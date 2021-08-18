@@ -1,113 +1,267 @@
+import 'package:api/api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tgp_flutter2/environment_config.dart';
+import 'package:tgp_flutter2/my_behavior.dart';
+import 'package:tgp_flutter2/route_path.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/base_state.dart';
+import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
+import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
+import 'package:tgp_flutter2/ui/home/home.dart';
+import 'package:tgp_flutter2/ui/login/login.dart';
+import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
+import 'package:tgp_flutter2/ui/profile/profile.dart';
+import 'package:tgp_flutter2/ui/splash/splash.dart';
+import 'package:api/localizations/language_provider.dart';
+import 'package:api/localizations/my_localizations.dart';
+import 'package:tgp_flutter2/ui/transaction/deposit_withdraw_transaction.dart';
+import 'package:tgp_flutter2/ui/transaction/transaction.dart';
 
-void main() {
+Future main() async {
+  //await DotEnv.load();
+  // await DotEnv.load(fileName: ".env");
+  // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  // DotEnv.env["appName"] = packageInfo.appName;
+  // // String packageName = packageInfo.packageName;
+  // // String version = packageInfo.version;
+  // // String buildNumber = packageInfo.buildNumber;
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale) async {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    state.setLocale(newLocale);
+  }
+}
+
+class _MyAppState extends BaseState<MyApp> {
+  final appTitle = EnvironmentConfig.appTitleName;
+
+  Locale _locale;
+  var langList = LanguageProvider().list.map((e) => e.locale).toList();
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      LanguageProvider().getLocale().then((locale) {
+        setState(() {
+          this._locale = locale;
+        });
+      });
+    });
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+          currentFocus.focusedChild.unfocus();
+        }
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: appTitle,
+        initialRoute: '/',
+        routes: {
+          RoutePath.empty: (context) => Splash(),
+          RoutePath.home: (context) => MyHomePage(),
+          RoutePath.profile: (context) => Profile(),
+          RoutePath.csWebView: (context) => CustomerServiceWebView(),
+          RoutePath.customerService: (context) => CustomerService(),
+          RoutePath.transaction: (context) => Transaction(),
+          RoutePath.login: (context) => Login(),
+          RoutePath.forgotPassword: (context) => ForgotPassword(),
+          RoutePath.maintenance: (context) => Maintenance()
+          /* RoutePath.menu: (context) => Menu(),
+          RoutePath.promotion: (context) => PromotionPage(),
+          RoutePath.childGame: (context) => ChildGame(),
+          RoutePath.deposit: (context) => Deposit(),
+          RoutePath.walletTransfer: (context) => WalletTransfer(),
+          RoutePath.withdraw: (context) => Withdraw(),
+          RoutePath.mainCard: (context) => MainCard(),
+          RoutePath.message: (context) => MessageView(),
+          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+          RoutePath.referFriend: (context) => ReferFriend(),
+          RoutePath.profileInfo: (context) => ProfileInfo(),
+          RoutePath.realNameVerification: (context) => RealNameVerification(),
+          RoutePath.phoneVerification: (context) => PhoneVerification(),
+          RoutePath.emailVerification: (context) => EmailVerification(0),
+          RoutePath.qqAccount: (context) => QQAccount(),
+          RoutePath.wechat: (context) => Wechat(),
+          RoutePath.address: (context) => Address(),
+          RoutePath.editPassword: (context) => EditPassword(),
+          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+          RoutePath.payPassword: (context) => PayPassword(),
+          RoutePath.securityAnswer: (context) => SecurityAnswer(),
+          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
+          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
+          RoutePath.language: (context) => LanguageView(),
+          RoutePath.addCard: (context) => AddCard(),
+          RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
+          RoutePath.csQrCode: (context) => CustomerServiceQrCode()*/
+        },
+        localizationsDelegates: [
+          MyLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        // MyHomePage(title: appTitle),
+        supportedLocales: langList,
+        locale: _locale,
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode &&
+                supportedLocale.scriptCode == locale.scriptCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  final bool isFirstRun;
+  final int index;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  MyHomePage({this.isFirstRun, this.index});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyHomePageState extends BaseState<MyHomePage> {
+  int currentBottomIndex = 0;
+  List _page;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    if (widget.index != null) currentBottomIndex = widget.index;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+    _page = [
+      Home(),
+      Transaction(),
+      DepositWithdrawTransactionView(),
+      CustomerService(),
+      Profile(),
+    ];
+    return ScrollConfiguration(
+      behavior: MyBehavior(),
+      child: Scaffold(
+        body: Center(
+          child: _page[currentBottomIndex],
+        ),
+        bottomNavigationBar: SizedBox(
+          height: 43.auto,
+          child: BottomAppBar(
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildBottomBarItem(0, "ic_home", "首页"),
+                _buildBottomBarItem(1, "ic_transaction", "账务"),
+                _buildBottomBarItem(2, "ic_deposit", "存提"),
+                _buildBottomBarItem(3, "ic_cs", "客服"),
+                _buildBottomBarItem(4, "ic_profile", "我的"),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
+        child: Stack(
+          children: [
+            SizedBox(
+              height: 58.auto,
+              width: context.screenWidth / 5,
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: () {
+                    if (index == 1) {
+                      Navigator.of(context).pushNamed(RoutePath.transaction);
+                    } else if (index == 3) {
+                      Navigator.of(context).pushNamed(RoutePath.customerService);
+                    } else {
+                      setState(() {
+                        currentBottomIndex = index;
+                      });
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      _buildImageIcon(imagePath, index, isNewMessage),
+                      Container(
+                        margin: EdgeInsets.only(top: 3.auto),
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 9.auto,
+                            color: currentBottomIndex == index
+                                ? CustomColor.theme_selected_color
+                                : CustomColor.theme_bg_color,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+      );
+
+  _buildImageIcon(String imagePath, int index, bool isNewMessage) => SvgPicture.asset(
+        "images/bottom_nav_bar/$imagePath.svg",
+        matchTextDirection: true,
+        height: 18.auto,
+        color: currentBottomIndex == index ? CustomColor.theme_selected_color : CustomColor.theme_bg_color,
+      );
+
+  _buildMenuIcon(String imagePath, int index) => CircleAvatar(
+        backgroundColor: CustomColor.theme_title_text_color,
+        child: ImageIcon(
+          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
+          size: 41.auto,
+          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        ),
+      );
+
+/*  _buildNotification(bool isNewMessage) => Visibility(
+      visible: isNewMessage,
+      child: Positioned(
+          top: context.screenWidth / 100,
+          right: context.screenWidth / 30,
+          child: AnimatedDot(
+            color: CustomColor.theme_label_text_highlight_color,
+          )));*/
 }

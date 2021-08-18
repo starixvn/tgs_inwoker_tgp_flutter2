@@ -23,11 +23,51 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
+  build_runner: ^1.0.0
+  json_serializable: ^3.5.0
+  http: ^0.12.2
+  shared_preferences: ^2.0.5
+  json_annotation: ^3.0.0
+  provider: ^5.0.0
+  auto_size_text: ^2.1.0
+  fluttertoast: ^7.1.1
+  marquee: ^1.6.1
+  flutter_swiper: ^1.1.6
+  outline_gradient_button: ^1.0.0+2
+  gradient_text: ^1.0.2
+  vs_scrollbar: ^0.2.0
+  flutter_svg: ^0.19.3
+  pull_to_refresh: ^1.6.4
+  fdottedline: ^1.0.1
+  flutter_inappwebview: ^4.0.0+4
+  ndialog: ^4.0.1
+  cached_network_image: ^2.0.0
+  flutter_html: ^1.2.0
+  lottie: ^0.1.4
+  animated_widgets: ^1.0.6
+  simple_animations: ^3.1.1
+  image_picker: ^0.6.5
+  flutter_launcher_icons: ^0.7.3
+  environment_config: ^2.2.0
+  flutter_webview_plugin: ^0.4.0
+  package_info: ^2.0.2
+  easy_gradient_text: ^1.0.0
+  qr_flutter: ^4.0.0
+
+  api:
+    git: https://gitlab.com/yewtungcheong/api
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter_staggered_grid_view: ^0.4.0
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +88,23 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+
+  assets:
+    - images/
+    - images/bottom_nav_bar/
+    - images/home/
+    - images/home_banner/
+    - images/game/
+    - images/profile/
+    - images/profile_info/
+    - images/support/
+    - images/login/
+    - images/transaction/
+
+
+    - loading/
+    - i18n/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
