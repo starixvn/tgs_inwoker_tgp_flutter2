@@ -56,7 +56,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                       child: AutoSizeText(
                         widget.displayText ?? widget.title,
                         style: TextStyle(
-                            color: widget.isHintText?CustomColor.theme_bar_gradient_1:Colors.grey,
+                            color: widget.isHintText?CustomColor.theme_button_color:Colors.grey,
                         ),
                         maxFontSize: 12,
                         minFontSize: 8,

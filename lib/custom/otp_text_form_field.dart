@@ -72,7 +72,7 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                     controller: widget.controller,
                     keyboardType: TextInputType.text,
                     textInputAction: widget.textInputAction,
-                    style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),
+                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 13.auto),
                     decoration: InputDecoration(
                       isDense: true,
                       border: InputBorder.none,
@@ -89,7 +89,7 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
                   onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode():null,
                   width: 86.auto,
                   height: 29.auto,
-                  color: CustomColor.theme_bar_gradient_2,
+                  color: CustomColor.theme_button_color,
                   fontSize: 11.auto
                   //fontSize: 11.auto,
                   )

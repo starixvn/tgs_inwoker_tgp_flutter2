@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
-import 'package:tgp_flutter2/custom/gradient_button.dart';
 import 'package:api/entity/language.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:tgp_flutter2/main.dart';

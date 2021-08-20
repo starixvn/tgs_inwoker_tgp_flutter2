@@ -65,7 +65,7 @@ class _TransactionFilterButtonItemState extends BaseState<TransactionFilterButto
         getTranslatedText(text),
         style: TextStyle(
             fontSize: widget.index==index?15.auto:12.auto,
-            color: widget.index==index?CustomColor.theme_bar_gradient_2:Colors.black
+            color: widget.index==index?CustomColor.theme_button_color:Colors.black
         ),
         textAlign: TextAlign.center,
       ),

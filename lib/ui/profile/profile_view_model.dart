@@ -25,6 +25,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   computeTotalBalance() async {
+    if(contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
 
     var task = <Future>[];

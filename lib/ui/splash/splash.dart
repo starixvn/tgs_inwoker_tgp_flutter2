@@ -5,6 +5,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/ui/splash/splash_view_model.dart';
 
 class Splash extends StatefulWidget {
@@ -60,12 +61,7 @@ class _SplashState extends BaseState<Splash> {
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    isFirstRun: true,
-                  )),
-          (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamed(RoutePath.home);
     });
-  }
+        }
 }

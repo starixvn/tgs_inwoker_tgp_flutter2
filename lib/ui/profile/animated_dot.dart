@@ -64,7 +64,7 @@ class _AnimatedDotState extends BaseState<AnimatedDot> with TickerProviderStateM
       child: Container(
         width: widget.size.auto,
         height: widget.size.auto,
-        decoration: BoxDecoration(color: widget.color?? CustomColor.theme_bar_gradient_2, shape: BoxShape.circle),
+        decoration: BoxDecoration(color: widget.color?? CustomColor.theme_button_color, shape: BoxShape.circle),
       ),
     );
   }

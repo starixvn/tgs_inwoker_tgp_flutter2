@@ -38,59 +38,67 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
   Widget build(BuildContext context) {
-    return Card(
-        semanticContainer: true,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        elevation: 5,
-        //margin:EdgeInsets.only(top:15.auto,),
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 15.auto, horizontal: 20.auto),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                Container(
-                  width: widget.width,
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(color: Colors.black, fontSize: 9.auto),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                Container(
-                  width: widget.width,
-                  child: TextFormField(
-                    enabled: widget.enabled ?? true,
-                    autofocus: false,
-                    onChanged: (value) => widget.onChanged(value),
-                    focusNode: widget.focusNode,
-                    controller: widget.controller,
-                    onFieldSubmitted: (value) => widget.onChanged(value),
-                    keyboardType: widget.textInputType,
-                    inputFormatters: widget.textInputType == TextInputType.number
-                        ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
-                        : null,
-                    textInputAction: widget.textInputAction,
-                    obscureText:
-                        (widget.textInputType == TextInputType.visiblePassword) ? true : false,
-                    style: TextStyle(color: CustomColor.theme_value_text_color, fontSize: 13.auto),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: InputBorder.none,
-                      hintText: widget.hintText,
-                      hintStyle:
-                          TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.auto),
+      child: Column(
+        children: [
+          Container(
+            width: widget.width,
+            alignment: Alignment.topLeft,
+            child: Text(
+              widget.title,
+              style: TextStyle(color: Colors.white, fontSize: 12.auto),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            elevation: 5,
+            margin: EdgeInsets.symmetric(vertical: 8.auto, horizontal: 10.auto),
+            child: Container(
+              height: 40.auto,
+              padding: EdgeInsets.symmetric(horizontal: 10.auto),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex:9,
+                    child: TextFormField(
+                      enabled: widget.enabled ?? true,
+                      autofocus: false,
+                      onChanged: (value) => widget.onChanged(value),
+                      focusNode: widget.focusNode,
+                      controller: widget.controller,
+                      onFieldSubmitted: (value) => widget.onChanged(value),
+                      keyboardType: widget.textInputType,
+                      inputFormatters: widget.textInputType == TextInputType.number
+                          ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+                          : null,
+                      textInputAction: widget.textInputAction,
+                      obscureText: (widget.textInputType == TextInputType.visiblePassword) ? true : false,
+                      style: TextStyle(color: CustomColor.theme_bg_color, fontSize: 13.auto),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                        hintText: widget.hintText,
+                        hintStyle: TextStyle(color: CustomColor.theme_text_color, fontSize: 13.auto),
+                      ),
                     ),
                   ),
-                ),
-              ]),
-              widget.button == null ? Container() : widget.button
-            ],
+                  widget.button == null ? Container() : Expanded(
+                    flex: 1,
+                    child: widget.button,
+                  )
+                ],
+              ),
+            ),
           ),
-        ));
+        ],
+      ),
+    );
   }
 }

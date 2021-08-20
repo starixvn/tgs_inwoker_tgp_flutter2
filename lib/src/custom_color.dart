@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:tgp_flutter2/environment_config.dart';
 
 class CustomColor{
-  static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
+  /*static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
   static const Color theme_bar_gradient_2 = Color(EnvironmentConfig.primaryGradientColorCode);
   static const Color theme_button_disable_bg = Color(0xff404040);
   static const Color theme_value_text_color = Color(0xff91030c);
-  static const Color theme_circle_button_bg = Color(0xff670108);
+  static const Color theme_circle_button_bg = Color(0xff670108);*/
 
   static const Color theme_title_text_color = Color(0xff404040);
 
@@ -31,6 +31,8 @@ class CustomColor{
   static const popup_menu_text_yellow = Color(0xffF7FF07);
   static const popup_menu_text_brown = Color(0xffC69C6A);
   static const popup_menu_text_green = Color(0xff82C66A);
+
+  static const light_button_color = Color(0xffFFF7EE);
 
 
 

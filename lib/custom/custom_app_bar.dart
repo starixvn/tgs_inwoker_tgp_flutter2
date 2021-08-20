@@ -12,21 +12,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget widget;
 
   @override
-Size get preferredSize => const Size.fromHeight(45);
+  Size get preferredSize => const Size.fromHeight(45);
 
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: CustomColor.theme_app_bar_color,
-      //centerTitle: true,
-      title: Text(title),
+      centerTitle: widget == null ? true : false,
+      title: Text(title, style: TextStyle(
+        fontSize: 16.auto
+      ),),
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.pop(context);
         },
       ),
-      actions: [widget?? Container()],
+      actions: [widget ?? Container()],
     );
   }
 }

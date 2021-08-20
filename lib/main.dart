@@ -14,7 +14,17 @@ import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter2/ui/home/home.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
+import 'package:tgp_flutter2/ui/message/message.dart';
 import 'package:tgp_flutter2/ui/profile/profile.dart';
+import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
+import 'package:tgp_flutter2/ui/profile_info/password/edit_password.dart';
+import 'package:tgp_flutter2/ui/profile_info/pay_password/pay_password.dart';
+import 'package:tgp_flutter2/ui/profile_info/pay_password/reset_pay_password.dart';
+import 'package:tgp_flutter2/ui/profile_info/profile_info.dart';
+import 'package:tgp_flutter2/ui/profile_info/qq_account/qq_account.dart';
+import 'package:tgp_flutter2/ui/profile_info/real_name/real_name_verification.dart';
+import 'package:tgp_flutter2/ui/profile_info/wechat/wechat.dart';
+import 'package:tgp_flutter2/ui/promotion/promotion.dart';
 import 'package:tgp_flutter2/ui/splash/splash.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
@@ -81,39 +91,45 @@ class _MyAppState extends BaseState<MyApp> {
         initialRoute: '/',
         routes: {
           RoutePath.empty: (context) => Splash(),
-          RoutePath.home: (context) => MyHomePage(),
+          RoutePath.home: (context) => Home(),
+          RoutePath.myHome: (context) => MyHomePage(),
           RoutePath.profile: (context) => Profile(),
           RoutePath.csWebView: (context) => CustomerServiceWebView(),
           RoutePath.customerService: (context) => CustomerService(),
           RoutePath.transaction: (context) => Transaction(),
           RoutePath.login: (context) => Login(),
           RoutePath.forgotPassword: (context) => ForgotPassword(),
-          RoutePath.maintenance: (context) => Maintenance()
+          RoutePath.maintenance: (context) => Maintenance(),
+          //RoutePath.mainCard: (context) => MainCard(),
+          RoutePath.message: (context) => Message(),
+          RoutePath.emailVerification: (context) => EmailVerification(0),
+          RoutePath.qqAccount: (context) => QQAccount(),
+          RoutePath.wechat: (context) => Wechat(),
+          RoutePath.editPassword: (context) => EditPassword(),
+          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+          RoutePath.payPassword: (context) => PayPassword(),
+          // RoutePath.language: (context) => LanguageView(),
+          // RoutePath.addCard: (context) => AddCard(),
+          RoutePath.realNameVerification: (context) => RealNameVerification(),
+          RoutePath.profileInfo: (context) => ProfileInfo(),
+          RoutePath.depositWithdrawTransaction: (context) => DepositWithdrawTransactionView(),
+          RoutePath.promotion: (context) => Promotion(),
           /* RoutePath.menu: (context) => Menu(),
-          RoutePath.promotion: (context) => PromotionPage(),
+
           RoutePath.childGame: (context) => ChildGame(),
           RoutePath.deposit: (context) => Deposit(),
           RoutePath.walletTransfer: (context) => WalletTransfer(),
           RoutePath.withdraw: (context) => Withdraw(),
-          RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => MessageView(),
           RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
-          RoutePath.profileInfo: (context) => ProfileInfo(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.emailVerification: (context) => EmailVerification(0),
-          RoutePath.qqAccount: (context) => QQAccount(),
-          RoutePath.wechat: (context) => Wechat(),
           RoutePath.address: (context) => Address(),
-          RoutePath.editPassword: (context) => EditPassword(),
-          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-          RoutePath.payPassword: (context) => PayPassword(),
+
           RoutePath.securityAnswer: (context) => SecurityAnswer(),
           RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
           RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
-          RoutePath.language: (context) => LanguageView(),
-          RoutePath.addCard: (context) => AddCard(),
+
           RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
           RoutePath.csQrCode: (context) => CustomerServiceQrCode()*/
         },
@@ -151,7 +167,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
-  List _page;
+  List _page = [
+    Promotion(),
+    Transaction(),
+    DepositWithdrawTransactionView(),
+    CustomerService(),
+    Profile(),
+  ];
+  var path;
 
   @override
   void initState() {
@@ -161,13 +184,6 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _page = [
-      Home(),
-      Transaction(),
-      DepositWithdrawTransactionView(),
-      CustomerService(),
-      Profile(),
-    ];
     return ScrollConfiguration(
       behavior: MyBehavior(),
       child: Scaffold(
@@ -204,8 +220,13 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
-                    if (index == 1) {
+                    if (index == 0) {
+                      Navigator.of(context).pushNamed(RoutePath.home);
+                    }
+                    else if (index == 1) {
                       Navigator.of(context).pushNamed(RoutePath.transaction);
+                    } else if (index == 2) {
+                      Navigator.of(context).pushNamed(RoutePath.depositWithdrawTransaction);
                     } else if (index == 3) {
                       Navigator.of(context).pushNamed(RoutePath.customerService);
                     } else {
@@ -225,7 +246,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                           title,
                           style: TextStyle(
                             fontSize: 9.auto,
-                            color: currentBottomIndex == index
+                            color: currentBottomIndex == index && currentBottomIndex!=0
                                 ? CustomColor.theme_selected_color
                                 : CustomColor.theme_bg_color,
                           ),
@@ -244,24 +265,6 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         "images/bottom_nav_bar/$imagePath.svg",
         matchTextDirection: true,
         height: 18.auto,
-        color: currentBottomIndex == index ? CustomColor.theme_selected_color : CustomColor.theme_bg_color,
+        color: currentBottomIndex == index && currentBottomIndex!=0? CustomColor.theme_selected_color : CustomColor.theme_bg_color,
       );
-
-  _buildMenuIcon(String imagePath, int index) => CircleAvatar(
-        backgroundColor: CustomColor.theme_title_text_color,
-        child: ImageIcon(
-          AssetImage("images/bottom_navigation_bar/$imagePath.png"),
-          size: 41.auto,
-          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-        ),
-      );
-
-/*  _buildNotification(bool isNewMessage) => Visibility(
-      visible: isNewMessage,
-      child: Positioned(
-          top: context.screenWidth / 100,
-          right: context.screenWidth / 30,
-          child: AnimatedDot(
-            color: CustomColor.theme_label_text_highlight_color,
-          )));*/
 }

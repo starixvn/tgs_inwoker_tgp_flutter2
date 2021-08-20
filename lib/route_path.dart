@@ -1,6 +1,7 @@
 class RoutePath{
   static final empty = '/';
   static final home = '/home';
+  static final myHome = '/my_home';
   static final login = '/login';
   static final promotion = '/promotion';
   static final profile = '/profile';
@@ -48,4 +49,5 @@ class RoutePath{
   static final csWebView = '/cs_web_view';
   static final csQrCode = '/cs_qr_code';
   static final maintenance = '/maintenance';
+  static final depositWithdrawTransaction = '/deposit_withdraw_transaction';
 }

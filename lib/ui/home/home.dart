@@ -2,13 +2,14 @@ import 'package:api/entity/game_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/language.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -16,10 +17,15 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:marquee/marquee.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/game/game.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/ui/profile/profile.dart';
+import 'package:tgp_flutter2/ui/promotion/promotion.dart';
+import 'package:tgp_flutter2/ui/transaction/deposit_withdraw_transaction.dart';
+import 'package:tgp_flutter2/ui/transaction/transaction.dart';
 
 class Home extends StatefulWidget {
   final bool isFirstRun;
@@ -51,9 +57,17 @@ class _HomeState extends BaseState<Home> {
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile user;
+  var currentBottomIndex = 0;
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
+  List _page = [
+    MyHomePage(index:0),
+    MyHomePage(index:1),
+    MyHomePage(index:2),
+    MyHomePage(index:3),
+    MyHomePage(index:4),
+  ];
 
   @override
   void initState() {
@@ -73,8 +87,23 @@ class _HomeState extends BaseState<Home> {
             backgroundColor: CustomColor.theme_bg_color,
             appBar: CustomLoginAppBar(
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-              isLogin: _vm.userProfile!=null,
+              isLogin: _vm.userProfile != null,
             ),
+            bottomNavigationBar: SizedBox(
+                height: 43.auto,
+                child: BottomAppBar(
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildBottomBarItem(0, "ic_promotion", "优惠"),
+                      _buildBottomBarItem(1, "ic_transaction", "账务"),
+                      _buildBottomBarItem(2, "ic_deposit", "存提"),
+                      _buildBottomBarItem(3, "ic_cs", "客服"),
+                      _buildBottomBarItem(4, "ic_profile", "我的"),
+                    ],
+                  ),
+                )),
             body: Container(
               margin: EdgeInsets.all(10.auto),
               child: Column(
@@ -84,6 +113,53 @@ class _HomeState extends BaseState<Home> {
           );
         });
   }
+
+  _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
+        child: Stack(
+          children: [
+            SizedBox(
+              height: 58.auto,
+              width: context.screenWidth / 5,
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MyHomePage(index: index)));
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      _buildImageIcon(imagePath, index, isNewMessage),
+                      Container(
+                        margin: EdgeInsets.only(top: 3.auto),
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 9.auto,
+                            color: CustomColor.theme_bg_color,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  _buildImageIcon(String imagePath, int index, bool isNewMessage) => SvgPicture.asset(
+        "images/bottom_nav_bar/$imagePath.svg",
+        matchTextDirection: true,
+        height: 18.auto,
+        color: CustomColor.theme_bg_color,
+      );
 
   _buildImageSlider() => Expanded(
         flex: 1,
@@ -119,11 +195,7 @@ class _HomeState extends BaseState<Home> {
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Game(
-                          gamePlatformCode: "",
-                          gameType: gameList[index],
-                      index:index
-                        ))),
+                    builder: (context) => Game(gamePlatformCode: "", gameType: gameList[index], index: index))),
             child: Image.asset("images/home/${gameList[index].getImagePath()}.png")),
         staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
         mainAxisSpacing: 15.auto,

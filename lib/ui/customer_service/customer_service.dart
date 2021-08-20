@@ -95,7 +95,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   child: ImageIcon(
                     AssetImage("images/support/support_call.png"),
                     size: 23.auto,
-                    color: CustomColor.theme_bar_gradient_1,
+                    color: CustomColor.theme_button_color,
                   ),
                 ),
                 Expanded(

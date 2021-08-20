@@ -100,6 +100,7 @@ flutter:
     - images/support/
     - images/login/
     - images/transaction/
+    - images/promotion/
 
 
     - loading/

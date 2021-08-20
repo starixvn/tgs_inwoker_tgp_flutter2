@@ -26,7 +26,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 style: TextStyle(
                   fontFamily: 'PingFang',
                   fontSize: 10.auto,
-                    color: (widget.index ==0) ? CustomColor.theme_bar_gradient_2: Colors.grey
+                    color: (widget.index ==0) ? CustomColor.theme_button_color: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
@@ -39,7 +39,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 ),
                 border: Border.all(
                   width: 2.0,
-                  color: (widget.index ==0) ? CustomColor.theme_bar_gradient_2: Colors.grey
+                  color: (widget.index ==0) ? CustomColor.theme_button_color: Colors.grey
                 )
               ),
               margin: EdgeInsets.symmetric(vertical: 3.auto),
@@ -49,7 +49,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,
-                    color: (widget.index ==0) ? CustomColor.theme_bar_gradient_2: Colors.grey
+                    color: (widget.index ==0) ? CustomColor.theme_button_color: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
@@ -63,7 +63,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 10.auto,
-                    color: (widget.index ==1) ? CustomColor.theme_bar_gradient_2: Colors.grey
+                    color: (widget.index ==1) ? CustomColor.theme_button_color: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
@@ -76,7 +76,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                   ),
                   border: Border.all(
                       width: 2.0,
-                      color: (widget.index ==1) ? CustomColor.theme_bar_gradient_2: Colors.grey
+                      color: (widget.index ==1) ? CustomColor.theme_button_color: Colors.grey
                   )
               ),
               margin: EdgeInsets.symmetric(vertical: 3.auto),
@@ -86,7 +86,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                 style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,
-                    color: (widget.index ==1) ? CustomColor.theme_bar_gradient_2: Colors.grey
+                    color: (widget.index ==1) ? CustomColor.theme_button_color: Colors.grey
                 ),
                 textAlign: TextAlign.center
             ),
