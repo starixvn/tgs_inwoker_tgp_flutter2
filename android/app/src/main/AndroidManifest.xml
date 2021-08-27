@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tgp_flutter2">
    <application
-        android:label="tgp_flutter2"
+        android:label="PG"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -44,7 +44,7 @@ class ColorButton extends StatelessWidget {
           minimumSize: MaterialStateProperty.all(Size(width ?? context.screenWidth, height ?? 45.auto))),
       child: AutoSizeText(
         title,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: CustomColor.theme_text_color2),
         minFontSize: fontSize ?? 15,
         maxLines: 1,
         textAlign: TextAlign.center,

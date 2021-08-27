@@ -33,7 +33,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       backgroundColor: CustomColor.theme_app_bar_color,
       title: Image.asset("images/pg_logo.png"),
-      actions: [_getLoginButton(), _getButton()],
+      actions: [_getLoginButton()],
     );
   }
 
@@ -82,7 +82,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             BoxDecoration(borderRadius: BorderRadius.circular((5.8).auto), color: CustomColor.theme_button_color),
         child: Text(
           "查询",
-          style: TextStyle(fontSize: 14.auto, color: Colors.white),
+          style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_text_color2),
           textAlign: TextAlign.center,
         ),
       );
@@ -145,7 +145,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   _getFirstColor(int index){
     if(index==8) return CustomColor.popup_menu_text_brown;
     else if (index == 9) return CustomColor.popup_menu_text_green;
-    else return Colors.white;
+    else return CustomColor.theme_text_color2;
   }
 
   _getSecondColor(int index){

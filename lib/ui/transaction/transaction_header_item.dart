@@ -1,14 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 
 class TransactionHeaderItem extends StatefulWidget {
   final List<String> headerList;
+  final bool isUploadButton;
 
-  const TransactionHeaderItem({Key key, this.headerList}) : super(key: key);
+  const TransactionHeaderItem({Key key, this.headerList, this.isUploadButton}) : super(key: key);
 
   @override
   _TransactionHeaderItemState createState() => _TransactionHeaderItemState();
@@ -21,19 +21,20 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
       child: Row(
           children: List.generate(widget.headerList.length, (index) {
         return Expanded(
-          //first header (time) flex number is 2, others will be 1
-          flex: 3,//index == 0 || index == 1 ? 4 : 3,
-          child: AutoSizeText(
-            getTranslatedText(widget.headerList[index]),
-            minFontSize: 5,
-            maxFontSize: 12,
-            stepGranularity: 1,
-            maxLines: 1,
-            textAlign: index==0?TextAlign.start: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white
-            ),
-          ),
+          flex: (index == 3 && widget.isUploadButton) ? 1 : 2,
+          child: index == 3 && widget.isUploadButton
+              ? Container(
+                  width: 45.auto,
+                )
+              : AutoSizeText(
+                  getTranslatedText(widget.headerList[index]) ?? " ",
+                  minFontSize: 5,
+                  maxFontSize: 12,
+                  stepGranularity: 1,
+                  maxLines: 1,
+                  textAlign: index == 0 ? TextAlign.start : TextAlign.center,
+                  style: TextStyle(color: CustomColor.theme_text_color2),
+                ),
         );
       }).toList()),
     );

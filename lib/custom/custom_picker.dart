@@ -36,15 +36,23 @@ class _CustomPickerState extends BaseState<CustomPicker> {
       elevation: 5,
       child: Container(
         width: widget.width,
-        height: 32.auto,
-        padding: EdgeInsets.symmetric(horizontal: 10.auto),
+        margin: EdgeInsets.symmetric(
+            vertical: 15.auto, horizontal: 20.auto),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 8.auto,),
+              child: Text(
+                getTranslatedText(widget.title)??widget.title,
+                style: TextStyle(
+                  fontSize: 9.auto,
+                ),
+              ),
+            ),
             InkWell(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
                 onTap: () {
                   widget.onClick();
                 },
@@ -52,11 +60,11 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      flex: 8,
+                      flex: 9,
                       child: AutoSizeText(
-                        widget.displayText ?? widget.title,
+                        widget.displayText,
                         style: TextStyle(
-                            color: widget.isHintText?CustomColor.theme_button_color:Colors.grey,
+                          color: widget.isHintText?CustomColor.theme_button_color:Colors.grey,
                         ),
                         maxFontSize: 12,
                         minFontSize: 8,
@@ -64,7 +72,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                       ),
                     ),
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: Icon(
                         Icons.keyboard_arrow_down,
                         size: 18.0,

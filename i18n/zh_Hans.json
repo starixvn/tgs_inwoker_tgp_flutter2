@@ -1,12 +1,12 @@
 {
-  "cat_livecasino": "真人",
-  "cat_qipai": "棋牌",
-  "cat_sport": "体育",
-  "cat_lottery": "彩票",
-  "cat_slotgame": "老虎",
-  "cat_fish": "捕鱼",
-  "cat_e_game": "电子",
-  "cat_e_sports": "电竞",
+  "cat_livecasino": "真人娱乐",
+  "cat_qipai": "棋牌游戏",
+  "cat_sport": "體育",
+  "cat_lottery": "彩票游戏",
+  "cat_slotgame": "老虎机",
+  "cat_fish": "捕魚游戏",
+  "cat_e_game": "電子游戏",
+  "cat_e_sports": "体育电竞",
   "home": "首页",
   "promotion": "优惠",
   "customer_service": "客服",
@@ -947,7 +947,10 @@
   "no_record":"查无资料",
   "favorite_game": "收藏游戏",
   "copy_text": "文本已复制",
-  "email_dialog": "请绑定邮箱地址"
+  "email_dialog": "请绑定邮箱地址",
+  "payment_type": "支付方式",
+  "payment_channel": "支付渠道",
+  "auto_transfer": "自动转账"
 }
 
 

@@ -15,7 +15,7 @@ class ProfileViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
-  get balance => userRepo.wallet.main;
+  get balance => userRepo.wallet?.main;
 
   logout() async {
     setLoading();

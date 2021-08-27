@@ -1,21 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:api/entity/account_transaction.dart';
-import 'package:api/entity/bet_transaction.dart';
-import 'package:api/entity/daily_transaction.dart';
-import 'package:api/entity/bet_transaction.dart';
 import 'package:api/entity/transaction_cell_item_type.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class TransactionCellItem extends StatefulWidget {
   final List list;
   final TransactionCellItemType type;
-
   final bool isEndRecord;
+  final bool isUploadButton;
+  final Function getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord}) : super(key: key);
+  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton, this.getManualDepositId})
+      : super(key: key);
 
   @override
   _TransactionCellItemState createState() => _TransactionCellItemState();
@@ -73,7 +72,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                 padding: EdgeInsets.only(bottom: 10.auto),
                 child: Text(
                   getTranslatedText("no_more"),
-                  style: TextStyle(fontSize: 12.auto, color: Colors.white),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_color2),
                 ),
               )
             : Container()
@@ -85,33 +84,53 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
 
   _getTransactionCellItem({bool isLast = false}) => Column(children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal:10.auto),
+          margin: EdgeInsets.symmetric(horizontal: 10.auto),
           child: Column(
             children: [
-              widget.list[0].isEmpty?Container():Row(
-                children: [
-                  Text(
-                    getTranslatedText("order_number"),
-                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                  ),
-                  AutoSizeText(
-                    widget.list[0],
-                    style: TextStyle(color: Colors.grey[700]),
-                    minFontSize: 10,
-                    maxFontSize: 12,
-                    stepGranularity: 1,
-                  )
-                ],
-              ),
+              widget.list[0].isEmpty
+                  ? Container()
+                  : Row(
+                      children: [
+                        Text(
+                          getTranslatedText("order_number"),
+                          style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                        ),
+                        AutoSizeText(
+                          widget.list[0],
+                          style: TextStyle(color: Colors.grey[700]),
+                          minFontSize: 10,
+                          maxFontSize: 12,
+                          stepGranularity: 1,
+                        )
+                      ],
+                    ),
               Container(
                 margin: EdgeInsets.only(top: 5.auto),
                 child: Row(
                     children: List.generate(widget.list.length, (index) {
-                      return index == 0
-                          ? Container()
-                          : Expanded(
+                  return (() {
+                    if (index == 0)
+                      return Container();
+                    else if (index == 4)
+                      return Expanded(
+                        flex: 1,
+                        child: widget.isUploadButton
+                            ? ColorButton(
+                                title: getTranslatedText("upload_prof"),
+                                onClick: () => widget.getManualDepositId(),
+                                isEnabled: true,
+                                radius: 4.8,
+                                height: 30,
+                                width: 45,
+                                fontSize: 8.auto,
+                                padding: 3,
+                              )
+                            : Container(),
+                      );
+                    else
+                      return Expanded(
                         //first header (time) flex number is 2, others will be 1
-                        flex: 3,
+                        flex: 2,
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 2.auto),
                           child: AutoSizeText(
@@ -124,7 +143,8 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                           ),
                         ),
                       );
-                    }).toList()),
+                  })();
+                }).toList()),
               ),
             ],
           ),

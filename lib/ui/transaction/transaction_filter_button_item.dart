@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -65,7 +64,7 @@ class _TransactionFilterButtonItemState extends BaseState<TransactionFilterButto
         getTranslatedText(text),
         style: TextStyle(
             fontSize: widget.index==index?15.auto:12.auto,
-            color: widget.index==index?CustomColor.theme_button_color:Colors.black
+            color: widget.index==index?CustomColor.theme_button_color:CustomColor.theme_text_color2
         ),
         textAlign: TextAlign.center,
       ),

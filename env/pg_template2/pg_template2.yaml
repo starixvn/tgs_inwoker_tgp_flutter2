@@ -1,0 +1,55 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path:  "images/PG_logo.png"
+
+environment_config:
+  fields:
+    jwtKey:
+      default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
+    url:
+      default: "https://dev.operator.tgsdev.gq/"
+    currency:
+      default: "CNY"
+    imageUrl:
+      default: "https://dev.lobby.tgsdev.gq/assets/images/"
+    csUrl:
+      default: "https://direct.lc.chat/12646566/"
+    appTitleName:
+      default: "PG Gaming"
+    slotGameUrl:
+      default: "https://images.srvptt.com/"
+    imageLogo:
+      default: "pg_login_logo"
+    environmentStage:
+      default: "development"
+    template_version:
+      type: int
+      default: 2
+    theme_app_bar_color:
+      type: int
+      default: 0xffC69C6A
+    theme_button_color:
+      type: int
+      default: 0xffC69C6A
+    theme_grey_button_color:
+      type: int
+      default: 0xff828282
+    theme_bg_color:
+      type: int
+      default: 0xffF0EFF5
+    theme_selected_color:
+      type: int
+      default: 0xffC69C6A
+    theme_disable_color:
+      type: int
+      default: 0xffABABAB
+    theme_text_color:
+      type: int
+      default: 0xff4B4B4B
+    theme_text_color2:
+        type: int
+        default: 0xFFFFFFFF
+    theme_app_bar_icon_color:
+      type: int
+      default: 0xff707070

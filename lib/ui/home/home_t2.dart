@@ -1,0 +1,256 @@
+import 'package:api/entity/game_type.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:marquee/marquee.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
+import 'package:api/entity/user_profile.dart';
+import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
+import 'package:tgp_flutter2/environment_config.dart';
+import 'package:tgp_flutter2/main.dart';
+import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'package:tgp_flutter2/route_path.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/base_state.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
+import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+
+class HomeT2 extends StatefulWidget {
+  final bool isFirstRun;
+
+  HomeT2({this.isFirstRun});
+
+  @override
+  _HomeT2State createState() => _HomeT2State();
+}
+
+class _HomeT2State extends BaseState<HomeT2> {
+  List<String> imgList = [
+    '1',
+    '2',
+    //'images/banner_2.jpg'
+  ];
+
+  //var gameList = ["sport", "live", "slot", "fishing", "lotto", "e-game", "card"];
+  var gameRowList = [
+    GameType.ESports,
+    GameType.LiveDealerLobby,
+  ];
+  var gameList = [
+    GameType.Slot,
+    GameType.Fishing,
+    GameType.LotteryLobby,
+    GameType.EGame,
+    GameType.CardGameLobby,
+  ];
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  ScrollController controller = ScrollController();
+  var currentTabIndex = "0";
+  UserProfile user;
+  var currentBottomIndex = 0;
+  var isMenu = false;
+
+  var itemHeightRatio = 335 / 90;
+  var _vm = HomeViewModel();
+  List _page = [
+    MyHomePage(index: 0),
+    MyHomePage(index: 1),
+    MyHomePage(index: 2),
+    MyHomePage(index: 3),
+    MyHomePage(index: 4),
+  ];
+
+  @override
+  void initState() {
+    _vm.getAnnouncement();
+    _vm.getApiError();
+    _vm.resumeIfNeed();
+    super.initState();
+  }
+
+  Widget build(BuildContext context) {
+    return ProviderWidget<HomeViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: CustomColor.theme_bg_color,
+            appBar: CustomLoginAppBar(
+              onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+              isLogin: _vm.userProfile != null,
+            ),
+            body: /* Stack(
+              children: [*/
+                Container(
+                  margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
+              child: Column(
+                children: [
+                  _buildImageSlider(),
+                  _buildTextMarquee(),
+                  _buildGameView(),
+                ],
+              ),
+            ),
+            /*_buildOverlay(),
+                _buildMenu(),
+              ],
+            ),*/
+          );
+        });
+  }
+
+  _buildImageSlider() {
+    String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
+    return Container(
+      height: context.screenHeight / 5,
+      child: Stack(
+        children: [
+          Swiper(
+            itemBuilder: (BuildContext context, int index) {
+              return AspectRatio(
+                aspectRatio: 380 / 156,
+                child: Image.asset(
+                  "images/home_banner/${getCurrentLanguage().apiCode}/$brand/${index + 1}.jpg",
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+            autoplay: true,
+            itemCount: 2,
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            child: Icon(Icons.arrow_forward_ios, color: Colors.white),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildTextMarquee() {
+    var announcement = _removeMultiLine(parseHtmlString(_getAnnouncementText()));
+    return Container(
+      padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
+      child: Row(
+        children: [
+          Expanded(
+            flex:1,
+            child: SvgPicture.asset(
+            "images/home/ic_marquee.svg",
+            height: 15.auto,
+          ),),
+          Expanded(
+            flex:9,
+            child: announcement.isEmpty
+                ? Container()
+                : Container(
+              // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+              margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+              height: 18.auto,
+              child: Marquee(
+                  text: announcement ?? "tt",
+                  style: TextStyle(
+                    color: CustomColor.theme_text_color,
+                    fontSize: 10.auto,
+                  ),
+                  scrollAxis: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  blankSpace: 5.auto,
+                  pauseAfterRound: Duration(seconds: 1),
+                  showFadingOnlyWhenScrolling: false),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _getAnnouncementText() {
+    if (_vm.announcement?.localization?.content?.isNotEmpty ?? false)
+      return _vm.announcement?.localization?.content;
+    else if (_vm.announcement?.content?.isNotEmpty ?? false)
+      return _vm.announcement?.content;
+    else
+      return "";
+  }
+
+  _removeMultiLine(String text) {
+    return text.replaceAll("\n", " ");
+  }
+
+  _buildGameView() => GameT2();
+
+  /*_buildGameImageGridView() => Expanded(
+        flex: 3,
+        child: StaggeredGridView.countBuilder(
+          crossAxisCount: 2,
+          itemCount: gameList.length,
+          itemBuilder: (BuildContext context, int index) => InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Game(gamePlatformCode: "", gameType: gameList[index], index: index))),
+              child: Stack(
+                children: [
+                  Image.asset("images/home/${gameList[index].getImagePath()}.png"),
+                  Positioned(
+                    bottom: 20.auto,
+                    left: 55.auto,
+                    child: Text(
+                      gameList[index].getName(context),
+                      style: TextStyle(color: Colors.white, fontSize: 23.auto),
+                    ),
+                  ),
+                ],
+              )),
+          staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+          mainAxisSpacing: 15.auto,
+          crossAxisSpacing: 15.auto,
+        ),
+      );*/
+
+  navigateToLogin() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushNamed(RoutePath.login);
+    });
+  }
+
+  _displayDialog() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var loginLater = prefs.getBool("login_later") ?? false;
+    if (_vm.userProfile == null && !loginLater) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: getTranslatedText("login_expired"),
+          description: getTranslatedText("login_again"),
+          buttonText1: getTranslatedText("login"),
+          buttonText2: getTranslatedText("no"),
+          onClick: this.navigateToLogin,
+          onClick2: () {
+            prefs.setBool("login_later", true);
+            Navigator.pop(context);
+          },
+        ),
+      );
+    }
+  }
+
+  _handleApiState() {
+    if (widget.isFirstRun != null && widget.isFirstRun) {
+      if (_vm.isNotLogin) {
+        navigateToLogin();
+        _vm.markIsNotLogin();
+      } else if (_vm.isExpired) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _displayDialog();
+        });
+      }
+    }
+  }
+}

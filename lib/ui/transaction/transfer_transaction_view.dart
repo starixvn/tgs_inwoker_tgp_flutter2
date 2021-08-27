@@ -3,9 +3,8 @@ import 'package:api/entity/transaction_cell_item_type.dart';
 import 'package:api/extension/format.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_silver_app_bar.dart';
+import 'package:tgp_flutter2/ui/transaction/base_transaction.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_cell_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_silver_app_bar2.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -42,7 +41,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return TransactionSilverAppBar2(
+          return BaseTransaction(
             transactionHeaderList: ["trade_time", "transfer_from", "transfer_to", "amount"],
             getPickerBox: Container(),
             filterIndex: filterIndex,
@@ -60,6 +59,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
             refreshController: _refreshController,
             list: _vm.transferTransactionList,
             displayItemList: _getList(),
+            isUploadButton: false,
           );
         });
   }
@@ -72,7 +72,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
         _vm.transferTransactionList[index].from,
         _vm.transferTransactionList[index].to,
         _vm.transferTransactionList[index].amount.toString(),
-      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false,),
     );
   }).toList();
 

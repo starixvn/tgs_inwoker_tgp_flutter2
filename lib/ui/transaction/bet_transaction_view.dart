@@ -1,36 +1,14 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter2/custom/custom_picker.dart';
-import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
-import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter2/custom/custom_toast.dart';
-import 'package:api/entity/account_transaction.dart';
-import 'package:api/entity/bet_transaction.dart';
-import 'package:api/entity/daily_transaction.dart';
-import 'package:api/entity/bet_transaction.dart';
 import 'package:api/entity/game_provider.dart';
-import 'package:api/entity/transaction_action_type.dart';
-import 'package:api/entity/transaction_bet_status_type.dart';
 import 'package:api/entity/transaction_cell_item_type.dart';
-import 'package:api/entity/transaction_status_type.dart';
-import 'package:api/entity/transaction_third_party.dart';
-import 'package:api/entity/transaction_third_party_type.dart';
 import 'package:api/extension/format.dart';
-import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_silver_app_bar.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/transaction/base_transaction.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_cell_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_date_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_filter_button_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_header_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_silver_app_bar2.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
-import '../../my_behavior.dart';
 
 class BetTransactionView extends StatefulWidget {
   final List<String> transactionHeaderList;
@@ -63,11 +41,11 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return TransactionSilverAppBar2(
+          return BaseTransaction(
             transactionHeaderList: ["bet_time", "bet_platform","game", "bet_amount", "win_loss"],
             getPickerBox: Container(),
             filterIndex: filterIndex,
-            expandedHeight: 120,
+            expandedHeight: 170,
             vm: _vm,
             getTransaction: (mIsLoadMore, mStatus) {
               _getTransaction(isLoadMore: mIsLoadMore);
@@ -81,12 +59,14 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
             refreshController: _refreshController,
             list: _vm.betTransactionList,
             displayItemList: _getList(),
+            isUploadButton: false,
           );
         });
   }
 
   _getList() => _vm.betTransactionList ==null?[]:List.generate(_vm.betTransactionList.length, (index) {
         return Container(
+          color: CustomColor.theme_bg_color,
           child: TransactionCellItem(list: [
             _vm.betTransactionList[index].id,
             Format().dateTimeFormat(_vm.betTransactionList[index].createdOn),
@@ -94,7 +74,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
             _vm.betTransactionList[index].gameName,
             _vm.betTransactionList[index].betAmount.toString(),
             _vm.betTransactionList[index].winLoss.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false,),
         );
       }).toList();
 

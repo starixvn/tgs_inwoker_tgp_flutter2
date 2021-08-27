@@ -960,5 +960,8 @@
   "no_record": "No Record",
   "favorite_game": "Favorite Game",
   "copy_text": "Text is copied to clipboard.",
-  "email_dialog": "Please link your email."
+  "email_dialog": "Please link your email.",
+  "payment_type": "Payment Type",
+  "payment_channel": "Payment Channel",
+  "auto_transfer": "Auto-Transfer"
 }

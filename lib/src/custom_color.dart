@@ -21,12 +21,14 @@ class CustomColor{
   static const Color grey_five = Color(0xff7f7f7f);
   static const Color faded_red = Color(0xffe73f42);
 
-  static const theme_app_bar_color = Color(0xff0E0D12);
-  static const theme_button_color = Color(0xffFF9900);
-  static const theme_bg_color = Color(0xff3A3A3A);
-  static const theme_selected_color = Color(0xffC69C6A);
-  static const theme_disable_color = Color(0xffABABAB);
-  static const theme_text_color = Color(0xff707070);
+  static const theme_app_bar_color = Color(EnvironmentConfig.theme_app_bar_color);
+  static const theme_button_color = Color(EnvironmentConfig.theme_button_color);
+  static const theme_bg_color = Color(EnvironmentConfig.theme_bg_color);
+  static const theme_selected_color = Color(EnvironmentConfig.theme_selected_color);
+  static const theme_disable_color = Color(EnvironmentConfig.theme_disable_color);
+  static const theme_text_color = Color(EnvironmentConfig.theme_text_color);
+  static const theme_text_color2 = Color(EnvironmentConfig.theme_text_color2);
+  static const theme_app_bar_icon_color = Color(EnvironmentConfig.theme_app_bar_icon_color);
 
   static const popup_menu_text_yellow = Color(0xffF7FF07);
   static const popup_menu_text_brown = Color(0xffC69C6A);
@@ -34,6 +36,9 @@ class CustomColor{
 
   static const light_button_color = Color(0xffFFF7EE);
 
+  static const menu_green = Color(0xff0A9D4C);
+  static const menu_orange = Color(0xffF79319);
+  static const menu_blue = Color(0xff3C92C5);
 
 
 }

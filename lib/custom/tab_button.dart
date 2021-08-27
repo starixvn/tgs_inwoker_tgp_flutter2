@@ -22,18 +22,21 @@ class TabButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: (width.auto)?? context.screenWidth/3,
-      height: (height.auto)?? 40.auto,
+      width: (width)?? context.screenWidth/3,
+      height: (height)?? 40.auto,
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(
-                  color: index == currentTabIndex ? CustomColor.theme_button_color : Colors.white,
+                  color: index == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_app_bar_icon_color,
                   width: 3))),
       child: Tab(
-        child: Text(text,
+        child: AutoSizeText(text,
+            maxLines: 1,
+            minFontSize: 8,
+            maxFontSize: 14,
+            stepGranularity: 1,
             style: TextStyle(
-                fontSize: 16.auto,
-                color: index == currentTabIndex ? CustomColor.theme_button_color : Colors.white)),
+                color: index == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_app_bar_icon_color)),
       ),
     );
   }

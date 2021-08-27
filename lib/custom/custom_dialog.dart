@@ -39,7 +39,7 @@ class CustomDialog extends StatelessWidget {
             horizontal: context.screenWidth / 20,
           ),
           decoration: new BoxDecoration(
-            color: Colors.white,
+            color: CustomColor.theme_text_color2,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
@@ -97,7 +97,7 @@ class CustomDialog extends StatelessWidget {
         /*text: Text(
           buttonText1,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: CustomColor.theme_text_color2),
         ),*/
         isEnabled: true,
         radius: 45.auto,
@@ -112,6 +112,6 @@ class CustomDialog extends StatelessWidget {
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
         fontSize: 13.auto,
-        color: Colors.white,
+        color: CustomColor.theme_text_color2,
       );
 }

@@ -38,7 +38,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
                   getTranslatedText("confirm_leave_game"),
                   style: TextStyle(
                     fontSize: 13.5.auto,
-                    color: Colors.white,
+                    color: CustomColor.theme_text_color2,
                   ),
                 ),
               ),
@@ -75,7 +75,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
             margin: EdgeInsets.only(left: 22.5.auto),
             height: 35.auto,
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.auto))),
+                color: CustomColor.theme_text_color2, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.auto))),
             child: Text(
               getTranslatedText("leave"),
               style: TextStyle(color: CustomColor.grey_five, fontSize: 11.5.auto),
@@ -95,7 +95,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
             margin: EdgeInsets.only(right: 17.5.auto),
             height: 35.auto,
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.only(bottomRight: Radius.circular(5.auto))),
+                color: CustomColor.theme_text_color2, borderRadius: BorderRadius.only(bottomRight: Radius.circular(5.auto))),
             child: Text(
               getTranslatedText("play_a_while"),
               style: TextStyle(color: CustomColor.faded_red, fontSize: 11.5.auto),

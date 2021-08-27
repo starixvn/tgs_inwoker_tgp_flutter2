@@ -66,7 +66,6 @@ class _EditPasswordState extends BaseState<EditPassword> {
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
           controller: controller,
-          focusNode: null,
           width: context.screenWidth - 40.auto,
           textInputType: TextInputType.visiblePassword,
           textInputAction: isLast ? TextInputAction.done : TextInputAction.next,

@@ -121,7 +121,7 @@ class _LoginContentState extends BaseState<LoginContent> {
             },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),
-              style: TextStyle(color: Colors.white, decoration: TextDecoration.underline, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_color, decoration: TextDecoration.underline, fontSize: 12.auto),
             ),
           )
         ],
@@ -141,7 +141,7 @@ class _LoginContentState extends BaseState<LoginContent> {
           ),
           Text(
             getTranslatedText("rmb_password"),
-            style: TextStyle(color: Colors.white, fontSize: 12.auto),
+            style: TextStyle(color: CustomColor.theme_text_color, fontSize: 12.auto),
           ),
         ],
       );
@@ -181,12 +181,12 @@ class _LoginContentState extends BaseState<LoginContent> {
                   child: Text(
                     list[index].name,
                     style:
-                        TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : Colors.white),
+                        TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_color),
                   )),
               Visibility(
                 visible: index != 2,
                 child: VerticalDivider(
-                  color: Colors.white,
+                  color: CustomColor.theme_text_color,
                 ),
               )
             ],

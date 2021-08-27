@@ -1,12 +1,12 @@
 {
-  "cat_livecasino": "真人",
-  "cat_qipai": "棋牌",
+  "cat_livecasino": "真人娛樂",
+  "cat_qipai": "棋牌遊戲",
   "cat_sport": "體育",
-  "cat_lottery": "彩票",
-  "cat_slotgame": "老虎",
-  "cat_fish": "捕魚",
-  "cat_e_game": "電子",
-  "cat_e_sports": "電競",
+  "cat_lottery": "彩票遊戲",
+  "cat_slotgame": "老虎機",
+  "cat_fish": "捕魚游戲",
+  "cat_e_game": "電子遊戲",
+  "cat_e_sports": "體育電競",
   "home": "首頁",
   "promotion": "優惠",
   "customer_service": "客服",
@@ -947,5 +947,8 @@
   "no_record":"查無資料",
   "favorite_game": "收藏遊戲",
   "copy_text": "文本已復制",
-  "email_dialog": "請綁定郵箱地址"
+  "email_dialog": "請綁定郵箱地址",
+  "payment_type": "支付方式",
+  "payment_channel": "支付渠道",
+  "auto_transfer": "自動轉賬"
 }

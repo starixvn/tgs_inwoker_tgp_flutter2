@@ -56,7 +56,7 @@ class _LoginState extends BaseState<Login> {
         Container(
           margin: EdgeInsets.only(right: 5.auto, left: 5.auto),
           child: Divider(
-            color: Colors.white,
+            color: CustomColor.theme_text_color,
           ),
         ),
         Container(
@@ -64,7 +64,7 @@ class _LoginState extends BaseState<Login> {
           alignment: Alignment.centerRight,
           child: Text(
             "Version $version (${EnvironmentConfig.environmentStage})",
-            style: TextStyle(fontSize: 8.auto, color: Colors.white),
+            style: TextStyle(fontSize: 8.auto, color: CustomColor.theme_text_color),
           ),
         )
       ],

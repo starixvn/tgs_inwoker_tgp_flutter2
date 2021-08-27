@@ -61,13 +61,13 @@ class _LoginTabState extends BaseState<LoginTab> {
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-                    color: int.parse(index) == currentTabIndex ? CustomColor.theme_button_color : Colors.white,
+                    color: int.parse(index) == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_text_color2,
                     width: 3))),
         child: Tab(
           child: Text(getTranslatedText(text),
               style: TextStyle(
                   fontSize: 16.auto,
-                  color: int.parse(index) == currentTabIndex ? CustomColor.theme_button_color : Colors.white)),
+                  color: int.parse(index) == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_text_color2)),
         ),
       );
 }

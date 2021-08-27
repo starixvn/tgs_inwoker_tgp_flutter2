@@ -2,11 +2,12 @@
 
 import 'package:api/api.dart';
 import 'package:api/entity/message.dart';
+import 'package:api/network/event_result.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class MessageViewModel extends BaseViewModel {
   final messageRepo = MessageRepository.getSingleton();
-  var getMessageListApiState, readMessageApiState;
+  EventResult getMessageListApiState, readMessageApiState;
   List<Message> messageList;
   var page = 1, rows = 10;
 

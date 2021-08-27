@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 
 class Maintenance extends StatefulWidget {
   @override
@@ -52,7 +53,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         margin: EdgeInsets.only(bottom: isNeedMargin?20.auto:0),
         child: Text(
           text,
-          style: TextStyle(color: Colors.white,
+          style: TextStyle(color: CustomColor.theme_text_color2,
               fontSize: 12.auto,),
           textAlign: TextAlign.center,
         ),
@@ -65,7 +66,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
     child: Text(
       text,
       style: TextStyle(
-          color: Colors.white,
+          color: CustomColor.theme_text_color2,
           fontSize: 12.auto,
           decoration:  TextDecoration.underline ),
       textAlign: TextAlign.center,

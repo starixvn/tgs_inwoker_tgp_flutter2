@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
@@ -8,9 +7,8 @@ import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_silver_app_bar.dart';
+import 'package:tgp_flutter2/ui/transaction/base_transaction.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_cell_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_silver_app_bar2.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -50,7 +48,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return TransactionSilverAppBar2(
+          return BaseTransaction(
             transactionHeaderList: ["time", "status", "amount"],
             getPickerBox: _getPickerBox(),
             filterIndex: filterIndex,
@@ -68,6 +66,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
             refreshController: _refreshController,
             list: _vm.withdrawTransactionList,
             displayItemList: _getList(),
+            isUploadButton: false,
           );
         });
   }
@@ -79,7 +78,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
             Format().dateTimeFormat(_vm.withdrawTransactionList[index].createdOn),
             _vm.withdrawTransactionList[index].status.getName(context),
             _vm.withdrawTransactionList[index].amount.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord),
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false),
         );
       }).toList();
 

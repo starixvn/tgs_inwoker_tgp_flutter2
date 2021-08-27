@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
@@ -195,7 +196,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed("/home");
+      Navigator.of(context).pushNamed(RoutePath.home);
     });
   }
 }

@@ -1,15 +1,17 @@
+
+
 import 'package:api/api.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/account_transaction.dart';
 import 'package:api/entity/bet_transaction.dart';
-import 'package:api/entity/transfer_transaction.dart';
 import 'package:api/entity/status.dart';
+import 'package:api/entity/transfer_transaction.dart';
+import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState, getTransferTransactionApiState;
+  final depositRepo = BankRepository.getSingleton();
+  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState, getTransferTransactionApiState, getDepositOrderApiState;
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
@@ -19,6 +21,7 @@ class TransactionViewModel extends BaseViewModel {
   var endRecord = false;
   var statusList = Status.values;
   var pStatus = Status.All;
+  var paymentId;
 
   get gameProviderList => contentRepo.gameProviderList;
   get wallet => userRepo.wallet;
@@ -152,21 +155,13 @@ class TransactionViewModel extends BaseViewModel {
       notifyListeners();
   }
 
- /* getDepositWithdrawTransaction(int index,{bool isLoadMore = false}){
-    switch (index) {
-      case 0:{
-        getAccountTransaction()
-      }
-      case 1:
-      //new game list
-        var list = gameList.where((element) => element.tag.isNew == true).toList();
-        return list;
-      case 2:
-      //hot game list
-        var list = gameList.where((element) => element.tag.isHot == true).toList();
-        return list;
-      default:
-        return gameList;
+  getManualDepositOrder(String id) async {
+    setLoading();
+    getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
+    if (getDepositOrderApiState.isSuccess) {
+      paymentId =id;
     }
-  }*/
+    setLoading(false);
+    return getDepositOrderApiState;
+  }
 }

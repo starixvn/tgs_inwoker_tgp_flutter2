@@ -8,13 +8,20 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/card/main_card.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
+import 'package:tgp_flutter2/ui/deposit/deposit.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
-import 'package:tgp_flutter2/ui/home/home.dart';
+import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
+import 'package:tgp_flutter2/ui/home/home_t2.dart';
+import 'package:tgp_flutter2/ui/home/home_t3.dart';
+import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
-import 'package:tgp_flutter2/ui/message/message.dart';
+import 'package:tgp_flutter2/ui/menu/menu.dart';
+import 'package:tgp_flutter2/ui/message/message_view.dart';
 import 'package:tgp_flutter2/ui/profile/profile.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/password/edit_password.dart';
@@ -28,17 +35,11 @@ import 'package:tgp_flutter2/ui/promotion/promotion.dart';
 import 'package:tgp_flutter2/ui/splash/splash.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
-import 'package:tgp_flutter2/ui/transaction/deposit_withdraw_transaction.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction.dart';
+import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
+import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 
 Future main() async {
-  //await DotEnv.load();
-  // await DotEnv.load(fileName: ".env");
-  // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  // DotEnv.env["appName"] = packageInfo.appName;
-  // // String packageName = packageInfo.packageName;
-  // // String version = packageInfo.version;
-  // // String buildNumber = packageInfo.buildNumber;
   runApp(MyApp());
 }
 
@@ -91,7 +92,7 @@ class _MyAppState extends BaseState<MyApp> {
         initialRoute: '/',
         routes: {
           RoutePath.empty: (context) => Splash(),
-          RoutePath.home: (context) => Home(),
+          RoutePath.home: (context) => MyHomePage(),
           RoutePath.myHome: (context) => MyHomePage(),
           RoutePath.profile: (context) => Profile(),
           RoutePath.csWebView: (context) => CustomerServiceWebView(),
@@ -100,27 +101,25 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.login: (context) => Login(),
           RoutePath.forgotPassword: (context) => ForgotPassword(),
           RoutePath.maintenance: (context) => Maintenance(),
-          //RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => Message(),
+          RoutePath.mainCard: (context) => MainCard(),
+          RoutePath.message: (context) => MessageView(),
           RoutePath.emailVerification: (context) => EmailVerification(0),
           RoutePath.qqAccount: (context) => QQAccount(),
           RoutePath.wechat: (context) => Wechat(),
           RoutePath.editPassword: (context) => EditPassword(),
           RoutePath.resetPayPassword: (context) => ResetPayPassword(),
           RoutePath.payPassword: (context) => PayPassword(),
-          // RoutePath.language: (context) => LanguageView(),
-          // RoutePath.addCard: (context) => AddCard(),
+          RoutePath.language: (context) => LanguageView(),
+          RoutePath.addCard: (context) => AddCard(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.profileInfo: (context) => ProfileInfo(),
-          RoutePath.depositWithdrawTransaction: (context) => DepositWithdrawTransactionView(),
           RoutePath.promotion: (context) => Promotion(),
-          /* RoutePath.menu: (context) => Menu(),
-
-          RoutePath.childGame: (context) => ChildGame(),
-          RoutePath.deposit: (context) => Deposit(),
           RoutePath.walletTransfer: (context) => WalletTransfer(),
+          RoutePath.menu: (context) => Menu(),
+          RoutePath.deposit: (context) => Deposit(),
           RoutePath.withdraw: (context) => Withdraw(),
-          RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+          RoutePath.childGame: (context) => ChildGame(),
+          /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.phoneVerification: (context) => PhoneVerification(),
@@ -167,18 +166,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
-  List _page = [
-    Promotion(),
-    Transaction(),
-    DepositWithdrawTransactionView(),
-    CustomerService(),
-    Profile(),
-  ];
-  var path;
+  List _page = [];
+  var isMenu = false;
 
   @override
   void initState() {
     if (widget.index != null) currentBottomIndex = widget.index;
+    _page = [
+      EnvironmentConfig.template_version == 3 ? HomeT3() : HomeT2(),
+      Promotion(),
+      Menu(),
+      CustomerService(),
+      Profile(),
+    ];
     super.initState();
   }
 
@@ -187,9 +187,13 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     return ScrollConfiguration(
       behavior: MyBehavior(),
       child: Scaffold(
-        body: Center(
-          child: _page[currentBottomIndex],
-        ),
+        body: Stack(children: [
+          Center(
+            child: _page[currentBottomIndex],
+          ),
+          _buildOverlay(),
+          _buildMenu()
+        ]),
         bottomNavigationBar: SizedBox(
           height: 43.auto,
           child: BottomAppBar(
@@ -197,11 +201,11 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildBottomBarItem(0, "ic_home", "首页"),
-                _buildBottomBarItem(1, "ic_transaction", "账务"),
+                _buildBottomBarItem(0, "ic_home", "home"),
+                _buildBottomBarItem(1, "ic_transaction", "promotion"),
                 _buildBottomBarItem(2, "ic_deposit", "存提"),
-                _buildBottomBarItem(3, "ic_cs", "客服"),
-                _buildBottomBarItem(4, "ic_profile", "我的"),
+                _buildBottomBarItem(3, "ic_cs", "customer_service"),
+                _buildBottomBarItem(4, "ic_profile", "my_profile"),
               ],
             ),
           ),
@@ -220,17 +224,17 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
-                    if (index == 0) {
-                      Navigator.of(context).pushNamed(RoutePath.home);
-                    }
-                    else if (index == 1) {
-                      Navigator.of(context).pushNamed(RoutePath.transaction);
-                    } else if (index == 2) {
-                      Navigator.of(context).pushNamed(RoutePath.depositWithdrawTransaction);
+                    if (index == 1) {
+                      Navigator.of(context).pushNamed("/promotion");
                     } else if (index == 3) {
-                      Navigator.of(context).pushNamed(RoutePath.customerService);
+                      Navigator.of(context).pushNamed("/customer_service");
+                    } else if (index == 2) {
+                      setState(() {
+                        isMenu = !isMenu;
+                      });
                     } else {
                       setState(() {
+                        isMenu = false;
                         currentBottomIndex = index;
                       });
                     }
@@ -243,12 +247,12 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                       Container(
                         margin: EdgeInsets.only(top: 3.auto),
                         child: Text(
-                          title,
+                          getTranslatedText(title) ?? title,
                           style: TextStyle(
                             fontSize: 9.auto,
-                            color: currentBottomIndex == index && currentBottomIndex!=0
+                            color: currentBottomIndex == index
                                 ? CustomColor.theme_selected_color
-                                : CustomColor.theme_bg_color,
+                                : CustomColor.theme_app_bar_icon_color,
                           ),
                         ),
                       ),
@@ -265,6 +269,36 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         "images/bottom_nav_bar/$imagePath.svg",
         matchTextDirection: true,
         height: 18.auto,
-        color: currentBottomIndex == index && currentBottomIndex!=0? CustomColor.theme_selected_color : CustomColor.theme_bg_color,
+        color: currentBottomIndex == index ? CustomColor.theme_selected_color : CustomColor.theme_bg_color,
+      );
+
+  _closeMenu() {
+    setState(() {
+      isMenu = false;
+    });
+  }
+
+  _buildMenu() => Visibility(
+        visible: isMenu,
+        child: Menu(),
+      );
+
+  _buildOverlay() => Visibility(
+        visible: isMenu,
+        child: ColorFiltered(
+          colorFilter: ColorFilter.mode(Colors.black54, BlendMode.srcOut),
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: _closeMenu,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 }
