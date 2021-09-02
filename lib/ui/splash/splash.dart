@@ -14,7 +14,7 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends BaseState<Splash> {
-  var _vm = SplashViewModel();
+  /*var _vm = SplashViewModel();
 
   @override
   void initState() {
@@ -22,41 +22,34 @@ class _SplashState extends BaseState<Splash> {
       _vm.getAuthToken();
     });
     super.initState();
-  }
+  }*/
 
   Widget build(BuildContext context) {
-    return ProviderWidget<SplashViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: Container(
-                width: context.screenWidth,
-                height: context.screenHeight,
-                color: Colors.black,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(width: context.screenWidth / 1.5, child: Image.asset("images/login/pg_login_logo.png")),
-                      Container(
-                        width: context.screenWidth / 2.5,
-                        alignment: Alignment.bottomCenter,
-                        child: Lottie.asset("loading/loading.json"),
-                      ),
-                    ],
-                  ),
-                ),
-              ));
-        });
+    return Container(
+      width: context.screenWidth,
+      height: context.screenHeight,
+      color: Colors.black,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(width: context.screenWidth / 1.5, child: Image.asset("images/login/pg_login_logo.png")),
+            Container(
+              width: context.screenWidth / 2.5,
+              alignment: Alignment.bottomCenter,
+              child: Lottie.asset("loading/loading_t${EnvironmentConfig.template_version}.json"),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _handleApiState() {
-    handleApiState(_vm.authApiState, onSuccess: () {
+    /*handleApiState(_vm.authApiState, onSuccess: () {
       _navigateToHome();
-    }, isAutoHideLoading: false, onError: (_) {});
+    }, isAutoHideLoading: false, onError: (_) {});*/
   }
 
   _navigateToHome() {

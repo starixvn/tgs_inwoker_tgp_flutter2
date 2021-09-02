@@ -64,12 +64,12 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
   _buildPlatformTabBar() => Container(
         padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 5.auto),
         constraints: BoxConstraints(maxHeight: 35.auto),
-    color: CustomColor.theme_disable_color,
+    color: CustomColor.theme_grey_button_color,
         width: context.screenWidth,
         child: TabBar(
           controller: _platformTabController,
           isScrollable: true,
-          unselectedLabelColor: CustomColor.theme_text_color2,
+          unselectedLabelColor: CustomColor.theme_text_grey_color,
           labelColor: CustomColor.theme_button_color,
           indicatorWeight: 3,
           onTap: (index) => widget.onFilterPlatform(_platformTabList[index]["code"]),
@@ -79,7 +79,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
               borderRadius: BorderRadius.circular(15.auto),
             ),
           ),
-          unselectedLabelStyle: TextStyle(color: CustomColor.theme_disable_color),
+          unselectedLabelStyle: TextStyle(color: CustomColor.theme_grey_button_color),
           tabs: _platformTabList.map((item) {
             return Tab(
               child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]) : item["name"],

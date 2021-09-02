@@ -54,13 +54,6 @@ class _HomeT3State extends BaseState<HomeT3> {
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  List _page = [
-    MyHomePage(index: 0),
-    MyHomePage(index: 1),
-    MyHomePage(index: 2),
-    MyHomePage(index: 3),
-    MyHomePage(index: 4),
-  ];
 
   @override
   void initState() {
@@ -180,7 +173,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                           right: 18.auto,
                           child: Text(
                             gameRowList[index].getName(context),
-                            style: TextStyle(color: CustomColor.theme_text_color2, fontSize: 23.auto),
+                            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
                           ),
                         ),
                       ],
@@ -207,7 +200,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                     left: 55.auto,
                     child: Text(
                       gameList[index].getName(context),
-                      style: TextStyle(color: CustomColor.theme_text_color2, fontSize: 23.auto),
+                      style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
                     ),
                   ),
                 ],

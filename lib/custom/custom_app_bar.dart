@@ -1,3 +1,4 @@
+import 'package:api/extension/format.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -6,10 +7,11 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({Key key, this.title, this.widget}) : super(key: key);
+  CustomAppBar({Key key, this.title, this.widget, this.walletBalance}) : super(key: key);
 
   final String title;
   final Widget widget;
+  final double walletBalance;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
@@ -28,7 +30,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Navigator.pop(context);
         },
       ),
-      actions: [widget ?? Container()],
+      actions: [_getAppBarWidget()],
     );
+  }
+
+  _getAppBarWidget(){
+    if(walletBalance !=null){
+      return Container(
+          margin: EdgeInsets.only(right: 15.auto),
+          alignment: Alignment.center,
+          child: Text(
+            "¥ ${Format().currencyWithDecimalFormat(walletBalance)}",
+            style: TextStyle(color: Colors.white),
+          ));
+    }
+    else if(widget !=null){
+      return Container();
+    }
+    else return Container();
   }
 }

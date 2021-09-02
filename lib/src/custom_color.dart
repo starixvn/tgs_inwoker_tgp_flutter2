@@ -23,12 +23,21 @@ class CustomColor{
 
   static const theme_app_bar_color = Color(EnvironmentConfig.theme_app_bar_color);
   static const theme_button_color = Color(EnvironmentConfig.theme_button_color);
+  static const theme_grey_button_color = Color(EnvironmentConfig.theme_grey_button_color);
   static const theme_bg_color = Color(EnvironmentConfig.theme_bg_color);
-  static const theme_selected_color = Color(EnvironmentConfig.theme_selected_color);
-  static const theme_disable_color = Color(EnvironmentConfig.theme_disable_color);
-  static const theme_text_color = Color(EnvironmentConfig.theme_text_color);
-  static const theme_text_color2 = Color(EnvironmentConfig.theme_text_color2);
   static const theme_app_bar_icon_color = Color(EnvironmentConfig.theme_app_bar_icon_color);
+  static const menu_bg_color = Color(EnvironmentConfig.menu_bg_color);
+  static const tab_selected_color = Color(EnvironmentConfig.tab_selected_color);
+  static const tab_unselected_color = Color(EnvironmentConfig.tab_unselected_color);
+  static const bottom_nav_selected_color = Color(EnvironmentConfig.bottom_nav_selected_color);
+  static const bottom_nav_unselected_color = Color(EnvironmentConfig.bottom_nav_unselected_color);
+  static const promotion_bg_color = Color(EnvironmentConfig.promotion_bg_color);
+  static const promotion_text_color = Color(EnvironmentConfig.promotion_text_color);
+  static const theme_text_black_color = Color(EnvironmentConfig.theme_text_black_color);
+  static const theme_text_black_white_color = Color(EnvironmentConfig.theme_text_black_white_color);
+  static const theme_text_grey_color = Color(EnvironmentConfig.theme_text_grey_color);
+  static const theme_text_grey_white_color = Color(EnvironmentConfig.theme_text_grey_white_color);
+
 
   static const popup_menu_text_yellow = Color(0xffF7FF07);
   static const popup_menu_text_brown = Color(0xffC69C6A);

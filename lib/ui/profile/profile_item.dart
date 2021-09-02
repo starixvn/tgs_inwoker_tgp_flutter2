@@ -100,7 +100,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
               flex: 7,
               child: Text(
                 getTranslatedText(title) ?? title,
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_color),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
               ))
         ],
       ),

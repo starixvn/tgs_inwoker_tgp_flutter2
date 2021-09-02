@@ -83,7 +83,7 @@ class _WithdrawState extends BaseState<Withdraw> {
             alignment: Alignment.center,
             child: Text(
               "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-              style: TextStyle(color: CustomColor.theme_text_color2),
+              style: TextStyle(color: CustomColor.theme_text_grey_color),
             )),
       );
 
@@ -154,7 +154,7 @@ class _WithdrawState extends BaseState<Withdraw> {
             ),
             Text(
               getTranslatedText("manage_card"),
-              style: TextStyle(color: CustomColor.theme_text_color2, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 12.auto),
             )
           ]),
         ),

@@ -40,7 +40,7 @@ class _TransactionDateItemState extends BaseState<TransactionDateItem> {
                 widget.title,
                 style: TextStyle(
                     fontSize: 10.auto,
-                  color: CustomColor.theme_text_color2
+                  color: CustomColor.theme_text_grey_color
                 ),
               )
             ]

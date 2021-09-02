@@ -55,7 +55,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
               alignment: Alignment.center,
               child: Text(
                 "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-                style: TextStyle(color: CustomColor.theme_text_color2),
+                style: TextStyle(color: CustomColor.theme_text_grey_color),
               )),
             ),
             body: Column(
@@ -66,7 +66,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   child: TabBar(
                     controller: _tabController,
                     isScrollable: true,
-                    unselectedLabelColor: CustomColor.theme_text_color2,
+                    unselectedLabelColor: CustomColor.theme_text_grey_color,
                     labelColor: CustomColor.theme_button_color,
                     indicatorColor: Colors.transparent,
                     indicatorWeight: 3,

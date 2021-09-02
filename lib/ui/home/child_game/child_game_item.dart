@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/game.dart';
+import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -120,7 +121,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
               margin: EdgeInsets.only(right: 3.auto),
               child: AutoSizeText(
                 widget.game.name,
-                style: TextStyle(color: CustomColor.theme_text_color2),
+                style: TextStyle(color: CustomColor.theme_text_grey_color),
                 minFontSize: 3,
                 stepGranularity: 1,
                 maxLines: 1,
@@ -131,15 +132,15 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             flex: 1,
             child: InkWell(
               onTap: () {
-               /* ProgressDialog.show(context);
+                ProgressDialog.show(context);
                 widget.game.isFavourite
                     ? widget.vm.deleteFavoriteGame(widget.game)
-                    : widget.vm.setFavoriteGame(widget.game);*/
+                    : widget.vm.setFavoriteGame(widget.game);
               },
               child: Image.asset(
-                /*widget.game.isFavourite
+                widget.game.isFavourite
                     ? "images/child_game/ic_favorite_selected.png"
-                    : */"images/child_game/ic_favorite.png",
+                    : "images/child_game/ic_favorite.png",
                 width: 15.auto,
                 height: 15.auto,
               ),
@@ -158,7 +159,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
           decoration: BoxDecoration(color: CustomColor.black, borderRadius: BorderRadius.circular(15.0)),
           child: Text(
             widget.game.gamePlatformName(),
-            style: TextStyle(color: CustomColor.theme_text_color2, fontSize: 9.auto),
+            style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 9.auto),
           ),
         ),
       );

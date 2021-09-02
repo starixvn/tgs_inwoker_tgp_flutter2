@@ -47,7 +47,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             isEnabled: true,
             width: 60,
             height: 17,
-            color: CustomColor.theme_app_bar_color,
+            color: Colors.white,
             fontSize: 14,
             radius: 5,
             padding: 4,
@@ -55,7 +55,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       );
 
-  _getButton() => Container(
+/*_getButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 5.auto),
         child: PopupMenuButton(
           child: _buildCheckButton(),
@@ -82,7 +82,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             BoxDecoration(borderRadius: BorderRadius.circular((5.8).auto), color: CustomColor.theme_button_color),
         child: Text(
           "查询",
-          style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_text_color2),
+          style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_text_grey_color),
           textAlign: TextAlign.center,
         ),
       );
@@ -120,7 +120,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
             visible: index != 9,
             child: Divider(
               thickness: 1,
-              color: CustomColor.theme_text_color,
+              color: CustomColor.theme_text_grey_color,
             ),
           ),
           Visibility(
@@ -145,12 +145,12 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   _getFirstColor(int index){
     if(index==8) return CustomColor.popup_menu_text_brown;
     else if (index == 9) return CustomColor.popup_menu_text_green;
-    else return CustomColor.theme_text_color2;
+    else return CustomColor.theme_text_grey_color;
   }
 
   _getSecondColor(int index){
     if(index==8) return CustomColor.popup_menu_text_brown;
     else if (index == 9) return CustomColor.popup_menu_text_green;
     else return CustomColor.popup_menu_text_yellow;
-  }
+  }*/
 }

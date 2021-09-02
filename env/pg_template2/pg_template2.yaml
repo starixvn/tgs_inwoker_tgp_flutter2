@@ -38,18 +38,40 @@ environment_config:
     theme_bg_color:
       type: int
       default: 0xffF0EFF5
-    theme_selected_color:
-      type: int
-      default: 0xffC69C6A
-    theme_disable_color:
-      type: int
-      default: 0xffABABAB
-    theme_text_color:
-      type: int
-      default: 0xff4B4B4B
-    theme_text_color2:
-        type: int
-        default: 0xFFFFFFFF
     theme_app_bar_icon_color:
       type: int
       default: 0xff707070
+    menu_bg_color:
+      type: int
+      default: 0xffffffff
+    tab_selected_color:
+      type: int
+      default: 0xffC69C6A
+    tab_unselected_color:
+      type: int
+      default: 0xff707070
+    bottom_nav_selected_color:
+      type: int
+      default: 0xffC69C6A
+    bottom_nav_unselected_color:
+      type: int
+      default: 0xff707070
+    promotion_bg_color:
+      type: int
+      default: 0xffFFFFFF
+    promotion_text_color:
+      type: int
+      default: 0xff616161
+    theme_text_black_color:
+      type: int
+      default: 0xff707070
+    theme_text_black_white_color:
+      type: int
+      default: 0xff707070
+    theme_text_grey_color:
+      type: int
+      default: 0xff4B4B4B
+    theme_text_grey_white_color:
+      type: int
+      default: 0xff4B4B4B
+

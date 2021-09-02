@@ -57,7 +57,7 @@ class _DepositState extends BaseState<Deposit> {
                           width: context.screenWidth,
                           child: TabBar(
                             isScrollable: true,
-                            unselectedLabelColor: CustomColor.theme_text_color2,
+                            unselectedLabelColor: CustomColor.theme_text_grey_color,
                             labelColor: CustomColor.theme_label_text_highlight_color,
                             indicatorColor: Colors.transparent,
                             indicatorWeight: 3,
@@ -67,7 +67,7 @@ class _DepositState extends BaseState<Deposit> {
                               });
                             },
                             labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
-                            unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_color2),
+                            unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_grey_color),
                             tabs: List.generate(_vm.paymentCodeList.keys.length, (index) {
                               return TabButton(
                                 text: getTranslatedText(_vm.paymentCodeList.keys.toList()[index]) ?? "",
@@ -105,7 +105,7 @@ class _DepositState extends BaseState<Deposit> {
             alignment: Alignment.center,
             child: Text(
               "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-              style: TextStyle(color: CustomColor.theme_text_color2),
+              style: TextStyle(color: CustomColor.theme_text_grey_color),
             )),
       );
 

@@ -39,10 +39,10 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           margin: EdgeInsets.only(left: 5, right: 5, top: 5),
           decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
           child: Text(
-            widget.title,
+            getTranslatedText(widget.title),
             style: TextStyle(
               fontSize: 13.auto,
-              color: Colors.red,
+              color: CustomColor.theme_button_color,
             ),
             textAlign: TextAlign.center,
           ),
@@ -72,10 +72,10 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return game.name;
     } else if (widget.list is List<BankType>) {
       BankType bankType = widget.list[index];
-      return bankType.displayName;
+      return bankType.getName(context);
     } else if (widget.list is List<Wallet>) {
       Wallet wallet = widget.list[index];
-      return wallet.title;
+      return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
     } else if (widget.list is List<Promotion>) {
       Promotion promotion = widget.list[index];
       return promotion.name;
@@ -85,22 +85,16 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return name;
     } else if (widget.list is List<WithdrawalInfo>) {
       if (widget.list[index].channelName == "PrimePay_BankTransfer_Custom") {
-        return "custom_bank";
+        return getTranslatedText("custom_bank");
       } else {
         var code = widget.list[index].channelCode;
         return code;
       }
     } else if (widget.list is List<Map<String, String>>) {
       String promotionName = widget.list[index]["name"];
-      return  promotionName;
+      return  getTranslatedText(promotionName)??promotionName;
     } else {
-      //string
-      if (widget.list[index] == "BankTransfer")
-        return "bank_transfer" ;
-      else if (widget.list[index] == "Crypto")
-        return "crypto" ;
-      else
-        return widget.list[index];
+      return getTranslatedText(widget.list[index])??widget.list[index];
     }
   }
 
@@ -118,7 +112,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          bankType.displayName,
+          bankType.getName(context),
           style: TextStyle(fontSize: 13.auto),
           textAlign: TextAlign.center,
         ),

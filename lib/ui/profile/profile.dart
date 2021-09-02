@@ -70,7 +70,7 @@ class _ProfileState extends BaseState<Profile> {
             margin: EdgeInsets.only(top: 3.auto),
             child: Text(
               _vm.userProfile?.username ?? " ",
-              style: TextStyle(color: CustomColor.theme_text_color2),
+              style: TextStyle(color: CustomColor.theme_text_grey_color),
             ),
           )
         ],
@@ -93,7 +93,7 @@ class _ProfileState extends BaseState<Profile> {
                       )),
                   Text(
                     " ¥ ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
-                    style: TextStyle(color: CustomColor.theme_text_color2),
+                    style: TextStyle(color: CustomColor.theme_text_grey_color),
                   )
                 ],
               ),
@@ -118,7 +118,7 @@ class _ProfileState extends BaseState<Profile> {
   _buildLogoutButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 5.auto),
         child: ColorButton(
-          title: "登出",
+          title: getTranslatedText("logout"),
           onClick: () => _logout(),
           isEnabled: true,
           radius: 5,

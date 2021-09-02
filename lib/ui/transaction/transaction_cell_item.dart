@@ -72,7 +72,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                 padding: EdgeInsets.only(bottom: 10.auto),
                 child: Text(
                   getTranslatedText("no_more"),
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_color2),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
                 ),
               )
             : Container()

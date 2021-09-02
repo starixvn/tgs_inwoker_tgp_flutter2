@@ -42,7 +42,7 @@ class _TransferPickerState extends BaseState<TransferPicker> {
                 child: AutoSizeText(
                   widget.displayText,
                   style: TextStyle(
-                    color: CustomColor.theme_text_color,
+                    color: CustomColor.theme_text_grey_color,
                   ),
                   maxFontSize: 20,
                   minFontSize: 8,

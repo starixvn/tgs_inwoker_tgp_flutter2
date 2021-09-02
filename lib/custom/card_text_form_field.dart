@@ -57,7 +57,7 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     widget.title,
-                    style: TextStyle(color: Colors.black, fontSize: 9.auto),
+                    style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 9.auto),
                     textAlign: TextAlign.start,
                   ),
                 ),
@@ -77,7 +77,7 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                     textInputAction: widget.textInputAction,
                     obscureText:
                         (widget.textInputType == TextInputType.visiblePassword) ? true : false,
-                    style: TextStyle(color: CustomColor.theme_text_color, fontSize: 13.auto),
+                    style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
                     decoration: InputDecoration(
                       isDense: true,
                       border: InputBorder.none,

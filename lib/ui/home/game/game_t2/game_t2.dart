@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/game_provider2.dart';
@@ -21,13 +22,12 @@ class GameT2 extends StatefulWidget {
 
 class _GameT2State extends BaseState<GameT2> {
   var _controller = ScrollController();
-  var currentTabIndex = 0, currentGameType = GameType.ESports;
+  var currentTabIndex = 0, currentGameType = GameType.Sportsbook;
   var _vm = GameViewModel();
   var gameName;
 
   @override
   void initState() {
-    //_controller.addListener(_scrollListener);
     _vm.getGameProviderList();
     super.initState();
   }
@@ -70,7 +70,7 @@ class _GameT2State extends BaseState<GameT2> {
                               child: GameItemT2(
                                 controller: _controller,
                                 currGameType: currentGameType,
-                                gameProviderList: _vm.gameTypeMap[currentGameType],
+                                gameProviderList:_getGameTypeMap(),
                                 onGameClick: (game) => _onGameClick(game),
 
                               ),
@@ -82,9 +82,15 @@ class _GameT2State extends BaseState<GameT2> {
         });
   }
 
+  _getGameTypeMap(){
+    if(currentGameType == GameType.Sportsbook)
+      return ([_vm.gameTypeMap[GameType.ESports], _vm.gameTypeMap[GameType.Sportsbook]].expand((x) => x).toList());
+    else return _vm.gameTypeMap[currentGameType];
+  }
+
   _buildTopGameTab(int tabIndex, GameType gameType) => Container(
         decoration: BoxDecoration(
-          color: CustomColor.theme_text_color2,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(5),
             topRight: Radius.circular(5),
@@ -129,17 +135,18 @@ class _GameT2State extends BaseState<GameT2> {
                 child: ImageIcon(
                   AssetImage("images/game_tab/ic_${gameType.getImagePath()}.png"),
                   size: 28.auto,
-                  color: currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_color,
+                  color: currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color,
                 ),
               ), //Image.asset("images/game_tab/ic_$imagePath.png")),
-              Container(
-                child: Text(
-                  gameType.getName(context),
-                  style: TextStyle(
-                      color:
-                      currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_color),
-                ),
-              )
+              AutoSizeText(
+                gameType.getName(context),
+                style: TextStyle(
+                    color:
+                    currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color),
+                minFontSize:2,
+                stepGranularity: 1,
+                maxLines: 1,
+              ),
             ],
           )),
     );

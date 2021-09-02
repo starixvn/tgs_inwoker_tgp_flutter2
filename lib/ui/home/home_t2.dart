@@ -34,19 +34,6 @@ class _HomeT2State extends BaseState<HomeT2> {
     '2',
     //'images/banner_2.jpg'
   ];
-
-  //var gameList = ["sport", "live", "slot", "fishing", "lotto", "e-game", "card"];
-  var gameRowList = [
-    GameType.ESports,
-    GameType.LiveDealerLobby,
-  ];
-  var gameList = [
-    GameType.Slot,
-    GameType.Fishing,
-    GameType.LotteryLobby,
-    GameType.EGame,
-    GameType.CardGameLobby,
-  ];
   String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
@@ -56,13 +43,6 @@ class _HomeT2State extends BaseState<HomeT2> {
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  List _page = [
-    MyHomePage(index: 0),
-    MyHomePage(index: 1),
-    MyHomePage(index: 2),
-    MyHomePage(index: 3),
-    MyHomePage(index: 4),
-  ];
 
   @override
   void initState() {
@@ -155,7 +135,7 @@ class _HomeT2State extends BaseState<HomeT2> {
               child: Marquee(
                   text: announcement ?? "tt",
                   style: TextStyle(
-                    color: CustomColor.theme_text_color,
+                    color: CustomColor.theme_text_grey_color,
                     fontSize: 10.auto,
                   ),
                   scrollAxis: Axis.horizontal,

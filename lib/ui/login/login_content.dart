@@ -121,7 +121,7 @@ class _LoginContentState extends BaseState<LoginContent> {
             },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),
-              style: TextStyle(color: CustomColor.theme_text_color, decoration: TextDecoration.underline, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_grey_color, decoration: TextDecoration.underline, fontSize: 12.auto),
             ),
           )
         ],
@@ -141,7 +141,7 @@ class _LoginContentState extends BaseState<LoginContent> {
           ),
           Text(
             getTranslatedText("rmb_password"),
-            style: TextStyle(color: CustomColor.theme_text_color, fontSize: 12.auto),
+            style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 12.auto),
           ),
         ],
       );
@@ -160,7 +160,7 @@ class _LoginContentState extends BaseState<LoginContent> {
         title: getTranslatedText("login_later"),
         onClick: () => _navigateToHome(),
         isEnabled: true,
-        color: CustomColor.theme_disable_color,
+        color: CustomColor.theme_grey_button_color,
       );
 
   _buildChangeLanguageText() {
@@ -181,12 +181,12 @@ class _LoginContentState extends BaseState<LoginContent> {
                   child: Text(
                     list[index].name,
                     style:
-                        TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_color),
+                        TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color),
                   )),
               Visibility(
-                visible: index != 2,
+                visible: index+1 != list.length,
                 child: VerticalDivider(
-                  color: CustomColor.theme_text_color,
+                  color: CustomColor.theme_text_grey_color,
                 ),
               )
             ],

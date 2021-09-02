@@ -92,7 +92,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
               title: "status",
               displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.statusList,
-              isHintText: true,
+              isHintText: false,
               width: context.screenWidth - 70.auto,
               onClick: () {
                 _buildPickerDialog("status", _vm.statusList);

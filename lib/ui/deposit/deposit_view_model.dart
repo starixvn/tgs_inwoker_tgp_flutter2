@@ -1,4 +1,5 @@
 import 'package:api/api.dart';
+import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/payment.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:collection/collection.dart';
@@ -12,7 +13,7 @@ class DepositViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [];
   var getPaymentApiState, uploadDepositImageApiState, getPlayerPromotionListApiState;
-  Map<String, Map<String, List<Payment>>> paymentCodeList;
+  Map<String, Map<BankType, List<Payment>>> paymentCodeList;
   List<Payment> paymentList;
   var manualDepositOrder;
   List<Promotion> promotionList;
@@ -30,7 +31,7 @@ class DepositViewModel extends BaseViewModel {
       List<Payment> list = getPaymentApiState.result;
       //list.sort((a, b) => a.order.compareTo(b.order));
       paymentCodeList = groupBy(list, (obj) => obj.paymentCode)
-          .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.methodCode)));
+          .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.bankType)));
     }
     setLoading(false);
     return getPaymentApiState;

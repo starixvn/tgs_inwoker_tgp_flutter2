@@ -24,15 +24,31 @@ class EnvironmentConfig {
 
   static const int theme_button_color = 4294940928;
 
+  static const int theme_grey_button_color = 4286743170;
+
   static const int theme_bg_color = 4282006074;
 
-  static const int theme_selected_color = 4291206250;
-
-  static const int theme_disable_color = 4289440683;
-
-  static const int theme_text_color = 4285558896;
-
-  static const int theme_text_color2 = 4294967295;
-
   static const int theme_app_bar_icon_color = 4285558896;
+
+  static const int menu_bg_color = 4285558896;
+
+  static const int tab_selected_color = 4294940928;
+
+  static const int tab_unselected_color = 4294967295;
+
+  static const int bottom_nav_selected_color = 4291206250;
+
+  static const int bottom_nav_unselected_color = 4285558896;
+
+  static const int promotion_bg_color = 4279637273;
+
+  static const int promotion_text_color = 4294967295;
+
+  static const int theme_text_black_color = 4285558896;
+
+  static const int theme_text_black_white_color = 4294967295;
+
+  static const int theme_text_grey_color = 4283124555;
+
+  static const int theme_text_grey_white_color = 4294967295;
 }

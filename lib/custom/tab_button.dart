@@ -27,7 +27,7 @@ class TabButton extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(
-                  color: index == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_app_bar_icon_color,
+                  color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
                   width: 3))),
       child: Tab(
         child: AutoSizeText(text,
@@ -36,7 +36,7 @@ class TabButton extends StatelessWidget {
             maxFontSize: 14,
             stepGranularity: 1,
             style: TextStyle(
-                color: index == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_app_bar_icon_color)),
+                color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color)),
       ),
     );
   }

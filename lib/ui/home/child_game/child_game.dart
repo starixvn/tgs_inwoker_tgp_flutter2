@@ -116,7 +116,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
             child: TabBar(
               controller: _groupTabController,
               isScrollable: true,
-              unselectedLabelColor: CustomColor.theme_text_color2,
+              unselectedLabelColor: CustomColor.theme_text_grey_color,
               labelColor: CustomColor.theme_button_color,
               indicatorColor: CustomColor.theme_button_color,
               indicatorWeight: 3,

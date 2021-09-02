@@ -79,13 +79,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildAppBar() => CustomAppBar(
     title: getTranslatedText("add_card"),
-    widget: Container(
-        margin: EdgeInsets.only(right: 15.auto),
-        alignment: Alignment.center,
-        child: Text(
-          "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-          style: TextStyle(color: CustomColor.theme_text_color2),
-        )),
+    walletBalance: _vm.wallet?.main
   );
 
   _buildAddCardTitle() => Container(
@@ -93,14 +87,14 @@ class _AddCardState extends BaseState<AddCard> {
       alignment: Alignment.topLeft,
       child: Text(
         getTranslatedText("add_card"),
-        style: TextStyle(fontWeight: FontWeight.w500, color: CustomColor.theme_text_color2),
+        style: TextStyle(fontWeight: FontWeight.w500, color: CustomColor.theme_text_black_white_color),
       ));
 
   _buildBankTypePicker() => CustomPicker(
       title: "bank_type",
       displayText: bankTypePickerText == null ? getTranslatedText("select_bank_type") : bankTypePickerText,
       list: _vm.bankTypeList.keys.toList(),
-      isHintText: true,
+      isHintText: false,
       width: context.screenWidth,
       onClick: () {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
@@ -110,7 +104,7 @@ class _AddCardState extends BaseState<AddCard> {
       title: "channel",
       displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
       list: _vm.withdrawalInfoList,
-      isHintText: true,
+      isHintText: false,
       width: context.screenWidth,
       onClick: () {
         _buildBottomSheet("channel", _vm.withdrawalInfoList);
@@ -224,7 +218,7 @@ class _AddCardState extends BaseState<AddCard> {
     onSelectedWithdrawalInfo();
     setState(() {
       isCrypto = bankType == BankType.CRYPTO;
-      bankTypePickerText = bankType.displayName;
+      bankTypePickerText = bankType.getName(context);
     });
   }
 

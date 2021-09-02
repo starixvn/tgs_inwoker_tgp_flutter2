@@ -88,7 +88,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             Container(width: 100, height: 100, child: Image.asset("images/pg_logo.png")),
             //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
             Lottie.asset(
-              "loading/loading.json",
+              "loading/loading_t${EnvironmentConfig.template_version}.json",
               width: 150,
               height: 150,
             ),

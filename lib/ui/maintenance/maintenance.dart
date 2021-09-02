@@ -53,7 +53,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         margin: EdgeInsets.only(bottom: isNeedMargin?20.auto:0),
         child: Text(
           text,
-          style: TextStyle(color: CustomColor.theme_text_color2,
+          style: TextStyle(color: CustomColor.theme_text_grey_color,
               fontSize: 12.auto,),
           textAlign: TextAlign.center,
         ),
@@ -66,7 +66,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
     child: Text(
       text,
       style: TextStyle(
-          color: CustomColor.theme_text_color2,
+          color: CustomColor.theme_text_grey_color,
           fontSize: 12.auto,
           decoration:  TextDecoration.underline ),
       textAlign: TextAlign.center,

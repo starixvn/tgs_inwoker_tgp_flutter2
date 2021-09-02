@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -33,22 +34,8 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        centerTitle: true,
-        title: Text(
-          getTranslatedText("customer_service"),
-          style: TextStyle(fontSize: 20.auto),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+      appBar: CustomAppBar(
+        title:getTranslatedText("customer_service"),
       ),
       body: widget.url == null
           ? buildProgressDialog()

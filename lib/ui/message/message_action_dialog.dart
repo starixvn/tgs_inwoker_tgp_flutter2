@@ -38,7 +38,7 @@ class _MessageActionDialogState extends BaseState<MessageActionDialog> {
               );
             },
             isEnabled: true,
-            color: CustomColor.theme_text_color2,
+            color: CustomColor.theme_text_grey_color,
             radius: 11.6.auto),
       ]),
     );

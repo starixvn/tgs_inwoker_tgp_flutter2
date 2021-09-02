@@ -232,6 +232,7 @@
   "LeePay": "利付钱包",
   "PrimePay": "一等付",
   "ApplePay": "苹果支付",
+  "UmPay": "UmPay",
   "enter_bank_acc_name": "请输入银行账号名称",
   "player_not_found": "无法查找玩家",
   "invalid_credentials": "无效凭证",

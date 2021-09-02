@@ -117,6 +117,9 @@ flutter:
     - images/child_game/
     - images/card/
     - images/language/
+    - images/support/cs_bg/en-US/
+    - images/support/cs_bg/zh-CN/
+    - images/support/cs_bg/zh-TW/
 
 
     - loading/

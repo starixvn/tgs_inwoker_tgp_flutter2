@@ -52,7 +52,7 @@ class _TransferTextFormFieldState extends BaseState<TransferTextFormField> {
         textInputAction: widget.textInputAction,
         obscureText:
         (widget.textInputType == TextInputType.visiblePassword) ? true : false,
-        style: TextStyle(color: CustomColor.theme_text_color, fontSize: 13.auto),
+        style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 13.auto),
         decoration: InputDecoration(
           isDense: true,
           border: InputBorder.none,

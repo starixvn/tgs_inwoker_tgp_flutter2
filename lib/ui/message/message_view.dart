@@ -66,7 +66,7 @@ class _MessageViewState extends BaseState<MessageView> {
                           padding: EdgeInsets.only(bottom: 10.auto),
                           child: Text(
                             getTranslatedText("no_more"),
-                            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_color2),
+                            style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
                           ),
                         ))
                   ]),
@@ -94,7 +94,7 @@ class _MessageViewState extends BaseState<MessageView> {
                     padding: EdgeInsets.only(top: 10.auto, bottom: 10.auto, left: 15.auto),
                     child: Text(
                       getTranslatedText("mark_as_read"),
-                      style: TextStyle(color: CustomColor.theme_text_color2, fontSize: 12.auto),
+                      style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 12.auto),
                     ),
                   ),
                 ),

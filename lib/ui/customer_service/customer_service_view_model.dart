@@ -25,7 +25,7 @@ class CustomerServiceViewModel extends BaseViewModel {
   }
 
   getLiveChatUrl(String languageCode) async {
-    /*setLoading();
+    setLoading();
    getLiveChatUrlApiState = await userRepo.getLiveChatUrl();
     if (getLiveChatUrlApiState.isSuccess) {
       List<String> pattern = ["{name}", "{email}", "{lang}"]; //ABV list
@@ -35,6 +35,6 @@ class CustomerServiceViewModel extends BaseViewModel {
           .fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev.replaceAll(e.key, e.value));
     }
     setLoading(false);
-    return getLiveChatUrlApiState;*/
+    return getLiveChatUrlApiState;
   }
 }

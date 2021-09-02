@@ -56,7 +56,7 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
           child: Center(
             child: AutoSizeText(
               game.name,
-              style: TextStyle(color: CustomColor.theme_text_color2, fontSize: 15),
+              style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 15),
               minFontSize: 10,
               stepGranularity: 1,
             ),

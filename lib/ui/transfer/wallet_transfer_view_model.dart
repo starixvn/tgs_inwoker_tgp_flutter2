@@ -98,22 +98,22 @@ class WalletTransferViewModel extends BaseViewModel {
   }
 
   getAutoTransferValue() async {
-    /*setLoading();
+    setLoading();
     getAutoTransferApiState = await userRepo.getAutoTransferValue();
     if (getAutoTransferApiState.isSuccess) {
       autoTransferValue = getAutoTransferApiState.result;
     }
     setLoading(false);
-    return getAutoTransferApiState;*/
+    return getAutoTransferApiState;
   }
 
   setAutoTransferValue() async {
-    /*setLoading();
+    setLoading();
     setAutoTransferApiState = await userRepo.setAutoTransferValue();
     if (setAutoTransferApiState.isSuccess) {
       autoTransferValue =!autoTransferValue;
     }
     setLoading(false);
-    return setAutoTransferApiState;*/
+    return setAutoTransferApiState;
   }
 }

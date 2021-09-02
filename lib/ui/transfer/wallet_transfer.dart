@@ -134,10 +134,10 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       );
 
   _buildWallet() => _buildWalletDetails(
-      "终额度",
+      getTranslatedText("total_balance"),
       Text(
         "0",
-        style: TextStyle(color: CustomColor.theme_text_color),
+        style: TextStyle(color: CustomColor.theme_text_grey_color),
       ));
 
   _buildFromWallet() => Container(
@@ -147,7 +147,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 title: getTranslatedText("transfer_from"),
                 displayText: textFromWallet ?? getTranslatedText("please_select"),
                 list: [],
-                isHintText: textFromWallet == null ? false : true,
+                isHintText: textFromWallet == null|| textFromWallet == getTranslatedText("please_select"),
                 onClick: () {
                   _buildPicker("transfer_from", _vm.walletList, true);
                 })),
@@ -159,7 +159,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           title: getTranslatedText("transfer_to"),
           displayText: textToWallet ?? getTranslatedText("please_select"),
           list: [],
-          isHintText: textToWallet == null ? false : true,
+          isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
           onClick: () {
             _buildPicker("transfer_to", _vm.walletList, true);
           }),
@@ -277,7 +277,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 margin: EdgeInsets.only(right: 10.auto),
                 child: Text(
                   getTranslatedText("auto_transfer"),
-                  style: TextStyle(color: CustomColor.theme_text_color2),
+                  style: TextStyle(color: CustomColor.theme_text_grey_color),
                 )),
             FlutterSwitch(
               value: _vm.autoTransferValue ?? false,

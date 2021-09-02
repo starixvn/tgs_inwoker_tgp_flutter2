@@ -78,13 +78,7 @@ class _MainCardState extends BaseState<MainCard> {
 
   _buildAppBar() => CustomAppBar(
     title: getTranslatedText("manage_card"),
-    widget: Container(
-        margin: EdgeInsets.only(right: 15.auto),
-        alignment: Alignment.center,
-        child: Text(
-          "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-          style: TextStyle(color: CustomColor.theme_text_color2),
-        )),
+      walletBalance: _vm.wallet?.main
   );
 
   _swipeLeftBackground() {
@@ -103,12 +97,12 @@ class _MainCardState extends BaseState<MainCard> {
             children: <Widget>[
               Icon(
                 Icons.delete,
-                color: CustomColor.theme_text_color2,
+                color: Colors.white,
               ),
               Text(
                 getTranslatedText("delete"),
                 style: TextStyle(
-                  color: CustomColor.theme_text_color2,
+                  color: Colors.white,
                   fontWeight: FontWeight.w700,
                 ),
                 textAlign: TextAlign.right,
@@ -145,7 +139,7 @@ class _MainCardState extends BaseState<MainCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  bankCard.bankType.displayName,
+                  bankCard.bankType.getName(context),
                   style: TextStyle(fontSize: 11.auto),
                 ),
                 Container(
@@ -171,13 +165,13 @@ class _MainCardState extends BaseState<MainCard> {
                 "images/card/ic_card_delete_hint.png",
               ),
               size: 15.auto,
-              color: CustomColor.theme_text_color2,
+              color: CustomColor.theme_text_grey_color,
             ),
             Container(
               margin: EdgeInsets.only(left: 5.auto),
               child: Text(
                 getTranslatedText("slide_to_delete_card"),
-                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_color2),
+                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_color),
               ),
             ),
           ],
@@ -194,7 +188,7 @@ class _MainCardState extends BaseState<MainCard> {
           child: Container(
             margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
             child: FDottedLine(
-                color: CustomColor.theme_disable_color,
+                color: CustomColor.theme_grey_button_color,
                 height: 70.0,
                 width: context.screenWidth,
                 space: 2.0,
@@ -210,13 +204,13 @@ class _MainCardState extends BaseState<MainCard> {
                         children: [
                           Text(
                             getTranslatedText("add_card"),
-                            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_color2),
+                            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_color),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 5.auto),
                             child: Text(
                               getTranslatedText("max_card_hint"),
-                              style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_disable_color),
+                              style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_grey_button_color),
                             ),
                           )
                         ],
@@ -229,7 +223,7 @@ class _MainCardState extends BaseState<MainCard> {
                               "images/card/ic_add_card.png",
                             ),
                             size: 23.auto,
-                            color: CustomColor.theme_disable_color)),
+                            color: CustomColor.theme_grey_button_color)),
                   ],
                 )),
           ),

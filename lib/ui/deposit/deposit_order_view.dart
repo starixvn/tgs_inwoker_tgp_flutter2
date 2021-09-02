@@ -83,7 +83,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         centerTitle: true,
         title: Text(
           getTranslatedText("deposit"),
-          style: TextStyle(fontSize: 20.auto, color: CustomColor.theme_text_color2),
+          style: TextStyle(fontSize: 20.auto, color: CustomColor.theme_text_grey_color),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),

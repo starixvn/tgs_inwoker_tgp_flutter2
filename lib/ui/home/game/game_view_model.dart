@@ -18,7 +18,9 @@ class GameViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [contentRepo];
   EventResult<List<Game>> getGameApiState;
-  EventResult getGameUrlApiState, getGameProviderListApiState, getLobbyGameUrlApiState;
+  EventResult getGameUrlApiState, getGameProviderListApiState, getLobbyGameUrlApiState,getFavouriteGameApiState,
+      setFavouriteGameApiState,
+      deleteFavouriteGameApiState;
   List<Game> _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
@@ -29,7 +31,7 @@ class GameViewModel extends BaseViewModel {
   List<List<GameProvider2>> gameProviderList;
   List<GameType> gameTypeList = [
     GameType.Sportsbook,
-    GameType.ESports,
+   // GameType.ESports,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
     GameType.Fishing,
@@ -64,8 +66,8 @@ class GameViewModel extends BaseViewModel {
           (type) => list.where((element) => element.gameType == type).toList(),
         )
         .toList();
-    gameTypeMap = groupBy(list, (obj) => obj.gameType);
-    print(gameProviderList);
+    gameTypeMap = (groupBy(list, (obj) => obj.gameType));
+
     setLoading(false);
     return getGameProviderListApiState;
   }
@@ -78,6 +80,7 @@ class GameViewModel extends BaseViewModel {
         e.localizedName = LanguageProvider().getTranslated(_context, e.code);
         return e;
       }).toList();
+      await _getFavoriteGame(gameType);
     }
     setLoading(false);
     return getGameApiState;
@@ -139,6 +142,10 @@ class GameViewModel extends BaseViewModel {
         //hot game list
         var list = gameList.where((element) => element.tag.isHot == true).toList();
         return list;
+      case 3:
+        //favorite game list
+        var list = gameList.where((element) => element.isFavourite == true).toList();
+        return list;
       default:
         return gameList;
     }
@@ -172,9 +179,7 @@ class GameViewModel extends BaseViewModel {
     if (mSearchQuery == null || mSearchQuery.isEmpty) {
       return gameList;
     } else {
-      var list = gameList
-          .where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase()))
-          .toList();
+      var list = gameList.where((element) => element.name.toLowerCase().contains(mSearchQuery.toLowerCase())).toList();
       return list;
     }
   }
@@ -183,5 +188,43 @@ class GameViewModel extends BaseViewModel {
     List<GameProvider2> list = gameProviderList.expand((e) => e).toList();
     platformList = list.where((element) => element.gameType == gameType).toList();
     notifyListeners();
+  }
+
+  _getFavoriteGame(GameType gameType) async {
+    setLoading();
+    getFavouriteGameApiState = await contentRepo.getFavoriteGame(gameType);
+    if (getFavouriteGameApiState.isSuccess) {
+      List list = getFavouriteGameApiState.result;
+      gameListMap.values.forEach((gameList) => gameList.map((game) {
+        game.isFavourite = false;
+        list.forEach((id) {
+          if (game.id == id) game.isFavourite = true;
+        });
+      }).toList());
+    }
+    setLoading(false);
+    return getFavouriteGameApiState;
+  }
+
+  setFavoriteGame(Game game) async {
+    setLoading();
+    var _apiState = await contentRepo.setFavoriteGame(game.id);
+    if (_apiState.isSuccess) {
+      setFavouriteGameApiState = await _getFavoriteGame(game.type);
+    } else
+      setFavouriteGameApiState = _apiState;
+    setLoading(false);
+    return setFavouriteGameApiState;
+  }
+
+  deleteFavoriteGame(Game game) async {
+    setLoading();
+    var _apiState = await contentRepo.deleteFavoriteGame(game.id);
+    if (_apiState.isSuccess) {
+      deleteFavouriteGameApiState = await _getFavoriteGame(game.type);
+    } else
+      deleteFavouriteGameApiState = _apiState;
+    setLoading(false);
+    return deleteFavouriteGameApiState;
   }
 }

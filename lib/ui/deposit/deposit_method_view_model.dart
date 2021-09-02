@@ -1,11 +1,12 @@
 import 'package:api/api.dart';
+import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/payment.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class DepositMethodViewModel extends BaseViewModel {
   final depositRepo = BankRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  final Map<String, List<Payment>> depositMethodList;
+  final Map<BankType, List<Payment>> depositMethodList;
 
   DepositMethodViewModel(this.depositMethodList);
 
@@ -21,8 +22,8 @@ class DepositMethodViewModel extends BaseViewModel {
   List<Payment> paymentList;
   var depositOrder, orderNo, exchangeRate;
 
-  filterMethod(String method) async {
-    paymentList = depositMethodList[method];
+  filterMethod(BankType bankType) async {
+    paymentList = depositMethodList[bankType];
     notifyListeners();
   }
 

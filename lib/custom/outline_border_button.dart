@@ -34,7 +34,7 @@ class OutlineBorderButton extends StatelessWidget {
       style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
             borderRadius: BorderRadius.circular((radius??5).auto),
-            side: BorderSide(color: CustomColor.theme_text_color2),
+            side: BorderSide(color: color?? Colors.white),
           )),
           padding: MaterialStateProperty.all(EdgeInsets.all((padding??2).auto)),
           backgroundColor: MaterialStateProperty.all(Colors.transparent),
@@ -47,7 +47,7 @@ class OutlineBorderButton extends StatelessWidget {
           width: width-20,
           child: AutoSizeText(
             title,
-            style: TextStyle(color: CustomColor.theme_text_color2),
+            style: TextStyle(color: color?? Colors.white),
             minFontSize: 7,
             maxLines: 1,
             textAlign: TextAlign.center,

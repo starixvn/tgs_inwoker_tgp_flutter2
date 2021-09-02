@@ -11,7 +11,7 @@ class CustomToast{
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black,
         fontSize: 13.auto,
-        textColor: CustomColor.theme_text_color2
+        textColor: Colors.white
     );
   }
 }
