@@ -56,8 +56,10 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
+              backgroundColor: CustomColor.theme_bg_color,
               appBar: CustomAppBar(
                 title:getTranslatedText("reset_pay_password"),
+                isPopTwice: true,
               ),
               body: Container(
                   padding: EdgeInsets.only(top: 20.auto, left: 10.auto, right: 10.auto),
@@ -117,28 +119,23 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         ),
       );
 
-  _buildOtpTextFormField() => Opacity(
-        opacity: isOtpEnabled ? 1 : 0.3,
-        child: Container(
-          margin: EdgeInsets.only(top: 15.auto),
-          child: OtpTextFormField(
-            hintText: getTranslatedText("enter_email_otp_hint"),
-            onChanged: (value) => _onOtpTextChange(),
-            controller: _otpController,
-            textInputAction: TextInputAction.done,
-            getOtpCode: () {
-              _getSmsCode();
-            },
-            isEnabled: isOtpEnabled,
-            isCountdown: isOtpCountdown,
-            onCountDownEnd: () => {
-              setState(() {
-                isOtpCountdown = false;
-              })
-            },
-          ),
-        ),
-      );
+  _buildOtpTextFormField() => OtpTextFormField(
+    hintText: getTranslatedText("enter_email_otp_hint"),
+    onChanged: (value) => _onOtpTextChange(),
+    controller: _otpController,
+    textInputAction: TextInputAction.done,
+    getOtpCode: () {
+      _getSmsCode();
+    },
+    isEnabled: isOtpEnabled,
+    isCountdown: isOtpCountdown,
+    onCountDownEnd: () => {
+      setState(() {
+        isOtpCountdown = false;
+      })
+    },
+    isVisible: true,
+  );
 
   _buildSubmitButton() => Container(
       width: context.screenWidth,

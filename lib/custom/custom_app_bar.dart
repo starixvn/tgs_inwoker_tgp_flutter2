@@ -7,11 +7,12 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({Key key, this.title, this.widget, this.walletBalance}) : super(key: key);
+  CustomAppBar({Key key, this.title, this.widget, this.walletBalance, this.isPopTwice = false}) : super(key: key);
 
   final String title;
   final Widget widget;
   final double walletBalance;
+  final bool isPopTwice;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
@@ -20,22 +21,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: CustomColor.theme_app_bar_color,
-      centerTitle: true,//widget == null ? true : false,
-      title: Text(title, style: TextStyle(
-        fontSize: 16.auto
-      ),),
+      centerTitle: true,
+      //widget == null ? true : false,
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 16.auto),
+      ),
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: isPopTwice
+            ? () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              }
+            : () {
+                Navigator.pop(context);
+              },
       ),
       actions: [_getAppBarWidget()],
     );
   }
 
-  _getAppBarWidget(){
-    if(walletBalance !=null){
+  _getAppBarWidget() {
+    if (walletBalance != null) {
       return Container(
           margin: EdgeInsets.only(right: 15.auto),
           alignment: Alignment.center,
@@ -43,10 +51,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             "¥ ${Format().currencyWithDecimalFormat(walletBalance)}",
             style: TextStyle(color: Colors.white),
           ));
-    }
-    else if(widget !=null){
+    } else if (widget != null) {
+      return widget;
+    } else
       return Container();
-    }
-    else return Container();
   }
 }

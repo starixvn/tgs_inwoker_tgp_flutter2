@@ -6,6 +6,7 @@ import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
@@ -61,7 +62,7 @@ class _GameWebState extends BaseState<GameWeb> {
             _handleApiState();
             return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
+              backgroundColor: CustomColor.theme_bg_color,
               appBar: _buildAppBar(),
               body: isLoading || url == null ? buildProgressDialog() : _buildWebView(),
             );

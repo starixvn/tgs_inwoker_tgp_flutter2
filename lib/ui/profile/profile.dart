@@ -70,7 +70,7 @@ class _ProfileState extends BaseState<Profile> {
             margin: EdgeInsets.only(top: 3.auto),
             child: Text(
               _vm.userProfile?.username ?? " ",
-              style: TextStyle(color: CustomColor.theme_text_grey_color),
+              style: TextStyle(color: CustomColor.theme_text_grey_white_color),
             ),
           )
         ],
@@ -89,11 +89,11 @@ class _ProfileState extends BaseState<Profile> {
                       margin: EdgeInsets.only(right: 5.auto),//decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
                       child:ImageIcon(
                         AssetImage("images/profile/ic_balance.png"),
-                        color: CustomColor.grey_five,
+                        color: CustomColor.theme_text_grey_white_color,
                       )),
                   Text(
                     " ¥ ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
-                    style: TextStyle(color: CustomColor.theme_text_grey_color),
+                    style: TextStyle(color: CustomColor.theme_text_grey_white_color),
                   )
                 ],
               ),

@@ -106,11 +106,11 @@ class _PayPasswordState extends BaseState<PayPassword> {
             ),
           );
         });
-      } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.of(context).pushNamed("/reset_pay_password");
-        });
       }
+    }else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed("/reset_pay_password");
+      });
     }
   }
 

@@ -64,13 +64,13 @@ environment_config:
       default: 0xffFFFFFF
     theme_text_black_color:
       type: int
-      default: 0xff707070
+      default: 0xff4B4B4B
     theme_text_black_white_color:
       type: int
       default: 0xffFFFFFF
     theme_text_grey_color:
       type: int
-      default: 0xff4B4B4B
+      default: 0xff707070
     theme_text_grey_white_color:
       type: int
       default: 0xffFFFFFF

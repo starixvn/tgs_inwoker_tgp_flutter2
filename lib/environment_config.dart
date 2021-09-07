@@ -44,11 +44,11 @@ class EnvironmentConfig {
 
   static const int promotion_text_color = 4294967295;
 
-  static const int theme_text_black_color = 4285558896;
+  static const int theme_text_black_color = 4283124555;
 
   static const int theme_text_black_white_color = 4294967295;
 
-  static const int theme_text_grey_color = 4283124555;
+  static const int theme_text_grey_color = 4285558896;
 
   static const int theme_text_grey_white_color = 4294967295;
 }

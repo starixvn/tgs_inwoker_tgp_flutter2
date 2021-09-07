@@ -150,11 +150,12 @@ class _WithdrawState extends BaseState<Withdraw> {
                 "images/withdraw/ic_edit_card.png",
                 width: 15.auto,
                 height: 15.auto,
+                color: CustomColor.theme_text_grey_white_color,
               ),
             ),
             Text(
               getTranslatedText("manage_card"),
-              style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: 12.auto),
             )
           ]),
         ),

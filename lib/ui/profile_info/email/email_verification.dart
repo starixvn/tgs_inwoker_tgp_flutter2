@@ -48,20 +48,22 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
               appBar: CustomAppBar(
                 title: getTranslatedText("email"),
               ),
-              body:
-                  /*userProfile == null?
-                  Center(child: CircularProgressIndicator(),):*/
-                  Container(
-                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
-                child: Column(
-                  children: [
-                    //CustomTabBar(index:1),
-                    _buildTextFormField(),
-                    _buildOtpTextFormField(),
-                    _buildButton()
-                  ],
-                ),
-              ));
+              body: _vm.userProfile == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
+                      child: Column(
+
+                        children: [
+                          //CustomTabBar(index:1),
+                          _buildTextFormField(),
+                          _buildOtpTextFormField(),
+                          _buildButton()
+                        ],
+                      ),
+                    ));
         });
   }
 
@@ -81,31 +83,23 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         ),
       );
 
-  _buildOtpTextFormField() => Visibility(
-        visible: _vm.userProfile.email == null,
-        child: Opacity(
-          opacity: isOtpEnabled ? 1 : 0.4,
-          child: Container(
-            margin: EdgeInsets.only(top: 15.auto),
-            child: OtpTextFormField(
-              hintText: getTranslatedText("enter_email_otp_hint"),
-              onChanged: (value) => _onTextChange(),
-              controller: _otpController,
-              textInputAction: TextInputAction.done,
-              getOtpCode: () {
-                _getSmsCode();
-              },
-              isEnabled: isOtpEnabled,
-              isCountdown: isOtpCountdown,
-              onCountDownEnd: () => {
-                setState(() {
-                  isOtpCountdown = false;
-                })
-              },
-            ),
-          ),
-        ),
-      );
+  _buildOtpTextFormField() => OtpTextFormField(
+    hintText: getTranslatedText("enter_email_otp_hint"),
+    onChanged: (value) => _onTextChange(),
+    controller: _otpController,
+    textInputAction: TextInputAction.done,
+    getOtpCode: () {
+      _getSmsCode();
+    },
+    isEnabled: isOtpEnabled,
+    isCountdown: isOtpCountdown,
+    onCountDownEnd: () => {
+      setState(() {
+        isOtpCountdown = false;
+      })
+    },
+    isVisible: _vm.userProfile.email==null,
+  );
 
   _buildButton() => Container(
       width: context.screenWidth,

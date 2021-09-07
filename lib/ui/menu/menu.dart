@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,11 +57,15 @@ class _MenuState extends BaseState<Menu> {
       ),
       width: 100.auto,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 10.auto),
-      child: Text(
+      padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 5.auto),
+      child: AutoSizeText(
         getTranslatedText("transfer"),
         textAlign: TextAlign.center,
-        style: TextStyle(color: CustomColor.theme_text_grey_color),
+        style: TextStyle(color: Colors.white),
+        minFontSize: 10,
+        maxLines: 1,
+        stepGranularity: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     ),
   );
@@ -87,10 +92,14 @@ class _MenuState extends BaseState<Menu> {
                   height: 18.auto,
                 ),
               ),
-              Text(
+              AutoSizeText(
                 getTranslatedText(title),
                 textAlign: TextAlign.center,
-                style: TextStyle(color: CustomColor.theme_text_grey_color),
+                style: TextStyle(color: Colors.white),
+                minFontSize: 10,
+                maxLines: 1,
+                stepGranularity: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

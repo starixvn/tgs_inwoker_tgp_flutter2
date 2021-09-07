@@ -165,13 +165,13 @@ class _MainCardState extends BaseState<MainCard> {
                 "images/card/ic_card_delete_hint.png",
               ),
               size: 15.auto,
-              color: CustomColor.theme_text_grey_color,
+              color: CustomColor.theme_text_grey_white_color,
             ),
             Container(
               margin: EdgeInsets.only(left: 5.auto),
               child: Text(
                 getTranslatedText("slide_to_delete_card"),
-                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_color),
+                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
               ),
             ),
           ],
@@ -188,7 +188,7 @@ class _MainCardState extends BaseState<MainCard> {
           child: Container(
             margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
             child: FDottedLine(
-                color: CustomColor.theme_grey_button_color,
+                color: CustomColor.theme_text_grey_white_color,
                 height: 70.0,
                 width: context.screenWidth,
                 space: 2.0,
@@ -204,13 +204,13 @@ class _MainCardState extends BaseState<MainCard> {
                         children: [
                           Text(
                             getTranslatedText("add_card"),
-                            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_color),
+                            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 5.auto),
                             child: Text(
                               getTranslatedText("max_card_hint"),
-                              style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_grey_button_color),
+                              style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
                             ),
                           )
                         ],
@@ -223,7 +223,7 @@ class _MainCardState extends BaseState<MainCard> {
                               "images/card/ic_add_card.png",
                             ),
                             size: 23.auto,
-                            color: CustomColor.theme_grey_button_color)),
+                            color: CustomColor.theme_text_grey_white_color)),
                   ],
                 )),
           ),

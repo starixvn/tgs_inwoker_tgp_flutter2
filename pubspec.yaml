@@ -120,6 +120,7 @@ flutter:
     - images/support/cs_bg/en-US/
     - images/support/cs_bg/zh-CN/
     - images/support/cs_bg/zh-TW/
+    - images/withdraw/
 
 
     - loading/

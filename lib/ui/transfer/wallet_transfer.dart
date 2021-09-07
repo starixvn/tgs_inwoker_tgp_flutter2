@@ -277,7 +277,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 margin: EdgeInsets.only(right: 10.auto),
                 child: Text(
                   getTranslatedText("auto_transfer"),
-                  style: TextStyle(color: CustomColor.theme_text_grey_color),
+                  style: TextStyle(color: CustomColor.theme_text_grey_white_color),
                 )),
             FlutterSwitch(
               value: _vm.autoTransferValue ?? false,

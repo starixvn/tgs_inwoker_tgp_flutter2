@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
@@ -36,22 +37,9 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(
-                  getTranslatedText("forgot_password"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
+              backgroundColor: CustomColor.theme_bg_color,
+              appBar: CustomAppBar(
+                title: getTranslatedText("forgot_password"),
               ),
               body: Container(
                   child: /*userProfile == null?
@@ -85,28 +73,23 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         ),
       );
 
-  _buildOtpTextFormField() => Opacity(
-        opacity: isOtpEnabled ? 1 : 0.3,
-        child: Container(
-          margin: EdgeInsets.only(top: 15.auto),
-          child: OtpTextFormField(
-            hintText: getTranslatedText("enter_email_otp_hint"),
-            onChanged: (value) => _onTextChange(),
-            controller: _otpController,
-            textInputAction: TextInputAction.done,
-            getOtpCode: () {
-              _getSmsCode();
-            },
-              isEnabled: isOtpEnabled,
-              isCountdown: isOtpCountdown,
-              onCountDownEnd: () => {
-                setState(() {
-                  isOtpCountdown = false;
-                })
-              }
-          ),
-        ),
-      );
+  _buildOtpTextFormField() => OtpTextFormField(
+    hintText: getTranslatedText("enter_email_otp_hint"),
+    onChanged: (value) => _onTextChange(),
+    controller: _otpController,
+    textInputAction: TextInputAction.done,
+    getOtpCode: () {
+      _getSmsCode();
+    },
+    isEnabled: isOtpEnabled,
+    isCountdown: isOtpCountdown,
+    onCountDownEnd: () => {
+      setState(() {
+        isOtpCountdown = false;
+      })
+    },
+    isVisible: true,
+  );
 
   _buildButton() => Container(
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
@@ -119,12 +102,12 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         radius: 9.6,
       ));
 
-  _checkValidation(){
+  _checkValidation() {
     if (!validate.validateEmail(_emailController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
-    }else {
+    } else {
       //ProgressDialog.show(context);
       _navigateToUpdatePassword();
     }

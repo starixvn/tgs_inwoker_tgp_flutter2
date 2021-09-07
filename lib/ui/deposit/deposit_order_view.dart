@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/deposit_redirect_applepay.dart';
@@ -67,36 +68,19 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.grey[100],
-              appBar: _buildAppBar(),
+              backgroundColor: CustomColor.theme_bg_color,
+              appBar: CustomAppBar(
+                title: getTranslatedText("deposit"),
+              ),
               body: widget.depositRedirect != null || widget.depositRedirectApplePay != null
                   ? _buildLeepayOrder()
                   : _buildManualDepositOrder());
         });
   }
 
-  _buildAppBar() => AppBar(
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        centerTitle: true,
-        title: Text(
-          getTranslatedText("deposit"),
-          style: TextStyle(fontSize: 20.auto, color: CustomColor.theme_text_grey_color),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      );
-
   _buildManualDepositOrder() => ListView(
         children: [
           Container(
-            decoration: BoxDecoration(color: Colors.white),
             padding: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
             child: Column(
               children: [
@@ -104,7 +88,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     getTranslatedText("amount"),
-                    style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+                    style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_black_white_color),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -255,14 +239,14 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
               flex: 2,
               child: Text(
                 getTranslatedText(title) ?? title,
-                style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+                style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_grey_white_color),
               ),
             ),
             Expanded(
               flex: 8,
               child: AutoSizeText(
                 content ?? "",
-                style: TextStyle(fontSize: 13.auto, color: Colors.black),
+                style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_black_white_color),
                 minFontSize: 2,
                 maxLines: 1,
                 textAlign: TextAlign.end,
@@ -283,11 +267,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         children: [
           Text(
             getTranslatedText(title) ?? title,
-            style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+            style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_grey_white_color),
           ),
           AutoSizeText(
             content ?? "",
-            style: TextStyle(fontSize: 13.auto, color: Colors.black),
+            style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_black_white_color),
             minFontSize: 2,
             maxLines: 1,
             textAlign: TextAlign.end,
@@ -307,7 +291,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
           children: [
             Text(
               getTranslatedText("upload_prof_hint"),
-              style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
+              style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_grey_white_color),
             ),
             ColorButton(
               title: getTranslatedText("pick_prof"),

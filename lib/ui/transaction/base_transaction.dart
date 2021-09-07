@@ -109,11 +109,21 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                 (index) =>  Container(
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
-                  height: 94.auto,
-                  color: Colors.white,
-                  child: Text(
-                    getTranslatedText("no_record"),
-                    textAlign: TextAlign.center,
+                  height: 150.auto,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 10.auto),
+                  child:Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: 75.auto,
+                          height: 75.auto,
+                          child: Image.asset("images/transaction/ic_no_record.png")),
+                      Text(getTranslatedText("no_record"))
+                    ],
                   ),
                 ))
             : widget.displayItemList,

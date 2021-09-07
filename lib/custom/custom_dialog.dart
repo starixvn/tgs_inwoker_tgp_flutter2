@@ -39,7 +39,7 @@ class CustomDialog extends StatelessWidget {
             horizontal: context.screenWidth / 20,
           ),
           decoration: new BoxDecoration(
-            color: CustomColor.theme_text_black_color,
+            color: Colors.white,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [

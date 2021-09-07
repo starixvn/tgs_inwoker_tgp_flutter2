@@ -32,7 +32,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
           padding: EdgeInsets.only(top: 5.auto, bottom: 10.auto),
           decoration: BoxDecoration(
             color: Colors.white,
-            //borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: _getTransactionCellItem(isLast: true),
         ),
@@ -44,7 +44,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
           padding: EdgeInsets.only(top: 5.auto),
           decoration: BoxDecoration(
             color: Colors.white,
-            //borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: _getTransactionCellItem());
     }
@@ -57,7 +57,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
               padding: EdgeInsets.only(bottom: 10.auto),
               decoration: BoxDecoration(
                 color: Colors.white,
-                //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               ),
               child: _getTransactionCellItem(isLast: true)),
         ),

@@ -34,7 +34,7 @@ class _SplashState extends BaseState<Splash> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(width: context.screenWidth / 1.5, child: Image.asset("images/login/pg_login_logo.png")),
+            Container(width: context.screenWidth / 1.5, child: Image.asset("images/pg_logo.png")),
             Container(
               width: context.screenWidth / 2.5,
               alignment: Alignment.bottomCenter,

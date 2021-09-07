@@ -922,7 +922,6 @@
   "LanternWealth": "財富燈籠",
   "MayaGoldCrazy": "瑪雅金瘋狂",
   "War Of Empires": "帝國戰爭",
-
   "Cai_Shen_Fishing": "財神捕魚",
   "Dragon_Fishing": "龍王捕魚",
   "Dragon_Fishing_II": "龍王捕魚第二部分",
@@ -930,7 +929,6 @@
   "Fishing_YiLuFa": "捕魚一路發",
   "FishingDisco": "捕魚迪斯科",
   "Five_Dragons_Fishing": "五龍捕魚",
-
   "game": "遊戲",
   "promotion_empty1": "目前尚未有活動",
   "promotion_empty2": "請敬請期待",
@@ -945,11 +943,12 @@
   "contact": "聯繫",
   "cs_join": "加入",
   "contact_now": "立即聯繫",
-  "no_record":"查無資料",
+  "no_record": "查無資料",
   "favorite_game": "收藏遊戲",
   "copy_text": "文本已復制",
   "email_dialog": "請綁定郵箱地址",
   "payment_type": "支付方式",
   "payment_channel": "支付渠道",
-  "auto_transfer": "自動轉賬"
+  "auto_transfer": "自動轉賬",
+  "balance": "總資金"
 }

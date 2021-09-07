@@ -53,7 +53,7 @@
   "next": "Next",
   "slide_to_delete_card": "Slide to delete card",
   "add_card": "Add bank card",
-  "max_card_hint": "Can perform withdrawal after added card,max 3。",
+  "max_card_hint": "Can perform withdrawal after added card, max 3",
   "bank": "Bank",
   "select_bank": "Please select bank",
   "bank_branch": "Branch",
@@ -934,7 +934,6 @@
   "LanternWealth": "LanternWealth",
   "MayaGoldCrazy": "MayaGoldCrazy",
   "War Of Empires": "War Of Empires",
-
   "Cai_Shen_Fishing": "Cai Shen Fishing",
   "Dragon_Fishing": "Dragon Fishing",
   "Dragon_Fishing_II": "Dragon Fishing II",
@@ -942,13 +941,11 @@
   "Fishing_YiLuFa": "Fishing YiLuFa",
   "FishingDisco": "FishingDisco",
   "Five_Dragons_Fishing": "Five Dragons Fishing",
-
   "game": "Game",
   "promotion_empty1": "MORE PROMOTIONS AND ACTIVITIES ARE",
   "promotion_empty2": "COMING SOON!",
   "request_failed": "Request failed, please contact Customer Service for further information.",
   "transaction_after_start_date": "End date must be after the start date",
-
   "waiting_payment": "Waiting payment",
   "review": "Review",
   "approved": "Approved",
@@ -964,5 +961,6 @@
   "email_dialog": "Please link your email.",
   "payment_type": "Payment Type",
   "payment_channel": "Payment Channel",
-  "auto_transfer": "Auto-Transfer"
+  "auto_transfer": "Auto-Transfer",
+  "balance": "Balance"
 }

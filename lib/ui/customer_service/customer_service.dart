@@ -71,15 +71,12 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   _getCsBgImage() {
-    if (EnvironmentConfig.template_version == 3)
-      return DecorationImage(
-          image: AssetImage("images/support/cs_bg/${getCurrentLanguage().apiCode}/cs_bg_t3.png"), fit: BoxFit.fill);
-    else
-      return DecorationImage(
-          image: AssetImage("images/support/cs_bg/${getCurrentLanguage().apiCode}/cs_bg_t2.png"),
-          fit: BoxFit.fitWidth,
-          alignment: Alignment.topLeft);
-    ;
+    //cs_bg_t2, cs_bg_t3
+    return DecorationImage(
+        image: AssetImage("images/support/cs_bg/${getCurrentLanguage().apiCode}/cs_bg_t${EnvironmentConfig.template_version}.png"),
+        fit: BoxFit.fitWidth,
+        alignment: Alignment.topLeft
+    );
   }
 
   buildLiveChatRow() => Visibility(
@@ -101,7 +98,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               children: [
                 Expanded(
                   flex: 1,
-                  child:SvgPicture.asset(
+                  child: SvgPicture.asset(
                     "images/support/support-call.svg",
                     matchTextDirection: true,
                     height: 20.auto,

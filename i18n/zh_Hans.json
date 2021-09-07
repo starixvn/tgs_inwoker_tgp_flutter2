@@ -921,7 +921,6 @@
   "LanternWealth": "财富灯笼",
   "MayaGoldCrazy": "玛雅金疯狂",
   "War Of Empires": "帝国战争",
-
   "Cai_Shen_Fishing": "财神捕鱼",
   "Dragon_Fishing": "龙王捕鱼",
   "Dragon_Fishing_II": "龙王捕鱼第二部分",
@@ -929,13 +928,11 @@
   "Fishing_YiLuFa": "捕鱼一路发",
   "FishingDisco": "捕鱼迪斯科",
   "Five_Dragons_Fishing": "五龙捕鱼",
-
   "game": "游戏",
   "promotion_empty1": "目前尚未有活动",
   "promotion_empty2": "请敬请期待",
   "request_failed": "请求失败，请联系客服。",
   "transaction_after_start_date": "结束日期需在开始日期之后",
-
   "waiting_payment": "等待付款",
   "review": "审核中",
   "approved": "已通过",
@@ -945,13 +942,14 @@
   "contact": "联系",
   "cs_join": "加入",
   "contact_now": "立即联系",
-  "no_record":"查无资料",
+  "no_record": "查无资料",
   "favorite_game": "收藏游戏",
   "copy_text": "文本已复制",
   "email_dialog": "请绑定邮箱地址",
   "payment_type": "支付方式",
   "payment_channel": "支付渠道",
-  "auto_transfer": "自动转账"
+  "auto_transfer": "自动转账",
+  "balance": "总资金"
 }
 
 

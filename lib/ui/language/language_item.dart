@@ -50,7 +50,7 @@ class _LanguageItemState extends BaseState<LanguageItem> {
               Expanded(
                 child: Text(
                   widget.text,
-                  style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_text_grey_color),
+                  style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_text_black_white_color),
                 ),
               ),
               Visibility(
@@ -58,13 +58,14 @@ class _LanguageItemState extends BaseState<LanguageItem> {
                   child: Icon(
                     Icons.check,
                     size: 25.auto,
+                    color: CustomColor.theme_button_color,
                   ))
             ],
           ),
         ),
         Divider(
           thickness: 1,
-            color: CustomColor.theme_text_grey_color
+            color: CustomColor.theme_text_black_white_color
         )
       ],
     );

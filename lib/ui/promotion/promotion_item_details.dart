@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -42,8 +43,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
               child: Text(
                 "【${getTranslatedText("promotion_condition")}】",
-                style:
-                    TextStyle(color: CustomColor.theme_button_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
+                style: TextStyle(color: CustomColor.theme_button_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
               )),
           _buildPromotionText(
               "${getTranslatedText("promotion_person")}：\n VIP" + widget.promotion.vipLevels.join(", VIP")),
@@ -58,29 +58,14 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
     );
   }
 
-  _buildAppBar() => AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        title: Text(
-          getTranslatedText("promotion_center"),
-          style: TextStyle(fontSize: 20.auto),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+  _buildAppBar() => CustomAppBar(
+        title: getTranslatedText("promotion_center"),
       );
 
   _buildJoinButton() => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: ColorButton(
           title: getTranslatedText("join"),
-
           onClick: () {
             _onClick();
           },

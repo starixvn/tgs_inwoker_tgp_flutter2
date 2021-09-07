@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -28,24 +29,10 @@ class _DepositWebState extends BaseState<DepositWeb> {
     print("url=${widget.url}");
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            decoration: gradientDecoration,
-          ),
-          centerTitle: true,
-          title: Text(
-            getTranslatedText("deposit"),
-            style: TextStyle(fontSize: 20.auto),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+        backgroundColor: CustomColor.theme_bg_color,
+        appBar: CustomAppBar(
+          title: getTranslatedText("deposit"),
+        ) ,
         body: InAppWebView(
           initialUrl: widget.url,
           initialOptions: InAppWebViewGroupOptions(

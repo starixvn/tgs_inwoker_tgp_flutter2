@@ -921,7 +921,6 @@
   "LanternWealth": "ตะเกียงแห่งความมั่งคั่ง",
   "MayaGoldCrazy": "มายาโกลด์เครซี่",
   "War Of Empires": "สงครามแห่งจักรวรรดิ",
-
   "Cai_Shen_Fishing": "ตกปลาเทพแห่งโชคลาภ",
   "Dragon_Fishing": "ราชามังกรตกปลา",
   "Dragon_Fishing_II": "ราชามังกรตกปลาภาค II",
@@ -929,13 +928,11 @@
   "Fishing_YiLuFa": "ตกปลาตลอดทาง",
   "FishingDisco": "ฟิชชิ่งดิสโก้",
   "Five_Dragons_Fishing": "ห้ามังกรตกปลา",
-
   "game": "เกม",
   "promotion_empty1": "ไม่มีกิจกรรมในขณะนี้",
   "promotion_empty2": "โปรดคอยติดตาม",
   "request_failed": "คำขอล้มเหลว โปรดติดต่อฝ่ายบริการลูกค้า",
   "transaction_after_start_date": "วันที่สิ้นสุดต้องอยู่หลังวันที่เริ่มต้น",
-
   "waiting_payment": "กำลังรอการชำระเงิน",
   "review": "อยู่ระหว่างตรวจสอบ",
   "approved": "อนุมัติ",
@@ -945,14 +942,14 @@
   "contact": "ติดต่อ",
   "cs_join": "เข้าร่วม",
   "contact_now": "ติดต่อเดี๋ยวนี้",
-  "no_record":"ตรวจสอบไม่มีข้อมูล",
+  "no_record": "ตรวจสอบไม่มีข้อมูล",
   "favorite_game": "เกมโปรด",
   "copy_text": "คัดลอกข้อความแล้ว",
   "email_dialog": "กรุณาผูกที่อยู่อีเมล",
-
   "payment_type": "วิธีการชำระเงิน",
   "payment_channel": "ช่องทางการชำระเงิน",
-  "auto_transfer": "โอนอัตโนมัติ"
+  "auto_transfer": "โอนอัตโนมัติ",
+  "balance": "บาลานซ์"
 }
 
 

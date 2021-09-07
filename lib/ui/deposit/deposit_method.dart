@@ -86,11 +86,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _buildCard(String title, List<dynamic> list, {bool isDepositMethod = false}) {
     var display;
-    if (list is List<String>) {
-      if (methodPickerText == "BankTransfer")
-        display = getTranslatedText("bank_transfer");
-      else
-        display = getTranslatedText(methodPickerText.toLowerCase());
+    if (list is List<BankType>) {
+      display = methodPickerText;
       isHintText = false;
     } else if (list is List<Payment>) {
       display = channelPickerText;

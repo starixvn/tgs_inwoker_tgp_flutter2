@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
@@ -42,22 +43,9 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                centerTitle: true,
-                flexibleSpace: Container(
-                  decoration: gradientDecoration,
-                ),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                title: Text(
-                  getTranslatedText("forgot_password"),
-                  style: TextStyle(fontSize: 16.auto),
-                ),
+              backgroundColor: CustomColor.theme_bg_color,
+              appBar: CustomAppBar(
+                title: getTranslatedText("forgot_password"),
               ),
               body: Container(
                   decoration: BoxDecoration(

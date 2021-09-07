@@ -33,7 +33,7 @@ class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
                   stepGranularity: 1,
                   maxLines: 1,
                   textAlign: index == 0 ? TextAlign.start : TextAlign.center,
-                  style: TextStyle(color: CustomColor.theme_text_grey_color),
+                  style: TextStyle(color: CustomColor.theme_text_black_white_color),
                 ),
         );
       }).toList()),

@@ -57,7 +57,7 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     widget.title,
-                    style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 9.auto),
+                    style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 9.auto),
                     textAlign: TextAlign.start,
                   ),
                 ),

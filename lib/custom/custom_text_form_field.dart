@@ -47,7 +47,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
             alignment: Alignment.topLeft,
             child: Text(
               widget.title,
-              style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
               textAlign: TextAlign.start,
             ),
           ),
@@ -66,7 +66,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex:9,
+                    flex: 9,
                     child: TextFormField(
                       enabled: widget.enabled ?? true,
                       autofocus: false,
@@ -80,19 +80,21 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                           : null,
                       textInputAction: widget.textInputAction,
                       obscureText: (widget.textInputType == TextInputType.visiblePassword) ? true : false,
-                      style: TextStyle(color: CustomColor.theme_bg_color, fontSize: 13.auto),
+                      style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
                       decoration: InputDecoration(
                         isDense: true,
                         border: InputBorder.none,
                         hintText: widget.hintText,
-                        hintStyle: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 13.auto),
+                        hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                       ),
                     ),
                   ),
-                  widget.button == null ? Container() : Expanded(
-                    flex: 1,
-                    child: widget.button,
-                  )
+                  widget.button == null
+                      ? Container()
+                      : Expanded(
+                          flex: 1,
+                          child: widget.button,
+                        )
                 ],
               ),
             ),
