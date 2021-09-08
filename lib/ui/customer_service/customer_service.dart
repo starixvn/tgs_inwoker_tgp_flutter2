@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -106,17 +107,20 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 7,
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto),
-                    child: Text(
+                    child: AutoSizeText(
                       getTranslatedText("online_cs"),
                       style: TextStyle(color: CustomColor.theme_text_black_color),
+                      maxLines: 1,
+                      minFontSize: 5,
+                      stepGranularity: 1,
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Text(
                     getTranslatedText("contact"),
                     style: TextStyle(color: CustomColor.theme_button_color),

@@ -78,21 +78,43 @@ class _GameT3State extends BaseState<GameT3> {
   _getImagePath(GameProvider2 gameProvider) {
     var gameType = gameProvider.gameType.getImagePath();
     var gamePlatformCode = gameProvider.code.toLowerCase();
-    var imagePath = "images/game/${gameType}_${gamePlatformCode}.png";
+    var imagePath = "images/game/T3/${gameType}_${gamePlatformCode}.png";
     return imagePath;
   }
 
-  _buildImage(GameProvider2 gameProvider) => AspectRatio(
-        aspectRatio: 750 / 330,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Container(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  _getImagePath(gameProvider),
-                  fit: BoxFit.cover,
-                ))),
-      );
+  _buildImage(GameProvider2 gameProvider) => Stack(
+    children: [
+      AspectRatio(
+            aspectRatio: 750 / 330,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      _getImagePath(gameProvider),
+                      fit: BoxFit.cover,
+                    ))),
+          ),
+      Positioned(
+        bottom: context.screenWidth / 15,
+        left: context.screenWidth /6,
+        child: Container(
+          width: 74.auto,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
+          child: Text(
+            getTranslatedText("start_game"),
+            style: TextStyle(
+              fontSize: 10.auto,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      )
+    ],
+  );
 
   _onGameClick(GameProvider2 gameProvider) {
     if (_vm.userProfile == null) {

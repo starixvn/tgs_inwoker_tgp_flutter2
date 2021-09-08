@@ -121,7 +121,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
               margin: EdgeInsets.only(right: 3.auto),
               child: AutoSizeText(
                 widget.game.name,
-                style: TextStyle(color: CustomColor.theme_text_grey_color),
+                style: TextStyle(color: Colors.white),
                 minFontSize: 3,
                 stepGranularity: 1,
                 maxLines: 1,
@@ -159,7 +159,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
           decoration: BoxDecoration(color: CustomColor.black, borderRadius: BorderRadius.circular(15.0)),
           child: Text(
             widget.game.gamePlatformName(),
-            style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 9.auto),
+            style: TextStyle(color: Colors.white, fontSize: 9.auto),
           ),
         ),
       );

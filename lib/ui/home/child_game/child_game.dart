@@ -133,6 +133,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
                       style: TextStyle(
                         fontFamily: 'PingFang',
                         fontSize: 14.auto,
+                        color: Colors.white
                       )),
                 );
               }).toList(),

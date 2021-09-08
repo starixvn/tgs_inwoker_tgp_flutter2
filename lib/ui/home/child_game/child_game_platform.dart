@@ -86,6 +86,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
                   style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,
+                    color: Colors.white
                   )),
             );
           }).toList(),

@@ -50,13 +50,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
             backgroundColor: Colors.white,
             appBar: CustomAppBar(
               title: getTranslatedText(tabList[currentTabIndex]["text"]),
-              widget: Container(
-            margin: EdgeInsets.only(right: 15.auto),
-              alignment: Alignment.center,
-              child: Text(
-                "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-                style: TextStyle(color: CustomColor.theme_text_grey_color),
-              )),
+              walletBalance: _vm.wallet?.main,
             ),
             body: Column(
               children: [

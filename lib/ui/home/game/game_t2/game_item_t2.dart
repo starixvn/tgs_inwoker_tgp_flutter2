@@ -49,7 +49,7 @@ ScrollController controller;
   _getImagePath(GameProvider2 gameProvider) {
     var gameType = gameProvider.gameType.getImagePath();
     var gamePlatformCode = gameProvider.code.toLowerCase();
-    var imagePath = "images/game/${gameType}_${gamePlatformCode}.png";
+    var imagePath = "images/game/T2/${gameType}_${gamePlatformCode}.png";
     return imagePath;
   }
 
@@ -72,7 +72,7 @@ ScrollController controller;
           width: 74.auto,
           alignment: Alignment.center,
           padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/btn_start_game.png"))),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
           child: Text(
             getTranslatedText("start_game"),
             style: TextStyle(

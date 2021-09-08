@@ -100,13 +100,7 @@ class _DepositState extends BaseState<Deposit> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("deposit"),
-        widget: Container(
-            margin: EdgeInsets.only(right: 15.auto),
-            alignment: Alignment.center,
-            child: Text(
-              "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-              style: TextStyle(color: CustomColor.theme_text_grey_color),
-            )),
+    walletBalance: _vm.wallet?.main,
       );
 
   /*AppBar(

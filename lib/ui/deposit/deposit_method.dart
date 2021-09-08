@@ -205,7 +205,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           children: [
             Text(
               getTranslatedText("exchange_rate") + ": ",
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+              style: TextStyle(fontSize: 13.auto, color:CustomColor.theme_text_grey_white_color),
             ),
             Text(
               _vm.exchangeRate ?? "0.00",
@@ -214,7 +214,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             Spacer(),
             Text(
               getTranslatedText("expected_amount") + ": ",
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_grey_white_color),
             ),
             Text(
               _calculateExpectedAmount(),

@@ -96,7 +96,8 @@ flutter:
     - images/bottom_nav_bar/
     - images/home/
     - images/home_banner/
-    - images/game/
+    - images/game/T2/
+    - images/game/T3/
     - images/profile/
     - images/profile_info/
     - images/support/
