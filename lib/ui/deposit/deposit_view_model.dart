@@ -24,6 +24,8 @@ class DepositViewModel extends BaseViewModel {
 
   get wallet => userRepo.wallet;
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   getPayment() async {
     setLoading();
     getPaymentApiState = await depositRepo.getPayment();

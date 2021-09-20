@@ -57,6 +57,7 @@ dependencies:
   easy_gradient_text: ^1.0.0
   qr_flutter: ^4.0.0
   flutter_switch: ^0.3.2
+  simple_html_css: ^2.0.2
 
   api:
     git: https://gitlab.com/yewtungcheong/api

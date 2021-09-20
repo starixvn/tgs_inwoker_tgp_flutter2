@@ -133,7 +133,7 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
                     _getTransaction(status: value);
                   }
                   Navigator.pop(context);
-                  // ProgressDialog.show(context);
+                  // ProgressDialog.show(context, _vm.brandLogoUrl);
                 });
               });
         });

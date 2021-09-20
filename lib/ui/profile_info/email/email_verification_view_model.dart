@@ -4,12 +4,16 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 class EmailVerificationViewModel extends BaseViewModel {
   final authRepo = AuthenticationRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
   var getEmailCodeApiState, emailVerifyApiState;
 
   @override
   List<BaseRepository> get repoList => [];
 
   get userProfile => userRepo.userProfile;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   var securityKey;
 
   getEmailCode(String email) async {

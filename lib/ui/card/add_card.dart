@@ -51,7 +51,7 @@ class _AddCardState extends BaseState<AddCard> {
               backgroundColor: CustomColor.theme_bg_color,
               appBar: _buildAppBar(),
               body: _vm.bankTypeList == null
-                  ? buildProgressDialog()
+                  ? buildProgressDialog(_vm.brandLogoUrl)
                   : ListView(
                 padding: EdgeInsets.only(
                   left: 10.auto,
@@ -235,7 +235,7 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   _onClick() {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     if (isCrypto)
       _vm.addBankCard(address: _addressController.text);
     else

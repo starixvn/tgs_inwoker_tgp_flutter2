@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -7,10 +8,11 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomLoginAppBar({Key key, this.onClickLoginButton, this.isLogin}) : super(key: key);
+  CustomLoginAppBar({Key key, this.onClickLoginButton, this.isLogin, this.brandLogoUrl}) : super(key: key);
 
   final Function onClickLoginButton;
   final bool isLogin;
+  final String brandLogoUrl;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
@@ -32,7 +34,14 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: CustomColor.theme_app_bar_color,
-      title: Image.asset("images/pg_logo.png"),
+      title: CachedNetworkImage(
+        placeholder: (context, url) => Container(),
+        imageUrl: brandLogoUrl,
+        //handling error
+        height: 30.auto,
+        fit: BoxFit.cover,
+        errorWidget: (context, url, error) => Container(),
+      ),
       actions: [_getLoginButton()],
     );
   }

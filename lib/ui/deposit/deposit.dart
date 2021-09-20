@@ -45,7 +45,7 @@ class _DepositState extends BaseState<Deposit> {
               appBar: _buildAppBar(),
               body: (() {
                 if (_vm.paymentCodeList == null)
-                  return buildProgressDialog();
+                  return buildProgressDialog(_vm.brandLogoUrl);
                 else if (_vm.paymentCodeList.isEmpty)
                   return Container();
                 else {

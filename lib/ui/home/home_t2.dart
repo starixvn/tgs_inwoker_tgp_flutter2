@@ -63,6 +63,7 @@ class _HomeT2State extends BaseState<HomeT2> {
             appBar: CustomLoginAppBar(
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
               isLogin: _vm.userProfile != null,
+              brandLogoUrl: _vm.brandLogoUrl,
             ),
             body: /* Stack(
               children: [*/

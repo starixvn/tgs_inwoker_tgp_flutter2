@@ -107,7 +107,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
         CustomToast.show(getTranslatedText("confirm_password_error_msg"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.editPassword(_oldPasswordController.text, _newPasswordController.text);
     }
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -9,6 +10,10 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/ui/splash/splash_view_model.dart';
 
 class Splash extends StatefulWidget {
+  final String logoUrl;
+
+  Splash({this.logoUrl});
+
   @override
   _SplashState createState() => _SplashState();
 }
@@ -34,7 +39,15 @@ class _SplashState extends BaseState<Splash> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(width: context.screenWidth / 1.5, child: Image.asset("images/pg_logo.png")),
+            widget.logoUrl.isEmpty
+                ? Container()
+                : CachedNetworkImage(
+                    placeholder: (context, url) => Container(),
+                    imageUrl: widget.logoUrl,
+                    //handling error
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(),
+                  ),
             Container(
               width: context.screenWidth / 2.5,
               alignment: Alignment.bottomCenter,
@@ -56,5 +69,5 @@ class _SplashState extends BaseState<Splash> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.home);
     });
-        }
+  }
 }

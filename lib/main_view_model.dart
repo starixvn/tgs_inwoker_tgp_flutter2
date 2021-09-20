@@ -7,14 +7,16 @@ import 'environment_config.dart';
 class MainViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
-  var authApiState, getLanguageApiState;
+  var authApiState, getLanguageApiState, getBrandLogoApiState;
 
   @override
   List<BaseRepository> get repoList => [];
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url,EnvironmentConfig.jwtKey,EnvironmentConfig.currency);
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;
@@ -26,5 +28,12 @@ class MainViewModel extends BaseViewModel {
     if (getLanguageApiState.isSuccess) {}
     setLoading(false);
     return getLanguageApiState;
+  }
+
+  getBrandLogo() async {
+    setLoading();
+    getBrandLogoApiState = await contentRepo.getBrandLogo();
+    setLoading(false);
+    return getBrandLogoApiState;
   }
 }

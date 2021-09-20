@@ -206,7 +206,7 @@ class _LoginContentState extends BaseState<LoginContent> {
         CustomToast.show(getTranslatedText("enter_password_hint"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.login(username.text, password.text, _isRememberMe);
     }
   }

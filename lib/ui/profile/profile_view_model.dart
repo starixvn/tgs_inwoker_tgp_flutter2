@@ -17,6 +17,8 @@ class ProfileViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet?.main;
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   logout() async {
     setLoading();
     logoutApiState = await userRepo.logout();
@@ -25,7 +27,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   computeTotalBalance() async {
-    if(contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
 
     var task = <Future>[];

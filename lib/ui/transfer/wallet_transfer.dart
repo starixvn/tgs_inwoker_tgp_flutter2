@@ -344,7 +344,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       return;
     } else {
       setState(() {
-        ProgressDialog.show(context);
+        ProgressDialog.show(context, _vm.brandLogoUrl);
         final isFundOut = fromWallet.isMainWallet;
         final gpCode = isFundOut ? toWallet.gpCode : fromWallet.gpCode;
         _vm.transferWallet(gpCode, int.parse(_amountController.text), isFundOut);

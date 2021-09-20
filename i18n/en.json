@@ -233,7 +233,7 @@
   "LeePay": "LeePay",
   "PrimePay": "PrimePay",
   "ApplePay": "ApplePay",
-  "UmPay": "UmPay",
+  "UmPay": "PlayPay",
   "enter_bank_acc_name": "Please enter bank account name",
   "player_not_found": "Player not found",
   "invalid_credentials": "Invalid Credentials",
@@ -962,5 +962,6 @@
   "payment_type": "Payment Type",
   "payment_channel": "Payment Channel",
   "auto_transfer": "Auto-Transfer",
-  "balance": "Balance"
+  "balance": "Balance",
+  "email_duplicate": "Email is duplicated"
 }

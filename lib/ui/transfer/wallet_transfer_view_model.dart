@@ -22,6 +22,8 @@ class WalletTransferViewModel extends BaseViewModel {
 
   get gameWalletList => walletList.where((element) => !element.isMainWallet).toList();
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   @override
   List<BaseRepository> get repoList => [contentRepo];
   var transferAllToMainWalletApiState,

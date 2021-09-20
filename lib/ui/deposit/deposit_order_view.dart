@@ -226,7 +226,9 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                           builder: (context) => DepositWeb(
                               url: widget.depositRedirect != null
                                   ? widget.depositRedirect.paymentUrl
-                                  : widget.depositRedirectApplePay.paymentUrl)))))
+                                  : widget.depositRedirectApplePay.paymentUrl,
+                            brandLogoUrl: _vm.brandLogoUrl,
+                          )))))
         ],
       );
 

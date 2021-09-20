@@ -137,7 +137,7 @@ class _WechatState extends BaseState<Wechat> {
         CustomToast.show(getTranslatedText("enter_wechat_error_message"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.setWechatAccount(_wechatController.text);
     }
   }

@@ -1,5 +1,3 @@
-
-
 import 'package:api/api.dart';
 import 'package:api/entity/message.dart';
 import 'package:api/network/event_result.dart';
@@ -7,6 +5,7 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class MessageViewModel extends BaseViewModel {
   final messageRepo = MessageRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
   EventResult getMessageListApiState, readMessageApiState;
   List<Message> messageList;
   var page = 1, rows = 10;
@@ -15,6 +14,8 @@ class MessageViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [messageRepo];
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   getMessageList({isLoadMore = false}) async {
     setLoading();
@@ -32,7 +33,7 @@ class MessageViewModel extends BaseViewModel {
     if (getMessageListApiState.isSuccess) {
       list = getMessageListApiState.result.items;
       if (messageList == null) messageList = [];
-      if(page == 1) messageList = [];
+      if (page == 1) messageList = [];
       messageList.addAll(list);
       endRecord = messageList.length >= getMessageListApiState.result.totalCount ? true : false;
     }

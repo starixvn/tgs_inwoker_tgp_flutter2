@@ -169,7 +169,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
     }else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _checkUsername();
     }
   }
@@ -187,7 +187,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
           CustomToast.show(getTranslatedText("username_exist"));
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-           ProgressDialog.show(context);
+           ProgressDialog.show(context, _vm.brandLogoUrl);
            _vm.register(username.text, password.text, confirmPassword.text, "CNY", invitationCode.text);
         });
       }

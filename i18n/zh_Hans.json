@@ -232,7 +232,7 @@
   "LeePay": "利付钱包",
   "PrimePay": "一等付",
   "ApplePay": "苹果支付",
-  "UmPay": "UmPay",
+  "UmPay": "PlayPay",
   "enter_bank_acc_name": "请输入银行账号名称",
   "player_not_found": "无法查找玩家",
   "invalid_credentials": "无效凭证",
@@ -949,8 +949,6 @@
   "payment_type": "支付方式",
   "payment_channel": "支付渠道",
   "auto_transfer": "自动转账",
-  "balance": "总资金"
+  "balance": "总资金",
+  "email_duplicate": "邮箱地址重复"
 }
-
-
-

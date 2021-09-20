@@ -232,7 +232,7 @@
   "LeePay": "利付錢包",
   "PrimePay": "一等付",
   "ApplePay": "蘋果支付",
-  "UmPay": "UmPay",
+  "UmPay": "PlayPay",
   "enter_bank_acc_name": "請輸入銀行賬號名稱",
   "player_not_found": "無法查找玩家",
   "invalid_credentials": "無效憑證",
@@ -248,8 +248,8 @@
   "back": "返回",
   "enter_pay_password_error_msg": "提款密碼只能輸入英文字母或數字",
   "pay_password_length_error_msg": "提款密碼需6-20个英文字母或者数字组成",
-  "verify_current_email": "验证原邮箱地址",
-  "set_new_pay_password": "设定新提款密碼",
+  "verify_current_email": "驗證原郵箱地址",
+  "set_new_pay_password": "設定新提款密碼",
   "enter_wechat_error_message": "微信碼格式不正確",
   "enter_qq_error_message": "QQ碼格式不正確",
   "invalid_old_password": "舊密碼輸入錯誤",
@@ -950,5 +950,6 @@
   "payment_type": "支付方式",
   "payment_channel": "支付渠道",
   "auto_transfer": "自動轉賬",
-  "balance": "總資金"
+  "balance": "總資金",
+  "email_duplicate": "郵箱地址重複"
 }

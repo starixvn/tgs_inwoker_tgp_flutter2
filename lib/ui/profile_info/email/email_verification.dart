@@ -55,7 +55,6 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                   : Container(
                       margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
                       child: Column(
-
                         children: [
                           //CustomTabBar(index:1),
                           _buildTextFormField(),
@@ -84,22 +83,22 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
       );
 
   _buildOtpTextFormField() => OtpTextFormField(
-    hintText: getTranslatedText("enter_email_otp_hint"),
-    onChanged: (value) => _onTextChange(),
-    controller: _otpController,
-    textInputAction: TextInputAction.done,
-    getOtpCode: () {
-      _getSmsCode();
-    },
-    isEnabled: isOtpEnabled,
-    isCountdown: isOtpCountdown,
-    onCountDownEnd: () => {
-      setState(() {
-        isOtpCountdown = false;
-      })
-    },
-    isVisible: _vm.userProfile.email==null,
-  );
+        hintText: getTranslatedText("enter_email_otp_hint"),
+        onChanged: (value) => _onTextChange(),
+        controller: _otpController,
+        textInputAction: TextInputAction.done,
+        getOtpCode: () {
+          _getSmsCode();
+        },
+        isEnabled: isOtpEnabled,
+        isCountdown: isOtpCountdown,
+        onCountDownEnd: () => {
+          setState(() {
+            isOtpCountdown = false;
+          })
+        },
+        isVisible: _vm.userProfile.email == null,
+      );
 
   _buildButton() => Container(
       width: context.screenWidth,
@@ -150,13 +149,13 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getEmailCode(_emailController.text);
     }
   }
 
   _onClick() async {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.emailVerify(_otpController.text);
   }
 
@@ -174,6 +173,10 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         _getUserProfile();
         if (widget.popDirection == 1) Navigator.of(context).pop(true);
       });
+    }, onError: (_) {
+      if (_vm.emailVerifyApiState.errorCode == 409) {
+        CustomToast.show(getTranslatedText("email_duplicate"));
+      }
     });
   }
 }

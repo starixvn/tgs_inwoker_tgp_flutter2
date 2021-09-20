@@ -11,6 +11,9 @@ class PromotionViewModel extends BaseViewModel {
   List<BaseRepository> get repoList => [userRepo, contentRepo];
 
   get userProfile => userRepo.userProfile;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   var getPromotionListApiState, joinPromotionApiState;
   var promotionList;
   int page, rows = 10;
@@ -35,7 +38,7 @@ class PromotionViewModel extends BaseViewModel {
     if (getPromotionListApiState.isSuccess) {
       list = getPromotionListApiState.result.items;
       if (promotionList == null) promotionList = [];
-      if(list.isNotEmpty) promotionList.addAll(list);
+      if (list.isNotEmpty) promotionList.addAll(list);
       endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
     } else
       promotionList = [];

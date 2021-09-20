@@ -5,6 +5,7 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
   var logoutApiState, getAllWalletState;
 
   @override
@@ -13,6 +14,8 @@ class LoginViewModel extends BaseViewModel {
   String token;
   EventResult loginApiState, registerApiState, checkUsernameApiState;
   bool isUsernameExist = false;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   login(String username, String password, bool rememberMe) async {
     setLoading();
@@ -66,11 +69,11 @@ class LoginViewModel extends BaseViewModel {
     }
   }
 
-  removePrefs() async{
+  removePrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("username")!=null||prefs.getString("username").isNotEmpty) await prefs.remove("username");
-    if(prefs.getString("password")!=null||prefs.getString("password").isNotEmpty) await prefs.remove("password");
-}
+    if (prefs.getString("username") != null || prefs.getString("username").isNotEmpty) await prefs.remove("username");
+    if (prefs.getString("password") != null || prefs.getString("password").isNotEmpty) await prefs.remove("password");
+  }
 
   getUsername() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

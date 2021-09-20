@@ -132,7 +132,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             flex: 1,
             child: InkWell(
               onTap: () {
-                ProgressDialog.show(context);
+                ProgressDialog.show(context, widget.vm.brandLogoUrl);
                 widget.game.isFavourite
                     ? widget.vm.deleteFavoriteGame(widget.game)
                     : widget.vm.setFavoriteGame(widget.game);

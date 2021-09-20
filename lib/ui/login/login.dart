@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:package_info/package_info.dart';
@@ -30,7 +31,7 @@ class _LoginState extends BaseState<Login> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: version == null
-          ? buildProgressDialog()
+          ? buildProgressDialog(_vm.brandLogoUrl)
           : Container(
               height: context.screenHeight,
               width: context.screenWidth,
@@ -72,14 +73,17 @@ class _LoginState extends BaseState<Login> {
   }
 
   _buildLogoImage() => Container(
-      margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight + 10.auto, bottom: 20.auto),
-      child: SvgPicture.asset(
-        "images/pg_logo.svg",
-        height: 80.auto,
+      margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
+      child: CachedNetworkImage(
+        placeholder: (context, url) => Container(),
+        imageUrl: _vm.brandLogoUrl,
+        //handling error
+        errorWidget: (context, url, error) => Container(),
       ));
 
   _getPackageInfo() async {
     packageInfo = await PackageInfo.fromPlatform();
+
     setState(() {
       version = packageInfo.version;
     });

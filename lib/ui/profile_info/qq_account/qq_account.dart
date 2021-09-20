@@ -139,7 +139,7 @@ class _QQAccountState extends BaseState<QQAccount> {
         CustomToast.show(getTranslatedText("enter_qq_error_message"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.setQQAccount(_qqController.text);
     }
   }

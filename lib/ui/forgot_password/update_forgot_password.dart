@@ -150,7 +150,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
         CustomToast.show(getTranslatedText("confirm_password_error_msg"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.resetPassword(widget.securityKey, widget.code, _newPasswordController.text);
     }
   }

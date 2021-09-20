@@ -60,7 +60,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                 widget.refreshController.refreshCompleted();
               },
               child: widget.list == null
-                  ? buildProgressDialog()
+                  ? buildProgressDialog(widget.vm.brandLogoUrl)
                   : CustomScrollView(
                 controller: widget.scrollController,
                 slivers: [

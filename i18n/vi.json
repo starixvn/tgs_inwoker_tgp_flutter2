@@ -232,7 +232,7 @@
   "LeePay": "Ví LeePay",
   "PrimePay": "Thanh toán Hạng Nhất",
   "ApplePay": "Apple Pay",
-  "UmPay": "UmPay",
+  "UmPay": "PlayPay",
   "enter_bank_acc_name": "Vui lòng nhập tên tài khoản ngân hàng",
   "player_not_found": "Không thể tìm thấy trình phát",
   "invalid_credentials": "Thông tin đăng nhập không hợp lệ",
@@ -949,5 +949,6 @@
   "payment_type": "Phương thức Thanh toán",
   "payment_channel": "Kênh thanh toán",
   "auto_transfer": "Tự động chuyển",
-  "balance": "Số dư"
+  "balance": "Số dư",
+  "email_duplicate": "Địa chỉ email trùng lặp"
 }

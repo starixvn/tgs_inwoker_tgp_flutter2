@@ -90,7 +90,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _buildWidget() {
     if (_vm.filteredGameList == null || _vm.gameProviderList == null)
-      return buildProgressDialog();
+      return buildProgressDialog(_vm.brandLogoUrl);
     else {
       return Stack(
         children: [

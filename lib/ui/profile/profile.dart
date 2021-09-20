@@ -126,7 +126,7 @@ class _ProfileState extends BaseState<Profile> {
       );
 
   _logout() {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.logout();
   }
 

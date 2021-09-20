@@ -1,4 +1,5 @@
 import 'package:api/entity/language.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:api/api.dart';
@@ -10,6 +11,7 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/route_path.dart';
+import 'package:api/extension/screen_apis.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
@@ -80,13 +82,19 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     eventResult.isHandled = true;
   }
 
-  buildProgressDialog() =>
+  buildProgressDialog(String url) =>
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(width: 100, height: 100, child: Image.asset("images/pg_logo.png")),
-            //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
+            CachedNetworkImage(
+              placeholder: (context, url) => Container(),
+              imageUrl: url,
+              //handling error
+              width: 200.auto,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) => Container(),
+            ),
             Lottie.asset(
               "loading/loading_t${EnvironmentConfig.template_version}.json",
               width: 150,
@@ -125,7 +133,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     return parsedString;
   }
 
-  getCurrentLanguage(){
+  getCurrentLanguage() {
     var list = LanguageProvider().list;
     Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
     return deviceLanguage;

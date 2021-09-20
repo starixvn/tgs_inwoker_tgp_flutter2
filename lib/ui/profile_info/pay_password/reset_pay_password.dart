@@ -179,7 +179,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       ));
 
   _getSmsCode() {
-    ProgressDialog.show(context);
+    ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.getPayPasswordCode();
   }
 
@@ -225,7 +225,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
         CustomToast.show(getTranslatedText("confirm_pay_password_error_msg"));
       });
     } else {
-      ProgressDialog.show(context);
+      ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.payPasswordVerify(_payPasswordController.text, _otpController.text);
     }
   }

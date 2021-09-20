@@ -80,6 +80,7 @@ class _MyAppState extends BaseState<MyApp> {
   Future<List<LanguageOption>> initData() async {
     if (firstInit) {
       await _vm.getAuthToken();
+      await _vm.getBrandLogo();
       await _vm.getLanguageOption();
       setState(() {
         firstInit = false;
@@ -97,7 +98,7 @@ class _MyAppState extends BaseState<MyApp> {
         future: initData(),
         builder: (BuildContext context, AsyncSnapshot<List<LanguageOption>> snapshot) {
           if (!snapshot.hasData) {
-            return MaterialApp(debugShowCheckedModeBanner: false,home: Splash());
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash(logoUrl: _vm.brandLogoUrl ?? ""));
           } else {
             return GestureDetector(
               onTap: () {

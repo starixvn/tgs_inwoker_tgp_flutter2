@@ -45,7 +45,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 title: getTranslatedText("customer_service"),
               ),
               body: _vm.communicationList == null
-                  ? buildProgressDialog()
+                  ? buildProgressDialog(_vm.brandLogoUrl)
                   : Stack(
                       children: [
                         Container(
@@ -85,7 +85,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         child: InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CustomerServiceWebView(url: _vm.liveChatUrl)));
+                context, MaterialPageRoute(builder: (context) => CustomerServiceWebView(url: _vm.liveChatUrl, brandLogoUrl: _vm.brandLogoUrl,)));
           },
           child: Container(
             padding: EdgeInsets.only(left: 20.auto, right: 20.auto),

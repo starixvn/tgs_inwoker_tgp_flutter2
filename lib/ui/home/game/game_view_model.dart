@@ -18,7 +18,10 @@ class GameViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [contentRepo];
   EventResult<List<Game>> getGameApiState;
-  EventResult getGameUrlApiState, getGameProviderListApiState, getLobbyGameUrlApiState,getFavouriteGameApiState,
+  EventResult getGameUrlApiState,
+      getGameProviderListApiState,
+      getLobbyGameUrlApiState,
+      getFavouriteGameApiState,
       setFavouriteGameApiState,
       deleteFavouriteGameApiState;
   List<Game> _gameList, filteredGameList;
@@ -31,7 +34,7 @@ class GameViewModel extends BaseViewModel {
   List<List<GameProvider2>> gameProviderList;
   List<GameType> gameTypeList = [
     GameType.Sportsbook,
-   // GameType.ESports,
+    // GameType.ESports,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
     GameType.Fishing,
@@ -43,6 +46,8 @@ class GameViewModel extends BaseViewModel {
   Map<GameType, List<GameProvider2>> gameTypeMap = new Map<GameType, List<GameProvider2>>();
 
   get userProfile => userRepo.userProfile;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get recommendGameList => _getRecommendGameList();
 
@@ -196,11 +201,11 @@ class GameViewModel extends BaseViewModel {
     if (getFavouriteGameApiState.isSuccess) {
       List list = getFavouriteGameApiState.result;
       gameListMap.values.forEach((gameList) => gameList.map((game) {
-        game.isFavourite = false;
-        list.forEach((id) {
-          if (game.id == id) game.isFavourite = true;
-        });
-      }).toList());
+            game.isFavourite = false;
+            list.forEach((id) {
+              if (game.id == id) game.isFavourite = true;
+            });
+          }).toList());
     }
     setLoading(false);
     return getFavouriteGameApiState;

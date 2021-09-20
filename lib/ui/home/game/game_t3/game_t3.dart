@@ -64,7 +64,7 @@ class _GameT3State extends BaseState<GameT3> {
                     title: getTranslatedText("game"),
                   ),
                   body: _vm.gameTypeMap[widget.gameType] == null
-                      ? buildProgressDialog()
+                      ? buildProgressDialog(_vm.brandLogoUrl)
                       : ListView(
                           padding: EdgeInsets.only(bottom: 15.auto),
                           children: _vm.gameTypeMap[widget.gameType]
@@ -149,7 +149,7 @@ class _GameT3State extends BaseState<GameT3> {
       });
     } else {
       //navigate to game web
-      /*ProgressDialog.show(context);
+      /*ProgressDialog.show(context, _vm.brandLogoUrl);
       await _vm.getGameList(gamePlatformCode, gameType);
       ProgressDialog.hide();*/
       WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -1,11 +1,10 @@
-
-
 import 'package:api/api.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class WithdrawViewModel extends BaseViewModel {
   final bankRepo = BankRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];
@@ -15,6 +14,8 @@ class WithdrawViewModel extends BaseViewModel {
   get wallet => userRepo.wallet;
 
   get userProfile => userRepo.userProfile;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   getBankCardList() async {
     setLoading();

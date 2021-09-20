@@ -233,7 +233,7 @@
   "LeePay": "LeePay",
   "PrimePay": "Prime Pay",
   "ApplePay": "Apple Pay",
-  "UmPay": "Um Pay",
+  "UmPay": "PlayPay",
   "enter_bank_acc_name": "Silakan masukkan nama rekening bank",
   "player_not_found": "Tidak dapat menemukan pemain",
   "invalid_credentials": "Kredensial tidak valid",
@@ -950,5 +950,6 @@
   "payment_type": "Metode Pembayaran",
   "payment_channel": "Saluran Pembayaran",
   "auto_transfer": "Transfer otomatis",
-  "balance": "Keseimbangan"
+  "balance": "Keseimbangan",
+  "email_duplicate": "Alamat email duplikat"
 }

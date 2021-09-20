@@ -17,6 +17,8 @@ class CardViewModel extends BaseViewModel {
 
   get wallet => userRepo.wallet;
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
   List bankCardList, withdrawalInfoList;

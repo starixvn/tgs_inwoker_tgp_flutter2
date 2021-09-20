@@ -1,5 +1,3 @@
-
-
 import 'package:api/api.dart';
 import 'package:api/entity/account_transaction.dart';
 import 'package:api/entity/bet_transaction.dart';
@@ -11,7 +9,12 @@ class TransactionViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   final depositRepo = BankRepository.getSingleton();
-  var getTransactionApiState, getGameProviderApiState, getAccountTransactionApiState, getWithdrawTransactionApiState, getTransferTransactionApiState, getDepositOrderApiState;
+  var getTransactionApiState,
+      getGameProviderApiState,
+      getAccountTransactionApiState,
+      getWithdrawTransactionApiState,
+      getTransferTransactionApiState,
+      getDepositOrderApiState;
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
@@ -24,7 +27,10 @@ class TransactionViewModel extends BaseViewModel {
   var paymentId;
 
   get gameProviderList => contentRepo.gameProviderList;
+
   get wallet => userRepo.wallet;
+
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
@@ -145,21 +151,22 @@ class TransactionViewModel extends BaseViewModel {
     return getTransferTransactionApiState;
   }
 
-
   setDate({DateTime startDate, endDate}) {
     if (startDate != null) pStartDate = startDate;
     if (endDate != null) {
-      if(endDate == pStartDate) pEndDate = DateTime(endDate.year, endDate.month, endDate.day,23,59,59,59,59);
-      else pEndDate = endDate;
+      if (endDate == pStartDate)
+        pEndDate = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59, 59, 59);
+      else
+        pEndDate = endDate;
     }
-      notifyListeners();
+    notifyListeners();
   }
 
   getManualDepositOrder(String id) async {
     setLoading();
     getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
     if (getDepositOrderApiState.isSuccess) {
-      paymentId =id;
+      paymentId = id;
     }
     setLoading(false);
     return getDepositOrderApiState;

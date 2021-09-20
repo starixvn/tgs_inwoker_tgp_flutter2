@@ -22,6 +22,8 @@ class DepositMethodViewModel extends BaseViewModel {
   List<Payment> paymentList;
   var depositOrder, orderNo, exchangeRate;
 
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
   filterMethod(BankType bankType) async {
     paymentList = depositMethodList[bankType];
     notifyListeners();

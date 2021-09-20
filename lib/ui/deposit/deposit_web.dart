@@ -12,10 +12,12 @@ import 'package:tgp_flutter2/base_state.dart';
 
 class DepositWeb extends StatefulWidget {
   final String url;
+  final String brandLogoUrl;
 
   DepositWeb({
     Key key,
     this.url,
+    this.brandLogoUrl
   }) : super(key: key);
 
   @override
@@ -49,7 +51,7 @@ class _DepositWebState extends BaseState<DepositWeb> {
             _webViewController.loadUrl(url: widget.url);
           },
           onLoadStart: (InAppWebViewController controller, String url) {
-            ProgressDialog.show(context);
+            ProgressDialog.show(context, widget.brandLogoUrl);
           },
           onLoadStop: (InAppWebViewController controller, String url) async {
             ProgressDialog.hide();
