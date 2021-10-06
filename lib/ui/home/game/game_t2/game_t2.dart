@@ -70,9 +70,8 @@ class _GameT2State extends BaseState<GameT2> {
                               child: GameItemT2(
                                 controller: _controller,
                                 currGameType: currentGameType,
-                                gameProviderList:_getGameTypeMap(),
+                                gameProviderList: _getGameTypeMap(),
                                 onGameClick: (game) => _onGameClick(game),
-
                               ),
                             ))
                       ],
@@ -82,10 +81,11 @@ class _GameT2State extends BaseState<GameT2> {
         });
   }
 
-  _getGameTypeMap(){
-    if(currentGameType == GameType.Sportsbook)
+  _getGameTypeMap() {
+    if (currentGameType == GameType.Sportsbook)
       return ([_vm.gameTypeMap[GameType.ESports], _vm.gameTypeMap[GameType.Sportsbook]].expand((x) => x).toList());
-    else return _vm.gameTypeMap[currentGameType];
+    else
+      return _vm.gameTypeMap[currentGameType];
   }
 
   _buildTopGameTab(int tabIndex, GameType gameType) => Container(
@@ -116,15 +116,13 @@ class _GameT2State extends BaseState<GameT2> {
         child: _buildGameTab(tabIndex, gameType),
       );
 
-  _buildGameTab(int tabIndex,GameType gameType) {
+  _buildGameTab(int tabIndex, GameType gameType) {
     // var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
         setState(() {
           currentGameType = gameType;
-          _controller.animateTo(0,
-                duration:Duration(milliseconds: 250), curve: Curves.linear);
-
+          _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
         });
       },
       child: Container(
@@ -135,15 +133,17 @@ class _GameT2State extends BaseState<GameT2> {
                 child: ImageIcon(
                   AssetImage("images/game_tab/ic_${gameType.getImagePath()}.png"),
                   size: 28.auto,
-                  color: currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color,
+                  color:
+                      currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color,
                 ),
               ), //Image.asset("images/game_tab/ic_$imagePath.png")),
               AutoSizeText(
                 gameType.getName(context),
                 style: TextStyle(
-                    color:
-                    currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color),
-                minFontSize:2,
+                    color: currentGameType == gameType
+                        ? CustomColor.theme_button_color
+                        : CustomColor.theme_text_grey_color),
+                minFontSize: 2,
                 stepGranularity: 1,
                 maxLines: 1,
               ),
@@ -189,11 +189,16 @@ class _GameT2State extends BaseState<GameT2> {
                       gameType: gameType,
                     )));
       });
+    } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
+      //only tcg will need to get gamelist
+      await _vm.getGameList(gamePlatformCode, gameType);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType, gameId: _vm.gameListMap[gamePlatformCode].first.id, )));
+      });
     } else {
       //navigate to game web
-      /*ProgressDialog.show(context, _vm.brandLogoUrl);
-      await _vm.getGameList(gamePlatformCode, gameType);
-      ProgressDialog.hide();*/
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));

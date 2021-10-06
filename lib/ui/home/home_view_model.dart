@@ -4,7 +4,7 @@ import 'package:api/entity/game.dart';
 import 'package:api/entity/game_provider.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/network/event_result.dart';
- import 'package:api/api.dart';
+import 'package:api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeViewModel extends BaseViewModel {
@@ -22,7 +22,7 @@ class HomeViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo.mobileUrl;
 
   bool isNotLogin = false, isExpired = false;
-  var getWalletBalanceApiState, getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;
+  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;
   Announcement announcement;
   double gameBalance = 0.0, totalBalance;
 
@@ -63,7 +63,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    if(contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
 
     var task = <Future>[];
@@ -71,7 +71,7 @@ class HomeViewModel extends BaseViewModel {
       task.add(_getGameWalletBalance(game));
     });
     await Future.wait(task);
-    totalBalance = balance+gameBalance;
+    totalBalance = balance + gameBalance;
     notifyListeners();
   }
 

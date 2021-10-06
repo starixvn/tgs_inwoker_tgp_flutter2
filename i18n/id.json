@@ -73,7 +73,7 @@
   "one_month": "1 bulan",
   "time": "Waktu (GMT+8)",
   "win_loss": "Menang atau Kalah",
-  "turnover": "Air Mengalir",
+  "turnover": "Air Mengalir: ",
   "trade_time": "Waktu",
   "trade_detail": "Rincian Transaksi",
   "status": "Status Transaksi",
@@ -234,6 +234,7 @@
   "PrimePay": "Prime Pay",
   "ApplePay": "Apple Pay",
   "UmPay": "PlayPay",
+  "MaticPay": "MaticPay",
   "enter_bank_acc_name": "Silakan masukkan nama rekening bank",
   "player_not_found": "Tidak dapat menemukan pemain",
   "invalid_credentials": "Kredensial tidak valid",
@@ -951,5 +952,13 @@
   "payment_channel": "Saluran Pembayaran",
   "auto_transfer": "Transfer otomatis",
   "balance": "Keseimbangan",
-  "email_duplicate": "Alamat email duplikat"
+  "email_duplicate": "Alamat email duplikat",
+  "maintenance": "Pemeliharaan",
+  "play_pay_hint_text": "Sistem akan menambahkan desimal acak setelah jumlah yang Anda masukkan untuk mengidentifikasi pesanan",
+  "deposit_withdraw": "Penarikan Setoran",
+  "phone_re-verify": "Verifikasi ulang SMS",
+  "username": "nama pengguna",
+  "password": "kata sandi",
+  "area_code": "Kode area"
+
 }

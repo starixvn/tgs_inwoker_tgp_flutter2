@@ -1,6 +1,7 @@
 import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -35,7 +36,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   behavior: MyBehavior(),
                   child: Container(
                     decoration: BoxDecoration(
-                        color:  CustomColor.theme_bg_color,
+                        color: CustomColor.theme_bg_color,
                         borderRadius: new BorderRadius.only(
                           topLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0),
@@ -45,17 +46,11 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                         children: [
                           _buildInfoCard(
                             "basic_info",
-                            [
-                              ProfileInfoItem.REALNAME, //ProfileInfoItem.PHONE_NUMBER,
-                              ProfileInfoItem.EMAIL
-                            ],
-                            [
-                              "real_ name_verification", //"phone_verification",
-                              "email_verification"
-                            ],
+                            [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
+                            ["real_ name_verification", "phone_verification", "email_verification"],
                             itemDescriptionList: [
                               _getItemText(_vm.userProfile.realname),
-                              // _getItemText(_vm.userProfile.phone),
+                              _getItemText(_vm.userProfile.phone),
                               _getItemText(_vm.userProfile.email)
                             ],
                           ),
@@ -75,12 +70,12 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                                 "security_center",
                                 [
                                   ProfileInfoItem.LOGIN_PASSWORD,
-                                  ProfileInfoItem.PAY_PASSWORD,
+                                  //ProfileInfoItem.PAY_PASSWORD,
                                   //ProfileInfoItem.RESET_PAY_PASSWORD
                                 ],
                                 [
                                   "edit_password",
-                                  "pay_password",
+                                  //"pay_password",
                                   //"reset_pay_password"
                                   // if no security will navigate to security answer, else will navigate to edit security answer
                                 ],
@@ -92,7 +87,6 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   )));
         });
   }
-
 
   _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
           {List<String> itemDescriptionList, bool isSecurity = false}) =>
@@ -137,7 +131,11 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String itemDescription}) => InkWell(
+  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String itemDescription}) {
+   /* if (routePath == "phone_verification" && EnvironmentConfig.appTitleName != "HKJP")
+      return Container();
+    else*/
+      return InkWell(
         onTap: () {
           Navigator.of(context).pushNamed("/$routePath");
         },
@@ -184,6 +182,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
           ),
         ),
       );
+  }
 
   _buildInfoItemWithoutText(String imagePath, String itemTitle, String routePath) => InkWell(
         onTap: () {

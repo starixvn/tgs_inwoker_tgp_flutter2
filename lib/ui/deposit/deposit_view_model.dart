@@ -18,11 +18,13 @@ class DepositViewModel extends BaseViewModel {
   var manualDepositOrder;
   List<Promotion> promotionList;
   List<Map<String, String>> displayPromotionList = [
-    {"name": "promotion_picker_hint", "payment_id": "-1"}
+    {"name": "promotion_picker_hint", "id": "-1"}
   ];
   var rows = 20;
 
   get wallet => userRepo.wallet;
+
+  get userProfile => userRepo.userProfile;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -49,17 +51,14 @@ class DepositViewModel extends BaseViewModel {
 
   getPlayerPromotionList(int page) async {
     setLoading();
-    getPlayerPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, false, false);
+    getPlayerPromotionListApiState = await contentRepo.getPromotionList(page, rows, false, false, userProfile == null);
     if (getPlayerPromotionListApiState.isSuccess) {
-      var list = getPlayerPromotionListApiState.result.items;
-      list.asMap().forEach((index, value) {
-        if (value.localization == null || value.localization.name.isEmpty)
-          displayPromotionList.add({"name": value.name, "payment_id": value.id});
-        else
-          displayPromotionList.add({"name": value.localization.name, "payment_id": value.id});
+      List<Promotion> list = getPlayerPromotionListApiState.result.items;
+      list.forEach((value) {
+        displayPromotionList.add({"name": value.localization.name ?? value.name, "id": value.id});
       });
+      setLoading(false);
+      return getPlayerPromotionListApiState;
     }
-    setLoading(false);
-    return getPlayerPromotionListApiState;
   }
 }

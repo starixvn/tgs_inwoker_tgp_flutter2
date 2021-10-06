@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
@@ -56,7 +57,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _buildJoinButton() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
         child: ColorButton(
           title: getTranslatedText("join"),
           onClick: () {
@@ -70,14 +71,16 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
 
   _buildPromotionImage() {
     var imageUrl;
-    if(widget.promotion.localization?.mobileBanner?.isNotEmpty ?? "" ){
+    if (widget.promotion.localization?.mobileBanner?.isNotEmpty ?? "") {
       imageUrl = widget.promotion.localization.mobileBanner;
-    }else if(widget.promotion.mobileBanner?.isNotEmpty ?? ""){
+    } else if (widget.promotion.mobileBanner?.isNotEmpty ?? "") {
       imageUrl = widget.promotion.mobileBanner;
-    }else imageUrl = "";
+    } else
+      imageUrl = "";
     return imageUrl.isEmpty
         ? Container()
         : CachedNetworkImage(
+            height: 150.auto,
             placeholder: (context, url) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
@@ -95,9 +98,11 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         Navigator.of(context).pushNamed("/login");
       });
       return;
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.deposit);
+      });
     }
-    ProgressDialog.show(context, widget.vm.brandLogoUrl);
-    widget.vm.joinPromotion(widget.promotion.id);
   }
 
   _buildPromotionText(String displayText) => Container(
@@ -118,7 +123,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         child: RichText(
             text: HTML.toTextSpan(
           context,
-          displayText,
+          displayText ?? "",
           defaultTextStyle: TextStyle(fontSize: 12.auto),
           overrideStyle: <String, TextStyle>{
             'p': TextStyle(fontSize: 15.auto),

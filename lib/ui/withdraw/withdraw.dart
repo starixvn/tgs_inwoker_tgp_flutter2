@@ -38,6 +38,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkUserProfile();
+      _vm.getTurnoverAmount();
     });
     super.initState();
   }
@@ -64,7 +65,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                           _buildEditBankItem(),
                           _buildBankPicker(),
                           _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
-                          _buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
+                          //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
                           _buildHintText(),
                           _buildButton(),
                           //_buildCustomerServiceText()
@@ -94,6 +95,8 @@ class _WithdrawState extends BaseState<Withdraw> {
             children: [
               _buildWithdrawItem(getTranslatedText("available_withdraw"),
                   " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}"),
+              _buildWithdrawItem(
+                  getTranslatedText("turnover"), " ${Format().currencyWithDecimalFormat(_vm.turnover ?? 0.0)}"),
             ],
           ),
         ),
@@ -290,5 +293,8 @@ class _WithdrawState extends BaseState<Withdraw> {
         isNextButtonEnabled = false;
       });
     });
+
+    handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: false, onSuccess: () {});
+
   }
 }

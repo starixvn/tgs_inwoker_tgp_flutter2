@@ -50,4 +50,6 @@ class RoutePath{
   static final csQrCode = '/cs_qr_code';
   static final maintenance = '/maintenance';
   static final depositWithdrawTransaction = '/deposit_withdraw_transaction';
+  static final  blacklistedUser = '/blacklisted_user';
+  static final  phoneReVerification = '/phone_re_verification';
 }

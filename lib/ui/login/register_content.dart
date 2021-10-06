@@ -19,12 +19,13 @@ class RegisterContent extends StatefulWidget {
 
 class _RegisterContentState extends BaseState<RegisterContent> {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
-  var username = TextEditingController();
-  var password = TextEditingController();
-  var confirmPassword = TextEditingController();
-  var pay = TextEditingController();
-  var confirmPay = TextEditingController();
-  var invitationCode = TextEditingController();
+  var username = TextEditingController(),
+      password = TextEditingController(),
+      confirmPassword = TextEditingController(),
+      pay = TextEditingController(),
+      confirmPay = TextEditingController(),
+      invitationCode = TextEditingController(),
+      phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   LoginViewModel _vm = LoginViewModel();
 
@@ -188,7 +189,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
            ProgressDialog.show(context, _vm.brandLogoUrl);
-           _vm.register(username.text, password.text, confirmPassword.text, "CNY", invitationCode.text);
+           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
         });
       }
     });

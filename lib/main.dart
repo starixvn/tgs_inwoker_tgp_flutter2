@@ -10,6 +10,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/card/main_card.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
@@ -21,6 +22,7 @@ import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
 import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
+import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:tgp_flutter2/ui/menu/menu.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
@@ -29,6 +31,8 @@ import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/password/edit_password.dart';
 import 'package:tgp_flutter2/ui/profile_info/pay_password/pay_password.dart';
 import 'package:tgp_flutter2/ui/profile_info/pay_password/reset_pay_password.dart';
+import 'package:tgp_flutter2/ui/profile_info/phone/edit_phone.dart';
+import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/profile_info.dart';
 import 'package:tgp_flutter2/ui/profile_info/qq_account/qq_account.dart';
 import 'package:tgp_flutter2/ui/profile_info/real_name/real_name_verification.dart';
@@ -140,6 +144,11 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.deposit: (context) => Deposit(),
                   RoutePath.withdraw: (context) => Withdraw(),
                   RoutePath.childGame: (context) => ChildGame(),
+                  RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                  RoutePath.phoneVerification: (context) => PhoneVerification(),
+                  RoutePath.editPhone: (context) => EditPhone(),
+
                   /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
@@ -230,7 +239,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
               children: [
                 _buildBottomBarItem(0, "ic_home", "home"),
                 _buildBottomBarItem(1, "ic_transaction", "promotion"),
-                _buildBottomBarItem(2, "ic_deposit", "存提"),
+                _buildBottomBarItem(2, "ic_deposit", "deposit_withdraw"),
                 _buildBottomBarItem(3, "ic_cs", "customer_service"),
                 _buildBottomBarItem(4, "ic_profile", "my_profile"),
               ],

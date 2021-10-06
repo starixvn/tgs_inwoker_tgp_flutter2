@@ -72,7 +72,7 @@
   "one_month": "1 เดือน",
   "time": "เวลา (GMT+8)",
   "win_loss": "ชนะหรือแพ้",
-  "turnover": "น้ำไหล",
+  "turnover": "น้ำไหล: ",
   "trade_time": "เวลา",
   "trade_detail": "รายละเอียดธุรกรรม",
   "status": "สถานะการทำธุรกรรม",
@@ -233,6 +233,7 @@
   "PrimePay": "ไพรม์เพย์",
   "ApplePay": "แอปเปิ้ลจ่าย",
   "UmPay": "PlayPay",
+  "MaticPay": "MaticPay",
   "enter_bank_acc_name": "โปรดป้อนชื่อบัญชีธนาคาร",
   "player_not_found": "ไม่พบผู้เล่น",
   "invalid_credentials": "ข้อมูลประจำตัวไม่ถูกต้อง",
@@ -950,7 +951,15 @@
   "payment_channel": "ช่องทางการชำระเงิน",
   "auto_transfer": "โอนอัตโนมัติ",
   "balance": "บาลานซ์",
-  "email_duplicate": "ที่อยู่อีเมลซ้ำกัน"
+  "email_duplicate": "ที่อยู่อีเมลซ้ำกัน",
+  "maintenance": "การบำรุงรักษา",
+  "play_pay_hint_text": "ระบบจะเพิ่มทศนิยมแบบสุ่มหลังจากจำนวนเงินที่คุณป้อนเพื่อระบุคำสั่งซื้อ",
+  "deposit_withdraw": "ฝาก ถอน",
+  "phone_re-verify": "ยืนยัน SMS อีกครั้ง",
+  "username": "ชื่อผู้ใช้",
+  "password": "รหัสผ่าน",
+  "area_code": "รหัสพื้นที่"
+
 }
 
 

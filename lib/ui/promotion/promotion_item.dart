@@ -51,9 +51,10 @@ class _PromotionItemState extends BaseState<PromotionItem> {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
+                  height: 150.auto,
                     placeholder: (context, url) => Container(
                           width: 375,
-                          height: 183,
+                          height: 150.auto,
                           color: CustomColor.very_light_pink_four,
                         ),
                     imageUrl: imageUrl,

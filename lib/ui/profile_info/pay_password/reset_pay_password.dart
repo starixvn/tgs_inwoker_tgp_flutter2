@@ -58,14 +58,18 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
               resizeToAvoidBottomInset: false,
               backgroundColor: CustomColor.theme_bg_color,
               appBar: CustomAppBar(
-                title:getTranslatedText("reset_pay_password"),
+                title: getTranslatedText("reset_pay_password"),
                 isPopTwice: true,
               ),
               body: Container(
                   padding: EdgeInsets.only(top: 20.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
-                      CustomTabBar(index: currIndex),
+                      CustomTabBar(
+                        index: currIndex,
+                        step1Text: "verify_current_email",
+                        step2Text: "set_new_pay_password",
+                      ),
                       currIndex == 0 ? _buildVerifyEmail() : _buildResetPayPassword()
                     ],
                   )));
@@ -120,22 +124,22 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
       );
 
   _buildOtpTextFormField() => OtpTextFormField(
-    hintText: getTranslatedText("enter_email_otp_hint"),
-    onChanged: (value) => _onOtpTextChange(),
-    controller: _otpController,
-    textInputAction: TextInputAction.done,
-    getOtpCode: () {
-      _getSmsCode();
-    },
-    isEnabled: isOtpEnabled,
-    isCountdown: isOtpCountdown,
-    onCountDownEnd: () => {
-      setState(() {
-        isOtpCountdown = false;
-      })
-    },
-    isVisible: true,
-  );
+        hintText: getTranslatedText("enter_email_otp_hint"),
+        onChanged: (value) => _onOtpTextChange(),
+        controller: _otpController,
+        textInputAction: TextInputAction.done,
+        getOtpCode: () {
+          _getSmsCode();
+        },
+        isEnabled: isOtpEnabled,
+        isCountdown: isOtpCountdown,
+        onCountDownEnd: () => {
+          setState(() {
+            isOtpCountdown = false;
+          })
+        },
+        isVisible: true,
+      );
 
   _buildSubmitButton() => Container(
       width: context.screenWidth,

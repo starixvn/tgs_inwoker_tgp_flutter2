@@ -18,7 +18,8 @@ class DepositMethodViewModel extends BaseViewModel {
       primePayDepositOrderApiState,
       applePayDepositOrderApiState,
       getUmPayDepositOrderApiState,
-      getExchangeRateApiState;
+      getExchangeRateApiState,
+      maticPayDepositOrderApiState;
   List<Payment> paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -72,17 +73,17 @@ class DepositMethodViewModel extends BaseViewModel {
   }
 
   umPayDepositOrder(String amount, String paymentId, String promotionId, bool isCrypto) async {
-    /*setLoading();
+    setLoading();
     if (isCrypto)
       getUmPayDepositOrderApiState = await depositRepo.umPayCryptoDepositOrder(amount, paymentId, promotionId);
     else
       getUmPayDepositOrderApiState = await depositRepo.umPayBankDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
-    return getUmPayDepositOrderApiState;*/
+    return getUmPayDepositOrderApiState;
   }
 
   getExchangeRate(String paymentId, bool isUmPay) async {
-    /*setLoading();
+    setLoading();
     if (!isUmPay)
       getExchangeRateApiState = await depositRepo.getLeePayExchangeRate(paymentId);
     else
@@ -94,6 +95,14 @@ class DepositMethodViewModel extends BaseViewModel {
         exchangeRate = getExchangeRateApiState.result.rate.toString();
     }
     setLoading(false);
-    return getExchangeRateApiState;*/
+    return getExchangeRateApiState;
   }
+
+  maticPayDepositOrder(String amount, String paymentId, String promotionId) async {
+    setLoading();
+    maticPayDepositOrderApiState = await depositRepo.maticPayDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return maticPayDepositOrderApiState;
+  }
+
 }

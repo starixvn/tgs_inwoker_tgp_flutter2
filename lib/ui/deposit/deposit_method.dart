@@ -1,4 +1,5 @@
 import 'package:api/entity/bank_type.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -76,6 +77,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
                 if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == "Crypto")) _buildExchangeRateText(),
+                if(_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildButton(),
               ],
@@ -205,7 +207,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           children: [
             Text(
               getTranslatedText("exchange_rate") + ": ",
-              style: TextStyle(fontSize: 13.auto, color:CustomColor.theme_text_grey_white_color),
+              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_grey_white_color),
             ),
             Text(
               _vm.exchangeRate ?? "0.00",
@@ -223,6 +225,22 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           ],
         ),
       );
+
+  _buildHintText() => Container(
+    margin: EdgeInsets.only(
+      left: 10.auto,
+      right: 10.auto,
+      top: 13.auto,
+    ),
+    child: AutoSizeText(
+      getTranslatedText("play_pay_hint_text"),
+      style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: 15),
+      minFontSize: 10,
+      maxFontSize: 13,
+      stepGranularity: 1,
+      maxLines: 2,
+    ),
+  );
 
   _calculateExpectedAmount() {
     if (_vm.exchangeRate != null) {
@@ -267,6 +285,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     } else if (_isUmPayDeposit()) {
       _vm.umPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, methodPickerText == "Crypto");
+    } else if (widget.paymentCode == "MaticPay") {
+      _vm.maticPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
     } else //currently is LeePay
       _vm.leePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
   }
@@ -427,5 +447,22 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       } else
         CustomToast.show(_vm.applePayDepositOrderApiState.result.errorMsg);
     });
+
+    handleApiState(_vm.maticPayDepositOrderApiState, onSuccess: () {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DepositOrderView(
+                      method: _payment.methodCode,
+                      depositRedirect: _vm.maticPayDepositOrderApiState.result,
+                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText,
+                      promotionName: promotionId != "-1" ? promotionName : null,
+                    )));
+        _clearTextField();
+      });
+    });
+    handleApiState(_vm.getExchangeRateApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

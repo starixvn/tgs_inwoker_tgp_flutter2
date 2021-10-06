@@ -8,8 +8,8 @@ class WithdrawViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getBankCardListApiState, withdrawApiState;
-  var bankCardList;
+  var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState;
+  var bankCardList, turnover;
 
   get wallet => userRepo.wallet;
 
@@ -36,5 +36,15 @@ class WithdrawViewModel extends BaseViewModel {
       withdrawApiState = status;
     setLoading(false);
     return withdrawApiState;
+  }
+
+  getTurnoverAmount() async {
+    setLoading();
+    getTurnoverAmountApiState = await bankRepo.getTurnoverAmount();
+    if (getTurnoverAmountApiState.isSuccess) {
+      turnover = getTurnoverAmountApiState.result;
+    }
+    setLoading(false);
+    return getTurnoverAmountApiState;
   }
 }

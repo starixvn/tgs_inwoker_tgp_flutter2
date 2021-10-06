@@ -28,7 +28,7 @@ class EmailVerificationViewModel extends BaseViewModel {
 
   emailVerify(String verificationCode) async {
     setLoading();
-    var _status = await authRepo.verifyCode(securityKey, verificationCode);
+    var _status = await authRepo.submitVerifyCode(securityKey, verificationCode);
     if (_status.isSuccess) {
       emailVerifyApiState = await userRepo.getBasicInfo();
     } else

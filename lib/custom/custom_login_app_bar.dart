@@ -4,6 +4,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/custom/right_tool_tip_shape.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -17,7 +18,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(45);
 
-  final List dropDownList = [
+  /*final List dropDownList = [
     {"id": "0", "text": "真人娱乐"},
     {"id": "1", "text": "棋牌游戏"},
     {"id": "2", "text": "体育电竞"},
@@ -28,7 +29,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
     {"id": "7", "text": "优惠活动"},
     {"id": "8", "text": "总额度"},
     {"id": "9", "text": "主播赠礼"}
-  ];
+  ];*/
 
   Widget build(BuildContext context) {
     return AppBar(
@@ -40,6 +41,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
         //handling error
         height: 30.auto,
         fit: BoxFit.cover,
+        color: Colors.white,
         errorWidget: (context, url, error) => Container(),
       ),
       actions: [_getLoginButton()],
@@ -49,7 +51,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
   _getLoginButton() => Visibility(
         visible: !isLogin,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 5.auto),
+          padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
           child: OutlineBorderButton(
             title: "登入",
             onClick: () => onClickLoginButton(),

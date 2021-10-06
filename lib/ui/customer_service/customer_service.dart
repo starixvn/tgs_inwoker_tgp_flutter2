@@ -72,12 +72,19 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   _getCsBgImage() {
+    var language;
+    String code = getCurrentLanguage().apiCode;
+    if (code == "zh-CN" || code == "zh-TW")
+      language = code;
+    else
+      language = "en-US";
+
     //cs_bg_t2, cs_bg_t3
+
     return DecorationImage(
-        image: AssetImage("images/support/cs_bg/${getCurrentLanguage().apiCode}/cs_bg_t${EnvironmentConfig.template_version}.png"),
+        image: AssetImage("images/support/cs_bg/$language/cs_bg_t${EnvironmentConfig.template_version}.png"),
         fit: BoxFit.fitWidth,
-        alignment: Alignment.topLeft
-    );
+        alignment: Alignment.topLeft);
   }
 
   buildLiveChatRow() => Visibility(
@@ -85,7 +92,12 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         child: InkWell(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CustomerServiceWebView(url: _vm.liveChatUrl, brandLogoUrl: _vm.brandLogoUrl,)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CustomerServiceWebView(
+                          url: _vm.liveChatUrl,
+                          brandLogoUrl: _vm.brandLogoUrl,
+                        )));
           },
           child: Container(
             padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
@@ -193,5 +205,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
 
   _handleApiState() {
     handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

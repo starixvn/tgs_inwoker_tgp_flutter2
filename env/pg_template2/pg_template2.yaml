@@ -8,7 +8,7 @@ environment_config:
     jwtKey:
       default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
     url:
-      default: "https://dev.operator.tgsdev.gq/"
+      default: "https://dev-op.rpgp.cc/"
     currency:
       default: "CNY"
     imageUrl:

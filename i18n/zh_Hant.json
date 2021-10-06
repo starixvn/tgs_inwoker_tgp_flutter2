@@ -72,7 +72,7 @@
   "one_month": "1個月",
   "time": "時間（GMT 8)",
   "win_loss": "輸贏",
-  "turnover": "流水",
+  "turnover": "流水: ",
   "trade_time": "時間",
   "trade_detail": "交易內容",
   "status": "交易狀態",
@@ -233,6 +233,7 @@
   "PrimePay": "一等付",
   "ApplePay": "蘋果支付",
   "UmPay": "PlayPay",
+  "MaticPay": "MaticPay",
   "enter_bank_acc_name": "請輸入銀行賬號名稱",
   "player_not_found": "無法查找玩家",
   "invalid_credentials": "無效憑證",
@@ -951,5 +952,13 @@
   "payment_channel": "支付渠道",
   "auto_transfer": "自動轉賬",
   "balance": "總資金",
-  "email_duplicate": "郵箱地址重複"
+  "email_duplicate": "郵箱地址重複",
+  "maintenance": "維護中",
+  "play_pay_hint_text": "系統稍後會在您輸入的金額後方隨機的小數，以便識別訂單",
+  "deposit_withdraw": "存提",
+  "phone_re-verify": "SMS重新認證",
+  "username": "用戶名",
+  "password": "密碼",
+  "area_code": "區域代碼"
+
 }

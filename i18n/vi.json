@@ -72,7 +72,7 @@
   "one_month": "1 tháng",
   "time": "Giờ (GMT + 8)",
   "win_loss": "Thắng hoặc Thua",
-  "turnover": "Nước chảy",
+  "turnover": "Nước chảy: ",
   "trade_time": "Thời gian",
   "trade_detail": "Chi tiết Giao dịch",
   "status": "Trạng thái giao dịch",
@@ -233,6 +233,7 @@
   "PrimePay": "Thanh toán Hạng Nhất",
   "ApplePay": "Apple Pay",
   "UmPay": "PlayPay",
+  "MaticPay": "MaticPay",
   "enter_bank_acc_name": "Vui lòng nhập tên tài khoản ngân hàng",
   "player_not_found": "Không thể tìm thấy trình phát",
   "invalid_credentials": "Thông tin đăng nhập không hợp lệ",
@@ -950,5 +951,13 @@
   "payment_channel": "Kênh thanh toán",
   "auto_transfer": "Tự động chuyển",
   "balance": "Số dư",
-  "email_duplicate": "Địa chỉ email trùng lặp"
+  "email_duplicate": "Địa chỉ email trùng lặp",
+  "maintenance": "Đang bảo trì",
+  "play_pay_hint_text": "Hệ thống sẽ thêm một số thập phân ngẫu nhiên sau số tiền bạn nhập để xác định đơn hàng",
+  "deposit_withdraw": "Gửi tiền Rút tiền",
+  "phone_re-verify": "Xác minh lại qua SMS",
+  "username": "tên tài khoản",
+  "password": "mật khẩu mở khóa",
+  "area_code": "mã vùng"
+
 }

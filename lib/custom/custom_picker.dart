@@ -36,10 +36,12 @@ class _CustomPickerState extends BaseState<CustomPicker> {
       elevation: 5,
       child: Container(
         width: widget.width,
+        height: 50.auto,
         margin: EdgeInsets.symmetric(
             vertical: 15.auto, horizontal: 20.auto),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 8.auto,),

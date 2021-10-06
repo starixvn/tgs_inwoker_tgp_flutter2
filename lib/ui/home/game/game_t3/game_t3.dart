@@ -1,6 +1,7 @@
 import 'package:api/entity/game_provider.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -30,8 +31,9 @@ class _GameT3State extends BaseState<GameT3> {
   var _vm = GameViewModel();
   var gameName;
 
-  /*double _imageRatio = 750 / 330;
-  double _containerPaddingRight = 5.auto;
+  double _imageRatio = 750 / 330;
+
+  /*double _containerPaddingRight = 5.auto;
   double _listViewPaddingRight = 5.auto;
   double _itemPaddingRight = 5.auto;
   double _itemPaddingLeft = (8.5).auto;
@@ -49,6 +51,13 @@ class _GameT3State extends BaseState<GameT3> {
     super.initState();
   }
 
+  List<dynamic> _getGameTypeMap() {
+    if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
+      return ([_vm.gameTypeMap[GameType.Sportsbook], _vm.gameTypeMap[GameType.ESports]].expand((x) => x).toList());
+    else
+      return _vm.gameTypeMap[widget.gameType];
+  }
+
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<GameViewModel>(
@@ -63,14 +72,14 @@ class _GameT3State extends BaseState<GameT3> {
                   appBar: CustomAppBar(
                     title: getTranslatedText("game"),
                   ),
-                  body: _vm.gameTypeMap[widget.gameType] == null
+                  body: _getGameTypeMap() == null
                       ? buildProgressDialog(_vm.brandLogoUrl)
                       : ListView(
                           padding: EdgeInsets.only(bottom: 15.auto),
-                          children: _vm.gameTypeMap[widget.gameType]
+                          children: _getGameTypeMap()
                               .map((item) => Container(
                                   margin: EdgeInsets.only(top: 15.auto, left: 15.auto, right: 15.auto),
-                                  child: GestureDetector(onTap: () => {_onGameClick(item)}, child: _buildImage(item))))
+                                  child: _buildImageLayout(item)))
                               .toList())));
         });
   }
@@ -82,39 +91,78 @@ class _GameT3State extends BaseState<GameT3> {
     return imagePath;
   }
 
-  _buildImage(GameProvider2 gameProvider) => Stack(
-    children: [
-      AspectRatio(
-            aspectRatio: 750 / 330,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Container(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      _getImagePath(gameProvider),
-                      fit: BoxFit.cover,
-                    ))),
-          ),
-      Positioned(
-        bottom: context.screenWidth / 15,
-        left: context.screenWidth /6,
-        child: Container(
-          width: 74.auto,
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
-          child: Text(
-            getTranslatedText("start_game"),
-            style: TextStyle(
-              fontSize: 10.auto,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+  _buildImageLayout(GameProvider2 gameProvider) => GestureDetector(
+        onTap: () {
+          if (gameProvider.status != 0) {
+          } else
+            _onGameClick(gameProvider);
+        },
+        child: Stack(
+          children: [
+            AspectRatio(
+              aspectRatio: _imageRatio,
+              child: gameProvider.status != 0
+                  ? ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black,
+                        BlendMode.saturation,
+                      ),
+                      child: _buildImage(gameProvider))
+                  : _buildImage(gameProvider),
             ),
-          ),
+            Positioned(
+              bottom: context.screenWidth / 15,
+              left: context.screenWidth / 6,
+              child:  gameProvider.status != 0
+                  ? ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.saturation,
+                  ),
+                  child: _buildStartGameButton())
+                  :_buildStartGameButton(),
+            ),
+            Visibility(
+              visible: gameProvider.status != 0,
+              child: AspectRatio(
+                aspectRatio: _imageRatio,
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+                  child: Center(
+                    child: Text(getTranslatedText("maintenance"),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      )
-    ],
+      );
+
+  _buildStartGameButton() => Container(
+    width: 74.auto,
+    alignment: Alignment.center,
+    padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+    decoration:
+    BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
+    child: Text(
+      getTranslatedText("start_game"),
+      style: TextStyle(
+        fontSize: 10.auto,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
   );
+
+  _buildImage(GameProvider2 gameProvider) => ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: Container(
+          alignment: Alignment.center,
+          child: Image.asset(
+            _getImagePath(gameProvider),
+            fit: BoxFit.cover,
+          )));
 
   _onGameClick(GameProvider2 gameProvider) {
     if (_vm.userProfile == null) {
@@ -143,9 +191,9 @@ class _GameT3State extends BaseState<GameT3> {
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
-                  gamePlatformCode: gamePlatformCode,
-                  gameType: gameType,
-                )));
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                    )));
       });
     } else {
       //navigate to game web

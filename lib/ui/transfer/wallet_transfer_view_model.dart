@@ -1,4 +1,3 @@
-
 import 'package:api/api.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
@@ -15,7 +14,7 @@ class WalletTransferViewModel extends BaseViewModel {
         .where((element) => element.transferWallet == true)
         .map((e) => Wallet(e.code, e.name))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
+          ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
   }
 
   get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
@@ -33,37 +32,6 @@ class WalletTransferViewModel extends BaseViewModel {
       setAutoTransferApiState;
   bool isFetchingBalance, autoTransferValue;
 
-  /*get walletList => walletRepo.walletList;
-
-
-
-  transferAllToMainWallet() async{
-    setLoading();
-    notifyListeners();
-    transferAllToMainWalletApiState = await walletRepo.transferAllToMainWallet();
-    setLoading(false);
-    notifyListeners();
-    return transferAllToMainWalletApiState ;
-  }
-
-
-
-  getTransferableWalletList(){
-    return walletList.where((e) => e.purseType != 1).toList();
-  }
-
-  getNoneMainWalletList(){
-    return walletList.where((e) => e.purseType == 2).toList();
-  }
-
-  getSingleWalletList(){
-    return walletList.where((e) => e.purseType == 1).toList();
-  }
-
-  getMainWallet(){
-    return getTransferableWalletList().singleWhere((e) => e.id == 10000);
-  }
-*/
   transferWallet(String gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
     transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
@@ -113,7 +81,7 @@ class WalletTransferViewModel extends BaseViewModel {
     setLoading();
     setAutoTransferApiState = await userRepo.setAutoTransferValue();
     if (setAutoTransferApiState.isSuccess) {
-      autoTransferValue =!autoTransferValue;
+      autoTransferValue = !autoTransferValue;
     }
     setLoading(false);
     return setAutoTransferApiState;

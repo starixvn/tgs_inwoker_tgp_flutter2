@@ -6,14 +6,21 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var logoutApiState, getAllWalletState;
+  final authRepo = AuthenticationRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [userRepo];
 
   String token;
-  EventResult loginApiState, registerApiState, checkUsernameApiState;
   bool isUsernameExist = false;
+  var securityKey, _username, _password;
+  var logoutApiState,
+      getAllWalletState,
+      loginApiState,
+      registerApiState,
+      checkUsernameApiState,
+      getReVerifyCodeApiState,
+      phoneReVerifyApiState;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -31,9 +38,9 @@ class LoginViewModel extends BaseViewModel {
     return loginApiState;
   }
 
-  register(String username, String password, String rpassword, String currency, [String invitationCode]) async {
+  register(String username, String password, String rpassword, [String invitationCode]) async {
     setLoading();
-    var _status = await userRepo.register(username, password, rpassword, currency, invitationCode ?? "");
+    var _status = await userRepo.register(username, password, rpassword, invitationCode ?? "");
     if (_status.isSuccess) {
       registerApiState = await login(username, password, true);
     } else
@@ -87,5 +94,31 @@ class LoginViewModel extends BaseViewModel {
 
   getApiError() async {
     await userRepo.getApiErrorLocalization();
+  }
+
+  getReVerifyCode(String username, String password, String areaCode, String phone) async {
+    setLoading();
+    getReVerifyCodeApiState = await authRepo.getReVerifyCode(username, password, areaCode, phone);
+    if (getReVerifyCodeApiState.isSuccess) {
+      securityKey = getReVerifyCodeApiState.result;
+      _username = username;
+      _password = password;
+    }
+    setLoading(false);
+    return getReVerifyCodeApiState;
+  }
+
+  phoneVerify(String verificationCode) async {
+    setLoading();
+    var _status = await authRepo.phoneReVerify(
+      securityKey,
+      verificationCode,
+    );
+    if (_status.isSuccess) {
+      phoneReVerifyApiState = await login(_username, _password, true);
+    } else
+      phoneReVerifyApiState = _status;
+    setLoading(false);
+    return phoneReVerifyApiState;
   }
 }

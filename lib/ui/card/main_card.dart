@@ -264,5 +264,7 @@ class _MainCardState extends BaseState<MainCard> {
         _checkBankCardListLength(); //check card list every time fetched
       });
     });
+    handleApiState(_vm.getWithdrawalInfoListApiState, isAutoHideLoading: false, onSuccess: (){});
+    handleApiState(_vm.deleteBankCardApiState, isAutoHideLoading: false, onSuccess: (){});
   }
 }

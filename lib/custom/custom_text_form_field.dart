@@ -47,7 +47,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
             alignment: Alignment.topLeft,
             child: Text(
               widget.title,
-              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 12.auto),
               textAlign: TextAlign.start,
             ),
           ),
@@ -79,10 +79,8 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                           ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
                           : null,
                       textInputAction: widget.textInputAction,
-                      obscureText: (widget.textInputType == TextInputType.visiblePassword) ? true : false,
                       style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
                       decoration: InputDecoration(
-                        isDense: true,
                         border: InputBorder.none,
                         hintText: widget.hintText,
                         hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
