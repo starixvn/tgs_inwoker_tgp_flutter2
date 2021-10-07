@@ -320,20 +320,17 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           _buildOverlay(),
           _buildMenu()
         ]),
-        bottomNavigationBar: SizedBox(
-          height: 43.auto,
-          child: BottomAppBar(
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildBottomBarItem(0, "ic_home", "home"),
-                _buildBottomBarItem(1, "ic_transaction", "promotion"),
-                _buildBottomBarItem(2, "ic_deposit", "deposit_withdraw"),
-                _buildBottomBarItem(3, "ic_cs", "customer_service"),
-                _buildBottomBarItem(4, "ic_profile", "my_profile"),
-              ],
-            ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildBottomBarItem(0, "ic_home", "home"),
+              _buildBottomBarItem(1, "ic_transaction", "promotion"),
+              _buildBottomBarItem(2, "ic_deposit", "deposit_withdraw"),
+              _buildBottomBarItem(3, "ic_cs", "customer_service"),
+              _buildBottomBarItem(4, "ic_profile", "my_profile"),
+            ],
           ),
         ),
       ),
@@ -344,7 +341,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         child: Stack(
           children: [
             SizedBox(
-              height: 58.auto,
+              height: context.screenWidth / 7,
               width: context.screenWidth / 5,
               child: Material(
                 type: MaterialType.transparency,
@@ -380,6 +377,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                                 ? CustomColor.bottom_nav_selected_color
                                 : CustomColor.bottom_nav_unselected_color,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],

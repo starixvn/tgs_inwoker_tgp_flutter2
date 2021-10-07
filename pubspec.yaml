@@ -109,12 +109,15 @@ flutter:
     - images/home_banner/en-US/BIN/
     - images/home_banner/en-US/PGG/
     - images/home_banner/en-US/WLG/
+    - images/home_banner/en-US/HKJP/
     - images/home_banner/zh-CN/BIN/
     - images/home_banner/zh-CN/PGG/
     - images/home_banner/zh-CN/WLG/
+    - images/home_banner/zh-CN/HKJP/
     - images/home_banner/zh-TW/BIN/
     - images/home_banner/zh-TW/PGG/
     - images/home_banner/zh-TW/WLG/
+    - images/home_banner/zh-TW/HKJP/
     - images/game_tab/
     - images/child_game/
     - images/card/

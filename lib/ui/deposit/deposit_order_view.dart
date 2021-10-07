@@ -110,11 +110,10 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 _buildText("payment_channel", widget.manualDepositOrder.methodName),
                 _buildText("receiver_bank", widget.manualDepositOrder.bankAccountName),
                 _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccount),
-                if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
+                handleNullWidget(
+                    widget.promotionName == null, _buildText("promotion_picker", widget.promotionName ?? "")),
                 _buildUploadTextRow(),
-                uploadImage == null
-                    ? Container()
-                    : Container(
+              uploadImage == null?Container():Container(
                         alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage)))
               ],
             ),
@@ -138,33 +137,6 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                         isEnabled: true,
                         radius: 4.8,
                         height: 44.5))
-                /*RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  color: CustomColor.grey,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.auto),
-                    child: Text(
-                      getTranslatedText("cancel_deposit"),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                RaisedButton(
-                    onPressed: () => {_vm.uploadDepositImage(uploadImage.path, widget.id)},
-                    color: CustomColor.grey,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.auto),
-                      child: Text(
-                        getTranslatedText("upload_prof"),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )),*/
               ],
             ),
           )
@@ -206,10 +178,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                     : _buildOrderText("order_no", widget.depositRedirectApplePay.formId),
                 _buildText("payment_type", widget.method),
                 _buildText("payment_channel", widget.depositChannel),
-                if (widget.exchangeRate != null) _buildText("exchange_rate", widget.exchangeRate),
-                if (widget.expectedAmount != null) _buildText("expected_amount", widget.expectedAmount),
-                if (widget.transName != null) _buildText("transfer_name", widget.transName ?? ""),
-                if (widget.promotionName != null) _buildText("promotion_picker", widget.promotionName ?? ""),
+                handleNullWidget(widget.exchangeRate == null, _buildText("exchange_rate", widget.exchangeRate)),
+                handleNullWidget(widget.expectedAmount == null, _buildText("expected_amount", widget.expectedAmount)),
+                handleNullWidget(widget.transName == null, _buildText("transfer_name", widget.transName ?? "")),
+                handleNullWidget(
+                    widget.promotionName == null, _buildText("promotion_picker", widget.promotionName ?? "")),
               ],
             ),
           ),
@@ -224,11 +197,11 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DepositWeb(
-                              url: widget.depositRedirect != null
-                                  ? widget.depositRedirect.paymentUrl
-                                  : widget.depositRedirectApplePay.paymentUrl,
-                            brandLogoUrl: _vm.brandLogoUrl,
-                          )))))
+                                url: widget.depositRedirect != null
+                                    ? widget.depositRedirect.paymentUrl
+                                    : widget.depositRedirectApplePay.paymentUrl,
+                                brandLogoUrl: _vm.brandLogoUrl,
+                              )))))
         ],
       );
 

@@ -162,15 +162,14 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     itemTitle,
                     style: TextStyle(fontSize: 15.auto),
                   ),
-                  itemDescription != null
-                      ? Container(
-                          margin: EdgeInsets.only(top: 3.auto),
-                          child: Text(
-                            itemDescription,
-                            style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
-                          ),
-                        )
-                      : Container()
+                  handleNullWidget(itemDescription == null, Container(
+                    margin: EdgeInsets.only(top: 3.auto),
+                    child: Text(
+                      itemDescription,
+                      style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+                    ),
+                  ))
+
                 ],
               ),
               Spacer(),

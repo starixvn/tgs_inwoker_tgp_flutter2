@@ -77,7 +77,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       imageUrl = widget.promotion.mobileBanner;
     } else
       imageUrl = "";
-    return imageUrl.isEmpty
+    /*return imageUrl.isEmpty
         ? Container()
         : CachedNetworkImage(
             height: 150.auto,
@@ -89,7 +89,18 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
             errorWidget: (context, url, error) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
-            fit: BoxFit.fill);
+            fit: BoxFit.fill);*/
+    return handleNullWidget(imageUrl.isEmpty, CachedNetworkImage(
+        height: 150.auto,
+        placeholder: (context, url) => Container(
+          color: CustomColor.very_light_pink_four,
+        ),
+        imageUrl: imageUrl,
+        //handling error
+        errorWidget: (context, url, error) => Container(
+          color: CustomColor.very_light_pink_four,
+        ),
+        fit: BoxFit.fill));
   }
 
   _onClick() {

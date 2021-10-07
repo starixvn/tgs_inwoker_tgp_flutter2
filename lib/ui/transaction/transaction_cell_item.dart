@@ -14,7 +14,14 @@ class TransactionCellItem extends StatefulWidget {
   final bool isAccountTransaction;
   final Function getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton, this.getManualDepositId, this.isAccountTransaction = false})
+  TransactionCellItem(
+      {Key key,
+      this.list,
+      this.type,
+      this.isEndRecord,
+      this.isUploadButton,
+      this.getManualDepositId,
+      this.isAccountTransaction = false})
       : super(key: key);
 
   @override
@@ -62,12 +69,6 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
               ),
               child: _getTransactionCellItem(isLast: true)),
         ),
-        /*widget.isLoading?Container(
-            height: 50,
-            width: 50,
-            padding: EdgeInsets.only(bottom: 10.auto),
-            child: CircularProgressIndicator(),
-          ):Container(),*/
         widget.isEndRecord
             ? Container(
                 padding: EdgeInsets.only(bottom: 10.auto),
@@ -114,9 +115,10 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                       return Container();
                     else if (index == 4 && widget.isAccountTransaction)
                       return Expanded(
-                        flex: 1,
-                        child: widget.isUploadButton
-                            ? ColorButton(
+                          flex: 1,
+                          child: handleNullWidget(
+                              !widget.isUploadButton,
+                              ColorButton(
                                 title: getTranslatedText("upload_prof"),
                                 onClick: () => widget.getManualDepositId(),
                                 isEnabled: true,
@@ -125,9 +127,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                                 width: 45,
                                 fontSize: 8.auto,
                                 padding: 3,
-                              )
-                            : Container(),
-                      );
+                              )));
                     else
                       return Expanded(
                         //first header (time) flex number is 2, others will be 1
@@ -150,11 +150,11 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
             ],
           ),
         ),
-        isLast
-            ? Container()
-            : Divider(
-                thickness: (1.0).auto,
-                color: CustomColor.very_light_pink_four,
-              )
+        handleNullWidget(
+            isLast,
+            Divider(
+              thickness: (1.0).auto,
+              color: CustomColor.very_light_pink_four,
+            ))
       ]);
 }

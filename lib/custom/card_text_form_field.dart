@@ -88,7 +88,7 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                   ),
                 ),
               ]),
-              widget.button == null ? Container() : widget.button
+          handleNullWidget(widget.button == null ,widget.button)
             ],
           ),
         ));

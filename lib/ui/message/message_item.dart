@@ -110,17 +110,6 @@ class _MessageItemState extends BaseState<MessageItem> {
               style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
             ),
           ),
-/*  Container(
-           width: context.screenWidth,
-            child: Text(
-              parseHtmlString(widget.message.localization?.subSubject ?? ""),
-              //overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              //softWrap: false,
-              textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
-            ),
-          )*/
         ],
       );
 }

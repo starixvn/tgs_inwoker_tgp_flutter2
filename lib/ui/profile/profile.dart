@@ -43,7 +43,7 @@ class _ProfileState extends BaseState<Profile> {
               backgroundColor: CustomColor.theme_bg_color,
               body: Container(
                 padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
-                child: Column(
+                child: ListView(
                   children: [_buildUserInfoContainer(), ProfileItem(), _buildLogoutButton()],
                 ),
               ));

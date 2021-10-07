@@ -127,9 +127,7 @@ class _HomeT2State extends BaseState<HomeT2> {
           ),),
           Expanded(
             flex:9,
-            child: announcement.isEmpty
-                ? Container()
-                : Container(
+            child: handleNullWidget(announcement.isEmpty, Container(
               // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
               margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
               height: 18.auto,
@@ -144,7 +142,8 @@ class _HomeT2State extends BaseState<HomeT2> {
                   blankSpace: 5.auto,
                   pauseAfterRound: Duration(seconds: 1),
                   showFadingOnlyWhenScrolling: false),
-            ),
+            ),)
+
           )
         ],
       ),

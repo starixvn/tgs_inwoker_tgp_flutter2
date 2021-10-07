@@ -80,12 +80,10 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
                       RegisterContent(
                         onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value),
                       ),
-                      _isHKJP()
-                          ? PhoneReVerification(
-                              username: username,
-                              password: password,
-                            )
-                          : Container()
+                      PhoneReVerification(
+                        username: username,
+                        password: password,
+                      )
                     ]
                   : [
                       LoginContent(),

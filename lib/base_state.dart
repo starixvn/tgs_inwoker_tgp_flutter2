@@ -99,9 +99,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            url == null
-                ? Container()
-                : CachedNetworkImage(
+            url == null?Container()
+            :CachedNetworkImage(
                     placeholder: (context, url) => Container(),
                     imageUrl: url,
                     //handling error
@@ -151,5 +150,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     var list = LanguageProvider().list;
     Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
     return deviceLanguage;
+  }
+
+  handleNullWidget(bool isNull, Widget widget){
+    if(isNull) return Container();
+    else return widget;
   }
 }

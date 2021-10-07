@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -25,7 +27,7 @@ class _MessageViewState extends BaseState<MessageView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ProgressDialog.show(context, _vm.brandLogoUrl);
+      //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getMessageList();
     });
     _controller.addListener(_scrollListener);
@@ -44,7 +46,7 @@ class _MessageViewState extends BaseState<MessageView> {
               title: getTranslatedText("message_center"),
             ),
             body: _vm.messageList == null
-                ? Container()
+                ? buildProgressDialog(_vm.brandLogoUrl)
                 : ListView(controller: _controller, padding: EdgeInsets.all(8.0), children: [
                     Column(
                       children: List.generate(_vm.messageList.length, (index) {
@@ -58,7 +60,14 @@ class _MessageViewState extends BaseState<MessageView> {
                     ),
                     Visibility(
                         visible: _vm.endRecord ? false : isLoading,
-                        child: Container(alignment: Alignment.center, child: CircularProgressIndicator())),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Lottie.asset(
+                            "loading/loading_t${EnvironmentConfig.template_version}.json",
+                            width: 100,
+                            height: 100,
+                          ),
+                        )),
                     Visibility(
                         visible: _vm.endRecord && _vm.messageList.isNotEmpty,
                         child: Container(
@@ -133,7 +142,7 @@ class _MessageViewState extends BaseState<MessageView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getMessageListApiState, onSuccess: () {
+    handleApiState(_vm.getMessageListApiState, isAutoHideLoading: false, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (isLoading) {
           setState(() {
@@ -142,6 +151,6 @@ class _MessageViewState extends BaseState<MessageView> {
         }
       });
     });
-    handleApiState(_vm.readMessageApiState, onSuccess: () {});
+    handleApiState(_vm.readMessageApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
