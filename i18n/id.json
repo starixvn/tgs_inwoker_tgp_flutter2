@@ -959,6 +959,8 @@
   "phone_re-verify": "Verifikasi ulang SMS",
   "username": "nama pengguna",
   "password": "kata sandi",
-  "area_code": "Kode area"
+  "area_code": "Kode area",
+  "instant_messaging": "Pesan singkat"
+
 
 }

@@ -959,6 +959,6 @@
   "phone_re-verify": "SMS重新認證",
   "username": "用戶名",
   "password": "密碼",
-  "area_code": "區域代碼"
-
+  "area_code": "區域代碼",
+  "instant_messaging": "即時通訊"
 }

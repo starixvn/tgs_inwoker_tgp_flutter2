@@ -4,6 +4,7 @@ import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -13,6 +14,13 @@ import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class RegisterContent extends StatefulWidget {
+  final ValueChanged<dynamic> onSubmitUsernameAndPassword;
+
+  RegisterContent({
+    Key key,
+    this.onSubmitUsernameAndPassword,
+  }) : super(key: key);
+
   @override
   _RegisterContentState createState() => _RegisterContentState();
 }
@@ -181,7 +189,10 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
-      _navigateToHome();
+      if (EnvironmentConfig.appTitleName == "HKJP")
+        widget.onSubmitUsernameAndPassword([username.text, password.text]);
+      else
+        _navigateToHome();
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {

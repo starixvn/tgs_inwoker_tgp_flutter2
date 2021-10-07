@@ -74,7 +74,7 @@ class BetTransactionViewState extends BaseState<BetTransactionView> {
             _vm.betTransactionList[index].gameName,
             _vm.betTransactionList[index].betAmount.toString(),
             _vm.betTransactionList[index].winLoss.toString(),
-          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false,),
+          ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, ),
         );
       }).toList();
 

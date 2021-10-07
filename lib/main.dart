@@ -81,7 +81,20 @@ class _MyAppState extends BaseState<MyApp> {
     });
   }
 
-  Future<List<LanguageOption>> initData() async {
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      LanguageProvider().getLocale().then((locale) {
+        setState(() {
+          this._locale = locale;
+        });
+      });
+    });
+    super.didChangeDependencies();
+  }
+
+
+  /*Future<List<LanguageOption>> initData() async {
     if (firstInit) {
       await _vm.getAuthToken();
       await _vm.getBrandLogo();
@@ -93,11 +106,11 @@ class _MyAppState extends BaseState<MyApp> {
       return _vm.getLanguageApiState.result;
     } else
       return [];
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    _handleApiState();
+    /*_handleApiState();
     return FutureBuilder(
         future: initData(),
         builder: (BuildContext context, AsyncSnapshot<List<LanguageOption>> snapshot) {
@@ -149,7 +162,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.phoneVerification: (context) => PhoneVerification(),
                   RoutePath.editPhone: (context) => EditPhone(),
 
-                  /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+                  *//* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.phoneVerification: (context) => PhoneVerification(),
@@ -160,7 +173,7 @@ class _MyAppState extends BaseState<MyApp> {
           RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
 
           RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
-          RoutePath.csQrCode: (context) => CustomerServiceQrCode()*/
+          RoutePath.csQrCode: (context) => CustomerServiceQrCode()*//*
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,
@@ -182,11 +195,88 @@ class _MyAppState extends BaseState<MyApp> {
               ),
             );
           }
-        });
+        });*/
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+          currentFocus.focusedChild.unfocus();
+        }
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: appTitle,
+        initialRoute: '/',
+        routes: {
+          RoutePath.empty: (context) => Splash(),
+          RoutePath.home: (context) => MyHomePage(),
+          RoutePath.myHome: (context) => MyHomePage(),
+          RoutePath.profile: (context) => Profile(),
+          RoutePath.csWebView: (context) => CustomerServiceWebView(),
+          RoutePath.customerService: (context) => CustomerService(),
+          RoutePath.transaction: (context) => Transaction(),
+          RoutePath.login: (context) => Login(),
+          RoutePath.forgotPassword: (context) => ForgotPassword(),
+          RoutePath.maintenance: (context) => Maintenance(),
+          RoutePath.mainCard: (context) => MainCard(),
+          RoutePath.message: (context) => MessageView(),
+          RoutePath.emailVerification: (context) => EmailVerification(0),
+          RoutePath.qqAccount: (context) => QQAccount(),
+          RoutePath.wechat: (context) => Wechat(),
+          RoutePath.editPassword: (context) => EditPassword(),
+          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+          RoutePath.payPassword: (context) => PayPassword(),
+          RoutePath.language: (context) => LanguageView(),
+          RoutePath.addCard: (context) => AddCard(),
+          RoutePath.realNameVerification: (context) => RealNameVerification(),
+          RoutePath.profileInfo: (context) => ProfileInfo(),
+          RoutePath.promotion: (context) => Promotion(),
+          RoutePath.walletTransfer: (context) => WalletTransfer(),
+          RoutePath.menu: (context) => Menu(),
+          RoutePath.deposit: (context) => Deposit(),
+          RoutePath.withdraw: (context) => Withdraw(),
+          RoutePath.childGame: (context) => ChildGame(),
+          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+          RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+          RoutePath.phoneVerification: (context) => PhoneVerification(),
+          RoutePath.editPhone: (context) => EditPhone(),
+
+          /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+          RoutePath.referFriend: (context) => ReferFriend(),
+          RoutePath.realNameVerification: (context) => RealNameVerification(),
+          RoutePath.phoneVerification: (context) => PhoneVerification(),
+          RoutePath.address: (context) => Address(),
+
+          RoutePath.securityAnswer: (context) => SecurityAnswer(),
+          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
+          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
+
+          RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
+          RoutePath.csQrCode: (context) => CustomerServiceQrCode()*/
+        },
+        localizationsDelegates: [
+          MyLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        // MyHomePage(title: appTitle),
+        supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
+        locale: _locale,
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode &&
+                supportedLocale.scriptCode == locale.scriptCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
+      ),
+    );
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
+    //handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
 

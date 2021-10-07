@@ -144,7 +144,7 @@
   "contact_cs": "Contact CS",
   "any_question_please_contact": "Any question, Please contact&#160;",
   "online_cs": "Online Customer Service",
-  "here": "Here",
+  "here": "here",
   "edit_phone_cs": "If want to edit phone, Click ",
   "edit_ic_no_cs": "If want edit Ic No, Please contact;",
   "downloading_installer": "Download Installer",
@@ -971,6 +971,6 @@
   "phone_re-verify": "SMS Re-verify",
   "username": "Username",
   "password": "Password",
-  "area_code": "Area Code"
-
+  "area_code": "Area Code",
+  "instant_messaging": "Instant Messaging"
 }

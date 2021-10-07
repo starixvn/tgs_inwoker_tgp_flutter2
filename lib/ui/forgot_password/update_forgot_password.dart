@@ -48,12 +48,6 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
                 title: getTranslatedText("forgot_password"),
               ),
               body: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      )),
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [

@@ -7,6 +7,8 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/phone_text_form_field.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -24,9 +26,11 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
+  String display;
 
   @override
   void initState() {
+    display = "+852";
     super.initState();
   }
 
@@ -49,7 +53,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
-                    _buildTextFormField(),
+                    EnvironmentConfig.appTitleName == "HKJP" ? _buildPhoneTextFormField() : _buildTextFormField(),
                     _buildOtpTextFormField(),
                     _buildButton()
                   ],
@@ -73,23 +77,44 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         ),
       );
 
+  _buildPhoneTextFormField() => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: PhoneTextFormField(
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: _emailController,
+          width: context.screenWidth - 70.auto,
+          textInputAction: TextInputAction.next,
+          enabled: true,
+          onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
+          displayedAreaCode: display,
+        ),
+      );
+
+  _onAreaCodeClicked(String area) {
+    setState(() {
+      display = area;
+      Navigator.of(context).pop();
+    });
+  }
+
   _buildOtpTextFormField() => OtpTextFormField(
-    hintText: getTranslatedText("enter_email_otp_hint"),
-    onChanged: (value) => _onTextChange(),
-    controller: _otpController,
-    textInputAction: TextInputAction.done,
-    getOtpCode: () {
-      _getSmsCode();
-    },
-    isEnabled: isOtpEnabled,
-    isCountdown: isOtpCountdown,
-    onCountDownEnd: () => {
-      setState(() {
-        isOtpCountdown = false;
-      })
-    },
-    isVisible: true,
-  );
+        hintText: getTranslatedText("enter_email_otp_hint"),
+        onChanged: (value) => _onTextChange(),
+        controller: _otpController,
+        textInputAction: TextInputAction.done,
+        getOtpCode: () {
+          _getSmsCode();
+        },
+        isEnabled: isOtpEnabled,
+        isCountdown: isOtpCountdown,
+        onCountDownEnd: () => {
+          setState(() {
+            isOtpCountdown = false;
+          })
+        },
+        isVisible: true,
+      );
 
   _buildButton() => Container(
       margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
@@ -103,14 +128,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
       ));
 
   _checkValidation() {
-    if (!validate.validateEmail(_emailController.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("email_format_error_msg"));
-      });
-    } else {
-      //ProgressDialog.show(context, _vm.brandLogoUrl);
-      _navigateToUpdatePassword();
-    }
+    _navigateToUpdatePassword();
   }
 
   _onTextChange() {
@@ -119,6 +137,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         isButtonEnabled = true;
       } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
+        isButtonEnabled = false;
       } else {
         isOtpEnabled = false;
         isButtonEnabled = false;
@@ -127,13 +146,26 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   }
 
   _getSmsCode() {
-    if (!validate.validateEmail(_emailController.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("email_format_error_msg"));
-      });
+    if (EnvironmentConfig.appTitleName == "HKJP") {
+      if (!validate.validateAreaCodeAndPhone(display, _emailController.text)) {
+        setState(() {
+          CustomToast.show(getTranslatedText("phone_format_error_msg"));
+        });
+      } else {
+        ProgressDialog.show(context, _vm.brandLogoUrl);
+        _vm.getForgotPasswordCode(phone: _emailController.text, areaCode: display);
+      }
+
     } else {
-      ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getForgotPasswordCode(_emailController.text);
+      if (!validate.validateEmail(_emailController.text)) {
+        setState(() {
+          CustomToast.show(getTranslatedText("email_format_error_msg"));
+        });
+      } else {
+        ProgressDialog.show(context, _vm.brandLogoUrl);
+        _vm.getForgotPasswordCode(email: _emailController.text);
+      }
+
     }
   }
 

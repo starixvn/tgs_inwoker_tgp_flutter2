@@ -75,7 +75,7 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
           ),
           AutoSizeText(getTranslatedText(widget.step2Text),
             style: TextStyle(
-                fontFamily: 'PingFang', color: (widget.index == 0) ? CustomColor.theme_button_color : Colors.grey),
+                fontFamily: 'PingFang', color: (widget.index == 1) ? CustomColor.theme_button_color : Colors.grey),
             textAlign: TextAlign.center,
             minFontSize: 10,
             stepGranularity: 1,

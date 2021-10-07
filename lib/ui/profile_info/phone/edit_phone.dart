@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -31,9 +32,9 @@ class _EditPhoneState extends BaseState<EditPhone> {
 
   @override
   void initState() {
+    display = "+852";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
-      display = "+852";
     });
     super.initState();
   }
@@ -45,6 +46,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
           _handleApiState();
           return Scaffold(
               resizeToAvoidBottomInset: false,
+              backgroundColor: CustomColor.theme_bg_color,
               appBar: _buildAppBar(),
               body: Container(
                   padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
@@ -62,7 +64,10 @@ class _EditPhoneState extends BaseState<EditPhone> {
         });
   }
 
-  _buildAppBar() => AppBar(
+  _buildAppBar() => CustomAppBar(
+    title:getTranslatedText("phone_number"),
+    onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info')),
+  )/*AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
@@ -72,10 +77,10 @@ class _EditPhoneState extends BaseState<EditPhone> {
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info'))),
         title: Text(
-          getTranslatedText("phone_number"),
+
           style: TextStyle(fontSize: 16.auto),
         ),
-      );
+      )*/;
 
   _buildVerifyOldPhoneNumber() => Column(
         children: [_buildPhoneTextFormField(), _buildOtpTextFormField(), _buildButton()],
@@ -85,12 +90,12 @@ class _EditPhoneState extends BaseState<EditPhone> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 15.auto),
+            margin: EdgeInsets.only(top: 25.auto),
             child: PhoneTextFormField(
               onChanged: (value) => _onTextChange(),
               onFieldSubmitted: (value) {},
               controller: _phoneController,
-              width: context.screenWidth - 70.auto,
+              width: context.screenWidth - 40.auto,
               textInputAction: TextInputAction.next,
               enabled: isTextFieldEnabled,
               onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
@@ -110,7 +115,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
   _buildOtpTextFormField() => Opacity(
         opacity: isOtpEnabled ? 1 : 0.4,
         child: Container(
-          margin: EdgeInsets.only(top: 15.auto),
+          margin: EdgeInsets.only(top: 10.auto),
           child: OtpTextFormField(
               hintText: getTranslatedText("enter_email_otp_hint"),
               onChanged: (value) => _onTextChange(),
@@ -138,7 +143,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
           _onClick();
         },
         isEnabled: isButtonEnabled ?? false,
-        color: CustomColor.theme_text_black_color,
+        color: CustomColor.theme_button_color,
         radius: 9.6,
       ));
 

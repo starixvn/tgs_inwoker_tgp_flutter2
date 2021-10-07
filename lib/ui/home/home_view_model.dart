@@ -19,7 +19,7 @@ class HomeViewModel extends BaseViewModel {
 
   get balance => userRepo.wallet.main;
 
-  get brandLogoUrl => contentRepo.brandLogo.mobileUrl;
+  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   bool isNotLogin = false, isExpired = false;
   var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;

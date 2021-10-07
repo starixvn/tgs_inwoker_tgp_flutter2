@@ -92,9 +92,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       }
     } else if (widget.list is List<Map<String, String>>) {
       String promotionName = widget.list[index]["name"];
-      return  getTranslatedText(promotionName)??promotionName;
+      return getTranslatedText(promotionName) ?? promotionName;
     } else {
-      return getTranslatedText(widget.list[index])??widget.list[index];
+      return getTranslatedText(widget.list[index]) ?? widget.list[index];
     }
   }
 

@@ -27,7 +27,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "60bc7f04741e66c95a199fd09cb7e8c08b28b6aa"
+      resolved-ref: "6a6a90542cfa46c360c3d2306df412dfd4851a64"
       url: "https://gitlab.com/yewtungcheong/api"
     source: git
     version: "0.0.1"

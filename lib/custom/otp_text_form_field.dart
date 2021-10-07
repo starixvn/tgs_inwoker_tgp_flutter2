@@ -30,7 +30,7 @@ class OtpTextFormField extends StatefulWidget {
       this.isEnabled,
       this.isCountdown,
       this.onCountDownEnd,
-      this.isVisible})
+      this.isVisible = true})
       : super(key: key);
 
   @override

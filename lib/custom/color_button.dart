@@ -48,6 +48,7 @@ class ColorButton extends StatelessWidget {
         minFontSize: fontSize ?? 15,
         maxLines: 1,
         textAlign: TextAlign.center,
+        stepGranularity: 1,
       ),
     );
   }

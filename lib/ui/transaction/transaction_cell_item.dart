@@ -11,9 +11,10 @@ class TransactionCellItem extends StatefulWidget {
   final TransactionCellItemType type;
   final bool isEndRecord;
   final bool isUploadButton;
+  final bool isAccountTransaction;
   final Function getManualDepositId;
 
-  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton, this.getManualDepositId})
+  TransactionCellItem({Key key, this.list, this.type, this.isEndRecord, this.isUploadButton, this.getManualDepositId, this.isAccountTransaction = false})
       : super(key: key);
 
   @override
@@ -111,7 +112,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                   return (() {
                     if (index == 0)
                       return Container();
-                    else if (index == 4)
+                    else if (index == 4 && widget.isAccountTransaction)
                       return Expanded(
                         flex: 1,
                         child: widget.isUploadButton

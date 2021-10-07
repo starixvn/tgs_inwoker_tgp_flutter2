@@ -47,7 +47,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
             alignment: Alignment.topLeft,
             child: Text(
               widget.title,
-              style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
               textAlign: TextAlign.start,
             ),
           ),

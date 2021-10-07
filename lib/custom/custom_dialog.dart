@@ -75,14 +75,17 @@ class CustomDialog extends StatelessWidget {
                     fontSize: 13.auto,
                     color: Colors.black54,
                   ),
-                  textAlign: title==null?TextAlign.center: TextAlign.start,
+                  textAlign: title == null ? TextAlign.center : TextAlign.start,
                 ),
               ),
               buttonText2 == null
                   ? _buildDoneButton(context)
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [_buildDoneButton(context), _buildBackButton(context)],
+                      children: [
+                        Expanded(flex: 1, child: _buildDoneButton(context)),
+                        Expanded(flex: 1, child: _buildBackButton(context))
+                      ],
                     )
             ],
           ),
@@ -103,6 +106,7 @@ class CustomDialog extends StatelessWidget {
         radius: 45.auto,
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
+        fontSize: 5,
       );
 
   _buildBackButton(BuildContext context) => OutlineBorderButton(

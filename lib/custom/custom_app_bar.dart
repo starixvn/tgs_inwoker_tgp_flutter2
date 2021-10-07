@@ -7,12 +7,14 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({Key key, this.title, this.widget, this.walletBalance, this.isPopTwice = false}) : super(key: key);
+  CustomAppBar({Key key, this.title, this.widget, this.walletBalance, this.isPopTwice = false, this.onPop})
+      : super(key: key);
 
   final String title;
   final Widget widget;
   final double walletBalance;
   final bool isPopTwice;
+  final Function onPop;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
@@ -29,14 +31,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
-        onPressed: isPopTwice
-            ? () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              }
-            : () {
-                Navigator.pop(context);
-              },
+        onPressed: () => _onPress(context),
       ),
       actions: [_getAppBarWidget()],
     );
@@ -55,5 +50,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       return widget;
     } else
       return Container();
+  }
+
+  _onPress(BuildContext context) {
+    if (onPop == null) {
+      if (isPopTwice) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      } else
+        Navigator.pop(context);
+    } else
+      this.onPop();
   }
 }

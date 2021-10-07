@@ -72,7 +72,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
         _vm.transferTransactionList[index].from,
         _vm.transferTransactionList[index].to,
         _vm.transferTransactionList[index].amount.toString(),
-      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false,),
+      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, ),
     );
   }).toList();
 

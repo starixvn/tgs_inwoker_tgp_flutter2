@@ -74,12 +74,16 @@ class _LoginState extends BaseState<Login> {
 
   _buildLogoImage() => Container(
       margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
-      child: CachedNetworkImage(
-        placeholder: (context, url) => Container(),
-        imageUrl: _vm.brandLogoUrl,
-        //handling error
-        errorWidget: (context, url, error) => Container(),
-      ));
+      child: (_vm?.brandLogoUrl?.isEmpty ?? true)
+          ? Container(
+              height: 100.auto,
+            )
+          : CachedNetworkImage(
+              placeholder: (context, url) => Container(),
+              imageUrl: _vm.brandLogoUrl,
+              //handling error
+              errorWidget: (context, url, error) => Container(),
+            ));
 
   _getPackageInfo() async {
     packageInfo = await PackageInfo.fromPlatform();

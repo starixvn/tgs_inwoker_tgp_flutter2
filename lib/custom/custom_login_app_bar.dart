@@ -35,15 +35,17 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: CustomColor.theme_app_bar_color,
-      title: CachedNetworkImage(
-        placeholder: (context, url) => Container(),
-        imageUrl: brandLogoUrl,
-        //handling error
-        height: 30.auto,
-        fit: BoxFit.cover,
-        color: Colors.white,
-        errorWidget: (context, url, error) => Container(),
-      ),
+      title: (brandLogoUrl?.isEmpty ?? true)
+          ? Container()
+          : CachedNetworkImage(
+              placeholder: (context, url) => Container(),
+              imageUrl: brandLogoUrl,
+              //handling error
+              height: 30.auto,
+              fit: BoxFit.cover,
+              color: Colors.white,
+              errorWidget: (context, url, error) => Container(),
+            ),
       actions: [_getLoginButton()],
     );
   }

@@ -40,6 +40,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         builder: (ctx, vm, _) {
           return Scaffold(
               resizeToAvoidBottomInset: false,
+              backgroundColor: CustomColor.theme_bg_color,
               appBar: _buildAppBar(),
               body: Container(
                   child: /*userProfile == null?
@@ -60,20 +61,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _buildAppBar() => CustomAppBar(
     title: getTranslatedText("phone_number"),
-  );/*AppBar(
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        centerTitle: true,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info'))),
-        title: Text(
-
-          style: TextStyle(fontSize: 16.auto),
-        ),
-      );*/
+    onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info'))
+  );
 
   _buildTextFormField() => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -108,6 +97,9 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         children: [
           Text(
             getTranslatedText("edit_phone_cs"),
+            style: TextStyle(
+              color: CustomColor.theme_text_black_white_color
+            ),
           ),
           InkWell(
             onTap: () {
@@ -119,7 +111,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
             },
             child: Text(
               getTranslatedText("here"),
-              style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_text_black_color),
+              style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_button_color),
             ),
           ),
         ],

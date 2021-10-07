@@ -19,50 +19,59 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends BaseState<Splash> {
-  /*var _vm = SplashViewModel();
+  var _vm = SplashViewModel();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.getAuthToken();
+      _vm.getBrandLogo();
+      _vm.getLanguageOption();
     });
     super.initState();
-  }*/
+  }
 
   Widget build(BuildContext context) {
-    return Container(
-      width: context.screenWidth,
-      height: context.screenHeight,
-      color: Colors.black,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            widget.logoUrl.isEmpty
-                ? Container()
-                : CachedNetworkImage(
-                    placeholder: (context, url) => Container(),
-                    imageUrl: widget.logoUrl,
-                    //handling error
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Container(),
+    return ProviderWidget<SplashViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Container(
+            width: context.screenWidth,
+            height: context.screenHeight,
+            color: Colors.black,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  widget.logoUrl?.isEmpty ?? true
+                      ? Container()
+                      : CachedNetworkImage(
+                          placeholder: (context, url) => Container(),
+                          imageUrl: widget.logoUrl,
+                          //handling error
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => Container(),
+                        ),
+                  Container(
+                    width: context.screenWidth / 2.5,
+                    alignment: Alignment.bottomCenter,
+                    child: Lottie.asset("loading/loading_t${EnvironmentConfig.template_version}.json"),
                   ),
-            Container(
-              width: context.screenWidth / 2.5,
-              alignment: Alignment.bottomCenter,
-              child: Lottie.asset("loading/loading_t${EnvironmentConfig.template_version}.json"),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   _handleApiState() {
-    /*handleApiState(_vm.authApiState, onSuccess: () {
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {
       _navigateToHome();
-    }, isAutoHideLoading: false, onError: (_) {});*/
+    });
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 
   _navigateToHome() {

@@ -40,6 +40,8 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     setState(() {
       if (code == "zh-TW")
         languageCode = "zh-CN";
+      else if (code == "th-TH")
+        languageCode = "en-US";
       else
         languageCode = code;
     });

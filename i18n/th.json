@@ -958,8 +958,8 @@
   "phone_re-verify": "ยืนยัน SMS อีกครั้ง",
   "username": "ชื่อผู้ใช้",
   "password": "รหัสผ่าน",
-  "area_code": "รหัสพื้นที่"
-
+  "area_code": "รหัสพื้นที่",
+  "instant_messaging": "ข้อความโต้ตอบแบบทันที"
 }
 
 

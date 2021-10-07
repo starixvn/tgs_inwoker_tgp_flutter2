@@ -36,13 +36,13 @@ class _PromotionItemState extends BaseState<PromotionItem> {
 
   _buildPromotionImage() {
     var imageUrl;
-    if(widget.promotion.localization?.mobileBanner?.isNotEmpty ?? "" ){
+    if(widget.promotion.localization?.mobileBanner?.isNotEmpty ?? true ){
       imageUrl = widget.promotion.localization.mobileBanner;
-    }else if(widget.promotion.mobileBanner?.isNotEmpty ?? ""){
+    }else if(widget.promotion.mobileBanner?.isNotEmpty ?? true){
       imageUrl = widget.promotion.mobileBanner;
     }else imageUrl = "";
     print(imageUrl);
-    return imageUrl.isEmpty
+    return imageUrl?.isEmpty ?? true
         ? Container(
             color: CustomColor.very_light_pink_four,
           )

@@ -958,5 +958,6 @@
   "phone_re-verify": "SMS重新认证",
   "username": "用户名",
   "password": "密码",
-  "area_code": "区域代码"
+  "area_code": "区域代码",
+  "instant_messaging": "即时通讯"
 }

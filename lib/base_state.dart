@@ -44,21 +44,21 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                 barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) => WillPopScope(
-                  onWillPop: () async => false,
-                  child: CustomDialog(
-                    title: "登录已超时",
-                    description: "请再登录",
-                    buttonText1: "登录",
-                    buttonText2: "不了",
-                    onClick: () {
-                      Navigator.of(context).pushReplacementNamed("/home");
-                      Navigator.of(context).pushNamed("/login");
-                    },
-                    onClick2: () {
-                      Navigator.of(context).pushReplacementNamed("/home");
-                    },
-                  ),
-                ));
+                      onWillPop: () async => false,
+                      child: CustomDialog(
+                        title: "登录已超时",
+                        description: "请再登录",
+                        buttonText1: "登录",
+                        buttonText2: "不了",
+                        onClick: () {
+                          Navigator.of(context).pushReplacementNamed("/home");
+                          Navigator.of(context).pushNamed("/login");
+                        },
+                        onClick2: () {
+                          Navigator.of(context).pushReplacementNamed("/home");
+                        },
+                      ),
+                    ));
           });
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
@@ -75,18 +75,16 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else {
           _showErrorMessage(eventResult);
         }
-      }
-      else if(eventResult.isMaintenance){
+      } else if (eventResult.isMaintenance) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                    isShowCS: true,
-                  )),
-                  (Route<dynamic> route) => false);
+                        isShowCS: true,
+                      )),
+              (Route<dynamic> route) => false);
         });
-      }
-      else if (eventResult.isSuccess) {
+      } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (isRequireResult) {
           onSuccess(eventResult.result);

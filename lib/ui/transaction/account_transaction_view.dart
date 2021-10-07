@@ -80,7 +80,8 @@ class AccountTransactionViewState extends BaseState<AccountTransactionView> {
           ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false,
           getManualDepositId: (){
             _vm.getManualDepositOrder(_vm.accountTransactionList[index].id);
-          },),
+          },
+            isAccountTransaction: true),
         );
       }).toList();
 
