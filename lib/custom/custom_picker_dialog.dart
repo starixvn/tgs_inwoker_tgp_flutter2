@@ -98,13 +98,42 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     }
   }
 
-  _getPickerItem(index) => widget.list is List<BankCard>
-      ? _getBankCardPickerItem(index)
-      : Text(
-          _getText(index),
-          style: TextStyle(fontSize: 13.auto),
-          textAlign: TextAlign.center,
-        );
+  _getPickerItem(index) {
+    if (widget.list is List<BankCard>)
+      return _getBankCardPickerItem(index);
+    else if (widget.list is List<Wallet>)
+      return buildWalletItem(index);
+    else
+      return _buildText(index);
+  }
+
+  _buildText(int index) => Text(
+        _getText(index),
+        style: TextStyle(fontSize: 13.auto),
+        textAlign: TextAlign.center,
+      );
+
+  buildWalletItem(index) {
+    Wallet wallet = widget.list[index];
+    return Row(
+      children: [
+        Expanded(
+            flex: 1,
+            child: Text(
+              (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title,
+              style: TextStyle(fontSize: 13.auto),
+              textAlign: TextAlign.center,
+            )),
+        Expanded(
+            flex: 1,
+            child: Text(
+              wallet.balance.toString(),
+              style: TextStyle(fontSize: 13.auto),
+              textAlign: TextAlign.center,
+            ))
+      ],
+    );
+  }
 
   _getBankCardPickerItem(index) {
     BankType bankType = widget.list[index].bankType;

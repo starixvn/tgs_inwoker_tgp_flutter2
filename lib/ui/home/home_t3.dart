@@ -1,4 +1,5 @@
 import 'package:api/entity/game_type.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -58,7 +59,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   @override
   void initState() {
     _vm.getAnnouncement();
-    _vm.getApiError();
+    _vm.getBanner();
     _vm.resumeIfNeed();
     super.initState();
   }
@@ -84,7 +85,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                 children: [
                   _buildImageSlider(),
                   Expanded(
-                      flex: 4,
+                      flex: 3,
                       child: Column(
                         children: [_buildImageRow(), _buildGameImageGridView()],
                       ))
@@ -99,59 +100,45 @@ class _HomeT3State extends BaseState<HomeT3> {
         });
   }
 
-  /*_buildImageSlider() => Expanded(
-        flex: 1,
-        child: Swiper(
-          itemBuilder: (BuildContext context, int index) {
-            return AspectRatio(
-              aspectRatio: 360 / 200,
-              child: Image.asset(
-                "images/home_banner/${imgList[index]}.png",
-                fit: BoxFit.fill,
-              ),
-            );
-          },
-          autoplay: true,
-          itemCount: imgList.length,
-          pagination: SwiperPagination(
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.all(context.screenHeight / 150),
-            builder: DotSwiperPaginationBuilder(
-              color: Colors.grey,
-              activeColor: Colors.red,
-              size: 5.auto,
-              activeSize: 5.auto,
-            ),
-          ),
-        ),
-      );*/
   _buildImageSlider() {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Expanded(
         flex: 1,
-        child: Swiper(
-            itemBuilder: (BuildContext context, int index) {
-              return AspectRatio(
-                aspectRatio: 360 / 200,
-                child: Image.asset(
-                  "images/home_banner/${getCurrentLanguage().apiCode}/$brand/${index + 1}.jpg",
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-            autoplay: true,
-            itemCount: 2,
-            pagination: SwiperPagination(
-              alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.all(context.screenHeight / 150),
-              builder: DotSwiperPaginationBuilder(
-                color: Colors.grey,
-                activeColor: Colors.red,
-                size: 5.auto,
-                activeSize: 5.auto,
-              ),
-            )));
+        child: _vm.bannerList == null || _vm.bannerList.isEmpty
+            ? _buildEmptyContainer()
+            : Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) => _buildEmptyContainer(),
+                      imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                      //handling error
+                      fit: BoxFit.fill,
+                      errorWidget: (context, url, error) => _buildEmptyContainer(),
+                    ),
+                  );
+                },
+                autoplay: true,
+                itemCount: 2,
+                pagination: SwiperPagination(
+                  alignment: Alignment.bottomCenter,
+                  margin: EdgeInsets.all(context.screenHeight / 150),
+                  builder: DotSwiperPaginationBuilder(
+                    color: Colors.grey,
+                    activeColor: Colors.red,
+                    size: 5.auto,
+                    activeSize: 5.auto,
+                  ),
+                )));
   }
+
+  _buildEmptyContainer() => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: CustomColor.very_light_pink_four,
+        ),
+      );
 
   _buildImageRow() => Expanded(
         flex: 2,
@@ -250,5 +237,8 @@ class _HomeT3State extends BaseState<HomeT3> {
         });
       }
     }
+    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

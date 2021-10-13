@@ -21,12 +21,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
-  handleApiState(EventResult eventResult,
-      {Function onSuccess,
-      Function onError,
-      bool isAutoHideLoading = true,
-      bool isRequireResult = false,
-      bool isCheckSessionExpired = true}) async {
+  handleApiState(
+    EventResult eventResult, {
+    Function onSuccess,
+    Function onError,
+    bool isAutoHideLoading = true,
+    bool isRequireResult = false,
+    bool isCheckSessionExpired = true,
+    bool isSplashScreen = false,
+  }) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
       if (eventResult.isError) {
@@ -37,7 +40,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
-        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) && isCheckSessionExpired) {
+        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) &&
+            isCheckSessionExpired &&
+            !isSplashScreen) {
           UserRepository.getSingleton().clearSession();
           WidgetsBinding.instance.addPostFrameCallback((_) {
             showDialog(
@@ -99,8 +104,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            url == null?Container()
-            :CachedNetworkImage(
+            url == null
+                ? Container()
+                : CachedNetworkImage(
                     placeholder: (context, url) => Container(),
                     imageUrl: url,
                     //handling error
@@ -152,8 +158,10 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     return deviceLanguage;
   }
 
-  handleNullWidget(bool isNull, Widget widget){
-    if(isNull) return Container();
-    else return widget;
+  handleNullWidget(bool isNull, Widget widget) {
+    if (isNull)
+      return Container();
+    else
+      return widget;
   }
 }

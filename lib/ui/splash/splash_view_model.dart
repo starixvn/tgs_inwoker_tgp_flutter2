@@ -35,4 +35,8 @@ class SplashViewModel extends BaseViewModel {
     setLoading(false);
     return getBrandLogoApiState;
   }
+
+  getApiError() async {
+    await userRepo.getApiErrorLocalization();
+  }
 }

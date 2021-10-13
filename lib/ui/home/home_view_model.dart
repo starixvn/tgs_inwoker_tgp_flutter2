@@ -1,3 +1,4 @@
+import 'package:api/entity/home_banner.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/announcement.dart';
 import 'package:api/entity/game.dart';
@@ -22,9 +23,10 @@ class HomeViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   bool isNotLogin = false, isExpired = false;
-  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState;
-  Announcement announcement;
+  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
+  String announcement;
   double gameBalance = 0.0, totalBalance;
+  List<HomeBanner> bannerList;
 
   resumeIfNeed() async {
     setLoading();
@@ -52,10 +54,29 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
-      announcement = getAnnouncementApiState.result.first;
+      List<Announcement> _list = getAnnouncementApiState.result;
+      if (_list?.isEmpty ?? true)
+        announcement = "";
+      else {
+        announcement = _getAnnouncementContent(_list.first);
+        if (_list.length != 1) {
+          for (var i = 1; i < _list.length; i++) {
+            announcement = announcement + " " + _getAnnouncementContent(_list[i]);
+          }
+        }
+      }
     }
     setLoading(false);
     return getAnnouncementApiState;
+  }
+
+  _getAnnouncementContent(Announcement text) {
+    if (text?.localization?.content?.isNotEmpty ?? true)
+      return text?.localization?.content;
+    else if (text?.content?.isNotEmpty ?? true)
+      return text?.content;
+    else
+      return "";
   }
 
   getApiError() async {
@@ -81,5 +102,15 @@ class HomeViewModel extends BaseViewModel {
       gameBalance += state.result.balance;
     }
     notifyListeners();
+  }
+
+  getBanner() async {
+    setLoading();
+    getBannerApiState = await contentRepo.getBanner();
+    if (getBannerApiState.isSuccess) {
+      bannerList = getBannerApiState.result;
+    }
+    setLoading(false);
+    return getBannerApiState;
   }
 }

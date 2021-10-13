@@ -52,66 +52,79 @@ class _ProfileState extends BaseState<Profile> {
 
   _buildUserInfoContainer() => Container(
         padding: EdgeInsets.only(top: 20.auto, left: 20.auto, right: 20.auto),
+        // margin: EdgeInsets.only(left: 10.auto),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [_buildProfileImage(), _buildBalanceText()],
         ),
       );
 
-  _buildProfileImage() => Column(
-        children: [
-          Container(
-              width: 65.auto,
-              height: 65.auto,
-              decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
-          Container(
-            margin: EdgeInsets.only(top: 3.auto),
-            child: Text(
-              _vm.userProfile?.username ?? " ",
-              style: TextStyle(color: CustomColor.theme_text_grey_white_color),
-            ),
-          )
-        ],
-      );
-
-  _buildBalanceText() => Container(
-        width: context.screenWidth / 2,
-        padding: EdgeInsets.only(left: 20.auto),
+  _buildProfileImage() => Expanded(
+        flex: 2,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 5.auto),
-              child: Row(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(right: 5.auto),//decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
-                      child:ImageIcon(
-                        AssetImage("images/profile/ic_balance.png"),
-                        color: CustomColor.theme_text_grey_white_color,
-                      )),
-                  Text(
-                    " ¥ ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
-                    style: TextStyle(color: CustomColor.theme_text_grey_white_color),
-                  )
-                ],
+                width: 65.auto,
+                height: 65.auto,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image:
+                        new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+            Container(
+              margin: EdgeInsets.only(top: 3.auto),
+              child: Text(
+                "${_vm.userProfile?.username} (VIP ${_vm.userProfile?.vipLevel})",
+                style: TextStyle(color: CustomColor.theme_text_grey_white_color),
+                textAlign: TextAlign.center,
+                maxLines: 1,
               ),
-            ),
-            Row(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(right: 5.auto),//decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
-                    child:ImageIcon(
-                      AssetImage("images/profile/ic_balance.png"),
-                      color: CustomColor.theme_button_color,
-                    )),                Text(
-                  _vm.totalBalance != null ? " ¥ ${Format().currencyWithDecimalFormat(_vm.totalBalance)}": "-",
-                  style: TextStyle(color: CustomColor.theme_button_color),
-                )
-              ],
             )
           ],
+        ),
+      );
+
+  _buildBalanceText() => Expanded(
+        flex: 3,
+        child: Container(
+          padding: EdgeInsets.only(left: 20.auto),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 5.auto),
+                child: Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(right: 5.auto),
+                        //decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
+                        child: ImageIcon(
+                          AssetImage("images/profile/ic_balance.png"),
+                          color: CustomColor.theme_text_grey_white_color,
+                        )),
+                    Text(
+                      " ¥ ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
+                      style: TextStyle(color: CustomColor.theme_text_grey_white_color),
+                    )
+                  ],
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.only(right: 5.auto),
+                      //decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
+                      child: ImageIcon(
+                        AssetImage("images/profile/ic_balance.png"),
+                        color: CustomColor.theme_button_color,
+                      )),
+                  Text(
+                    _vm.totalBalance != null ? " ¥ ${Format().currencyWithDecimalFormat(_vm.totalBalance)}" : "-",
+                    style: TextStyle(color: CustomColor.theme_button_color),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       );
 

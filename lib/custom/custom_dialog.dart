@@ -84,6 +84,7 @@ class CustomDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(flex: 1, child: _buildDoneButton(context)),
+                        Container(width: 10.auto,),
                         Expanded(flex: 1, child: _buildBackButton(context))
                       ],
                     )
@@ -117,5 +118,6 @@ class CustomDialog extends StatelessWidget {
         height: context.screenHeight / 18,
         fontSize: 13.auto,
         color: CustomColor.theme_text_black_color,
+        radius: 45.auto,
       );
 }

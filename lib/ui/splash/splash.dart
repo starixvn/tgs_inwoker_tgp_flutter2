@@ -25,6 +25,7 @@ class _SplashState extends BaseState<Splash> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.getAuthToken();
+      _vm.getApiError();
       _vm.getBrandLogo();
       _vm.getLanguageOption();
     });
@@ -67,11 +68,11 @@ class _SplashState extends BaseState<Splash> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {
       _navigateToHome();
     });
-    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.authApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 
   _navigateToHome() {
