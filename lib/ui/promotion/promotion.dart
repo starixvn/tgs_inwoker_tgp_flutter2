@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gradient_text/gradient_text.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
@@ -74,33 +73,8 @@ class _PromotionState extends BaseState<Promotion> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GradientText(
-                      getTranslatedText("promotion_empty1"),
-                      style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff446597),
-                          Color(0xff282828),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    GradientText(
-                      getTranslatedText("promotion_empty2"),
-                      //getTranslatedText("promotion_empty"),
-                      style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff446597),
-                          Color(0xff282828),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
+                    _buildGradientText(getTranslatedText("promotion_empty1")),
+                    _buildGradientText(getTranslatedText("promotion_empty2")),
                   ],
                 ))
           ],
@@ -116,6 +90,25 @@ class _PromotionState extends BaseState<Promotion> {
       );
     }
   }
+
+  _buildGradientText(String text) => ShaderMask(
+    shaderCallback: (bounds) {
+      return LinearGradient(
+        colors: [
+          Color(0xff446597),
+          Color(0xff282828),
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ).createShader(Offset.zero & bounds.size);
+    },
+    child: Text(
+      text,
+      textAlign: TextAlign.center,
+      style:
+      TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+    ),
+  );
 
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {

@@ -1,5 +1,6 @@
 import 'package:api/entity/game_type.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -13,7 +14,6 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
@@ -29,8 +29,8 @@ class HomeT3 extends StatefulWidget {
 
 class _HomeT3State extends BaseState<HomeT3> {
   List<String> imgList = [
-    'banner_1',
-    'banner_2',
+    '1',
+    '2',
     //'images/banner_2.jpg'
   ];
 
@@ -46,7 +46,6 @@ class _HomeT3State extends BaseState<HomeT3> {
     GameType.EGame,
     GameType.CardGameLobby,
   ];
-  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile user;
@@ -55,6 +54,8 @@ class _HomeT3State extends BaseState<HomeT3> {
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
@@ -106,7 +107,8 @@ class _HomeT3State extends BaseState<HomeT3> {
         flex: 1,
         child: _vm.bannerList == null || _vm.bannerList.isEmpty
             ? _buildEmptyContainer()
-            : Swiper(
+            :
+            /*Swiper(
                 itemBuilder: (BuildContext context, int index) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(10),
@@ -130,7 +132,63 @@ class _HomeT3State extends BaseState<HomeT3> {
                     size: 5.auto,
                     activeSize: 5.auto,
                   ),
-                )));
+                ))*/
+            ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Stack(
+                  children: [
+                    CarouselSlider(
+                      items: List.generate(
+                          _vm.bannerList.length,
+                          (index) => ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  height: 400,
+                                  width: context.screenWidth,
+                                  placeholder: (context, url) => _buildEmptyContainer(),
+                                  imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                                  //handling error
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) => _buildEmptyContainer(),
+                                ),
+                              )),
+                      options: CarouselOptions(
+                        height: 400,
+                        aspectRatio: context.screenWidth / 400,
+                        viewportFraction: 1,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(milliseconds: 500),
+                        enlargeCenterPage: true,
+                        scrollDirection: Axis.horizontal,
+                        onPageChanged: (index, _) {
+                          setState(() {
+                            _current = index;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 400,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: List.generate(_vm.bannerList.length, (index) {
+                          return Container(
+                            width: 8.auto,
+                            height: 8.auto,
+                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ));
   }
 
   _buildEmptyContainer() => Container(

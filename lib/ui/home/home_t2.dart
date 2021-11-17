@@ -1,5 +1,6 @@
 import 'package:api/entity/game_type.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -15,7 +16,6 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
@@ -44,7 +44,8 @@ class _HomeT2State extends BaseState<HomeT2> {
 
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  SwiperController swiperController = SwiperController();
+  int _current = 0;
+  CarouselController carouselController = CarouselController();
 
   @override
   void initState() {
@@ -91,49 +92,71 @@ class _HomeT2State extends BaseState<HomeT2> {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
       height: context.screenHeight / 5,
-      child: Stack(
-        children: [
-          _vm.bannerList == null || _vm.bannerList.isEmpty
-              ? _buildEmptyContainer()
-              : Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        placeholder: (context, url) => _buildEmptyContainer(),
-                        imageUrl: _vm.bannerList[index].mobileUrl ?? "",
-                        //handling error
-                        fit: BoxFit.fill,
-                        errorWidget: (context, url, error) => _buildEmptyContainer(),
-                      ),
-                    );
-                  },
-                  autoplay: true,
-                  itemCount: 2,
-                  pagination: SwiperPagination(
-                    alignment: Alignment.bottomCenter,
-                    margin: EdgeInsets.all(context.screenHeight / 150),
-                    builder: DotSwiperPaginationBuilder(
-                      color: Colors.grey,
-                      activeColor: Colors.red,
-                      size: 5.auto,
-                      activeSize: 5.auto,
-                    ),
+      child: _vm.bannerList == null || _vm.bannerList.isEmpty
+          ? _buildEmptyContainer()
+          : Stack(
+              children: [
+                CarouselSlider(
+                  carouselController: carouselController,
+                  items: List.generate(
+                      _vm.bannerList.length,
+                      (index) => ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              height: 400,
+                              width: context.screenWidth,
+                              placeholder: (context, url) => _buildEmptyContainer(),
+                              imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                              //handling error
+                              fit: BoxFit.fill,
+                              errorWidget: (context, url, error) => _buildEmptyContainer(),
+                            ),
+                          )),
+                  options: CarouselOptions(
+                    height: 400,
+                    aspectRatio: context.screenWidth / 400,
+                    viewportFraction: 1,
+                    initialPage: 0,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 500),
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (index, _) {
+                      setState(() {
+                        _current = index;
+                      });
+                    },
                   ),
-                  controller: swiperController,
-                  duration: 500,
                 ),
-          InkWell(
-            onTap: () {
-              swiperController.next();
-            },
-            child: Container(
-              alignment: Alignment.centerRight,
-              child: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                InkWell(
+                  onTap: () {
+                    carouselController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
+                  },
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.arrow_forward_ios, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  height: 400,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: List.generate(_vm.bannerList.length, (index) {
+                      return Container(
+                        width: 8.auto,
+                        height: 8.auto,
+                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
-          )
-        ],
-      ),
     );
   }
 

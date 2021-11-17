@@ -1,4 +1,4 @@
-import 'package:fdottedline/fdottedline.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
@@ -187,12 +187,10 @@ class _MainCardState extends BaseState<MainCard> {
           },
           child: Container(
             margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
-            child: FDottedLine(
+            child: DottedBorder(
                 color: CustomColor.theme_text_grey_white_color,
-                height: 70.0,
-                width: context.screenWidth,
-                space: 2.0,
-                corner: FDottedLineCorner.all(10.auto),
+                borderType: BorderType.RRect,
+                radius: Radius.circular(10.auto),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
