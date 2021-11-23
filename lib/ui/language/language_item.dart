@@ -6,15 +6,14 @@ import 'package:tgp_flutter2/base_state.dart';
 
 class LanguageItem extends StatefulWidget {
   final bool isSelected;
-  final String imagePath;
-  final String text;
+  final String? imagePath;
+  final String? text;
 
   LanguageItem({
-    Key key,
-    this.isSelected,
+    this.isSelected = false,
     this.imagePath,
     this.text,
-  }) : super(key: key);
+  }) ;
 
   @override
   _LanguageItemState createState() => _LanguageItemState();
@@ -37,7 +36,7 @@ class _LanguageItemState extends BaseState<LanguageItem> {
                   ? Container(
                       margin: EdgeInsets.only(right: 10.auto),
                       child: Image.asset(
-                        widget.imagePath,
+                        widget.imagePath!,
                         height: 25.auto,
                         width: 36.auto,
                       ),
@@ -49,7 +48,7 @@ class _LanguageItemState extends BaseState<LanguageItem> {
                     ),
               Expanded(
                 child: Text(
-                  widget.text,
+                  widget.text!,
                   style: TextStyle(fontSize: 14.auto, color: CustomColor.theme_text_black_white_color),
                 ),
               ),

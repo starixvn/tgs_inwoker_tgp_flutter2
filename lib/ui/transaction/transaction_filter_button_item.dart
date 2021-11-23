@@ -7,10 +7,10 @@ class TransactionFilterButtonItem extends StatefulWidget{
   final int index;
   final ValueChanged<int> onTextChanged;
 
-  const TransactionFilterButtonItem({Key key,
-    this.index,
-    this.onTextChanged
-  }) : super(key: key);
+  const TransactionFilterButtonItem({
+    required this.index,
+    required this.onTextChanged
+  }) ;
 
 
   @override
@@ -45,7 +45,7 @@ class _TransactionFilterButtonItemState extends BaseState<TransactionFilterButto
       child: Row(
           children: List.generate(filterTabList.length, (index){
             return Container(
-              child: _buildFilterButton(index, filterTabList[index]["text"]),
+              child: _buildFilterButton(index, (filterTabList[index]["text"])!),
             );
           })
       ),

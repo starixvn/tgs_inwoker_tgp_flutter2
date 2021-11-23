@@ -45,23 +45,23 @@ class _MainCardState extends BaseState<MainCard> {
               resizeToAvoidBottomInset: false,
               backgroundColor: CustomColor.theme_bg_color,
               appBar: _buildAppBar(),
-              body: _vm.bankCardList == null || _vm.bankCardList.length == 0
+              body: _vm.bankCardList == null || _vm.bankCardList!.length == 0
                   ? buildProgressDialog(_vm.brandLogoUrl)
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.auto),
                       child: ListView(
                         children: [
                           Wrap(
-                            children: List.generate(_vm.bankCardList.length, (index) {
+                            children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
                                   child: Dismissible(
                                 key: UniqueKey(),
-                                child: _buildBankCardItem(_vm.bankCardList[index]),
+                                child: _buildBankCardItem(_vm.bankCardList![index]),
                                 background: _swipeLeftBackground(),
                                 direction: DismissDirection.endToStart,
                                 behavior: HitTestBehavior.deferToChild,
                                 onDismissed: (_) {
-                                  _delete(_vm.bankCardList[index], index);
+                                  _delete(_vm.bankCardList![index], index);
                                 },
                               ));
                             }),
@@ -145,7 +145,7 @@ class _MainCardState extends BaseState<MainCard> {
                 Container(
                   margin: EdgeInsets.only(top: 10.auto),
                   child: Text(
-                    bankCard.bankType == BankType.CRYPTO ? (bankCard.bankDetail.address) : (bankCard.bankDetail.bankAccount ?? ""),
+                    bankCard.bankType == BankType.CRYPTO ? (bankCard.bankDetail.address??"") : (bankCard.bankDetail.bankAccount??""),
                     style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
                   ),
                 )
@@ -179,7 +179,7 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildAddCardItem() => Visibility(
-        visible: _vm.bankCardList.length != 3,
+        visible: _vm.bankCardList!.length != 3,
         child: InkWell(
           onTap: () async {
             await Navigator.of(context).pushNamed("/add_card");
@@ -229,10 +229,10 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _delete(BankCard card, int index) async {
-    if (_vm.bankCardList.length > 1) //only show when existing list more than 1, else overlapped
+    if (_vm.bankCardList!.length > 1) //only show when existing list more than 1, else overlapped
       ProgressDialog.show(context, _vm.brandLogoUrl);
     setState(() {
-      _vm.bankCardList.removeAt(index);
+      _vm.bankCardList!.removeAt(index);
     });
     await _vm.deleteBankCard(card.id);
   }
@@ -242,7 +242,7 @@ class _MainCardState extends BaseState<MainCard> {
   }
 
   _checkBankCardListLength() async {
-    if (_vm.bankCardList.length == 0) {
+    if (_vm.bankCardList!.length == 0) {
       var result = await Navigator.of(context).pushNamed("/add_card");
       if (result == null) //no result mean no card added
         Navigator.pop(context);
@@ -258,7 +258,7 @@ class _MainCardState extends BaseState<MainCard> {
       if (!isInitLoading) {
         isInitLoading = true;
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _checkBankCardListLength(); //check card list every time fetched
       });
     });

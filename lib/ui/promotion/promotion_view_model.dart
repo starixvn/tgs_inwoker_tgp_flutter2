@@ -16,22 +16,23 @@ class PromotionViewModel extends BaseViewModel {
 
   var getPromotionListApiState, joinPromotionApiState;
   var promotionList;
-  int page, rows = 10;
-  bool endRecord;
+  int? page;
+  int rows = 10;
+  bool endRecord = false;
 
   getPromotionList({isLoadMore = false}) async {
     setLoading();
 
     if (isLoadMore) {
-      if (page * rows < getPromotionListApiState.result.totalCount)
-        page++;
+      if (page! * rows < getPromotionListApiState.result.totalCount)
+        page = page!+1;
       else
         return;
     } else
       page = 1;
 
     //if (userProfile == null)
-      getPromotionListApiState = await contentRepo.getPromotionList(page, rows, true, true, userProfile == null);
+    getPromotionListApiState = await contentRepo.getPromotionList(page!, rows, true, true, userProfile == null);
     // else
     //   getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
     List<Promotion> list = [];

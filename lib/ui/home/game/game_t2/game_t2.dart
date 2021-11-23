@@ -83,9 +83,9 @@ class _GameT2State extends BaseState<GameT2> {
 
   _getGameTypeMap() {
     if (currentGameType == GameType.Sportsbook)
-      return ([_vm.gameTypeMap[GameType.ESports], _vm.gameTypeMap[GameType.Sportsbook]].expand((x) => x).toList());
+      return ([_vm.gameTypeMap![GameType.ESports], _vm.gameTypeMap![GameType.Sportsbook]].expand((x) => x!).toList());
     else
-      return _vm.gameTypeMap[currentGameType];
+      return _vm.gameTypeMap![currentGameType];
   }
 
   _buildTopGameTab(int tabIndex, GameType gameType) => Container(
@@ -172,7 +172,7 @@ class _GameT2State extends BaseState<GameT2> {
   }
 
   navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }
@@ -180,7 +180,7 @@ class _GameT2State extends BaseState<GameT2> {
   _navigate(String gamePlatformCode, GameType gameType) async {
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -192,14 +192,14 @@ class _GameT2State extends BaseState<GameT2> {
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(context,
             MaterialPageRoute(
-                builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType, gameId: _vm.gameListMap[gamePlatformCode].first.id, )));
+                builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType, gameId: _vm.gameListMap[gamePlatformCode]!.first.id, )));
       });
     } else {
       //navigate to game web
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
       });

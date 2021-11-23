@@ -12,17 +12,15 @@ class TransactionCellItem extends StatefulWidget {
   final bool isEndRecord;
   final bool isUploadButton;
   final bool isAccountTransaction;
-  final Function getManualDepositId;
+  final Function? getManualDepositId;
 
   TransactionCellItem(
-      {Key key,
-      this.list,
-      this.type,
-      this.isEndRecord,
-      this.isUploadButton,
-      this.getManualDepositId,
-      this.isAccountTransaction = false})
-      : super(key: key);
+      {required this.list,
+      required this.type,
+      required this.isEndRecord,
+       this.isUploadButton = false,
+       this.getManualDepositId,
+      this.isAccountTransaction = false});
 
   @override
   _TransactionCellItemState createState() => _TransactionCellItemState();
@@ -120,7 +118,7 @@ class _TransactionCellItemState extends BaseState<TransactionCellItem> {
                               !widget.isUploadButton,
                               ColorButton(
                                 title: getTranslatedText("upload_prof"),
-                                onClick: () => widget.getManualDepositId(),
+                                onClick: () => widget.getManualDepositId!(),
                                 isEnabled: true,
                                 radius: 4.8,
                                 height: 30,

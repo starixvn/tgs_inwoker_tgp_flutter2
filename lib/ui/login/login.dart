@@ -18,8 +18,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends BaseState<Login> {
   var _vm = LoginViewModel();
-  PackageInfo packageInfo;
-  String version;
+  PackageInfo? packageInfo;
+  String? version;
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _LoginState extends BaseState<Login> {
 
   _buildLogoImage() => Container(
       margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
-      child: (_vm?.brandLogoUrl?.isEmpty ?? true)
+      child: (_vm.brandLogoUrl?.isEmpty ?? true)
           ? Container(
               height: 100.auto,
             )
@@ -89,7 +89,7 @@ class _LoginState extends BaseState<Login> {
     packageInfo = await PackageInfo.fromPlatform();
 
     setState(() {
-      version = packageInfo.version;
+      version = packageInfo!.version;
     });
   }
 }

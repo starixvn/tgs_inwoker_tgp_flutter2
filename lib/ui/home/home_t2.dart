@@ -23,7 +23,7 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 class HomeT2 extends StatefulWidget {
   final bool isFirstRun;
 
-  HomeT2({this.isFirstRun});
+  HomeT2({this.isFirstRun = false});
 
   @override
   _HomeT2State createState() => _HomeT2State();
@@ -38,7 +38,7 @@ class _HomeT2State extends BaseState<HomeT2> {
   String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
-  UserProfile user;
+  UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
 
@@ -92,21 +92,21 @@ class _HomeT2State extends BaseState<HomeT2> {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
       height: context.screenHeight / 5,
-      child: _vm.bannerList == null || _vm.bannerList.isEmpty
+      child: _vm.bannerList == null || _vm.bannerList!.isEmpty
           ? _buildEmptyContainer()
           : Stack(
               children: [
                 CarouselSlider(
                   carouselController: carouselController,
                   items: List.generate(
-                      _vm.bannerList.length,
+                      _vm.bannerList!.length,
                       (index) => ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: CachedNetworkImage(
                               height: 400,
                               width: context.screenWidth,
                               placeholder: (context, url) => _buildEmptyContainer(),
-                              imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                              imageUrl: _vm.bannerList![index].mobileUrl,
                               //handling error
                               fit: BoxFit.fill,
                               errorWidget: (context, url, error) => _buildEmptyContainer(),
@@ -144,7 +144,7 @@ class _HomeT2State extends BaseState<HomeT2> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: List.generate(_vm.bannerList.length, (index) {
+                    children: List.generate(_vm.bannerList!.length, (index) {
                       return Container(
                         width: 8.auto,
                         height: 8.auto,
@@ -165,7 +165,7 @@ class _HomeT2State extends BaseState<HomeT2> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement));
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement!));
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
@@ -239,7 +239,7 @@ class _HomeT2State extends BaseState<HomeT2> {
       );*/
 
   navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }
@@ -271,7 +271,7 @@ class _HomeT2State extends BaseState<HomeT2> {
         navigateToLogin();
         _vm.markIsNotLogin();
       } else if (_vm.isExpired) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           _displayDialog();
         });
       }

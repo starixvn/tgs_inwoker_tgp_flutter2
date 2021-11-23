@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+//import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tgp_flutter2/custom/leave_game_dialog.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -12,11 +12,11 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 
 class GameWeb extends StatefulWidget {
-  final int gameId;
-  final String gamePlatformCode;
-  final GameType gameType;
+  final int? gameId;
+  final String? gamePlatformCode;
+  final GameType? gameType;
 
-  GameWeb({Key key, this.gameId, this.gameType, this.gamePlatformCode}) : super(key: key);
+  GameWeb({this.gameId, this.gameType, this.gamePlatformCode}) ;
 
   @override
   _GameWebState createState() => _GameWebState();
@@ -25,30 +25,30 @@ class GameWeb extends StatefulWidget {
 class _GameWebState extends BaseState<GameWeb> {
   var _vm = GameViewModel();
 
-  InAppWebViewController _webViewController;
+  InAppWebViewController? _webViewController;
 
   //WebViewController _webViewController;
   var isLoading = false;
-  String url, lobbyUrl;
-  FlutterWebviewPlugin webviewPlugin = FlutterWebviewPlugin();
+  String? url, lobbyUrl;
+  //FlutterWebviewPlugin webviewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
     lobbyUrl =
         "http://gci.aggdemo.com:81/forwardGame.do?params=4DJlwdGL1cWclbwxZFKgtr6rJmU8Mqe0y4VXswlHs8uWLV/LAwtfY9/SYLWTh/MBrOQNAdd/nZiuIaXx1/ZDX71ziYHXpHj9WeekhidF60CbLBd9VFlD9EYcWQOX7ALM/w3Ww5Yy86wEsd/IgnUTGwU7vX+3btJezXPCNriz+iYgg9d9jU6yEAXdEN0H7L/tkDdt8IWJGjAqQ2334aF5vlPc2f7DCzM7&key=8dc57f4377fc86da1d0d9e47495993e0";
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
-        _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
+        _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
       else
-        _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType, lobbyUrl);
+        _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
     });
-    if (isHabaPPGamePlatform()) {
+    /*if (isHabaPPGamePlatform()) {
       webviewPlugin.onUrlChanged.listen((String url) {
         if (url == lobbyUrl) {
           _displayDialog();
         }
       });
-    }
+    }*/
     super.initState();
   }
 
@@ -98,7 +98,7 @@ class _GameWebState extends BaseState<GameWeb> {
       );
 
   _buildWebView() {
-    return isHabaPPGamePlatform()
+    return /*isHabaPPGamePlatform()
         ? WebviewScaffold(
             url: _getValidUrl(url),
             withZoom: false,
@@ -107,45 +107,47 @@ class _GameWebState extends BaseState<GameWeb> {
             useWideViewPort: true,
             hidden: true,
           )
-        : InAppWebView(
-            initialUrl: _getValidUrl(url),
+        : */InAppWebView(
+            initialUrlRequest: URLRequest(url:Uri.parse(_getValidUrl(url))),
             initialOptions: InAppWebViewGroupOptions(
                 crossPlatform: InAppWebViewOptions(
-                    debuggingEnabled: true, javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
+                    //debuggingEnabled: true,
+    javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
                 android: AndroidInAppWebViewOptions(
                   useWideViewPort: true,
                   mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
                 )),
             onWebViewCreated: (InAppWebViewController controller) {
               _webViewController = controller;
-              _webViewController.loadUrl(url: _getValidUrl(url));
+              _webViewController!.loadUrl(urlRequest: URLRequest(url:Uri.parse(_getValidUrl(url))));
             },
             onExitFullscreen: (InAppWebViewController controller) {
               Navigator.pop(
                 context,
               );
             },
-            onLoadStart: (InAppWebViewController controller, String url) {
+            onLoadStart: ( controller,  url) {
               //ProgressDialog.show(context, _vm.brandLogoUrl);
             },
-            onLoadStop: (InAppWebViewController controller, String url) async {
+            onLoadStop: ( controller,  url) async {
               // ProgressDialog.hide();
             },
-            shouldOverrideUrlLoading: (controller, shouldOverrideUrlLoadingRequest) async {
-              if (shouldOverrideUrlLoadingRequest.url == lobbyUrl) {
+            shouldOverrideUrlLoading: (controller, navigationAction) async {
+              var uri = navigationAction.request.url!;
+              if (uri == Uri.parse(lobbyUrl!)) {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => LeaveGameDialog(),
                 );
-                return ShouldOverrideUrlLoadingAction.CANCEL;
+                return NavigationActionPolicy.CANCEL;
               } else {
-                return ShouldOverrideUrlLoadingAction.ALLOW;
+                return NavigationActionPolicy.ALLOW;
               }
             },
           );
   }
 
-  _getValidUrl(String url) {
+  _getValidUrl(String? url) {
     if (url != null) {
       if ((url.contains("https://") || url.contains("http://"))) {
         return url;
@@ -156,7 +158,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _displayDialog() {
-    if (isHabaPPGamePlatform()) webviewPlugin.close();
+   // if (isHabaPPGamePlatform()) webviewPlugin.close();
     showDialog(
       context: context,
       builder: (BuildContext context) => LeaveGameDialog(),
@@ -166,9 +168,9 @@ class _GameWebState extends BaseState<GameWeb> {
   _loadWebView() {
     isLoading = true;
     if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
-      _vm.getGameUrl(widget.gamePlatformCode, widget.gameId, lobbyUrl);
+      _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
     else
-      _vm.getLobbyGameUrl(widget.gamePlatformCode, widget.gameType, lobbyUrl);
+      _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
   }
 
   isHabaPPGamePlatform() {

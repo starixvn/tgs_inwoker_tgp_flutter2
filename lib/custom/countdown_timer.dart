@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class CountdownTimer extends AnimatedWidget {
-  CountdownTimer({Key key, this.animation}) : super(key: key, listenable: animation);
+  CountdownTimer({required this.animation}) : super( listenable: animation);
   final Animation<int> animation;
 
   @override

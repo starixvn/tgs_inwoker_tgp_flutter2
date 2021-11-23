@@ -48,9 +48,9 @@ class _DepositState extends BaseState<Deposit> {
                   return buildProgressDialog(_vm.brandLogoUrl);
                 else
                   return handleNullWidget(
-                      _vm.paymentCodeList.isEmpty,
+                      _vm.paymentCodeList!.isEmpty,
                       DefaultTabController(
-                        length: _vm.paymentCodeList.keys.length,
+                        length: _vm.paymentCodeList!.keys.length,
                         child: Column(
                           children: [
                             Container(
@@ -68,9 +68,9 @@ class _DepositState extends BaseState<Deposit> {
                                 },
                                 labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
                                 unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_grey_color),
-                                tabs: List.generate(_vm.paymentCodeList.keys.length, (index) {
+                                tabs: List.generate(_vm.paymentCodeList!.keys.length, (index) {
                                   return TabButton(
-                                    text: getTranslatedText(_vm.paymentCodeList.keys.toList()[index]) ?? "",
+                                    text: getTranslatedText(_vm.paymentCodeList!.keys.toList()[index]) ?? "",
                                     index: index,
                                     currentTabIndex: currentTabIndex,
                                     width: 90.auto,
@@ -81,10 +81,10 @@ class _DepositState extends BaseState<Deposit> {
                             ),
                             Expanded(
                               child: TabBarView(
-                                children: List.generate(_vm.paymentCodeList.keys.length, (index) {
+                                children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
                                   return DepositMethod(
-                                    paymentCode: _vm.paymentCodeList.keys.toList()[index],
-                                    depositMethodList: _vm.paymentCodeList.values.toList()[index],
+                                    paymentCode: _vm.paymentCodeList!.keys.toList()[index],
+                                    depositMethodList: _vm.paymentCodeList!.values.toList()[index],
                                     promotionList: _vm.displayPromotionList,
                                   );
                                 }).toList(),
@@ -119,7 +119,7 @@ class _DepositState extends BaseState<Deposit> {
               margin: EdgeInsets.only(right: 15.auto),
               alignment: Alignment.center,
               child: Text(
-                "¥ ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
+                "${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
                 style: TextStyle(color: CustomColor.theme_label_text_highlight_color),
               )),
         ],

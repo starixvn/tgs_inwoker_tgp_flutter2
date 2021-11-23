@@ -18,15 +18,16 @@ class HomeViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
-  get balance => userRepo.wallet.main;
+  get balance => userRepo.wallet?.main;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   bool isNotLogin = false, isExpired = false;
   var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
-  String announcement;
-  double gameBalance = 0.0, totalBalance;
-  List<HomeBanner> bannerList;
+  String? announcement;
+  double gameBalance = 0.0;
+  double? totalBalance;
+  List<HomeBanner>? bannerList;
 
   resumeIfNeed() async {
     setLoading();
@@ -36,10 +37,10 @@ class HomeViewModel extends BaseViewModel {
       print(token);
       await userRepo.getBasicInfo();
       await userRepo.getWalletBalance();
-      await _computeTotalBalance();
+     // await _computeTotalBalance();
       if (userProfile == null) isExpired = true;
       print("Token: " + token);
-      print("Authorization: " + prefs.getString("auth_token"));
+      print("Authorization: " + prefs.getString("auth_token")!);
     } else
       isNotLogin = true;
     setLoading(false);
@@ -55,13 +56,13 @@ class HomeViewModel extends BaseViewModel {
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
       List<Announcement> _list = getAnnouncementApiState.result;
-      if (_list?.isEmpty ?? true)
+      if (_list.isEmpty)
         announcement = "";
       else {
         announcement = _getAnnouncementContent(_list.first);
         if (_list.length != 1) {
           for (var i = 1; i < _list.length; i++) {
-            announcement = announcement + " " + _getAnnouncementContent(_list[i]);
+            announcement = announcement! + " " + _getAnnouncementContent(_list[i]);
           }
         }
       }
@@ -71,10 +72,10 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _getAnnouncementContent(Announcement text) {
-    if (text?.localization?.content?.isNotEmpty ?? true)
-      return text?.localization?.content;
-    else if (text?.content?.isNotEmpty ?? true)
-      return text?.content;
+    if (text.localization.content?.isNotEmpty ?? false)
+      return text.localization.content;
+    else if (text.content.isNotEmpty)
+      return text.content;
     else
       return "";
   }
@@ -85,7 +86,7 @@ class HomeViewModel extends BaseViewModel {
 
   _computeTotalBalance() async {
     if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
-    var gameList = contentRepo.gameProviderList.where((element) => element.transferWallet == true);
+    var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
 
     var task = <Future>[];
     gameList.forEach((game) {
@@ -99,7 +100,7 @@ class HomeViewModel extends BaseViewModel {
   _getGameWalletBalance(GameProvider game) async {
     var state = await walletRepo.getGameWallet(game.code);
     if (state.isSuccess) {
-      gameBalance += state.result.balance;
+      gameBalance += state.result?.balance ?? 0.0;
     }
     notifyListeners();
   }
@@ -112,5 +113,12 @@ class HomeViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getBannerApiState;
+  }
+
+  getUserInfo() async {
+    setLoading();
+    getBasicInfoApiState = await userRepo.getBasicInfo();
+    setLoading(false);
+    return getBasicInfoApiState;
   }
 }

@@ -17,29 +17,27 @@ class BaseTransaction extends StatefulWidget {
   final int filterIndex;
   final int expandedHeight;
   final TransactionViewModel vm;
-  final Function(bool, Status) getTransaction;
+  final Function(bool, Status?) getTransaction;
   final Function(int) setIndex;
   final ScrollController scrollController;
   final RefreshController refreshController;
-  final List list;
-  final List displayItemList;
+  final List<dynamic>? list;
+  final List<Widget>? displayItemList;
   final bool isUploadButton;
 
   BaseTransaction(
-      {Key key,
-      this.transactionHeaderList,
-      this.getPickerBox,
-      this.filterIndex,
-      this.expandedHeight,
-      this.vm,
-      this.getTransaction,
-      this.setIndex,
-      this.scrollController,
-      this.refreshController,
+      {required this.transactionHeaderList,
+      required this.getPickerBox,
+      required this.filterIndex,
+      required this.expandedHeight,
+      required this.vm,
+      required this.getTransaction,
+      required this.setIndex,
+      required this.scrollController,
+      required this.refreshController,
       this.list,
       this.displayItemList,
-      this.isUploadButton})
-      : super(key: key);
+      required this.isUploadButton});
 
   @override
   BaseTransactionState createState() => BaseTransactionState();
@@ -62,104 +60,102 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
               child: widget.list == null
                   ? buildProgressDialog(widget.vm.brandLogoUrl)
                   : CustomScrollView(
-                controller: widget.scrollController,
-                slivers: [
-                  SliverAppBar(
-                    automaticallyImplyLeading: false,
-                    pinned: true,
-                    floating: false,
-                    expandedHeight: widget.expandedHeight.auto,
-                    backgroundColor: CustomColor.theme_bg_color,
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.pin,
-                      background: Column(children: [
-                        _getCalendarItem(),
-                        TransactionFilterButtonItem(
-                          index: widget.filterIndex,
-                          onTextChanged: (value) => _onDateFilter(value),
+                      controller: widget.scrollController,
+                      slivers: [
+                        SliverAppBar(
+                          automaticallyImplyLeading: false,
+                          pinned: true,
+                          floating: false,
+                          expandedHeight: widget.expandedHeight.auto,
+                          backgroundColor: CustomColor.theme_bg_color,
+                          flexibleSpace: FlexibleSpaceBar(
+                            collapseMode: CollapseMode.pin,
+                            background: Column(children: [
+                              _getCalendarItem(),
+                              TransactionFilterButtonItem(
+                                index: widget.filterIndex,
+                                onTextChanged: (value) => _onDateFilter(value),
+                              ),
+                              widget.getPickerBox
+                            ]),
+                          ),
+                          bottom: PreferredSize(
+                            preferredSize: Size.zero,
+                            child: Center(
+                              child: TransactionHeaderItem(
+                                headerList: widget.transactionHeaderList,
+                                isUploadButton: widget.isUploadButton,
+                              ),
+                            ),
+                          ),
+                          toolbarHeight: 40.auto,
+                          elevation: 0,
                         ),
-                        widget.getPickerBox
-                      ]),
-                    ),
-                    bottom: PreferredSize(
-                      preferredSize: Size.zero,
-                      child: Center(
-                        child: TransactionHeaderItem(
-                          headerList: widget.transactionHeaderList,
-                          isUploadButton: widget.isUploadButton,
-                        ),
-                      ),
-                    ),
-                    toolbarHeight: 40.auto,
-                    elevation: 0,
-                  ),
-                  _buildTransactionItem()
-                ],
-              ))),
+                        _buildTransactionItem()
+                      ],
+                    ))),
     );
   }
 
   _buildTransactionItem() => SliverPadding(
-    padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
-    sliver: SliverList(
-      delegate: SliverChildListDelegate(
-        widget.list?.length == 0
-            ? List.generate(
-            1,
-                (index) =>  Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
-                  height: 150.auto,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.white
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 10.auto),
-                  child:Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          width: 75.auto,
-                          height: 75.auto,
-                          child: Image.asset("images/transaction/ic_no_record.png")),
-                      Text(getTranslatedText("no_record"))
-                    ],
-                  ),
-                ))
-            : widget.displayItemList,
-      ),
-    ),
-  );
+        padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(
+            widget.list?.length == 0
+                ? List.generate(
+                    1,
+                    (index) => Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+                          height: 150.auto,
+                          decoration:
+                              BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.white),
+                          padding: EdgeInsets.symmetric(vertical: 10.auto),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  width: 75.auto,
+                                  height: 75.auto,
+                                  child: Image.asset("images/transaction/ic_no_record.png")),
+                              Text(getTranslatedText("no_record"))
+                            ],
+                          ),
+                        ))
+                : widget.displayItemList??[],
+          ),
+        ),
+      );
 
   _getCalendarItem() => Container(
-    padding: EdgeInsets.all(10.auto),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        TransactionDateItem(
-          date: widget.vm.pStartDate,
-          title: getTranslatedText("start_time"),
-          onDateChanged: (value) {
-            _onCalendarClick(value, true);
-          },
+        padding: EdgeInsets.all(10.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TransactionDateItem(
+              date: widget.vm.pStartDate,
+              title: getTranslatedText("start_time"),
+              onDateChanged: (value) {
+                _onCalendarClick(value, true);
+              },
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 20.auto),
+              width: 5.auto,
+              height: 1,
+              color: CustomColor.grey,
+            ),
+            TransactionDateItem(
+              date: widget.vm.pEndDate,
+              title: getTranslatedText("end_time"),
+              onDateChanged: (value) {
+                _onCalendarClick(value, false);
+              },
+            ),
+          ],
         ),
-        Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(top: 20.auto),
-          width: 5.auto,
-          height: 1,
-          color: CustomColor.grey,
-        ),
-        TransactionDateItem(
-          date: widget.vm.pEndDate,
-          title: getTranslatedText("end_time"),
-          onDateChanged: (value) {
-            _onCalendarClick(value, false);
-          },
-        ),
-      ],
-    ),
-  );
+      );
 
   _onCalendarClick(DateTime date, bool isStartDate) {
     if (isStartDate) {

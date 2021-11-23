@@ -10,16 +10,14 @@ class TransferPicker extends StatefulWidget{
   final List<dynamic> list;
   final Function onClick;
   final bool isHintText;
-  final double width;
 
-  TransferPicker({Key key,
-    this.title,
-    this.displayText,
-    this.list,
-    this.onClick,
-    this.isHintText,
-    this.width
-  }) : super(key: key);
+  TransferPicker({
+    required this.title,
+    required this.displayText,
+    required this.list,
+    required this.onClick,
+    required this.isHintText,
+  }) ;
 
   @override
   _TransferPickerState createState() => _TransferPickerState();

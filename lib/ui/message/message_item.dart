@@ -12,8 +12,8 @@ class MessageItem extends StatefulWidget {
   final Function(String) onReadMessage;
 
   MessageItem({
-    this.message,
-    this.onReadMessage,
+    required this.message,
+    required this.onReadMessage,
   });
 
   @override
@@ -102,7 +102,7 @@ class _MessageItemState extends BaseState<MessageItem> {
           Container(
             width: context.screenWidth,
             child: Text(
-              parseHtmlString(widget.message.localization?.content ?? widget.message.content),
+              parseHtmlString(widget.message.localization.content?? ""),
               //overflow: TextOverflow.ellipsis,
               maxLines: 1,
               //softWrap: false,

@@ -6,11 +6,11 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 class MessageViewModel extends BaseViewModel {
   final messageRepo = MessageRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  EventResult getMessageListApiState, readMessageApiState;
-  List<Message> messageList;
+  var getMessageListApiState, readMessageApiState;
+  List<Message>? messageList;
   var page = 1, rows = 10;
 
-  bool endRecord;
+  bool endRecord = false;
 
   @override
   List<BaseRepository> get repoList => [messageRepo];
@@ -34,8 +34,8 @@ class MessageViewModel extends BaseViewModel {
       list = getMessageListApiState.result.items;
       if (messageList == null) messageList = [];
       if (page == 1) messageList = [];
-      messageList.addAll(list);
-      endRecord = messageList.length >= getMessageListApiState.result.totalCount ? true : false;
+      messageList!.addAll(list);
+      endRecord = messageList!.length >= getMessageListApiState.result.totalCount ? true : false;
     }
     setLoading(false);
     return getMessageListApiState;

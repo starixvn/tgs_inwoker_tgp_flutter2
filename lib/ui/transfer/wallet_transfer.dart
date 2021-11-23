@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
@@ -32,19 +33,19 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   var _amountController = TextEditingController();
   var isEnabled = false, isMaxAmountButtonEnabled = false;
 
-  Wallet fromWallet, toWallet;
-  String textFromWallet, textToWallet;
+  Wallet? fromWallet, toWallet;
+  String? textFromWallet, textToWallet;
   var transferAmount;
   FocusNode _focusNode = FocusNode();
   var _key = GlobalKey();
-  AnimationController _controller;
-  Animation<double> _animation;
-  int amount;
+  AnimationController? _controller;
+  Animation<double>? _animation;
+  int? amount;
   bool toggleValue = false;
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     _amountController.dispose();
     super.dispose();
   }
@@ -57,11 +58,11 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       vsync: this,
     );
     _animation = CurvedAnimation(
-      parent: _controller,
+      parent: _controller!,
       curve: Curves.linear,
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          if (_vm.isFetchingBalance) _controller.forward(from: 0.0);
+          if (_vm.isFetchingBalance) _controller!.forward(from: 0.0);
         }
       });
     _vm.getAllWallet();
@@ -100,7 +101,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           margin: EdgeInsets.all(7.auto),
           alignment: Alignment.center,
           child: RotationTransition(
-            turns: _animation,
+            turns: _animation!,
             child: IconButton(
               icon: Image.asset("images/ic_refresh.png"),
               onPressed: () {
@@ -147,7 +148,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 title: getTranslatedText("transfer_from"),
                 displayText: textFromWallet ?? getTranslatedText("please_select"),
                 list: [],
-                isHintText: textFromWallet == null|| textFromWallet == getTranslatedText("please_select"),
+                isHintText: textFromWallet == null || textFromWallet == getTranslatedText("please_select"),
                 onClick: () {
                   _buildPicker("transfer_from", _vm.walletList, true);
                 })),
@@ -210,7 +211,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                       setToWallet(list.first);
                     else
                       setToWallet(fromWallet != null
-                          ? fromWallet.isMainWallet
+                          ? fromWallet?.isMainWallet ?? true
                               ? null
                               : fromWallet
                           : null);
@@ -220,7 +221,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                       setFromWallet(list.first);
                     else
                       setFromWallet(toWallet != null
-                          ? toWallet.isMainWallet
+                          ? toWallet?.isMainWallet ?? true
                               ? null
                               : toWallet
                           : null);
@@ -269,26 +270,35 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       );
 
   _buildAutoTransferToggleButton() => Container(
-        margin: EdgeInsets.only(right: 10.auto, top: 10.auto, bottom: 10.auto),
+        margin: EdgeInsets.all( 10.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-                margin: EdgeInsets.only(right: 10.auto),
-                child: Text(
-                  getTranslatedText("auto_transfer"),
-                  style: TextStyle(color: CustomColor.theme_text_grey_white_color),
-                )),
-            FlutterSwitch(
-              value: _vm.autoTransferValue ?? false,
-              width: 35,
-              height: 17.5,
-              toggleSize: 17.5,
-              padding: 2,
-              activeColor: CustomColor.theme_button_color,
-              onToggle: (val) {
-                _vm.setAutoTransferValue();
-              },
+            Expanded(
+              flex: 9,
+              child: Container(
+                  margin: EdgeInsets.only(right: 10.auto),
+                  child: AutoSizeText(
+                    getTranslatedText("auto_transfer"),
+                    style: TextStyle(color: CustomColor.theme_text_grey_white_color),
+                    minFontSize: 8,
+                    maxLines: 2,
+                  )),
+            ),
+            Expanded(
+              flex:1,
+              child: FlutterSwitch(
+                value: _vm.autoTransferValue,
+                width: 35,
+                height: 17.5,
+                toggleSize: 17.5,
+                padding: 2,
+                activeColor: CustomColor.theme_button_color,
+                onToggle: (val) {
+                  ProgressDialog.show(context, _vm.brandLogoUrl);
+                  _vm.setAutoTransferValue();
+                },
+              ),
             ),
           ],
         ),
@@ -297,12 +307,12 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   getMaxAmount() {
     setState(() {
       _amountController.text =
-          _vm.walletList.singleWhere((e) => e.gpCode == fromWallet.gpCode).balance.floor().toString() ?? "";
+          _vm.walletList.singleWhere((e) => e.gpCode == fromWallet!.gpCode).balance!.floor().toString();
       checkButtonState();
     });
   }
 
-  setFromWallet(Wallet wallet) {
+  setFromWallet(Wallet? wallet) {
     fromWallet = wallet;
     if (wallet == null)
       textFromWallet = getTranslatedText("please_select");
@@ -314,7 +324,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     }
   }
 
-  setToWallet(Wallet wallet) {
+  setToWallet(Wallet? wallet) {
     toWallet = wallet;
     if (wallet == null)
       textToWallet = getTranslatedText("please_select");
@@ -327,7 +337,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       amount = int.parse(_amountController.text);
     } else
       amount = 0;
-    if (fromWallet == null || toWallet == null || amount == 0 || amount > fromWallet.balance) {
+    if (fromWallet == null || toWallet == null || amount == 0 || amount! > fromWallet!.balance!) {
       setState(() {
         isEnabled = false;
       });
@@ -345,8 +355,8 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     } else {
       setState(() {
         ProgressDialog.show(context, _vm.brandLogoUrl);
-        final isFundOut = fromWallet.isMainWallet;
-        final gpCode = isFundOut ? toWallet.gpCode : fromWallet.gpCode;
+        final isFundOut = fromWallet!.isMainWallet;
+        final gpCode = isFundOut ? toWallet!.gpCode : fromWallet!.gpCode;
         _vm.transferWallet(gpCode, int.parse(_amountController.text), isFundOut);
       });
     }
@@ -362,12 +372,12 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
 
   _handleApiState() {
     if (_vm.isFetchingBalance) {
-      if (!_controller.isAnimating) _controller.forward(from: 0.0);
+      if (!_controller!.isAnimating) _controller!.forward(from: 0.0);
     }
     handleApiState(_vm.transferWalletApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         clearData();
       });
     });

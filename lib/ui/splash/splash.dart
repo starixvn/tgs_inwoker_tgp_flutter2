@@ -10,7 +10,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/ui/splash/splash_view_model.dart';
 
 class Splash extends StatefulWidget {
-  final String logoUrl;
+  final String? logoUrl;
 
   Splash({this.logoUrl});
 
@@ -23,20 +23,20 @@ class _SplashState extends BaseState<Splash> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+   /* WidgetsBinding.instance!.addPostFrameCallback((_) {
       _vm.getAuthToken();
       _vm.getApiError();
       _vm.getBrandLogo();
       _vm.getLanguageOption();
-    });
+    });*/
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<SplashViewModel>(
+ /*   return ProviderWidget<SplashViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          _handleApiState();
+          _handleApiState();*/
           return Container(
             width: context.screenWidth,
             height: context.screenHeight,
@@ -50,7 +50,7 @@ class _SplashState extends BaseState<Splash> {
                       ? Container()
                       : CachedNetworkImage(
                           placeholder: (context, url) => Container(),
-                          imageUrl: widget.logoUrl,
+                          imageUrl: widget.logoUrl!,
                           //handling error
                           fit: BoxFit.cover,
                           errorWidget: (context, url, error) => Container(),
@@ -64,7 +64,7 @@ class _SplashState extends BaseState<Splash> {
               ),
             ),
           );
-        });
+       // });
   }
 
   _handleApiState() {
@@ -76,7 +76,7 @@ class _SplashState extends BaseState<Splash> {
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.home);
     });
   }

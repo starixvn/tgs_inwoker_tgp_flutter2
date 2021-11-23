@@ -967,5 +967,6 @@
   "login_time_out": "Waktu masuk telah habis",
   "withdrawal_amount_warning": "Jumlah setoran harus dalam satuan seratus",
   "game_platform_inactive": "Platform permainan ditutup",
-  "edit_email": "Edit alamat email"
+  "edit_email": "Edit alamat email",
+  "deposit_withdraw": "Penarikan Setoran"
 }

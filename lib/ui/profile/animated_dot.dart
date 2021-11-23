@@ -7,18 +7,18 @@ import 'package:tgp_flutter2/base_state.dart';
 
 class AnimatedDot extends StatefulWidget {
   final double size;
-  final Color color;
+  final Color? color;
 
-  AnimatedDot({Key key, this.size = 10, this.color})
-      : super(key: key);
+  AnimatedDot({this.size = 10, this.color})
+      ;
 
   @override
   _AnimatedDotState createState() => _AnimatedDotState();
 }
 
 class _AnimatedDotState extends BaseState<AnimatedDot> with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation scaleAnimation;
+  AnimationController? _controller;
+  Animation<double>? scaleAnimation;
   int bounceCount = 0;
 
   @override
@@ -28,30 +28,30 @@ class _AnimatedDotState extends BaseState<AnimatedDot> with TickerProviderStateM
       vsync: this,
     );
     scaleAnimation = Tween(begin: 1.0, end: 1.2)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear))
+        .animate(CurvedAnimation(parent: _controller!, curve: Curves.linear))
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              _controller.reverse();
+              _controller!.reverse();
             } else if (status == AnimationStatus.dismissed) {
               bounceCount++;
               if (bounceCount >= 2) {
                 bounceCount = 0;
                 Future.delayed(Duration(milliseconds: 3000), () {
-                  if (_controller != null) _controller.forward(from: 0.0);
+                  if (_controller != null) _controller!.forward(from: 0.0);
                 });
               } else {
-                _controller.forward(from: 0.0);
+                _controller!.forward(from: 0.0);
               }
             }
           });
 
     super.initState();
-    _controller.forward(from: 0.0);
+    _controller!.forward(from: 0.0);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     _controller = null;
     scaleAnimation = null;
     super.dispose();
@@ -59,7 +59,7 @@ class _AnimatedDotState extends BaseState<AnimatedDot> with TickerProviderStateM
 
   Widget build(BuildContext context) {
     return ScaleTransition(
-      scale: scaleAnimation,
+      scale: scaleAnimation!,
       alignment: Alignment.center,
       child: Container(
         width: widget.size.auto,

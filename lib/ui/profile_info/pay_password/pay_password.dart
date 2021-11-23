@@ -92,7 +92,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
   _checkEmailIsSet() {
     if (!_vm.userProfile.isSetPayPassword) {
       if (_vm.userProfile.email == null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           showDialog(
             context: context,
             builder: (BuildContext context) => CustomDialog(
@@ -108,7 +108,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
         });
       }
     }else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/reset_pay_password");
       });
     }
@@ -153,7 +153,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
   _handleApiState() {
     handleApiState(_vm.addPayPasswordApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.pop(context, true);
       });
     });

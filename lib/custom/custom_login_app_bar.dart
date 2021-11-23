@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
-import 'package:tgp_flutter2/custom/right_tool_tip_shape.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomLoginAppBar({Key key, this.onClickLoginButton, this.isLogin, this.brandLogoUrl}) : super(key: key);
+  CustomLoginAppBar({
+    required this.onClickLoginButton,
+    required this.isLogin,
+     this.brandLogoUrl,
+  });
 
   final Function onClickLoginButton;
   final bool isLogin;
-  final String brandLogoUrl;
+  final String? brandLogoUrl;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
@@ -39,7 +42,7 @@ class CustomLoginAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? Container()
           : CachedNetworkImage(
               placeholder: (context, url) => Container(),
-              imageUrl: brandLogoUrl,
+              imageUrl: brandLogoUrl!,
               //handling error
               height: 30.auto,
               fit: BoxFit.cover,

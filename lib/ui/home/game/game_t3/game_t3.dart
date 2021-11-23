@@ -17,9 +17,9 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 
 class GameT3 extends StatefulWidget {
-  final String gamePlatformCode;
-  final GameType gameType;
-  final int index;
+  final String? gamePlatformCode;
+  final GameType? gameType;
+  final int? index;
 
   GameT3({this.gamePlatformCode, this.gameType, this.index});
 
@@ -53,9 +53,9 @@ class _GameT3State extends BaseState<GameT3> {
 
   List<dynamic> _getGameTypeMap() {
     if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
-      return ([_vm.gameTypeMap[GameType.Sportsbook], _vm.gameTypeMap[GameType.ESports]].expand((x) => x).toList());
+      return ([_vm.gameTypeMap![GameType.Sportsbook], _vm.gameTypeMap![GameType.ESports]].expand((x) => x!).toList());
     else
-      return _vm.gameTypeMap[widget.gameType];
+      return _vm.gameTypeMap![widget.gameType]!;
   }
 
   @override
@@ -186,7 +186,7 @@ class _GameT3State extends BaseState<GameT3> {
   _navigate(String gamePlatformCode, GameType gameType) async {
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -200,7 +200,7 @@ class _GameT3State extends BaseState<GameT3> {
       /*ProgressDialog.show(context, _vm.brandLogoUrl);
       await _vm.getGameList(gamePlatformCode, gameType);
       ProgressDialog.hide();*/
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
       });
@@ -208,7 +208,7 @@ class _GameT3State extends BaseState<GameT3> {
   }
 
   navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }

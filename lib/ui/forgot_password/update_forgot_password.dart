@@ -15,8 +15,8 @@ import 'package:tgp_flutter2/ui/forgot_password/forgot_password_view_model.dart'
 import 'package:api/extension/screen_apis.dart';
 
 class UpdateForgotPassword extends StatefulWidget {
-  final String code;
-  final String securityKey;
+  final String? code;
+  final String? securityKey;
 
   UpdateForgotPassword({this.code, this.securityKey});
 
@@ -120,7 +120,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
         onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         radius: 9.6,
       ));
 
@@ -145,14 +145,14 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.resetPassword(widget.securityKey, widget.code, _newPasswordController.text);
+      _vm.resetPassword(widget.securityKey!, widget.code!, _newPasswordController.text);
     }
   }
 
   _handleApiState() {
     handleApiState(_vm.resetPasswordApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         var count = 0;
         Navigator.popUntil(context, (route) {
           return count++ == 2;

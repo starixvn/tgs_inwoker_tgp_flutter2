@@ -9,21 +9,20 @@ import 'package:tgp_flutter2/base_state.dart';
 
 
 class CustomerServiceWebView extends StatefulWidget {
-  final String url;
-  final String brandLogoUrl;
+  final String? url;
+  final String? brandLogoUrl;
 
   CustomerServiceWebView({
-    Key key,
-    this.url,
-    this.brandLogoUrl
-  }) : super(key: key);
+     this.url,
+     this.brandLogoUrl
+  }) ;
 
   @override
   _CustomerServiceWebViewState createState() => _CustomerServiceWebViewState();
 }
 
 class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
-  InAppWebViewController _webViewController;
+  InAppWebViewController? _webViewController;
   var url = EnvironmentConfig.csUrl;
 //  CustomerServiceViewModel _vm = CustomerServiceViewModel();
 
@@ -40,12 +39,12 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
         title:getTranslatedText("customer_service"),
       ),
       body: widget.url == null
-          ? buildProgressDialog(widget.brandLogoUrl)
+          ? buildProgressDialog(widget.brandLogoUrl!)
           : InAppWebView(
-        initialUrl: widget.url,
+        initialUrlRequest: URLRequest(url:Uri.parse(widget.url!)),
         initialOptions: InAppWebViewGroupOptions(
             crossPlatform: InAppWebViewOptions(
-              debuggingEnabled: true,
+              //debuggingEnabled: true,
               javaScriptEnabled: true,
             ),
             android: AndroidInAppWebViewOptions(
@@ -54,12 +53,12 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
             )),
         onWebViewCreated: (InAppWebViewController controller) {
           _webViewController = controller;
-          _webViewController.loadUrl(url: widget.url);
+          _webViewController!.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url!)));
         },
-        onLoadStart: (InAppWebViewController controller, String url) {
+        onLoadStart: ( controller,  url) {
           ProgressDialog.show(context, widget.brandLogoUrl);
         },
-        onLoadStop: (InAppWebViewController controller, String url) async {
+        onLoadStop: ( controller,  url) async {
           ProgressDialog.hide();
         },
       ),

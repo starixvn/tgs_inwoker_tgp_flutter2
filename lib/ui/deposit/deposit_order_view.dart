@@ -19,21 +19,21 @@ import 'deposit_view_model.dart';
 import 'deposit_web.dart';
 
 class DepositOrderView extends StatefulWidget {
-  final String method;
-  final String id;
-  final ManualDepositOrder manualDepositOrder;
-  final DepositRedirect depositRedirect;
-  final String depositAmount;
-  final String depositChannel;
-  final String orderNo;
-  final String promotionName;
-  final String transName;
-  final DepositRedirectApplePay depositRedirectApplePay;
-  final String exchangeRate;
-  final String expectedAmount;
+  final String? method;
+  final String? id;
+  final ManualDepositOrder? manualDepositOrder;
+  final DepositRedirect? depositRedirect;
+  final String? depositAmount;
+  final String? depositChannel;
+  final String? orderNo;
+  final String? promotionName;
+  final String? transName;
+  final DepositRedirectApplePay? depositRedirectApplePay;
+  final String? exchangeRate;
+  final String? expectedAmount;
 
   DepositOrderView(
-      {Key key,
+      {
       this.method,
       this.id,
       this.manualDepositOrder,
@@ -46,14 +46,14 @@ class DepositOrderView extends StatefulWidget {
       this.depositRedirectApplePay,
       this.exchangeRate,
       this.expectedAmount})
-      : super(key: key);
+      ;
 
   @override
   _DepositOrderViewState createState() => _DepositOrderViewState();
 }
 
 class _DepositOrderViewState extends BaseState<DepositOrderView> {
-  File uploadImage;
+  var uploadImage;
   var _vm = DepositViewModel();
 
   @override
@@ -95,7 +95,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "¥ ${widget.manualDepositOrder.amount.toString()}",
+                    "${widget.manualDepositOrder!.amount.toString()}",
                     style: TextStyle(
                         fontSize: (38.5).auto, color: CustomColor.theme_button_color, fontWeight: FontWeight.w400),
                   ),
@@ -106,15 +106,15 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                 ),
                 //_buildText("deposit_channel", widget.manualDepositOrder.methodName),
                 _buildOrderText("order_no", widget.orderNo),
-                _buildText("payment_type", widget.manualDepositOrder.methodName),
-                _buildText("payment_channel", widget.manualDepositOrder.methodName),
-                _buildText("receiver_bank", widget.manualDepositOrder.bankAccountName),
-                _buildText("receiver_bank_account", widget.manualDepositOrder.bankAccount),
+                _buildText("payment_type", widget.manualDepositOrder!.methodName),
+                _buildText("payment_channel", widget.manualDepositOrder!.methodName),
+                _buildText("receiver_bank", widget.manualDepositOrder!.bankAccountName),
+                _buildText("receiver_bank_account", widget.manualDepositOrder!.bankAccount),
                 handleNullWidget(
                     widget.promotionName == null, _buildText("promotion_picker", widget.promotionName ?? "")),
                 _buildUploadTextRow(),
               uploadImage == null?Container():Container(
-                        alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage)))
+                        alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage!)))
               ],
             ),
           ),
@@ -125,7 +125,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
               children: [
                 ColorButton(
                     title: getTranslatedText("upload_prof"),
-                    onClick: () => _vm.uploadDepositImage(uploadImage.path, widget.id),
+                    onClick: () => _vm.uploadDepositImage(uploadImage, widget.id!),
                     isEnabled: uploadImage == null ? false : true,
                     radius: 4.8,
                     height: 44.5),
@@ -163,10 +163,10 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     //"10.00",
-                    widget.depositAmount,
+                    widget.depositAmount!,
                     style: TextStyle(
                         fontSize: (38.5).auto, color: CustomColor.theme_button_color, fontWeight: FontWeight.w400),
-                    //"¥ $amount"
+                    //"$amount"
                   ),
                 ),
                 Divider(
@@ -174,8 +174,8 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                   color: CustomColor.very_light_pink_four,
                 ),
                 widget.depositRedirect != null
-                    ? _buildOrderText("order_no", widget.depositRedirect.formId)
-                    : _buildOrderText("order_no", widget.depositRedirectApplePay.formId),
+                    ? _buildOrderText("order_no", widget.depositRedirect!.formId)
+                    : _buildOrderText("order_no", widget.depositRedirectApplePay!.formId),
                 _buildText("payment_type", widget.method),
                 _buildText("payment_channel", widget.depositChannel),
                 handleNullWidget(widget.exchangeRate == null, _buildText("exchange_rate", widget.exchangeRate)),
@@ -198,14 +198,14 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
                       MaterialPageRoute(
                           builder: (context) => DepositWeb(
                                 url: widget.depositRedirect != null
-                                    ? widget.depositRedirect.paymentUrl
-                                    : widget.depositRedirectApplePay.paymentUrl,
+                                    ? widget.depositRedirect!.paymentUrl
+                                    : widget.depositRedirectApplePay!.paymentUrl,
                                 brandLogoUrl: _vm.brandLogoUrl,
                               )))))
         ],
       );
 
-  _buildOrderText(String title, String content) => Container(
+  _buildOrderText(String title, String? content) => Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,7 +231,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         ),
       );
 
-  _buildText(String title, String content) {
+  _buildText(String title, String? content) {
     if (content == "BankTransfer")
       content = getTranslatedText("bank_transfer");
     else if (content == "Crypto") content = getTranslatedText("crypto");
@@ -284,20 +284,22 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
       );
 
   Future<void> chooseImage() async {
-    File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    ImagePicker picker = ImagePicker();
+    XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
+    //XFile file = File(picker!.path);
     //set source: ImageSource.camera to get image from camera
     setState(() {
-      uploadImage = choosedImage;
+      uploadImage = File(choosedImage!.path);
     });
   }
 
   _handleApiState() {
     handleApiState(_vm.uploadDepositImageApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
-            title: null,
+
             description: getTranslatedText("upload_success"),
             buttonText1: getTranslatedText("confirm"),
             onClick: () {

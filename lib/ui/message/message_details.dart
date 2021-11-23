@@ -14,7 +14,7 @@ import 'package:tgp_flutter2/ui/message/message_action_dialog.dart';
 class MessageDetails extends StatefulWidget {
   final Message message;
 
-  MessageDetails({this.message});
+  MessageDetails({required this.message});
 
   @override
   _MessageDetailsState createState() => _MessageDetailsState();

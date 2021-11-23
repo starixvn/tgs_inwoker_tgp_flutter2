@@ -23,10 +23,10 @@ import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class PhoneReVerification extends StatefulWidget {
-  final String username;
-  final String password;
+  final String? username;
+  final String? password;
 
-  PhoneReVerification({Key key, this.username, this.password}) : super(key: key);
+  PhoneReVerification({this.username, this.password});
 
   @override
   _PhoneReVerificationState createState() => _PhoneReVerificationState();
@@ -42,11 +42,10 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
   bool _obscurePassword = true;
-  String display;
+  String display = "+852";
 
   @override
   void initState() {
-    display = "+852";
     _usernameController.text = widget.username ?? "";
     _passwordController.text = widget.password ?? "";
     super.initState();
@@ -161,7 +160,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         onClick: () {
           _onClick();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         color: CustomColor.theme_text_black_color,
         radius: 9.6,
       ));
@@ -210,7 +209,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.home, (Route<dynamic> route) => false);
     });
   }

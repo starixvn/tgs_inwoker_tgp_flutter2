@@ -115,7 +115,7 @@ class _EditPasswordState extends BaseState<EditPassword> {
   _handleApiState() {
     handleApiState(_vm.editPasswordApiState, isCheckSessionExpired:false, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.pop(context);
       });
     }, onError: (errorMsg){

@@ -22,9 +22,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(
-    EventResult eventResult, {
-    Function onSuccess,
-    Function onError,
+    EventResult? eventResult, {
+    required Function onSuccess,
+    Function? onError,
     bool isAutoHideLoading = true,
     bool isRequireResult = false,
     bool isCheckSessionExpired = true,
@@ -36,7 +36,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
@@ -44,17 +44,17 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             isCheckSessionExpired &&
             !isSplashScreen) {
           UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) => WillPopScope(
                       onWillPop: () async => false,
                       child: CustomDialog(
-                        title: "登录已超时",
-                        description: "请再登录",
-                        buttonText1: "登录",
-                        buttonText2: "不了",
+                        title: getTranslatedText("login_time_out"),
+                        description: getTranslatedText("login_again"),
+                        buttonText1: getTranslatedText("login"),
+                        buttonText2: getTranslatedText("cancel"),
                         onClick: () {
                           Navigator.of(context).pushReplacementNamed("/home");
                           Navigator.of(context).pushNamed("/login");
@@ -67,25 +67,24 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           });
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+            WidgetsBinding.instance!.addPostFrameCallback((_) {
               Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
               Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
             });
           } else if (onError != null) {
             onError(eventResult.error);
-          } else if(userRepo.apiError !=null){
-            String error = userRepo.apiError[eventResult.errorMsgId];
-            CustomToast.show(error);
-          }
+          } else
+            showApiErrorMessage(eventResult);
         } else {
           _showErrorMessage(eventResult);
         }
       } else if (eventResult.isMaintenance) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
                         isShowCS: true,
+                        isShowsAppBar: false,
                       )),
               (Route<dynamic> route) => false);
         });
@@ -100,7 +99,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     eventResult.isHandled = true;
   }
 
-  buildProgressDialog(String url) => Center(
+  buildProgressDialog(String? url) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -114,6 +113,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) => Container(),
                   ),
+            //: Container(),
+            //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
+            //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
             Lottie.asset(
               "loading/loading_t${EnvironmentConfig.template_version}.json",
               width: 150,
@@ -142,12 +144,19 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     if (errorKey != null) {
       errorMessage = getTranslatedText(errorKey);
     }
-    CustomToast.show(errorMessage);
+    CustomToast.show(errorMessage!);
+  }
+
+  showApiErrorMessage(EventResult eventResult) {
+    if (userRepo.apiError != null) {
+      String error = userRepo.apiError![eventResult.errorMsgId] ?? "";
+      CustomToast.show(error);
+    }
   }
 
   String parseHtmlString(String htmlString) {
-    final document = parse(htmlString ?? "");
-    final String parsedString = parse(document.body.text).documentElement.text;
+    final document = parse(htmlString);
+    final String parsedString = parse(document.body?.text).documentElement!.text;
 
     return parsedString;
   }

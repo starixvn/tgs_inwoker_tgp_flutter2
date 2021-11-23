@@ -28,7 +28,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -88,7 +88,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         onClick: () {
           //_onClick();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         color: CustomColor.theme_text_black_white_color,
         radius: 9.6,
       ));
@@ -105,7 +105,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
             onTap: () {
               Navigator.of(context)
                   .pushNamed(RoutePath.editPhone)
-                  .then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                  .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
                         _getUserProfile();
                       }));
             },

@@ -12,9 +12,8 @@ class TransferTransactionView extends StatefulWidget {
   final TransactionViewModel vm;
 
   TransferTransactionView({
-    Key key,
-    this.vm,
-  }) : super(key: key);
+    required this.vm,
+  });
 
   @override
   TransferTransactionViewState createState() => TransferTransactionViewState();
@@ -30,7 +29,7 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getTransaction();
     });
     super.initState();
@@ -57,32 +56,38 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.transferTransactionList,
+            list: _vm.transferTransactionList ?? [],
             displayItemList: _getList(),
             isUploadButton: false,
           );
         });
   }
 
-  _getList() =>_vm.transferTransactionList ==null?[]:List.generate(_vm.transferTransactionList.length, (index) {
-    return Container(
-      child: TransactionCellItem(list: [
-        "",
-        Format().dateTimeFormat(_vm.transferTransactionList[index].balanceTime),
-        _vm.transferTransactionList[index].from,
-        _vm.transferTransactionList[index].to,
-        _vm.transferTransactionList[index].amount.toString(),
-      ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, ),
-    );
-  }).toList();
+  List<Widget> _getList() => _vm.transferTransactionList == null
+      ? []
+      : List.generate(_vm.transferTransactionList!.length, (index) {
+          return Container(
+            child: TransactionCellItem(
+              list: [
+                "",
+                Format().dateTimeFormat(_vm.transferTransactionList![index].balanceTime),
+                _vm.transferTransactionList![index].from,
+                _vm.transferTransactionList![index].to,
+                _vm.transferTransactionList![index].amount.toString(),
+              ],
+              type: _getTransactionItemType(index),
+              isEndRecord: _vm.endRecord,
+            ),
+          );
+        }).toList();
 
   _getTransactionItemType(int index) {
-    if (_vm.transferTransactionList.length == 1) {
+    if (_vm.transferTransactionList!.length == 1) {
       return TransactionCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return TransactionCellItemType.TOP;
-      } else if (index == _vm.transferTransactionList.length - 1) {
+      } else if (index == _vm.transferTransactionList!.length - 1) {
         return TransactionCellItemType.BOTTOM;
       } else {
         return TransactionCellItemType.CENTER;
@@ -99,8 +104,8 @@ class TransferTransactionViewState extends BaseState<TransferTransactionView> {
     }
   }
 
-  _getTransaction({bool isLoadMore}) async {
-    await _vm.getTransferTransaction(isLoadMore: isLoadMore ?? false);
+  _getTransaction({bool isLoadMore = false}) async {
+    await _vm.getTransferTransaction(isLoadMore: isLoadMore);
   }
 
   _handleApiState() {

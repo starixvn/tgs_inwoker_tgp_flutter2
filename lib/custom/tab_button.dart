@@ -7,23 +7,22 @@ class TabButton extends StatelessWidget {
   final String text;
   final int index;
   final int currentTabIndex;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
-  TabButton(
-      {Key key,
-      @required this.text,
-      @required this.index,
-      @required this.currentTabIndex,
-      this.width,
-      this.height})
-      : super(key: key);
+  TabButton({
+    required this.text,
+    required this.index,
+    required this.currentTabIndex,
+    this.width,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: (width)?? context.screenWidth/3,
-      height: (height)?? 40.auto,
+      width: width ?? context.screenWidth / 3,
+      height: height ?? 40.auto,
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(

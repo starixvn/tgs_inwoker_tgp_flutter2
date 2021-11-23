@@ -8,7 +8,10 @@ class TransactionHeaderItem extends StatefulWidget {
   final List<String> headerList;
   final bool isUploadButton;
 
-  const TransactionHeaderItem({Key key, this.headerList, this.isUploadButton}) : super(key: key);
+  const TransactionHeaderItem({
+    required this.headerList,
+    required this.isUploadButton,
+  });
 
   @override
   _TransactionHeaderItemState createState() => _TransactionHeaderItemState();

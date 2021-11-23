@@ -36,10 +36,7 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
                 left: context.screenWidth / 8,
                 child: Text(
                   getTranslatedText("confirm_leave_game"),
-                  style: TextStyle(
-                    fontSize: 13.5.auto,
-                    color: Colors.white
-                  ),
+                  style: TextStyle(fontSize: 13.5.auto, color: Colors.white),
                 ),
               ),
             ],
@@ -62,13 +59,9 @@ class _LeaveGameDialogState extends BaseState<LeaveGameDialog> {
   _buildLeaveButton() => Expanded(
         flex: 1,
         child: InkWell(
-          onTap:(){
-            Navigator.pop(
-              context,
-            );
-            Navigator.pop(
-              context,
-            );
+          onTap: () {
+            Navigator.pop(context, true);
+            Navigator.pop(context, true);
           },
           child: Container(
             alignment: Alignment.center,

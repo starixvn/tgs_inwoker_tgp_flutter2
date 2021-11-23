@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -9,8 +10,9 @@ import 'package:tgp_flutter2/ui/maintenance/maintenance_view_model.dart';
 
 class Maintenance extends StatefulWidget {
   final bool isShowCS;
+  final bool isShowsAppBar;
 
-  Maintenance({this.isShowCS = false});
+  Maintenance({this.isShowCS = false, this.isShowsAppBar = true});
 
   @override
   _MaintenanceState createState() => _MaintenanceState();
@@ -22,7 +24,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
   @override
   void initState() {
     if (widget.isShowCS) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _vm.getBrandCommunication();
         _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
       });
@@ -38,6 +40,13 @@ class _MaintenanceState extends BaseState<Maintenance> {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.grey[100],
+            appBar: widget.isShowsAppBar
+                ? _buildAppBar()
+                : PreferredSize(
+                    child: Container(
+                      color: Colors.black,
+                    ),
+                    preferredSize: Size.zero),
             body: Container(
               padding: EdgeInsets.only(top: 100.auto),
               width: context.screenWidth,
@@ -60,6 +69,22 @@ class _MaintenanceState extends BaseState<Maintenance> {
           );
         });
   }
+
+  _buildAppBar() => AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
+          },
+        ),
+        title: Text(
+          getTranslatedText("maintenance"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
 
   _buildText(String text, {bool isNeedMargin = true}) => Container(
         margin: EdgeInsets.only(bottom: isNeedMargin ? 20.auto : 0),

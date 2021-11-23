@@ -89,7 +89,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   }
 
   _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
-          {List<String> itemDescriptionList, bool isSecurity = false}) =>
+          {List<String>? itemDescriptionList, bool isSecurity = false}) =>
       Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: Card(
@@ -113,14 +113,14 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   return Container(
                     child: !isSecurity
                         ? _buildInfoItem(
-                            itemList[index].getImagePath,
-                            itemList[index].getDisplayName(context),
+                            itemList[index].getImagePath!,
+                            itemList[index].getDisplayName(context)!,
                             pathList[index],
                             itemDescription: itemDescriptionList != null ? itemDescriptionList[index] : "",
                           )
                         : _buildInfoItemWithoutText(
-                            itemList[index].getImagePath,
-                            itemList[index].getDisplayName(context),
+                            itemList[index].getImagePath!,
+                            itemList[index].getDisplayName(context)!,
                             pathList[index],
                           ),
                   );
@@ -131,7 +131,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String itemDescription}) {
+  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription}) {
    /* if (routePath == "phone_verification" && EnvironmentConfig.appTitleName != "HKJP")
       return Container();
     else*/
@@ -165,7 +165,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   handleNullWidget(itemDescription == null, Container(
                     margin: EdgeInsets.only(top: 3.auto),
                     child: Text(
-                      itemDescription,
+                      itemDescription!,
                       style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
                     ),
                   ))
@@ -222,7 +222,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _getItemText(String text) {
+  _getItemText(String? text) {
     if (text != null && text.isNotEmpty)
       return text;
     else

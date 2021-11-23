@@ -10,7 +10,7 @@ class WalletTransferViewModel extends BaseViewModel {
   List<Wallet> walletList = List.empty();
 
   WalletTransferViewModel() {
-    walletList = contentRepo.gameProviderList
+    walletList = contentRepo.gameProviderList!
         .where((element) => element.transferWallet == true)
         .map((e) => Wallet(e.code, e.name))
         .toList()
@@ -30,7 +30,7 @@ class WalletTransferViewModel extends BaseViewModel {
       getWalletApiState,
       getAutoTransferApiState,
       setAutoTransferApiState;
-  bool isFetchingBalance, autoTransferValue;
+  bool isFetchingBalance = false, autoTransferValue = false;
 
   transferWallet(String gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
@@ -45,12 +45,12 @@ class WalletTransferViewModel extends BaseViewModel {
     wallet.balance = null;
     if (wallet.isMainWallet) {
       await userRepo.getWalletBalance();
-      wallet.balance = userRepo.wallet.main;
+      wallet.balance = userRepo.wallet!.main;
     } else {
       var state = await walletRepo.getGameWallet(wallet.gpCode);
       if (state.isSuccess) {
-        wallet.balance = state.result.balance;
-      }
+        wallet.balance = state.result?.balance ??0.0;
+      }else wallet.balance = 0.0;
     }
     notifyListeners();
   }

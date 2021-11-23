@@ -23,7 +23,7 @@ class _ProfileState extends BaseState<Profile> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
         _vm.computeTotalBalance();
       } else {
@@ -102,7 +102,7 @@ class _ProfileState extends BaseState<Profile> {
                           color: CustomColor.theme_text_grey_white_color,
                         )),
                     Text(
-                      " ¥ ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
+                      " ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
                       style: TextStyle(color: CustomColor.theme_text_grey_white_color),
                     )
                   ],
@@ -118,7 +118,7 @@ class _ProfileState extends BaseState<Profile> {
                         color: CustomColor.theme_button_color,
                       )),
                   Text(
-                    _vm.totalBalance != null ? " ¥ ${Format().currencyWithDecimalFormat(_vm.totalBalance)}" : "-",
+                    _vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance??0.0)}" : "-",
                     style: TextStyle(color: CustomColor.theme_button_color),
                   )
                 ],
@@ -144,7 +144,7 @@ class _ProfileState extends BaseState<Profile> {
   }
 
   _navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
       Navigator.of(context)
           .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);

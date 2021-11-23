@@ -26,11 +26,10 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
-  String display;
+  String display = "+852";
 
   @override
   void initState() {
-    display = "+852";
     super.initState();
   }
 
@@ -70,7 +69,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
           controller: _emailController,
-          focusNode: null,
+
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -123,7 +122,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         onClick: () {
           _checkValidation();
         },
-        isEnabled: isButtonEnabled ?? false,
+        isEnabled: isButtonEnabled,
         radius: 9.6,
       ));
 
@@ -171,7 +170,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   _handleApiState() {
     handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         setState(() {
           isOtpCountdown = true;
         });

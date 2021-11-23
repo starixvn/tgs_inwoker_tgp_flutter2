@@ -26,7 +26,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _vm.getBrandCommunication();
       _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
     });
@@ -56,11 +56,11 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           child: Column(children: [
                             buildLiveChatRow(),
                             Column(
-                              children: List.generate(_vm.communicationList.length, (index) {
+                              children: List.generate(_vm.communicationList!.length, (index) {
                                 return Container(
-                                  child: _buildCSRow(_vm.communicationList[index].type, "cs_join", "cs_qr_code",
-                                      "support-" + _vm.communicationList[index].type.toLowerCase(),
-                                      qrCode: _vm.communicationList[index]),
+                                  child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
+                                      "support-" + _vm.communicationList![index].type.toLowerCase(),
+                                      qrCode: _vm.communicationList![index]),
                                 );
                               }),
                             )
@@ -95,7 +95,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => CustomerServiceWebView(
-                          url: _vm.liveChatUrl,
+                          url: _vm.liveChatUrl!,
                           brandLogoUrl: _vm.brandLogoUrl,
                         )));
           },
@@ -145,7 +145,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         ),
       );
 
-  _buildCSRow(String title, String text, String routePath, String imagePath, {BrandCommunication qrCode}) => InkWell(
+  _buildCSRow(String title, String text, String routePath, String imagePath, {BrandCommunication? qrCode}) => InkWell(
         onTap: () {},
         child: Container(
           padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
@@ -179,7 +179,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               Expanded(
                 flex: 3,
                 child: Text(
-                  qrCode.appId ?? qrCode.phone,
+                  (qrCode!.appId) ?? qrCode.phone,
                   // getTranslatedText(text),
                   style: TextStyle(color: CustomColor.theme_button_color),
                 ),

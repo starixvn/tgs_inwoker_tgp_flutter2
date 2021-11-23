@@ -10,27 +10,25 @@ class CardTextFormField extends StatefulWidget {
   final ValueChanged<String> onFieldSubmitted;
   final ValueChanged<String> onChanged;
   final TextEditingController controller;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final double width;
-  final Widget button;
+  final Widget? button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool enabled;
 
   CardTextFormField(
-      {Key key,
-      this.title,
-      this.hintText,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.controller,
-      this.focusNode,
-      this.width,
-      this.button,
-      this.textInputType,
-      this.textInputAction,
-      this.enabled})
-      : super(key: key);
+      {required this.title,
+      required this.hintText,
+      required this.onChanged,
+      required this.onFieldSubmitted,
+      required this.controller,
+       this.focusNode,
+      required this.width,
+       this.button,
+      required this.textInputType,
+      required this.textInputAction,
+       this.enabled = false});
 
   @override
   _CardTextFormFieldState createState() => _CardTextFormFieldState();
@@ -64,7 +62,7 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                 Container(
                   width: widget.width,
                   child: TextFormField(
-                    enabled: widget.enabled ?? true,
+                    enabled: widget.enabled,
                     autofocus: false,
                     onChanged: (value) => widget.onChanged(value),
                     focusNode: widget.focusNode,
@@ -75,20 +73,18 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                         ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
                         : null,
                     textInputAction: widget.textInputAction,
-                    obscureText:
-                        (widget.textInputType == TextInputType.visiblePassword) ? true : false,
+                    obscureText: (widget.textInputType == TextInputType.visiblePassword) ? true : false,
                     style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
                     decoration: InputDecoration(
                       isDense: true,
                       border: InputBorder.none,
                       hintText: widget.hintText,
-                      hintStyle:
-                          TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                      hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                     ),
                   ),
                 ),
               ]),
-          handleNullWidget(widget.button == null ,widget.button)
+              handleNullWidget(widget.button == null, widget.button!)
             ],
           ),
         ));

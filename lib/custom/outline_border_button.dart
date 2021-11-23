@@ -7,25 +7,24 @@ class OutlineBorderButton extends StatelessWidget {
   final String title;
   final Function onClick;
   final bool isEnabled;
-  final double width;
-  final double height;
-  final Color color;
+  final double? width;
+  final double? height;
+  final Color? color;
   final double fontSize;
   final double radius;
   final double padding;
 
   OutlineBorderButton({
-    Key key,
-    this.title,
-    this.onClick,
-    this.isEnabled,
+    required this.title,
+    required this.onClick,
+    required this.isEnabled,
     this.width,
     this.height,
     this.color,
-    this.fontSize,
-    this.radius,
-    this.padding
-  }) : super(key: key);
+    required this.fontSize,
+    this.radius = 5,
+    this.padding = 0.0,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +32,10 @@ class OutlineBorderButton extends StatelessWidget {
       onPressed: () => {this.onClick()},
       style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular((radius??5).auto),
-            side: BorderSide(color: color?? Colors.white),
+            borderRadius: BorderRadius.circular(radius.auto),
+            side: BorderSide(color: color ?? Colors.white),
           )),
-          padding: MaterialStateProperty.all(EdgeInsets.all((padding??2).auto)),
+          padding: MaterialStateProperty.all(EdgeInsets.all(padding.auto)),
           backgroundColor: MaterialStateProperty.all(Colors.transparent),
           minimumSize: MaterialStateProperty.all<Size>(Size(width ?? context.screenWidth, height ?? 29.auto))),
       child: Container(
@@ -44,10 +43,10 @@ class OutlineBorderButton extends StatelessWidget {
         /*width: width??context.screenWidth,
           height: 25.auto,*/
         child: SizedBox(
-          width: width-20,
+          width: (width ?? context.screenWidth) - 20,
           child: AutoSizeText(
             title,
-            style: TextStyle(color: color?? Colors.white),
+            style: TextStyle(color: color ?? Colors.white),
             minFontSize: 7,
             maxLines: 1,
             textAlign: TextAlign.center,

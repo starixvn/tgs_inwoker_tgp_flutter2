@@ -11,25 +11,22 @@ class LoginPasswordTextFormField extends StatefulWidget {
   final Function onShowPassword;
   final TextEditingController controller;
   final double width;
-  final Widget button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool obscurePassword;
 
   LoginPasswordTextFormField({
-    Key key,
-    this.icon,
-    this.hintText,
-    this.onChanged,
-    this.onFieldSubmitted,
-    this.onShowPassword,
-    this.controller,
-    this.width,
-    this.button,
-    this.textInputType,
-    this.textInputAction,
-    this.obscurePassword,
-  }) : super(key: key);
+    required this.icon,
+    required this.hintText,
+    required this.onChanged,
+    required this.onFieldSubmitted,
+    required this.onShowPassword,
+    required this.controller,
+    required this.width,
+    required this.textInputType,
+    required this.textInputAction,
+    required this.obscurePassword,
+  });
 
   @override
   _LoginPasswordTextFormFieldState createState() => _LoginPasswordTextFormFieldState();

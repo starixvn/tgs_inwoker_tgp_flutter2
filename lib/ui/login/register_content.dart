@@ -14,12 +14,11 @@ import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class RegisterContent extends StatefulWidget {
-  final ValueChanged<dynamic> onSubmitUsernameAndPassword;
+  final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
 
   RegisterContent({
-    Key key,
     this.onSubmitUsernameAndPassword,
-  }) : super(key: key);
+  });
 
   @override
   _RegisterContentState createState() => _RegisterContentState();
@@ -161,11 +160,11 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _register() {
-    if (!validate.validateUsernameLength(username.text)||!validate.validateUsernamePassword(username.text)) {
+    if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
-    } else if (!validate.validatePasswordLength(password.text)|| !validate.validateUsernamePassword(password.text)) {
+    } else if (!validate.validatePasswordLength(password.text) || !validate.validateUsernamePassword(password.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
@@ -177,7 +176,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    }else {
+    } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _checkUsername();
     }
@@ -190,24 +189,24 @@ class _RegisterContentState extends BaseState<RegisterContent> {
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (EnvironmentConfig.appTitleName == "HKJP")
-        widget.onSubmitUsernameAndPassword([username.text, password.text]);
+        widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       else
         _navigateToHome();
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {
-          CustomToast.show(getTranslatedText("username_exist"));
+        CustomToast.show(getTranslatedText("username_exist"));
       } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-           ProgressDialog.show(context, _vm.brandLogoUrl);
-           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          ProgressDialog.show(context, _vm.brandLogoUrl);
+          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text);
         });
       }
     });
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.home);
     });
   }

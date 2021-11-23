@@ -10,7 +10,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class MaintenanceDialog extends StatefulWidget {
-  final List<BrandCommunication> communicationList;
+  final List<BrandCommunication>? communicationList;
 
   MaintenanceDialog({this.communicationList});
 
@@ -69,14 +69,14 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
               physics: AlwaysScrollableScrollPhysics(),
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
-              children: List.generate(widget.communicationList.length, (index) {
+              children: List.generate(widget.communicationList!.length, (index) {
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
-                  child: _buildCSRow(widget.communicationList[index].type, "cs_join", "cs_qr_code",
-                      "support-" + widget.communicationList[index].type.toLowerCase(),
-                      qrCode: widget.communicationList[index]),
+                  child: _buildCSRow(widget.communicationList![index].type, "cs_join", "cs_qr_code",
+                      "support-" + widget.communicationList![index].type.toLowerCase(),
+                      qrCode: widget.communicationList![index]),
                 );
               }),
             ),
@@ -84,9 +84,9 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
         ],
       );
 
-  _buildCSRow(String title, String text, String routePath, String imagePath, {BrandCommunication qrCode}) => InkWell(
+  _buildCSRow(String title, String text, String routePath, String imagePath, {BrandCommunication? qrCode}) => InkWell(
         onTap: () {
-          Clipboard.setData(ClipboardData(text: qrCode.appId ?? qrCode.phone));
+          Clipboard.setData(ClipboardData(text: qrCode?.appId ?? qrCode?.phone));
           CustomToast.show(getTranslatedText("copy_text"));
         },
         child: Column(

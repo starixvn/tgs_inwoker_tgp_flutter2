@@ -18,11 +18,10 @@ class CustomPickerDialog extends StatefulWidget {
   final ValueChanged<dynamic> onChanged;
 
   CustomPickerDialog({
-    Key key,
-    @required this.title,
-    this.list,
-    this.onChanged,
-  }) : super(key: key);
+    required this.title,
+    required this.list,
+    required this.onChanged,
+  }) ;
 
   @override
   _CustomPickerDialogState createState() => _CustomPickerDialogState();

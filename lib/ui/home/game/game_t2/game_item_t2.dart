@@ -7,12 +7,12 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class GameItemT2 extends StatefulWidget {
-  final ScrollController controller;
-  final List<dynamic> gameProviderList;
-  final Function(GameProvider2) onGameClick;
-  final GameType currGameType;
+  final ScrollController? controller;
+  final List<dynamic>? gameProviderList;
+  final Function(GameProvider2)? onGameClick;
+  final GameType? currGameType;
 
-  GameItemT2({Key key, this.gameProviderList, this.onGameClick, this.currGameType, this.controller}) : super(key: key);
+  GameItemT2({this.gameProviderList, this.onGameClick, this.currGameType, this.controller}) ;
 
   @override
   GameItemT2State createState() => GameItemT2State();
@@ -28,10 +28,10 @@ class GameItemT2State extends BaseState<GameItemT2> {
   double _itemPaddingBottom = (5).auto;
 
   double get _itemWidth =>
-      context.size.width - _containerPaddingRight - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
+      context.size!.width - _containerPaddingRight - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
 
   double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;
-  ScrollController controller;
+  //ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
         //decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
         child: ListView(
       controller: widget.controller,
-      children: widget.gameProviderList
+      children: widget.gameProviderList!
           .map((item) => Container(
               padding: EdgeInsets.only(
                   left: _itemPaddingLeft, right: _itemPaddingRight, top: _itemPaddingTop, bottom: _itemPaddingBottom),
@@ -59,7 +59,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
         onTap: () {
           if (gameProvider.status != 0) {
           } else
-            widget.onGameClick(gameProvider);
+            widget.onGameClick!(gameProvider);
         },
         child: Stack(
           children: [

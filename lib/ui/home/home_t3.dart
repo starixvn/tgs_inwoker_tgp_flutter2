@@ -21,7 +21,7 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 class HomeT3 extends StatefulWidget {
   final bool isFirstRun;
 
-  HomeT3({this.isFirstRun});
+  HomeT3({this.isFirstRun = false});
 
   @override
   _HomeT3State createState() => _HomeT3State();
@@ -48,7 +48,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   ];
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
-  UserProfile user;
+  UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
 
@@ -105,7 +105,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Expanded(
         flex: 1,
-        child: _vm.bannerList == null || _vm.bannerList.isEmpty
+        child: _vm.bannerList == null || _vm.bannerList!.isEmpty
             ? _buildEmptyContainer()
             :
             /*Swiper(
@@ -139,14 +139,14 @@ class _HomeT3State extends BaseState<HomeT3> {
                   children: [
                     CarouselSlider(
                       items: List.generate(
-                          _vm.bannerList.length,
+                          _vm.bannerList!.length,
                           (index) => ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
                                   height: 400,
                                   width: context.screenWidth,
                                   placeholder: (context, url) => _buildEmptyContainer(),
-                                  imageUrl: _vm.bannerList[index].mobileUrl ?? "",
+                                  imageUrl: _vm.bannerList![index].mobileUrl,
                                   //handling error
                                   fit: BoxFit.fill,
                                   errorWidget: (context, url, error) => _buildEmptyContainer(),
@@ -175,7 +175,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: List.generate(_vm.bannerList.length, (index) {
+                        children: List.generate(_vm.bannerList!.length, (index) {
                           return Container(
                             width: 8.auto,
                             height: 8.auto,
@@ -258,7 +258,7 @@ class _HomeT3State extends BaseState<HomeT3> {
       );
 
   navigateToLogin() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }
@@ -290,7 +290,7 @@ class _HomeT3State extends BaseState<HomeT3> {
         navigateToLogin();
         _vm.markIsNotLogin();
       } else if (_vm.isExpired) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
           _displayDialog();
         });
       }

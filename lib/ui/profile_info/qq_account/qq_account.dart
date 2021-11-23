@@ -26,7 +26,7 @@ class _QQAccountState extends BaseState<QQAccount> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -103,7 +103,7 @@ class _QQAccountState extends BaseState<QQAccount> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       var _qq = _vm.userProfile.qq;
       setState(() {
         if (_qq != null) {

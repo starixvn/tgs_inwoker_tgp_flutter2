@@ -6,9 +6,9 @@ import 'package:tgp_flutter2/base_state.dart';
 class RoundCheckBox extends StatefulWidget{
   final bool isEdit;
 
-  RoundCheckBox({Key key,
-    this.isEdit
-  }) : super(key: key);
+  RoundCheckBox({
+    this.isEdit = false
+  }) ;
 
   @override
   _RoundCheckBoxState createState() => _RoundCheckBoxState();

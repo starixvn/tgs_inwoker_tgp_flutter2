@@ -6,15 +6,17 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 
 class CustomDialog extends StatelessWidget {
-  final String title, description, buttonText1, buttonText2;
-  final Function onClick, onClick2;
+  final String? title, description, buttonText1;
+  final String? buttonText2;
+  final Function onClick;
+  final Function? onClick2;
 
   CustomDialog({
     this.title,
-    this.description,
-    this.buttonText1,
+    required this.description,
+    required this.buttonText1,
     this.buttonText2,
-    this.onClick,
+    required this.onClick,
     this.onClick2,
   });
 
@@ -59,7 +61,7 @@ class CustomDialog extends StatelessWidget {
                       padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        title,
+                        title!,
                         style: TextStyle(
                           fontSize: 18.auto,
                           fontWeight: FontWeight.w500,
@@ -70,7 +72,7 @@ class CustomDialog extends StatelessWidget {
                 width: context.screenWidth,
                 padding: EdgeInsets.only(bottom: 20.auto, left: 10.auto, right: 10.auto),
                 child: Text(
-                  description,
+                  description!,
                   style: TextStyle(
                     fontSize: 13.auto,
                     color: Colors.black54,
@@ -97,7 +99,7 @@ class CustomDialog extends StatelessWidget {
 
   _buildDoneButton(BuildContext context) => ColorButton(
         onClick: () => this.onClick(),
-        title: buttonText1,
+        title: buttonText1!,
         /*text: Text(
           buttonText1,
           textAlign: TextAlign.center,
@@ -111,8 +113,8 @@ class CustomDialog extends StatelessWidget {
       );
 
   _buildBackButton(BuildContext context) => OutlineBorderButton(
-        onClick: () => this.onClick2(),
-        title: buttonText2,
+        onClick: () => this.onClick2!(),
+        title: buttonText2!,
         isEnabled: true,
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,

@@ -9,11 +9,11 @@ class TransactionDateItem extends StatefulWidget{
   final String title;
   final ValueChanged<DateTime> onDateChanged;
 
-  const TransactionDateItem({Key key,
-    this.date,
-    this.title,
-    this.onDateChanged
-  }) : super(key: key);
+  const TransactionDateItem({
+    required this.date,
+    required this.title,
+    required this.onDateChanged
+  }) ;
 
 
   @override
@@ -73,7 +73,7 @@ class _TransactionDateItemState extends BaseState<TransactionDateItem> {
   }
   _showDatePicker(BuildContext context) async{
     var currentDate = DateTime.now();
-    final DateTime dateTime = await showDatePicker(
+    final DateTime? dateTime = await showDatePicker(
       context: context,
       initialDate: date,
       firstDate: DateTime(currentDate.year, currentDate.month - 3, currentDate.day),

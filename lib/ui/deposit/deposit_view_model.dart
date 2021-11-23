@@ -13,10 +13,10 @@ class DepositViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [];
   var getPaymentApiState, uploadDepositImageApiState, getPlayerPromotionListApiState;
-  Map<String, Map<BankType, List<Payment>>> paymentCodeList;
-  List<Payment> paymentList;
+  Map<String, Map<BankType, List<Payment>>>? paymentCodeList;
+  List<Payment>? paymentList;
   var manualDepositOrder;
-  List<Promotion> promotionList;
+  List<Promotion>? promotionList;
   List<Map<String, String>> displayPromotionList = [
     {"name": "promotion_picker_hint", "id": "-1"}
   ];
@@ -34,7 +34,7 @@ class DepositViewModel extends BaseViewModel {
     if (getPaymentApiState.isSuccess) {
       List<Payment> list = getPaymentApiState.result;
       //list.sort((a, b) => a.order.compareTo(b.order));
-      paymentCodeList = groupBy(list, (obj) => obj.paymentCode)
+      paymentCodeList = groupBy(list, (Payment obj) => obj.paymentCode)
           .map((key, value) => MapEntry(key, groupBy(value, (obj) => obj.bankType)));
     }
     setLoading(false);
@@ -55,7 +55,7 @@ class DepositViewModel extends BaseViewModel {
     if (getPlayerPromotionListApiState.isSuccess) {
       List<Promotion> list = getPlayerPromotionListApiState.result.items;
       list.forEach((value) {
-        displayPromotionList.add({"name": value.localization.name ?? value.name, "id": value.id});
+        displayPromotionList.add({"name": value.localization?.name?? value.name, "id": value.id});
       });
       setLoading(false);
       return getPlayerPromotionListApiState;

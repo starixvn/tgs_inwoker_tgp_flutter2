@@ -19,7 +19,7 @@ class _PromotionState extends BaseState<Promotion> {
   var currentTabIndex = 0;
   var currentBottomIndex = 1;
   PromotionViewModel _vm = PromotionViewModel();
-  BuildContext key = GlobalKey().currentContext;
+  BuildContext? key = GlobalKey().currentContext;
 
   @override
   void initState() {
@@ -112,7 +112,7 @@ class _PromotionState extends BaseState<Promotion> {
 
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
@@ -132,7 +132,7 @@ class _PromotionState extends BaseState<Promotion> {
         );
       });
     }, onError: (errorMsg) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

@@ -4,30 +4,23 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
 class LoginTextFormField extends StatelessWidget {
-  final Widget icon;
+  final Widget? icon;
   final String hintText;
-  //final ValueChanged<String> onFieldSubmitted;
-   final ValueChanged<String> onChanged;
- // final Function onShowPassword;
+  final ValueChanged<String?>? onChanged;
   final TextEditingController controller;
   final double width;
-  //final Widget button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
 
   LoginTextFormField({
-    Key key,
-    this.icon,
-    this.hintText,
+     this.icon,
+    required this.hintText,
      this.onChanged,
-    //this.onFieldSubmitted,
-    //this.onShowPassword,
-    this.controller,
-    this.width,
-    //this.button,
-    this.textInputType,
-    this.textInputAction,
-  }) : super(key: key);
+    required this.controller,
+    required this.width,
+    required this.textInputType,
+    required this.textInputAction,
+  });
 
   Widget build(BuildContext context) {
     return Container(

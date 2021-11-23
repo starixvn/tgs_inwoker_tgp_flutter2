@@ -26,7 +26,7 @@ class _MessageViewState extends BaseState<MessageView> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getMessageList();
     });
@@ -49,9 +49,9 @@ class _MessageViewState extends BaseState<MessageView> {
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : ListView(controller: _controller, padding: EdgeInsets.all(8.0), children: [
                     Column(
-                      children: List.generate(_vm.messageList.length, (index) {
+                      children: List.generate(_vm.messageList!.length, (index) {
                         return MessageItem(
-                          message: _vm.messageList[index],
+                          message: _vm.messageList![index],
                           onReadMessage: (id) {
                             _vm.readMessage([id]); //call api silently
                           },
@@ -69,7 +69,7 @@ class _MessageViewState extends BaseState<MessageView> {
                           ),
                         )),
                     Visibility(
-                        visible: _vm.endRecord && _vm.messageList.isNotEmpty,
+                        visible: _vm.endRecord && _vm.messageList!.isNotEmpty,
                         child: Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.only(bottom: 10.auto),
@@ -143,7 +143,7 @@ class _MessageViewState extends BaseState<MessageView> {
 
   _handleApiState() {
     handleApiState(_vm.getMessageListApiState, isAutoHideLoading: false, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (isLoading) {
           setState(() {
             isLoading = false;

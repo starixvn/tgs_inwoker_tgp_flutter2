@@ -10,9 +10,9 @@ import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 
 class ChildGameSuggestion extends StatefulWidget {
   final bool isVisible;
-  final List<Game> recommendList;
+  final List<Game>? recommendList;
 
-  ChildGameSuggestion({this.isVisible, this.recommendList});
+  ChildGameSuggestion({this.isVisible = false, this.recommendList});
 
   @override
   _ChildGameSuggestionState createState() => _ChildGameSuggestionState();
@@ -34,11 +34,11 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             children: List.generate(
-                widget.recommendList.length,
+                widget.recommendList!.length,
                 (index) => Container(
                       height: (12.5).auto,
                       width: 50.auto,
-                      child: _buildSearchSuggestionItem(widget.recommendList[index]),
+                      child: _buildSearchSuggestionItem(widget.recommendList![index]),
                     ))),
       ),
     );
@@ -65,7 +65,7 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
       );
 
   _navigateToGameWeb(Game game) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: game.gamePlatformCode, gameId: game.id,)));
     });
   }

@@ -13,8 +13,8 @@ import 'package:tgp_flutter2/ui/home/child_game/child_game_suggestion.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 
 class ChildGame extends StatefulWidget {
-  final String gamePlatformCode;
-  final GameType gameType;
+  final String? gamePlatformCode;
+  final GameType? gameType;
 
   ChildGame({this.gamePlatformCode, this.gameType});
 
@@ -49,8 +49,8 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _initData() async {
     await _vm.getGameProviderList();
-    _vm.getPlatformList(widget.gameType);
-    _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode, gameType: widget.gameType);
+    _vm.getPlatformList(widget.gameType!);
+    _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode!, gameType: widget.gameType!);
   }
 
   Widget build(BuildContext context) {
@@ -147,7 +147,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               onFilterPlatform: (code) {
                 _vm.filter(gamePlatformCode: code);
               },
-              initialPlatformCode: widget.gamePlatformCode,
+              initialPlatformCode: widget.gamePlatformCode!,
               vm: _vm,
             ),
           ),
@@ -210,7 +210,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _getAppTitle() {
     if (widget.gameType != null) {
-      return widget.gameType.getName(context);
+      return widget.gameType!.getName(context);
     }
   }
 
@@ -229,7 +229,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消")),
       );
     } else {
-      if (_vm.mSearchQuery.isEmpty) {
+      if (_vm.mSearchQuery?.isEmpty ?? true) {
         // if not in searching mode and search controller text is empty
         return InkWell(
           onTap: () {
@@ -261,7 +261,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     if (!_focusNode.hasFocus) {
       isSearching = false;
       isVisibleSuggestionList = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         searchController.text = "";
       });
     }

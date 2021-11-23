@@ -14,10 +14,10 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 
 class ChildGameItem extends StatefulWidget {
-  final bool isFavourite;
-  final Game game;
-  final bool isDisabled;
-  final GameViewModel vm;
+  final bool? isFavourite;
+  final Game? game;
+  final bool? isDisabled;
+  final GameViewModel? vm;
 
   ChildGameItem({this.isFavourite, this.game, this.isDisabled, this.vm});
 
@@ -49,7 +49,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.isDisabled ? () {} : () => _navigateToGameWeb(widget.game),
+      onTap: (widget.isDisabled ?? true) ? () {} : () => _navigateToGameWeb(widget.game!),
       child: Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -87,17 +87,17 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   _getImageUrl() {
     var gameName = _getGameName();
     if (gameName == "FishingYiLuFa")
-      return EnvironmentConfig.slotGameUrl + "${widget.game.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
+      return EnvironmentConfig.slotGameUrl + "${widget.game!.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
     else
       return EnvironmentConfig.slotGameUrl +
-          "${widget.game.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
+          "${widget.game!.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
   _getGameName() {
     /*if (((getCurrentLanguage().apiCode == "zh-CN" || getCurrentLanguage().apiCode == "zh-TW") &&
         (widget.game.gamePlatformCode == "HABA" || widget.game.gamePlatformCode == "PP")) ||
         widget.game.gamePlatformCode == "SW"|| widget.game.type == GameType.Fishing )*/
-    return widget.game.code;
+    return widget.game!.code;
     /*else
       return widget.game.code.replaceAll(RegExp("_"), "");*/
   }
@@ -122,7 +122,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             child: Container(
               margin: EdgeInsets.only(right: 3.auto),
               child: AutoSizeText(
-                widget.game.name,
+                widget.game!.name,
                 style: TextStyle(color: Colors.white),
                 minFontSize: 3,
                 stepGranularity: 1,
@@ -134,13 +134,13 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             flex: 1,
             child: InkWell(
               onTap: () {
-                ProgressDialog.show(context, widget.vm.brandLogoUrl);
-                widget.game.isFavourite
-                    ? widget.vm.deleteFavoriteGame(widget.game)
-                    : widget.vm.setFavoriteGame(widget.game);
+                ProgressDialog.show(context, widget.vm!.brandLogoUrl);
+                widget.game!.isFavourite
+                    ? widget.vm!.deleteFavoriteGame(widget.game!)
+                    : widget.vm!.setFavoriteGame(widget.game!);
               },
               child: Image.asset(
-                widget.game.isFavourite
+                widget.game!.isFavourite
                     ? "images/child_game/ic_favorite_selected.png"
                     : "images/child_game/ic_favorite.png",
                 width: 15.auto,
@@ -160,14 +160,14 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
           padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
           decoration: BoxDecoration(color: CustomColor.black, borderRadius: BorderRadius.circular(15.0)),
           child: Text(
-            widget.game.gamePlatformName(),
+            widget.game!.gamePlatformName(),
             style: TextStyle(color: Colors.white, fontSize: 9.auto),
           ),
         ),
       );
 
   _navigateToGameWeb(Game game) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.push(
           context,
           MaterialPageRoute(

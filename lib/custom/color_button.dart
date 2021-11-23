@@ -7,27 +7,26 @@ class ColorButton extends StatelessWidget {
   final String title;
   final Function onClick;
   final bool isEnabled;
-  final double radius;
-  final double width;
-  final double height;
-  final BorderSide border;
-  final double padding;
-  final double fontSize;
-  final Color color;
+  final double? radius;
+  final double? width;
+  final double? height;
+  final BorderSide? border;
+  final double? padding;
+  final double? fontSize;
+  final Color? color;
 
   ColorButton(
-      {Key key,
-      @required this.title,
-      @required this.onClick,
-      @required this.isEnabled,
+      {
+      required this.title,
+      required this.onClick,
+      required this.isEnabled,
       this.radius,
       this.width,
       this.height,
       this.border,
       this.padding,
       this.fontSize,
-      this.color})
-      : super(key: key);
+      this.color});
 
   @override
   Widget build(BuildContext context) {

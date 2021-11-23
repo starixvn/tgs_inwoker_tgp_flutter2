@@ -966,5 +966,6 @@
   "login_time_out": "登录已超时",
   "withdrawal_amount_warning": "存款金額必須是以百元為單位",
   "game_platform_inactive": "游戏平台已关闭",
-  "edit_email": "修改邮箱地址"
+  "edit_email": "修改邮箱地址",
+  "deposit_withdraw": "存提"
 }

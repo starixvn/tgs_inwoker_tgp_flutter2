@@ -15,19 +15,19 @@ class LoginPhoneTextFormField extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool enabled;
   final ValueChanged<String> onAreaCodeClicked;
-  final String displayedAreaCode;
+  final String? displayedAreaCode;
 
   LoginPhoneTextFormField(
-      {Key key,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.controller,
-      this.width,
-      this.textInputAction,
-      this.enabled,
-      this.onAreaCodeClicked,
-      this.displayedAreaCode})
-      : super(key: key);
+      {
+      required this.onChanged,
+      required this.onFieldSubmitted,
+      required this.controller,
+      required this.width,
+      required this.textInputAction,
+      required this.enabled,
+      required this.onAreaCodeClicked,
+       this.displayedAreaCode})
+      ;
 
   @override
   _LoginPhoneTextFormFieldState createState() => _LoginPhoneTextFormFieldState();

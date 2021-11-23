@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:api/entity/language_option.dart';
+import 'package:api/network/event_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -54,16 +55,16 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 
   static void setLocale(BuildContext context, Locale newLocale) async {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(newLocale);
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(newLocale);
   }
 }
 
 class _MyAppState extends BaseState<MyApp> {
   final appTitle = EnvironmentConfig.appTitleName;
 
-  Locale _locale;
-  //var langList = LanguageProvider().list.map((e) => e.locale).toList();
+  Locale? _locale;
+  var langList;
   var _vm = MainViewModel();
   var firstInit = true;
 
@@ -81,9 +82,9 @@ class _MyAppState extends BaseState<MyApp> {
     });
   }
 
-  @override
+/*  @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       LanguageProvider().getLocale().then((locale) {
         setState(() {
           this._locale = locale;
@@ -91,71 +92,81 @@ class _MyAppState extends BaseState<MyApp> {
       });
     });
     super.didChangeDependencies();
-  }
+  }*/
 
-
-  /*Future<List<LanguageOption>> initData() async {
+  Future<EventResult<List<LanguageOption>>> initData() async {
     if (firstInit) {
       await _vm.getAuthToken();
-      await _vm.getBrandLogo();
       await _vm.getLanguageOption();
+      _vm.getApiError();
+      _vm.getBrandLogo();
       setState(() {
         firstInit = false;
       });
       _getLocale();
-      return _vm.getLanguageApiState.result;
+      langList = LanguageProvider().list.map((e) => e.locale).toList();
+      return _vm.getLanguageApiState;
     } else
-      return [];
-  }*/
+      return EventResult.loading();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-          currentFocus.focusedChild.unfocus();
-        }
-      },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: appTitle,
-        initialRoute: '/',
-        routes: {
-          RoutePath.empty: (context) => Splash(),
-          RoutePath.home: (context) => MyHomePage(),
-          RoutePath.myHome: (context) => MyHomePage(),
-          RoutePath.profile: (context) => Profile(),
-          RoutePath.csWebView: (context) => CustomerServiceWebView(),
-          RoutePath.customerService: (context) => CustomerService(),
-          RoutePath.transaction: (context) => Transaction(),
-          RoutePath.login: (context) => Login(),
-          RoutePath.forgotPassword: (context) => ForgotPassword(),
-          RoutePath.maintenance: (context) => Maintenance(),
-          RoutePath.mainCard: (context) => MainCard(),
-          RoutePath.message: (context) => MessageView(),
-          RoutePath.emailVerification: (context) => EmailVerification(0),
-          RoutePath.qqAccount: (context) => QQAccount(),
-          RoutePath.wechat: (context) => Wechat(),
-          RoutePath.editPassword: (context) => EditPassword(),
-          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-          RoutePath.payPassword: (context) => PayPassword(),
-          RoutePath.language: (context) => LanguageView(),
-          RoutePath.addCard: (context) => AddCard(),
-          RoutePath.realNameVerification: (context) => RealNameVerification(),
-          RoutePath.profileInfo: (context) => ProfileInfo(),
-          RoutePath.promotion: (context) => Promotion(),
-          RoutePath.walletTransfer: (context) => WalletTransfer(),
-          RoutePath.menu: (context) => Menu(),
-          RoutePath.deposit: (context) => Deposit(),
-          RoutePath.withdraw: (context) => Withdraw(),
-          RoutePath.childGame: (context) => ChildGame(),
-          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
-          RoutePath.phoneReVerification: (context) => PhoneReVerification(),
-          RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.editPhone: (context) => EditPhone(),
+    _handleApiState();
+    return FutureBuilder(
+        future: initData(),
+        builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
+          if (!snapshot.hasData) {
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+          } else if (snapshot.data!.isMaintenance) {
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
+          } else {
+            return GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                  currentFocus.focusedChild!.unfocus();
+                }
+              },
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: appTitle,
+                initialRoute: '/',
+                routes: {
+                  RoutePath.empty: (context) =>  MyHomePage(),
+                  RoutePath.home: (context) => MyHomePage(),
+                  RoutePath.myHome: (context) => MyHomePage(),
+                  RoutePath.profile: (context) => Profile(),
+                  RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                  RoutePath.customerService: (context) => CustomerService(),
+                  RoutePath.transaction: (context) => Transaction(),
+                  RoutePath.login: (context) => Login(),
+                  RoutePath.forgotPassword: (context) => ForgotPassword(),
+                  RoutePath.maintenance: (context) => Maintenance(),
+                  RoutePath.mainCard: (context) => MainCard(),
+                  RoutePath.message: (context) => MessageView(),
+                  RoutePath.emailVerification: (context) => EmailVerification(0),
+                  RoutePath.qqAccount: (context) => QQAccount(),
+                  RoutePath.wechat: (context) => Wechat(),
+                  RoutePath.editPassword: (context) => EditPassword(),
+                  RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+                  RoutePath.payPassword: (context) => PayPassword(),
+                  RoutePath.language: (context) => LanguageView(),
+                  RoutePath.addCard: (context) => AddCard(),
+                  RoutePath.realNameVerification: (context) => RealNameVerification(),
+                  RoutePath.profileInfo: (context) => ProfileInfo(),
+                  RoutePath.promotion: (context) => Promotion(),
+                  RoutePath.walletTransfer: (context) => WalletTransfer(),
+                  RoutePath.menu: (context) => Menu(),
+                  RoutePath.deposit: (context) => Deposit(),
+                  RoutePath.withdraw: (context) => Withdraw(),
+                  RoutePath.childGame: (context) => ChildGame(),
+                  RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                  RoutePath.phoneVerification: (context) => PhoneVerification(),
+                  RoutePath.editPhone: (context) => EditPhone(),
 
-          /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
+                  /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
           RoutePath.referFriend: (context) => ReferFriend(),
           RoutePath.realNameVerification: (context) => RealNameVerification(),
           RoutePath.phoneVerification: (context) => PhoneVerification(),
@@ -167,26 +178,28 @@ class _MyAppState extends BaseState<MyApp> {
 
           RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
           RoutePath.csQrCode: (context) => CustomerServiceQrCode()*/
-        },
-        localizationsDelegates: [
-          MyLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
-        ],
-        // MyHomePage(title: appTitle),
-        supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
-        locale: _locale,
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode &&
-                supportedLocale.scriptCode == locale.scriptCode) {
-              return supportedLocale;
-            }
+                },
+                localizationsDelegates: [
+                  MyLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate
+                ],
+                // MyHomePage(title: appTitle),
+                supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
+                locale: _locale,
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale!.languageCode &&
+                        supportedLocale.scriptCode == locale.scriptCode) {
+                      return supportedLocale;
+                    }
+                  }
+                  return supportedLocales.first;
+                },
+              ),
+            );
           }
-          return supportedLocales.first;
-        },
-      ),
-    );
+        });
   }
 
   _handleApiState() {
@@ -196,9 +209,9 @@ class _MyAppState extends BaseState<MyApp> {
 
 class MyHomePage extends StatefulWidget {
   final bool isFirstRun;
-  final int index;
+  final int? index;
 
-  MyHomePage({this.isFirstRun, this.index});
+  MyHomePage({this.isFirstRun = false, this.index});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -211,7 +224,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   @override
   void initState() {
-    if (widget.index != null) currentBottomIndex = widget.index;
+    if (widget.index != null) currentBottomIndex = widget.index!;
     _page = [
       EnvironmentConfig.template_version == 3 ? HomeT3() : HomeT2(),
       Promotion(),

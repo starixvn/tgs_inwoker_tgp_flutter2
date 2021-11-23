@@ -11,15 +11,15 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 
 class ChildGamePlatform extends StatefulWidget {
-  final List<GameProvider2> platformList;
-  final List<Game> gameList;
+  final List<GameProvider2>? platformList;
+  final List<Game>? gameList;
   final bool isSearching;
-  final Function(String) onFilterPlatform;
-  final String initialPlatformCode;
-  final GameViewModel vm;
+  final Function(String)? onFilterPlatform;
+  final String? initialPlatformCode;
+  final GameViewModel? vm;
 
   ChildGamePlatform(
-      {this.platformList, this.gameList, this.isSearching, this.onFilterPlatform, this.initialPlatformCode, this.vm});
+      {this.platformList, this.gameList, this.isSearching = false, this.onFilterPlatform, this.initialPlatformCode, this.vm});
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
@@ -36,12 +36,12 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
   void initState() {
     initData();
     _platformTabController =
-        TabController(length: widget.platformList.length + 1, vsync: this, initialIndex: platformTabIndex);
+        TabController(length: widget.platformList!.length + 1, vsync: this, initialIndex: platformTabIndex);
     super.initState();
   }
 
   initData() {
-    widget.platformList.asMap().forEach((index, value) {
+    widget.platformList!.asMap().forEach((index, value) {
       _platformTabList.add({"name": value.name, "code": value.code});
       if (value.code == widget.initialPlatformCode) {
         platformTabIndex = index + 1;
@@ -72,7 +72,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelColor: CustomColor.theme_text_grey_color,
           labelColor: CustomColor.theme_button_color,
           indicatorWeight: 3,
-          onTap: (index) => widget.onFilterPlatform(_platformTabList[index]["code"]),
+          onTap: (index) => widget.onFilterPlatform!((_platformTabList[index]["code"])!),
           indicator: ShapeDecoration(
             shape: RoundedRectangleBorder(
               side: BorderSide(color: CustomColor.theme_button_color),
@@ -82,7 +82,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelStyle: TextStyle(color: CustomColor.theme_grey_button_color),
           tabs: _platformTabList.map((item) {
             return Tab(
-              child: Text(item["code"] == "ALL" ? getTranslatedText(item["name"]) : item["name"],
+              child: Text(item["code"] == "ALL" ? getTranslatedText((item["name"])!) : item["name"],
                   style: TextStyle(
                     fontFamily: 'PingFang',
                     fontSize: 14.auto,

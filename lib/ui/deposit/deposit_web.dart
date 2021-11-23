@@ -11,21 +11,21 @@ import 'package:tgp_flutter2/base_state.dart';
 //import 'package:webview_flutter/webview_flutter.dart';
 
 class DepositWeb extends StatefulWidget {
-  final String url;
-  final String brandLogoUrl;
+  final String? url;
+  final String? brandLogoUrl;
 
   DepositWeb({
-    Key key,
+
     this.url,
     this.brandLogoUrl
-  }) : super(key: key);
+  }) ;
 
   @override
   _DepositWebState createState() => _DepositWebState();
 }
 
 class _DepositWebState extends BaseState<DepositWeb> {
-  InAppWebViewController _webViewController;
+  InAppWebViewController? _webViewController;
 
   Widget build(BuildContext context) {
     print("url=${widget.url}");
@@ -36,10 +36,11 @@ class _DepositWebState extends BaseState<DepositWeb> {
           title: getTranslatedText("deposit"),
         ) ,
         body: InAppWebView(
-          initialUrl: widget.url,
+          initialUrlRequest: URLRequest(url:Uri.parse(widget.url!)),
+          //initialUrl: widget.url,
           initialOptions: InAppWebViewGroupOptions(
               crossPlatform: InAppWebViewOptions(
-                debuggingEnabled: true,
+                //debuggingEnabled: true,
                 javaScriptEnabled: true,
               ),
               android: AndroidInAppWebViewOptions(
@@ -48,12 +49,12 @@ class _DepositWebState extends BaseState<DepositWeb> {
               )),
           onWebViewCreated: (InAppWebViewController controller) {
             _webViewController = controller;
-            _webViewController.loadUrl(url: widget.url);
+            _webViewController!.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url!)),);
           },
-          onLoadStart: (InAppWebViewController controller, String url) {
+          onLoadStart: ( controller,  url) {
             ProgressDialog.show(context, widget.brandLogoUrl);
           },
-          onLoadStop: (InAppWebViewController controller, String url) async {
+          onLoadStop: ( controller,  url) async {
             ProgressDialog.hide();
           },
         ));

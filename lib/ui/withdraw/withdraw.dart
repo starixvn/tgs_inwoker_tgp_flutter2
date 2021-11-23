@@ -36,7 +36,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _checkUserProfile();
       _vm.getTurnoverAmount();
     });
@@ -124,7 +124,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                 Container(
                   padding: EdgeInsets.only(top: 5.auto),
                   child: Text(
-                    "¥ $amount",
+                    "$amount",
                     style: TextStyle(color: CustomColor.theme_button_color, fontSize: 12.auto),
                     textAlign: TextAlign.start,
                   ),
@@ -286,7 +286,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _showDialog();
         _amountController.clear();
         _payPasswordController.clear();

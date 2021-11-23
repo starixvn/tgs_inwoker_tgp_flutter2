@@ -7,10 +7,6 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class MessageActionDialog extends StatefulWidget {
-  MessageActionDialog({
-    Key key,
-  }) : super(key: key);
-
   @override
   _MessageActionDialogState createState() => _MessageActionDialogState();
 }
@@ -31,7 +27,6 @@ class _MessageActionDialogState extends BaseState<MessageActionDialog> {
             radius: 11.6.auto),*/
         ColorButton(
             title: getTranslatedText("cancel"),
-
             onClick: () {
               Navigator.pop(
                 context,

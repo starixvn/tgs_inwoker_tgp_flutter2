@@ -19,7 +19,7 @@ import 'package:api/extension/screen_apis.dart';
 class LoginContent extends StatefulWidget {
   final child;
 
-  LoginContent({this.child, Key key}) : super(key: key);
+  LoginContent({this.child}) ;
 
   @override
   _LoginContentState createState() => _LoginContentState();
@@ -44,8 +44,8 @@ class _LoginContentState extends BaseState<LoginContent> {
   }
 
   void _changeLanguage(Language language) async {
-    Locale _locale = await LanguageProvider().setLocale(language);
-    MyApp.setLocale(context, _locale);
+    Locale? _locale = await LanguageProvider().setLocale(language);
+    MyApp.setLocale(context, _locale!);
     await _vm.getApiError();
   }
 
@@ -166,33 +166,36 @@ class _LoginContentState extends BaseState<LoginContent> {
   _buildChangeLanguageText() {
     var list = LanguageProvider().list;
     var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return Container(
-      margin: EdgeInsets.only(top: 10.auto),
-      child: IntrinsicHeight(
-          child: new Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(list.length, (index) {
-          return Row(
-            children: [
-              InkWell(
-                  onTap: () {
-                    _changeLanguage(list[index]);
-                  },
-                  child: Text(
-                    list[index].name,
-                    style:
-                        TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_black_white_color),
-                  )),
-              Visibility(
-                visible: index+1 != list.length,
-                child: VerticalDivider(
-                  color: CustomColor.theme_text_black_white_color,
-                ),
-              )
-            ],
-          );
-        }),
-      )),
+    return FittedBox(
+      fit: BoxFit.fitWidth,
+      child: Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: IntrinsicHeight(
+            child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(list.length, (index) {
+            return Row(
+              children: [
+                InkWell(
+                    onTap: () {
+                      _changeLanguage(list[index]);
+                    },
+                    child: Text(
+                      list[index].name,
+                      style:
+                          TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_black_white_color),
+                    )),
+                Visibility(
+                  visible: index+1 != list.length,
+                  child: VerticalDivider(
+                    color: CustomColor.theme_text_black_white_color,
+                  ),
+                )
+              ],
+            );
+          }),
+        )),
+      ),
     );
   }
 
@@ -214,7 +217,7 @@ class _LoginContentState extends BaseState<LoginContent> {
   _navigateToHome() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("login_later", true);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => MyHomePage(

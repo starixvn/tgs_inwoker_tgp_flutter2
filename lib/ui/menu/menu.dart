@@ -9,9 +9,9 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
 class Menu extends StatefulWidget {
-  final Function onCloseMenu;
+  final Function? onCloseMenu;
 
-  Menu({this.onCloseMenu, Key key}) : super(key: key);
+  Menu({this.onCloseMenu}) ;
 
   @override
   _MenuState createState() => _MenuState();

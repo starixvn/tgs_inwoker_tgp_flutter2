@@ -14,21 +14,18 @@ class TransferTextFormField extends StatefulWidget {
   final Widget button;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
-  final bool enabled;
 
-  TransferTextFormField(
-      {Key key,
-      this.hintText,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.controller,
-      this.focusNode,
-      this.width,
-      this.button,
-      this.textInputType,
-      this.textInputAction,
-      this.enabled})
-      : super(key: key);
+  TransferTextFormField({
+    required this.hintText,
+    required this.onChanged,
+    required this.onFieldSubmitted,
+    required this.controller,
+    required this.focusNode,
+    required this.width,
+    required this.button,
+    required this.textInputType,
+    required this.textInputAction,
+  });
 
   @override
   _TransferTextFormFieldState createState() => _TransferTextFormFieldState();
@@ -39,7 +36,7 @@ class _TransferTextFormFieldState extends BaseState<TransferTextFormField> {
     return Container(
       width: widget.width,
       child: TextFormField(
-        enabled: widget.enabled ?? true,
+        enabled: true,
         autofocus: false,
         onChanged: (value) => widget.onChanged(value),
         focusNode: widget.focusNode,
@@ -50,15 +47,13 @@ class _TransferTextFormFieldState extends BaseState<TransferTextFormField> {
             ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
             : null,
         textInputAction: widget.textInputAction,
-        obscureText:
-        (widget.textInputType == TextInputType.visiblePassword) ? true : false,
+        obscureText: (widget.textInputType == TextInputType.visiblePassword) ? true : false,
         style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 13.auto),
         decoration: InputDecoration(
           isDense: true,
           border: InputBorder.none,
           hintText: widget.hintText,
-          hintStyle:
-          TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+          hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
         ),
       ),
     );

@@ -7,16 +7,16 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/transaction/deposit_transaction_view.dart';
 import 'package:tgp_flutter2/ui/transaction/account_transaction_view.dart';
-import 'package:tgp_flutter2/ui/transaction/bet_transaction_view.dart';
 import 'package:tgp_flutter2/ui/transaction/transfer_transaction_view.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
 import 'package:tgp_flutter2/ui/transaction/withdraw_transaction_view.dart';
 
 class Transaction extends StatefulWidget {
-  final int tabIndex;
+  final int? tabIndex;
 
-  Transaction({Key key, this.tabIndex}) : super(key: key);
+  Transaction({this.tabIndex}) ;
 
   @override
   _TransactionState createState() => _TransactionState();
@@ -49,7 +49,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             appBar: CustomAppBar(
-              title: getTranslatedText(tabList[currentTabIndex]["text"]),
+              title: getTranslatedText((tabList[currentTabIndex]["text"])!),
               walletBalance: _vm.wallet?.main,
             ),
             body: Column(
@@ -73,7 +73,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                     unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                     tabs: List.generate(tabList.length, (index) {
                       return TabButton(
-                        text: getTranslatedText(tabList[index]["text"]) ?? tabList[currentTabIndex]["text"],
+                        text: getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
                         index: index,
                         currentTabIndex: currentTabIndex,
                         width: 90.auto,
@@ -86,10 +86,10 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      BetTransactionView(
+                      AccountTransactionView(
                         vm: _vm,
                       ),
-                      AccountTransactionView(
+                      DepositTransactionView(
                         vm: _vm,
                       ),
                       WithdrawTransactionView(

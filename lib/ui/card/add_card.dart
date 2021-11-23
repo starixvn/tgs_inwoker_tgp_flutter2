@@ -30,7 +30,7 @@ class _AddCardState extends BaseState<AddCard> {
       _bankBranchController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
-  String bankTypePickerText, channelPickerText;
+  String? bankTypePickerText, channelPickerText;
   bool isCrypto = true;
 
   @override
@@ -103,11 +103,11 @@ class _AddCardState extends BaseState<AddCard> {
   _buildChannelPicker() => CustomPicker(
       title: "channel",
       displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
-      list: _vm.withdrawalInfoList,
+      list: _vm.withdrawalInfoList!,
       isHintText: false,
       width: context.screenWidth,
       onClick: () {
-        _buildBottomSheet("channel", _vm.withdrawalInfoList);
+        _buildBottomSheet("channel", _vm.withdrawalInfoList!);
       });
 
   _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => Visibility(
@@ -118,7 +118,6 @@ class _AddCardState extends BaseState<AddCard> {
           onChanged: (value) => _onTextChange(value),
           onFieldSubmitted: (value) => _onTextChange(value),
           controller: controller,
-          focusNode: null,
           width: context.screenWidth - 70.auto,
           textInputType: isNum ? TextInputType.number : TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -177,7 +176,7 @@ class _AddCardState extends BaseState<AddCard> {
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: title,
-              list: list ?? [],
+              list: list ,
               onChanged: (value) {
                 setState(() {
                   if (value is BankType)
@@ -212,24 +211,24 @@ class _AddCardState extends BaseState<AddCard> {
       isButtonEnabled = false;
   }
 
-  onSelectedBankType({BankType bankType}) async {
+  onSelectedBankType({BankType? bankType}) async {
     if (bankType == null) bankType = _vm.pBankType;
     await _vm.onSelectedBankType(bankType);
     onSelectedWithdrawalInfo();
     setState(() {
       isCrypto = bankType == BankType.CRYPTO;
-      bankTypePickerText = bankType.getName(context);
+      bankTypePickerText = bankType!.getName(context);
     });
   }
 
-  onSelectedWithdrawalInfo({WithdrawalInfo withdrawalInfo}) async {
+  onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
     await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
     setState(() {
     //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
-      if(_vm.pWithdrawalInfo.channelName == "PrimePay_BankTransfer_Custom"){
+      if(_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom"){
         channelPickerText = getTranslatedText("custom_bank");
       } else{
-        channelPickerText = _vm.pWithdrawalInfo.channelCode;
+        channelPickerText = _vm.pWithdrawalInfo!.channelCode;
       }
     });
   }
@@ -248,7 +247,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _handleApiState() {
     handleApiState(_vm.addBankCardApiState, onSuccess: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pop(true);
       });
     });

@@ -18,9 +18,9 @@ class TransactionViewModel extends BaseViewModel {
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
-  List<BetTransaction> betTransactionList;
-  List<AccountTransaction> accountTransactionList, withdrawTransactionList;
-  List<TransferTransaction> transferTransactionList;
+  List<BetTransaction>? betTransactionList;
+  List<AccountTransaction>? accountTransactionList, withdrawTransactionList;
+  List<TransferTransaction>? transferTransactionList;
   var endRecord = false;
   var statusList = Status.values;
   var pStatus = Status.All;
@@ -56,15 +56,15 @@ class TransactionViewModel extends BaseViewModel {
       list = getTransactionApiState.result.items;
       if (betTransactionList == null) betTransactionList = [];
 
-      betTransactionList.addAll(list);
-      endRecord = betTransactionList.length >= getTransactionApiState.result.totalCount ? true : false;
+      betTransactionList!.addAll(list);
+      endRecord = betTransactionList!.length >= getTransactionApiState.result.totalCount ? true : false;
       notifyListeners();
     }
     setLoading(false);
     return getTransactionApiState;
   }
 
-  getAccountTransaction({bool isLoadMore = false, Status status}) async {
+  getAccountTransaction({bool isLoadMore = false, Status? status = Status.All}) async {
     setLoading();
 
     if (isLoadMore) {
@@ -86,15 +86,15 @@ class TransactionViewModel extends BaseViewModel {
       list = getAccountTransactionApiState.result.items;
       if (accountTransactionList == null) accountTransactionList = [];
 
-      accountTransactionList.addAll(list);
-      endRecord = accountTransactionList.length >= getAccountTransactionApiState.result.totalCount ? true : false;
+      accountTransactionList!.addAll(list);
+      endRecord = accountTransactionList!.length >= getAccountTransactionApiState.result.totalCount ? true : false;
       notifyListeners();
     }
     setLoading(false);
     return getAccountTransactionApiState;
   }
 
-  getWithdrawTransaction({bool isLoadMore = false, Status status}) async {
+  getWithdrawTransaction({bool isLoadMore = false, Status? status = Status.All}) async {
     setLoading();
 
     if (isLoadMore) {
@@ -115,8 +115,8 @@ class TransactionViewModel extends BaseViewModel {
       list = getWithdrawTransactionApiState.result.items;
       if (withdrawTransactionList == null) withdrawTransactionList = [];
 
-      withdrawTransactionList.addAll(list);
-      endRecord = withdrawTransactionList.length >= getWithdrawTransactionApiState.result.totalCount ? true : false;
+      withdrawTransactionList!.addAll(list);
+      endRecord = withdrawTransactionList!.length >= getWithdrawTransactionApiState.result.totalCount ? true : false;
       notifyListeners();
     }
     setLoading(false);
@@ -143,15 +143,15 @@ class TransactionViewModel extends BaseViewModel {
       list = getTransferTransactionApiState.result.items;
       if (transferTransactionList == null) transferTransactionList = [];
 
-      transferTransactionList.addAll(list);
-      endRecord = transferTransactionList.length >= getTransferTransactionApiState.result.totalCount ? true : false;
+      transferTransactionList!.addAll(list);
+      endRecord = transferTransactionList!.length >= getTransferTransactionApiState.result.totalCount ? true : false;
       notifyListeners();
     }
     setLoading(false);
     return getTransferTransactionApiState;
   }
 
-  setDate({DateTime startDate, endDate}) {
+  setDate({DateTime? startDate,  DateTime? endDate}) {
     if (startDate != null) pStartDate = startDate;
     if (endDate != null) {
       if (endDate == pStartDate)

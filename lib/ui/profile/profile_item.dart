@@ -5,16 +5,15 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/transaction/transaction.dart';
 
 class ProfileItem extends StatefulWidget {
-  final String title;
+  /*final String title;
   final String imagePath;
   final String routePath;
 
   ProfileItem({
-    Key key,
-    this.title,
-    this.imagePath,
-    this.routePath,
-  }) : super(key: key);
+    required this.title,
+    required this.imagePath,
+    required this.routePath,
+  }) ;*/
 
   @override
   _ProfileItemState createState() => _ProfileItemState();
@@ -107,7 +106,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
     ),
   );
 
-  _navigate(String routePath, int navigationID) => WidgetsBinding.instance.addPostFrameCallback((_) {
+  _navigate(String routePath, int navigationID) => WidgetsBinding.instance!.addPostFrameCallback((_) {
     if (navigationID == 0) {
       Navigator.of(context).pushNamed("/$routePath");
     } else {
