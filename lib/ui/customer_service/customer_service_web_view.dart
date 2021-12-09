@@ -23,7 +23,7 @@ class CustomerServiceWebView extends StatefulWidget {
 
 class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
   InAppWebViewController? _webViewController;
-  var url = EnvironmentConfig.csUrl;
+ // var url = EnvironmentConfig.csUrl;
 //  CustomerServiceViewModel _vm = CustomerServiceViewModel();
 
   @override

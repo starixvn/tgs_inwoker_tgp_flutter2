@@ -7,22 +7,23 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/transaction/deposit_transaction_view.dart';
-import 'package:tgp_flutter2/ui/transaction/account_transaction_view.dart';
-import 'package:tgp_flutter2/ui/transaction/transfer_transaction_view.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
-import 'package:tgp_flutter2/ui/transaction/withdraw_transaction_view.dart';
+import 'package:tgp_flutter2/ui/report/account_report_view.dart';
+import 'package:tgp_flutter2/ui/report/deposit_report_view.dart';
+import 'package:tgp_flutter2/ui/report/promotion_report_view.dart';
+import 'package:tgp_flutter2/ui/report/report_view_model.dart';
+import 'package:tgp_flutter2/ui/report/transfer_report_view.dart';
+import 'package:tgp_flutter2/ui/report/withdraw_report_view.dart';
 
-class Transaction extends StatefulWidget {
+class Report extends StatefulWidget {
   final int? tabIndex;
 
-  Transaction({this.tabIndex}) ;
+  Report({this.tabIndex}) ;
 
   @override
-  _TransactionState createState() => _TransactionState();
+  _ReportState createState() => _ReportState();
 }
 
-class _TransactionState extends BaseState<Transaction> with SingleTickerProviderStateMixin {
+class _ReportState extends BaseState<Report> with SingleTickerProviderStateMixin {
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
@@ -30,9 +31,10 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
     {"id": "1", "text": "deposit_history"},
     {"id": "2", "text": "withdrawal_history"},
     {"id": "3", "text": "transfer_history"},
+    {"id": "4", "text": "promotion_history"},
     /*{"id": "4", "text": "返水记录"},*/
   ];
-  TransactionViewModel _vm = TransactionViewModel();
+  ReportViewModel _vm = ReportViewModel();
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<TransactionViewModel>(
+    return ProviderWidget<ReportViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           return Scaffold(
@@ -86,16 +88,11 @@ class _TransactionState extends BaseState<Transaction> with SingleTickerProvider
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      AccountTransactionView(
-                        vm: _vm,
-                      ),
-                      DepositTransactionView(
-                        vm: _vm,
-                      ),
-                      WithdrawTransactionView(
-                        vm: _vm,
-                      ),
-                      TransferTransactionView(vm: _vm)
+                      AccountReportView(vm: _vm),
+                      DepositReportView(vm: _vm),
+                      WithdrawReportView(vm: _vm),
+                      TransferReportView(vm: _vm),
+                      PromotionReportView(vm: _vm)
                     ],
                   ),
                 ),

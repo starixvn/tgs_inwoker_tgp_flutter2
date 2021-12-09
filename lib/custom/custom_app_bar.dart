@@ -7,19 +7,20 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({
-    required this.title,
-    this.widget,
-    this.walletBalance,
-    this.isPopTwice = false,
-    this.onPop,
-  });
+  CustomAppBar(
+      {required this.title,
+      this.widget,
+      this.walletBalance,
+      this.isPopTwice = false,
+      this.onPop,
+      this.isPassTrueWhenPop = false});
 
   final String title;
   final Widget? widget;
   final double? walletBalance;
   final bool isPopTwice;
   final Function? onPop;
+  final bool isPassTrueWhenPop;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
@@ -62,6 +63,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       if (isPopTwice) {
         Navigator.pop(context);
         Navigator.pop(context);
+      } else if (isPassTrueWhenPop) {
+        Navigator.pop(context, true);
       } else
         Navigator.pop(context);
     } else

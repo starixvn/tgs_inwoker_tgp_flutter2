@@ -44,6 +44,7 @@ class GameViewModel extends BaseViewModel {
   ];
   var _context;
   Map<GameType, List<GameProvider2>>? gameTypeMap = new Map<GameType, List<GameProvider2>>();
+  bool isGamePlatformInactive = false;
 
   get userProfile => userRepo.userProfile;
 
@@ -51,8 +52,8 @@ class GameViewModel extends BaseViewModel {
 
   get recommendGameList => _getRecommendGameList();
 
-  getGameProviderList() async {
-    if (contentRepo.gameProviderList == null) {
+  getGameProviderList({bool isRefresh = false}) async {
+    if (contentRepo.gameProviderList == null || isRefresh) {
       setLoading();
       getGameProviderListApiState = await contentRepo.getGameProviderList();
     }
@@ -72,18 +73,32 @@ class GameViewModel extends BaseViewModel {
         )
         .toList();
     gameTypeMap = (groupBy(list, (obj) => obj.gameType));
-
+    print("222");
     setLoading(false);
     return getGameProviderListApiState;
   }
 
   getGameList(String gamePlatformCode, GameType gameType) async {
     setLoading();
-    getGameApiState = await contentRepo.getGameList(gamePlatformCode, gameType);
-    if (getGameApiState.isSuccess) {
-      gameListMap[gamePlatformCode] = getGameApiState.result;
-      if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)
-        await _getFavoriteGame(gameType);
+    var apiState = await contentRepo.getGameList(gamePlatformCode, gameType);
+    if (apiState.isSuccess) {
+      if (apiState.result!.isEmpty) {
+        getGameApiState = apiState;
+        await getPlatformList(gameType);
+        isGamePlatformInactive = true;
+        mPlatform = "ALL";
+        await filter(gamePlatformCode: mPlatform!);
+      } else {
+        gameListMap[gamePlatformCode] = apiState.result!;
+        if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)
+          await _getFavoriteGame(gameType).then((_apiState) {
+            if (_apiState.result.isNotEmpty) {
+              getGameApiState = _apiState;
+            } else {
+              getGameApiState = apiState;
+            }
+          });
+      }
     }
     setLoading(false);
     return getGameApiState;
@@ -116,7 +131,8 @@ class GameViewModel extends BaseViewModel {
       return <Game>[];
   }
 
-  filter({BuildContext? context, int? category, String? searchQuery, String? gamePlatformCode, GameType? gameType}) async {
+  filter(
+      {BuildContext? context, int? category, String? searchQuery, String? gamePlatformCode, GameType? gameType}) async {
     if (context != null) _context = context;
     if (gamePlatformCode != null && gameType != null) {
       mGameType = gameType;
@@ -154,16 +170,20 @@ class GameViewModel extends BaseViewModel {
     }
   }
 
-  _filterPlatform() async {
+  Future<List<Game>> _filterPlatform() async {
     if (mPlatform == "ALL") {
       //get all game list
       List<Game> _list = await _addGameList(_gameList!);
       return _list;
     } else {
-      if (gameListMap[mPlatform] == null) {
-        await getGameList(mPlatform!, mGameType!);
-      }
-      return gameListMap[mPlatform];
+      //if (gameListMap[mPlatform] == null) {
+      return await getGameList(mPlatform!, mGameType!).then((apiState) {
+        if (apiState.result.isEmpty) {
+          List<Game> list = [];
+          return list;
+        } else
+          return gameListMap[mPlatform];
+      });
     }
   }
 
@@ -229,5 +249,8 @@ class GameViewModel extends BaseViewModel {
       deleteFavouriteGameApiState = _apiState;
     setLoading(false);
     return deleteFavouriteGameApiState;
+  }
+  setGamePlatformInactiveFalse() {
+    isGamePlatformInactive = false;
   }
 }

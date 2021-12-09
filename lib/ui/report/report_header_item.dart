@@ -4,27 +4,27 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
-class TransactionHeaderItem extends StatefulWidget {
+class ReportHeaderItem extends StatefulWidget {
   final List<String> headerList;
   final bool isUploadButton;
 
-  const TransactionHeaderItem({
+  const ReportHeaderItem({
     required this.headerList,
     required this.isUploadButton,
   });
 
   @override
-  _TransactionHeaderItemState createState() => _TransactionHeaderItemState();
+  _ReportHeaderItemState createState() => _ReportHeaderItemState();
 }
 
-class _TransactionHeaderItemState extends BaseState<TransactionHeaderItem> {
+class _ReportHeaderItemState extends BaseState<ReportHeaderItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 20.auto),
       child: Row(
           children: List.generate(widget.headerList.length, (index) {
         return Expanded(
-          flex: (index == 3 && widget.isUploadButton) ? 1 : 2,
+          flex: /*(index == 3 && widget.isUploadButton) ? 1 :*/ 2,
           child: index == 3 && widget.isUploadButton
               ? Container(
                   width: 45.auto,

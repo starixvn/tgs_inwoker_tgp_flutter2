@@ -45,6 +45,7 @@ class _PayPasswordState extends BaseState<PayPassword> {
                 title: _vm.userProfile.isSetPayPassword
                     ? getTranslatedText("edit_pay_password")
                     : getTranslatedText("add_pay_password"),
+                isPassTrueWhenPop: true,
               ),
               body: _vm.userProfile == null
                   ? buildProgressDialog(_vm.brandLogoUrl)

@@ -7,7 +7,7 @@ import 'package:tgp_flutter2/base_state.dart';
 class CustomPicker extends StatefulWidget {
   final String title;
   final String displayText;
-  final List<dynamic> list;
+  final List<dynamic>? list;
   final Function onClick;
   final bool isHintText;
   final double width;
@@ -15,7 +15,7 @@ class CustomPicker extends StatefulWidget {
   CustomPicker({
     required this.title,
     required this.displayText,
-    required this.list,
+    this.list,
     required this.onClick,
     required this.isHintText,
     required this.width,

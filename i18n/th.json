@@ -967,5 +967,7 @@
   "withdrawal_amount_warning": "จำนวนเงินฝากต้องเป็นหน่วยร้อยหยวน",
   "game_platform_inactive": "แพลตฟอร์มเกมปิดอยู่",
   "edit_email": "แก้ไขที่อยู่อีเมล",
-  "deposit_withdraw": "ฝาก ถอน"
+  "deposit_withdraw": "ฝาก ถอน",
+  "promotion_name": "Nama Promosi",
+  "promotion_history": "Riwayat Promosi"
 }

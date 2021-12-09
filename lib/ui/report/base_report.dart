@@ -6,44 +6,47 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_date_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_filter_button_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_header_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
+import 'package:tgp_flutter2/ui/report/report_date_item.dart';
+import 'package:tgp_flutter2/ui/report/report_filter_button_item.dart';
+import 'package:tgp_flutter2/ui/report/report_header_item.dart';
+import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 
-class BaseTransaction extends StatefulWidget {
+class BaseReport extends StatefulWidget {
   final List<String> transactionHeaderList;
   final Widget getPickerBox;
   final int filterIndex;
   final int expandedHeight;
-  final TransactionViewModel vm;
-  final Function(bool, Status?) getTransaction;
+  final ReportViewModel vm;
+  final Function(bool, Status?) getReport;
   final Function(int) setIndex;
   final ScrollController scrollController;
   final RefreshController refreshController;
   final List<dynamic>? list;
   final List<Widget>? displayItemList;
   final bool isUploadButton;
+  final String url;
 
-  BaseTransaction(
-      {required this.transactionHeaderList,
-      required this.getPickerBox,
-      required this.filterIndex,
-      required this.expandedHeight,
-      required this.vm,
-      required this.getTransaction,
-      required this.setIndex,
-      required this.scrollController,
-      required this.refreshController,
-      this.list,
-      this.displayItemList,
-      required this.isUploadButton});
+  BaseReport({
+    required this.transactionHeaderList,
+    required this.getPickerBox,
+    required this.filterIndex,
+    required this.expandedHeight,
+    required this.vm,
+    required this.getReport,
+    required this.setIndex,
+    required this.scrollController,
+    required this.refreshController,
+    this.list,
+    this.displayItemList,
+    required this.isUploadButton,
+    required this.url,
+  });
 
   @override
-  BaseTransactionState createState() => BaseTransactionState();
+  BaseReportState createState() => BaseReportState();
 }
 
-class BaseTransactionState extends BaseState<BaseTransaction> {
+class BaseReportState extends BaseState<BaseReport> {
   Widget build(BuildContext context) {
     return Container(
       height: context.screenHeight,
@@ -54,7 +57,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
               controller: widget.refreshController,
               enablePullDown: true,
               onRefresh: () {
-                widget.getTransaction(false, null);
+                widget.getReport(false, null);
                 widget.refreshController.refreshCompleted();
               },
               child: widget.list == null
@@ -72,7 +75,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                             collapseMode: CollapseMode.pin,
                             background: Column(children: [
                               _getCalendarItem(),
-                              TransactionFilterButtonItem(
+                              ReportFilterButtonItem(
                                 index: widget.filterIndex,
                                 onTextChanged: (value) => _onDateFilter(value),
                               ),
@@ -82,7 +85,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                           bottom: PreferredSize(
                             preferredSize: Size.zero,
                             child: Center(
-                              child: TransactionHeaderItem(
+                              child: ReportHeaderItem(
                                 headerList: widget.transactionHeaderList,
                                 isUploadButton: widget.isUploadButton,
                               ),
@@ -91,13 +94,13 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                           toolbarHeight: 40.auto,
                           elevation: 0,
                         ),
-                        _buildTransactionItem()
+                        _buildReportItem()
                       ],
                     ))),
     );
   }
 
-  _buildTransactionItem() => SliverPadding(
+  _buildReportItem() => SliverPadding(
         padding: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto),
         sliver: SliverList(
           delegate: SliverChildListDelegate(
@@ -122,7 +125,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
                             ],
                           ),
                         ))
-                : widget.displayItemList??[],
+                : widget.displayItemList ?? [],
           ),
         ),
       );
@@ -132,7 +135,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TransactionDateItem(
+            ReportDateItem(
               date: widget.vm.pStartDate,
               title: getTranslatedText("start_time"),
               onDateChanged: (value) {
@@ -146,7 +149,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
               height: 1,
               color: CustomColor.grey,
             ),
-            TransactionDateItem(
+            ReportDateItem(
               date: widget.vm.pEndDate,
               title: getTranslatedText("end_time"),
               onDateChanged: (value) {
@@ -192,7 +195,7 @@ class BaseTransactionState extends BaseState<BaseTransaction> {
         widget.vm.setDate();
         break;
     }
-    widget.getTransaction(false, null);
+    widget.getReport(false, null);
     widget.setIndex(index);
   }
 }

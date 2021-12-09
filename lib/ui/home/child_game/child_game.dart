@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -38,11 +39,13 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   var searchController = TextEditingController();
   var _focusNode = FocusNode();
   var isSearching = false, isVisibleSuggestionList = false, isInitLoading = true;
+  var currGamePlatformCode;
 
   @override
   void initState() {
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
+    currGamePlatformCode = widget.gamePlatformCode;
     _initData();
     super.initState();
   }
@@ -76,7 +79,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
         title: isSearching
@@ -130,11 +133,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               tabs: _groupTabList.map((item) {
                 return Tab(
                   child: Text(getTranslatedText(item),
-                      style: TextStyle(
-                        fontFamily: 'PingFang',
-                        fontSize: 14.auto,
-                        color: Colors.white
-                      )),
+                      style: TextStyle(fontFamily: 'PingFang', fontSize: 14.auto, color: Colors.white)),
                 );
               }).toList(),
             ),
@@ -229,7 +228,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消")),
       );
     } else {
-      if (_vm.mSearchQuery?.isEmpty ?? true) {
+      if (_vm.mSearchQuery?.isEmpty ?? false) {
         // if not in searching mode and search controller text is empty
         return InkWell(
           onTap: () {
@@ -249,7 +248,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         // if not in searching mode and search controller text is not empty
         return InkWell(
           onTap: () {
-            _vm.filter(searchQuery: searchController.text);
+            _vm.filter(searchQuery: "");
           },
           child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消搜索")),
         );
@@ -277,12 +276,19 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
   }
 
   _handleApiState() {
-    handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getGameApiState, isAutoHideLoading: false, onSuccess: () {
+      if (_vm.isGamePlatformInactive) {
+        currGamePlatformCode = "ALL";
+        _vm.filter(gamePlatformCode: currGamePlatformCode);
+        _vm.setGamePlatformInactiveFalse();
+        CustomToast.show(getTranslatedText("game_platform_inactive"));
+      }
+    });
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
-    /*handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: !isInitLoading, onSuccess: () {
-      if(isInitLoading) isInitLoading = !isInitLoading;
+    handleApiState(_vm.getFavouriteGameApiState, isAutoHideLoading: !isInitLoading, onSuccess: () {
+      if (isInitLoading) isInitLoading = !isInitLoading;
     });
     handleApiState(_vm.setFavouriteGameApiState, onSuccess: () {});
-    handleApiState(_vm.deleteFavouriteGameApiState,  onSuccess: () {});*/
+    handleApiState(_vm.deleteFavouriteGameApiState, onSuccess: () {});
   }
 }

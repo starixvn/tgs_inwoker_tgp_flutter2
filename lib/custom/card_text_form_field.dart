@@ -28,7 +28,7 @@ class CardTextFormField extends StatefulWidget {
        this.button,
       required this.textInputType,
       required this.textInputAction,
-       this.enabled = false});
+       this.enabled = true});
 
   @override
   _CardTextFormFieldState createState() => _CardTextFormFieldState();
@@ -84,7 +84,7 @@ class _CardTextFormFieldState extends BaseState<CardTextFormField> {
                   ),
                 ),
               ]),
-              handleNullWidget(widget.button == null, widget.button!)
+              handleNullWidget(widget.button == null, widget.button)
             ],
           ),
         ));

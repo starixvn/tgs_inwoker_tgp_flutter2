@@ -23,6 +23,7 @@ class _QQAccountState extends BaseState<QQAccount> {
   var isButtonEnabled = false, isTextFieldEnabled = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
+  var _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -50,8 +51,9 @@ class _QQAccountState extends BaseState<QQAccount> {
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
                 child: Column(
                   children: [
-                    _buildTextFormField(), _buildButton(),
-                    //_buildFooterText()
+                    _buildTextFormField(),
+                    _buildButton(),
+                    _buildFooterText(),
                   ],
                 ),
               )));
@@ -64,7 +66,7 @@ class _QQAccountState extends BaseState<QQAccount> {
         onChanged: (value) => _onTextChange(),
         onFieldSubmitted: (value) {},
         controller: _qqController,
-        focusNode: null,
+        focusNode: _focusNode,
         width: context.screenWidth - 40.auto,
         textInputType: TextInputType.number,
         textInputAction: TextInputAction.done,
@@ -84,22 +86,33 @@ class _QQAccountState extends BaseState<QQAccount> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Container(
-        alignment: Alignment.center,
-        child: InkWell(
-            onTap: () => Navigator.of(context).pushNamed("/customer_service"),
-            child: Wrap(
-              children: [
-                Text(
-                  getTranslatedText("edit_qq_cs"),
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
-                ),
-                Text(
-                  getTranslatedText("customer_service"),
+  _buildFooterText() => Visibility(
+        visible: _vm.userProfile.qq != null,
+        child: Container(
+          alignment: Alignment.center,
+          child: Wrap(
+            children: [
+              Text(
+                getTranslatedText("edit_qq_cs"),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isTextFieldEnabled = true;
+                    isButtonEnabled = true;
+                    buttonText = getTranslatedText("edit");
+                    _focusNode.requestFocus();
+                  });
+                },
+                child: Text(
+                  getTranslatedText("here"),
                   style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color),
-                )
-              ],
-            )),
+                ),
+              )
+            ],
+          ),
+        ),
       );
 
   _getUserProfile() {

@@ -1,57 +1,57 @@
+import 'package:api/entity/report_cell_item_type.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:api/entity/status.dart';
-import 'package:api/entity/transaction_cell_item_type.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/transaction/base_transaction.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_cell_item.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction_view_model.dart';
+import 'package:tgp_flutter2/ui/report/base_report.dart';
+import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
+import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class WithdrawTransactionView extends StatefulWidget {
-  final TransactionViewModel vm;
+class WithdrawReportView extends StatefulWidget {
+  final ReportViewModel vm;
 
-  WithdrawTransactionView({
+  WithdrawReportView({
     required this.vm,
   });
 
   @override
-  WithdrawTransactionViewState createState() => WithdrawTransactionViewState();
+  WithdrawReportViewState createState() => WithdrawReportViewState();
 }
 
-class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
+class WithdrawReportViewState extends BaseState<WithdrawReportView> {
   ScrollController _scrollController = ScrollController();
   var isLoading = false;
   RefreshController _refreshController = RefreshController();
   var pickerText1;
   var filterIndex = 0;
-  TransactionViewModel _vm = TransactionViewModel();
+  ReportViewModel _vm = ReportViewModel();
 
   void initState() {
     _scrollController.addListener(_scrollListener);
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _getTransaction();
+      _getReport();
     });
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<TransactionViewModel>(
+    return ProviderWidget<ReportViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return BaseTransaction(
+          return BaseReport(
             transactionHeaderList: ["time", "status", "amount"],
             getPickerBox: _getPickerBox(),
             filterIndex: filterIndex,
             expandedHeight: 250,
             vm: _vm,
-            getTransaction: (mIsLoadMore, mStatus) {
-              _getTransaction(isLoadMore: mIsLoadMore, status: mStatus);
+            getReport: (mIsLoadMore, mStatus) {
+              _getReport(isLoadMore: mIsLoadMore, status: mStatus);
             },
             setIndex: (value) {
               setState(() {
@@ -60,23 +60,31 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.withdrawTransactionList??[],
+            list: _vm.withdrawReportList ?? [],
             displayItemList: _getList(),
             isUploadButton: false,
+            url: _vm.brandLogoUrl,
           );
         });
   }
 
-  List<Widget> _getList() => _vm.withdrawTransactionList == null
+  List<Widget> _getList() => _vm.withdrawReportList == null
       ? []
-      : List.generate(_vm.withdrawTransactionList!.length, (index) {
+      : List.generate(_vm.withdrawReportList!.length, (index) {
           return Container(
-            child: TransactionCellItem(list: [
-              _vm.withdrawTransactionList![index].id,
-              Format().dateTimeFormat(_vm.withdrawTransactionList![index].createdOn),
-              _vm.withdrawTransactionList![index].status.getName(context),
-              _vm.withdrawTransactionList![index].amount.toString(),
-            ], type: _getTransactionItemType(index), isEndRecord: _vm.endRecord, isUploadButton: false),
+            child: ReportCellItem(
+              list: [
+                _vm.withdrawReportList![index].id,
+                _vm.withdrawReportList![index].orderNo,
+                Format().dateTimeFormat(_vm.withdrawReportList![index].createdOn),
+                _vm.withdrawReportList![index].status.getName(context),
+                _vm.withdrawReportList![index].amount.toString(),
+              ],
+              type: _getReportItemType(index),
+              isEndRecord: _vm.endRecord,
+              isUploadButton: false,
+              isWithdrawReport: true,
+            ),
           );
         }).toList();
 
@@ -112,7 +120,7 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
                 setState(() {
                   if (value is Status) {
                     pickerText1 = value.getName(context);
-                    _getTransaction(status: value);
+                    _getReport(status: value);
                   }
                   Navigator.pop(context);
                   // ProgressDialog.show(context, _vm.brandLogoUrl);
@@ -121,34 +129,34 @@ class WithdrawTransactionViewState extends BaseState<WithdrawTransactionView> {
         });
   }
 
-  _getTransactionItemType(int index) {
-    if (_vm.withdrawTransactionList!.length == 1) {
-      return TransactionCellItemType.SINGLE;
+  _getReportItemType(int index) {
+    if (_vm.withdrawReportList!.length == 1) {
+      return ReportCellItemType.SINGLE;
     } else {
       if (index == 0) {
-        return TransactionCellItemType.TOP;
-      } else if (index == _vm.withdrawTransactionList! .length - 1) {
-        return TransactionCellItemType.BOTTOM;
+        return ReportCellItemType.TOP;
+      } else if (index == _vm.withdrawReportList!.length - 1) {
+        return ReportCellItemType.BOTTOM;
       } else {
-        return TransactionCellItemType.CENTER;
+        return ReportCellItemType.CENTER;
       }
     }
   }
 
   _scrollListener() {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
-      _getTransaction(isLoadMore: true);
+      _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
       });
     }
   }
 
-  _getTransaction({Status? status = Status.All, bool isLoadMore = false}) async {
-    await _vm.getWithdrawTransaction(isLoadMore: isLoadMore, status: status);
+  _getReport({Status? status = Status.All, bool isLoadMore = false}) async {
+    await _vm.getWithdrawReport(isLoadMore: isLoadMore, status: status);
   }
 
   _handleApiState() {
-    handleApiState(_vm.getWithdrawTransactionApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getWithdrawReportApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

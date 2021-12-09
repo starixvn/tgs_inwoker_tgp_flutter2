@@ -14,10 +14,10 @@ flutter pub run --no-sound-null-safety environment_config:generate --config=env/
 cd ../../
 
 #App PackageId
-pub global run rename --bundleId $2
+dart pub global run rename --bundleId $2
 
 #App Name
-pub global run rename --appname $3
+dart pub global run rename --appname $3
 
 
 

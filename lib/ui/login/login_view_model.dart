@@ -22,7 +22,7 @@ class LoginViewModel extends BaseViewModel {
       getReVerifyCodeApiState,
       phoneReVerifyApiState;
 
-  get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+  get brandLogo => contentRepo.brandLogo;
 
   login(String username, String password, bool rememberMe) async {
     setLoading();

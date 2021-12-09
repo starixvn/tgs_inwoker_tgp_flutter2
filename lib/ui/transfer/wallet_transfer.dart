@@ -110,6 +110,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
             ),
           ),
         ),
+      isPassTrueWhenPop: true,
       );
 
   _buildWalletDetails(String title, Widget widget, {bool isLast = false}) => Container(
@@ -137,7 +138,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
   _buildWallet() => _buildWalletDetails(
       getTranslatedText("total_balance"),
       Text(
-        "0",
+        _vm.mainWallet != null ? Format().amountFormat(_vm.mainWallet.main) : "",
         style: TextStyle(color: CustomColor.theme_text_grey_color),
       ));
 

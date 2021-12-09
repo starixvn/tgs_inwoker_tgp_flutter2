@@ -1,3 +1,4 @@
+import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -9,6 +10,7 @@ import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/withdrawal_info.dart';
 import 'package:api/extension/format.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -27,11 +29,14 @@ class _AddCardState extends BaseState<AddCard> {
       _addressController = TextEditingController(),
       _bankNameController = TextEditingController(),
       _nameController = TextEditingController(),
-      _bankBranchController = TextEditingController();
+      _bankBranchController = TextEditingController(),
+      _realNameController = TextEditingController(),
+      _phoneController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
   String? bankTypePickerText, channelPickerText;
   bool isCrypto = true;
+  InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
@@ -53,34 +58,31 @@ class _AddCardState extends BaseState<AddCard> {
               body: _vm.bankTypeList == null
                   ? buildProgressDialog(_vm.brandLogoUrl)
                   : ListView(
-                padding: EdgeInsets.only(
-                  left: 10.auto,
-                  right: 10.auto,
-                  top: 5.auto,
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                children: [
-                  _buildAddCardTitle(),
-                  _buildBankTypePicker(),
-                  _buildChannelPicker(),
-                  _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
-                  _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
-                  _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
-                  _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
-                  _buildCryptoAddressTextField(),
-                  _getHintText(),
-                  _buildConfirmButton()
-                ],
-              ),
+                      padding: EdgeInsets.only(
+                        left: 10.auto,
+                        right: 10.auto,
+                        top: 5.auto,
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      children: [
+                        _buildAddCardTitle(),
+                        _buildBankTypePicker(),
+                        _buildChannelPicker(),
+                        ListView(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          children: _getWidgetList(),
+                        ),
+                        _getHintText(),
+                        _buildConfirmButton()
+                      ],
+                    ),
             ),
           );
         });
   }
 
-  _buildAppBar() => CustomAppBar(
-    title: getTranslatedText("add_card"),
-    walletBalance: _vm.wallet?.main
-  );
+  _buildAppBar() => CustomAppBar(title: getTranslatedText("add_card"), walletBalance: _vm.wallet?.main);
 
   _buildAddCardTitle() => Container(
       margin: EdgeInsets.only(top: 10.auto, left: 20.auto, bottom: 10.auto),
@@ -100,44 +102,87 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
       });
 
-  _buildChannelPicker() => CustomPicker(
+  _buildChannelPicker() =>  CustomPicker(
       title: "channel",
       displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
-      list: _vm.withdrawalInfoList!,
+      list: _vm.withdrawalInfoList,
       isHintText: false,
       width: context.screenWidth,
       onClick: () {
         _buildBottomSheet("channel", _vm.withdrawalInfoList!);
       });
 
-  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => Visibility(
-        visible: !isCrypto,
-        child: CardTextFormField(
-          title: getTranslatedText(title),
-          hintText: getTranslatedText(hint),
-          onChanged: (value) => _onTextChange(value),
-          onFieldSubmitted: (value) => _onTextChange(value),
-          controller: controller,
-          width: context.screenWidth - 70.auto,
-          textInputType: isNum ? TextInputType.number : TextInputType.text,
-          textInputAction: TextInputAction.next,
-        ),
+  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CustomTextFormField(
+        title: getTranslatedText(title),
+        hintText: getTranslatedText(hint),
+        onChanged: (value) => _onTextChange(value),
+        onFieldSubmitted: (value) => _onTextChange(value),
+        controller: controller,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: isNum ? TextInputType.number : TextInputType.text,
+        textInputAction: TextInputAction.next,
       );
 
-  _buildCryptoAddressTextField() => Visibility(
-        visible: isCrypto,
-        child: CardTextFormField(
-          title: getTranslatedText("address"),
-          hintText: getTranslatedText("enter_address"),
-          onChanged: (value) => _onTextChange(value),
-          onFieldSubmitted: (value) => _onTextChange(value),
-          controller: _addressController,
-          focusNode: null,
-          width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-        ),
+  _buildCryptoAddressTextField() => CardTextFormField(
+        title: getTranslatedText("address"),
+        hintText: getTranslatedText("enter_address"),
+        onChanged: (value) => _onTextChange(value),
+        onFieldSubmitted: (value) => _onTextChange(value),
+        controller: _addressController,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.text,
+        textInputAction: TextInputAction.next,
       );
+
+  _buildRealNameTextField() => CardTextFormField(
+        title: getTranslatedText("realname"),
+        hintText: getTranslatedText("enter_realname_hint"),
+        onChanged: (value) => _onTextChange(value),
+        onFieldSubmitted: (value) => _onTextChange(value),
+        controller: _realNameController,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+      );
+
+  _buildPhoneTextField() => CardTextFormField(
+        title: getTranslatedText("phone_number"),
+        hintText: getTranslatedText("enter_phone_hint"),
+        onChanged: (value) => _onTextChange(value),
+        onFieldSubmitted: (value) => _onTextChange(value),
+        controller: _phoneController,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+      );
+
+  List<Widget> _getWidgetList() {
+    switch (_vm.pBankType) {
+      case BankType.BANK:
+        return [
+          _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
+          Visibility(
+            visible: EnvironmentConfig.isShowBankBranch,
+            child:_buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
+          ),
+          _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
+          _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
+        ];
+      case BankType.CRYPTO:
+        return [
+          _buildCryptoAddressTextField(),
+        ];
+      default:
+        return [
+          _buildRealNameTextField(),
+          _buildPhoneTextField(),
+        ];
+    }
+  }
 
   _getHintText() => Container(
         margin: EdgeInsets.only(top: 2.auto, bottom: 20.auto),
@@ -176,7 +221,7 @@ class _AddCardState extends BaseState<AddCard> {
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: title,
-              list: list ,
+              list: list,
               onChanged: (value) {
                 setState(() {
                   if (value is BankType)
@@ -188,27 +233,39 @@ class _AddCardState extends BaseState<AddCard> {
         });
   }
 
-
   _onTextChange(String value) {
-    if (isCrypto) {
-      if (_addressController.text != null && _addressController.text.isNotEmpty) {
-        setState(() {
-          isButtonEnabled = true;
-        });
+    setState(() {
+      switch (_vm.pBankType) {
+        case BankType.CRYPTO:
+          {
+            if (_addressController.text.isNotEmpty)
+              isButtonEnabled = true;
+            else
+              isButtonEnabled = false;
+            break;
+          }
+        case BankType.BANK:
+          {
+            if ((_bankNumController.text.isNotEmpty) &&
+                    (_bankNameController.text.isNotEmpty) &&
+                    (_nameController.text.isNotEmpty) /*&&
+                (_bankBranchController.text.isNotEmpty)*/
+                )
+              isButtonEnabled = true;
+            else
+              isButtonEnabled = false;
+            break;
+          }
+        default:
+          {
+            if ((_realNameController.text.isNotEmpty) && (_phoneController.text.isNotEmpty))
+              isButtonEnabled = true;
+            else
+              isButtonEnabled = false;
+            break;
+          }
       }
-    } else if (_bankNumController.text != null &&
-        _bankNumController.text.isNotEmpty &&
-        _bankNameController.text != null &&
-        _bankNameController.text.isNotEmpty &&
-        _nameController.text != null &&
-        _nameController.text.isNotEmpty &&
-        _bankBranchController.text != null &&
-        _bankBranchController.text.isNotEmpty) {
-      setState(() {
-        isButtonEnabled = true;
-      });
-    } else
-      isButtonEnabled = false;
+    });
   }
 
   onSelectedBankType({BankType? bankType}) async {
@@ -224,10 +281,10 @@ class _AddCardState extends BaseState<AddCard> {
   onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
     await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
     setState(() {
-    //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
-      if(_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom"){
+      //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
+      if (_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom") {
         channelPickerText = getTranslatedText("custom_bank");
-      } else{
+      } else {
         channelPickerText = _vm.pWithdrawalInfo!.channelCode;
       }
     });
@@ -239,10 +296,13 @@ class _AddCardState extends BaseState<AddCard> {
       _vm.addBankCard(address: _addressController.text);
     else
       _vm.addBankCard(
-          bankName: _bankNameController.text,
-          bankAccount: _bankNumController.text,
-          bankBranch: _bankBranchController.text,
-          name: _nameController.text);
+        bankName: _bankNameController.text,
+        bankAccount: _bankNumController.text,
+        bankBranch: _bankBranchController.text,
+        name: _nameController.text,
+        phone: _phoneController.text,
+        realName: _realNameController.text,
+      );
   }
 
   _handleApiState() {

@@ -28,7 +28,7 @@ class CustomTextFormField extends StatefulWidget {
      this.button,
     required this.textInputType,
     required this.textInputAction,
-     this.enabled = false,
+     this.enabled = true,
   });
 
   @override

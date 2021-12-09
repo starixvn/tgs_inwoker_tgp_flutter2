@@ -8,13 +8,9 @@ environment_config:
     jwtKey:
       default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
     url:
-      default: "https://stg-op.rpgp.cc/"
+      default: "https://stg-t1-op.rpgp.cc/"
     currency:
       default: "CNY"
-    imageUrl:
-      default: "https://dev.lobby.tgsdev.gq/assets/images/"
-    csUrl:
-      default: "https://direct.lc.chat/12646566/"
     appTitleName:
       default: "PG Gaming"
     slotGameUrl:
@@ -74,4 +70,25 @@ environment_config:
     theme_text_grey_white_color:
       type: int
       default: 0xff707070
+    isShowSmsVerification:
+      type: bool
+      default: true
+    isShowBankBranch:
+      #add bank card
+      type: bool
+      default: true
+    isShowIcVerification:
+      type: bool
+      default: true
+    isShowWechatQQ:
+      type: bool
+      default: true
+    isShowBankAcc:
+      #deposit
+      type: bool
+      default: true
+    isShowMarqueePopUp:
+      type: bool
+      default: true
+
 

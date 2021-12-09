@@ -79,7 +79,9 @@ class _MessageItemState extends BaseState<MessageItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.message.subject,
+              (widget.message.localization?.subject) ??
+                  widget.message.subject,
+
               style: TextStyle(fontSize: 15.auto),
             ),
             Container(
@@ -102,7 +104,7 @@ class _MessageItemState extends BaseState<MessageItem> {
           Container(
             width: context.screenWidth,
             child: Text(
-              parseHtmlString(widget.message.localization.content?? ""),
+              parseHtmlString(widget.message.localization?.content?? ""),
               //overflow: TextOverflow.ellipsis,
               maxLines: 1,
               //softWrap: false,

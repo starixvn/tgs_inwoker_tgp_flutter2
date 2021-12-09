@@ -52,7 +52,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
-                    EnvironmentConfig.appTitleName == "HKJP" ? _buildPhoneTextFormField() : _buildTextFormField(),
+                   ( EnvironmentConfig.appTitleName == "HKJP"|| EnvironmentConfig.isShowSmsVerification) ? _buildPhoneTextFormField() : _buildTextFormField(),
                     _buildOtpTextFormField(),
                     _buildButton()
                   ],
@@ -69,7 +69,6 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
           controller: _emailController,
-
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -133,6 +132,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   _onTextChange() {
     setState(() {
       if (_otpController.text.isNotEmpty && _emailController.text.isNotEmpty) {
+        isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_emailController.text.isNotEmpty) {
         isOtpEnabled = true;
@@ -145,7 +145,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   }
 
   _getSmsCode() {
-    if (EnvironmentConfig.appTitleName == "HKJP") {
+    if (EnvironmentConfig.appTitleName == "HKJP"|| EnvironmentConfig.isShowSmsVerification) {
       if (!validate.validateAreaCodeAndPhone(display, _emailController.text)) {
         setState(() {
           CustomToast.show(getTranslatedText("phone_format_error_msg"));
@@ -154,7 +154,6 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         ProgressDialog.show(context, _vm.brandLogoUrl);
         _vm.getForgotPasswordCode(phone: _emailController.text, areaCode: display);
       }
-
     } else {
       if (!validate.validateEmail(_emailController.text)) {
         setState(() {
@@ -164,7 +163,6 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         ProgressDialog.show(context, _vm.brandLogoUrl);
         _vm.getForgotPasswordCode(email: _emailController.text);
       }
-
     }
   }
 

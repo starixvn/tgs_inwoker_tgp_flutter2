@@ -14,7 +14,7 @@ class WalletTransferViewModel extends BaseViewModel {
         .where((element) => element.transferWallet == true)
         .map((e) => Wallet(e.code, e.name))
         .toList()
-          ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
+      ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
   }
 
   get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
@@ -22,6 +22,8 @@ class WalletTransferViewModel extends BaseViewModel {
   get gameWalletList => walletList.where((element) => !element.isMainWallet).toList();
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
+  get mainWallet => userRepo.wallet;
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
@@ -49,8 +51,9 @@ class WalletTransferViewModel extends BaseViewModel {
     } else {
       var state = await walletRepo.getGameWallet(wallet.gpCode);
       if (state.isSuccess) {
-        wallet.balance = state.result?.balance ??0.0;
-      }else wallet.balance = 0.0;
+        wallet.balance = state.result?.balance ?? 0.0;
+      } else
+        wallet.balance = 0.0;
     }
     notifyListeners();
   }

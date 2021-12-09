@@ -1,3 +1,4 @@
+import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -10,8 +11,11 @@ import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/extension/format.dart';
+import 'package:tgp_flutter2/custom/custom_toast.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
@@ -33,6 +37,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   var selectedBankCard;
   TextEditingController _amountController = TextEditingController(), _payPasswordController = TextEditingController();
   var amount;
+  InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
@@ -80,6 +85,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("withdrawal"),
         walletBalance: _vm.wallet?.main,
+        isPassTrueWhenPop: true,
       );
 
   _buildWithdrawCard() => Container(
@@ -139,7 +145,12 @@ class _WithdrawState extends BaseState<Withdraw> {
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         alignment: Alignment.centerRight,
         child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/main_card"),
+          onTap: () async {
+            var result = await Navigator.of(context).pushNamed(RoutePath.mainCard);
+            if (result != null) {
+              await _vm.getBankCardList();
+            }
+          },
           child: Wrap(children: [
             Container(
               margin: EdgeInsets.only(right: 5.auto),
@@ -192,13 +203,23 @@ class _WithdrawState extends BaseState<Withdraw> {
     if (selectedBankCard == null) {
       selectedBankCard = _vm.bankCardList.first;
     }
-    return selectedBankCard.bankType == BankType.CRYPTO
-        ? (selectedBankCard.bankDetail.address)
-        : (selectedBankCard.bankDetail.bankAccount ?? "");
+    return _getDisplayBankAccountText(selectedBankCard);
   }
 
-  _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) =>
-      CardTextFormField(
+  _getDisplayBankAccountText(BankCard bankCard) {
+    switch (bankCard.bankType) {
+      case BankType.CRYPTO:
+        return bankCard.bankDetail.address;
+      case BankType.THIRD_PARTY:
+        return bankCard.bankDetail.phone;
+      case BankType.FPS:
+        return bankCard.bankDetail.phone;
+      default:
+        return bankCard.bankDetail.bankAccount;
+    }
+  }
+
+  _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) => CardTextFormField(
         title: getTranslatedText(titleText),
         hintText: getTranslatedText(hintText),
         onChanged: (value) => onTextChange(),
@@ -256,8 +277,14 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
+    if (EnvironmentConfig.appTitleName == "HKJP" && !validate.validateIncremental100(_amountController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
+      });
+    } else {
+      ProgressDialog.show(context, _vm.brandLogoUrl);
+      _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
+    }
   }
 
   _checkUserProfile() async {
@@ -295,6 +322,5 @@ class _WithdrawState extends BaseState<Withdraw> {
     });
 
     handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: false, onSuccess: () {});
-
   }
 }

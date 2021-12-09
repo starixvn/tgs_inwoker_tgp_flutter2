@@ -13,11 +13,14 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/payment.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/deposit/deposit_html.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_method_view_model.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_order_view.dart';
+import 'package:tgp_flutter2/ui/deposit/manual_deposit_order_view.dart';
 
 class DepositMethod extends StatefulWidget {
   final String? paymentCode;
@@ -43,19 +46,17 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   var selectedPayment;
   var paymentMin, paymentMax;
   int? amount;
-
   late DepositMethodViewModel _vm;
   Payment? _payment;
   String? promotionName, promotionId;
   var paymentChannelId;
+  var currBankType;
 
   void initState() {
     _vm = DepositMethodViewModel(widget.depositMethodList!);
     if (_vm.depositMethodList!.isNotEmpty) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        BankType currBankType = _vm.depositMethodList!.keys.first;
-        methodPickerText = currBankType.getName(context);
-        onSelectedMethod(currBankType);
+        onSelectedMethod(_vm.depositMethodList!.keys.first);
       });
     }
     super.initState();
@@ -77,12 +78,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList!.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
-                if (_isManualDeposit())
+                if (_isManualDeposit() && EnvironmentConfig.isShowBankAcc)
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
-                if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == "Crypto")) _buildExchangeRateText(),
+                if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto")))
+                  _buildExchangeRateText(),
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildButton(),
@@ -163,7 +165,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         child: CardTextFormField(
           title: getTranslatedText("deposit_amount") ?? "",
           hintText: getTranslatedText("enter") +
-              (Format().amountFormat(paymentMin) ) +
+              (Format().amountFormat(paymentMin)) +
               "-" +
               (Format().amountFormat(paymentMax)) +
               getTranslatedText("yuan"),
@@ -286,7 +288,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context, _vm.brandLogoUrl);
     switch (widget.paymentCode) {
       case "Manual":
-        _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment!.id, promotionId! );
+        _vm.getManualDepositId(
+            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId!);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(
@@ -304,21 +307,17 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       case "LeePay":
         _vm.leePayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
         break;
-      default:
-        _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment!.id, promotionId ?? null);
+      case "Help2Pay":
+        _vm.help2PayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
         break;
-    } /*
-    if (_isManualDeposit())
-      _vm.getManualDepositId(_bankNameController.text, _amountController.text, _payment.id, promotionId ?? null);
-    else if (_isApplePayDeposit())
-    else if (_isPrimePayDeposit()) {
-      _vm.primePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
-    } else if (_isUmPayDeposit()) {
-      _vm.umPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null, methodPickerText == "Crypto");
-    } else if (_isMaticPayDeposit()) {
-      _vm.maticPayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);
-    } else //currently is LeePay
-      _vm.leePayDepositOrder(_amountController.text, _payment.id, promotionId ?? null);*/
+      case "SkyPay":
+        _vm.skyPayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
+        break;
+      default:
+        _vm.getManualDepositId(
+            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId ?? null);
+        break;
+    }
   }
 
   _isManualDeposit() => widget.paymentCode == "Manual";
@@ -376,21 +375,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           depositRedirect: _vm.getLeepayOrderApiState.result,
           exchangeRate: _vm.exchangeRate,
           expectedAmount: _calculateExpectedAmount());
-      /*WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DepositOrderView(
-                      method: _payment.methodCode,
-                      depositRedirect: _vm.getLeepayOrderApiState.result,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                      depositChannel: channelPickerText,
-                      promotionName: promotionId != "-1" ? promotionName : null,
-                      exchangeRate: _vm.exchangeRate,
-                      expectedAmount: _calculateExpectedAmount(),
-                    )));
-        _clearTextField();
-      });*/
     });
     handleApiState(_vm.getUmPayDepositOrderApiState, isRequireResult: true, onSuccess: (result) {
       methodPickerText == "Crypto"
@@ -399,72 +383,32 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               exchangeRate: _vm.exchangeRate,
               expectedAmount: _calculateExpectedAmount())
           : _navigateToDepositOrder(depositRedirect: _vm.getUmPayDepositOrderApiState.result);
-      /*WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => methodPickerText == "Crypto"
-                    ? DepositOrderView(
-                        method: _payment.methodCode,
-                        depositRedirect: _vm.getUmPayDepositOrderApiState.result,
-                        depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                        depositChannel: channelPickerText,
-                        promotionName: promotionId != "-1" ? promotionName : null,
-                        exchangeRate: _vm.exchangeRate,
-                        expectedAmount: _calculateExpectedAmount(),
-                      )
-                    : DepositOrderView(
-                        method: _payment.methodCode,
-                        depositRedirect: _vm.getUmPayDepositOrderApiState.result,
-                        depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                        depositChannel: channelPickerText,
-                        promotionName: promotionId != "-1" ? promotionName : null,
-                      )));
-        _clearTextField();
-      });*/
     });
     handleApiState(_vm.primePayDepositOrderApiState, onSuccess: () {
       _navigateToDepositOrder(depositRedirect: _vm.primePayDepositOrderApiState.result);
-      /*WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DepositOrderView(
-                      method: _payment.methodCode,
-                      depositRedirect: _vm.primePayDepositOrderApiState.result,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                      depositChannel: channelPickerText,
-                      promotionName: promotionId != "-1" ? promotionName : null,
-                    )));
-        _clearTextField();
-      });*/
     });
 
     handleApiState(_vm.getManualDepositIdApiState, isRequireResult: true, onSuccess: (result) {
       paymentChannelId = result;
     });
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      _navigateToDepositOrder(
-        manualDepositOrder: _vm.getDepositOrderApiState.result,
-        orderNo: _vm.orderNo,
-      );
-      /*WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DepositOrderView(
-                      method: _payment.methodCode,
+                builder: (context) => ManualDepositOrderView(
                       id: paymentChannelId,
-                      manualDepositOrder: _vm.getDepositOrderApiState.result,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                      depositChannel: channelPickerText,
-                      orderNo: _vm.orderNo,
+                      method: _payment!.methodCode,
+                      depositAmount: Format().currencyWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText!,
                       promotionName: promotionId != "-1" ? promotionName : null,
+                      orderNo: _vm.orderNo,
+                      manualDepositOrder: _vm.getDepositOrderApiState.result,
+                      paymentQrCode: _payment!.qrCode,
                     )));
         _clearTextField();
-      });*/
+      });
     });
-
     handleApiState(_vm.applePayDepositOrderApiState, onSuccess: () {
       if (_vm.applePayDepositOrderApiState.result.errorMsg.isEmpty) {
         _navigateToDepositOrder(
@@ -473,20 +417,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           expectedAmount: _calculateExpectedAmount(),
           transferName: _transferNameController.text,
         );
-        /*WidgetsBinding.instance!.addPostFrameCallback((_) async {
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DepositOrderView(
-                        method: _payment.methodCode,
-                        depositRedirectApplePay: _vm.applePayDepositOrderApiState.result,
-                        depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                        depositChannel: channelPickerText,
-                        transName: _transferNameController.text,
-                        promotionName: promotionId != "-1" ? promotionName : null,
-                      )));
-          _clearTextField();
-        });*/
       } else
         CustomToast.show(_vm.applePayDepositOrderApiState.result.errorMsg);
     });
@@ -496,45 +426,64 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           depositRedirect: _vm.maticPayDepositOrderApiState.result,
           exchangeRate: _vm.exchangeRate,
           expectedAmount: _calculateExpectedAmount());
-      /*WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    });
+    handleApiState(_vm.getExchangeRateApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.help2PayDepositOrderApiState, onSuccess: () {
+      /*_navigateToDepositOrder(
+          depositRedirect: _vm.help2PayDepositOrderApiState.result,
+          exchangeRate: _vm.exchangeRate,
+          expectedAmount: _calculateExpectedAmount());*/
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+        await _vm.getHelp2PayHtmlText(_vm.help2PayDepositOrderApiState.result.paymentUrl);
+      });
+    });
+
+    handleApiState(_vm.getHelp2PayHtmlTextApiState, onSuccess: () {
+      /*_navigateToDepositOrder(
+          depositRedirect: _vm.help2PayDepositOrderApiState.result,
+          exchangeRate: _vm.exchangeRate,
+          expectedAmount: _calculateExpectedAmount());*/
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DepositOrderView(
-                      method: _payment.methodCode,
-                      depositRedirect: _vm.maticPayDepositOrderApiState.result,
-                      depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                      depositChannel: channelPickerText,
-                      promotionName: promotionId != "-1" ? promotionName : null,
+                builder: (context) => DepositHtml(
+                      htmlText: _vm.getHelp2PayHtmlTextApiState.result.toString(),
                     )));
-        _clearTextField();
-      });*/
+      });
     });
-    handleApiState(_vm.getExchangeRateApiState, isAutoHideLoading: false, onSuccess: () {});
+
+    handleApiState(_vm.skyPayDepositOrderApiState, onSuccess: () {
+      _navigateToDepositOrder(
+        depositRedirect: _vm.skyPayDepositOrderApiState.result,
+      );
+    });
   }
 
-  _navigateToDepositOrder(
-          {DepositRedirect? depositRedirect,
-          String? orderNo,
-          String? exchangeRate,
-          String? expectedAmount,
-          String? transferName,
-          ManualDepositOrder? manualDepositOrder}) =>
+  _navigateToDepositOrder({
+    DepositRedirect? depositRedirect,
+    String? exchangeRate,
+    String? expectedAmount,
+    String? transferName,
+    String? htmlText,
+  }) =>
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DepositOrderView(
-                    method: _payment?.methodCode,
-                    depositRedirect: depositRedirect,
-                    depositAmount: Format().currencySymbolWithDecimalFormat(double.parse(_amountController.text)),
-                    depositChannel: channelPickerText,
-                    promotionName: promotionId != "-1" ? promotionName : null,
-                    orderNo: orderNo,
-                    exchangeRate: exchangeRate,
-                    expectedAmount: expectedAmount,
-                    transName: transferName,
-                    manualDepositOrder: manualDepositOrder)));
+                      method: _payment?.methodCode,
+                      depositRedirect: depositRedirect,
+                      depositAmount: Format().currencyWithDecimalFormat(double.parse(_amountController.text)),
+                      depositChannel: channelPickerText,
+                      promotionName: promotionId != "-1" ? promotionName : null,
+                      //orderNo: orderNo,
+                      exchangeRate: exchangeRate,
+                      expectedAmount: expectedAmount,
+                      transName: transferName,
+                      htmlText: htmlText,
+                      id: _payment?.id ?? "",
+                    )));
         _clearTextField();
       });
 }

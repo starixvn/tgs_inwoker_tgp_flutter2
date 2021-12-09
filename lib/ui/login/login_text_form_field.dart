@@ -7,6 +7,7 @@ class LoginTextFormField extends StatelessWidget {
   final Widget? icon;
   final String hintText;
   final ValueChanged<String?>? onChanged;
+  final ValueChanged<String?>? onFieldSubmitted;
   final TextEditingController controller;
   final double width;
   final TextInputType textInputType;
@@ -16,6 +17,7 @@ class LoginTextFormField extends StatelessWidget {
      this.icon,
     required this.hintText,
      this.onChanged,
+    this.onFieldSubmitted,
     required this.controller,
     required this.width,
     required this.textInputType,

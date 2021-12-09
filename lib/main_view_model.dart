@@ -1,6 +1,7 @@
 import 'package:api/api.dart';
 import 'package:api/init.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
+import 'package:tgp_flutter2/custom/custom_toast.dart';
 
 import 'environment_config.dart';
 
@@ -25,7 +26,6 @@ class MainViewModel extends BaseViewModel {
   getLanguageOption() async {
     setLoading();
     getLanguageApiState = await contentRepo.getLanguageOption();
-    if (getLanguageApiState.isSuccess) {}
     setLoading(false);
     return getLanguageApiState;
   }

@@ -24,13 +24,9 @@ class GameWeb extends StatefulWidget {
 
 class _GameWebState extends BaseState<GameWeb> {
   var _vm = GameViewModel();
-
   InAppWebViewController? _webViewController;
-
-  //WebViewController _webViewController;
   var isLoading = false;
   String? url, lobbyUrl;
-  //FlutterWebviewPlugin webviewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {

@@ -4,6 +4,7 @@ import 'package:api/network/event_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main_view_model.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -28,6 +29,7 @@ import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:tgp_flutter2/ui/menu/menu.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
 import 'package:tgp_flutter2/ui/profile/profile.dart';
+import 'package:tgp_flutter2/ui/profile_info/email/edit_email.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/password/edit_password.dart';
 import 'package:tgp_flutter2/ui/profile_info/pay_password/pay_password.dart';
@@ -39,10 +41,10 @@ import 'package:tgp_flutter2/ui/profile_info/qq_account/qq_account.dart';
 import 'package:tgp_flutter2/ui/profile_info/real_name/real_name_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/wechat/wechat.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion.dart';
+import 'package:tgp_flutter2/ui/report/report.dart';
 import 'package:tgp_flutter2/ui/splash/splash.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 
@@ -133,13 +135,13 @@ class _MyAppState extends BaseState<MyApp> {
                 title: appTitle,
                 initialRoute: '/',
                 routes: {
-                  RoutePath.empty: (context) =>  MyHomePage(),
+                  RoutePath.empty: (context) => MyHomePage(),
                   RoutePath.home: (context) => MyHomePage(),
                   RoutePath.myHome: (context) => MyHomePage(),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.customerService: (context) => CustomerService(),
-                  RoutePath.transaction: (context) => Transaction(),
+                  RoutePath.transaction: (context) => Report(),
                   RoutePath.login: (context) => Login(),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(),
@@ -165,19 +167,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.phoneReVerification: (context) => PhoneReVerification(),
                   RoutePath.phoneVerification: (context) => PhoneVerification(),
                   RoutePath.editPhone: (context) => EditPhone(),
-
-                  /* RoutePath.frequentQuestion: (context) => FrequentQuestion(),
-          RoutePath.referFriend: (context) => ReferFriend(),
-          RoutePath.realNameVerification: (context) => RealNameVerification(),
-          RoutePath.phoneVerification: (context) => PhoneVerification(),
-          RoutePath.address: (context) => Address(),
-
-          RoutePath.securityAnswer: (context) => SecurityAnswer(),
-          RoutePath.editSecurityAnswer: (context) => EditSecurityAnswer(),
-          RoutePath.editSecurityAnswerBySecurityAnswer: (context) => EditSecurityAnswerBySecurityAnswer(),
-
-          RoutePath.promotionItemDetails: (context) => PromotionItemDetails(),
-          RoutePath.csQrCode: (context) => CustomerServiceQrCode()*/
+                  RoutePath.editEmail: (context) => EditEmail(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,
@@ -203,7 +193,10 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   _handleApiState() {
-    //handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {
+    });
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }
 
@@ -250,7 +243,8 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         bottomNavigationBar: BottomAppBar(
           color: Colors.white,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildBottomBarItem(0, "ic_home", "home"),
               _buildBottomBarItem(1, "ic_transaction", "promotion"),

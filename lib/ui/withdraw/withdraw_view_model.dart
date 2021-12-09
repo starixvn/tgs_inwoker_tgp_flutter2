@@ -42,7 +42,7 @@ class WithdrawViewModel extends BaseViewModel {
     setLoading();
     getTurnoverAmountApiState = await bankRepo.getTurnoverAmount();
     if (getTurnoverAmountApiState.isSuccess) {
-      turnover = getTurnoverAmountApiState.result;
+      turnover = (getTurnoverAmountApiState.result).toDouble();
     }
     setLoading(false);
     return getTurnoverAmountApiState;

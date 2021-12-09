@@ -16,6 +16,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
+import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
 class HomeT3 extends StatefulWidget {
@@ -51,18 +52,30 @@ class _HomeT3State extends BaseState<HomeT3> {
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
-
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
   int _current = 0;
   final CarouselController _controller = CarouselController();
+  var languageCode;
+  var _gameViewModel = GameViewModel();
 
   @override
   void initState() {
     _vm.getAnnouncement();
     _vm.getBanner();
+    _gameViewModel.getGameProviderList();
     _vm.resumeIfNeed();
+    getLanguage();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (EnvironmentConfig.isShowMarqueePopUp && _vm.firstAnnouncement != null) _displayMarqueeDialog();
+    });
+
     super.initState();
+  }
+
+  getLanguage() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
   }
 
   Widget build(BuildContext context) {
@@ -263,7 +276,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     });
   }
 
-  _displayDialog() async {
+  _displayLoginDialog() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var loginLater = prefs.getBool("login_later") ?? false;
     if (_vm.userProfile == null && !loginLater) {
@@ -284,14 +297,26 @@ class _HomeT3State extends BaseState<HomeT3> {
     }
   }
 
+  _displayMarqueeDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+        title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
+        description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
+        buttonText1: getTranslatedText("confirm"),
+        onClick: () => Navigator.of(context).pop(),
+      ),
+    );
+  }
+
   _handleApiState() {
-    if (widget.isFirstRun != null && widget.isFirstRun) {
+    if (widget.isFirstRun) {
       if (_vm.isNotLogin) {
         navigateToLogin();
         _vm.markIsNotLogin();
       } else if (_vm.isExpired) {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _displayDialog();
+          _displayLoginDialog();
         });
       }
     }

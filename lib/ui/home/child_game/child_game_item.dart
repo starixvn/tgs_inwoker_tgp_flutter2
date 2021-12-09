@@ -16,10 +16,10 @@ import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 class ChildGameItem extends StatefulWidget {
   final bool? isFavourite;
   final Game? game;
-  final bool? isDisabled;
+  final bool isDisabled;
   final GameViewModel? vm;
 
-  ChildGameItem({this.isFavourite, this.game, this.isDisabled, this.vm});
+  ChildGameItem({this.isFavourite, this.game, this.isDisabled = false, this.vm});
 
   @override
   _ChildGameItemState createState() => _ChildGameItemState();
@@ -49,7 +49,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (widget.isDisabled ?? true) ? () {} : () => _navigateToGameWeb(widget.game!),
+      onTap: (widget.isDisabled) ? () {} : () => _navigateToGameWeb(widget.game!),
       child: Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -134,13 +134,13 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             flex: 1,
             child: InkWell(
               onTap: () {
-                ProgressDialog.show(context, widget.vm!.brandLogoUrl);
-                widget.game!.isFavourite
+                //ProgressDialog.show(context, widget.vm!.brandLogoUrl);
+                (widget.game!.isFavourite ?? false)
                     ? widget.vm!.deleteFavoriteGame(widget.game!)
                     : widget.vm!.setFavoriteGame(widget.game!);
               },
               child: Image.asset(
-                widget.game!.isFavourite
+                (widget.game!.isFavourite ?? false)
                     ? "images/child_game/ic_favorite_selected.png"
                     : "images/child_game/ic_favorite.png",
                 width: 15.auto,

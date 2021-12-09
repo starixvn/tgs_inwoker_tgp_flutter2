@@ -4,12 +4,12 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
-class TransactionDateItem extends StatefulWidget{
+class ReportDateItem extends StatefulWidget{
   final DateTime date;
   final String title;
   final ValueChanged<DateTime> onDateChanged;
 
-  const TransactionDateItem({
+  const ReportDateItem({
     required this.date,
     required this.title,
     required this.onDateChanged
@@ -17,10 +17,10 @@ class TransactionDateItem extends StatefulWidget{
 
 
   @override
-  _TransactionDateItemState createState() => _TransactionDateItemState();
+  _ReportDateItemState createState() => _ReportDateItemState();
 }
 
-class _TransactionDateItemState extends BaseState<TransactionDateItem> {
+class _ReportDateItemState extends BaseState<ReportDateItem> {
   var date;
 
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class _TransactionDateItemState extends BaseState<TransactionDateItem> {
     final DateTime? dateTime = await showDatePicker(
       context: context,
       initialDate: date,
-      firstDate: DateTime(currentDate.year, currentDate.month - 3, currentDate.day),
+      firstDate: DateTime(2020),
       lastDate: currentDate
     );
 

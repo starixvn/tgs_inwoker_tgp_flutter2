@@ -8,6 +8,7 @@ import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/email_verification_view_model.dart';
@@ -59,7 +60,8 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                           //CustomTabBar(index:1),
                           _buildTextFormField(),
                           _buildOtpTextFormField(),
-                          _buildButton()
+                          _buildButton(),
+                          _buildEditEmailText()
                         ],
                       ),
                     ));
@@ -112,6 +114,27 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
         color: CustomColor.theme_button_color,
         radius: 9.6,
       ));
+
+  _buildEditEmailText() => Wrap(
+        children: [
+          Text(
+            getTranslatedText("edit_email_cs"),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed(RoutePath.editEmail)
+                  .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        _getUserProfile();
+                      }));
+            },
+            child: Text(
+              getTranslatedText("here"),
+              style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_button_color),
+            ),
+          ),
+        ],
+      );
 
   _onTextChange() {
     setState(() {

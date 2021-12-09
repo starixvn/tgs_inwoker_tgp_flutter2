@@ -980,5 +980,7 @@
   "withdrawal_amount_warning": "The deposit amount must be in hundred as the unit",
   "game_platform_inactive": "Game platform is inactive",
   "edit_email": "Edit Email",
-  "deposit_withdraw": "Deposit Withdraw"
+  "deposit_withdraw": "Deposit Withdraw",
+  "promotion_name": "Promotion Name",
+  "promotion_history": "Promotion Report"
 }

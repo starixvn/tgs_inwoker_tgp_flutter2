@@ -967,5 +967,7 @@
   "withdrawal_amount_warning": "存款金額必須是以百元為單位",
   "game_platform_inactive": "游戏平台已关闭",
   "edit_email": "修改邮箱地址",
-  "deposit_withdraw": "存提"
+  "deposit_withdraw": "存提",
+  "promotion_name": "活动名称",
+  "promotion_history": "活动记录"
 }

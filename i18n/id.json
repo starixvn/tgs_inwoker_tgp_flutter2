@@ -968,5 +968,7 @@
   "withdrawal_amount_warning": "Jumlah setoran harus dalam satuan seratus",
   "game_platform_inactive": "Platform permainan ditutup",
   "edit_email": "Edit alamat email",
-  "deposit_withdraw": "Penarikan Setoran"
+  "deposit_withdraw": "Penarikan Setoran",
+  "promotion_name": "Nama Promosi",
+  "promotion_history": "Riwayat Promosi"
 }

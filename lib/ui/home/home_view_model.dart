@@ -28,6 +28,7 @@ class HomeViewModel extends BaseViewModel {
   double gameBalance = 0.0;
   double? totalBalance;
   List<HomeBanner>? bannerList;
+  Announcement? firstAnnouncement;
 
   resumeIfNeed() async {
     setLoading();
@@ -37,7 +38,7 @@ class HomeViewModel extends BaseViewModel {
       print(token);
       await userRepo.getBasicInfo();
       await userRepo.getWalletBalance();
-     // await _computeTotalBalance();
+      await _computeTotalBalance();
       if (userProfile == null) isExpired = true;
       print("Token: " + token);
       print("Authorization: " + prefs.getString("auth_token")!);
@@ -59,6 +60,7 @@ class HomeViewModel extends BaseViewModel {
       if (_list.isEmpty)
         announcement = "";
       else {
+        firstAnnouncement = _list.first;
         announcement = _getAnnouncementContent(_list.first);
         if (_list.length != 1) {
           for (var i = 1; i < _list.length; i++) {
@@ -72,9 +74,9 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _getAnnouncementContent(Announcement text) {
-    if (text.localization.content?.isNotEmpty ?? false)
-      return text.localization.content;
-    else if (text.content.isNotEmpty)
+    if (text.localization?.content?.isNotEmpty ?? false)
+      return text.localization!.content;
+    else if (text.content?.isNotEmpty ?? false)
       return text.content;
     else
       return "";

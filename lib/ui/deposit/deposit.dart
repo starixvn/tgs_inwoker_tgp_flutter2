@@ -100,6 +100,7 @@ class _DepositState extends BaseState<Deposit> {
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("deposit"),
         walletBalance: _vm.wallet?.main,
+    isPassTrueWhenPop: true,
       );
 
   /*AppBar(

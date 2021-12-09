@@ -24,11 +24,15 @@ class EditPhone extends StatefulWidget {
 
 class _EditPhoneState extends BaseState<EditPhone> {
   var _vm = PhoneVerificationViewModel();
-  TextEditingController _phoneController = TextEditingController(), _otpController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
+  TextEditingController _phoneController = TextEditingController(),
+      _otpController = TextEditingController();
+  var isButtonEnabled = false,
+      isOtpEnabled = false,
+      isTextFieldEnabled = false,
+      isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
   int currIndex = 0;
-  String display= "+852";
+  String display = "+852";
 
   @override
   void initState() {
@@ -63,10 +67,11 @@ class _EditPhoneState extends BaseState<EditPhone> {
         });
   }
 
-  _buildAppBar() => CustomAppBar(
-    title:getTranslatedText("phone_number"),
-    onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info')),
-  )/*AppBar(
+  _buildAppBar() =>
+      CustomAppBar(
+        title: getTranslatedText("phone_number"),
+        onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info')),
+      ) /*AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
@@ -81,11 +86,13 @@ class _EditPhoneState extends BaseState<EditPhone> {
         ),
       )*/;
 
-  _buildVerifyOldPhoneNumber() => Column(
+  _buildVerifyOldPhoneNumber() =>
+      Column(
         children: [_buildPhoneTextFormField(), _buildOtpTextFormField(), _buildButton()],
       );
 
-  _buildPhoneTextFormField() => Row(
+  _buildPhoneTextFormField() =>
+      Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
@@ -111,7 +118,8 @@ class _EditPhoneState extends BaseState<EditPhone> {
     });
   }
 
-  _buildOtpTextFormField() => Opacity(
+  _buildOtpTextFormField() =>
+      Opacity(
         opacity: isOtpEnabled ? 1 : 0.4,
         child: Container(
           margin: EdgeInsets.only(top: 10.auto),
@@ -125,31 +133,35 @@ class _EditPhoneState extends BaseState<EditPhone> {
               },
               isCountdown: isOtpCountdown,
               isEnabled: isOtpEnabled,
-              onCountDownEnd: () => {
-                    setState(() {
-                      isOtpCountdown = false;
-                    })
-                  }),
+              onCountDownEnd: () =>
+              {
+                setState(() {
+                  isOtpCountdown = false;
+                })
+              }),
         ),
       );
 
-  _buildButton() => Container(
-      width: context.screenWidth,
-      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
-      child: ColorButton(
-        title: currIndex == 0 ? getTranslatedText("next") : getTranslatedText("done"),
-        onClick: () {
-          _onClick();
-        },
-        isEnabled: isButtonEnabled ,
-        color: CustomColor.theme_button_color,
-        radius: 9.6,
-      ));
+  _buildButton() =>
+      Container(
+          width: context.screenWidth,
+          margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
+          child: ColorButton(
+            title: currIndex == 0 ? getTranslatedText("next") : getTranslatedText("done"),
+            onClick: () {
+              _onClick();
+            },
+            isEnabled: isButtonEnabled,
+            color: CustomColor.theme_button_color,
+            radius: 9.6,
+          ));
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty)
+      if (_otpController.text.isNotEmpty) {
+        isOtpEnabled = true;
         isButtonEnabled = true;
+      }
       else if (_phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = false;

@@ -120,6 +120,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   _onTextChange() {
     setState(() {
       if (_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
+        isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_phoneController.text.isNotEmpty) {
         isOtpEnabled = true;

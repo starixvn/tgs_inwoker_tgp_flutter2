@@ -171,6 +171,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
           _passwordController.text.isNotEmpty &&
           _phoneController.text.isNotEmpty &&
           _otpController.text.isNotEmpty) {
+        isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_usernameController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty &&
@@ -196,7 +197,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   }
 
   _onClick() async {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
+    ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
     _vm.phoneVerify(_otpController.text);
   }
 

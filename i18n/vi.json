@@ -967,5 +967,7 @@
   "withdrawal_amount_warning": "Số tiền gửi phải tính bằng đơn vị trăm nhân dân tệ",
   "game_platform_inactive": "Nền tảng trò chơi đã bị đóng",
   "edit_email": "Chỉnh sửa địa chỉ email",
-  "deposit_withdraw": "Gửi tiền Rút tiền"
+  "deposit_withdraw": "Gửi tiền Rút tiền",
+  "promotion_name": "tên khuyến mãi",
+  "promotion_history": "lịch sử thăng tiến"
 }

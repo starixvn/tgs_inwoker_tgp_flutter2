@@ -33,29 +33,20 @@ class _GameT3State extends BaseState<GameT3> {
 
   double _imageRatio = 750 / 330;
 
-  /*double _containerPaddingRight = 5.auto;
-  double _listViewPaddingRight = 5.auto;
-  double _itemPaddingRight = 5.auto;
-  double _itemPaddingLeft = (8.5).auto;
-  double _itemPaddingTop = (12.5).auto;
-  double _itemPaddingBottom = (5).auto;
-
-  double get _itemWidth =>
-      context.size.width - _containerPaddingRight - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
-
-  double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;*/
-
   @override
   void initState() {
-    _vm.getGameProviderList();
+    _vm.getGameProviderList(isRefresh: true);
     super.initState();
   }
 
-  List<dynamic> _getGameTypeMap() {
-    if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
-      return ([_vm.gameTypeMap![GameType.Sportsbook], _vm.gameTypeMap![GameType.ESports]].expand((x) => x!).toList());
-    else
-      return _vm.gameTypeMap![widget.gameType]!;
+  List<dynamic>? _getGameTypeMap() {
+    if(_vm.gameTypeMap?.isEmpty??true) return null;
+    else{
+      if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
+        return ([_vm.gameTypeMap![GameType.Sportsbook], _vm.gameTypeMap![GameType.ESports]].expand((x) => x!).toList());
+      else
+        return _vm.gameTypeMap![widget.gameType]!;
+    }
   }
 
   @override
@@ -71,12 +62,13 @@ class _GameT3State extends BaseState<GameT3> {
                   backgroundColor: CustomColor.theme_bg_color,
                   appBar: CustomAppBar(
                     title: getTranslatedText("game"),
+                    isPassTrueWhenPop: true,
                   ),
                   body: _getGameTypeMap() == null
                       ? buildProgressDialog(_vm.brandLogoUrl)
                       : ListView(
                           padding: EdgeInsets.only(bottom: 15.auto),
-                          children: _getGameTypeMap()
+                          children: _getGameTypeMap()!
                               .map((item) => Container(
                                   margin: EdgeInsets.only(top: 15.auto, left: 15.auto, right: 15.auto),
                                   child: _buildImageLayout(item)))

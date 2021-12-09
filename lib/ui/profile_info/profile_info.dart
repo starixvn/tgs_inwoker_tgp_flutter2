@@ -54,31 +54,21 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                               _getItemText(_vm.userProfile.email)
                             ],
                           ),
-                          _buildInfoCard(
-                            "other_info",
-                            [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
-                            ["qq_account", "wechat"],
-                            itemDescriptionList: [
-                              _getItemText(_vm.userProfile.qq),
-                              _getItemText(_vm.userProfile.wechat),
-                              //_getItemText(/*_vm.userProfile.memberAddress, isShowSet: true*/)
-                            ],
-                          ),
+                          EnvironmentConfig.isShowWechatQQ
+                              ? _buildInfoCard(
+                                  "other_info",
+                                  [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
+                                  ["qq_account", "wechat"],
+                                  itemDescriptionList: [
+                                    _getItemText(_vm.userProfile.qq),
+                                    _getItemText(_vm.userProfile.wechat),
+                                  ],
+                                )
+                              : Container(),
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.auto),
                             child: _buildInfoCard(
-                                "security_center",
-                                [
-                                  ProfileInfoItem.LOGIN_PASSWORD,
-                                  //ProfileInfoItem.PAY_PASSWORD,
-                                  //ProfileInfoItem.RESET_PAY_PASSWORD
-                                ],
-                                [
-                                  "edit_password",
-                                  //"pay_password",
-                                  //"reset_pay_password"
-                                  // if no security will navigate to security answer, else will navigate to edit security answer
-                                ],
+                                "security_center", [ProfileInfoItem.LOGIN_PASSWORD], ["edit_password"],
                                 isSecurity: true),
                           )
                         ],
@@ -132,9 +122,11 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       );
 
   _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription}) {
-   /* if (routePath == "phone_verification" && EnvironmentConfig.appTitleName != "HKJP")
+    if ((routePath == "phone_verification" &&
+            !(EnvironmentConfig.appTitleName == "HKJP" && EnvironmentConfig.isShowSmsVerification)) ||
+        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification))
       return Container();
-    else*/
+    else
       return InkWell(
         onTap: () {
           Navigator.of(context).pushNamed("/$routePath");
@@ -149,11 +141,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   child: ImageIcon(
                     AssetImage(imagePath),
                     size: 20.auto,
-                  )
-                  /*Image.asset(imagePath,
-                  width: 20.auto,
-                ),*/
-                  ),
+                  )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,14 +150,15 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     itemTitle,
                     style: TextStyle(fontSize: 15.auto),
                   ),
-                  handleNullWidget(itemDescription == null, Container(
-                    margin: EdgeInsets.only(top: 3.auto),
-                    child: Text(
-                      itemDescription!,
-                      style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
-                    ),
-                  ))
-
+                  handleNullWidget(
+                      itemDescription == null,
+                      Container(
+                        margin: EdgeInsets.only(top: 3.auto),
+                        child: Text(
+                          itemDescription!,
+                          style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+                        ),
+                      ))
                 ],
               ),
               Spacer(),
@@ -197,11 +186,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   child: ImageIcon(
                     AssetImage(imagePath),
                     size: 20.auto,
-                  )
-                  /*Image.asset(imagePath,
-                  width: 20.auto,
-                ),*/
-                  ),
+                  )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

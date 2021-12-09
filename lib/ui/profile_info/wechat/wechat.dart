@@ -23,6 +23,7 @@ class _WechatState extends BaseState<Wechat> {
   var isButtonEnabled = false, isTextFieldEnabled = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
+  var _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -47,8 +48,9 @@ class _WechatState extends BaseState<Wechat> {
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
                 child: Column(
                   children: [
-                    _buildTextFormField(), _buildButton(),
-                    //_buildFooterText()
+                    _buildTextFormField(),
+                    _buildButton(),
+                    _buildFooterText(),
                   ],
                 ),
               ));
@@ -61,7 +63,7 @@ class _WechatState extends BaseState<Wechat> {
         onChanged: (value) => _onTextChange(),
         onFieldSubmitted: (value) {},
         controller: _wechatController,
-        focusNode: null,
+        focusNode: _focusNode,
         width: context.screenWidth - 40.auto,
         textInputType: TextInputType.text,
         textInputAction: TextInputAction.done,
@@ -81,19 +83,29 @@ class _WechatState extends BaseState<Wechat> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Container(
-        alignment: Alignment.center,
-        child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/customer_service"),
+  _buildFooterText() => Visibility(
+        visible: _vm.userProfile.wechat != null,
+        child: Container(
+          alignment: Alignment.center,
           child: Wrap(
             children: [
               Text(
                 getTranslatedText("edit_wechat_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
               ),
-              Text(
-                getTranslatedText("customer_service"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isTextFieldEnabled = true;
+                    isButtonEnabled = true;
+                    buttonText = getTranslatedText("edit");
+                    _focusNode.requestFocus();
+                  });
+                },
+                child: Text(
+                  getTranslatedText("here"),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color),
+                ),
               )
             ],
           ),

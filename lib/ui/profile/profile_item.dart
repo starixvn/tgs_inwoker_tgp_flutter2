@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
-import 'package:tgp_flutter2/ui/transaction/transaction.dart';
+import 'package:tgp_flutter2/ui/report/report.dart';
 
 class ProfileItem extends StatefulWidget {
   /*final String title;
@@ -113,7 +113,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Transaction(
+              builder: (context) => Report(
                 tabIndex: navigationID,
               )));
     }
