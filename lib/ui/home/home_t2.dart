@@ -54,7 +54,7 @@ class _HomeT2State extends BaseState<HomeT2> {
   void initState() {
     _vm.getAnnouncement();
     _vm.getBanner();
-    _vm.resumeIfNeed();
+    _vm.getTotalBalance();
     _gameViewModel.getGameProviderList();
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {

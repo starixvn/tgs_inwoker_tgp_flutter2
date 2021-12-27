@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.20+1
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -58,11 +58,11 @@ dependencies:
   flutter_switch: ^0.3.2
   simple_html_css: ^3.0.1+1
 
-  #flutter_webview_plugin:
-  #  git: https://github.com/nuc134r/flutter_webview_plugin.git
+  #api:
+   # path: ../api
 
   api:
-    git: https://gitlab.com/inwoker/tgs/api
+    git: https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -84,24 +84,13 @@ class _MyAppState extends BaseState<MyApp> {
     });
   }
 
-/*  @override
-  void didChangeDependencies() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      LanguageProvider().getLocale().then((locale) {
-        setState(() {
-          this._locale = locale;
-        });
-      });
-    });
-    super.didChangeDependencies();
-  }*/
-
   Future<EventResult<List<LanguageOption>>> initData() async {
     if (firstInit) {
       await _vm.getAuthToken();
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
+      _vm.resumeIfNeed();
       setState(() {
         firstInit = false;
       });
@@ -193,8 +182,7 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {
-    });
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
@@ -247,7 +235,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildBottomBarItem(0, "ic_home", "home"),
-              _buildBottomBarItem(1, "ic_transaction", "promotion"),
+              _buildBottomBarItem(1, "ic_promotion", "promotion"),
               _buildBottomBarItem(2, "ic_deposit", "deposit_withdraw"),
               _buildBottomBarItem(3, "ic_cs", "customer_service"),
               _buildBottomBarItem(4, "ic_profile", "my_profile"),
@@ -294,7 +282,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                           getTranslatedText(title) ?? title,
                           style: TextStyle(
                             fontSize: 9.auto,
-                            color: currentBottomIndex == index
+                            color: (currentBottomIndex == index && !isMenu)
                                 ? CustomColor.bottom_nav_selected_color
                                 : CustomColor.bottom_nav_unselected_color,
                           ),
@@ -310,14 +298,20 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         ),
       );
 
-  _buildImageIcon(String imagePath, int index, bool isNewMessage) => SvgPicture.asset(
-        "images/bottom_nav_bar/$imagePath.svg",
-        matchTextDirection: true,
-        height: 18.auto,
-        color: currentBottomIndex == index
-            ? CustomColor.bottom_nav_selected_color
-            : CustomColor.bottom_nav_unselected_color,
-      );
+  _buildImageIcon(String imagePath, int index, bool isNewMessage) => imagePath == "ic_deposit"
+      ? SvgPicture.asset(
+          "images/bottom_nav_bar/$imagePath.svg",
+          matchTextDirection: true,
+          height: 18.auto,
+        )
+      : SvgPicture.asset(
+          "images/bottom_nav_bar/$imagePath.svg",
+          matchTextDirection: true,
+          height: 18.auto,
+          color: currentBottomIndex == index && !isMenu
+              ? CustomColor.bottom_nav_selected_color
+              : CustomColor.bottom_nav_unselected_color,
+        );
 
   _closeMenu() {
     setState(() {

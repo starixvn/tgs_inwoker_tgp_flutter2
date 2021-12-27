@@ -1,4 +1,5 @@
 import 'package:api/entity/game_type.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,7 +65,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     _vm.getAnnouncement();
     _vm.getBanner();
     _gameViewModel.getGameProviderList();
-    _vm.resumeIfNeed();
+    _vm.getTotalBalance();
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (EnvironmentConfig.isShowMarqueePopUp && _vm.firstAnnouncement != null) _displayMarqueeDialog();
@@ -229,10 +230,18 @@ class _HomeT3State extends BaseState<HomeT3> {
                         Image.asset("images/home/${gameRowList[index].getImagePath()}.png"),
                         Positioned(
                           bottom: 7.auto,
-                          right: 18.auto,
-                          child: Text(
-                            gameRowList[index].getName(context),
-                            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
+                          right: 10.auto,
+                          child: Container(
+                            width: 80.auto,
+                            height: 90.auto,
+                            alignment: Alignment.bottomCenter,
+                            child: AutoSizeText(
+                              gameRowList[index].getName(context),
+                              maxFontSize: 23,
+                              minFontSize: 10,
+                              stepGranularity: 1,
+                              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23),
+                            ),
                           ),
                         ),
                       ],
@@ -255,13 +264,20 @@ class _HomeT3State extends BaseState<HomeT3> {
                 children: [
                   Image.asset("images/home/${gameList[index].getImagePath()}.png"),
                   Positioned(
-                    bottom: 20.auto,
-                    left: 55.auto,
-                    child: Text(
-                      gameList[index].getName(context),
-                      style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
-                    ),
-                  ),
+                      bottom: 20.auto,
+                      left: 60.auto,
+                      child: Container(
+                        width: 70.auto,
+                        height: 40.auto,
+                        alignment: Alignment.bottomLeft,
+                        child: AutoSizeText(
+                          gameList[index].getName(context),
+                          maxFontSize: 23,
+                          minFontSize: 10,
+                          stepGranularity: 1,
+                          style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
+                        ),
+                      )),
                 ],
               )),
           staggeredTileBuilder: (int index) => StaggeredTile.fit(1),

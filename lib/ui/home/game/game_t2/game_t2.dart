@@ -193,9 +193,14 @@ class _GameT2State extends BaseState<GameT2> {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.push(context,
+        Navigator.push(
+            context,
             MaterialPageRoute(
-                builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType, gameId: _vm.gameListMap[gamePlatformCode]!.first.id, )));
+                builder: (context) => GameWeb(
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                      gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
+                    )));
       });
     } else {
       //navigate to game web

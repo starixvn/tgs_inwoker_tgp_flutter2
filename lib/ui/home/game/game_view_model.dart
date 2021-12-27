@@ -23,13 +23,14 @@ class GameViewModel extends BaseViewModel {
       getLobbyGameUrlApiState,
       getFavouriteGameApiState,
       setFavouriteGameApiState,
-      deleteFavouriteGameApiState;
+      deleteFavouriteGameApiState,
+      getBetConstructHtmlApiState;
   List<Game>? _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
   String? mPlatform, mSearchQuery = "";
   GameType? mGameType;
-  var url, lobbyUrl;
+  String? url, lobbyUrl;
   List<GameProvider2>? platformList;
   List<List<GameProvider2>>? gameProviderList;
   List<GameType> gameTypeList = [
@@ -73,7 +74,6 @@ class GameViewModel extends BaseViewModel {
         )
         .toList();
     gameTypeMap = (groupBy(list, (obj) => obj.gameType));
-    print("222");
     setLoading(false);
     return getGameProviderListApiState;
   }
@@ -118,7 +118,7 @@ class GameViewModel extends BaseViewModel {
     setLoading();
     getLobbyGameUrlApiState = await contentRepo.getLobbyGameUrl(gamePlatformCode, gameType, _lobbyUrl);
     if (getLobbyGameUrlApiState.isSuccess) {
-      lobbyUrl = getLobbyGameUrlApiState.result.url;
+      url = getLobbyGameUrlApiState.result.url;
     }
     setLoading(false);
     return getLobbyGameUrlApiState;
@@ -250,7 +250,18 @@ class GameViewModel extends BaseViewModel {
     setLoading(false);
     return deleteFavouriteGameApiState;
   }
+
   setGamePlatformInactiveFalse() {
     isGamePlatformInactive = false;
+  }
+
+  getBetConstructHtml() async {
+    setLoading();
+    getBetConstructHtmlApiState = await contentRepo.getBetConstructHtml();
+    if (getBetConstructHtmlApiState.isSuccess) {
+      url = getBetConstructHtmlApiState.result;
+    }
+    setLoading(false);
+    return getBetConstructHtmlApiState;
   }
 }

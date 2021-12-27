@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 //import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tgp_flutter2/custom/leave_game_dialog.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -16,7 +19,7 @@ class GameWeb extends StatefulWidget {
   final String? gamePlatformCode;
   final GameType? gameType;
 
-  GameWeb({this.gameId, this.gameType, this.gamePlatformCode}) ;
+  GameWeb({this.gameId, this.gameType, this.gamePlatformCode});
 
   @override
   _GameWebState createState() => _GameWebState();
@@ -27,6 +30,7 @@ class _GameWebState extends BaseState<GameWeb> {
   InAppWebViewController? _webViewController;
   var isLoading = false;
   String? url, lobbyUrl;
+  var prefs;
 
   @override
   void initState() {
@@ -45,6 +49,7 @@ class _GameWebState extends BaseState<GameWeb> {
         }
       });
     }*/
+    _getSharedPrefs();
     super.initState();
   }
 
@@ -93,8 +98,12 @@ class _GameWebState extends BaseState<GameWeb> {
         ],
       );
 
+  _getSharedPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
   _buildWebView() {
-    return /*isHabaPPGamePlatform()
+    /*isHabaPPGamePlatform()
         ? WebviewScaffold(
             url: _getValidUrl(url),
             withZoom: false,
@@ -103,44 +112,55 @@ class _GameWebState extends BaseState<GameWeb> {
             useWideViewPort: true,
             hidden: true,
           )
-        : */InAppWebView(
-            initialUrlRequest: URLRequest(url:Uri.parse(_getValidUrl(url))),
-            initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                    //debuggingEnabled: true,
-    javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
-                android: AndroidInAppWebViewOptions(
-                  useWideViewPort: true,
-                  mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-                )),
-            onWebViewCreated: (InAppWebViewController controller) {
-              _webViewController = controller;
-              _webViewController!.loadUrl(urlRequest: URLRequest(url:Uri.parse(_getValidUrl(url))));
-            },
-            onExitFullscreen: (InAppWebViewController controller) {
-              Navigator.pop(
-                context,
-              );
-            },
-            onLoadStart: ( controller,  url) {
-              //ProgressDialog.show(context, _vm.brandLogoUrl);
-            },
-            onLoadStop: ( controller,  url) async {
-              // ProgressDialog.hide();
-            },
-            shouldOverrideUrlLoading: (controller, navigationAction) async {
-              var uri = navigationAction.request.url!;
-              if (uri == Uri.parse(lobbyUrl!)) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => LeaveGameDialog(),
-                );
-                return NavigationActionPolicy.CANCEL;
-              } else {
-                return NavigationActionPolicy.ALLOW;
-              }
-            },
+        : */
+    var apiUrl = EnvironmentConfig.url + "api/game/bc";
+
+    return InAppWebView(
+      initialUrlRequest: URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))),
+      initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+              //debuggingEnabled: true,
+              javaScriptEnabled: true,
+              useShouldOverrideUrlLoading: true),
+          android: AndroidInAppWebViewOptions(
+            useWideViewPort: true,
+            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+          )),
+      onWebViewCreated: (InAppWebViewController controller) {
+        _webViewController = controller;
+        _webViewController!.loadUrl(
+            urlRequest: widget.gamePlatformCode == "BC"
+                ? //bet construct only
+                URLRequest(url: Uri.parse(apiUrl), headers: {
+                    "Authentication": "bearer " + prefs.getString("auth_token")!,
+                    "token": prefs.getString("token")!
+                  })
+                : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+      },
+      onExitFullscreen: (InAppWebViewController controller) {
+        Navigator.pop(
+          context,
+        );
+      },
+      onLoadStart: (controller, url) {
+        //ProgressDialog.show(context, _vm.brandLogoUrl);
+      },
+      onLoadStop: (controller, url) async {
+        // ProgressDialog.hide();
+      },
+      shouldOverrideUrlLoading: (controller, navigationAction) async {
+        var uri = navigationAction.request.url;
+        if (uri == Uri.parse(lobbyUrl!)) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => LeaveGameDialog(),
           );
+          return NavigationActionPolicy.CANCEL;
+        } else {
+          return NavigationActionPolicy.ALLOW;
+        }
+      },
+    );
   }
 
   _getValidUrl(String? url) {
@@ -154,7 +174,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _displayDialog() {
-   // if (isHabaPPGamePlatform()) webviewPlugin.close();
+    // if (isHabaPPGamePlatform()) webviewPlugin.close();
     showDialog(
       context: context,
       builder: (BuildContext context) => LeaveGameDialog(),

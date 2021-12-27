@@ -55,7 +55,7 @@ class DepositViewModel extends BaseViewModel {
     if (getPlayerPromotionListApiState.isSuccess) {
       List<Promotion> list = getPlayerPromotionListApiState.result.items;
       list.forEach((value) {
-        displayPromotionList.add({"name": value.localization?.name?? value.name, "id": value.id});
+        displayPromotionList.add({"name": value.localization?.name ?? value.name, "id": value.id});
       });
       setLoading(false);
       return getPlayerPromotionListApiState;

@@ -135,12 +135,12 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             child: InkWell(
               onTap: () {
                 //ProgressDialog.show(context, widget.vm!.brandLogoUrl);
-                (widget.game!.isFavourite ?? false)
+                widget.game!.isFavourite!
                     ? widget.vm!.deleteFavoriteGame(widget.game!)
                     : widget.vm!.setFavoriteGame(widget.game!);
               },
               child: Image.asset(
-                (widget.game!.isFavourite ?? false)
+                widget.game!.isFavourite!
                     ? "images/child_game/ic_favorite_selected.png"
                     : "images/child_game/ic_favorite.png",
                 width: 15.auto,

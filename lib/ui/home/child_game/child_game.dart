@@ -119,7 +119,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
             child: TabBar(
               controller: _groupTabController,
               isScrollable: true,
-              unselectedLabelColor: CustomColor.theme_text_grey_color,
+              unselectedLabelColor: CustomColor.theme_text_grey_white_color,
               labelColor: CustomColor.theme_button_color,
               indicatorColor: CustomColor.theme_button_color,
               indicatorWeight: 3,
@@ -133,7 +133,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               tabs: _groupTabList.map((item) {
                 return Tab(
                   child: Text(getTranslatedText(item),
-                      style: TextStyle(fontFamily: 'PingFang', fontSize: 14.auto, color: Colors.white)),
+                      style: TextStyle(fontFamily: 'PingFang', fontSize: 14.auto,)),
                 );
               }).toList(),
             ),

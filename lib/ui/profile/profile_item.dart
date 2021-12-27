@@ -31,6 +31,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transaction", "deposit_history", "transaction", 1),
           _buildMiddleProfileItem("ic_transaction", "withdrawal_history", "transaction", 2),
           _buildMiddleProfileItem("ic_transfer", "transfer_history", "transaction", 3),
+          _buildMiddleProfileItem("ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
           _buildMiddleProfileItem("ic_deposit", "deposit", "deposit", 0),
           _buildMiddleProfileItem("ic_transfer", "transfer", "wallet_transfer", 0),
@@ -83,39 +84,39 @@ class _ProfileItemState extends BaseState<ProfileItem> {
       ));
 
   _buildProfileItem(String imagePath, String title, String routePath, int navigationID) => Container(
-    child: InkWell(
-      onTap: () => _navigate(routePath, navigationID),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: ImageIcon(
-              AssetImage("images/profile/$imagePath.png"),
-              size: title=="deposit"||title=="withdrawal"?20.auto:15.auto,
-              color: CustomColor.theme_button_color,
-            ),
+        child: InkWell(
+          onTap: () => _navigate(routePath, navigationID),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: ImageIcon(
+                  AssetImage("images/profile/$imagePath.png"),
+                  size: title == "deposit" || title == "withdrawal" ? 20.auto : 15.auto,
+                  color: CustomColor.theme_button_color,
+                ),
+              ),
+              Expanded(
+                  flex: 7,
+                  child: Text(
+                    getTranslatedText(title) ?? title,
+                    style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
+                  ))
+            ],
           ),
-          Expanded(
-              flex: 7,
-              child: Text(
-                getTranslatedText(title) ?? title,
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
-              ))
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   _navigate(String routePath, int navigationID) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-    if (navigationID == 0) {
-      Navigator.of(context).pushNamed("/$routePath");
-    } else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Report(
-                tabIndex: navigationID,
-              )));
-    }
-  });
+        if (navigationID == 0) {
+          Navigator.of(context).pushNamed("/$routePath");
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Report(
+                        tabIndex: navigationID,
+                      )));
+        }
+      });
 }
