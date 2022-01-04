@@ -62,25 +62,27 @@ class GameViewModel extends BaseViewModel {
 
     List<GameProvider2> list = [];
     contentRepo.gameProviderList!.forEach((e) {
-      e.gameTypes.forEach((element) {
-        if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
-          list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
-        }
-      });
+      if (e.gameTypes != null) {
+        e.gameTypes!.forEach((element) {
+          if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
+            list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
+          }
+        });
+      }
     });
     gameProviderList = gameTypeList
         .map(
           (type) => list.where((element) => element.gameType == type).toList(),
         )
         .toList();
-    gameTypeMap = (groupBy(list, (obj) => obj.gameType));
+    gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
     setLoading(false);
     return getGameProviderListApiState;
   }
 
-  getGameList(String gamePlatformCode, GameType gameType) async {
+  getGameList(String? gamePlatformCode, GameType? gameType) async {
     setLoading();
-    var apiState = await contentRepo.getGameList(gamePlatformCode, gameType);
+    var apiState = await contentRepo.getGameList(gamePlatformCode!, gameType!);
     if (apiState.isSuccess) {
       if (apiState.result!.isEmpty) {
         getGameApiState = apiState;
@@ -126,7 +128,7 @@ class GameViewModel extends BaseViewModel {
 
   _getRecommendGameList() {
     if (_gameList != null)
-      return _gameList!.where((element) => element.tag.isRecommend == true).take(6).toList();
+      return _gameList!.where((element) => element.tag?.isRecommend == true).take(6).toList();
     else
       return <Game>[];
   }
@@ -155,11 +157,11 @@ class GameViewModel extends BaseViewModel {
         return gameList;
       case 1:
         //new game list
-        var list = gameList.where((element) => element.tag.isNew == true).toList();
+        var list = gameList.where((element) => element.tag?.isNew == true).toList();
         return list;
       case 2:
         //hot game list
-        var list = gameList.where((element) => element.tag.isHot == true).toList();
+        var list = gameList.where((element) => element.tag?.isHot == true).toList();
         return list;
       case 3:
         //favorite game list
@@ -173,7 +175,7 @@ class GameViewModel extends BaseViewModel {
   Future<List<Game>> _filterPlatform() async {
     if (mPlatform == "ALL") {
       //get all game list
-      List<Game> _list = await _addGameList(_gameList!);
+      List<Game> _list = await _addGameList();
       return _list;
     } else {
       //if (gameListMap[mPlatform] == null) {
@@ -187,7 +189,7 @@ class GameViewModel extends BaseViewModel {
     }
   }
 
-  _addGameList(List<Game> list) async {
+  _addGameList() async {
     var task = <Future>[];
     platformList!.forEach((platform) {
       if (gameListMap[platform.code] == null) {
@@ -202,7 +204,9 @@ class GameViewModel extends BaseViewModel {
     if (mSearchQuery?.isEmpty ?? true) {
       return gameList;
     } else {
-      var list = gameList.where((element) => element.name.toLowerCase().contains(mSearchQuery!.toLowerCase())).toList();
+      var list = gameList
+          .where((element) => (element.name ?? "").toLowerCase().contains(mSearchQuery!.toLowerCase()))
+          .toList();
       return list;
     }
   }
@@ -213,7 +217,7 @@ class GameViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  _getFavoriteGame(GameType gameType) async {
+  _getFavoriteGame(GameType? gameType) async {
     setLoading();
     getFavouriteGameApiState = await contentRepo.getFavoriteGame(gameType);
     if (getFavouriteGameApiState.isSuccess) {

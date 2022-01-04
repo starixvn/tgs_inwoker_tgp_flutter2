@@ -13,6 +13,7 @@ import 'package:api/entity/payment_qr_code.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -96,30 +97,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 Row(
                   children: [
-                    (widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? true)
-                        ? Expanded(
-                            flex: 2,
-                            child: QrImage(
-                              data: widget.manualDepositOrder!.qrCode,
-                              version: QrVersions.auto,
-                              size: 150.0,
-                            ),
-                          )
-                        : Expanded(
-                            flex: 2,
-                            child: Image.network(
-                              widget.paymentQrCode!.qrCodeFileUrl!,
-                              width: 150,
-                              height: 150,
-                            ),
-                          ),
-                    ((widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? true) ||
-                            (widget.manualDepositOrder?.qrCode.isEmpty ?? true))
-                        ? Expanded(
-                            flex: 1,
-                            child: Container(),
-                          )
-                        : Container(),
+                    _displayImage(),
                     Expanded(
                       flex: 2,
                       child: Column(
@@ -200,6 +178,32 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         ],
       );
 
+  _displayImage() {
+    if (widget.manualDepositOrder?.qrCode?.isEmpty ?? false)
+      return Expanded(
+        flex: 2,
+        child: QrImage(
+          data: widget.manualDepositOrder!.qrCode!,
+          version: QrVersions.auto,
+          size: 150.0,
+        ),
+      );
+    else if (widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? false)
+      return Expanded(
+        flex: 2,
+        child: Image.network(
+          widget.paymentQrCode!.qrCodeFileUrl!,
+          width: 150,
+          height: 150,
+        ),
+      );
+    else if ((widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? false) ||
+        (widget.manualDepositOrder?.qrCode?.isEmpty ?? false))
+      return Expanded(flex: 1, child: Container());
+    else
+      return Container();
+  }
+
   _buildOrderText(String title, String content) => Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: Row(
@@ -226,7 +230,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         ),
       );
 
-  _buildText(String title, String content) {
+  _buildText(String title, String? content) {
     if (content == "BankTransfer")
       content = getTranslatedText("bank_transfer");
     else if (content == "Crypto") content = getTranslatedText("crypto");
@@ -240,7 +244,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
             style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
           ),
           AutoSizeText(
-            content,
+            content ?? "",
             style: TextStyle(fontSize: 13.auto, color: Colors.black),
             minFontSize: 2,
             maxLines: 1,
@@ -259,19 +263,25 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              getTranslatedText("upload_prof_hint"),
-              style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
+            Expanded(
+              flex:7,
+              child: Text(
+                getTranslatedText("upload_prof_hint"),
+                style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
+              ),
             ),
-            ColorButton(
-              title: getTranslatedText("pick_prof"),
-              width: 70.auto,
-              height: 30.auto,
-              onClick: () {
-                chooseImage();
-              },
-              isEnabled: true,
-              radius: 9.6,
+            Expanded(
+              flex:3,
+              child: ColorButton(
+                title: getTranslatedText("pick_prof"),
+                width: 70.auto,
+                height: 30.auto,
+                onClick: () {
+                  chooseImage();
+                },
+                isEnabled: true,
+                radius: 9.6,
+              ),
             )
           ],
         ),
@@ -286,12 +296,17 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
 
     ImagePicker picker = ImagePicker();
     XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    //XFile file = File(picker!.path);
-    //set source: ImageSource.camera to get image from camera
-    setState(() {
-      uploadImage = File(choosedImage!.path);
-    });
+    File imageFile;
+    imageFile = File(choosedImage!.path);
+    var bytes = imageFile.readAsBytesSync().lengthInBytes;
+    if (bytes > 10485760) {
+      //restrict upload image to 10MB
+      CustomToast.show(getTranslatedText("image_size_limit"));
+    } else {
+      setState(() {
+        uploadImage = imageFile;
+      });
+    }
   }
 
   _handleApiState() {

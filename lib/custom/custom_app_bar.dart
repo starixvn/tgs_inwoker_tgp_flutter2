@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar(
@@ -26,21 +28,38 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(45);
 
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: CustomColor.theme_app_bar_color,
+    return EnvironmentConfig.template_version == 1
+        ? AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Container(
+              decoration: gradientDecoration,
+            ),
       centerTitle: true,
-      //widget == null ? true : false,
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 16.auto),
-      ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () => _onPress(context),
-      ),
-      actions: [_getAppBarWidget()],
-    );
+            title: Text(
+              title,
+              style: TextStyle(fontSize: 16.auto),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => _onPress(context),
+            ),
+            actions: [_getAppBarWidget()],
+          )
+        : AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: CustomColor.theme_app_bar_color,
+            centerTitle: true,
+            //widget == null ? true : false,
+            title: Text(
+              title,
+              style: TextStyle(fontSize: 16.auto),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => _onPress(context),
+            ),
+            actions: [_getAppBarWidget()],
+          );
   }
 
   _getAppBarWidget() {

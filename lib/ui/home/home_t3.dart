@@ -62,16 +62,19 @@ class _HomeT3State extends BaseState<HomeT3> {
 
   @override
   void initState() {
+    _initData();
+    super.initState();
+  }
+
+  _initData() async{
     _vm.getAnnouncement();
     _vm.getBanner();
-    _gameViewModel.getGameProviderList();
     _vm.getTotalBalance();
+    await _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (EnvironmentConfig.isShowMarqueePopUp && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
-
-    super.initState();
   }
 
   getLanguage() async {
@@ -91,6 +94,7 @@ class _HomeT3State extends BaseState<HomeT3> {
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
+              username: _vm.userProfile.username,
             ),
             body: /* Stack(
               children: [*/
@@ -160,7 +164,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                                   height: 400,
                                   width: context.screenWidth,
                                   placeholder: (context, url) => _buildEmptyContainer(),
-                                  imageUrl: _vm.bannerList![index].mobileUrl,
+                                  imageUrl: _vm.bannerList![index].mobileUrl!,
                                   //handling error
                                   fit: BoxFit.fill,
                                   errorWidget: (context, url, error) => _buildEmptyContainer(),

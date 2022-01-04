@@ -15,7 +15,7 @@ class SplashViewModel extends BaseViewModel {
 
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url,EnvironmentConfig.jwtKey,EnvironmentConfig.currency);
+    InitData().getData(EnvironmentConfig.url,EnvironmentConfig.jwtKey,EnvironmentConfig.currency,EnvironmentConfig.assetUrl);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;

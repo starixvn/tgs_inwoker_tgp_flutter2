@@ -58,7 +58,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.betReportList ?? [],
+            list: _vm.accountReportList ?? [],
             displayItemList: _getList(),
             isUploadButton: false,
             url: _vm.brandLogoUrl,
@@ -66,20 +66,21 @@ class AccountReportViewState extends BaseState<AccountReportView> {
         });
   }
 
-  List<Widget> _getList() => _vm.betReportList == null
+  List<Widget> _getList() => _vm.accountReportList == null
       ? []
-      : List.generate(_vm.betReportList!.length, (index) {
+      : List.generate(_vm.accountReportList!.length, (index) {
           return Container(
             color: CustomColor.theme_bg_color,
             child: ReportCellItem(
+              reportList: _vm.accountReportList!,
               list: [
-                _vm.betReportList![index].id,
+                _vm.accountReportList![index].id,
                 "",
-                Format().dateTimeFormat(_vm.betReportList![index].createdOn),
-                _vm.betReportList![index].gameProviderName,
-                _vm.betReportList![index].gameName,
-                _vm.betReportList![index].betAmount.toString(),
-                _vm.betReportList![index].winLoss.toString(),
+                Format().dateTimeFormat(_vm.accountReportList![index].createdOn),
+                _vm.accountReportList![index].gameProviderName,
+                _vm.accountReportList![index].gameName,
+                _vm.accountReportList![index].betAmount.toString(),
+                _vm.accountReportList![index].winLoss.toString(),
               ],
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
@@ -88,12 +89,12 @@ class AccountReportViewState extends BaseState<AccountReportView> {
         }).toList();
 
   _getReportItemType(int index) {
-    if (_vm.betReportList!.length == 1) {
+    if (_vm.accountReportList!.length == 1) {
       return ReportCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return ReportCellItemType.TOP;
-      } else if (index == _vm.betReportList!.length - 1) {
+      } else if (index == _vm.accountReportList!.length - 1) {
         return ReportCellItemType.BOTTOM;
       } else {
         return ReportCellItemType.CENTER;
@@ -111,7 +112,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   }
 
   _getReport({bool isLoadMore = false}) async {
-    await _vm.getReport(isLoadMore: isLoadMore);
+    await _vm.getAccountReport(isLoadMore: isLoadMore);
   }
 
   _handleApiState() {

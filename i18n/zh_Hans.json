@@ -969,5 +969,19 @@
   "edit_email": "修改邮箱地址",
   "deposit_withdraw": "存提",
   "promotion_name": "活动名称",
-  "promotion_history": "活动记录"
+  "promotion_history": "活动记录",
+  "new_update": "更新",
+  "image_size_limit": "照片尺寸大于上传限制，请重新上传",
+  "register_terms": "我确认我已年满18岁，并已阅读和接受本网站的策略丶隐私声明，条款及条件。",
+  "empty_promotion": "没有活动可选",
+  "affiliate_link": "推广链接",
+  "affiliate": "推广赚钱",
+  "affiliate_qr_code": "推广二维码",
+  "copy": "拷贝",
+  "edit_bank_card_cs": "无法添加，编辑和删除。如需帮助，请联系客服。",
+  "doc_no": "文件号码",
+  "enter_doc_no_hint": "请输入文件号码",
+  "input_length_error": "栏位输入长度必须少于256位",
+  "full_name": "全名",
+  "enter_full_name_hint": "请输入全名"
 }

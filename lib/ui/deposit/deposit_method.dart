@@ -42,7 +42,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   TextEditingController _amountController = TextEditingController(),
       _bankNameController = TextEditingController(),
       _transferNameController = TextEditingController();
-  var isButtonEnabled = false, isHintText = false;
+  var isButtonEnabled = false, isHintText = false, isPromotionEnabled = false;
   var selectedPayment;
   var paymentMin, paymentMax;
   int? amount;
@@ -123,8 +123,14 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             list: list ?? [],
             isHintText: isHintText,
             width: context.screenWidth,
-            onClick: () {
-              _buildBottomSheet(title, list ?? []);
+            onClick: (list?.isEmpty ?? true)
+                  ? () {
+                CustomToast.show(getTranslatedText("empty_promotion"));
+              }
+                  : () {
+                _buildBottomSheet(title, list ?? []);
+
+
             },
           ),
         ));
@@ -266,7 +272,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       amount = 0;
     }
     if (_isManualDeposit() &&
-        _bankNameController.text != null &&
+        EnvironmentConfig.isShowBankAcc &&
         _bankNameController.text.isNotEmpty &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
@@ -339,9 +345,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   onSelectedChannel(Payment payment) {
     setState(() {
       _payment = payment;
-      channelPickerText = payment.channelName.replaceAll("_", " ");
-      paymentMin = payment.transferLimit.from;
-      paymentMax = payment.transferLimit.to;
+      channelPickerText = (payment.channelName ?? "").replaceAll("_", " ");
+      paymentMin = payment.transferLimit?.from ?? 0;
+      paymentMax = payment.transferLimit?.to ?? 0;
     });
     if (_isLeePayDeposit())
       _vm.getExchangeRate(_payment!.id, false);

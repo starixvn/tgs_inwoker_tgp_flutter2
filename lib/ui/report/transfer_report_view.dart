@@ -69,6 +69,7 @@ class TransferReportViewState extends BaseState<TransferReportView> {
       : List.generate(_vm.transferReportList!.length, (index) {
           return Container(
             child: ReportCellItem(
+              reportList: _vm.transferReportList!,
               list: [
                 "",
                 "",

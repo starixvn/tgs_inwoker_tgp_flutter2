@@ -43,7 +43,7 @@ class ProfileViewModel extends BaseViewModel {
   _getGameWalletBalance(GameProvider game) async {
     var state = await walletRepo.getGameWallet(game.code);
     if (state.isSuccess) {
-      gameBalance = (gameBalance??0.0) + state.result!.balance;
+      gameBalance = (gameBalance??0.0) + state.result!.balance!;
     }
     notifyListeners();
   }

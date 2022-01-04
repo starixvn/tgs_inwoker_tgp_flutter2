@@ -49,9 +49,9 @@ class GameItemT2State extends BaseState<GameItemT2> {
   }
 
   _getImagePath(GameProvider2 gameProvider) {
-    var gameType = gameProvider.gameType.getImagePath();
-    var gamePlatformCode = gameProvider.code.toLowerCase();
-    var imagePath = "images/game/T2/${gameType}_${gamePlatformCode}.png";
+    var gameType = gameProvider.gameType?.getImagePath();
+    var gamePlatformCode = gameProvider.code?.toLowerCase();
+    var imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
     return imagePath;
   }
 

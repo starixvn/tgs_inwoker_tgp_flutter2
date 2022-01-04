@@ -35,6 +35,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   LoginViewModel _vm = LoginViewModel();
+  bool _isTermsChecked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
               _buildPasswordTextFormField(),
               _buildConfirmPasswordTextFormField(),
               //_buildPayPasswordTextFormField(),
+              _buildRegisterTermsText(),
               _buildPromotionCodeTextFormField(),
               _buildRegisterButton()
             ],
@@ -132,33 +134,60 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       );
 
   _buildPromotionCodeTextFormField() => Visibility(
-    visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
-    child: Container(
-      margin: EdgeInsets.only(top: 10.auto),
-      child: LoginTextFormField(
-        icon: SvgPicture.asset(
-          "images/login/ic_login_promotion.svg",
-          height: 20.auto,
+        visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
+        child: Container(
+          margin: EdgeInsets.only(top: 10.auto),
+          child: LoginTextFormField(
+            icon: SvgPicture.asset(
+              "images/login/ic_login_promotion.svg",
+              height: 20.auto,
+            ),
+            hintText: getTranslatedText("signup_promotion_code_hint"),
+            onChanged: (value) => null,
+            onFieldSubmitted: (value) => _register(),
+            controller: invitationCode,
+            width: context.screenWidth,
+            textInputType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+          ),
         ),
-        hintText: getTranslatedText("signup_promotion_code_hint"),
-        onChanged: (value) => null,
-        onFieldSubmitted: (value) => _register(),
-        controller: invitationCode,
-        width: context.screenWidth,
-        textInputType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-      ),
-    ),
-  );
+      );
 
   _buildRegisterButton() => Container(
-        margin: EdgeInsets.only(top: 70.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
         child: ColorButton(
           title: getTranslatedText("register"),
           onClick: () {
             _register();
           },
-          isEnabled: true,
+          isEnabled: _isTermsChecked,
+        ),
+      );
+
+  _buildRegisterTermsText() => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                value: this._isTermsChecked,
+                checkColor: Colors.white,
+                activeColor: Colors.black,
+                onChanged: (val) => this.setState(() {
+                  this._isTermsChecked = !this._isTermsChecked;
+                }),
+              ),
+            ),
+            Expanded(
+              flex: 9,
+              child: Text(
+                getTranslatedText("register_terms"),
+                style: TextStyle(color: Colors.black, fontSize: 12.auto),
+              ),
+            ),
+          ],
         ),
       );
 
@@ -193,8 +222,10 @@ class _RegisterContentState extends BaseState<RegisterContent> {
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
-      else
+      else {
+        _vm.login(username.text, password.text, true);
         _navigateToHome();
+      }
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {

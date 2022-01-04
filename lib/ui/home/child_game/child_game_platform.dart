@@ -41,8 +41,11 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
   }
 
   initData() {
+    List<Map<String, String>> list = [
+      {"name": "all", "code": "ALL"}
+    ];
     widget.platformList!.asMap().forEach((index, value) {
-      _platformTabList.add({"name": value.name, "code": value.code});
+      list.add({"name": value.name ?? "", "code": value.code ?? ""});
       if (value.code == widget.initialPlatformCode) {
         platformTabIndex = index + 1;
       }

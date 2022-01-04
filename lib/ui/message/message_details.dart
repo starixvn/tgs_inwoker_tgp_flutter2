@@ -71,14 +71,16 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.auto),
                 child: Text(
-                  widget.message.subject,
+                  widget.message.subject ??"",
                   style: TextStyle(fontSize: 15.auto, fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.auto, vertical: 5.auto),
                 child: Text(
-                  Format().dateFormat(DateTime.parse(widget.message.createdOn)),
+                  widget.message.createdOn == null
+                      ? ""
+                      : Format().dateFormat(DateTime.parse(widget.message.createdOn!)),
                   style: TextStyle(fontSize: 11.auto, color: CustomColor.grey),
                 ),
               ),

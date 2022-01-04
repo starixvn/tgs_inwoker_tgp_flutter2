@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:api/api.dart';
 import 'package:api/init.dart';
+import 'package:api/network/event_result.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
@@ -15,6 +20,7 @@ class MainViewModel extends BaseViewModel {
 
   bool isNotLogin = false, isExpired = false;
   var authApiState, getLanguageApiState, getBrandLogoApiState, autoLoginApiState, getBasicInfoApiState;
+  var versionUpdateState;
   double gameBalance = 0.0;
   double? totalBalance;
 
@@ -24,9 +30,33 @@ class MainViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
+  getVersion() async {
+    setLoading();
+    EventResult<dynamic> eventResult = await contentRepo.getVersionJson(EnvironmentConfig.brandName);
+    if (eventResult.isSuccess) {
+      var package = await PackageInfo.fromPlatform();
+      try {
+        var versionList = jsonDecode(eventResult.result);
+        var platform = Platform.isAndroid
+            ? "android"
+            : Platform.isIOS
+            ? "iOS"
+            : "";
+        var version = versionList.where((element) => element["platform"] == platform).first;
+
+        if (version["version"] != package.version) {
+          versionUpdateState = version;
+        }
+      } catch (e) {
+        //ignore
+      }
+    }
+    setLoading(false);
+  }
+
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency);
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;

@@ -73,6 +73,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
       : List.generate(_vm.withdrawReportList!.length, (index) {
           return Container(
             child: ReportCellItem(
+              reportList: _vm.withdrawReportList!,
               list: [
                 _vm.withdrawReportList![index].id,
                 _vm.withdrawReportList![index].orderNo,

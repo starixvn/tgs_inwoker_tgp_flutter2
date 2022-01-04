@@ -106,5 +106,5 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
     });
   }
 
-  _isHKJP() => EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification;
+  _isHKJP() => EnvironmentConfig.isShowSmsVerification;
 }

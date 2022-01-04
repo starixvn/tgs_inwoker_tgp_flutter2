@@ -9,7 +9,7 @@ import 'package:tgp_flutter2/base_state.dart';
 
 class MessageItem extends StatefulWidget {
   final Message message;
-  final Function(String) onReadMessage;
+  final Function(String?) onReadMessage;
 
   MessageItem({
     required this.message,
@@ -64,7 +64,7 @@ class _MessageItemState extends BaseState<MessageItem> {
   }
 
   _messageDot() => Visibility(
-        visible: !widget.message.isRead,
+    visible: !(widget.message.isRead ?? true),
         child: Container(
           width: 8.auto,
           height: 8.auto,
@@ -79,15 +79,13 @@ class _MessageItemState extends BaseState<MessageItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              (widget.message.localization?.subject) ??
-                  widget.message.subject,
-
+              (widget.message.localization?.subject) ?? widget.message.subject ?? "",
               style: TextStyle(fontSize: 15.auto),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 5.auto),
               child: Text(
-                Format().dateFormat(DateTime.parse(widget.message.createdOn)),
+                widget.message.createdOn == null ? "" : Format().dateTimezoneFormat(widget.message.createdOn!),
                 style: TextStyle(fontSize: 11.auto, color: CustomColor.grey),
               ),
             ),

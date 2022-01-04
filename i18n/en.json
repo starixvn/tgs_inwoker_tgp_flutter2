@@ -982,5 +982,19 @@
   "edit_email": "Edit Email",
   "deposit_withdraw": "Deposit Withdraw",
   "promotion_name": "Promotion Name",
-  "promotion_history": "Promotion Report"
+  "promotion_history": "Promotion Report",
+  "new_update": "New update",
+  "image_size_limit": "Image size is greater than upload limit, please upload again.",
+  "register_terms": "I confirm that I am at least 18 years old and have read and accepted the policy, privacy statement, terms and conditions of this website.",
+  "empty_promotion": "No promotion can be select.",
+  "affiliate_link": "Affiliate link",
+  "affiliate": "Affiliate",
+  "affiliate_qr_code": "Affiliate QR Code",
+  "copy": "Copy",
+  "edit_bank_card_cs": "Cannot add, edit and delete. If you need help, please contact customer service.",
+  "doc_no": "Document Number",
+  "enter_doc_no_hint": "Enter Document Number",
+  "input_length_error": "The input length must be less than 256 digits",
+  "full_name": "Full Name",
+  "enter_full_name_hint": "Enter Full Name"
 }

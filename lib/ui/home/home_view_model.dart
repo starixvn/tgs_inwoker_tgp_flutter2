@@ -87,7 +87,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+    //if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
 
     var task = <Future>[];
@@ -102,7 +102,7 @@ class HomeViewModel extends BaseViewModel {
   _getGameWalletBalance(GameProvider game) async {
     var state = await walletRepo.getGameWallet(game.code);
     if (state.isSuccess) {
-      gameBalance = (gameBalance ?? 0.0) + state.result!.balance;
+      gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
     }
     notifyListeners();
   }

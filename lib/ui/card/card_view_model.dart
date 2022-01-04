@@ -22,7 +22,7 @@ class CardViewModel extends BaseViewModel {
   var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
   List? bankCardList, withdrawalInfoList;
-  BankType pBankType = BankType.THIRD_PARTY;
+  BankType? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
 
   getBankCardList() async {
@@ -40,16 +40,19 @@ class CardViewModel extends BaseViewModel {
     getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
     if (getWithdrawalInfoListApiState.isSuccess) {
       List<WithdrawalInfo> list = getWithdrawalInfoListApiState.result;
-      bankTypeList = groupBy(list, (obj) => obj.bankType);
+      bankTypeList = groupBy(list, (obj) => obj.bankType!);
     }
     setLoading(false);
     return getWithdrawalInfoListApiState;
   }
 
-  onSelectedBankType(BankType bankType) async {
+  onSelectedBankType(BankType? bankType) async {
     if (bankTypeList.isEmpty) await getWithdrawalInfoList();
-    pBankType = bankType;
-    withdrawalInfoList = (bankTypeList[bankType])!;
+    if (bankType == null && pBankType == null)
+      pBankType = bankTypeList.keys.first;
+    else
+      pBankType = bankType;
+    withdrawalInfoList = (bankTypeList[pBankType])!;
     notifyListeners();
   }
 
@@ -62,32 +65,21 @@ class CardViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  addBankCard({
-    String? address,
-    String? bankAccount,
-    String? bankName,
-    String? name,
-    String? bankBranch,
-    String? phone,
-    String? realName,
-  }) async {
+  addBankCard({String? address, bankAccount, bankName, name, bankBranch, phone, realName}) async {
     setLoading();
-    addBankCardApiState = await bankRepo.addBankCard(
-      pWithdrawalInfo!.channelId,
-      pBankType,
-      address: address,
-      bankAccount: bankAccount,
-      bankName: bankName,
-      bankBranch: bankBranch,
-      name: name,
-      phone: phone,
-      realName: realName,
-    );
+    addBankCardApiState = await bankRepo.addBankCard(pWithdrawalInfo!.channelId, pBankType!,
+        address: address,
+        bankAccount: bankAccount,
+        bankName: bankName,
+        bankBranch: bankBranch,
+        name: name,
+        phone: phone,
+        realName: realName);
     setLoading(false);
     return addBankCardApiState;
   }
 
-  deleteBankCard(String bankInfoId) async {
+  deleteBankCard(String? bankInfoId) async {
     setLoading();
     deleteBankCardApiState = await bankRepo.deleteBankCard(bankInfoId);
     getBankCardList(); //incase failed, had to get back the deleted card

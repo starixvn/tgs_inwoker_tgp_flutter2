@@ -52,16 +52,19 @@ class _HomeT2State extends BaseState<HomeT2> {
 
   @override
   void initState() {
+    _initData();
+    super.initState();
+  }
+
+  _initData() async {
     _vm.getAnnouncement();
     _vm.getBanner();
     _vm.getTotalBalance();
-    _gameViewModel.getGameProviderList();
+    await _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (EnvironmentConfig.isShowMarqueePopUp && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
-
-    super.initState();
   }
 
   getLanguage() async {
@@ -81,6 +84,7 @@ class _HomeT2State extends BaseState<HomeT2> {
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
+              username: _vm.userProfile.username,
             ),
             body: /* Stack(
               children: [*/
@@ -116,15 +120,17 @@ class _HomeT2State extends BaseState<HomeT2> {
                       _vm.bannerList!.length,
                       (index) => ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              height: 400,
-                              width: context.screenWidth,
-                              placeholder: (context, url) => _buildEmptyContainer(),
-                              imageUrl: _vm.bannerList![index].mobileUrl,
-                              //handling error
-                              fit: BoxFit.fill,
-                              errorWidget: (context, url, error) => _buildEmptyContainer(),
-                            ),
+                            child: _vm.bannerList![index].mobileUrl == null
+                                ? _buildEmptyContainer()
+                                : CachedNetworkImage(
+                                    height: 400,
+                                    width: context.screenWidth,
+                                    placeholder: (context, url) => _buildEmptyContainer(),
+                                    imageUrl: _vm.bannerList![index].mobileUrl!,
+                                    //handling error
+                                    fit: BoxFit.fill,
+                                    errorWidget: (context, url, error) => _buildEmptyContainer(),
+                                  ),
                           )),
                   options: CarouselOptions(
                     height: 400,
@@ -179,7 +185,7 @@ class _HomeT2State extends BaseState<HomeT2> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement??""));
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
@@ -207,7 +213,7 @@ class _HomeT2State extends BaseState<HomeT2> {
                       ),
                       scrollAxis: Axis.horizontal,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      blankSpace: 5.auto,
+                      blankSpace: 300.auto,
                       pauseAfterRound: Duration(seconds: 1),
                       showFadingOnlyWhenScrolling: false),
                 ),

@@ -114,7 +114,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         children: [
           OutlineBorderButton(
             onClick: () {},
-            title: getTranslatedText("contact_cs"),
+            title: "Contact CS",
             isEnabled: true,
             width: context.screenWidth / 3.5,
             height: context.screenHeight / 18,
@@ -122,7 +122,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
             color: Colors.white,
           ),
           ColorButton(
-            title: getTranslatedText("instant_messaging"),
+            title: "Instant Messaging",
             onClick: () {},
             isEnabled: true,
             radius: 20,
@@ -137,6 +137,6 @@ class _MaintenanceState extends BaseState<Maintenance> {
 
   _handleApiState() {
     handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
+    // handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

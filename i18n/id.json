@@ -970,5 +970,19 @@
   "edit_email": "Edit alamat email",
   "deposit_withdraw": "Penarikan Setoran",
   "promotion_name": "Nama Promosi",
-  "promotion_history": "Riwayat Promosi"
+  "promotion_history": "Riwayat Promosi",
+  "new_update": "Memperbarui",
+  "image_size_limit": "Ukuran foto lebih besar dari batas upload, silakan upload lagi",
+  "register_terms": "Saya mengonfirmasi bahwa saya berusia di atas 18 tahun dan telah membaca serta menerima kebijakan, pernyataan privasi, syarat dan ketentuan situs web ini.",
+  "empty_promotion": "Tidak ada promosi yang dapat dipilih",
+  "affiliate_link": "Tautan Sponsor",
+  "affiliate": "Promosi untuk menghasilkan uang",
+  "affiliate_qr_code": "Kode QR Bersponsor",
+  "copy": "Salin",
+  "edit_bank_card_cs": "Tidak dapat menambah, mengedit, dan menghapus. Jika Anda membutuhkan bantuan, silakan hubungi layanan pelanggan.",
+  "doc_no": "Nomor Dokumen",
+  "enter_doc_no_hint": "Silakan masukkan nomor dokumen",
+  "input_length_error": "Panjang input bidang harus kurang dari 256 bit",
+  "full_name": "Nama Lengkap",
+  "enter_full_name_hint": "Masukkan Nama Lengkap"
 }

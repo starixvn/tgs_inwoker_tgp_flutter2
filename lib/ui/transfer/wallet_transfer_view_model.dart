@@ -19,7 +19,7 @@ class WalletTransferViewModel extends BaseViewModel {
 
   get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
 
-  get gameWalletList => walletList.where((element) => !element.isMainWallet).toList();
+  get gameWalletList => walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -34,7 +34,7 @@ class WalletTransferViewModel extends BaseViewModel {
       setAutoTransferApiState;
   bool isFetchingBalance = false, autoTransferValue = false;
 
-  transferWallet(String gpCode, int transferAmount, bool isFundOut) async {
+  transferWallet(String? gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
     transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
     if (transferWalletApiState.isSuccess) {
@@ -53,7 +53,7 @@ class WalletTransferViewModel extends BaseViewModel {
       if (state.isSuccess) {
         wallet.balance = state.result?.balance ?? 0.0;
       } else
-        wallet.balance = 0.0;
+        wallet.balance = null;
     }
     notifyListeners();
   }

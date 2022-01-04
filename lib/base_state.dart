@@ -19,51 +19,31 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   get apiError => userRepo.apiError;
 
-  getTranslatedText(String key) => LanguageProvider().getTranslated(context, key);
+  getTranslatedText(String? key) => LanguageProvider().getTranslated(context, key);
 
   handleApiState(
-    EventResult? eventResult, {
-    required Function onSuccess,
-    Function? onError,
-    bool isAutoHideLoading = true,
-    bool isRequireResult = false,
-    bool isCheckSessionExpired = true,
-    bool isSplashScreen = false,
-  }) async {
+      EventResult? eventResult, {
+        required Function onSuccess,
+        Function? onError,
+        bool isAutoHideLoading = true,
+        bool isRequireResult = false,
+        bool isCheckSessionExpired = true,
+        bool isSplashScreen = false,
+        bool isLogoutApiState = false,
+        Function? onLogout,
+      }) async {
     if (eventResult == null) return;
     if (!eventResult.isHandled) {
-      if (eventResult.isError) {
+      if (onLogout != null) {
+        //force user to logout even api return error or maintenance
+        onLogout();
+      } else if (eventResult.isError && !isLogoutApiState) {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
           WidgetsBinding.instance!.addPostFrameCallback((_) {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
-          });
-        } else if ((eventResult.errorCode == 102 || eventResult.errorCode == 101) &&
-            isCheckSessionExpired &&
-            !isSplashScreen) {
-          UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
-            showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) => WillPopScope(
-                      onWillPop: () async => false,
-                      child: CustomDialog(
-                        title: getTranslatedText("login_time_out"),
-                        description: getTranslatedText("login_again"),
-                        buttonText1: getTranslatedText("login"),
-                        buttonText2: getTranslatedText("cancel"),
-                        onClick: () {
-                          Navigator.of(context).pushReplacementNamed("/home");
-                          Navigator.of(context).pushNamed("/login");
-                        },
-                        onClick2: () {
-                          Navigator.of(context).pushReplacementNamed("/home");
-                        },
-                      ),
-                    ));
           });
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
@@ -78,15 +58,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else {
           _showErrorMessage(eventResult);
         }
-      } else if (eventResult.isMaintenance) {
+      } else if (eventResult.isMaintenance && !isLogoutApiState) {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
-                        isShowCS: true,
-                        isShowsAppBar: false,
-                      )),
-              (Route<dynamic> route) => false);
+                    isShowCS: true,
+                    isShowsAppBar: false,
+                  )),
+                  (Route<dynamic> route) => false);
         });
       } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
@@ -162,8 +142,14 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   getCurrentLanguage() {
     var list = LanguageProvider().list;
-    Language deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return deviceLanguage;
+    Language? deviceLanguage;
+    if (list.length==1) {
+      return list.first;
+    } else {
+      deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+      return deviceLanguage;
+    }
+
   }
 
   handleNullWidget(bool isNull, Widget? widget) {

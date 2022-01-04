@@ -74,6 +74,7 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
       : List.generate(_vm.promotionReportList!.length, (index) {
           return Container(
             child: ReportCellItem(
+              reportList: _vm.accountReportList!,
               list: [
                 "",
                 "",

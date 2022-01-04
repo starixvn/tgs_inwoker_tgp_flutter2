@@ -41,7 +41,7 @@ class MessageViewModel extends BaseViewModel {
     return getMessageListApiState;
   }
 
-  readMessage(List<String> idList) async {
+  readMessage(List<String?> idList) async {
     setLoading();
     var state = await messageRepo.readMessage(idList);
     if (state.isSuccess) {

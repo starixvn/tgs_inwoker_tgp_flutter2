@@ -106,6 +106,8 @@ flutter:
     - images/game/T2/
     - images/game/T3/
     - images/profile/
+    - images/profile/t1/
+    - images/profile/t2/
     - images/profile_info/
     - images/support/
     - images/login/
@@ -124,7 +126,8 @@ flutter:
     - images/home_banner/zh-TW/PGG/
     - images/home_banner/zh-TW/WLG/
     - images/home_banner/zh-TW/HKJP/
-    - images/game_tab/
+    - images/game_tab/t1/
+    - images/game_tab/t2/
     - images/child_game/
     - images/card/
     - images/language/

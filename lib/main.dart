@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:api/entity/language_option.dart';
+import 'package:api/entity/response/login_response.dart';
 import 'package:api/network/event_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,6 +21,7 @@ import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart'
 import 'package:tgp_flutter2/ui/deposit/deposit.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
+import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
 import 'package:tgp_flutter2/ui/language/language_view.dart';
@@ -41,7 +43,7 @@ import 'package:tgp_flutter2/ui/profile_info/qq_account/qq_account.dart';
 import 'package:tgp_flutter2/ui/profile_info/real_name/real_name_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/wechat/wechat.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion.dart';
-import 'package:tgp_flutter2/ui/report/report.dart';
+import 'package:tgp_flutter2/ui/report/report_view.dart';
 import 'package:tgp_flutter2/ui/splash/splash.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
@@ -86,11 +88,13 @@ class _MyAppState extends BaseState<MyApp> {
 
   Future<EventResult<List<LanguageOption>>> initData() async {
     if (firstInit) {
+      await _vm.getVersion();
       await _vm.getAuthToken();
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
       _vm.resumeIfNeed();
+      // _vm.autoLogin();
       setState(() {
         firstInit = false;
       });
@@ -101,82 +105,105 @@ class _MyAppState extends BaseState<MyApp> {
       return EventResult.loading();
   }
 
+  Future<EventResult<LoginResponse>> initAuthToken() async {
+    if (firstInit) {
+      await _vm.getAuthToken();
+      return _vm.authApiState;
+    } else
+      return EventResult.loading();
+  }
+
   @override
   Widget build(BuildContext context) {
     _handleApiState();
     return FutureBuilder(
-        future: initData(),
-        builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
+        future: initAuthToken(),
+        builder: (BuildContext context, AsyncSnapshot<EventResult<LoginResponse>> snapshot) {
           if (!snapshot.hasData) {
             return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
           } else if (snapshot.data!.isMaintenance) {
-            return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
-          } else {
-            return GestureDetector(
-              onTap: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-                  currentFocus.focusedChild!.unfocus();
-                }
-              },
-              child: MaterialApp(
+            return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: appTitle,
-                initialRoute: '/',
-                routes: {
-                  RoutePath.empty: (context) => MyHomePage(),
-                  RoutePath.home: (context) => MyHomePage(),
-                  RoutePath.myHome: (context) => MyHomePage(),
-                  RoutePath.profile: (context) => Profile(),
-                  RoutePath.csWebView: (context) => CustomerServiceWebView(),
-                  RoutePath.customerService: (context) => CustomerService(),
-                  RoutePath.transaction: (context) => Report(),
-                  RoutePath.login: (context) => Login(),
-                  RoutePath.forgotPassword: (context) => ForgotPassword(),
-                  RoutePath.maintenance: (context) => Maintenance(),
-                  RoutePath.mainCard: (context) => MainCard(),
-                  RoutePath.message: (context) => MessageView(),
-                  RoutePath.emailVerification: (context) => EmailVerification(0),
-                  RoutePath.qqAccount: (context) => QQAccount(),
-                  RoutePath.wechat: (context) => Wechat(),
-                  RoutePath.editPassword: (context) => EditPassword(),
-                  RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-                  RoutePath.payPassword: (context) => PayPassword(),
-                  RoutePath.language: (context) => LanguageView(),
-                  RoutePath.addCard: (context) => AddCard(),
-                  RoutePath.realNameVerification: (context) => RealNameVerification(),
-                  RoutePath.profileInfo: (context) => ProfileInfo(),
-                  RoutePath.promotion: (context) => Promotion(),
-                  RoutePath.walletTransfer: (context) => WalletTransfer(),
-                  RoutePath.menu: (context) => Menu(),
-                  RoutePath.deposit: (context) => Deposit(),
-                  RoutePath.withdraw: (context) => Withdraw(),
-                  RoutePath.childGame: (context) => ChildGame(),
-                  RoutePath.blacklistedUser: (context) => BlacklistedUser(),
-                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
-                  RoutePath.phoneVerification: (context) => PhoneVerification(),
-                  RoutePath.editPhone: (context) => EditPhone(),
-                  RoutePath.editEmail: (context) => EditEmail(),
-                },
-                localizationsDelegates: [
-                  MyLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate
-                ],
-                // MyHomePage(title: appTitle),
-                supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
-                locale: _locale,
-                localeResolutionCallback: (locale, supportedLocales) {
-                  for (var supportedLocale in supportedLocales) {
-                    if (supportedLocale.languageCode == locale!.languageCode &&
-                        supportedLocale.scriptCode == locale.scriptCode) {
-                      return supportedLocale;
-                    }
+                home: Maintenance(
+                  isShowsAppBar: false,
+                  isShowCS: true,
+                ));
+          } else {
+            return FutureBuilder(
+                future: initData(),
+                builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
+                  if (!snapshot.hasData) {
+                    return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+                  } else if (snapshot.data!.isMaintenance) {
+                    return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
+                  } else {
+                    return GestureDetector(
+                      onTap: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                          currentFocus.focusedChild!.unfocus();
+                        }
+                      },
+                      child: MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        title: appTitle,
+                        initialRoute: '/',
+                        routes: {
+                          RoutePath.empty: (context) => MyHomePage(),
+                          RoutePath.home: (context) => MyHomePage(),
+                          RoutePath.myHome: (context) => MyHomePage(),
+                          RoutePath.profile: (context) => Profile(),
+                          RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                          RoutePath.customerService: (context) => CustomerService(),
+                          RoutePath.transaction: (context) => ReportView(),
+                          RoutePath.login: (context) => Login(),
+                          RoutePath.forgotPassword: (context) => ForgotPassword(),
+                          RoutePath.maintenance: (context) => Maintenance(),
+                          RoutePath.mainCard: (context) => MainCard(),
+                          RoutePath.message: (context) => MessageView(),
+                          RoutePath.emailVerification: (context) => EmailVerification(0),
+                          RoutePath.qqAccount: (context) => QQAccount(),
+                          RoutePath.wechat: (context) => Wechat(),
+                          RoutePath.editPassword: (context) => EditPassword(),
+                          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+                          RoutePath.payPassword: (context) => PayPassword(),
+                          RoutePath.language: (context) => LanguageView(),
+                          RoutePath.addCard: (context) => AddCard(),
+                          RoutePath.realNameVerification: (context) => RealNameVerification(),
+                          RoutePath.profileInfo: (context) => ProfileInfo(),
+                          RoutePath.promotion: (context) => Promotion(),
+                          RoutePath.walletTransfer: (context) => WalletTransfer(),
+                          RoutePath.menu: (context) => Menu(),
+                          RoutePath.deposit: (context) => Deposit(),
+                          RoutePath.withdraw: (context) => Withdraw(),
+                          RoutePath.childGame: (context) => ChildGame(),
+                          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                          RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                          RoutePath.phoneVerification: (context) => PhoneVerification(),
+                          RoutePath.editPhone: (context) => EditPhone(),
+                          RoutePath.editEmail: (context) => EditEmail(),
+                        },
+                        localizationsDelegates: [
+                          MyLocalizations.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate
+                        ],
+                        // MyHomePage(title: appTitle),
+                        supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
+                        locale: _locale,
+                        localeResolutionCallback: (locale, supportedLocales) {
+                          for (var supportedLocale in supportedLocales) {
+                            if (supportedLocale.languageCode == locale!.languageCode &&
+                                supportedLocale.scriptCode == locale.scriptCode) {
+                              return supportedLocale;
+                            }
+                          }
+                          return supportedLocales.first;
+                        },
+                      ),
+                    );
                   }
-                  return supportedLocales.first;
-                },
-              ),
-            );
+                });
           }
         });
   }
@@ -207,13 +234,24 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   void initState() {
     if (widget.index != null) currentBottomIndex = widget.index!;
     _page = [
-      EnvironmentConfig.template_version == 3 ? HomeT3() : HomeT2(),
+      _getHomeTemplateVersion(),
       Promotion(),
       Menu(),
       CustomerService(),
       Profile(),
     ];
     super.initState();
+  }
+
+  _getHomeTemplateVersion() {
+    switch (EnvironmentConfig.template_version) {
+      case 1:
+        return HomeT1();
+      case 2:
+        return HomeT2();
+      case 3:
+        return HomeT3();
+    }
   }
 
   @override
@@ -236,7 +274,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             children: [
               _buildBottomBarItem(0, "ic_home", "home"),
               _buildBottomBarItem(1, "ic_promotion", "promotion"),
-              _buildBottomBarItem(2, "ic_deposit", "deposit_withdraw"),
+              _buildBottomBarItem(2, "ic_deposit", "wallet"),
               _buildBottomBarItem(3, "ic_cs", "customer_service"),
               _buildBottomBarItem(4, "ic_profile", "my_profile"),
             ],

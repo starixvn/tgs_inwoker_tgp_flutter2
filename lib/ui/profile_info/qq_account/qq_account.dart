@@ -5,6 +5,7 @@ import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -87,33 +88,33 @@ class _QQAccountState extends BaseState<QQAccount> {
       ));
 
   _buildFooterText() => Visibility(
-        visible: _vm.userProfile.qq != null,
-        child: Container(
-          alignment: Alignment.center,
-          child: Wrap(
-            children: [
-              Text(
-                getTranslatedText("edit_qq_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isTextFieldEnabled = true;
-                    isButtonEnabled = true;
-                    buttonText = getTranslatedText("edit");
-                    _focusNode.requestFocus();
-                  });
-                },
-                child: Text(
-                  getTranslatedText("here"),
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color),
-                ),
-              )
-            ],
+    visible: _vm.userProfile.qq != null,
+    child: InkWell(
+      onTap: () {
+        EnvironmentConfig.brandName == "MESS8"
+            ? Navigator.of(context).pushNamed("/customer_service")
+            : setState(() {
+          isTextFieldEnabled = true;
+          isButtonEnabled = true;
+          buttonText = getTranslatedText("edit");
+          _focusNode.requestFocus();
+        });
+      },
+      child: Wrap(
+        children: [
+          Text(
+            getTranslatedText("edit_qq_cs"),
+            style: TextStyle(fontSize: 12.auto),
           ),
-        ),
-      );
+          Text(
+            EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : getTranslatedText("here"),
+            style: TextStyle(
+                decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
+          ),
+        ],
+      ),
+    ),
+  );
 
   _getUserProfile() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

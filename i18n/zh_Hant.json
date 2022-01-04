@@ -970,5 +970,19 @@
   "edit_email": "修改郵箱地址",
   "deposit_withdraw": "存提",
   "promotion_name": "活動名稱",
-  "promotion_history": "活動記錄"
+  "promotion_history": "活動記錄",
+  "new_update": "更新",
+  "image_size_limit": "照片尺寸大於上傳限制，請重新上傳",
+  "register_terms": "我確認我已年滿18歲，並已閱讀和接受本網站的策略丶隱私聲明，條款及條件。",
+  "empty_promotion": "沒有活動可選",
+  "affiliate_link": "推廣鏈接",
+  "affiliate": "推廣賺錢",
+  "affiliate_qr_code": "推廣二維碼",
+  "copy": "拷貝",
+  "edit_bank_card_": "無法添加，編輯和刪除。如需幫助，請聯繫客服。",
+  "doc_no": "文件號碼",
+  "enter_doc_no_hint": "請輸入文件號碼",
+  "input_length_error": "欄位輸入長度必須少於256位",
+  "full_name": "全名",
+  "enter_full_name_hint": "請輸入全名"
 }

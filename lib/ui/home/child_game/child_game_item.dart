@@ -38,12 +38,10 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var code = _prefs.getString("LANGUAGE_CODE");
     setState(() {
-      if (code == "zh-TW")
+      if (code == "zh-TW" || code == "zh-CN")
         languageCode = "zh-CN";
-      else if (code == "th-TH")
-        languageCode = "en-US";
       else
-        languageCode = code;
+        languageCode = "en-US";
     });
   }
 
@@ -87,10 +85,11 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   _getImageUrl() {
     var gameName = _getGameName();
     if (gameName == "FishingYiLuFa")
-      return EnvironmentConfig.slotGameUrl + "${widget.game!.gamePlatformCode.toUpperCase()}/zh-CN/$gameName.jpg";
+      return EnvironmentConfig.slotGameUrl +
+          "${(widget.game?.gamePlatformCode ?? "").toUpperCase()}/zh-CN/$gameName.jpg";
     else
       return EnvironmentConfig.slotGameUrl +
-          "${widget.game!.gamePlatformCode.toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
+          "${(widget.game?.gamePlatformCode ?? "").toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";
   }
 
   _getGameName() {
@@ -122,7 +121,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
             child: Container(
               margin: EdgeInsets.only(right: 3.auto),
               child: AutoSizeText(
-                widget.game!.name,
+                widget.game?.name ?? "",
                 style: TextStyle(color: Colors.white),
                 minFontSize: 3,
                 stepGranularity: 1,

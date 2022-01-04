@@ -22,6 +22,12 @@ environment_config:
     template_version:
       type: int
       default: 2
+    primaryColorCode:
+      type: int
+      default: 0xff044BA3
+    primaryGradientColorCode:
+      type: int
+      default: 0xff1b86c7
     theme_app_bar_color:
       type: int
       default: 0xffC69C6A
@@ -89,6 +95,12 @@ environment_config:
       default: true
     isShowMarqueePopUp:
       type: bool
-      default: true
+      default: false
+    default_lang:
+      default: "en-US"
+    assetUrl:
+      default: "https://app12.s3.ap-east-1.amazonaws.com/"
+    brandName:
+      default: "GPI"
 
 

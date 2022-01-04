@@ -38,6 +38,8 @@ class CustomColor{
   static const theme_text_grey_color = Color(EnvironmentConfig.theme_text_grey_color);
   static const theme_text_grey_white_color = Color(EnvironmentConfig.theme_text_grey_white_color);
 
+  static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
+  static const Color theme_bar_gradient_2 = Color(EnvironmentConfig.primaryGradientColorCode);
 
   static const popup_menu_text_yellow = Color(0xffF7FF07);
   static const popup_menu_text_brown = Color(0xffC69C6A);

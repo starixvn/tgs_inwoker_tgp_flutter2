@@ -131,7 +131,7 @@ class _GameT2State extends BaseState<GameT2> {
             children: [
               Container(
                 child: ImageIcon(
-                  AssetImage("images/game_tab/ic_${gameType.getImagePath()}.png"),
+                  AssetImage("images/game_tab/t2/ic_${gameType.getImagePath()}.png"),
                   size: 28.auto,
                   color:
                       currentGameType == gameType ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color,
@@ -177,7 +177,7 @@ class _GameT2State extends BaseState<GameT2> {
     });
   }
 
-  _navigate(String gamePlatformCode, GameType gameType) async {
+  _navigate(String? gamePlatformCode, GameType? gameType) async {
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {

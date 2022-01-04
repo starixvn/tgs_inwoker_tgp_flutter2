@@ -42,13 +42,13 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
                 style: TextStyle(color: CustomColor.theme_button_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
               )),
           _buildPromotionText(
-              "${getTranslatedText("promotion_person")}：\n VIP" + widget.promotion.vipLevels.join(", VIP")),
+              "${getTranslatedText("promotion_person")}：\n VIP" + (widget.promotion.vipLevels ?? []).join(", VIP")),
           _buildPromotionText("${getTranslatedText("promotion_time")}：\n " +
               Format().dateTimeFormat(widget.promotion.from) +
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
           _buildPromotionContentText(
-              parseHtmlString(widget.promotion.content )),
+              parseHtmlString(widget.promotion.localization?.content ?? widget.promotion.content ?? "")),
           _buildPromotionTermsText(widget.promotion.terms),
           _buildJoinButton()
         ],
@@ -135,12 +135,12 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         ),
       );
 
-  _buildPromotionTermsText(String displayText) => Container(
+  _buildPromotionTermsText(String? displayText) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: RichText(
             text: HTML.toTextSpan(
           context,
-          displayText,
+          displayText ??"",
           defaultTextStyle: TextStyle(fontSize: 12.auto),
           overrideStyle: <String, TextStyle>{
             'p': TextStyle(fontSize: 15.auto),

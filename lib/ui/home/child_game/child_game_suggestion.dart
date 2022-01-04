@@ -55,7 +55,7 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Center(
             child: AutoSizeText(
-              game.name,
+              game.name ?? "",
               style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 15),
               minFontSize: 10,
               stepGranularity: 1,

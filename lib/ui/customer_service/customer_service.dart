@@ -28,7 +28,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _vm.getBrandCommunication();
-      _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
+      _vm.getLiveChatUrl(getCurrentLanguage().apiCode ?? "en-US");
     });
     super.initState();
   }
@@ -59,7 +59,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                               children: List.generate(_vm.communicationList!.length, (index) {
                                 return Container(
                                   child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
-                                      "support-" + _vm.communicationList![index].type.toLowerCase(),
+                                      "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
                                       qrCode: _vm.communicationList![index]),
                                 );
                               }),
@@ -82,7 +82,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
     //cs_bg_t2, cs_bg_t3
 
     return DecorationImage(
-        image: AssetImage("images/support/cs_bg/$language/cs_bg_t${EnvironmentConfig.template_version}.png"),
+        image:
+            AssetImage("images/support/cs_bg/$language/cs_bg_t${EnvironmentConfig.template_version == 2 ? 2 : 3}.png"),
         fit: BoxFit.fitWidth,
         alignment: Alignment.topLeft);
   }
@@ -145,7 +146,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         ),
       );
 
-  _buildCSRow(String title, String text, String routePath, String imagePath, {BrandCommunication? qrCode}) => InkWell(
+  _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => InkWell(
         onTap: () {},
         child: Container(
           padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
@@ -179,7 +180,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               Expanded(
                 flex: 3,
                 child: Text(
-                  (qrCode!.appId) ?? qrCode.phone,
+                  ((qrCode!.appId) ?? qrCode.phone) ?? "",
                   // getTranslatedText(text),
                   style: TextStyle(color: CustomColor.theme_button_color),
                 ),

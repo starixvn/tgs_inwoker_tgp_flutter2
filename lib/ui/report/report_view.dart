@@ -14,16 +14,16 @@ import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:tgp_flutter2/ui/report/transfer_report_view.dart';
 import 'package:tgp_flutter2/ui/report/withdraw_report_view.dart';
 
-class Report extends StatefulWidget {
+class ReportView extends StatefulWidget {
   final int? tabIndex;
 
-  Report({this.tabIndex}) ;
+  ReportView({this.tabIndex}) ;
 
   @override
-  _ReportState createState() => _ReportState();
+  _ReportViewState createState() => _ReportViewState();
 }
 
-class _ReportState extends BaseState<Report> with SingleTickerProviderStateMixin {
+class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderStateMixin {
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [

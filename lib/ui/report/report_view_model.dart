@@ -1,7 +1,7 @@
 import 'package:api/api.dart';
 import 'package:api/entity/account_report.dart';
-import 'package:api/entity/bet_report.dart';
 import 'package:api/entity/promotion_report.dart';
+import 'package:api/entity/report.dart';
 import 'package:api/entity/status.dart';
 import 'package:api/entity/transfer_report.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
@@ -20,8 +20,8 @@ class ReportViewModel extends BaseViewModel {
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
-  List<BetReport>? betReportList;
-  List<AccountReport>? accountReportList, withdrawReportList;
+  List<AccountReport>? accountReportList;
+  List<Report>? reportList, withdrawReportList;
   List<TransferReport>? transferReportList;
   List<PromotionReport>? promotionReportList;
   var endRecord = false;
@@ -38,36 +38,7 @@ class ReportViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
 
-  getReport({bool isLoadMore = false}) async {
-    setLoading();
-
-    if (isLoadMore) {
-      if (page * rows < getReportApiState.result.totalCount) {
-        page++;
-      } else
-        return;
-    } else {
-      page = 1;
-      getReportApiState = null;
-      betReportList = null;
-    }
-    getReportApiState =
-        await userRepo.getReport(pStartDate, pEndDate, page, rows /*, orderBy, isDesc, sortBy, showAll*/);
-
-    List<BetReport> list = [];
-    if (getReportApiState.isSuccess) {
-      list = getReportApiState.result.items;
-      if (betReportList == null) betReportList = [];
-
-      betReportList!.addAll(list);
-      endRecord = betReportList!.length >= getReportApiState.result.totalCount ? true : false;
-      notifyListeners();
-    }
-    setLoading(false);
-    return getReportApiState;
-  }
-
-  getAccountReport({bool isLoadMore = false, Status? status = Status.All}) async {
+  getAccountReport({bool isLoadMore = false}) async {
     setLoading();
 
     if (isLoadMore) {
@@ -80,9 +51,8 @@ class ReportViewModel extends BaseViewModel {
       getAccountReportApiState = null;
       accountReportList = null;
     }
-
-    if (status != null) pStatus = status;
-    getAccountReportApiState = await userRepo.getAccountReport(pStartDate, pEndDate, page, rows, pStatus);
+    getAccountReportApiState =
+    await userRepo.getAccountReport(pStartDate, pEndDate, page, rows /*, orderBy, isDesc, sortBy, showAll*/);
 
     List<AccountReport> list = [];
     if (getAccountReportApiState.isSuccess) {
@@ -94,10 +64,40 @@ class ReportViewModel extends BaseViewModel {
       notifyListeners();
     }
     setLoading(false);
-    return getAccountReportApiState;
+    return getReportApiState;
   }
 
-  getWithdrawReport({bool isLoadMore = false, Status? status = Status.All}) async {
+  getReport({bool isLoadMore = false, Status? status}) async {
+    setLoading();
+
+    if (isLoadMore) {
+      if (page * rows < getReportApiState.result.totalCount) {
+        page++;
+      } else
+        return;
+    } else {
+      page = 1;
+      getReportApiState = null;
+      reportList = null;
+    }
+
+    if (status != null) pStatus = status;
+    getReportApiState = await userRepo.getReport(pStartDate, pEndDate, page, rows, pStatus);
+
+    List<Report> list = [];
+    if (getReportApiState.isSuccess) {
+      list = getReportApiState.result.items;
+      if (reportList == null) reportList = [];
+
+      reportList!.addAll(list);
+      endRecord = reportList!.length >= getReportApiState.result.totalCount ? true : false;
+      notifyListeners();
+    }
+    setLoading(false);
+    return getReportApiState;
+  }
+
+  getWithdrawReport({bool isLoadMore = false, Status? status}) async {
     setLoading();
 
     if (isLoadMore) {
@@ -113,7 +113,7 @@ class ReportViewModel extends BaseViewModel {
     if (status != null) pStatus = status;
     getWithdrawReportApiState = await userRepo.getWithdrawReport(pStartDate, pEndDate, page, rows, pStatus);
 
-    List<AccountReport> list = [];
+    List<Report> list = [];
     if (getWithdrawReportApiState.isSuccess) {
       list = getWithdrawReportApiState.result.items;
       if (withdrawReportList == null) withdrawReportList = [];
@@ -165,7 +165,7 @@ class ReportViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getManualDepositOrder(String id) async {
+  getManualDepositOrder(String? id) async {
     setLoading();
     getDepositOrderApiState = await depositRepo.getManualDepositOrder(id);
     if (getDepositOrderApiState.isSuccess) {

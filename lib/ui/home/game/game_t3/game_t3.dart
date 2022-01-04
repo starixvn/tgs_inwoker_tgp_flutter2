@@ -77,8 +77,8 @@ class _GameT3State extends BaseState<GameT3> {
   }
 
   _getImagePath(GameProvider2 gameProvider) {
-    var gameType = gameProvider.gameType.getImagePath();
-    var gamePlatformCode = gameProvider.code.toLowerCase();
+    var gameType = gameProvider.gameType?.getImagePath();
+    var gamePlatformCode = gameProvider.code?.toLowerCase();
     var imagePath = "images/game/T3/${gameType}_${gamePlatformCode}.png";
     return imagePath;
   }
@@ -175,7 +175,7 @@ class _GameT3State extends BaseState<GameT3> {
       _navigate(gameProvider.code, gameProvider.gameType);
   }
 
-  _navigate(String gamePlatformCode, GameType gameType) async {
+  _navigate(String? gamePlatformCode, GameType? gameType) async {
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {

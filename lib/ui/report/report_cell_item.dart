@@ -1,3 +1,4 @@
+import 'package:api/entity/account_report.dart';
 import 'package:api/entity/report_cell_item_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,11 @@ class ReportCellItem extends StatefulWidget {
   final bool isDepositReport;
   final bool isWithdrawReport;
   final Function? getManualDepositId;
+  final List<dynamic> reportList;
 
   ReportCellItem({
     required this.list,
+    required this.reportList,
     required this.type,
     required this.isEndRecord,
     this.isUploadButton = false,
@@ -92,41 +95,36 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
             children: [
               widget.list[0].isEmpty
                   ? Container()
-                  : Column(
+                  : Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              getTranslatedText("order_number"),
-                              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                            ),
-                            AutoSizeText(
-                              widget.list[0] ?? "",
-                              style: TextStyle(color: Colors.grey[700]),
-                              minFontSize: 10,
-                              maxFontSize: 12,
-                              stepGranularity: 1,
-                            )
-                          ],
+                        Text(
+                          getTranslatedText("order_number"),
+                          style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                         ),
-                        Visibility(
-                          visible: widget.isDepositReport || widget.isWithdrawReport,
-                          child: Row(
-                            children: [
-                              Text(
-                                getTranslatedText("gms_order_number"),
-                                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                              ),
-                              AutoSizeText(
-                                widget.list[1] ?? "",
-                                style: TextStyle(color: Colors.grey[700]),
-                                minFontSize: 10,
-                                maxFontSize: 12,
-                                stepGranularity: 1,
-                              )
-                            ],
-                          ),
+                        AutoSizeText(
+                          widget.list[0] ?? "",
+                          style: TextStyle(color: Colors.grey[700]),
+                          minFontSize: 10,
+                          maxFontSize: 12,
+                          stepGranularity: 1,
+                        )
+                      ],
+                    ),
+              (widget.list[1]?.isEmpty ?? false) && !(widget.isDepositReport || widget.isWithdrawReport)
+                  ? Container()
+                  : Row(
+                      children: [
+                        Text(
+                          getTranslatedText("gms_order_number"),
+                          style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                         ),
+                        AutoSizeText(
+                          widget.list[1] ?? "",
+                          style: TextStyle(color: Colors.grey[700]),
+                          minFontSize: 10,
+                          maxFontSize: 12,
+                          stepGranularity: 1,
+                        )
                       ],
                     ),
               Container(
@@ -151,7 +149,23 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
                                 fontSize: 8.auto,
                                 padding: 3,
                               )));
-                    else
+                    else if (index == 7 && widget.reportList is List<AccountReport>) {
+                      return Expanded(
+                        //first header (time) flex number is 2, others will be 1
+                        flex: 2,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2.auto),
+                          child: AutoSizeText(
+                            widget.list[index] ?? "",
+                            style: TextStyle(color: widget.list[index].contains("-") ? Colors.red : Colors.green),
+                            textAlign: index == 1 ? TextAlign.start : TextAlign.center,
+                            minFontSize: 5,
+                            maxFontSize: 12,
+                            stepGranularity: 1,
+                          ),
+                        ),
+                      );
+                    }else
                       return Expanded(
                         //first header (time) flex number is 2, others will be 1
                         flex: 2,
