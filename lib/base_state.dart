@@ -52,10 +52,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
               if(isMaintenanceDialog) {
                 showApiErrorMessageInDialog(eventResult);
               }else{
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    RoutePath.maintenance, (Route<dynamic> route) => false);
+                Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
               }
-              // Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
             });
           } else if (onError != null) {
             onError(eventResult.error);
