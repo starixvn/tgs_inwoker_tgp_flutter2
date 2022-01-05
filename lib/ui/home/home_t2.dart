@@ -84,7 +84,7 @@ class _HomeT2State extends BaseState<HomeT2> {
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
-              username: _vm.userProfile.username,
+              username: _vm.userProfile?.username ?? "",
             ),
             body: /* Stack(
               children: [*/
