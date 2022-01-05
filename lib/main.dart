@@ -158,7 +158,7 @@ class _MyAppState extends BaseState<MyApp> {
                           RoutePath.transaction: (context) => ReportView(),
                           RoutePath.login: (context) => Login(),
                           RoutePath.forgotPassword: (context) => ForgotPassword(),
-                          RoutePath.maintenance: (context) => Maintenance(),
+                          RoutePath.maintenance: (context) => Maintenance(isShowCS: true,isShowsAppBar: false),
                           RoutePath.mainCard: (context) => MainCard(),
                           RoutePath.message: (context) => MessageView(),
                           RoutePath.emailVerification: (context) => EmailVerification(0),
