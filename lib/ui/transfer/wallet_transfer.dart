@@ -163,7 +163,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           list: [],
           isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
           onClick: () {
-            _buildPicker("transfer_to", _vm.walletList, true);
+            _buildPicker("transfer_to", _vm.walletList, false);
           }),
       isLast: true);
 
