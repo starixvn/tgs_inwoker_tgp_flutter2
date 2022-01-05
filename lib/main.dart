@@ -5,6 +5,7 @@ import 'package:api/network/event_result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main_view_model.dart';
@@ -49,6 +50,7 @@ import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future main() async {
   runApp(MyApp());
@@ -131,7 +133,7 @@ class _MyAppState extends BaseState<MyApp> {
           } else {
             return FutureBuilder(
                 future: initData(),
-                builder: (BuildContext context, AsyncSnapshot<EventResult<List<LanguageOption>>> snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
                   if (!snapshot.hasData) {
                     return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
                   } else if (snapshot.data!.isMaintenance) {
@@ -150,7 +152,9 @@ class _MyAppState extends BaseState<MyApp> {
                         initialRoute: '/',
                         routes: {
                           RoutePath.empty: (context) => MyHomePage(),
-                          RoutePath.home: (context) => MyHomePage(),
+                          RoutePath.empty: (context) => MyHomePage(
+                                versionUpdate: _vm.versionUpdateState,
+                              ),
                           RoutePath.myHome: (context) => MyHomePage(),
                           RoutePath.profile: (context) => Profile(),
                           RoutePath.csWebView: (context) => CustomerServiceWebView(),
@@ -218,8 +222,9 @@ class _MyAppState extends BaseState<MyApp> {
 class MyHomePage extends StatefulWidget {
   final bool isFirstRun;
   final int? index;
+  final dynamic versionUpdate;
 
-  MyHomePage({this.isFirstRun = false, this.index});
+  MyHomePage({this.isFirstRun = false, this.index, this.versionUpdate});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -232,6 +237,10 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   @override
   void initState() {
+    if (widget.versionUpdate != null) {
+      Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
+    }
+
     if (widget.index != null) currentBottomIndex = widget.index!;
     _page = [
       _getHomeTemplateVersion(),
@@ -380,4 +389,21 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           ),
         ),
       );
+
+  _showNewVersionUpdateDialog(dynamic data) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            CustomDialog(
+                title: getTranslatedText("New update: ${data["version"]}"),
+                description: data["content"],
+                buttonText1: getTranslatedText("update"),
+                onClick: () {
+                  Navigator.pop(
+                    context,
+                  );
+                  launch(data["link"]);
+                }));
+
+  }
 }

@@ -58,8 +58,8 @@ dependencies:
   flutter_switch: ^0.3.2
   simple_html_css: ^3.0.1+1
 
-  #api:
-   # path: ../api
+    #api:
+  # path: ../api
 
   api:
     git: https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git
@@ -76,6 +76,7 @@ dependencies:
   dotted_border: ^2.0.0+1
   carousel_slider: ^4.0.0
   simple_gradient_text: ^1.2.2
+  url_launcher: ^6.0.17
   #easy_gradient_text: ^1.0.0
 
 dev_dependencies:
