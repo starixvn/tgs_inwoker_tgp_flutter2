@@ -163,7 +163,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           list: [],
           isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
           onClick: () {
-            _buildPicker("transfer_to", _vm.walletList, true);
+            _buildPicker("transfer_to", _vm.walletList, false);
           }),
       isLast: true);
 
@@ -375,7 +375,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if (_vm.isFetchingBalance) {
       if (!_controller!.isAnimating) _controller!.forward(from: 0.0);
     }
-    handleApiState(_vm.transferWalletApiState, onSuccess: () {
+    handleApiState(_vm.transferWalletApiState,isMaintenanceDialog : true, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
 
       WidgetsBinding.instance!.addPostFrameCallback((_) {

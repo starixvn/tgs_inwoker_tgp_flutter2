@@ -30,6 +30,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         bool isCheckSessionExpired = true,
         bool isSplashScreen = false,
         bool isLogoutApiState = false,
+        bool isMaintenanceDialog = false,
         Function? onLogout,
       }) async {
     if (eventResult == null) return;
@@ -48,8 +49,11 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
-              Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
-              Navigator.of(context).popAndPushNamed(RoutePath.maintenance);
+              if(isMaintenanceDialog) {
+                showApiErrorMessageInDialog(eventResult);
+              }else{
+                Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
+              }
             });
           } else if (onError != null) {
             onError(eventResult.error);
@@ -80,30 +84,30 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   }
 
   buildProgressDialog(String? url) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            url == null
-                ? Container()
-                : CachedNetworkImage(
-                    placeholder: (context, url) => Container(),
-                    imageUrl: url,
-                    //handling error
-                    width: 200.auto,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Container(),
-                  ),
-            //: Container(),
-            //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
-            //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
-            Lottie.asset(
-              "loading/loading_t${EnvironmentConfig.template_version}.json",
-              width: 150,
-              height: 150,
-            ),
-          ],
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        url == null
+            ? Container()
+            : CachedNetworkImage(
+          placeholder: (context, url) => Container(),
+          imageUrl: url,
+          //handling error
+          width: 200.auto,
+          fit: BoxFit.cover,
+          errorWidget: (context, url, error) => Container(),
         ),
-      );
+        //: Container(),
+        //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
+        //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
+        Lottie.asset(
+          "loading/loading_t${EnvironmentConfig.template_version}.json",
+          width: 150,
+          height: 150,
+        ),
+      ],
+    ),
+  );
 
   _showErrorMessage(EventResult eventResult) {
     var errorMessage = eventResult.error;
@@ -127,6 +131,21 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     CustomToast.show(errorMessage!);
   }
 
+  showApiErrorMessageInDialog(EventResult eventResult) {
+    if (userRepo.apiError != null) {
+      String error = userRepo.apiError![eventResult.errorMsgId] ?? "";
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+            description: error,
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.of(context).pop();
+            },
+          )
+      );
+    }
+  }
   showApiErrorMessage(EventResult eventResult) {
     if (userRepo.apiError != null) {
       String error = userRepo.apiError![eventResult.errorMsgId] ?? "";
