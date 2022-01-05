@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/manual_deposit_order.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -51,6 +55,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   String? promotionName, promotionId;
   var paymentChannelId;
   var currBankType;
+  File? uploadImage;
 
   void initState() {
     _vm = DepositMethodViewModel(widget.depositMethodList!);
@@ -87,6 +92,24 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   _buildExchangeRateText(),
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
+                _buildUploadImageColumn(),
+                Visibility(
+                  visible: _isManualDeposit(),
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: 10.auto,
+                      right: 10.auto,
+                      top: 15.auto,
+                    ),
+                    child: ColorButton(
+                      title: getTranslatedText("upload_prof"),
+                      onClick: () => _vm.uploadDepositImage(uploadImage!.path, paymentChannelId),
+                      isEnabled: uploadImage == null ? false : true,
+                      radius: 9.6,
+                      height: 44.5,
+                    ),
+                  ),
+                ),
                 _buildButton(),
               ],
             ),
@@ -124,14 +147,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             isHintText: isHintText,
             width: context.screenWidth,
             onClick: (list?.isEmpty ?? true)
-                  ? () {
-                CustomToast.show(getTranslatedText("empty_promotion"));
-              }
-                  : () {
-                _buildBottomSheet(title, list ?? []);
-
-
-            },
+                ? () {
+                    CustomToast.show(getTranslatedText("empty_promotion"));
+                  }
+                : () {
+                    _buildBottomSheet(title, list ?? []);
+                  },
           ),
         ));
   }
@@ -256,6 +277,82 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           maxLines: 2,
         ),
       );
+
+  _buildUploadImageColumn() => Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        elevation: 5,
+        child: Column(
+          children: [
+            _buildUploadTextRow(),
+            uploadImage == null
+                ? Container()
+                : Container(
+              padding: EdgeInsets.all(10.auto),
+                    alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+          ],
+        ),
+      );
+
+  _buildUploadTextRow() => Visibility(
+        visible: _isManualDeposit(),
+        child: Container(
+          margin: EdgeInsets.only(top: 10, left: 10.auto, right: 10.auto),
+          decoration: BoxDecoration(
+              //bg image
+              ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 7,
+                child: Text(
+                  getTranslatedText("upload_prof_hint"),
+                  style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: ColorButton(
+                  title: getTranslatedText("pick_prof"),
+                  width: 70.auto,
+                  height: 30.auto,
+                  onClick: () {
+                    chooseImage();
+                  },
+                  isEnabled: true,
+                  radius: 9.6,
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+
+  Future<void> chooseImage() async {
+    /*File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //set source: ImageSource.camera to get image from camera
+    setState(() {
+      uploadImage = choosedImage;
+    });*/
+
+    ImagePicker picker = ImagePicker();
+    XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
+    File imageFile;
+    imageFile = File(choosedImage!.path);
+    var bytes = imageFile.readAsBytesSync().lengthInBytes;
+    if (bytes > 10485760) {
+      //restrict upload image to 10MB
+      CustomToast.show(getTranslatedText("image_size_limit"));
+    } else {
+      setState(() {
+        uploadImage = imageFile;
+      });
+    }
+  }
 
   _calculateExpectedAmount() {
     if (_vm.exchangeRate != null) {
@@ -463,6 +560,30 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       _navigateToDepositOrder(
         depositRedirect: _vm.skyPayDepositOrderApiState.result,
       );
+    });
+
+    handleApiState(_vm.uploadDepositImageApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+            title: null,
+            description: getTranslatedText("upload_success"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              Navigator.pop(
+                context,
+              );
+            },
+            onClick2: () {
+              Navigator.pop(context);
+            },
+          ),
+        );
+      });
     });
   }
 

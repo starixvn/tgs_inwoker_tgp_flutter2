@@ -22,7 +22,8 @@ class DepositMethodViewModel extends BaseViewModel {
       maticPayDepositOrderApiState,
       help2PayDepositOrderApiState,
       getHelp2PayHtmlTextApiState,
-      skyPayDepositOrderApiState;
+      skyPayDepositOrderApiState,
+      uploadDepositImageApiState;
   List<Payment>? paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -33,10 +34,13 @@ class DepositMethodViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getManualDepositId(BankType bankType,String account, String amount, String? paymentId, String? promotionId) async {
+  getManualDepositId(BankType bankType, String account, String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    if(bankType == BankType.BANK) getManualDepositIdApiState = await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId);
-    else getManualDepositIdApiState = await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
+    if (bankType == BankType.BANK)
+      getManualDepositIdApiState = await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId);
+    else
+      getManualDepositIdApiState =
+          await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
       getManualDepositOrder(orderNo);
@@ -94,7 +98,7 @@ class DepositMethodViewModel extends BaseViewModel {
       getExchangeRateApiState = await depositRepo.getUmPayExchangeRate(paymentId);
     if (getExchangeRateApiState.isSuccess) {
       if (!isUmPay)
-        exchangeRate = getExchangeRateApiState.result.buyPrice.replaceAll(',','.');
+        exchangeRate = getExchangeRateApiState.result.buyPrice.replaceAll(',', '.');
       else
         exchangeRate = getExchangeRateApiState.result.rate.toString();
     }
@@ -108,6 +112,7 @@ class DepositMethodViewModel extends BaseViewModel {
     setLoading(false);
     return maticPayDepositOrderApiState;
   }
+
   help2PayDepositOrder(String amount, String? paymentId, String? promotionId) async {
     setLoading();
     help2PayDepositOrderApiState = await depositRepo.help2PayDepositOrder(amount, paymentId, promotionId);
@@ -127,5 +132,13 @@ class DepositMethodViewModel extends BaseViewModel {
     skyPayDepositOrderApiState = await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return skyPayDepositOrderApiState;
+  }
+
+  uploadDepositImage(String imageFile, String id) async {
+    setLoading();
+    uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
+    if (uploadDepositImageApiState.isSuccess) {}
+    setLoading(false);
+    return uploadDepositImageApiState;
   }
 }

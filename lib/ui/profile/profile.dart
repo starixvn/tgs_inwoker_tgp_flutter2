@@ -82,7 +82,7 @@ class _ProfileState extends BaseState<Profile> {
         margin: EdgeInsets.only(left: 20.auto),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AutoSizeText(
-            _vm.userProfile.username ?? "",
+            _vm.userProfile?.username ?? "",
             style: TextStyle(
                 color: CustomColor.theme_text_black_color,
                 fontWeight: FontWeight.bold
@@ -101,7 +101,7 @@ class _ProfileState extends BaseState<Profile> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "${Format().currencyWithDecimalFormat(_vm.balance)}",
+                    "${Format().currencyWithDecimalFormat(_vm.balance??0)}",
                     style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),

@@ -86,7 +86,7 @@ class _HomeT1State extends BaseState<HomeT1> {
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
-              username: _vm.userProfile.username,
+              username: _vm.userProfile?.username ?? "",
             ),
             body: /* Stack(
               children: [*/
@@ -245,9 +245,9 @@ class _HomeT1State extends BaseState<HomeT1> {
   }
 
   _buildGameView() => GameT1(
-    vm: _gameViewModel,
-    onRefreshHomePage: () => _initData(),
-  );
+        vm: _gameViewModel,
+        onRefreshHomePage: () => _initData(),
+      );
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

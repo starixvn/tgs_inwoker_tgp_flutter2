@@ -43,13 +43,21 @@ class ColorButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all(
               isEnabled ? (color ?? CustomColor.theme_button_color) : CustomColor.theme_grey_button_color),
           minimumSize: MaterialStateProperty.all(Size(width ?? context.screenWidth, height ?? 45.auto))),
-      child: AutoSizeText(
-        title,
-        style: TextStyle(color: textColor??Colors.white),
-        minFontSize: fontSize ?? 15,
-        maxLines: 1,
-        textAlign: TextAlign.center,
-        stepGranularity: 1,
+      child: Container(
+        alignment: Alignment.center,
+        /*width: width??context.screenWidth,
+          height: 25.auto,*/
+        child: SizedBox(
+          width: (width ?? context.screenWidth) - 20,
+          child: AutoSizeText(
+            title,
+            style: TextStyle(color: textColor ?? Colors.white),
+            minFontSize: 5,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            stepGranularity: 1,
+          ),
+        ),
       ),
     );
   }

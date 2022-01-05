@@ -19,7 +19,7 @@ class RealNameVerification extends StatefulWidget {
 class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var _vm = RealNameVerificationViewModel();
   TextEditingController _realNameController = TextEditingController(), _icNoController = TextEditingController();
-  var isButtonEnabled = false, isTextFieldEnabled = false;
+  var isButtonEnabled = false, isTextFieldEnabled = false, isShowICNo;
   var buttonText;
 
   @override
@@ -44,7 +44,10 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                 child: Column(
                   children: [
                     _buildTextFormField("realname", "enter_realname_hint", _realNameController, false),
-                    _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
+                    Visibility(
+                      visible: _vm.userProfile.realname == null,
+                      child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
+                    ),
                     _buildButton(),
                     //_buildFooterText()
                   ],

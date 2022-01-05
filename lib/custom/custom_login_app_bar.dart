@@ -103,7 +103,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           title: getTranslatedText("register"),
           onClick: () => widget.onClickLoginButton(),
           isEnabled: true,
-          width: 60,
+          width: 80,
           height: 17,
           color: Colors.white,
           fontSize: 14,
