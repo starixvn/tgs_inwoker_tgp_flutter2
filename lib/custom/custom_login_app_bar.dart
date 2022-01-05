@@ -1,3 +1,4 @@
+import 'package:api/entity/user_profile.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,64 +14,76 @@ import 'package:tgp_flutter2/src/gradient_decoration.dart';
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomLoginAppBar({
     required this.onClickLoginButton,
+    required this.onClickLogoutButton,
     required this.isLogin,
     this.brandLogoUrl,
-    this.username,
+    this.userProfile,
   });
 
   final Function onClickLoginButton;
+  final Function onClickLogoutButton;
   final bool isLogin;
   final String? brandLogoUrl;
-  final String? username;
+  final UserProfile? userProfile;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(45);
+  Size get preferredSize => const Size.fromHeight(55);
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   Widget build(BuildContext context) {
-    return EnvironmentConfig.template_version == 1
-        ? AppBar(
-            automaticallyImplyLeading: false,
-            flexibleSpace: Container(
-              decoration: gradientDecoration,
-            ),
-            centerTitle: false,
-            title: (widget.brandLogoUrl?.isEmpty ?? true)
-                ? Container()
-                : CachedNetworkImage(
-                    placeholder: (context, url) => Container(),
-                    imageUrl: widget.brandLogoUrl!,
-                    //handling error
-                    height: 30.auto,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.centerLeft,
-                    errorWidget: (context, url, error) => Container(),
-                  ),
-            actions: _getActionButton(),
-          )
-        : AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: CustomColor.theme_app_bar_color,
-            centerTitle: false,
-            title: (widget.brandLogoUrl?.isEmpty ?? true)
-                ? Container()
-                : CachedNetworkImage(
-                    placeholder: (context, url) => Container(),
-                    imageUrl: widget.brandLogoUrl!,
-                    //handling error
-                    height: 30.auto,
-                    fit: BoxFit.cover,
-                    color: Colors.white,
-                    alignment: Alignment.centerLeft,
-                    errorWidget: (context, url, error) => Container(),
-                  ),
-            actions: _getActionButton(),
-          );
+    if (EnvironmentConfig.template_version == 1) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        centerTitle: false,
+        title: _getAppBarTitle(),
+        actions: _getActionButton(),
+      );
+    } else {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: CustomColor.theme_app_bar_color,
+        centerTitle: false,
+        title: _getAppBarTitle(),
+        actions: _getActionButton(),
+      );
+    }
   }
+
+  _getAppBarTitle() => (widget.brandLogoUrl?.isEmpty ?? true)
+      ? Container()
+      : Container(
+          height: 45,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: CachedNetworkImage(
+                  placeholder: (context, url) => Container(),
+                  imageUrl: widget.brandLogoUrl!,
+                  //handling error
+                  height: 30.auto,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.centerLeft,
+                  errorWidget: (context, url, error) => Container(),
+                ),
+              ),
+              Expanded(
+                flex: widget.isLogin?1:0,
+                child: _getUserDetailsRow(),
+              )
+            ],
+          ),
+        );
 
   List<Widget> _getActionButton() => widget.isLogin
       ? [
@@ -117,7 +130,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         child: ColorButton(
           title: getTranslatedText("logout"),
-          onClick: () => widget.onClickLoginButton(),
+          onClick: () => widget.onClickLogoutButton(),
           isEnabled: true,
           width: 60,
           height: 17,
@@ -130,15 +143,62 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getUsernameText() => Container(
-    alignment: Alignment.center,
-    child: AutoSizeText(
-          widget.username ?? "",
+        alignment: Alignment.center,
+        child: AutoSizeText(
+          widget.userProfile?.username ?? "",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
           minFontSize: 10,
           stepGranularity: 1,
         ),
-  );
+      );
+
+  _getUserDetailsRow() => Visibility(
+        visible: widget.isLogin,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 3.auto),
+          child: Row(
+            children: [
+              Visibility(
+                visible: widget.userProfile?.phone!=null,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 3.auto),
+                  child: Image.asset(
+                    "images/home/ic_phone.png",
+                    width: 10.auto,
+                    height: 10.auto,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: widget.userProfile?.phone!=null,
+                child: AutoSizeText(
+                  widget.userProfile?.phone ?? "",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                  minFontSize: 5,
+                  stepGranularity: 1,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 3.auto),
+                child: Image.asset(
+                  "images/home/ic_vip.png",
+                  width: 10.auto,
+                  height: 10.auto,
+                ),
+              ),
+              AutoSizeText(
+                "VIP ${widget.userProfile?.vipLevel ?? 0}",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+                minFontSize: 5,
+                stepGranularity: 1,
+              ),
+            ],
+          ),
+        ),
+      );
 
   getTranslatedText(String? key) => LanguageProvider().getTranslated(context, key);
 }

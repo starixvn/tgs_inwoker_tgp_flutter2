@@ -34,7 +34,14 @@ class DepositMethodViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getManualDepositId(BankType bankType, String account, String amount, String? paymentId, String? promotionId) async {
+  getManualDepositId(
+    BankType bankType,
+    String account,
+    String amount,
+    String? paymentId,
+    String? promotionId,
+    String imageFile,
+  ) async {
     setLoading();
     if (bankType == BankType.BANK)
       getManualDepositIdApiState = await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId);
@@ -43,7 +50,8 @@ class DepositMethodViewModel extends BaseViewModel {
           await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
-      getManualDepositOrder(orderNo);
+      //getManualDepositOrder(orderNo);
+      uploadDepositImage(imageFile, orderNo);
     }
     setLoading(false);
     return getManualDepositIdApiState;

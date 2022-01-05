@@ -49,7 +49,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                       child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
                     ),
                     _buildButton(),
-                    //_buildFooterText()
+                    _buildFooterText()
                   ],
                 ),
               ));

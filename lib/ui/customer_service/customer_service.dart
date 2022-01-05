@@ -53,7 +53,19 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           height: context.screenHeight,
                           padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(image: _getCsBgImage()),
-                          child: Column(children: [
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                            Container(
+                              margin:EdgeInsets.only(left: 50.auto),
+                              child: AutoSizeText(
+                                _vm.userProfile?.phone ?? "",
+                                style: TextStyle(color: CustomColor.theme_text_black_color, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.left,
+                                minFontSize: 5,
+                                stepGranularity: 1,
+                              ),
+                            ),
                             buildLiveChatRow(),
                             Column(
                               children: List.generate(_vm.communicationList!.length, (index) {

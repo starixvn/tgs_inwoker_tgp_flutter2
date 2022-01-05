@@ -35,8 +35,6 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
   @override
   void initState() {
     initData();
-    _platformTabController =
-        TabController(length: widget.platformList!.length + 1, vsync: this, initialIndex: platformTabIndex);
     super.initState();
   }
 
@@ -50,6 +48,9 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
         platformTabIndex = index + 1;
       }
     });
+    _platformTabList = list;
+    _platformTabController = TabController(length: list.length, vsync: this, initialIndex: platformTabIndex);
+
   }
 
   Widget build(BuildContext context) {
@@ -57,17 +58,18 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
       _buildPlatformTabBar(),
       Expanded(
           child: ChildGamePlatformTabBarView(
-        gameList: widget.gameList,
-        isDisabled: widget.isSearching,
+            gameList: widget.gameList,
+            isDisabled: widget.isSearching,
             vm: widget.vm,
-      )),
+          )),
     ]);
   }
 
-  _buildPlatformTabBar() => Container(
+  _buildPlatformTabBar() =>
+      Container(
         padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 5.auto),
         constraints: BoxConstraints(maxHeight: 35.auto),
-    color: CustomColor.theme_grey_button_color,
+        color: CustomColor.theme_grey_button_color,
         width: context.screenWidth,
         child: TabBar(
           controller: _platformTabController,
@@ -75,7 +77,12 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
           unselectedLabelColor: CustomColor.theme_text_grey_color,
           labelColor: CustomColor.theme_button_color,
           indicatorWeight: 3,
-          onTap: (index) => widget.onFilterPlatform!((_platformTabList[index]["code"])!),
+          onTap: (index) {
+            setState(() {
+              platformTabIndex = index;
+            });
+            widget.onFilterPlatform!((_platformTabList[index]["code"])!);
+          },
           indicator: ShapeDecoration(
             shape: RoundedRectangleBorder(
               side: BorderSide(color: CustomColor.theme_button_color),
@@ -87,9 +94,9 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
             return Tab(
               child: Text(item["code"] == "ALL" ? getTranslatedText((item["name"])!) : item["name"],
                   style: TextStyle(
-                    fontFamily: 'PingFang',
-                    fontSize: 14.auto,
-                    color: Colors.white
+                      fontFamily: 'PingFang',
+                      fontSize: 14.auto,
+                      color: Colors.white
                   )),
             );
           }).toList(),

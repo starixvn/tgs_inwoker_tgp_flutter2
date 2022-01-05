@@ -23,7 +23,7 @@ class HomeViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   bool isNotLogin = false, isExpired = false;
-  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState;
+  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState, logoutApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -130,5 +130,12 @@ class HomeViewModel extends BaseViewModel {
     await _computeTotalBalance();
     setLoading(false);
     notifyListeners();
+  }
+
+  logout() async {
+    setLoading();
+    logoutApiState = await userRepo.logout();
+    setLoading(false);
+    return logoutApiState;
   }
 }

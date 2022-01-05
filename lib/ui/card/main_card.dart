@@ -57,19 +57,17 @@ class _MainCardState extends BaseState<MainCard> {
                             children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
                                   child: Dismissible(
-                                    key: UniqueKey(),
-                                    child: _buildBankCardItem(_vm.bankCardList![index]),
-                                    background: _swipeLeftBackground(),
-                                    direction: DismissDirection.endToStart,
-                                    behavior: HitTestBehavior.deferToChild,
-                                    onDismissed: (_) {
-                                      EnvironmentConfig.brandName == "MESS8"
-                                          ?
-                                      _showDialog()
-                                          : _delete(_vm.bankCardList![index], index);
-                                    },
-                                  )
-                              );
+                                key: UniqueKey(),
+                                child: _buildBankCardItem(_vm.bankCardList![index]),
+                                background: _swipeLeftBackground(),
+                                direction: DismissDirection.endToStart,
+                                behavior: HitTestBehavior.deferToChild,
+                                onDismissed: (_) {
+                                  EnvironmentConfig.brandName == "MESS8"
+                                      ? _showDialog()
+                                      : _delete(_vm.bankCardList![index], index);
+                                },
+                              ));
                             }),
                           ),
                           _buildDeleteHintText(),
@@ -123,31 +121,32 @@ class _MainCardState extends BaseState<MainCard> {
   }
 
   _buildBankCardItem(BankCard bankCard) => Container(
-      width: context.screenWidth,
-      height: 90.auto,
-      margin: EdgeInsets.only(top: 10.auto),
-    padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 30.auto),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            bankCard.bankType?.getName(context) ?? "",
-            style: TextStyle(fontSize: 11.auto),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10.auto),
-            child: Text(
-              _getDisplayBankAccountText(bankCard) ?? "",
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+        width: context.screenWidth,
+        height: 90.auto,
+        margin: EdgeInsets.only(top: 10.auto),
+        padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 30.auto),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              bankCard.bankType?.getName(context) ?? "",
+              style: TextStyle(fontSize: 11.auto),
             ),
-          )
-        ],
-      ),);
+            Container(
+              margin: EdgeInsets.only(top: 10.auto),
+              child: Text(
+                _getDisplayBankAccountText(bankCard) ?? "",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+              ),
+            )
+          ],
+        ),
+      );
 
   _buildDeleteHintText() => Container(
         margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
@@ -173,13 +172,16 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildAddCardItem() => InkWell(
-    onTap:  EnvironmentConfig.brandName != "MESS8" && _vm.bankCardList!.length != 1
-        ? () async {
-      await Navigator.of(context).pushNamed("/add_card");
-      _getBankCardList(); //reinitdata after pop from  add card
-    }
-        :
-        () => _showDialog(),
+        onTap: /*() async {
+          await Navigator.of(context).pushNamed("/add_card");
+          _getBankCardList(); //reinitdata after pop from  add card
+        },*/
+            EnvironmentConfig.brandName != "MESS8" && _vm.bankCardList!.length != 1
+                ? () async {
+                    await Navigator.of(context).pushNamed("/add_card");
+                    _getBankCardList(); //reinitdata after pop from  add card
+                  }
+                : () => _showDialog(),
         child: Container(
           margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
           child: DottedBorder(
@@ -191,7 +193,7 @@ class _MainCardState extends BaseState<MainCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex:8,
+                    flex: 8,
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
                       child: Column(
@@ -267,16 +269,16 @@ class _MainCardState extends BaseState<MainCard> {
   }
 
   _showDialog() => showDialog(
-    context: context,
-    builder: (BuildContext context) => CustomDialog(
-      description: getTranslatedText("edit_bank_card_cs"),
-      buttonText1: "确认",
-      onClick: () {
-        Navigator.pop(context);
-        _getBankCardList();//reinite data after pop
-      },
-    ),
-  );
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          description: getTranslatedText("edit_bank_card_cs"),
+          buttonText1: "确认",
+          onClick: () {
+            Navigator.pop(context);
+            _getBankCardList(); //reinite data after pop
+          },
+        ),
+      );
 
   _handleApiState() async {
     handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: isInitLoading, onSuccess: () {

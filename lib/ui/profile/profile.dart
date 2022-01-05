@@ -172,7 +172,7 @@ class _ProfileState extends BaseState<Profile> {
                         margin: EdgeInsets.only(right: 5.auto),
                         //decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
                         child: ImageIcon(
-                          AssetImage("images/profile/ic_balance.png"),
+                          AssetImage("images/profile/t2/ic_balance.png"),
                           color: CustomColor.theme_text_grey_white_color,
                         )),
                     Text(
@@ -188,7 +188,7 @@ class _ProfileState extends BaseState<Profile> {
                       margin: EdgeInsets.only(right: 5.auto),
                       //decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
                       child: ImageIcon(
-                        AssetImage("images/profile/ic_balance.png"),
+                        AssetImage("images/profile/t2/ic_balance.png"),
                         color: CustomColor.theme_button_color,
                       )),
                   Text(

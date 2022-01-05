@@ -93,23 +93,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildUploadImageColumn(),
-                Visibility(
-                  visible: _isManualDeposit(),
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      left: 10.auto,
-                      right: 10.auto,
-                      top: 15.auto,
-                    ),
-                    child: ColorButton(
-                      title: getTranslatedText("upload_prof"),
-                      onClick: () => _vm.uploadDepositImage(uploadImage!.path, paymentChannelId),
-                      isEnabled: uploadImage == null ? false : true,
-                      radius: 9.6,
-                      height: 44.5,
-                    ),
-                  ),
-                ),
+
                 _buildButton(),
               ],
             ),
@@ -371,6 +355,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     if (_isManualDeposit() &&
         EnvironmentConfig.isShowBankAcc &&
         _bankNameController.text.isNotEmpty &&
+        uploadImage?.path !=null &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
       setState(() {
@@ -392,7 +377,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     switch (widget.paymentCode) {
       case "Manual":
         _vm.getManualDepositId(
-            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId!);
+            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId??null, uploadImage!.path);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(
@@ -418,7 +403,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         break;
       default:
         _vm.getManualDepositId(
-            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId ?? null);
+            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId ?? null, uploadImage!.path);
         break;
     }
   }
@@ -435,6 +420,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     _vm.filterMethod(bankType);
     onSelectedChannel(_vm.paymentList!.first);
     setState(() {
+      currBankType = bankType;
       methodPickerText = bankType.getName(context);
     });
   }
@@ -469,6 +455,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       _transferNameController.clear();
       promotionId = null;
       isButtonEnabled = false;
+      uploadImage =null;
     });
   }
 
@@ -574,12 +561,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               Navigator.pop(
                 context,
               );
-              Navigator.pop(
-                context,
-              );
-            },
-            onClick2: () {
-              Navigator.pop(context);
+              _clearTextField();
             },
           ),
         );

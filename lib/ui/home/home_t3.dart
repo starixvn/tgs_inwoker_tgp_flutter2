@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -66,7 +67,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     super.initState();
   }
 
-  _initData() async{
+  _initData() async {
     _vm.getAnnouncement();
     _vm.getBanner();
     _vm.getTotalBalance();
@@ -92,9 +93,10 @@ class _HomeT3State extends BaseState<HomeT3> {
             backgroundColor: CustomColor.theme_bg_color,
             appBar: CustomLoginAppBar(
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+              onClickLogoutButton: () => _logout(),
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
-              username: _vm.userProfile.username,
+              userProfile: _vm.userProfile,
             ),
             body: /* Stack(
               children: [*/
@@ -317,6 +319,11 @@ class _HomeT3State extends BaseState<HomeT3> {
     }
   }
 
+  _logout() {
+    ProgressDialog.show(context, _vm.brandLogoUrl);
+    _vm.logout();
+  }
+
   _displayMarqueeDialog() async {
     showDialog(
       context: context,
@@ -340,6 +347,11 @@ class _HomeT3State extends BaseState<HomeT3> {
         });
       }
     }
+    handleApiState(_vm.logoutApiState, isLogoutApiState: true, onSuccess: () {
+      ProgressDialog.hide();
+    }, onLogout: () {
+      ProgressDialog.hide();
+    });
     handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
