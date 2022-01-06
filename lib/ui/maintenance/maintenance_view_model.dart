@@ -2,7 +2,7 @@ import 'package:api/api.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/brand_communication.dart';
 
-class MaintenanceViewModel extends BaseViewModel{
+class MaintenanceViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
 
@@ -30,7 +30,7 @@ class MaintenanceViewModel extends BaseViewModel{
   getLiveChatUrl(String languageCode) async {
     setLoading();
     getLiveChatUrlApiState = await userRepo.getLiveChatUrl();
-    if (getLiveChatUrlApiState.isSuccess && getLiveChatUrlApiState.result.setting != null) {
+    if (getLiveChatUrlApiState.isSuccess ) {
       List<String> pattern = ["{name}", "{email}", "{lang}"]; //ABV list
       List<String> replace = [
         userProfile?.username ?? " ",
@@ -38,8 +38,9 @@ class MaintenanceViewModel extends BaseViewModel{
         languageCode
       ]; //corresponding list
       Map<String, String> map = Map.fromIterables(pattern, replace);
-      liveChatUrl =
-          map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev!.replaceAll(e.key, e.value));
+      liveChatUrl = getLiveChatUrlApiState.result.setting.url;
+      //map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev!.replaceAll(e.key, e.value));
+
     }
     setLoading(false);
     return getLiveChatUrlApiState;

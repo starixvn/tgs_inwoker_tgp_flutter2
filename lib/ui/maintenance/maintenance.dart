@@ -7,6 +7,8 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
+import 'package:tgp_flutter2/ui/maintenance/maintenance_dialog.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance_view_model.dart';
 
 class Maintenance extends StatefulWidget {
@@ -117,7 +119,15 @@ class _MaintenanceState extends BaseState<Maintenance> {
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       OutlineBorderButton(
-        onClick: () {},
+        onClick: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CustomerServiceWebView(
+                    url: _vm.liveChatUrl,
+                    brandLogoUrl: _vm.brandLogoUrl,
+                  )));
+        },
         title: "Contact CS",
         isEnabled: true,
         width: context.screenWidth / 3.5,
@@ -127,7 +137,14 @@ class _MaintenanceState extends BaseState<Maintenance> {
       ),
       ColorButton(
         title: "Instant Messaging",
-        onClick: () {},
+        onClick: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => MaintenanceDialog(
+              communicationList: _vm.communicationList,
+            ),
+          );
+        },
         isEnabled: true,
         radius: 20,
         height: 44.5,

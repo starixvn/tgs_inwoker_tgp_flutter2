@@ -63,6 +63,7 @@ class _HomeT1State extends BaseState<HomeT1> {
     _vm.getAnnouncement();
     _vm.getBanner();
     _vm.getTotalBalance();
+    _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -89,6 +90,7 @@ class _HomeT1State extends BaseState<HomeT1> {
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
               userProfile: _vm.userProfile,
+              phone: _vm.phone,
             ),
             body: /* Stack(
               children: [*/

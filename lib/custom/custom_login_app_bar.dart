@@ -18,6 +18,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.isLogin,
     this.brandLogoUrl,
     this.userProfile,
+    this.phone,
   });
 
   final Function onClickLoginButton;
@@ -25,6 +26,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool isLogin;
   final String? brandLogoUrl;
   final UserProfile? userProfile;
+  final String? phone;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -78,7 +80,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ),
               Expanded(
-                flex: widget.isLogin?1:0,
+                flex: widget.isLogin ? 1 : 0,
                 child: _getUserDetailsRow(),
               )
             ],
@@ -153,34 +155,28 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  _getUserDetailsRow() => Visibility(
-        visible: widget.isLogin,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 3.auto),
-          child: Row(
-            children: [
-              Visibility(
-                visible: widget.userProfile?.phone!=null,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 3.auto),
-                  child: Image.asset(
-                    "images/home/ic_phone.png",
-                    width: 10.auto,
-                    height: 10.auto,
-                  ),
-                ),
+  _getUserDetailsRow() => Container(
+        margin: EdgeInsets.symmetric(vertical: 3.auto),
+        child: Row(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 3.auto),
+              child: Image.asset(
+                "images/home/ic_phone.png",
+                width: 10.auto,
+                height: 10.auto,
               ),
-              Visibility(
-                visible: widget.userProfile?.phone!=null,
-                child: AutoSizeText(
-                  widget.userProfile?.phone ?? "",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                  minFontSize: 5,
-                  stepGranularity: 1,
-                ),
-              ),
-              Container(
+            ),
+            AutoSizeText(
+              widget.phone ?? "",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
+              minFontSize: 5,
+              stepGranularity: 1,
+            ),
+            Visibility(
+              visible: widget.isLogin,
+              child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 3.auto),
                 child: Image.asset(
                   "images/home/ic_vip.png",
@@ -188,15 +184,18 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                   height: 10.auto,
                 ),
               ),
-              AutoSizeText(
+            ),
+            Visibility(
+              visible: widget.isLogin,
+              child: AutoSizeText(
                 "VIP ${widget.userProfile?.vipLevel ?? 0}",
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
                 minFontSize: 5,
                 stepGranularity: 1,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 

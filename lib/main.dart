@@ -137,7 +137,14 @@ class _MyAppState extends BaseState<MyApp> {
                   if (!snapshot.hasData) {
                     return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
                   } else if (snapshot.data!.isMaintenance) {
-                    return MaterialApp(debugShowCheckedModeBanner: false, home: Maintenance(isShowCS: true));
+                    return MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        home: Maintenance(isShowCS: true),
+                        title: appTitle,
+                        initialRoute: '/',
+                        routes: {
+                          RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                        });
                   } else {
                     return GestureDetector(
                       onTap: () {
@@ -163,6 +170,7 @@ class _MyAppState extends BaseState<MyApp> {
                           RoutePath.login: (context) => Login(),
                           RoutePath.forgotPassword: (context) => ForgotPassword(),
                           RoutePath.maintenance: (context) => Maintenance(),
+                          RoutePath.customerServiceWebView: (context) => CustomerServiceWebView(),
                           RoutePath.mainCard: (context) => MainCard(),
                           RoutePath.message: (context) => MessageView(),
                           RoutePath.emailVerification: (context) => EmailVerification(0),
@@ -393,17 +401,15 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   _showNewVersionUpdateDialog(dynamic data) {
     showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            CustomDialog(
-                title: getTranslatedText("New update: ${data["version"]}"),
-                description: data["content"],
-                buttonText1: getTranslatedText("update"),
-                onClick: () {
-                  Navigator.pop(
-                    context,
-                  );
-                  launch(data["link"]);
-                }));
-
+        builder: (BuildContext context) => CustomDialog(
+            title: getTranslatedText("New update: ${data["version"]}"),
+            description: data["content"],
+            buttonText1: getTranslatedText("update"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              launch(data["link"]);
+            }));
   }
 }

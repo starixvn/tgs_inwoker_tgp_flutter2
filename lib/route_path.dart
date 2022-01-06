@@ -52,4 +52,5 @@ class RoutePath{
   static final depositWithdrawTransaction = '/deposit_withdraw_transaction';
   static final  blacklistedUser = '/blacklisted_user';
   static final  phoneReVerification = '/phone_re_verification';
+  static final customerServiceWebView = '/customer_service_web_view';
 }

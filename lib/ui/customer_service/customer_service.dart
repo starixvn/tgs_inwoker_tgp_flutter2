@@ -42,7 +42,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               resizeToAvoidBottomInset: false,
               backgroundColor: CustomColor.theme_bg_color,
               appBar: CustomAppBar(
-                title: getTranslatedText("customer_service"),
+                title: getTranslatedText("customer_service") == "customer_service"
+                    ? "Customer Service"
+                    : getTranslatedText("customer_service"),
               ),
               body: _vm.communicationList == null
                   ? buildProgressDialog(_vm.brandLogoUrl)
@@ -53,18 +55,26 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           height: context.screenHeight,
                           padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(image: _getCsBgImage()),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Row(
                               children: [
-                            Container(
-                              margin:EdgeInsets.only(left: 50.auto),
-                              child: AutoSizeText(
-                                _vm.userProfile?.phone ?? "",
-                                style: TextStyle(color: CustomColor.theme_text_black_color, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                                minFontSize: 5,
-                                stepGranularity: 1,
-                              ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                                  child: Image.asset(
+                                    "images/home/ic_phone.png",
+                                    width: 10.auto,
+                                    height: 10.auto,
+                                    color: CustomColor.theme_button_color,
+                                  ),
+                                ),
+                                AutoSizeText(
+                                  _vm.phone ?? "",
+                                  style: TextStyle(color: CustomColor.theme_button_color, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                  minFontSize: 5,
+                                  stepGranularity: 1,
+                                ),
+                              ],
                             ),
                             buildLiveChatRow(),
                             Column(

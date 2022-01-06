@@ -33,7 +33,9 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: getTranslatedText("customer_service") ?? "Customer service",
+        title: getTranslatedText("customer_service") == "customer_service"
+            ? "Customer Service"
+            : getTranslatedText("customer_service"),
       ),
       body: widget.url == null
           ? buildProgressDialog(widget.brandLogoUrl!)
