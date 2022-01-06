@@ -27,7 +27,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "1d1a32a9983100d5fc6914999f4bd9cce8d5d73e"
+      resolved-ref: c3f22ad5d1dfcff19d8a1a8cb133669922ba929d
       url: "https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git"
     source: git
     version: "0.0.0"

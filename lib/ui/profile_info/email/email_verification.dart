@@ -118,9 +118,9 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
 
   _buildEditEmailText() => InkWell(
       onTap: () {
-        EnvironmentConfig.brandName == "MESS8"
+        /*EnvironmentConfig.brandName == "MESS8"
             ? Navigator.of(context).pushNamed("/customer_service")
-            : Navigator.of(context)
+            : */Navigator.of(context)
             .pushNamed(RoutePath.editEmail)
             .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
           _getUserProfile();
@@ -133,7 +133,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
             style: TextStyle(fontSize: 12.auto),
           ),
           Text(
-            EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : getTranslatedText("here"),
+            /*EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") :*/ getTranslatedText("here"),
             style: TextStyle(
                 decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
           ),

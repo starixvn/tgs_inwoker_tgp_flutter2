@@ -38,13 +38,20 @@ class _LoginState extends BaseState<Login> {
               color: CustomColor.theme_bg_color,
               child: Column(
                 children: [
-                  _buildLogoImage(),
                   Expanded(
+                    flex:4,
+                    child:_buildLogoImage(),
+                  ),
+                  Expanded(
+                    flex:15,
                       child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 27.auto),
                     child: LoginTab(),
                   )),
-                  _buildVersionText(),
+                  Expanded(
+                    flex:1,
+                    child:_buildVersionText(),
+                  )
                 ],
               ),
             ),

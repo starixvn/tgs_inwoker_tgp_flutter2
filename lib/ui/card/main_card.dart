@@ -63,9 +63,9 @@ class _MainCardState extends BaseState<MainCard> {
                                 direction: DismissDirection.endToStart,
                                 behavior: HitTestBehavior.deferToChild,
                                 onDismissed: (_) {
-                                  EnvironmentConfig.brandName == "MESS8"
+                                  /*EnvironmentConfig.brandName == "MESS8"
                                       ? _showDialog()
-                                      : _delete(_vm.bankCardList![index], index);
+                                      :*/ _delete(_vm.bankCardList![index], index);
                                 },
                               ));
                             }),
@@ -172,16 +172,16 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildAddCardItem() => InkWell(
-        onTap: /*() async {
+        onTap: () async {
           await Navigator.of(context).pushNamed("/add_card");
           _getBankCardList(); //reinitdata after pop from  add card
-        },*/
-            EnvironmentConfig.brandName != "MESS8" && _vm.bankCardList!.length != 1
+        },
+            /*EnvironmentConfig.brandName != "MESS8" && _vm.bankCardList!.length != 1
                 ? () async {
                     await Navigator.of(context).pushNamed("/add_card");
                     _getBankCardList(); //reinitdata after pop from  add card
                   }
-                : () => _showDialog(),
+                : () => _showDialog(),*/
         child: Container(
           margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
           child: DottedBorder(

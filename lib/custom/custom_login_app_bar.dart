@@ -80,9 +80,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ),
               Expanded(
-                flex: widget.isLogin ? 1 : 0,
-                child: _getUserDetailsRow(),
-              )
+                  flex: EnvironmentConfig.brandName == "MESS8" ? 1 : 0,
+                  child: Visibility(
+                    visible: EnvironmentConfig.brandName == "MESS8",
+                    child: _getUserDetailsRow(),
+                  ))
             ],
           ),
         );
