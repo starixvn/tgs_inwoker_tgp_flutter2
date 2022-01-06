@@ -88,9 +88,9 @@ class _WechatState extends BaseState<Wechat> {
     visible: _vm.userProfile.wechat != null,
     child: InkWell(
       onTap: () {
-        /*EnvironmentConfig.brandName == "MESS8"
+        EnvironmentConfig.brandName == "MESS8"
             ? Navigator.of(context).pushNamed("/customer_service")
-            :*/ setState(() {
+            : setState(() {
           isTextFieldEnabled = true;
           isButtonEnabled = true;
           buttonText = getTranslatedText("edit");
@@ -104,7 +104,7 @@ class _WechatState extends BaseState<Wechat> {
             style: TextStyle(fontSize: 12.auto),
           ),
           Text(
-            /*EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : */getTranslatedText("here"),
+            EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : getTranslatedText("here"),
             style: TextStyle(
                 decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
           ),
