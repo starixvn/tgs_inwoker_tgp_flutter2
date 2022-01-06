@@ -63,9 +63,9 @@ class _MainCardState extends BaseState<MainCard> {
                                 direction: DismissDirection.endToStart,
                                 behavior: HitTestBehavior.deferToChild,
                                 onDismissed: (_) {
-                                  /*EnvironmentConfig.brandName == "MESS8"
+                                  EnvironmentConfig.brandName == "MESS8"
                                       ? _showDialog()
-                                      :*/ _delete(_vm.bankCardList![index], index);
+                                      : _delete(_vm.bankCardList![index], index);
                                 },
                               ));
                             }),

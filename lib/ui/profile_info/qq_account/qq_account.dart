@@ -91,9 +91,9 @@ class _QQAccountState extends BaseState<QQAccount> {
     visible: _vm.userProfile.qq != null,
     child: InkWell(
       onTap: () {
-        /*EnvironmentConfig.brandName == "MESS8"
+        EnvironmentConfig.brandName == "MESS8"
             ? Navigator.of(context).pushNamed("/customer_service")
-            :*/ setState(() {
+            : setState(() {
           isTextFieldEnabled = true;
           isButtonEnabled = true;
           buttonText = getTranslatedText("edit");
@@ -107,7 +107,7 @@ class _QQAccountState extends BaseState<QQAccount> {
             style: TextStyle(fontSize: 12.auto),
           ),
           Text(
-            /*EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : */getTranslatedText("here"),
+            EnvironmentConfig.brandName == "MESS8" ? getTranslatedText("online_cs") : getTranslatedText("here"),
             style: TextStyle(
                 decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
           ),
