@@ -61,145 +61,168 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getAppBarTitle() => (widget.brandLogoUrl?.isEmpty ?? true)
       ? Container()
       : Container(
-          height: 45,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: CachedNetworkImage(
-                  placeholder: (context, url) => Container(),
-                  imageUrl: widget.brandLogoUrl!,
-                  //handling error
-                  height: 30.auto,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.centerLeft,
-                  errorWidget: (context, url, error) => Container(),
-                ),
-              ),
-              Expanded(
-                  flex: EnvironmentConfig.brandName == "MESS8" ? 1 : 0,
-                  child: Visibility(
-                    visible: EnvironmentConfig.brandName == "MESS8",
-                    child: _getUserDetailsRow(),
-                  ))
-            ],
+    height: 45,
+    child: Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: CachedNetworkImage(
+            placeholder: (context, url) => Container(),
+            imageUrl: widget.brandLogoUrl!,
+            //handling error
+            height: 30.auto,
+            fit: BoxFit.cover,
+            alignment: Alignment.centerLeft,
+            errorWidget: (context, url, error) => Container(),
           ),
-        );
+        ),
+        Expanded(
+            flex: EnvironmentConfig.brandName == "MESS8" ? 1 : 0,
+            child: Visibility(
+              visible: EnvironmentConfig.brandName == "MESS8",
+              child: _getUserDetailsRow(),
+            ))
+      ],
+    ),
+  );
 
   List<Widget> _getActionButton() => widget.isLogin
-      ? [
-          _getUsernameText(),
-          _getLogoutButton(),
-        ]
+  ? [
+  _getUsernameText(),
+  _getLogoutButton(),
+  ]
       : [
-          _getLoginButton(),
-          _getRegisterButton(),
-        ];
+  _getLoginButton(),
+  _getRegisterButton(),
+  ];
 
   _getLoginButton() => Container(
-        padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: OutlineBorderButton(
-          title: getTranslatedText("login"),
-          onClick: () => widget.onClickLoginButton(),
-          isEnabled: true,
-          width: 60,
-          height: 17,
-          color: Colors.white,
-          fontSize: 14,
-          radius: 5,
-          padding: 4,
-        ),
-      );
+    padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
+    child: OutlineBorderButton(
+      title: getTranslatedText("login"),
+      onClick: () => widget.onClickLoginButton(),
+      isEnabled: true,
+      width: 60,
+      height: 17,
+      color: Colors.white,
+      fontSize: 14,
+      radius: 5,
+      padding: 4,
+    ),
+  );
 
   _getRegisterButton() => Container(
-        padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: ColorButton(
-          title: getTranslatedText("register"),
-          onClick: () => widget.onClickLoginButton(),
-          isEnabled: true,
-          width: 80,
-          height: 17,
-          color: Colors.white,
-          fontSize: 14,
-          radius: 5,
-          padding: 4,
-          textColor: CustomColor.theme_text_black_color,
-        ),
-      );
+    padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
+    child: ColorButton(
+      title: getTranslatedText("register"),
+      onClick: () => widget.onClickLoginButton(),
+      isEnabled: true,
+      width: 80,
+      height: 17,
+      color: Colors.white,
+      fontSize: 14,
+      radius: 5,
+      padding: 4,
+      textColor: CustomColor.theme_text_black_color,
+    ),
+  );
 
   _getLogoutButton() => Container(
-        padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: ColorButton(
-          title: getTranslatedText("logout"),
-          onClick: () => widget.onClickLogoutButton(),
-          isEnabled: true,
-          width: 60,
-          height: 17,
-          color: Colors.white,
-          fontSize: 14,
-          radius: 5,
-          padding: 4,
-          textColor: CustomColor.theme_text_black_color,
-        ),
-      );
+    padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
+    child: ColorButton(
+      title: getTranslatedText("logout"),
+      onClick: () => widget.onClickLogoutButton(),
+      isEnabled: true,
+      width: 60,
+      height: 17,
+      color: Colors.white,
+      fontSize: 14,
+      radius: 5,
+      padding: 4,
+      textColor: CustomColor.theme_text_black_color,
+    ),
+  );
 
   _getUsernameText() => Container(
-        alignment: Alignment.center,
-        child: AutoSizeText(
-          widget.userProfile?.username ?? "",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-          minFontSize: 10,
-          stepGranularity: 1,
-        ),
-      );
+    alignment: Alignment.center,
+    child: AutoSizeText(
+      widget.userProfile?.username ?? "",
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.left,
+      minFontSize: 10,
+      stepGranularity: 1,
+    ),
+  );
 
   _getUserDetailsRow() => Container(
-        margin: EdgeInsets.symmetric(vertical: 3.auto),
-        child: Row(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 3.auto),
-              child: Image.asset(
-                "images/home/ic_phone.png",
-                width: 10.auto,
-                height: 10.auto,
-              ),
-            ),
-            AutoSizeText(
-              widget.phone ?? "",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-              minFontSize: 5,
-              stepGranularity: 1,
-            ),
-            Visibility(
-              visible: widget.isLogin,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 3.auto),
-                child: Image.asset(
-                  "images/home/ic_vip.png",
-                  width: 10.auto,
-                  height: 10.auto,
-                ),
-              ),
-            ),
-            Visibility(
-              visible: widget.isLogin,
-              child: AutoSizeText(
-                "VIP ${widget.userProfile?.vipLevel ?? 0}",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-                minFontSize: 5,
-                stepGranularity: 1,
-              ),
-            ),
-          ],
+    margin: EdgeInsets.symmetric(vertical: 3.auto),
+    child: Row(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 3.auto),
+          child: Image.asset(
+            "images/home/ic_phone.png",
+            width: 10.auto,
+            height: 10.auto,
+          ),
         ),
-      );
+        AutoSizeText(
+          widget.phone ?? "",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.left,
+          minFontSize: 5,
+          stepGranularity: 1,
+        ),
+        Visibility(
+          visible: widget.isLogin,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 3.auto),
+            child: Image.asset(
+              "images/home/ic_vip.png",
+              width: 10.auto,
+              height: 10.auto,
+            ),
+          ),
+        ),
+        Visibility(
+          visible: widget.isLogin,
+          child: AutoSizeText(
+            _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
+            minFontSize: 5,
+            stepGranularity: 1,
+          ),
+        ),
+      ],
+    ),
+  );
 
   getTranslatedText(String? key) => LanguageProvider().getTranslated(context, key);
+
+  _getVipPresentText(int level){
+    if(EnvironmentConfig.vipPresentType == 2) {
+      switch (level) {
+        case 1:
+          return "VIP 1";
+        case 2:
+          return "Silver";
+        case 3:
+          return "Gold";
+        case 4:
+          return "Platinum";
+        case 5:
+          return "Diamond";
+        default:
+          return "";
+      }
+    }
+    else{
+      return "VIP $level";
+    }
+  }
 }
+
