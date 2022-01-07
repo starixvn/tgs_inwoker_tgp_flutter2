@@ -1,3 +1,4 @@
+
 import 'package:api/api.dart';
 import 'package:api/entity/language_option.dart';
 import 'package:api/entity/response/login_response.dart';
@@ -53,6 +54,8 @@ import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
