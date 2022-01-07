@@ -4,6 +4,7 @@ import 'package:api/entity/language_option.dart';
 import 'package:api/entity/response/login_response.dart';
 import 'package:api/network/event_result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
@@ -55,7 +56,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(MyApp());
 }
 
