@@ -265,7 +265,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       amount = int.parse(_amountController.text);
     } else
       amount = 0;
-    if (amount == 0 || amount > _vm.wallet.main || _payPasswordController.text.isEmpty) {
+    if (amount == 0 || amount > _vm.wallet.main) {
       setState(() {
         isNextButtonEnabled = false;
       });
