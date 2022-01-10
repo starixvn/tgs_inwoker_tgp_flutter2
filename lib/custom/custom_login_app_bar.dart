@@ -189,11 +189,23 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             ),
             Visibility(
               visible: widget.isLogin,
+
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 3.auto),
+                child: Image.asset(
+                  "images/home/ic_vip.png",
+                  width: 10.auto,
+                  height: 10.auto,
+                ),
+              ),
+            ),
+            Visibility(
+              visible: widget.isLogin,
               child: AutoSizeText(
-                "VIP ${widget.userProfile?.vipLevel ?? 0}",
+                _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
-                minFontSize: 10,
+                minFontSize: 5,
                 stepGranularity: 1,
               ),
             ),
@@ -202,4 +214,25 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   getTranslatedText(String? key) => LanguageProvider().getTranslated(context, key);
+
+  _getVipPresentText(int level) {
+    if (EnvironmentConfig.vipPresentType == 2) {
+      switch (level) {
+        case 1:
+          return "VIP 1";
+        case 2:
+          return "Silver";
+        case 3:
+          return "Gold";
+        case 4:
+          return "Platinum";
+        case 5:
+          return "Diamond";
+        default:
+          return "";
+      }
+    } else {
+      return "VIP $level";
+    }
+  }
 }

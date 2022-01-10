@@ -103,7 +103,7 @@ environment_config:
     default_lang:
       default: "zh-TW"
     vipPresentType:
-        type: int
-        default: 1
+      type: int
+      default: 1
 
 
