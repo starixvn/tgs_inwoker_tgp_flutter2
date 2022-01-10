@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -40,8 +41,9 @@ class _GameT3State extends BaseState<GameT3> {
   }
 
   List<dynamic>? _getGameTypeMap() {
-    if(_vm.gameTypeMap?.isEmpty??true) return null;
-    else{
+    if (_vm.gameTypeMap?.isEmpty ?? true)
+      return null;
+    else {
       if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
         return ([_vm.gameTypeMap![GameType.Sportsbook], _vm.gameTypeMap![GameType.ESports]].expand((x) => x!).toList());
       else
@@ -83,69 +85,87 @@ class _GameT3State extends BaseState<GameT3> {
     return imagePath;
   }
 
-  _buildImageLayout(GameProvider2 gameProvider) => GestureDetector(
-        onTap: () {
-          if (gameProvider.status != 0) {
-          } else
-            _onGameClick(gameProvider);
-        },
-        child: Stack(
-          children: [
-            AspectRatio(
+  _buildImageLayout(GameProvider2 gameProvider) {
+    var gamePlatformCode = gameProvider.code?.toLowerCase();
+
+    return GestureDetector(
+      onTap: () {
+        if (gameProvider.status != 0) {
+        } else
+          _onGameClick(gameProvider);
+      },
+      child: Stack(
+        children: [
+          AspectRatio(
+            aspectRatio: _imageRatio,
+            child: gameProvider.status != 0
+                ? ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      Colors.black,
+                      BlendMode.saturation,
+                    ),
+                    child: _buildImage(gameProvider))
+                : _buildImage(gameProvider),
+          ),
+          Positioned(
+            bottom: context.screenWidth / 15,
+            left: context.screenWidth / 6,
+            child: Column(
+              children: [
+                (EnvironmentConfig.brandName == "MGM" && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia"))
+                    ? Container(
+                        width: 74.auto,
+                        margin: EdgeInsets.only(bottom: 15.auto),
+                        child: Text(
+                          getTranslatedText("sports_$gamePlatformCode"),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : Container(),
+                gameProvider.status != 0
+                    ? ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          Colors.black,
+                          BlendMode.saturation,
+                        ),
+                        child: _buildStartGameButton())
+                    : _buildStartGameButton(),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: gameProvider.status != 0,
+            child: AspectRatio(
               aspectRatio: _imageRatio,
-              child: gameProvider.status != 0
-                  ? ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black,
-                        BlendMode.saturation,
-                      ),
-                      child: _buildImage(gameProvider))
-                  : _buildImage(gameProvider),
-            ),
-            Positioned(
-              bottom: context.screenWidth / 15,
-              left: context.screenWidth / 6,
-              child:  gameProvider.status != 0
-                  ? ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black,
-                    BlendMode.saturation,
-                  ),
-                  child: _buildStartGameButton())
-                  :_buildStartGameButton(),
-            ),
-            Visibility(
-              visible: gameProvider.status != 0,
-              child: AspectRatio(
-                aspectRatio: _imageRatio,
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
-                  child: Center(
-                    child: Text(getTranslatedText("maintenance"),
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
-                  ),
+              child: Container(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+                child: Center(
+                  child: Text(getTranslatedText("maintenance"),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
                 ),
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   _buildStartGameButton() => Container(
-    width: 74.auto,
-    alignment: Alignment.center,
-    padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-    decoration:
-    BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
-    child: Text(
-      getTranslatedText("start_game"),
-      style: TextStyle(
-        fontSize: 10.auto,
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
+        width: 74.auto,
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
+        child: Text(
+          getTranslatedText("start_game"),
+          style: TextStyle(
+            fontSize: 10.auto,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
 
   _buildImage(GameProvider2 gameProvider) => ClipRRect(
       borderRadius: BorderRadius.circular(8.0),

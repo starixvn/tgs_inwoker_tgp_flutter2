@@ -134,7 +134,7 @@ class _GameWebState extends BaseState<GameWeb> {
               urlRequest: widget.gamePlatformCode == "BC"
                   ? //bet construct only
               URLRequest(
-                  url: Uri.parse(/*widget.gamePlatformCode == "BC" ? apiUrl : */ _getValidUrl(_vm.url!)),
+                  url: Uri.parse(apiUrl),
                   headers: {
                     "Authentication": "bearer " + prefs.getString("auth_token")!,
                     "token": prefs.getString("token")!

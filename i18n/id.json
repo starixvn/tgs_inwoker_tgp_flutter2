@@ -985,5 +985,7 @@
   "enter_doc_no_hint": "Silakan masukkan nomor dokumen",
   "input_length_error": "Panjang input bidang harus kurang dari 256 bit",
   "full_name": "Nama Lengkap",
-  "enter_full_name_hint": "Masukkan Nama Lengkap"
+  "enter_full_name_hint": "Masukkan Nama Lengkap",
+  "sports_wgvia": "Balap kuda",
+  "sports_wgfm": "Olahraga"
 }

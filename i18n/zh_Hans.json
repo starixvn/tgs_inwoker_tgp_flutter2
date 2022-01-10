@@ -984,5 +984,7 @@
   "enter_doc_no_hint": "请输入文件号码",
   "input_length_error": "栏位输入长度必须少于256位",
   "full_name": "全名",
-  "enter_full_name_hint": "请输入全名"
+  "enter_full_name_hint": "请输入全名",
+  "sports_wgvia": "赛马",
+  "sports_wgfm": "体育"
 }

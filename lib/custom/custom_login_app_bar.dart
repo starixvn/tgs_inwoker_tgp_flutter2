@@ -189,18 +189,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             ),
             Visibility(
               visible: widget.isLogin,
-
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 3.auto),
-                child: Image.asset(
-                  "images/home/ic_vip.png",
-                  width: 10.auto,
-                  height: 10.auto,
-                ),
-              ),
-            ),
-            Visibility(
-              visible: widget.isLogin,
               child: AutoSizeText(
                 _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

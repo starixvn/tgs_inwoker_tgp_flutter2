@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -12,7 +13,7 @@ class GameItemT2 extends StatefulWidget {
   final Function(GameProvider2)? onGameClick;
   final GameType? currGameType;
 
-  GameItemT2({this.gameProviderList, this.onGameClick, this.currGameType, this.controller}) ;
+  GameItemT2({this.gameProviderList, this.onGameClick, this.currGameType, this.controller});
 
   @override
   GameItemT2State createState() => GameItemT2State();
@@ -31,6 +32,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
       context.size!.width - _containerPaddingRight - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
 
   double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;
+
   //ScrollController? controller;
 
   @override
@@ -55,64 +57,80 @@ class GameItemT2State extends BaseState<GameItemT2> {
     return imagePath;
   }
 
-  _buildImageLayout(GameProvider2 gameProvider) => GestureDetector(
-        onTap: () {
-          if (gameProvider.status != 0) {
-          } else
-            widget.onGameClick!(gameProvider);
-        },
-        child: Stack(
-          children: [
-            AspectRatio(
-              aspectRatio: _imageRatio,
-              child: gameProvider.status != 0
-                  ? ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black,
-                        BlendMode.saturation,
-                      ),
-                      child: _buildImage(gameProvider))
-                  : _buildImage(gameProvider),
-            ),
-            Positioned(
-              bottom: context.screenWidth / 30,
-              left: context.screenWidth / 12,
-              child: Container(
-                width: 74.auto,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration:
-                    BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: AutoSizeText(
-                    getTranslatedText("start_game"),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+  _buildImageLayout(GameProvider2 gameProvider) {
+    var gamePlatformCode = gameProvider.code?.toLowerCase();
+    return GestureDetector(
+      onTap: () {
+        if (gameProvider.status != 0) {
+        } else
+          widget.onGameClick!(gameProvider);
+      },
+      child: Stack(
+        children: [
+          AspectRatio(
+            aspectRatio: _imageRatio,
+            child: gameProvider.status != 0
+                ? ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      Colors.black,
+                      BlendMode.saturation,
                     ),
-                    minFontSize: 5,
-                    maxFontSize: 11,
-                    stepGranularity: 1,
+                    child: _buildImage(gameProvider))
+                : _buildImage(gameProvider),
+          ),
+          Positioned(
+            bottom: context.screenWidth / 30,
+            left: context.screenWidth / 12,
+            child: Column(
+              children: [
+                (EnvironmentConfig.brandName == "MGM" && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia"))
+                    ? Container(
+                        width: 74.auto,
+                        margin: EdgeInsets.only(bottom: 15.auto),
+                        child: Text(
+                          getTranslatedText("sports_$gamePlatformCode"),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : Container(),
+                Container(
+                  width: 74.auto,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration:
+                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: AutoSizeText(
+                      getTranslatedText("start_game"),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      minFontSize: 5,
+                      maxFontSize: 8,
+                      stepGranularity: 1,
+                    ),
                   ),
+                ),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: gameProvider.status != 0,
+            child: AspectRatio(
+              aspectRatio: _imageRatio,
+              child: Container(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+                child: Center(
+                  child: Text(getTranslatedText("maintenance"),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
                 ),
               ),
             ),
-            Visibility(
-              visible: gameProvider.status != 0,
-              child: AspectRatio(
-                aspectRatio: _imageRatio,
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
-                  child: Center(
-                    child: Text(getTranslatedText("maintenance"),
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   _buildImage(GameProvider2 gameProvider) => Container(
       alignment: Alignment.center,

@@ -984,5 +984,7 @@
   "enter_doc_no_hint": "กรุณากรอกหมายเลขเอกสาร",
   "input_length_error": "ความยาวอินพุตของฟิลด์ต้องน้อยกว่า 256 บิต",
   "full_name": "ชื่อเต็ม",
-  "enter_full_name_hint": "ป้อนชื่อเต็ม"
+  "enter_full_name_hint": "ป้อนชื่อเต็ม",
+  "sports_wgvia": "แข่งม้า",
+  "sports_wgfm": "กีฬา"
 }

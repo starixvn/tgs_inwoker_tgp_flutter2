@@ -94,7 +94,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
               ),
               Text(
                 getTranslatedText("online_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color, decoration: TextDecoration.underline,),
               )
             ],
           ),

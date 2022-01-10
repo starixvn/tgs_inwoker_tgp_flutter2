@@ -985,5 +985,7 @@
   "enter_doc_no_hint": "請輸入文件號碼",
   "input_length_error": "欄位輸入長度必須少於256位",
   "full_name": "全名",
-  "enter_full_name_hint": "請輸入全名"
+  "enter_full_name_hint": "請輸入全名",
+  "sports_wgvia": "賽馬",
+  "sports_wgfm": "體育"
 }
