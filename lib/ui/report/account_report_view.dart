@@ -43,7 +43,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return BaseReport(
-            transactionHeaderList: ["bet_time", "bet_platform", "game", "bet_amount", "win_loss"],
+            transactionHeaderList: ["bet_time", "bet_platform", "game", "bet_amount", "valid_bet_amount", "win_loss"],
             getPickerBox: Container(),
             filterIndex: filterIndex,
             expandedHeight: 170,
@@ -76,10 +76,11 @@ class AccountReportViewState extends BaseState<AccountReportView> {
               list: [
                 _vm.accountReportList![index].id,
                 "",
-                Format().dateTimeFormat(_vm.accountReportList![index].createdOn),
+                Format().dateTimezoneFormat(_vm.accountReportList![index].createdOn),
                 _vm.accountReportList![index].gameProviderName,
                 _vm.accountReportList![index].gameName,
                 _vm.accountReportList![index].betAmount.toString(),
+                _vm.accountReportList![index].validBetAmount.toString(),
                 _vm.accountReportList![index].winLoss.toString(),
               ],
               type: _getReportItemType(index),

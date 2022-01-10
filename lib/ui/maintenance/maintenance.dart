@@ -146,7 +146,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
           );
         },
         isEnabled: true,
-        radius: 20,
+        radius: 5,
         height: 44.5,
         width: context.screenWidth / 3.5,
         padding: 5.auto,
