@@ -25,7 +25,22 @@ class ReportViewModel extends BaseViewModel {
   List<TransferReport>? transferReportList;
   List<PromotionReport>? promotionReportList;
   var endRecord = false;
-  var statusList = Status.values;
+  var depositStatusList = [
+    Status.All,
+    Status.Review,
+    Status.WaitingPayment,
+    Status.Approved,
+    Status.Rejected
+  ];
+
+  var withdrawalStatusList = [
+    Status.All,
+    Status.Review,
+    Status.WaitingPaid,
+    Status.Paid,
+    Status.Rejected
+  ];
+  
   var pStatus = Status.All;
   var paymentId;
 
