@@ -204,7 +204,7 @@ class _GameWebState extends BaseState<GameWeb> {
       if (isLoading) {
         isLoading = !isLoading;
       }
-      url = _vm.lobbyUrl;
+      url = _vm.url;
     });
   }
 }

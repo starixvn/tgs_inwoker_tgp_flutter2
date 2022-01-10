@@ -35,7 +35,7 @@ class GameViewModel extends BaseViewModel {
   List<List<GameProvider2>>? gameProviderList;
   List<GameType> gameTypeList = [
     GameType.Sportsbook,
-    // GameType.ESports,
+    //GameType.ESports,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
     GameType.Fishing,
@@ -72,8 +72,10 @@ class GameViewModel extends BaseViewModel {
     });
     gameProviderList = gameTypeList
         .map(
-          (type) => list.where((element) => element.gameType == type).toList(),
-        )
+          (type) => list.where((element) => (type == GameType.Sportsbook) //combine eesport to sportbook
+          ? (element.gameType == type || element.gameType == GameType.ESports)
+          : element.gameType == type).toList(),
+    )
         .toList();
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
     setLoading(false);
@@ -153,18 +155,18 @@ class GameViewModel extends BaseViewModel {
   List<Game> _filterCategory(List<Game> gameList) {
     switch (mCategory) {
       case 0:
-        //all game list
+      //all game list
         return gameList;
       case 1:
-        //new game list
+      //new game list
         var list = gameList.where((element) => element.tag?.isNew == true).toList();
         return list;
       case 2:
-        //hot game list
+      //hot game list
         var list = gameList.where((element) => element.tag?.isHot == true).toList();
         return list;
       case 3:
-        //favorite game list
+      //favorite game list
         var list = gameList.where((element) => element.isFavourite == true).toList();
         return list;
       default:
@@ -223,11 +225,11 @@ class GameViewModel extends BaseViewModel {
     if (getFavouriteGameApiState.isSuccess) {
       List list = getFavouriteGameApiState.result;
       gameListMap.values.forEach((gameList) => gameList.map((game) {
-            game.isFavourite = false;
-            list.forEach((id) {
-              if (game.id == id) game.isFavourite = true;
-            });
-          }).toList());
+        game.isFavourite = false;
+        list.forEach((id) {
+          if (game.id == id) game.isFavourite = true;
+        });
+      }).toList());
     }
     setLoading(false);
     return getFavouriteGameApiState;

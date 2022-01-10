@@ -102,3 +102,6 @@ environment_config:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     brandName:
       default: "HKJP"
+    vipPresentType:
+      type: int
+      default: 1

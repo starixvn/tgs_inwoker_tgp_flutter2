@@ -102,5 +102,8 @@ environment_config:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     default_lang:
       default: "vi-VN"
+    vipPresentType:
+      type: int
+      default: 2
 
 
