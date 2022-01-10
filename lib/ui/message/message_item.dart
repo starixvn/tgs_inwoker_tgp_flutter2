@@ -64,7 +64,7 @@ class _MessageItemState extends BaseState<MessageItem> {
   }
 
   _messageDot() => Visibility(
-    visible: !(widget.message.isRead ?? true),
+        visible: !(widget.message.isRead ?? true),
         child: Container(
           width: 8.auto,
           height: 8.auto,
@@ -79,7 +79,7 @@ class _MessageItemState extends BaseState<MessageItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              (widget.message.localization?.subject) ?? widget.message.subject ?? "",
+              _getMessageSubject(),
               style: TextStyle(fontSize: 15.auto),
             ),
             Container(
@@ -93,6 +93,7 @@ class _MessageItemState extends BaseState<MessageItem> {
         ),
       );
 
+
   _messageContent() => Column(
         children: [
           Divider(
@@ -102,7 +103,7 @@ class _MessageItemState extends BaseState<MessageItem> {
           Container(
             width: context.screenWidth,
             child: Text(
-              parseHtmlString(widget.message.localization?.content?? ""),
+              parseHtmlString(_getMessageContent()),
               //overflow: TextOverflow.ellipsis,
               maxLines: 1,
               //softWrap: false,
@@ -112,4 +113,20 @@ class _MessageItemState extends BaseState<MessageItem> {
           ),
         ],
       );
+
+
+  _getMessageSubject() {
+    if ((widget.message.localization?.subject?.isNotEmpty) ?? false)
+      return widget.message.localization?.subject;
+    else
+      return widget.message.subject ?? "";
+  }
+
+  _getMessageContent() {
+    if (widget.message.localization?.content?.isNotEmpty ?? false)
+      return widget.message.localization?.content;
+    else
+      return widget.message.content ?? "";
+  }
 }
+

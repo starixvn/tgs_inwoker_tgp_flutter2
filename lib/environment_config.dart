@@ -71,4 +71,8 @@ class EnvironmentConfig {
   static const String brandName = 'GPI';
 
   static const int vipPresentType = 1;
+
+  static const bool isShowPhoneNumber = false;
+
+  static const bool isShowVipInHome = false;
 }

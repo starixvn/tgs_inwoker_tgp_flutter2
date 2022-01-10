@@ -102,7 +102,7 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
       });
 
-  _buildChannelPicker() =>  CustomPicker(
+  _buildChannelPicker() => CustomPicker(
       title: "channel",
       displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
       list: _vm.withdrawalInfoList,
@@ -167,7 +167,7 @@ class _AddCardState extends BaseState<AddCard> {
           _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
           Visibility(
             visible: EnvironmentConfig.isShowBankBranch,
-            child:_buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
+            child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
           _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
@@ -269,12 +269,12 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   onSelectedBankType({BankType? bankType}) async {
-    if (bankType == null) bankType = _vm.pBankType;
     await _vm.onSelectedBankType(bankType);
+    BankType _currentBankType = bankType ?? _vm.pBankType!;
     onSelectedWithdrawalInfo();
     setState(() {
-      isCrypto = bankType == BankType.CRYPTO;
-      bankTypePickerText = bankType!.getName(context);
+      isCrypto = _currentBankType == BankType.CRYPTO;
+      bankTypePickerText = _currentBankType.getName(context);
     });
   }
 

@@ -80,11 +80,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ),
               Expanded(
-                  flex: EnvironmentConfig.brandName == "MESS8" ? 1 : 0,
-                  child: Visibility(
-                    visible: EnvironmentConfig.brandName == "MESS8",
-                    child: _getUserDetailsRow(),
-                  ))
+                flex: 1,
+                child: _getUserDetailsRow(),
+              )
             ],
           ),
         );
@@ -160,6 +158,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getUserDetailsRow() => Container(
         margin: EdgeInsets.symmetric(vertical: 3.auto),
         child: Row(
+          children: [_getPhoneText(), _getVipText()],
+        ),
+      );
+
+  _getPhoneText() => Visibility(
+        visible: EnvironmentConfig.isShowPhoneNumber,
+        child: Row(
           children: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 3.auto),
@@ -176,6 +181,14 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               minFontSize: 10,
               stepGranularity: 1,
             ),
+          ],
+        ),
+      );
+
+  _getVipText() => Visibility(
+        visible: EnvironmentConfig.isShowVipInHome,
+        child: Row(
+          children: [
             Visibility(
               visible: widget.isLogin,
               child: Container(

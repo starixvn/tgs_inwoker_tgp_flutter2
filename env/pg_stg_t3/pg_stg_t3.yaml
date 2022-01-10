@@ -109,3 +109,9 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
+    isShowPhoneNumber:
+      type: bool
+      default: false
+    isShowVipInHome:
+      type: bool
+      default: false

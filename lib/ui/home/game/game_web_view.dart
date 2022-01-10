@@ -119,48 +119,46 @@ class _GameWebState extends BaseState<GameWeb> {
             hidden: true,
           )
         : */
-      InAppWebView(
-        initialOptions: InAppWebViewGroupOptions(
-            crossPlatform: InAppWebViewOptions(javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
-            android: AndroidInAppWebViewOptions(
-              useWideViewPort: true,
-              domStorageEnabled: true,
-              mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-            ),
-            ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true)),
-        onWebViewCreated: (InAppWebViewController controller) {
-          _webViewController = controller;
-          _webViewController!.loadUrl(
-              urlRequest: widget.gamePlatformCode == "BC"
-                  ? //bet construct only
-              URLRequest(
-                  url: Uri.parse(apiUrl),
-                  headers: {
+        InAppWebView(
+      initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
+          android: AndroidInAppWebViewOptions(
+            useWideViewPort: true,
+            domStorageEnabled: true,
+            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+          ),
+          ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true)),
+      onWebViewCreated: (InAppWebViewController controller) {
+        _webViewController = controller;
+        _webViewController!.loadUrl(
+            urlRequest: widget.gamePlatformCode == "BC"
+                ? //bet construct only
+                URLRequest(url: Uri.parse(apiUrl), headers: {
                     "Authentication": "bearer " + prefs.getString("auth_token")!,
                     "token": prefs.getString("token")!
                   })
-                  : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
-        },
-        onExitFullscreen: (InAppWebViewController controller) {
-          Navigator.pop(
-            context,
+                : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
+      },
+      onExitFullscreen: (InAppWebViewController controller) {
+        Navigator.pop(
+          context,
+        );
+      },
+      onLoadStart: (controller, url) {},
+      onLoadStop: (controller, url) async {},
+      shouldOverrideUrlLoading: (controller, navigationAction) async {
+        var uri = navigationAction.request.url;
+        if (uri == Uri.parse(lobbyUrl!)) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => LeaveGameDialog(),
           );
-        },
-        onLoadStart: (controller, url) {},
-        onLoadStop: (controller, url) async {},
-        shouldOverrideUrlLoading: (controller, navigationAction) async {
-          var uri = navigationAction.request.url;
-          if (uri == Uri.parse(lobbyUrl!)) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => LeaveGameDialog(),
-            );
-            return NavigationActionPolicy.CANCEL;
-          } else {
-            return NavigationActionPolicy.ALLOW;
-          }
-        },
-      );
+          return NavigationActionPolicy.CANCEL;
+        } else {
+          return NavigationActionPolicy.ALLOW;
+        }
+      },
+    );
   }
 
   _getValidUrl(String? url) {
