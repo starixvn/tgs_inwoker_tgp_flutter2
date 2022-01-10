@@ -49,6 +49,7 @@
     <array>
       <string>https</string>
       <string>http</string>
+	  <string>whatsapp</string>
     </array>
 </dict>
 </plist>
