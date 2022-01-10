@@ -98,11 +98,11 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
           CustomPicker(
               title: "status",
               displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
-              list: _vm.statusList,
+              list: _vm.withdrawalStatusList,
               isHintText: false,
               width: context.screenWidth - 70.auto,
               onClick: () {
-                _buildPickerDialog("status", _vm.statusList);
+                _buildPickerDialog("status", _vm.withdrawalStatusList);
               }),
         ],
       ),

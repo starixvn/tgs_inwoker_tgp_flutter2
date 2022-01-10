@@ -117,11 +117,11 @@ class DepositReportViewState extends BaseState<DepositReportView> {
           CustomPicker(
               title: "status",
               displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
-              list: _vm.statusList,
+              list: _vm.depositStatusList,
               isHintText: false,
               width: context.screenWidth - 70.auto,
               onClick: () {
-                _buildPickerDialog("status", _vm.statusList);
+                _buildPickerDialog("status", _vm.depositStatusList);
               }),
         ],
       ),
