@@ -56,7 +56,6 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(image: _getCsBgImage()),
                           child: Column(children: [
-
                             buildLiveChatRow(),
                             Column(
                               children: List.generate(_vm.communicationList!.length, (index) {
@@ -69,32 +68,34 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                             )
                           ]),
                         ),
-                        Positioned(
-                          top: context.screenWidth/2.1,
-                          right: context.screenWidth/10,
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
-                                child: SvgPicture.asset(
-                                  "images/support/ic_phone.svg",
-                                  matchTextDirection: true,
-                                  height: 20.auto,
-                                  color: Color(0xfffD18206),
+                        Visibility(
+                          visible: EnvironmentConfig.isShowPhoneNumber,
+                          child: Positioned(
+                            top: context.screenWidth / 2.1,
+                            right: context.screenWidth / 10,
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                                  child: SvgPicture.asset(
+                                    "images/support/ic_phone.svg",
+                                    matchTextDirection: true,
+                                    height: 20.auto,
+                                    color: Color(0xfffD18206),
+                                  ),
                                 ),
-                              ),
-                              AutoSizeText(
-                                _vm.phone ?? "",
-                                style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                                minFontSize: 5,
-                                stepGranularity: 1,
-                              ),
-                            ],
+                                AutoSizeText(
+                                  _vm.phone ?? "",
+                                  style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                  minFontSize: 5,
+                                  stepGranularity: 1,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
-
                     ));
         });
   }
