@@ -30,59 +30,63 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
         child: _dialogContent());
   }
 
-  _dialogContent() => Wrap(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: CustomColor.theme_button_color,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10),
-                  )),
-              padding: EdgeInsets.symmetric(horizontal: 10.auto),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Instant Messaging",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
+  _dialogContent() => Container(
+    height: context.screenWidth +100.auto,
+    alignment: Alignment.center,
+    child: Column(
+          children: [
+            Flexible(
+              flex: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: CustomColor.theme_button_color,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(10),
+                    )),
+                padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Instant Messaging",
+                      style: TextStyle(color: Colors.white),
                     ),
-                  )
-                ],
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 19,
-            child: GridView.count(
-              padding: EdgeInsets.all(10.auto),
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: AlwaysScrollableScrollPhysics(),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              children: List.generate(widget.communicationList!.length, (index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: _buildCSRow(widget.communicationList![index].type, "cs_join", "cs_qr_code",
-                      "support-" + widget.communicationList![index].type!.toLowerCase(),
-                      qrCode: widget.communicationList![index]),
-                );
-              }),
+            Flexible(
+              flex: 19,
+              child: GridView.count(
+                padding: EdgeInsets.all(10.auto),
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: List.generate(widget.communicationList!.length, (index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: _buildCSRow(widget.communicationList![index].type, "cs_join", "cs_qr_code",
+                        "support-" + widget.communicationList![index].type!.toLowerCase(),
+                        qrCode: widget.communicationList![index]),
+                  );
+                }),
+              ),
             ),
-          ),
-        ],
-      );
+          ],
+        ),
+  );
 
   _buildCSRow(String? title, String text, String routePath, String imagePath, {BrandCommunication? qrCode}) => InkWell(
         onTap: () {

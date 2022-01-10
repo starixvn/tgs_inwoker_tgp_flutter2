@@ -159,6 +159,7 @@
   "upload_prof_hint": "Please upload receipt in order to proceed",
   "trade_order_no": "Order Number",
   "bet_amount": "Bet Amount",
+  "valid_bet_amount": "Valid Bet Amount",
   "bet_time": "Bet Time",
   "wallet": "Wallet",
   "rebate_history": "Rebate",

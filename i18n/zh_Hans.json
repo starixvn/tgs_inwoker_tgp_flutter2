@@ -158,6 +158,7 @@
   "upload_prof_hint": "请完成转账后立即上传凭证以便后台核实",
   "trade_order_no": "订单号",
   "bet_amount": "投注金额",
+  "valid_bet_amount": "有效投注",
   "bet_time": "投注时间",
   "wallet": "钱包",
   "rebate_history": "返水记录",

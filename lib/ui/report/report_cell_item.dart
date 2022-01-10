@@ -157,7 +157,11 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
                           margin: EdgeInsets.symmetric(horizontal: 2.auto),
                           child: AutoSizeText(
                             widget.list[index] ?? "",
-                            style: TextStyle(color: widget.list[index].contains("-") ? Colors.red : Colors.green),
+                            style: TextStyle(
+                                color: (widget.list[index] == null|| widget.list[index]=="null")
+                                //if is null display black
+                                    ? Colors.grey[700]
+                                    : (widget.list[index].contains("-") ? Colors.red : Colors.green)),
                             textAlign: index == 1 ? TextAlign.start : TextAlign.center,
                             minFontSize: 5,
                             maxFontSize: 12,
@@ -165,7 +169,7 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
                           ),
                         ),
                       );
-                    }else
+                    } else
                       return Expanded(
                         //first header (time) flex number is 2, others will be 1
                         flex: 2,

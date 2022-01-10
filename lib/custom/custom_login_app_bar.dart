@@ -32,7 +32,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(55);
+  Size get preferredSize => const Size.fromHeight(60);
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
@@ -61,7 +61,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getAppBarTitle() => (widget.brandLogoUrl?.isEmpty ?? true)
       ? Container()
       : Container(
-          height: 45,
+          height: 50,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -173,7 +173,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               widget.phone ?? "",
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
-              minFontSize: 5,
+              minFontSize: 10,
               stepGranularity: 1,
             ),
             Visibility(
@@ -193,7 +193,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 "VIP ${widget.userProfile?.vipLevel ?? 0}",
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
-                minFontSize: 5,
+                minFontSize: 10,
                 stepGranularity: 1,
               ),
             ),
