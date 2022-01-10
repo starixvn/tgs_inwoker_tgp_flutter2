@@ -112,7 +112,7 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("channel", _vm.withdrawalInfoList!);
       });
 
-  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CustomTextFormField(
+  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CardTextFormField(
         title: getTranslatedText(title),
         hintText: getTranslatedText(hint),
         onChanged: (value) => _onTextChange(value),
