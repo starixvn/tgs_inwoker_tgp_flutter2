@@ -23,10 +23,11 @@ class CustomerServiceViewModel extends BaseViewModel {
     getBrandCommunicationApiState = await userRepo.getBrandCommunication();
     if (getBrandCommunicationApiState.isSuccess) {
       communicationList = getBrandCommunicationApiState.result;
-      if(communicationList != null && communicationList!.length > 0)
+      if (communicationList != null && communicationList!.length > 0)
         phone = communicationList?.first.phone;
     }
     setLoading(false);
+    print("cjeckcommniuiica: $communicationList");
     return getBrandCommunicationApiState;
   }
 
@@ -35,7 +36,11 @@ class CustomerServiceViewModel extends BaseViewModel {
     getLiveChatUrlApiState = await userRepo.getLiveChatUrl();
     if (getLiveChatUrlApiState.isSuccess) {
       List<String> pattern = ["{name}", "{email}", "{lang}"]; //ABV list
-      List<String> replace = [userProfile?.username ?? "", userProfile?.email ?? "", languageCode]; //corresponding list
+      List<String> replace = [
+        userProfile?.username ?? "",
+        userProfile?.email ?? "",
+        languageCode
+      ]; //corresponding list
       Map<String, String> map = Map.fromIterables(pattern, replace);
       liveChatUrl = getLiveChatUrlApiState.result?.setting?.url;
       //  map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev!.replaceAll(e.key, e.value));
