@@ -93,7 +93,6 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildUploadImageColumn(),
-
                 _buildButton(),
               ],
             ),
@@ -211,7 +210,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       ),
       child: ColorButton(
         onClick: () => _onClick(),
-        title: getTranslatedText("next"),
+        title: getTranslatedText("submit"),
         color: CustomColor.theme_button_color,
         radius: 9.6,
         isEnabled: isButtonEnabled,
@@ -275,8 +274,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             uploadImage == null
                 ? Container()
                 : Container(
-              padding: EdgeInsets.all(10.auto),
-                    alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+                    padding: EdgeInsets.all(10.auto),
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(height: 80, child: Image.file(uploadImage!))),
           ],
         ),
       );
@@ -335,6 +335,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       setState(() {
         uploadImage = imageFile;
       });
+      onTextChange();
     }
   }
 
@@ -355,13 +356,21 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     if (_isManualDeposit() &&
         EnvironmentConfig.isShowBankAcc &&
         _bankNameController.text.isNotEmpty &&
-        uploadImage?.path !=null &&
+        uploadImage?.path != null &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
       setState(() {
         isButtonEnabled = true;
       });
-    } else if (amount! >= paymentMin && amount! <= paymentMax) {
+    } else if (_isManualDeposit() &&
+        !EnvironmentConfig.isShowBankAcc &&
+        uploadImage?.path != null &&
+        amount! >= paymentMin &&
+        amount! <= paymentMax) {
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else if (!_isManualDeposit() && amount! >= paymentMin && amount! <= paymentMax) {
       setState(() {
         isButtonEnabled = true;
       });
@@ -376,8 +385,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context, _vm.brandLogoUrl);
     switch (widget.paymentCode) {
       case "Manual":
-        _vm.getManualDepositId(
-            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId??null, uploadImage!.path);
+        _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
+            promotionId ?? null, uploadImage!.path);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(
@@ -402,8 +411,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         _vm.skyPayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
         break;
       default:
-        _vm.getManualDepositId(
-            currBankType, _bankNameController.text, _amountController.text, _payment!.id, promotionId ?? null, uploadImage!.path);
+        _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
+            promotionId ?? null, uploadImage!.path);
         break;
     }
   }
@@ -455,7 +464,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       _transferNameController.clear();
       promotionId = null;
       isButtonEnabled = false;
-      uploadImage =null;
+      uploadImage = null;
     });
   }
 
@@ -480,6 +489,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
     handleApiState(_vm.getManualDepositIdApiState, isRequireResult: true, onSuccess: (result) {
       paymentChannelId = result;
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        ProgressDialog.show(context, _vm.brandLogoUrl);
+      });
     });
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
