@@ -62,7 +62,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             },
             scrollController: _scrollController,
             refreshController: _refreshController,
-            list: _vm.accountReportList ??[],
+            list: _vm.reportList ??[],
             displayItemList: _getList(),
             isUploadButton: true,
             url: _vm.brandLogoUrl,
@@ -95,12 +95,12 @@ class DepositReportViewState extends BaseState<DepositReportView> {
 
 
   _getReportItemType(int index) {
-    if (_vm.accountReportList!.length == 1) {
+    if (_vm.reportList!.length == 1) {
       return ReportCellItemType.SINGLE;
     } else {
       if (index == 0) {
         return ReportCellItemType.TOP;
-      } else if (index == _vm.accountReportList!.length - 1) {
+      } else if (index == _vm.reportList!.length - 1) {
         return ReportCellItemType.BOTTOM;
       } else {
         return ReportCellItemType.CENTER;
