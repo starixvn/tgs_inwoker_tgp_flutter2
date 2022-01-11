@@ -22,7 +22,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   get apiError => userRepo.apiError;
 
-  getTranslatedText(String? key) => LanguageProvider().getTranslated(context, key);
+  getTranslatedText(String? key) => LanguageProvider.getSingleton().getTranslated(context, key);
 
   handleApiState(
     EventResult? eventResult, {
@@ -163,7 +163,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   }
 
   getCurrentLanguage() {
-    var list = LanguageProvider().list;
+    var list = LanguageProvider.getSingleton().list;
     Language? deviceLanguage;
     if (list.length == 1) {
       return list.first;

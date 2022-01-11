@@ -1,4 +1,3 @@
-
 import 'package:api/api.dart';
 import 'package:api/entity/language_option.dart';
 import 'package:api/entity/response/login_response.dart';
@@ -88,17 +87,28 @@ class _MyAppState extends BaseState<MyApp> {
   }
 
   _getLocale() {
-    LanguageProvider().getLocale().then((locale) {
+    LanguageProvider.getSingleton().refreshLangList();
+    LanguageProvider.getSingleton().getLocale().then((locale) {
       setState(() {
         this._locale = locale;
       });
     });
   }
 
-  Future<EventResult<List<LanguageOption>>> initData() async {
+  Future<EventResult<dynamic>> initData() async {
     if (firstInit) {
-      await _vm.getVersion();
+      if (_vm.authApiState?.isMaintenance == true) {
+        //prevent loop
+        return _vm.authApiState; //return if maintenance
+      }
+
       await _vm.getAuthToken();
+      //_vm.authApiState.isMaintenance = true;
+      if (_vm.authApiState.isMaintenance) {
+        _getLocale(); //temp for localization for mainteance page
+        return _vm.authApiState; //return if maintenance
+      }
+      await _vm.getVersion();
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
@@ -108,7 +118,7 @@ class _MyAppState extends BaseState<MyApp> {
         firstInit = false;
       });
       _getLocale();
-      langList = LanguageProvider().list.map((e) => e.locale).toList();
+      langList = LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
       return _vm.getLanguageApiState;
     } else
       return EventResult.loading();
@@ -126,103 +136,82 @@ class _MyAppState extends BaseState<MyApp> {
   Widget build(BuildContext context) {
     _handleApiState();
     return FutureBuilder(
-        future: initAuthToken(),
-        builder: (BuildContext context, AsyncSnapshot<EventResult<LoginResponse>> snapshot) {
+        future: initData(),
+        builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
           if (!snapshot.hasData) {
             return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
-          } else if (snapshot.data!.isMaintenance) {
-            return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                home: Maintenance(
-                  isShowsAppBar: false,
-                  isShowCS: true,
-                ));
           } else {
-            return FutureBuilder(
-                future: initData(),
-                builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
-                  if (!snapshot.hasData) {
-                    return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
-                  } else if (snapshot.data!.isMaintenance) {
-                    return MaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        home: Maintenance(isShowCS: true),
-                        title: appTitle,
-                        initialRoute: '/',
-                        routes: {
-                          RoutePath.csWebView: (context) => CustomerServiceWebView(),
-                        });
-                  } else {
-                    return GestureDetector(
-                      onTap: () {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-                          currentFocus.focusedChild!.unfocus();
-                        }
-                      },
-                      child: MaterialApp(
-                        debugShowCheckedModeBanner: false,
-                        title: appTitle,
-                        initialRoute: '/',
-                        routes: {
-                          RoutePath.empty: (context) => MyHomePage(),
-                          RoutePath.empty: (context) => MyHomePage(
-                                versionUpdate: _vm.versionUpdateState,
-                              ),
-                          RoutePath.myHome: (context) => MyHomePage(),
-                          RoutePath.profile: (context) => Profile(),
-                          RoutePath.csWebView: (context) => CustomerServiceWebView(),
-                          RoutePath.customerService: (context) => CustomerService(),
-                          RoutePath.transaction: (context) => ReportView(),
-                          RoutePath.login: (context) => Login(),
-                          RoutePath.forgotPassword: (context) => ForgotPassword(),
-                          RoutePath.maintenance: (context) => Maintenance(),
-                          RoutePath.customerServiceWebView: (context) => CustomerServiceWebView(),
-                          RoutePath.mainCard: (context) => MainCard(),
-                          RoutePath.message: (context) => MessageView(),
-                          RoutePath.emailVerification: (context) => EmailVerification(0),
-                          RoutePath.qqAccount: (context) => QQAccount(),
-                          RoutePath.wechat: (context) => Wechat(),
-                          RoutePath.editPassword: (context) => EditPassword(),
-                          RoutePath.resetPayPassword: (context) => ResetPayPassword(),
-                          RoutePath.payPassword: (context) => PayPassword(),
-                          RoutePath.language: (context) => LanguageView(),
-                          RoutePath.addCard: (context) => AddCard(),
-                          RoutePath.realNameVerification: (context) => RealNameVerification(),
-                          RoutePath.profileInfo: (context) => ProfileInfo(),
-                          RoutePath.promotion: (context) => Promotion(),
-                          RoutePath.walletTransfer: (context) => WalletTransfer(),
-                          RoutePath.menu: (context) => Menu(),
-                          RoutePath.deposit: (context) => Deposit(),
-                          RoutePath.withdraw: (context) => Withdraw(),
-                          RoutePath.childGame: (context) => ChildGame(),
-                          RoutePath.blacklistedUser: (context) => BlacklistedUser(),
-                          RoutePath.phoneReVerification: (context) => PhoneReVerification(),
-                          RoutePath.phoneVerification: (context) => PhoneVerification(),
-                          RoutePath.editPhone: (context) => EditPhone(),
-                          RoutePath.editEmail: (context) => EditEmail(),
-                        },
-                        localizationsDelegates: [
-                          MyLocalizations.delegate,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate
-                        ],
-                        // MyHomePage(title: appTitle),
-                        supportedLocales: LanguageProvider().list.map((e) => e.locale).toList(),
-                        locale: _locale,
-                        localeResolutionCallback: (locale, supportedLocales) {
-                          for (var supportedLocale in supportedLocales) {
-                            if (supportedLocale.languageCode == locale!.languageCode &&
-                                supportedLocale.scriptCode == locale.scriptCode) {
-                              return supportedLocale;
-                            }
-                          }
-                          return supportedLocales.first;
-                        },
+            return GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                  currentFocus.focusedChild!.unfocus();
+                }
+              },
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: appTitle,
+                initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
+                routes: {
+                  RoutePath.myHome: (context) => MyHomePage(
+                        versionUpdate: _vm.versionUpdateState,
                       ),
-                    );
+                  RoutePath.profile: (context) => Profile(),
+                  RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                  RoutePath.customerService: (context) => CustomerService(),
+                  RoutePath.transaction: (context) => ReportView(),
+                  RoutePath.login: (context) => Login(),
+                  RoutePath.forgotPassword: (context) => ForgotPassword(),
+                  RoutePath.maintenance: (context) => Maintenance(),
+                  RoutePath.splashMaintenance: (context) => Maintenance(
+                        isShowCS: true,
+                        isShowsAppBar: false,
+                      ),
+                  RoutePath.customerServiceWebView: (context) => CustomerServiceWebView(),
+                  RoutePath.mainCard: (context) => MainCard(),
+                  RoutePath.message: (context) => MessageView(),
+                  RoutePath.emailVerification: (context) => EmailVerification(0),
+                  RoutePath.qqAccount: (context) => QQAccount(),
+                  RoutePath.wechat: (context) => Wechat(),
+                  RoutePath.editPassword: (context) => EditPassword(),
+                  RoutePath.resetPayPassword: (context) => ResetPayPassword(),
+                  RoutePath.payPassword: (context) => PayPassword(),
+                  RoutePath.language: (context) => LanguageView(),
+                  RoutePath.addCard: (context) => AddCard(),
+                  RoutePath.realNameVerification: (context) => RealNameVerification(),
+                  RoutePath.profileInfo: (context) => ProfileInfo(),
+                  RoutePath.promotion: (context) => Promotion(),
+                  RoutePath.walletTransfer: (context) => WalletTransfer(),
+                  RoutePath.menu: (context) => Menu(),
+                  RoutePath.deposit: (context) => Deposit(),
+                  RoutePath.withdraw: (context) => Withdraw(),
+                  RoutePath.childGame: (context) => ChildGame(),
+                  RoutePath.blacklistedUser: (context) => BlacklistedUser(),
+                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                  RoutePath.phoneVerification: (context) => PhoneVerification(),
+                  RoutePath.editPhone: (context) => EditPhone(),
+                  RoutePath.editEmail: (context) => EditEmail(),
+                  RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                },
+                localizationsDelegates: [
+                  MyLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate
+                ],
+                // MyHomePage(title: appTitle),
+                supportedLocales: LanguageProvider.getSingleton().list.map((e) => e.locale).toList(),
+                locale: _locale,
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale!.languageCode &&
+                        supportedLocale.scriptCode == locale.scriptCode) {
+                      return supportedLocale;
+                    }
                   }
-                });
+                  return supportedLocales.first;
+                },
+              ),
+            );
           }
         });
   }

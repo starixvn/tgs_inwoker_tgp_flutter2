@@ -44,7 +44,7 @@ class _LoginContentState extends BaseState<LoginContent> {
   }
 
   void _changeLanguage(Language language) async {
-    Locale? _locale = await LanguageProvider().setLocale(language);
+    Locale? _locale = await LanguageProvider.getSingleton().setLocale(language);
     MyApp.setLocale(context, _locale!);
     await _vm.getApiError();
   }
@@ -164,7 +164,7 @@ class _LoginContentState extends BaseState<LoginContent> {
       );
 
   _buildChangeLanguageText() {
-    var list = LanguageProvider().list;
+    var list = LanguageProvider.getSingleton().list;
     var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
     return FittedBox(
       fit: BoxFit.fitWidth,

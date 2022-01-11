@@ -31,36 +31,33 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
   }
 
   _dialogContent() => Container(
-    height: context.screenWidth +100.auto,
-    alignment: Alignment.center,
-    child: Column(
+        height: context.screenWidth + 100.auto,
+        alignment: Alignment.center,
+        child: Column(
           children: [
-            Flexible(
-              flex: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: CustomColor.theme_button_color,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      topLeft: Radius.circular(10),
-                    )),
-                padding: EdgeInsets.symmetric(horizontal: 10.auto),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Instant Messaging",
-                      style: TextStyle(color: Colors.white),
+            Container(
+              decoration: BoxDecoration(
+                  color: CustomColor.theme_button_color,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10),
+                  )),
+              padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 10.auto),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    getTranslatedText("instant_messaging"),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
                     ),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
             Flexible(
@@ -78,7 +75,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: _buildCSRow(widget.communicationList![index].type, "cs_join", "cs_qr_code",
-                        "support-" + widget.communicationList![index].type!.toLowerCase(),
+                        "m-support-" + widget.communicationList![index].type!.toLowerCase(),
                         qrCode: widget.communicationList![index]),
                   );
                 }),
@@ -86,26 +83,37 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
             ),
           ],
         ),
-  );
+      );
 
   _buildCSRow(String? title, String text, String routePath, String imagePath, {BrandCommunication? qrCode}) => InkWell(
         onTap: () {
-          Clipboard.setData(ClipboardData(text: qrCode?.appId ?? qrCode?.phone));
-          CustomToast.show(getTranslatedText("copy_text"));
+          var contact = qrCode?.appId ?? qrCode?.phone;
+          if (contact != null) {
+            Clipboard.setData(ClipboardData(text: contact));
+            CustomToast.show(getTranslatedText("copy_text"));
+            handleDeepLink(title ?? "", contact);
+          }
         },
         child: Column(
           children: [
-            SvgPicture.asset(
-              "images/support/$imagePath.svg",
-              height: 100.auto,
-              color: CustomColor.theme_button_color,
+            Image.asset(
+              "images/support/$imagePath.png",
+              height: 80.auto,
             ),
             Container(
-              margin: EdgeInsets.only(left: 10.auto),
+              margin: EdgeInsets.only(top: 5.auto),
               child: Text(
                 getTranslatedText(title) ?? title ?? "",
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(top: 2.auto),
+              child: qrCode?.appId != null
+                  ? Text("ID: ${qrCode?.appId ?? ""}")
+                  : qrCode?.phone != null
+                      ? Text("${getTranslatedText("phone")}: ${qrCode?.phone ?? ""}")
+                      : Container(),
+            )
           ],
         ),
       );
