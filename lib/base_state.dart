@@ -47,8 +47,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
           WidgetsBinding.instance!.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                RoutePath.empty, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
         } else if (eventResult.errorMsgId != null) {
@@ -57,8 +56,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
               if (isMaintenanceDialog) {
                 showApiErrorMessageInDialog(eventResult);
               } else {
-                Navigator.of(context)
-                    .pushReplacementNamed(RoutePath.maintenance);
+                Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
               }
             });
           } else if (onError != null) {
@@ -161,8 +159,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   String parseHtmlString(String htmlString) {
     final document = parse(htmlString);
-    final String parsedString =
-        parse(document.body?.text).documentElement!.text;
+    final String parsedString = parse(document.body?.text).documentElement!.text;
     return parsedString;
   }
 
@@ -172,8 +169,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     if (list.length == 1) {
       return list.first;
     } else {
-      deviceLanguage =
-          list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+      deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
       return deviceLanguage;
     }
   }
@@ -184,87 +180,4 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     else
       return widget;
   }
-
-  handleDeepLink(String comType, String value) async {
-    var url = "";
-    var defaultLink = "";
-    var checkExistingLink = "";
-    if (comType.contains("WeChat")) {
-      url = "weixin://dl/add?phone=$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/wechat/id414478124"
-          : "https://play.google.com/store/apps/details?id=com.tencent.mm";
-      checkExistingLink = "";
-    } else if (comType.contains("WhatsApp")) {
-      url = Platform.isIOS
-          ? "whatsapp://wa.me/+$value"
-          : "whatsapp://send?phone=+$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/whatsapp-messenger/id310633997"
-          : "https://play.google.com/store/apps/details?id=com.whatsapp";
-      checkExistingLink = "WhatsApp://";
-    } else if (comType.contains("Telegram")) {
-      url = "tg://addcontact?phone=$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/telegram-messenger/id686449807"
-          : "ttps://play.google.com/store/apps/details?id=org.telegram.messenger";
-      checkExistingLink = "https://t.me/";
-    } else if (comType.contains("Zalo")) {
-      url = "https://zalo.me/$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/zalo/id579523206"
-          : "ttps://play.google.com/store/apps/details?id=com.zing.zalo";
-      checkExistingLink = "https://zalo.me/";
-    } else if (comType.contains("KakaoTalk")) {
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/kakaotalk-messenger/id362057947"
-          : "ttps://play.google.com/store/apps/details?id=com.kaokao.talk";
-      checkExistingLink = "";
-    }
-
-    // if (Platform.isIOS) {
-    if (await canLaunch(checkExistingLink)) {
-      Platform.isIOS ? launch(url, forceSafariVC: false) : launch(url);
-    } else {
-      Platform.isIOS ? launch(defaultLink) : launch(url);
-    }
-    // } else {
-    //   if (await canLaunch('whatsapp://')) {
-    //     await launch(url, forceSafariVC: false);
-    //   } else {
-    //     await launch(url, forceSafariVC: true);
-    //   }
-    // }
-  }
-
-  // openWhatsApp() async {
-  //   var url = "";
-  //   if (Platform.isIOS) {
-  //     url = "whatsapp://wa.me/+16713494701";
-  //   } else {
-  //     url = "whatsapp://send?phone=+16713494701";
-  //   }
-  //   if (Platform.isIOS) {
-  //     if (await canLaunch('whatsapp://')) {
-  //       await launch(url, forceSafariVC: false);
-  //     } else {
-  //       await launch(url, forceSafariVC: true);
-  //     }
-  //   } else {
-  //     if (await canLaunch('whatsapp://')) {
-  //       await launch(url, forceSafariVC: false);
-  //     } else {
-  //       await launch(url, forceSafariVC: true);
-  //     }
-  //     // await canLaunch(url) {
-  //     //   launch(url);
-  //     // }
-  //     // ?
-  //     // : Scaffold.of(context).showSnackBar(
-  //     //     SnackBar(
-  //     //       content: new Text("You need WhatsApp to access Sara chatbot"),
-  //     //     ),
-  //     //   );
-  //   }
-  // }
 }
