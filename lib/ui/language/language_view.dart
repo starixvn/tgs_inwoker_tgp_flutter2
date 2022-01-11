@@ -19,7 +19,7 @@ class LanguageView extends StatefulWidget {
 
 class _LanguageViewState extends BaseState<LanguageView> {
   var isEditing = false, isSelected = false;
-  var list = LanguageProvider().list;
+  var list = LanguageProvider.getSingleton().list;
   var _vm = LanguageViewModel();
 
   @override
@@ -56,7 +56,7 @@ class _LanguageViewState extends BaseState<LanguageView> {
   }
 
   void _changeLanguage(Language language) async {
-    Locale? _locale = await LanguageProvider().setLocale(language);
+    Locale? _locale = await LanguageProvider.getSingleton().setLocale(language);
     MyApp.setLocale(context, _locale!);
     await _vm.getApiError();
   }
