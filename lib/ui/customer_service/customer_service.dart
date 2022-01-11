@@ -262,7 +262,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   onTap: () {
                     Clipboard.setData(
                         ClipboardData(text: qrCode?.appId ?? qrCode?.phone));
-                    _handleDeepLinkApps(title ?? "", text);
+                    _handleDeepLinkApps(title ?? "", qrCode?.phone ?? "");
 
                     // CustomToast.show(getTranslatedText("copy_text"));
                   },
@@ -292,6 +292,6 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   _handleDeepLinkApps(String comType, String value) {
-    handleDeepLink(comType, value);
+    _vm.handleDeepLink(comType, value);
   }
 }

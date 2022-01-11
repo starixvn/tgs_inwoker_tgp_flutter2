@@ -50,6 +50,11 @@
       <string>https</string>
       <string>http</string>
 	  <string>whatsapp</string>
+	  <string>skype</string>
+	  <string>viber</string>
+	  <string>line</string>
+	  <string>zalo</string>
+	  <string>kakaotalk</string>
     </array>
 </dict>
 </plist>
