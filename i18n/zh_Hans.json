@@ -70,7 +70,7 @@
   "today": "今天",
   "one_week": "1週",
   "one_month": "1个月",
-  "time": "时间（GMT+8)",
+  "time": "时间",
   "win_loss": "輸贏",
   "turnover": "流水: ",
   "trade_time": "时间",
@@ -988,5 +988,7 @@
   "sports_wgvia": "赛马",
   "sports_wgfm": "体育",
   "deposit_to_account": "转帐帐户",
-  "deposit_to_bank_account_name": "帐户名字"
+  "deposit_to_bank_account_name": "帐户名字",
+  "from": "从",
+  "to": "至"
 }

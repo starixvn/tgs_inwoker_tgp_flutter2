@@ -53,6 +53,7 @@ class ColorButton extends StatelessWidget {
             title,
             style: TextStyle(color: textColor ?? Colors.white),
             minFontSize: 5,
+            maxFontSize: fontSize ?? 12,
             maxLines: 1,
             textAlign: TextAlign.center,
             stepGranularity: 1,

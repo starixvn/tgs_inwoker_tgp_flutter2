@@ -72,7 +72,7 @@
   "one_week": "1 Week",
   "one_month": "1 Month",
   "time": "Time",
-  "win_loss": "Win/Loss",
+  "win_loss": "Win Loss",
   "turnover": "Turnover Requirement: ",
   "trade_time": "Time",
   "trade_detail": "Detail",
@@ -159,7 +159,7 @@
   "upload_prof_hint": "Please upload receipt in order to proceed",
   "trade_order_no": "Order Number",
   "bet_amount": "Bet Amount",
-  "valid_bet_amount": "Valid Bet Amount",
+  "valid_bet_amount": "Valid Turnover",
   "bet_time": "Bet Time",
   "wallet": "Wallet",
   "rebate_history": "Rebate",
@@ -1001,5 +1001,7 @@
   "sports_wgvia": "Horse Racing",
   "sports_wgfm": "Sports",
   "deposit_to_account": "Transfer account",
-  "deposit_to_bank_account_name": "Account name"
+  "deposit_to_bank_account_name": "Account name",
+  "from": "From",
+  "to": "To"
 }

@@ -70,7 +70,7 @@
   "today": "今天",
   "one_week": "1週",
   "one_month": "1個月",
-  "time": "時間（GMT 8)",
+  "time": "時間",
   "win_loss": "輸贏",
   "turnover": "流水: ",
   "trade_time": "時間",
@@ -989,5 +989,7 @@
   "sports_wgvia": "賽馬",
   "sports_wgfm": "體育",
   "deposit_to_account": "轉帳賬戶",
-  "deposit_to_bank_account_name": "帳戶名字"
+  "deposit_to_bank_account_name": "帳戶名字",
+  "from": "從",
+  "to":"至"
 }

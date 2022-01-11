@@ -84,14 +84,16 @@ class BaseReportState extends BaseState<BaseReport> {
                           ),
                           bottom: PreferredSize(
                             preferredSize: Size.zero,
-                            child: Center(
-                              child: ReportHeaderItem(
-                                headerList: widget.transactionHeaderList,
-                                isUploadButton: widget.isUploadButton,
-                              ),
-                            ),
+                            child: widget.transactionHeaderList.isNotEmpty
+                                ? Center(
+                                    child: ReportHeaderItem(
+                                      headerList: widget.transactionHeaderList,
+                                      isUploadButton: widget.isUploadButton,
+                                    ),
+                                  )
+                                : Container(),
                           ),
-                          toolbarHeight: 40.auto,
+                          toolbarHeight: widget.transactionHeaderList.isNotEmpty ? 40.auto : 0,
                           elevation: 0,
                         ),
                         _buildReportItem()

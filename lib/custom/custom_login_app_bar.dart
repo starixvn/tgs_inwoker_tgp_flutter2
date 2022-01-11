@@ -80,7 +80,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ),
               Expanded(
-                flex: 1,
+                flex: EnvironmentConfig.isShowPhoneNumber ? 1 : 0,
                 child: _getUserDetailsRow(),
               )
             ],

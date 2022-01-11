@@ -1,4 +1,5 @@
 import 'package:api/entity/report_cell_item_type.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
@@ -7,10 +8,12 @@ import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/base_report.dart';
 import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:api/extension/screen_apis.dart';
 
 class WithdrawReportView extends StatefulWidget {
   final ReportViewModel vm;
@@ -73,21 +76,69 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
       : List.generate(_vm.withdrawReportList!.length, (index) {
           return Container(
             child: ReportCellItem(
-              reportList: _vm.withdrawReportList!,
-              list: [
-                _vm.withdrawReportList![index].id,
-                _vm.withdrawReportList![index].orderNo,
-                Format().dateTimeFormat(_vm.withdrawReportList![index].createdOn),
-                _vm.withdrawReportList![index].status.getName(context),
-                _vm.withdrawReportList![index].amount.toString(),
-              ],
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              isUploadButton: false,
-              isWithdrawReport: true,
+              buildReportCellItemLayout: _buildReportCellItemLayout(index),
             ),
           );
         }).toList();
+
+  _buildReportCellItemLayout(int index) => Container(
+      margin: EdgeInsets.symmetric(horizontal: 10.auto),
+      child: Flex(
+        direction: Axis.vertical,
+        children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(bottom: 3.auto),
+              child: AutoSizeText(
+                getTranslatedText("gms_order_number") + (_vm.withdrawReportList![index].orderNo ?? ""),
+                style: TextStyle(color: Colors.grey[700]),
+                minFontSize: 10,
+                maxFontSize: 12,
+                stepGranularity: 1,
+                maxLines: 1,
+              )),
+          Container(
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: AutoSizeText(
+                    Format().dateTimezoneFormat(_vm.withdrawReportList![index].createdOn),
+                    style: TextStyle(color: Colors.grey[700]),
+                    minFontSize: 10,
+                    maxFontSize: 12,
+                    stepGranularity: 1,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: AutoSizeText(
+                    _vm.withdrawReportList![index].status.getName(context),
+                    style: TextStyle(color: Colors.grey[700]),
+                    minFontSize: 10,
+                    maxFontSize: 12,
+                    stepGranularity: 1,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: AutoSizeText(
+                    _vm.withdrawReportList![index].amount.toString(),
+                    style: TextStyle(color: Colors.grey[700]),
+                    minFontSize: 10,
+                    maxFontSize: 12,
+                    stepGranularity: 1,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ));
 
   _getPickerBox() {
     return Container(

@@ -70,7 +70,7 @@
   "today": "hôm nay",
   "one_week": "1 tuần",
   "one_month": "1 tháng",
-  "time": "Giờ (GMT + 8)",
+  "time": "Giờ",
   "win_loss": "Thắng hoặc Thua",
   "turnover": "Nước chảy: ",
   "trade_time": "Thời gian",
@@ -988,5 +988,7 @@
   "sports_wgvia": "Đua ngựa",
   "sports_wgfm": "Thể thao",
   "deposit_to_account": "Chuyển khoản",
-  "deposit_to_bank_account_name": "tên tài khoản"
+  "deposit_to_bank_account_name": "tên tài khoản",
+  "from": "từ",
+  "to": "đến"
 }
