@@ -252,7 +252,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   _handleDeepLinkApps(String comType, String value) {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
+    // ProgressDialog.show(context, _vm.brandLogoUrl);
     handleDeepLink(comType, value);
   }
 }
