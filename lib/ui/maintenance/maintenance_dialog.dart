@@ -117,7 +117,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
               child: qrCode?.appId != null
                   ? Text("ID: ${qrCode?.appId ?? ""}")
                   : qrCode?.phone != null
-                      ? Text("${getTranslatedText("phone")}: ${qrCode?.phone ?? ""}")
+                      ? Text("${getTranslatedText("phone_number")}: ${qrCode?.phone ?? ""}")
                       : Container(),
             )
           ],
