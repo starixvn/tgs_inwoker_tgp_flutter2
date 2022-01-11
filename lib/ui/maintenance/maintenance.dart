@@ -46,10 +46,10 @@ class _MaintenanceState extends BaseState<Maintenance> {
             appBar: widget.isShowsAppBar
                 ? _buildAppBar()
                 : PreferredSize(
-                child: Container(
-                  color: Colors.black,
-                ),
-                preferredSize: Size.zero),
+                    child: Container(
+                      color: Colors.black,
+                    ),
+                    preferredSize: Size.zero),
             body: Container(
               padding: EdgeInsets.only(top: 100.auto),
               width: context.screenWidth,
@@ -74,35 +74,35 @@ class _MaintenanceState extends BaseState<Maintenance> {
   }
 
   _buildAppBar() => AppBar(
-    automaticallyImplyLeading: false,
-    centerTitle: true,
-    flexibleSpace: Container(
-      decoration: gradientDecoration,
-    ),
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.of(context)
-            .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
-      },
-    ),
-    title: Text(
-      getTranslatedText("maintenance"),
-      style: TextStyle(fontSize: 16.auto),
-    ),
-  );
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: gradientDecoration,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
+          },
+        ),
+        title: Text(
+          getTranslatedText("maintenance"),
+          style: TextStyle(fontSize: 16.auto),
+        ),
+      );
 
   _buildText(String text, {bool isNeedMargin = true}) => Container(
-    margin: EdgeInsets.only(bottom: isNeedMargin ? 20.auto : 0),
-    child: Text(
-      text,
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 12.auto,
-      ),
-      textAlign: TextAlign.center,
-    ),
-  );
+        margin: EdgeInsets.only(bottom: isNeedMargin ? 20.auto : 0),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12.auto,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      );
 
 /*  _buildCSText(String text) => InkWell(
         onTap: () {
@@ -116,48 +116,48 @@ class _MaintenanceState extends BaseState<Maintenance> {
       );*/
 
   _buildButton() => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      OutlineBorderButton(
-        onClick: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CustomerServiceWebView(
-                    url: _vm.liveChatUrl,
-                    brandLogoUrl: _vm.brandLogoUrl,
-                  )));
-        },
-        title: getTranslatedText("contact_cs"),
-        isEnabled: true,
-        width: context.screenWidth / 3.5,
-        height: context.screenHeight / 18,
-        fontSize: 13.auto,
-        color: Colors.white,
-      ),
-      ColorButton(
-        title: getTranslatedText("instant_messaging"),
-        onClick: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => MaintenanceDialog(
-              communicationList: _vm.communicationList,
-            ),
-          );
-        },
-        isEnabled: true,
-        radius: 5,
-        height: 44.5,
-        width: context.screenWidth / 3.5,
-        padding: 5.auto,
-        fontSize: 10.auto,
-        color: CustomColor.theme_button_color,
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          OutlineBorderButton(
+            onClick: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CustomerServiceWebView(
+                            url: _vm.liveChatUrl,
+                            brandLogoUrl: _vm.brandLogoUrl,
+                          )));
+            },
+            title: getTranslatedText("contact_cs"),
+            isEnabled: true,
+            width: context.screenWidth / 3.5,
+            height: context.screenHeight / 18,
+            fontSize: 13.auto,
+            color: Colors.white,
+          ),
+          ColorButton(
+            title: getTranslatedText("instant_messaging"),
+            onClick: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => MaintenanceDialog(
+                  communicationList: _vm.communicationList,
+                ),
+              );
+            },
+            isEnabled: true,
+            radius: 5,
+            height: 44.5,
+            width: context.screenWidth / 3.5,
+            padding: 5.auto,
+            fontSize: 10.auto,
+            color: CustomColor.theme_button_color,
+          ),
+        ],
+      );
 
   _handleApiState() {
     handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
-    // handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
