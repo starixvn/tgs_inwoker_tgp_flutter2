@@ -97,14 +97,15 @@ class _MyAppState extends BaseState<MyApp> {
 
   Future<EventResult<dynamic>> initData() async {
     if (firstInit) {
-      if (_vm.authApiState?.isMaintenance == true) {//prevent loop
+      if (_vm.authApiState?.isMaintenance == true) {
+        //prevent loop
         return _vm.authApiState; //return if maintenance
       }
 
       await _vm.getAuthToken();
       //_vm.authApiState.isMaintenance = true;
       if (_vm.authApiState.isMaintenance) {
-        _getLocale();//temp for localization for mainteance page
+        _getLocale(); //temp for localization for mainteance page
         return _vm.authApiState; //return if maintenance
       }
       await _vm.getVersion();
