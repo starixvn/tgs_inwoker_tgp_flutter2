@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/brand_communication.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+
+import 'maintenance_view_model.dart';
 
 class MaintenanceDialog extends StatefulWidget {
   final List<BrandCommunication>? communicationList;
@@ -19,6 +22,8 @@ class MaintenanceDialog extends StatefulWidget {
 }
 
 class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
+  var _vm = MaintenanceViewModel();
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -91,6 +96,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
           if (contact != null) {
             Clipboard.setData(ClipboardData(text: contact));
             CustomToast.show(getTranslatedText("copy_text"));
+            ProgressDialog.show(context, _vm.brandLogoUrl);
             handleDeepLink(title ?? "", contact);
           }
         },
