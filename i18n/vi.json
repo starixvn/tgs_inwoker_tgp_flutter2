@@ -70,7 +70,7 @@
   "today": "hôm nay",
   "one_week": "1 tuần",
   "one_month": "1 tháng",
-  "time": "Giờ (GMT + 8)",
+  "time": "Giờ",
   "win_loss": "Thắng hoặc Thua",
   "turnover": "Nước chảy: ",
   "trade_time": "Thời gian",
@@ -986,5 +986,7 @@
   "full_name": "Tên đầy đủ",
   "enter_full_name_hint": "Nhập Họ và Tên",
   "sports_wgvia": "Đua ngựa",
-  "sports_wgfm": "Thể thao"
+  "sports_wgfm": "Thể thao",
+  "from": "từ",
+  "to": "đến"
 }

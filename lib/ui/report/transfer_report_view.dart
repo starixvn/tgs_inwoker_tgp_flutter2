@@ -1,12 +1,15 @@
 import 'package:api/entity/report_cell_item_type.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/format.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/base_report.dart';
 import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
+import 'package:api/extension/screen_apis.dart';
 
 class TransferReportView extends StatefulWidget {
   final ReportViewModel vm;
@@ -41,10 +44,10 @@ class TransferReportViewState extends BaseState<TransferReportView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return BaseReport(
-            transactionHeaderList: ["trade_time", "transfer_from", "transfer_to", "amount"],
+            transactionHeaderList: [],
             getPickerBox: Container(),
             filterIndex: filterIndex,
-            expandedHeight: 170,
+            expandedHeight: 130,
             vm: _vm,
             getReport: (mIsLoadMore, mStatus) {
               _getReport(isLoadMore: mIsLoadMore);
@@ -69,20 +72,48 @@ class TransferReportViewState extends BaseState<TransferReportView> {
       : List.generate(_vm.transferReportList!.length, (index) {
           return Container(
             child: ReportCellItem(
-              reportList: _vm.transferReportList!,
-              list: [
-                "",
-                "",
-                Format().dateTimeFormat(_vm.transferReportList![index].balanceTime),
-                _vm.transferReportList![index].from,
-                _vm.transferReportList![index].to,
-                _vm.transferReportList![index].amount.toString(),
-              ],
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
+              buildReportCellItemLayout: _buildReportCellItemLayout(index),
             ),
           );
         }).toList();
+
+  _buildReportCellItemLayout(int index) => Column(children: [
+        Container(
+            margin: EdgeInsets.symmetric(horizontal: 10.auto),
+            child: Flex(
+              direction: Axis.vertical,
+              children: [
+                _buildReportSubItem("from", (_vm.transferReportList![index].from ?? "")),
+                _buildReportSubItem("to", (_vm.transferReportList![index].to ?? "")),
+                _buildReportSubItem("amount", (_vm.transferReportList![index].amount ?? 0).toString()),
+                Container(
+                    margin: EdgeInsets.only(top: 3.auto),
+                    alignment: Alignment.centerLeft,
+                    child: AutoSizeText(
+                      Format().dateTimezoneFormat(_vm.transferReportList![index].balanceTime),
+                      style: TextStyle(color: Colors.grey[700]),
+                      minFontSize: 10,
+                      maxFontSize: 12,
+                      stepGranularity: 1,
+                      maxLines: 1,
+                    ))
+              ],
+            )),
+      ]);
+
+  _buildReportSubItem(String title, String text) => Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(bottom: 3.auto),
+      child: AutoSizeText(
+        getTranslatedText(title) + " : " + text,
+        style: TextStyle(color: Colors.grey[700]),
+        minFontSize: 10,
+        maxFontSize: 12,
+        stepGranularity: 1,
+        maxLines: 1,
+      ));
 
   _getReportItemType(int index) {
     if (_vm.transferReportList!.length == 1) {

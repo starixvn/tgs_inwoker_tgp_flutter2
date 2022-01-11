@@ -71,7 +71,7 @@
   "today": "hari ini",
   "one_week": "1 minggu",
   "one_month": "1 bulan",
-  "time": "Waktu (GMT+8)",
+  "time": "Waktu",
   "win_loss": "Menang atau Kalah",
   "turnover": "Air Mengalir: ",
   "trade_time": "Waktu",
@@ -987,5 +987,7 @@
   "full_name": "Nama Lengkap",
   "enter_full_name_hint": "Masukkan Nama Lengkap",
   "sports_wgvia": "Balap kuda",
-  "sports_wgfm": "Olahraga"
+  "sports_wgfm": "Olahraga",
+  "from": "Dari",
+  "to":"Ke"
 }
