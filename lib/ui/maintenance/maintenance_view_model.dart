@@ -38,7 +38,7 @@ class MaintenanceViewModel extends BaseViewModel {
         languageCode
       ]; //corresponding list
       Map<String, String> map = Map.fromIterables(pattern, replace);
-      liveChatUrl = getLiveChatUrlApiState.result.setting.url;
+      liveChatUrl = getLiveChatUrlApiState.result?.setting?.url;
       //map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev!.replaceAll(e.key, e.value));
 
     }

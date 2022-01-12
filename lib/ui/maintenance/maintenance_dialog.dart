@@ -49,7 +49,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Instant Messaging",
+                      getTranslatedText("instant_messaging"),
                       style: TextStyle(color: Colors.white),
                     ),
                     InkWell(

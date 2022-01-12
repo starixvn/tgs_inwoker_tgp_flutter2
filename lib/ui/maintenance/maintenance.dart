@@ -128,7 +128,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
                     brandLogoUrl: _vm.brandLogoUrl,
                   )));
         },
-        title: "Contact CS",
+        title: getTranslatedText("contact_cs"),
         isEnabled: true,
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
@@ -136,7 +136,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         color: Colors.white,
       ),
       ColorButton(
-        title: "Instant Messaging",
+        title: getTranslatedText("instant_messaging"),
         onClick: () {
           showDialog(
             context: context,
