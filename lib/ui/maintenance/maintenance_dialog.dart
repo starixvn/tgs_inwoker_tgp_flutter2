@@ -97,7 +97,6 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
           if (contact != null) {
             Clipboard.setData(ClipboardData(text: contact));
             CustomToast.show(getTranslatedText("copy_text"));
-            ProgressDialog.show(context, _vm.brandLogoUrl);
             handleDeepLink(title ?? "", contact);
           }
         },
