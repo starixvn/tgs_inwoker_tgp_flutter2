@@ -15,6 +15,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/affiliate/affiliate.dart';
 import 'package:tgp_flutter2/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/card/main_card.dart';
@@ -192,6 +193,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.editPhone: (context) => EditPhone(),
                   RoutePath.editEmail: (context) => EditEmail(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
+                  RoutePath.affiliate: (context) => Affiliate(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

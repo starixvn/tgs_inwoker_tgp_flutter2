@@ -988,5 +988,7 @@
   "sports_wgvia": "赛马",
   "sports_wgfm": "体育",
   "from": "从",
-  "to": "至"
+  "to": "至",
+  "agent": "代理",
+  "player": "玩家"
 }

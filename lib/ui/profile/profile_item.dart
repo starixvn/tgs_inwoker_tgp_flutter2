@@ -39,7 +39,8 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer_report", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_account_report", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
-          _buildBottomProfileItem("ic_lang", "language", "language", 0),
+          _buildMiddleProfileItem("ic_lang", "language", "language", 0),
+          _buildBottomProfileItem("ic_affiliate", "affiliate", "affiliate", 0),
         ],
       );
 
@@ -53,7 +54,8 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
-          _buildBottomProfileItem("ic_lang", "language", "language", 0),
+          _buildMiddleProfileItem("ic_lang", "language", "language", 0),
+          _buildBottomProfileItem("ic_affiliate", "affiliate", "affiliate", 0),
         ],
       );
 

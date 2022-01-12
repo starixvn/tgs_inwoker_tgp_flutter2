@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
+import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -27,9 +28,18 @@ class _AffiliateState extends BaseState<Affiliate> {
 
   @override
   void initState() {
-    if (_vm.userProfile.playerCode != null)
-      affiliateUrl = EnvironmentConfig.url + "a/${_vm.userProfile.playerCode}?do=register";
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _getAffiliateUrl();
+    });
     super.initState();
+  }
+
+  _getAffiliateUrl() {
+    setState(() {
+      if (_vm.userProfile.playerCode != null)
+        affiliateUrl =
+            EnvironmentConfig.url + "${getCurrentLanguage().apiCode}/p/${_vm.userProfile.playerCode}?do=register";
+    });
   }
 
   Widget build(BuildContext context) {
@@ -47,16 +57,18 @@ class _AffiliateState extends BaseState<Affiliate> {
               style: TextStyle(fontSize: 16.auto),
               textAlign: TextAlign.center,
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20.auto),
-              height: 120.auto,
-              width: 120.auto,
-              child: QrImage(
-                data: affiliateUrl!,
-                version: QrVersions.auto,
-                size: 150.0,
-              ),
-            ),
+            affiliateUrl == null
+                ? Container()
+                : Container(
+                    margin: EdgeInsets.only(top: 20.auto),
+                    height: 120.auto,
+                    width: 120.auto,
+                    child: QrImage(
+                      data: affiliateUrl!,
+                      version: QrVersions.auto,
+                      size: 150.0,
+                    ),
+                  ),
             _buildReferIdText(),
             _buildIdLink(),
             //_buildProfileItem()
@@ -86,8 +98,9 @@ class _AffiliateState extends BaseState<Affiliate> {
 
   _buildReferIdText() => Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(width: 1, color: CustomColor.theme_text_grey_white_color)),
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
         padding: EdgeInsets.only(
           left: 10.auto,
           right: 5.auto,
@@ -114,8 +127,9 @@ class _AffiliateState extends BaseState<Affiliate> {
 
   _buildIdLink() => Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(width: 1, color: CustomColor.theme_text_black_white_color)),
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
         padding: EdgeInsets.only(
           left: 10.auto,
           right: 5.auto,
@@ -152,29 +166,28 @@ class _AffiliateState extends BaseState<Affiliate> {
             ),
             Expanded(
               flex: 2,
-              child: InkWell(
-                onTap: () {
-                  Clipboard.setData(ClipboardData(text: affiliateUrl ?? ""));
-                  CustomToast.show(getTranslatedText("copy_text"));
-                },
-                child: Container(
+              child: Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.only(left: 3.auto),
                   height: 25.auto,
-                  child: ColorButton(
+                  child: OutlineBorderButton(
                     title: getTranslatedText("copy"),
-                    onClick: () => {},
+                    onClick: () {
+                      Clipboard.setData(ClipboardData(text: affiliateUrl ?? ""));
+                      CustomToast.show(getTranslatedText("copy_text"));
+                    },
                     isEnabled: true,
-                    radius: 20,
                     width: 50.auto,
-                  ),
-                ),
-              ),
+                    height: 17,
+                    color: CustomColor.theme_text_black_color,
+                    fontSize: 14,
+                    radius: 5,
+                    padding: 4,
+                  )),
             )
           ],
         ),
       );
-
 
   _buildButton() => Container(
       padding: EdgeInsets.only(bottom: 10.auto, top: 20.auto),
