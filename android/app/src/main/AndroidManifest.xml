@@ -43,6 +43,12 @@
                   android:scheme="poc"
                   android:host="deeplink.flutter.dev" />
             </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="poc"
+                    android:host="deeplink.flutter.dev" />
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
