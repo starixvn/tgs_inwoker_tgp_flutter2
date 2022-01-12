@@ -73,6 +73,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
             height: context.screenHeight - 320.auto,
             width: context.screenWidth,
             child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               controller: tabController,
               children: _isHKJP()
                   ? [
