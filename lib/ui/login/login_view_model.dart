@@ -40,7 +40,7 @@ class LoginViewModel extends BaseViewModel {
 
   register(String username, String password, String rpassword, [String? invitationCode]) async {
     setLoading();
-    var _status = await userRepo.register(username, password, rpassword, invitationCode ?? "");
+    var _status = await userRepo.register(username, password, rpassword, invitationCode ?? "",false);
     if (_status.isSuccess) {
       registerApiState = await login(username, password, true);
     } else
