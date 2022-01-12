@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +37,6 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
   }
 
   _dialogContent() => Container(
-        height: context.screenWidth + 100.auto,
         alignment: Alignment.center,
         child: Column(
           children: [
@@ -74,6 +74,7 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
                 physics: AlwaysScrollableScrollPhysics(),
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
+                childAspectRatio:0.9,
                 children: List.generate(widget.communicationList!.length, (index) {
                   return Container(
                     decoration: BoxDecoration(
@@ -101,6 +102,8 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
           }
         },
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
               "images/support/$imagePath.png",
@@ -113,14 +116,21 @@ class _MaintenanceDialogState extends BaseState<MaintenanceDialog> {
               ),
             ),
             Container(
+              height: 30.auto,
               margin: EdgeInsets.only(top: 2.auto),
-              child: qrCode?.appId != null
-                  ? Text("ID: ${qrCode?.appId ?? ""}")
-                  : qrCode?.phone != null
-                      ? Text("${getTranslatedText("phone_number")}: ${qrCode?.phone ?? ""}")
-                      : Container(),
+              child: _buildContactRow(qrCode)
             )
           ],
         ),
       );
+
+  _buildContactRow(BrandCommunication? qrCode){
+    var text = qrCode?.appId != null ?  "ID: ${qrCode?.appId ?? ""}" : qrCode?.phone != null ? "${getTranslatedText("phone_number")}: ${qrCode?.phone ?? ""}" : "";
+    return AutoSizeText(text,
+      minFontSize: 8,
+      maxLines: 2,
+      textAlign: TextAlign.center,
+    );
+
+  }
 }
