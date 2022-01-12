@@ -52,41 +52,36 @@ class _ProfileState extends BaseState<Profile> {
         });
   }
 
-  _buildUserInfoContainer() =>
-      EnvironmentConfig.template_version == 1
-          ? Padding(
-        padding: EdgeInsets.only(top: 10.auto, left: 30.auto, right: 50.auto, bottom: 10.auto),
-        child: Row(
-          children: [
-            Container(
-                width: 65.auto,
-                height: 65.auto,
-                decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
-            _buildUserInfoText(),
-          ],
-        ),
-      )
-          : Container(
-        padding: EdgeInsets.only(top: 20.auto, left: 20.auto, right: 20.auto),
-        // margin: EdgeInsets.only(left: 10.auto),
-        child: Row(
-          children: [_buildProfileImage(), _buildBalanceText()],
-        ),
-      );
+  _buildUserInfoContainer() => EnvironmentConfig.template_version == 1
+      ? Padding(
+          padding: EdgeInsets.only(top: 10.auto, left: 30.auto, right: 50.auto, bottom: 10.auto),
+          child: Row(
+            children: [
+              Container(
+                  width: 65.auto,
+                  height: 65.auto,
+                  decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+              _buildUserInfoText(),
+            ],
+          ),
+        )
+      : Container(
+          padding: EdgeInsets.only(top: 20.auto, left: 20.auto, right: 20.auto),
+          // margin: EdgeInsets.only(left: 10.auto),
+          child: Row(
+            children: [_buildProfileImage(), _buildBalanceText()],
+          ),
+        );
 
-  _buildUserInfoText() =>
-      Container(
+  _buildUserInfoText() => Container(
         margin: EdgeInsets.only(left: 20.auto),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AutoSizeText(
             _vm.userProfile?.username ?? "",
-            style: TextStyle(
-                color: CustomColor.theme_text_black_color,
-                fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(color: CustomColor.theme_text_black_color, fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
             minFontSize: 10,
             stepGranularity: 1,
@@ -94,6 +89,7 @@ class _ProfileState extends BaseState<Profile> {
           Padding(
               padding: EdgeInsets.only(top: 3.auto, bottom: 3.auto),
               child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.end,
                 children: [
                   Text(
                     getTranslatedText("main_wallet") + " :",
@@ -101,24 +97,23 @@ class _ProfileState extends BaseState<Profile> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    "${Format().currencyWithDecimalFormat(_vm.balance??0)}",
+                    " ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
                     style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
                 ],
-              )
-          ),
+              )),
           Wrap(
+            crossAxisAlignment: WrapCrossAlignment.end,
             children: [
               Text(
-                getTranslatedText("total_balance") +
-                    " :" ,
+                getTranslatedText("total_balance") + " :",
                 //"总资金  "+(_vm.totalBalance != null ?  "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
                 style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: (11.2).auto),
                 textAlign: TextAlign.start,
               ),
               Text(
-                    (_vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}" : "-"),
+                (_vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}" : "-"),
                 //"总资金  "+(_vm.totalBalance != null ?  "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
                 style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
                 textAlign: TextAlign.start,
@@ -128,8 +123,7 @@ class _ProfileState extends BaseState<Profile> {
         ]),
       );
 
-  _buildProfileImage() =>
-      Expanded(
+  _buildProfileImage() => Expanded(
         flex: 2,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -141,7 +135,7 @@ class _ProfileState extends BaseState<Profile> {
                 decoration: new BoxDecoration(
                     shape: BoxShape.circle,
                     image:
-                    new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+                        new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
             Container(
               margin: EdgeInsets.only(top: 3.auto),
               child: AutoSizeText(
@@ -157,8 +151,7 @@ class _ProfileState extends BaseState<Profile> {
         ),
       );
 
-  _buildBalanceText() =>
-      Expanded(
+  _buildBalanceText() => Expanded(
         flex: 3,
         child: Container(
           padding: EdgeInsets.only(left: 20.auto),
@@ -202,8 +195,7 @@ class _ProfileState extends BaseState<Profile> {
         ),
       );
 
-  _buildLogoutButton() =>
-      Container(
+  _buildLogoutButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 5.auto),
         child: ColorButton(
           title: getTranslatedText("logout"),
