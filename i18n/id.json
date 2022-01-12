@@ -989,5 +989,7 @@
   "sports_wgvia": "Balap kuda",
   "sports_wgfm": "Olahraga",
   "from": "Dari",
-  "to":"Ke"
+  "to":"Ke",
+  "agent": "Agen",
+  "player": "Pemain"
 }

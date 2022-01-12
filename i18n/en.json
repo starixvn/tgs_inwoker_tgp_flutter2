@@ -1001,5 +1001,7 @@
   "sports_wgvia": "Horse Racing",
   "sports_wgfm": "Sports",
   "from": "From",
-  "to": "To"
+  "to": "To",
+  "agent": "Agent",
+  "player": "Player"
 }

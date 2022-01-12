@@ -989,5 +989,7 @@
   "sports_wgvia": "賽馬",
   "sports_wgfm": "體育",
   "from": "從",
-  "to":"至"
+  "to":"至",
+  "agent": "代理",
+  "player": "玩家"
 }
