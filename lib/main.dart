@@ -153,9 +153,7 @@ class _MyAppState extends BaseState<MyApp> {
                 title: appTitle,
                 initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
                 routes: {
-                  RoutePath.myHome: (context) => MyHomePage(
-                        versionUpdate: _vm.versionUpdateState,
-                      ),
+                  RoutePath.myHome: (context) => MyHomePage(versionUpdate: _vm.versionUpdateState),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.customerService: (context) => CustomerService(),
@@ -238,6 +236,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
   List _page = [];
   var isMenu = false;
+  var _vm = MainViewModel();
 
   @override
   void initState() {
@@ -287,9 +286,9 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             children: [
               _buildBottomBarItem(0, "ic_home", "home"),
               _buildBottomBarItem(1, "ic_promotion", "promotion"),
-              _buildBottomBarItem(2, "ic_deposit", "wallet"),
+              _buildBottomBarItem(2, "ic_deposit", "wallet", isNeedLogin: true),
               _buildBottomBarItem(3, "ic_cs", "customer_service"),
-              _buildBottomBarItem(4, "ic_profile", "my_profile"),
+              _buildBottomBarItem(4, "ic_profile", "my_profile", isNeedLogin: true),
             ],
           ),
         ),
@@ -297,7 +296,9 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     );
   }
 
-  _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false}) => Expanded(
+  _buildBottomBarItem(int index, String imagePath, String title,
+          {bool isNewMessage = false, bool isNeedLogin = false}) =>
+      Expanded(
         child: Stack(
           children: [
             SizedBox(
@@ -307,6 +308,12 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 type: MaterialType.transparency,
                 child: InkWell(
                   onTap: () {
+                    if (isNeedLogin) {
+                      if (_vm.userProfile == null) {
+                        showPreLoginDialog();
+                        return;
+                      }
+                    }
                     if (index == 1) {
                       Navigator.of(context).pushNamed("/promotion");
                     } else if (index == 3) {
