@@ -25,8 +25,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   getTranslatedText(String? key) =>
       LanguageProvider.getSingleton().getTranslated(context, key);
 
-  handleApiState(
-    EventResult? eventResult, {
+  handleApiState(EventResult? eventResult, {
     required Function onSuccess,
     Function? onError,
     bool isAutoHideLoading = true,
@@ -70,11 +69,12 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (context) => Maintenance(
+                  builder: (context) =>
+                      Maintenance(
                         isShowCS: true,
                         isShowsAppBar: false,
                       )),
-              (Route<dynamic> route) => false);
+                  (Route<dynamic> route) => false);
         });
       } else if (eventResult.isSuccess) {
         if (isAutoHideLoading) ProgressDialog.hide();
@@ -87,20 +87,21 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     eventResult.isHandled = true;
   }
 
-  buildProgressDialog(String? url) => Center(
+  buildProgressDialog(String? url) =>
+      Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             url == null
                 ? Container()
                 : CachedNetworkImage(
-                    placeholder: (context, url) => Container(),
-                    imageUrl: url,
-                    //handling error
-                    width: 200.auto,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Container(),
-                  ),
+              placeholder: (context, url) => Container(),
+              imageUrl: url,
+              //handling error
+              width: 200.auto,
+              fit: BoxFit.cover,
+              errorWidget: (context, url, error) => Container(),
+            ),
             //: Container(),
             //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
             //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
@@ -140,7 +141,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       String error = userRepo.apiError![eventResult.errorMsgId] ?? "";
       showDialog(
           context: context,
-          builder: (BuildContext context) => CustomDialog(
+          builder: (BuildContext context) =>
+              CustomDialog(
                 description: error,
                 buttonText1: getTranslatedText("confirm"),
                 onClick: () {
@@ -164,7 +166,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   }
 
   getCurrentLanguage() {
-    var list = LanguageProvider.getSingleton().list;
+    var list = LanguageProvider
+        .getSingleton()
+        .list;
     Language? deviceLanguage;
     if (list.length == 1) {
       return list.first;
@@ -249,5 +253,28 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       // ProgressDialog.hide();
       // }
     }
+  }
+
+  navigateToLogin() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Navigator.of(context).pushNamed(RoutePath.login);
+    });
+  }
+
+  showPreLoginDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            CustomDialog(
+              title: getTranslatedText("login_hint"),
+              description: getTranslatedText("login_dialog_des"),
+              buttonText1: getTranslatedText("login_or_signup"),
+              buttonText2: getTranslatedText("got_it"),
+              onClick: this.navigateToLogin,
+              onClick2: () {
+                Navigator.pop(context);
+              },
+            )
+    );
   }
 }

@@ -196,28 +196,12 @@ class _GameT1State extends BaseState<GameT1> {
 
   _onGameClick(GameProvider2 gameProvider) {
     if (_vm.userProfile == null) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_hint"),
-          description: getTranslatedText("login_dialog_des"),
-          buttonText1: getTranslatedText("login_or_signup"),
-          buttonText2: getTranslatedText("got_it"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            Navigator.pop(context);
-          },
-        ),
-      );
+      showPreLoginDialog();
     } else
       _navigate(gameProvider.code, gameProvider.gameType);
   }
 
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
-    });
-  }
+
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
