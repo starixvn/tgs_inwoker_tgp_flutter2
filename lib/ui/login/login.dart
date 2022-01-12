@@ -39,18 +39,18 @@ class _LoginState extends BaseState<Login> {
               child: Column(
                 children: [
                   Expanded(
-                    flex:4,
-                    child:_buildLogoImage(),
+                    flex: 4,
+                    child: _buildLogoImage(),
                   ),
                   Expanded(
-                    flex:15,
+                      flex: 15,
                       child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 27.auto),
-                    child: LoginTab(),
-                  )),
+                        margin: EdgeInsets.symmetric(horizontal: 27.auto),
+                        child: LoginTab(),
+                      )),
                   Expanded(
-                    flex:1,
-                    child:_buildVersionText(),
+                    flex: 1,
+                    child: _buildVersionText(),
                   )
                 ],
               ),
@@ -86,6 +86,8 @@ class _LoginState extends BaseState<Login> {
               height: 100.auto,
             )
           : CachedNetworkImage(
+              width: 150.auto,
+              height: 100.auto,
               placeholder: (context, url) => Container(),
               imageUrl: _vm.brandLogo.mobileUrl,
               //handling error
