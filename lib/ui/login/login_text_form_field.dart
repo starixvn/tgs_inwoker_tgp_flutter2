@@ -12,16 +12,18 @@ class LoginTextFormField extends StatelessWidget {
   final double width;
   final TextInputType textInputType;
   final TextInputAction textInputAction;
+  final Widget? dropDown;
 
   LoginTextFormField({
-     this.icon,
+    this.icon,
     required this.hintText,
-     this.onChanged,
+    this.onChanged,
     this.onFieldSubmitted,
     required this.controller,
     required this.width,
     required this.textInputType,
     required this.textInputAction,
+    this.dropDown,
   });
 
   Widget build(BuildContext context) {
@@ -33,11 +35,15 @@ class LoginTextFormField extends StatelessWidget {
         children: [
           icon == null
               ? Container()
-              : Container(
-                  margin: EdgeInsets.only(right: 10.auto),
-                  child: icon,
+              : Expanded(
+                  flex: 1,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10.auto),
+                    child: icon,
+                  ),
                 ),
           Expanded(
+            flex: 7,
             child: TextFormField(
               autofocus: false,
               //  onChanged: (value) => onChanged(value),
@@ -53,7 +59,8 @@ class LoginTextFormField extends StatelessWidget {
                 hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
               ),
             ),
-          )
+          ),
+          dropDown == null ? Container() : Expanded(flex: 2, child: dropDown!),
         ],
       ),
     );

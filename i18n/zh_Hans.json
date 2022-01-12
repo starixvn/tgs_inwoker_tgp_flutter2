@@ -990,5 +990,7 @@
   "deposit_to_account": "转帐帐户",
   "deposit_to_bank_account_name": "帐户名字",
   "from": "从",
-  "to": "至"
+  "to": "至",
+  "agent": "代理",
+  "player": "玩家"
 }

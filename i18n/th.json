@@ -990,5 +990,7 @@
   "deposit_to_account": "โอนบัญชี",
   "deposit_to_bank_account_name": "ชื่อบัญชี",
   "from": "จาก",
-  "to": "ถึง"
+  "to": "ถึง",
+  "agent": "ผู้เล่น",
+  "player": "ตัวแทน"
 }

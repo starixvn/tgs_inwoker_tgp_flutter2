@@ -990,5 +990,7 @@
   "deposit_to_account": "Chuyển khoản",
   "deposit_to_bank_account_name": "tên tài khoản",
   "from": "từ",
-  "to": "đến"
+  "to": "đến",
+  "agent": "Người chơi",
+  "player": "Đặc vụ"
 }

@@ -1003,5 +1003,7 @@
   "deposit_to_account": "Transfer account",
   "deposit_to_bank_account_name": "Account name",
   "from": "From",
-  "to": "To"
+  "to": "To",
+  "agent": "Agent",
+  "player": "Player"
 }
