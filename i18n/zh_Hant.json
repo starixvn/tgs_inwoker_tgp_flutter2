@@ -70,7 +70,7 @@
   "today": "今天",
   "one_week": "1週",
   "one_month": "1個月",
-  "time": "時間（GMT 8)",
+  "time": "時間",
   "win_loss": "輸贏",
   "turnover": "流水: ",
   "trade_time": "時間",
@@ -987,5 +987,7 @@
   "full_name": "全名",
   "enter_full_name_hint": "請輸入全名",
   "sports_wgvia": "賽馬",
-  "sports_wgfm": "體育"
+  "sports_wgfm": "體育",
+  "from": "從",
+  "to":"至"
 }

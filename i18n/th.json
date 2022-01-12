@@ -70,7 +70,7 @@
   "today": "วันนี้",
   "one_week": "1 สัปดาห์",
   "one_month": "1 เดือน",
-  "time": "เวลา (GMT+8)",
+  "time": "เวลา",
   "win_loss": "ชนะหรือแพ้",
   "turnover": "น้ำไหล: ",
   "trade_time": "เวลา",
@@ -986,5 +986,7 @@
   "full_name": "ชื่อเต็ม",
   "enter_full_name_hint": "ป้อนชื่อเต็ม",
   "sports_wgvia": "แข่งม้า",
-  "sports_wgfm": "กีฬา"
+  "sports_wgfm": "กีฬา",
+  "from": "จาก",
+  "to": "ถึง"
 }

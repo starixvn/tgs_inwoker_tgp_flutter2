@@ -238,16 +238,15 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
     if (await canLaunch(checkExistingLink)) {
       final bool launchSuccess = Platform.isIOS ? await launch(url, forceSafariVC: false) : await launch(url);
-      if (launchSuccess) {
-        ProgressDialog.hide();
-      }
+      // if (launchSuccess) {
+      // ProgressDialog.hide();
+      // }
       // launch(url, forceSafariVC: false);
     } else {
       final bool launchSuccess = Platform.isIOS ? await launch(defaultLink) : await launch(defaultLink);
-      if (launchSuccess) {
-        ProgressDialog.hide();
-      }
+      // if (launchSuccess) {
+      // ProgressDialog.hide();
+      // }
     }
   }
-
 }
