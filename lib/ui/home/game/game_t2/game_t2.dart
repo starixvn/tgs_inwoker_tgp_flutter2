@@ -138,7 +138,7 @@ class _GameT2State extends BaseState<GameT2> {
                 ),
               ), //Image.asset("images/game_tab/ic_$imagePath.png")),
               AutoSizeText(
-                gameType.getName(context),
+                gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
                 style: TextStyle(
                     color: currentGameType == gameType
                         ? CustomColor.theme_button_color

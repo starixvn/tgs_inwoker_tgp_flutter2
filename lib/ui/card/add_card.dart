@@ -166,7 +166,7 @@ class _AddCardState extends BaseState<AddCard> {
         return [
           _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
           Visibility(
-            visible: EnvironmentConfig.isShowBankBranch,
+            visible: _vm.config.addCardBankBranch,
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),

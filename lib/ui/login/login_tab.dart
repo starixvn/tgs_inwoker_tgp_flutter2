@@ -1,3 +1,4 @@
+import 'package:api/entity/env_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:tgp_flutter2/custom/tab_button.dart';
@@ -10,6 +11,10 @@ import 'package:tgp_flutter2/ui/login/register_content.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class LoginTab extends StatefulWidget {
+  final EnvFeaturesConfig? config;
+
+  LoginTab({this.config});
+
   @override
   _LoginTabState createState() => _LoginTabState();
 }
@@ -25,10 +30,10 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
     super.initState();
     tabController = TabController(
       initialIndex: currentTabIndex,
-      length: _isHKJP() ? 3 : 2,
+      length: _isShowSmsVerification() ? 3 : 2,
       vsync: this,
     );
-    tab = _isHKJP()
+    tab = _isShowSmsVerification()
         ? [
             {"id": "0", "text": "login"},
             {"id": "1", "text": "register"},
@@ -75,7 +80,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
             child: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               controller: tabController,
-              children: _isHKJP()
+              children: _isShowSmsVerification()
                   ? [
                       LoginContent(),
                       RegisterContent(
@@ -107,5 +112,5 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
     });
   }
 
-  _isHKJP() => EnvironmentConfig.isShowSmsVerification;
+  _isShowSmsVerification() => (widget.config?.smsVerification ?? false);
 }

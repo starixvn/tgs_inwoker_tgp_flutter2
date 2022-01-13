@@ -16,6 +16,8 @@ class CustomerServiceViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   var getBrandCommunicationApiState, getLiveChatUrlApiState;
   List<BrandCommunication>? communicationList;
   String? liveChatUrl;
@@ -46,5 +48,4 @@ class CustomerServiceViewModel extends BaseViewModel {
     setLoading(false);
     return getLiveChatUrlApiState;
   }
-
 }

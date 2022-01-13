@@ -278,7 +278,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    if (EnvironmentConfig.appTitleName == "HKJP" && !validate.validateIncremental100(_amountController.text)) {
+    if ((_vm.config?.withdrawalHundredDigit ?? false) && !validate.validateIncremental100(_amountController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
       });
@@ -291,7 +291,8 @@ class _WithdrawState extends BaseState<Withdraw> {
   _checkUserProfile() async {
     var result;
     //fetch bank list
-    if (_vm.userProfile.email == null  && EnvironmentConfig.isShowEmailVerification) {
+
+    if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? false)) {
       result = await Navigator.push(
         context,
         new MaterialPageRoute(

@@ -24,6 +24,8 @@ class LoginViewModel extends BaseViewModel {
 
   get brandLogo => contentRepo.brandLogo;
 
+  get config => contentRepo.featuresConfig;
+
   login(String username, String password, bool rememberMe) async {
     setLoading();
     loginApiState = await userRepo.login(username, password);
