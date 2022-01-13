@@ -109,7 +109,6 @@ class CustomDialog extends StatelessWidget {
         radius: 45.auto,
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
-        fontSize: 5,
       );
 
   _buildBackButton(BuildContext context) => OutlineBorderButton(

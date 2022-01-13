@@ -43,6 +43,7 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
         children: [
           Container(
             height: 20.auto,
+            width: 20.auto,
             margin: EdgeInsets.only(right: 10.auto),
             child: widget.icon,
           ),
@@ -57,6 +58,7 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
               obscureText: widget.obscurePassword,
               style: TextStyle(fontSize: 13.auto),
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(top: 13.5),
                 isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
