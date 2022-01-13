@@ -359,8 +359,8 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) => imagePath == "ic_deposit"
-      ? SvgPicture.asset(
-          "images/bottom_nav_bar/$imagePath.svg",
+      ? Image.asset(
+          "images/bottom_nav_bar/$imagePath.png",
           matchTextDirection: true,
           height: 18.auto,
         )
