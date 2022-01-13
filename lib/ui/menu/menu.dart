@@ -11,7 +11,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 class Menu extends StatefulWidget {
   final Function? onCloseMenu;
 
-  Menu({this.onCloseMenu}) ;
+  Menu({this.onCloseMenu});
 
   @override
   _MenuState createState() => _MenuState();
@@ -37,7 +37,7 @@ class _MenuState extends BaseState<Menu> {
                 children: [
                   _buildTransferButton(),
                   _buildMenuButton("deposit", "ic_menu_deposit", CustomColor.menu_green, RoutePath.deposit),
-                  _buildMenuButton("withdrawal", "ic_menu_withdrawal", CustomColor.menu_orange, RoutePath.withdraw),
+                  _buildMenuButton("withdrawal", "ic_menu_withdrawal.png", CustomColor.menu_orange, RoutePath.withdraw),
                 ],
               ),
             ],
@@ -46,33 +46,33 @@ class _MenuState extends BaseState<Menu> {
   }
 
   _buildTransferButton() => InkWell(
-    onTap: (){
-      Navigator.of(context).pushNamed(RoutePath.walletTransfer);
-    },
-    child: Container(
-      margin: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: CustomColor.menu_blue,
-      ),
-      width: 100.auto,
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 5.auto),
-      child: AutoSizeText(
-        getTranslatedText("transfer"),
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-        minFontSize: 10,
-        maxLines: 1,
-        stepGranularity: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-    ),
-  );
+        onTap: () {
+          Navigator.of(context).pushNamed(RoutePath.walletTransfer);
+        },
+        child: Container(
+          margin: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: CustomColor.menu_blue,
+          ),
+          width: 100.auto,
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 5.auto),
+          child: AutoSizeText(
+            getTranslatedText("transfer"),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+            minFontSize: 10,
+            maxLines: 1,
+            stepGranularity: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      );
 
   _buildMenuButton(String title, String imagePath, Color color, String route) => InkWell(
-    onTap: () => Navigator.of(context).pushNamed(route),
-    child: Container(
+        onTap: () => Navigator.of(context).pushNamed(route),
+        child: Container(
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -86,11 +86,17 @@ class _MenuState extends BaseState<Menu> {
             children: [
               Container(
                 margin: EdgeInsets.only(right: 10.auto),
-                child: SvgPicture.asset(
-                  "images/menu/$imagePath.svg",
-                  matchTextDirection: true,
-                  height: 18.auto,
-                ),
+                child: imagePath.contains(".png")
+                    ? Image.asset(
+                        "images/menu/$imagePath",
+                        height: 18.auto,
+                        color: Colors.white,
+                      )
+                    : SvgPicture.asset(
+                        "images/menu/$imagePath.svg",
+                        matchTextDirection: true,
+                        height: 18.auto,
+                      ),
               ),
               AutoSizeText(
                 getTranslatedText(title),
@@ -104,5 +110,5 @@ class _MenuState extends BaseState<Menu> {
             ],
           ),
         ),
-  );
+      );
 }
