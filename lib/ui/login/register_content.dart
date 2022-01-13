@@ -153,43 +153,45 @@ class _RegisterContentState extends BaseState<RegisterContent> {
             width: context.screenWidth,
             textInputType: TextInputType.text,
             textInputAction: TextInputAction.done,
-            dropDown: Container(
-              color: CustomColor.very_light_pink_two,
-              padding: EdgeInsets.only(
-                left: 5.auto,
-              ),
-              margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
-              child: DropdownButton(
-                elevation: 0,
-                isExpanded: true,
-                hint: Container(
-                  child: AutoSizeText(
-                    getTranslatedText(agentPlayer),
-                    minFontSize: 2,
-                    stepGranularity: 1,
-                    maxLines: 1,
-                  ),
-                ),
-                items: agentPlayerList.map((value) {
-                  return DropdownMenuItem(
-                    value: value,
-                    child: Text(
-                      getTranslatedText(value),
-                      style: TextStyle(color: CustomColor.theme_title_text_color),
+            dropDown: EnvironmentConfig.brandName == "HKJP"
+                ? Container(
+                    color: CustomColor.very_light_pink_two,
+                    padding: EdgeInsets.only(
+                      left: 5.auto,
                     ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    agentPlayer = value.toString();
-                    print(agentPlayer);
-                  });
-                },
-                style: TextStyle(
-                  color: CustomColor.theme_title_text_color,
-                ),
-              ),
-            ),
+                    margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
+                    child: DropdownButton(
+                      elevation: 0,
+                      isExpanded: true,
+                      hint: Container(
+                        child: AutoSizeText(
+                          getTranslatedText(agentPlayer),
+                          minFontSize: 2,
+                          stepGranularity: 1,
+                          maxLines: 1,
+                        ),
+                      ),
+                      items: agentPlayerList.map((value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            getTranslatedText(value),
+                            style: TextStyle(color: CustomColor.theme_title_text_color),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          agentPlayer = value.toString();
+                          print(agentPlayer);
+                        });
+                      },
+                      style: TextStyle(
+                        color: CustomColor.theme_title_text_color,
+                      ),
+                    ),
+                  )
+                : Container(),
           ),
         ),
       );
@@ -274,7 +276,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       } else {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer=="agent");
+          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
         });
       }
     });

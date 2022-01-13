@@ -122,9 +122,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       );
 
   _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription}) {
-    if ((routePath == "phone_verification" &&
-            !(EnvironmentConfig.appTitleName == "HKJP" && EnvironmentConfig.isShowSmsVerification)) ||
-        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification))
+    if ((routePath == "phone_verification" && !EnvironmentConfig.isShowSmsVerification) ||
+        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification) ||
+        (routePath == "email_verification" && !EnvironmentConfig.isShowEmailVerification))
       return Container();
     else
       return InkWell(
