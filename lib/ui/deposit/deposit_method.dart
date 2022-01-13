@@ -83,8 +83,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList!.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
-                if (_isManualDeposit() && EnvironmentConfig.isShowBankAcc)
-                  _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
+                if (isShowBankAcc()) _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
@@ -261,28 +260,31 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildUploadImageColumn() => Card(
-        semanticContainer: true,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        elevation: 5,
-        child: Column(
-          children: [
-            _buildUploadTextRow(),
-            uploadImage == null
-                ? Container()
-                : Container(
-                    padding: EdgeInsets.all(10.auto),
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(height: 80, child: Image.file(uploadImage!))),
-          ],
+  _buildUploadImageColumn() => Visibility(
+        visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          elevation: 5,
+          child: Column(
+            children: [
+              _buildUploadTextRow(),
+              uploadImage == null
+                  ? Container()
+                  : Container(
+                      padding: EdgeInsets.all(10.auto),
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+            ],
+          ),
         ),
       );
 
   _buildUploadTextRow() => Visibility(
-        visible: _isManualDeposit(),
+        visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
         child: Container(
           margin: EdgeInsets.only(top: 10, left: 10.auto, right: 10.auto),
           decoration: BoxDecoration(
@@ -353,24 +355,25 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     } else {
       amount = 0;
     }
-    if (_isManualDeposit() &&
-        EnvironmentConfig.isShowBankAcc &&
+    if (isShowBankAcc() &&
         _bankNameController.text.isNotEmpty &&
         uploadImage?.path != null &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
+      //is manual deposit or apple deposit, and showing bank account
       setState(() {
         isButtonEnabled = true;
       });
-    } else if (_isManualDeposit() &&
-        !EnvironmentConfig.isShowBankAcc &&
+    } else if ((_isManualDeposit() || _isApplePayDeposit()) &&
+        (_vm.config?.depositManualApplePayHideBankAcc ?? false) &&
         uploadImage?.path != null &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
+      //is manual deposit or apple deposit, but not showing bank account
       setState(() {
         isButtonEnabled = true;
       });
-    } else if (!_isManualDeposit() && amount! >= paymentMin && amount! <= paymentMax) {
+    } else if (!(_isManualDeposit() && _isApplePayDeposit()) && amount! >= paymentMin && amount! <= paymentMax) {
       setState(() {
         isButtonEnabled = true;
       });
@@ -467,6 +470,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       uploadImage = null;
     });
   }
+
+  isShowBankAcc() =>
+      (_isManualDeposit() || _isApplePayDeposit()) && !(_vm.config?.depositManualApplePayHideBankAcc ?? false);
 
   _handleApiState() {
     handleApiState(_vm.getLeepayOrderApiState, isRequireResult: true, onSuccess: (result) {

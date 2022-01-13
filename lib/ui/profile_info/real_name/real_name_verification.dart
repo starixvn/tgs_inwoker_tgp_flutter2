@@ -1,3 +1,4 @@
+import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -18,9 +19,12 @@ class RealNameVerification extends StatefulWidget {
 
 class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var _vm = RealNameVerificationViewModel();
-  TextEditingController _realNameController = TextEditingController(), _icNoController = TextEditingController();
+  TextEditingController _realNameController = TextEditingController(),
+      _icNoController = TextEditingController(),
+      _docNoController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false, isShowICNo;
   var buttonText;
+  InputValidationProvider validate = new InputValidationProvider();
 
   @override
   void initState() {
@@ -41,20 +45,37 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
               ),
               body: Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
-                child: Column(
-                  children: [
-                    _buildTextFormField("realname", "enter_realname_hint", _realNameController, false),
-                    Visibility(
-                      visible: _vm.userProfile.realname == null,
-                      child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
-                    ),
-                    _buildButton(),
-                    _buildFooterText()
-                  ],
-                ),
+                child: _isShowIcVerificationUpload() ? _buildUploadDocColumn() : _buildRealNameColumn(),
               ));
         });
   }
+
+  _buildUploadDocColumn() => Column(
+        children: [
+          _buildTextFormField("doc_no", "enter_doc_no_hint", _docNoController, false),
+          _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true),
+          /*GradientButton(
+            title: getTranslatedText("upload_prof"),
+            onClick: () => _vm.uploadDepositImage(uploadImage!.path, " "),
+            isEnabled: uploadImage == null ? false : true,
+            radius: 9.6,
+            height: 44.5,
+          ),*/
+          _buildButton(),
+        ],
+      );
+
+  _buildRealNameColumn() => Column(
+        children: [
+          _buildTextFormField("realname", "enter_realname_hint", _realNameController, false),
+          Visibility(
+            visible: _vm.userProfile.realname == null,
+            child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
+          ),
+          _buildButton(),
+          _buildFooterText()
+        ],
+      );
 
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => CustomTextFormField(
         title: getTranslatedText(title),
@@ -94,7 +115,11 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
               ),
               Text(
                 getTranslatedText("online_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_button_color, decoration: TextDecoration.underline,),
+                style: TextStyle(
+                  fontSize: 12.auto,
+                  color: CustomColor.theme_button_color,
+                  decoration: TextDecoration.underline,
+                ),
               )
             ],
           ),
@@ -122,7 +147,8 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _onTextChange() {
     setState(() {
-      if (_realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty) {
+      if ((_isShowIcVerificationUpload() && _realNameController.text.isNotEmpty && _docNoController.text.isNotEmpty) ||
+          (_realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty)) {
         isButtonEnabled = true;
       } else {
         isButtonEnabled = false;
@@ -131,9 +157,19 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   }
 
   _onClick() async {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.idVerify(_realNameController.text, _icNoController.text);
+    if (_isShowIcVerificationUpload() &&
+        validate.validateInputLength(_docNoController.text) &&
+        validate.validateInputLength(_realNameController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("input_length_error"));
+      });
+    } else {
+      ProgressDialog.show(context, _vm.brandLogoUrl);
+      _vm.idVerify(_realNameController.text, _icNoController.text);
+    }
   }
+
+  _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
 
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {

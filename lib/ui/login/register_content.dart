@@ -183,7 +183,6 @@ class _RegisterContentState extends BaseState<RegisterContent> {
                       onChanged: (value) {
                         setState(() {
                           agentPlayer = value.toString();
-                          print(agentPlayer);
                         });
                       },
                       style: TextStyle(
@@ -263,7 +262,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
-      if (EnvironmentConfig.appTitleName == "HKJP" || EnvironmentConfig.isShowSmsVerification)
+      if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       else {
         _vm.login(username.text, password.text, true);
@@ -284,7 +283,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   _navigateToHome() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.home);
+      Navigator.of(context).pushNamed(RoutePath.myHome);
     });
   }
 }

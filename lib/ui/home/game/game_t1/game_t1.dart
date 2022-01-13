@@ -15,7 +15,7 @@ import 'package:tgp_flutter2/ui/home/game/game_t2/game_item_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 
-class  GameT1 extends StatefulWidget {
+class GameT1 extends StatefulWidget {
   final GameViewModel? vm;
   final Function? onRefreshHomePage;
 
@@ -147,9 +147,9 @@ class _GameT1State extends BaseState<GameT1> {
                 ),*/
                   ), //Image.asset("images/game_tab/ic_$imagePath.png")),
               AutoSizeText(
-                gameType.getName(context),
+                gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
                 style: TextStyle(
-                    color:tabIndex == currentTabIndex
+                    color: tabIndex == currentTabIndex
                         ? CustomColor.theme_button_color
                         : CustomColor.theme_text_grey_color),
                 minFontSize: 2,
@@ -200,8 +200,6 @@ class _GameT1State extends BaseState<GameT1> {
     } else
       _navigate(gameProvider.code, gameProvider.gameType);
   }
-
-
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
     if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {

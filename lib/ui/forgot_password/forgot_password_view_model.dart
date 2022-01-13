@@ -13,6 +13,9 @@ class ForgotPasswordViewModel extends BaseViewModel {
   get userProfile => userRepo.userProfile;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
+
+  get config => contentRepo.featuresConfig;
+
   var securityKey;
 
   getForgotPasswordCode({String? email, String? phone, String? areaCode}) async {

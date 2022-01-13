@@ -13,6 +13,8 @@ class RealNameVerificationViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   idVerify(String realname, String id) async {
     setLoading();
     var _status = idVerifyApiState = await userRepo.setIdentity(realname, id);

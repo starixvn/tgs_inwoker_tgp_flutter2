@@ -22,8 +22,15 @@ class HomeViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   bool isNotLogin = false, isExpired = false;
-  var getBasicInfoApiState, getAnnouncementApiState, getApiErrorLocalizationApiState, getBannerApiState, logoutApiState, getBrandCommunicationApiState;
+  var getBasicInfoApiState,
+      getAnnouncementApiState,
+      getApiErrorLocalizationApiState,
+      getBannerApiState,
+      logoutApiState,
+      getBrandCommunicationApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;

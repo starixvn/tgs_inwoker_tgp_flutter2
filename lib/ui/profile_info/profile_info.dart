@@ -54,7 +54,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                               _getItemText(_vm.userProfile.email)
                             ],
                           ),
-                          EnvironmentConfig.isShowWechatQQ
+                          (_vm.config?.qqWeChat ?? false)
                               ? _buildInfoCard(
                                   "other_info",
                                   [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
@@ -122,9 +122,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       );
 
   _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription}) {
-    if ((routePath == "phone_verification" && !EnvironmentConfig.isShowSmsVerification) ||
-        (routePath == "real_name_verification" && !EnvironmentConfig.isShowIcVerification) ||
-        (routePath == "email_verification" && !EnvironmentConfig.isShowEmailVerification))
+    if ((routePath == "phone_verification" && !(_vm.config?.smsVerification ?? false)) ||
+        (routePath == "real_name_verification" && !(_vm.config?.icVerification ?? false)) ||
+        (routePath == "email_verification" && !(_vm.config?.emailVerification ?? false)))
       return Container();
     else
       return InkWell(

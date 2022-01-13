@@ -109,7 +109,10 @@ class _MyAppState extends BaseState<MyApp> {
         _getLocale(); //temp for localization for mainteance page
         return _vm.authApiState; //return if maintenance
       }
-      await _vm.getVersion();
+      if (_vm.config?.haveDownloadFeature ?? false) {
+        await _vm.getVersion();
+      }
+      await _vm.getEnvFeatures();
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
@@ -125,13 +128,13 @@ class _MyAppState extends BaseState<MyApp> {
       return EventResult.loading();
   }
 
-  Future<EventResult<LoginResponse>> initAuthToken() async {
+/*  Future<EventResult<LoginResponse>> initAuthToken() async {
     if (firstInit) {
       await _vm.getAuthToken();
       return _vm.authApiState;
     } else
       return EventResult.loading();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

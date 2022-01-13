@@ -65,7 +65,7 @@ class _HomeT2State extends BaseState<HomeT2> {
     await _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (EnvironmentConfig.isShowMarqueePopUp && _vm.firstAnnouncement != null) _displayMarqueeDialog();
+      if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
   }
 
@@ -89,6 +89,7 @@ class _HomeT2State extends BaseState<HomeT2> {
               brandLogoUrl: _vm.brandLogoUrl,
               userProfile: _vm.userProfile,
               phone: _vm.phone,
+              config: _vm.config,
             ),
             body: /* Stack(
               children: [*/

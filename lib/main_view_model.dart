@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:api/api.dart';
+import 'package:api/entity/env_features_config.dart';
 import 'package:api/init.dart';
 import 'package:api/network/event_result.dart';
 import 'package:package_info/package_info.dart';
@@ -30,6 +31,8 @@ class MainViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
+  get config => contentRepo.featuresConfig;
+
   getVersion() async {
     setLoading();
     EventResult<dynamic> eventResult = await contentRepo.getVersionJson(EnvironmentConfig.brandName);
@@ -40,8 +43,8 @@ class MainViewModel extends BaseViewModel {
         var platform = Platform.isAndroid
             ? "android"
             : Platform.isIOS
-            ? "iOS"
-            : "";
+                ? "iOS"
+                : "";
         var version = versionList.where((element) => element["platform"] == platform).first;
 
         if (version["version"] != package.version) {
@@ -54,9 +57,17 @@ class MainViewModel extends BaseViewModel {
     setLoading(false);
   }
 
+  getEnvFeatures() async {
+    setLoading();
+    EventResult<EnvFeaturesConfig> eventResult = await contentRepo.getEnvFeaturesJson(EnvironmentConfig.brandName);
+    if (eventResult.isSuccess) {}
+    setLoading(false);
+  }
+
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency,
+        EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;

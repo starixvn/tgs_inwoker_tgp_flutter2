@@ -1,3 +1,4 @@
+import 'package:api/entity/env_features_config.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -12,14 +13,14 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomLoginAppBar({
-    required this.onClickLoginButton,
-    required this.onClickLogoutButton,
-    required this.isLogin,
-    this.brandLogoUrl,
-    this.userProfile,
-    this.phone,
-  });
+  CustomLoginAppBar(
+      {required this.onClickLoginButton,
+      required this.onClickLogoutButton,
+      required this.isLogin,
+      this.brandLogoUrl,
+      this.userProfile,
+      this.phone,
+      this.config});
 
   final Function onClickLoginButton;
   final Function onClickLogoutButton;
@@ -27,6 +28,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? brandLogoUrl;
   final UserProfile? userProfile;
   final String? phone;
+  final EnvFeaturesConfig? config;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -80,7 +82,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ),
               Expanded(
-                flex: EnvironmentConfig.isShowPhoneNumber ? 1 : 0,
+                flex: (widget.config?.displayPhone ?? false) ? 1 : 0,
                 child: _getUserDetailsRow(),
               )
             ],
@@ -163,7 +165,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getPhoneText() => Visibility(
-        visible: EnvironmentConfig.isShowPhoneNumber,
+        visible: (widget.config?.displayPhone ?? false),
         child: Row(
           children: [
             Container(
@@ -186,7 +188,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getVipText() => Visibility(
-        visible: EnvironmentConfig.isShowVipInHome,
+        visible: widget.config?.customVIP ?? false,
         child: Row(
           children: [
             Visibility(

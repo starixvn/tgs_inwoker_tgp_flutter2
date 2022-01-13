@@ -29,6 +29,8 @@ class DepositMethodViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   filterMethod(BankType bankType) async {
     paymentList = depositMethodList![bankType];
     notifyListeners();
@@ -50,8 +52,10 @@ class DepositMethodViewModel extends BaseViewModel {
           await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
-      //getManualDepositOrder(orderNo);
-      uploadDepositImage(imageFile, orderNo);
+      if (config.deposit_DualPage)
+        getManualDepositOrder(orderNo);
+      else
+        uploadDepositImage(imageFile, orderNo);
     }
     setLoading(false);
     return getManualDepositIdApiState;

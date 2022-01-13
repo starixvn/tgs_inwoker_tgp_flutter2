@@ -211,7 +211,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
 
   _navigateToHome() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.home, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
     });
   }
 }

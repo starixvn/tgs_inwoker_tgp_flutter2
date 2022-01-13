@@ -17,6 +17,8 @@ class WithdrawViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   getBankCardList() async {
     setLoading();
     getBankCardListApiState = await bankRepo.getBankCardList();

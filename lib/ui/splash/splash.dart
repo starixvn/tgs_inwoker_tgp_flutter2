@@ -77,7 +77,7 @@ class _SplashState extends BaseState<Splash> {
 
   _navigateToHome() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.home);
+      Navigator.of(context).pushNamed(RoutePath.myHome);
     });
   }
 }

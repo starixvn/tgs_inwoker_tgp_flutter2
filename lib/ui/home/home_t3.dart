@@ -75,7 +75,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     await _gameViewModel.getGameProviderList(isRefresh: true);
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (EnvironmentConfig.isShowMarqueePopUp && _vm.firstAnnouncement != null) _displayMarqueeDialog();
+      if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
   }
 
@@ -99,6 +99,7 @@ class _HomeT3State extends BaseState<HomeT3> {
               brandLogoUrl: _vm.brandLogoUrl,
               userProfile: _vm.userProfile,
               phone: _vm.phone,
+              config: _vm.config,
             ),
             body: /* Stack(
               children: [*/
@@ -244,7 +245,8 @@ class _HomeT3State extends BaseState<HomeT3> {
                             height: 90.auto,
                             alignment: Alignment.bottomCenter,
                             child: AutoSizeText(
-                              gameRowList[index].getName(context),
+                              // gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
+                              gameRowList[index].getName(context, _vm.config?.menuItemShootFish ?? false),
                               maxFontSize: 23,
                               minFontSize: 10,
                               stepGranularity: 1,
@@ -279,7 +281,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                         height: 40.auto,
                         alignment: Alignment.bottomLeft,
                         child: AutoSizeText(
-                          gameList[index].getName(context),
+                          gameList[index].getName(context, _vm.config?.menuItemShootFish ?? false),
                           maxFontSize: 23,
                           minFontSize: 10,
                           stepGranularity: 1,

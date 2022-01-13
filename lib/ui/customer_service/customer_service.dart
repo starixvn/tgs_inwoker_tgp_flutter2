@@ -97,7 +97,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
 //                             ],
 // =======
                         Visibility(
-                          visible: EnvironmentConfig.isShowPhoneNumber,
+                          visible: _vm.config?.displayPhone ?? false,
                           child: Positioned(
                             top: context.screenWidth / 2.1,
                             right: context.screenWidth / 10,

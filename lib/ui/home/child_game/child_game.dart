@@ -209,7 +209,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _getAppTitle() {
     if (widget.gameType != null) {
-      return widget.gameType!.getName(context);
+      return widget.gameType!.getName(context, _vm.config?.menuItemShootFish ?? false);
     }
   }
 
