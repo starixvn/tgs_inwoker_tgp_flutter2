@@ -35,12 +35,11 @@ class LoginTextFormField extends StatelessWidget {
         children: [
           icon == null
               ? Container()
-              : Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10.auto),
-                    child: icon,
-                  ),
+              : Container(
+                  height: 20.auto,
+                  width: 20.auto,
+                  margin: EdgeInsets.only(right: 10.auto),
+                  child: icon,
                 ),
           Expanded(
             flex: 7,
