@@ -54,6 +54,8 @@ class EnvironmentConfig {
 
   static const bool isShowSmsVerification = true;
 
+  static const bool isShowEmailVerification = false;
+
   static const bool isShowBankBranch = true;
 
   static const bool isShowIcVerification = true;
