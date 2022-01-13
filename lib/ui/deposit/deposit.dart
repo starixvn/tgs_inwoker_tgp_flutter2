@@ -81,6 +81,7 @@ class _DepositState extends BaseState<Deposit> {
                             ),
                             Expanded(
                               child: TabBarView(
+                                physics: NeverScrollableScrollPhysics(),
                                 children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
                                   return DepositMethod(
                                     paymentCode: _vm.paymentCodeList!.keys.toList()[index],
