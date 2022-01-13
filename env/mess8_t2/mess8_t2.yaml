@@ -79,6 +79,9 @@ environment_config:
     isShowSmsVerification:
       type: bool
       default: false
+    isShowEmailVerification:
+      type: bool
+      default: true
     isShowBankBranch:
       #add bank card
       type: bool

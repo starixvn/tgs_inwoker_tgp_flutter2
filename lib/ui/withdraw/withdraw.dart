@@ -291,7 +291,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   _checkUserProfile() async {
     var result;
     //fetch bank list
-    if (_vm.userProfile.email == null) {
+    if (_vm.userProfile.email == null  && EnvironmentConfig.isShowEmailVerification) {
       result = await Navigator.push(
         context,
         new MaterialPageRoute(
@@ -299,9 +299,11 @@ class _WithdrawState extends BaseState<Withdraw> {
         ),
       );
       //Navigator.of(context).pushNamed("/email_verification");
-    } else if (_vm.userProfile.isSetPayPassword == false) {
-      result = await Navigator.of(context).pushNamed("/pay_password");
-    } else {
+    }
+    // else if (_vm.userProfile.isSetPayPassword == false) {
+    //   result = await Navigator.of(context).pushNamed("/pay_password");
+    // }
+    else {
       _vm.getBankCardList();
       return;
     }

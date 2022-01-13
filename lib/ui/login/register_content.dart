@@ -149,6 +149,45 @@ class _RegisterContentState extends BaseState<RegisterContent> {
             width: context.screenWidth,
             textInputType: TextInputType.text,
             textInputAction: TextInputAction.done,
+            // dropDown: EnvironmentConfig.brandName == "HKJP"
+            //     ? Container(
+            //         color: CustomColor.very_light_pink_two,
+            //         padding: EdgeInsets.only(
+            //           left: 5.auto,
+            //         ),
+            //         margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
+            //         child: DropdownButton(
+            //           elevation: 0,
+            //           isExpanded: true,
+            //           hint: Container(
+            //             child: AutoSizeText(
+            //               getTranslatedText(agentPlayer),
+            //               minFontSize: 2,
+            //               stepGranularity: 1,
+            //               maxLines: 1,
+            //             ),
+            //           ),
+            //           items: agentPlayerList.map((value) {
+            //             return DropdownMenuItem(
+            //               value: value,
+            //               child: Text(
+            //                 getTranslatedText(value),
+            //                 style: TextStyle(color: CustomColor.theme_title_text_color),
+            //               ),
+            //             );
+            //           }).toList(),
+            //           onChanged: (value) {
+            //             setState(() {
+            //               agentPlayer = value.toString();
+            //               print(agentPlayer);
+            //             });
+            //           },
+            //           style: TextStyle(
+            //             color: CustomColor.theme_title_text_color,
+            //           ),
+            //         ),
+            //       )
+            //     : Container(),
           ),
         ),
       );
