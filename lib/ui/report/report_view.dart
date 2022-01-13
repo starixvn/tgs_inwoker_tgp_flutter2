@@ -86,6 +86,7 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
                 ),
                 Expanded(
                   child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: _tabController,
                     children: [
                       AccountReportView(vm: _vm),
