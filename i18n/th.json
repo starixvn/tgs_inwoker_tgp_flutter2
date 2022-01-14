@@ -986,5 +986,7 @@
   "full_name": "ชื่อเต็ม",
   "enter_full_name_hint": "ป้อนชื่อเต็ม",
   "sports_wgvia": "แข่งม้า",
-  "sports_wgfm": "กีฬา"
+  "sports_wgfm": "กีฬา",
+  "deposit_to_account": "โอนบัญชี",
+  "deposit_to_bank_account_name": "ชื่อบัญชี"
 }

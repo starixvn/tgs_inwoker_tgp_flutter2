@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/manual_deposit_order.dart';
+import 'package:api/entity/payment_qr_code.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
@@ -83,6 +85,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList!.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
+                if (_isManualDeposit()) _buildTransferToAccount(_payment?.methodCode, _payment?.qrCode),
                 if (_isManualDeposit() && EnvironmentConfig.isShowBankAcc)
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (_isApplePayDeposit())
@@ -244,6 +247,94 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           ],
         ),
       );
+
+  _buildTransferToAccount(String? methodCode, PaymentQrCode? paymentQrCode) {
+    if (paymentQrCode == null) return Container();
+
+    List<Widget> content = methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null
+        ? _buildTransferToQr(paymentQrCode.qrCodeFileUrl!)
+        : (paymentQrCode.name != null && paymentQrCode.bankAccount != null)
+            ? _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!, paymentQrCode.bankAccount!)
+            : [];
+
+    if (content.isNotEmpty) {
+      return Container(
+        margin: EdgeInsets.only(
+          left: 10.auto,
+          right: 10.auto,
+          top: 13.auto,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              getTranslatedText("deposit_to_account"),
+              style: TextStyle(
+                fontSize: 9.auto,
+              ),
+            ),
+            SizedBox(height: 3.auto),
+          ]..addAll(content),
+        ),
+      );
+    }
+    return Container();
+  }
+
+  _buildTransferToQr(String qrUrl) {
+    return [
+      Image.network(
+        qrUrl,
+        width: 100,
+        height: 100,
+      )
+    ];
+  }
+
+  _buildTransferToBank(String? logo, String name, String bankAccount) {
+    return [
+      logo != null
+          ? CachedNetworkImage(
+              width: 120.auto,
+              placeholder: (context, url) => Container(
+                    color: CustomColor.very_light_pink_four,
+                  ),
+              imageUrl: logo,
+              //handling error
+              fit: BoxFit.fill)
+          : Container(),
+      SizedBox(height: 3.auto),
+      Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text(
+            getTranslatedText("deposit_to_bank_account_name") + ": ",
+            style: TextStyle(
+                fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+          ),
+          Text(
+            name,
+            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+          ),
+        ],
+      ),
+      SizedBox(height: 3.auto),
+      Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text(
+            getTranslatedText("card_number") + ": ",
+            style: TextStyle(
+                fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+          ),
+          Text(
+            bankAccount,
+            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+          ),
+        ],
+      ),
+    ];
+  }
 
   _buildHintText() => Container(
         margin: EdgeInsets.only(

@@ -987,5 +987,7 @@
   "full_name": "Nama Lengkap",
   "enter_full_name_hint": "Masukkan Nama Lengkap",
   "sports_wgvia": "Balap kuda",
-  "sports_wgfm": "Olahraga"
+  "sports_wgfm": "Olahraga",
+  "deposit_to_account": "转帐帐户",
+  "deposit_to_bank_account_name": "帐户名字"
 }

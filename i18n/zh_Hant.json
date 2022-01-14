@@ -987,5 +987,7 @@
   "full_name": "全名",
   "enter_full_name_hint": "請輸入全名",
   "sports_wgvia": "賽馬",
-  "sports_wgfm": "體育"
+  "sports_wgfm": "體育",
+  "deposit_to_account": "轉帳賬戶",
+  "deposit_to_bank_account_name": "帳戶名字"
 }

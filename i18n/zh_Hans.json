@@ -986,5 +986,7 @@
   "full_name": "全名",
   "enter_full_name_hint": "请输入全名",
   "sports_wgvia": "赛马",
-  "sports_wgfm": "体育"
+  "sports_wgfm": "体育",
+  "deposit_to_account": "转帐帐户",
+  "deposit_to_bank_account_name": "帐户名字"
 }
