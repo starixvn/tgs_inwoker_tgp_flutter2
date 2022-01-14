@@ -74,7 +74,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               Expanded(
                 flex: 2,
                 child: CachedNetworkImage(
-                  placeholder: (context, url) => Container(),
+                  placeholder: (context, url) => Container(
+                    height: 30.auto,
+                    width: 30.auto,
+                  ),
                   imageUrl: widget.brandLogoUrl!,
                   //handling error
                   height: 30.auto,
