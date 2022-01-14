@@ -272,7 +272,7 @@ class _MainCardState extends BaseState<MainCard> {
         context: context,
         builder: (BuildContext context) => CustomDialog(
           description: getTranslatedText("edit_bank_card_cs"),
-          buttonText1: "确认",
+          buttonText1: getTranslatedText("confirm"),
           onClick: () {
             Navigator.pop(context);
             _getBankCardList(); //reinite data after pop

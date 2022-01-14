@@ -74,7 +74,6 @@ class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
             onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode() : null,
             width: 86.auto,
             height: 40.auto,
-            fontSize: 5,
             isEnabled: widget.isEnabled,
             radius: 2.9,
             //fontSize: 11.auto,

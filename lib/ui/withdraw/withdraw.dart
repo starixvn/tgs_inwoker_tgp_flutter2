@@ -299,9 +299,9 @@ class _WithdrawState extends BaseState<Withdraw> {
         ),
       );
       //Navigator.of(context).pushNamed("/email_verification");
-    } else if (_vm.userProfile.isSetPayPassword == false) {
+    } /*else if (_vm.userProfile.isSetPayPassword == false) {
       result = await Navigator.of(context).pushNamed("/pay_password");
-    } else {
+    }*/ else {
       _vm.getBankCardList();
       return;
     }
