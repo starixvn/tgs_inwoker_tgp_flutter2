@@ -176,12 +176,12 @@ class _MainCardState extends BaseState<MainCard> {
           await Navigator.of(context).pushNamed("/add_card");
           _getBankCardList(); //reinitdata after pop from  add card
         },*/
-            EnvironmentConfig.brandName != "MESS8" && _vm.bankCardList!.length != 1
-                ? () async {
+            EnvironmentConfig.brandName == "MESS8" && _vm.bankCardList!.length >= 1
+                ? () => _showDialog()
+                : () async {
                     await Navigator.of(context).pushNamed("/add_card");
                     _getBankCardList(); //reinitdata after pop from  add card
-                  }
-                : () => _showDialog(),
+                  },
         child: Container(
           margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
           child: DottedBorder(

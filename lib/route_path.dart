@@ -19,7 +19,7 @@ class RoutePath{
   static final cardVerifyRealName = '/card_verify_real_name';
   static final cardVerifyWithdrawPassword = '/card_verify_withdraw_password';
   static final profileInfo = '/profile_info';
-  static final realNameVerification = '/real_ name_verification';
+  static final realNameVerification = '/real_name_verification';
   static final phoneVerification = '/phone_verification';
   static final editPhone = '/edit_phone';
   static final emailVerification = '/email_verification';
