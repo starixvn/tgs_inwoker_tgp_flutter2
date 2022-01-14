@@ -305,7 +305,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           : Container(),
       SizedBox(height: 3.auto),
       Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           Text(
             getTranslatedText("deposit_to_bank_account_name") + ": ",
@@ -320,7 +320,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       ),
       SizedBox(height: 3.auto),
       Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.end,
         children: [
           Text(
             getTranslatedText("card_number") + ": ",
