@@ -133,7 +133,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getLogoutButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         child: ColorButton(
-          title: getTranslatedText("logout"),
+          title: getTranslatedText("exit"),
           onClick: () => widget.onClickLogoutButton(),
           isEnabled: true,
           width: 60,

@@ -1006,5 +1006,6 @@
   "from": "From",
   "to": "To",
   "agent": "Agent",
-  "player": "Player"
+  "player": "Player",
+  "exit": "Exit"
 }
