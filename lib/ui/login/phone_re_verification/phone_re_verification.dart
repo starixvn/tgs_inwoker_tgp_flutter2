@@ -89,7 +89,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         margin: EdgeInsets.only(top: 10.auto),
         child: LoginPasswordTextFormField(
           icon: SvgPicture.asset(
-            "images/login/unlock_alt.svg",
+            "images/login/ic_login_password.svg",
             height: 20.auto,
           ),
           hintText: getTranslatedText("signup_password_hint"),

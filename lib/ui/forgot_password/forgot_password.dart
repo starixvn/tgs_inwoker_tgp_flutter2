@@ -81,7 +81,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
           controller: _emailController,
-          width: context.screenWidth - 70.auto,
+          width: context.screenWidth - 30.auto,
           textInputAction: TextInputAction.next,
           enabled: true,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
