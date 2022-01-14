@@ -86,6 +86,7 @@ class _HomeT1State extends BaseState<HomeT1> {
             backgroundColor: CustomColor.theme_bg_color,
             appBar: CustomLoginAppBar(
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+              onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
               onClickLogoutButton: () => _logout(),
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,

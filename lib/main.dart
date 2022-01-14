@@ -163,6 +163,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
                   RoutePath.login: (context) => Login(),
+                  RoutePath.register: (context) => Login(defaultRegisterTab:true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(),
                   RoutePath.splashMaintenance: (context) => Maintenance(

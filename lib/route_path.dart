@@ -3,6 +3,7 @@ class RoutePath{
   static final home = '/home';
   static final myHome = '/my_home';
   static final login = '/login';
+  static final register = '/register';
   static final promotion = '/promotion';
   static final profile = '/profile';
   static final deposit = '/deposit';
