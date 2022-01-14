@@ -1,3 +1,4 @@
+import 'package:api/entity/env_features_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
@@ -12,8 +13,15 @@ class GameItemT2 extends StatefulWidget {
   final List<dynamic>? gameProviderList;
   final Function(GameProvider2)? onGameClick;
   final GameType? currGameType;
+  final EnvFeaturesConfig? config;
 
-  GameItemT2({this.gameProviderList, this.onGameClick, this.currGameType, this.controller});
+  GameItemT2({
+    this.gameProviderList,
+    this.onGameClick,
+    this.currGameType,
+    this.controller,
+    this.config,
+  });
 
   @override
   GameItemT2State createState() => GameItemT2State();
@@ -53,7 +61,11 @@ class GameItemT2State extends BaseState<GameItemT2> {
   _getImagePath(GameProvider2 gameProvider) {
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
+    var imagePath;
+    if (_isSportsHideLogo(gamePlatformCode))
+      imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_hkjp.png";
+    else
+      imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
     return imagePath;
   }
 
@@ -138,4 +150,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
         _getImagePath(gameProvider),
         fit: BoxFit.cover,
       ));
+
+  _isSportsHideLogo(String? gamePlatformCode) =>
+      (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 }

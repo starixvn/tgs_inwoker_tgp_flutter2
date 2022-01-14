@@ -1,3 +1,4 @@
+import 'package:api/entity/env_features_config.dart';
 import 'package:api/entity/game_provider.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
@@ -21,8 +22,14 @@ class GameT3 extends StatefulWidget {
   final String? gamePlatformCode;
   final GameType? gameType;
   final int? index;
+  final EnvFeaturesConfig? config;
 
-  GameT3({this.gamePlatformCode, this.gameType, this.index});
+  GameT3({
+    this.gamePlatformCode,
+    this.gameType,
+    this.index,
+    this.config,
+  });
 
   @override
   _GameT3State createState() => _GameT3State();
@@ -81,7 +88,12 @@ class _GameT3State extends BaseState<GameT3> {
   _getImagePath(GameProvider2 gameProvider) {
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var imagePath = "images/game/T3/${gameType}_${gamePlatformCode}.png";
+    //var imagePath = "images/game/T3/${gameType}_${gamePlatformCode}.png";
+    var imagePath;
+    if (_isSportsHideLogo(gamePlatformCode))
+      imagePath = "images/game/T3/${gameType}_${gamePlatformCode}_hkjp.png";
+    else
+      imagePath = "images/game/T3/${gameType}_$gamePlatformCode.png";
     return imagePath;
   }
 
@@ -224,6 +236,9 @@ class _GameT3State extends BaseState<GameT3> {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }
+
+  _isSportsHideLogo(String? gamePlatformCode) =>
+      (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
