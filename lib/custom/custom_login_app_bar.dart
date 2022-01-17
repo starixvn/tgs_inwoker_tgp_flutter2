@@ -15,6 +15,7 @@ import 'package:tgp_flutter2/src/gradient_decoration.dart';
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomLoginAppBar(
       {required this.onClickLoginButton,
+      required this.onClickRegisterButton,
       required this.onClickLogoutButton,
       required this.isLogin,
       this.brandLogoUrl,
@@ -23,6 +24,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
       this.config});
 
   final Function onClickLoginButton;
+  final Function onClickRegisterButton;
   final Function onClickLogoutButton;
   final bool isLogin;
   final String? brandLogoUrl;
@@ -72,7 +74,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               Expanded(
                 flex: 2,
                 child: CachedNetworkImage(
-                  placeholder: (context, url) => Container(),
+                  placeholder: (context, url) => Container(
+                    height: 30.auto,
+                    width: 30.auto,
+                  ),
                   imageUrl: widget.brandLogoUrl!,
                   //handling error
                   height: 30.auto,
@@ -118,7 +123,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         child: ColorButton(
           title: getTranslatedText("register"),
-          onClick: () => widget.onClickLoginButton(),
+          onClick: () => widget.onClickRegisterButton(),
           isEnabled: true,
           width: 80,
           height: 17,
@@ -133,7 +138,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getLogoutButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         child: ColorButton(
-          title: getTranslatedText("logout"),
+          title: getTranslatedText("exit"),
           onClick: () => widget.onClickLogoutButton(),
           isEnabled: true,
           width: 60,
@@ -216,7 +221,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  getTranslatedText(String? key) => LanguageProvider.getSingleton().getTranslated(context, key);
 
   _getVipPresentText(int level) {
     if (EnvironmentConfig.vipPresentType == 2) {

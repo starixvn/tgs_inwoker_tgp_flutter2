@@ -16,7 +16,8 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password_view_model.dart';
 import 'package:tgp_flutter2/ui/forgot_password/update_forgot_password.dart';
 
-class ForgotPassword extends StatefulWidget {
+class
+ForgotPassword extends StatefulWidget {
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
@@ -69,7 +70,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
           controller: _emailController,
-          width: context.screenWidth - 70.auto,
+          width: context.screenWidth - 40.auto,
           textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
         ),

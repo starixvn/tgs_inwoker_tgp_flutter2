@@ -12,6 +12,10 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 
 class Login extends StatefulWidget {
+  final bool defaultRegisterTab;
+
+  Login({this.defaultRegisterTab = false});
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -48,6 +52,7 @@ class _LoginState extends BaseState<Login> {
                         margin: EdgeInsets.symmetric(horizontal: 27.auto),
                         child: LoginTab(
                           config: _vm.config,
+                          defaultRegisterTab: widget.defaultRegisterTab,
                         ),
                       )),
                   Expanded(

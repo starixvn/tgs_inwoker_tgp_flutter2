@@ -12,8 +12,9 @@ import 'package:api/extension/screen_apis.dart';
 
 class LoginTab extends StatefulWidget {
   final EnvFeaturesConfig? config;
+  final bool defaultRegisterTab;
 
-  LoginTab({this.config});
+  LoginTab({this.config, this.defaultRegisterTab = false});
 
   @override
   _LoginTabState createState() => _LoginTabState();
@@ -28,6 +29,8 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    if (widget.defaultRegisterTab) currentTabIndex = 1;
+
     tabController = TabController(
       initialIndex: currentTabIndex,
       length: _isShowSmsVerification() ? 3 : 2,

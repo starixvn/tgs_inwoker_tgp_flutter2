@@ -994,5 +994,6 @@
   "from": "Dari",
   "to":"Ke",
   "agent": "Agen",
-  "player": "Pemain"
+  "player": "Pemain",
+  "exit": "Exit"
 }

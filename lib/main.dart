@@ -98,6 +98,7 @@ class _MyAppState extends BaseState<MyApp> {
 
   Future<EventResult<dynamic>> initData() async {
     if (firstInit) {
+      LanguageProvider.getSingleton().init(EnvironmentConfig.brandName);
       if (_vm.authApiState?.isMaintenance == true) {
         //prevent loop
         return _vm.authApiState; //return if maintenance
@@ -163,6 +164,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
                   RoutePath.login: (context) => Login(),
+                  RoutePath.register: (context) => Login(defaultRegisterTab:true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(),
                   RoutePath.splashMaintenance: (context) => Maintenance(

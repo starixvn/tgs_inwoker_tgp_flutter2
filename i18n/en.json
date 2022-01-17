@@ -2,6 +2,7 @@
   "cat_livecasino": "Live Casino",
   "cat_qipai": "Card",
   "cat_sport": "Sportsbook",
+  "MESS8_cat_sport": "Sports",
   "cat_lottery": "Lottery",
   "cat_slotgame": "Slots",
   "cat_fish": "Fishing",
@@ -1006,5 +1007,6 @@
   "from": "From",
   "to": "To",
   "agent": "Agent",
-  "player": "Player"
+  "player": "Player",
+  "exit": "Exit"
 }
