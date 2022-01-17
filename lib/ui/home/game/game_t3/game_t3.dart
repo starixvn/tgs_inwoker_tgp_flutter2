@@ -52,8 +52,12 @@ class _GameT3State extends BaseState<GameT3> {
     if (_vm.gameTypeMap?.isEmpty ?? true)
       return null;
     else {
-      if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
-        return ([_vm.gameTypeMap![GameType.Sportsbook], _vm.gameTypeMap![GameType.ESports]].expand((x) => x!).toList());
+      if (widget.gameType == GameType.Sportsbook ||
+          widget.gameType == GameType.ESports)
+        return ([
+          _vm.gameTypeMap![GameType.Sportsbook],
+          _vm.gameTypeMap![GameType.ESports]
+        ].expand((x) => x!).toList());
       else
         return _vm.gameTypeMap![widget.gameType]!;
     }
@@ -80,7 +84,10 @@ class _GameT3State extends BaseState<GameT3> {
                           padding: EdgeInsets.only(bottom: 15.auto),
                           children: _getGameTypeMap()!
                               .map((item) => Container(
-                                  margin: EdgeInsets.only(top: 15.auto, left: 15.auto, right: 15.auto),
+                                  margin: EdgeInsets.only(
+                                      top: 15.auto,
+                                      left: 15.auto,
+                                      right: 15.auto),
                                   child: _buildImageLayout(item)))
                               .toList())));
         });
@@ -125,13 +132,16 @@ class _GameT3State extends BaseState<GameT3> {
             left: context.screenWidth / 6,
             child: Column(
               children: [
-                (EnvironmentConfig.brandName == "MGM" && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia"))
+                (EnvironmentConfig.brandName == "MGM" &&
+                        (gamePlatformCode == "wgfm" ||
+                            gamePlatformCode == "wgvia"))
                     ? Container(
                         width: 74.auto,
                         margin: EdgeInsets.only(bottom: 15.auto),
                         child: Text(
                           getTranslatedText("sports_$gamePlatformCode"),
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       )
@@ -155,7 +165,10 @@ class _GameT3State extends BaseState<GameT3> {
                 decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
                 child: Center(
                   child: Text(getTranslatedText("maintenance"),
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.auto)),
                 ),
               ),
             ),
@@ -169,7 +182,9 @@ class _GameT3State extends BaseState<GameT3> {
         width: 74.auto,
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/game/T3/btn_start_game.png"))),
         child: Text(
           getTranslatedText("start_game"),
           style: TextStyle(
@@ -209,17 +224,23 @@ class _GameT3State extends BaseState<GameT3> {
   }
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
-    if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) || gamePlatformCode == "TCG_SEA") {
+    if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
+        gamePlatformCode == "TCG_SEA" ||
+        gamePlatformCode == "TCG_LOTTO" ||
+        gamePlatformCode == "TCG_LOTTO_VN") {
       if (gamePlatformCode == "SW")
         await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
       else {
         await _vm.getGameList(gamePlatformCode, gameType);
-        await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+        await _vm.getGameUrl(gamePlatformCode!,
+            _vm.gameListMap[gamePlatformCode]!.first.id!, "");
       }
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
       });
-    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+    } else if (gameType == GameType.Slot ||
+        gameType == GameType.EGame ||
+        gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
@@ -230,7 +251,8 @@ class _GameT3State extends BaseState<GameT3> {
                       gameType: gameType,
                     )));
       });
-    } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
+    } else if (gameType == GameType.Lottery ||
+        gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
       Navigator.push(
@@ -265,10 +287,12 @@ class _GameT3State extends BaseState<GameT3> {
   }
 
   _isSportsHideLogo(String? gamePlatformCode) =>
-      (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+      (widget.config?.sportsHideLogo ?? false) &&
+      (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 
   _handleApiState() {
-    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getGameProviderListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameApiState, onSuccess: () {});
   }
 }
