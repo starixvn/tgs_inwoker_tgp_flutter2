@@ -109,10 +109,10 @@ class _MyAppState extends BaseState<MyApp> {
         _getLocale(); //temp for localization for mainteance page
         return _vm.authApiState; //return if maintenance
       }
+      await _vm.getEnvFeatures();
       if (_vm.config?.haveDownloadFeature ?? false) {
         await _vm.getVersion();
       }
-      await _vm.getEnvFeatures();
       await _vm.getLanguageOption();
       _vm.getApiError();
       _vm.getBrandLogo();
