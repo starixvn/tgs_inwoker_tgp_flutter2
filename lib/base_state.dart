@@ -17,12 +17,13 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-abstract class BaseState<T extends StatefulWidget> extends State<T> {
+abstract class
+BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
 
   get apiError => userRepo.apiError;
 
-  getTranslatedText(String? key) => LanguageProvider.getSingleton().getTranslated(context, key);
+  getTranslatedText(String? key, {bool isByBrand = false}) => LanguageProvider.getSingleton().getTranslated(context, key,isByBrand: isByBrand);
 
   handleApiState(
     EventResult? eventResult, {

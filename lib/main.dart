@@ -98,6 +98,7 @@ class _MyAppState extends BaseState<MyApp> {
 
   Future<EventResult<dynamic>> initData() async {
     if (firstInit) {
+      LanguageProvider.getSingleton().init(EnvironmentConfig.brandName);
       if (_vm.authApiState?.isMaintenance == true) {
         //prevent loop
         return _vm.authApiState; //return if maintenance

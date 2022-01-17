@@ -221,7 +221,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  getTranslatedText(String? key) => LanguageProvider.getSingleton().getTranslated(context, key);
 
   _getVipPresentText(int level) {
     if (EnvironmentConfig.vipPresentType == 2) {
