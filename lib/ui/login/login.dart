@@ -46,7 +46,9 @@ class _LoginState extends BaseState<Login> {
                       flex: 15,
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 27.auto),
-                        child: LoginTab(),
+                        child: LoginTab(
+                          config: _vm.config,
+                        ),
                       )),
                   Expanded(
                     flex: 1,

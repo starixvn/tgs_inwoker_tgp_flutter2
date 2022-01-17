@@ -72,6 +72,7 @@ class _GameT2State extends BaseState<GameT2> {
                                 currGameType: currentGameType,
                                 gameProviderList: _getGameTypeMap(),
                                 onGameClick: (game) => _onGameClick(game),
+                                config: _vm.config,
                               ),
                             ))
                       ],

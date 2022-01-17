@@ -77,6 +77,7 @@ class _GameT1State extends BaseState<GameT1> {
                             controller: _controller,
                             gameProviderList: _vm.gameProviderList,
                             onGameClick: (game) => _onGameClick(game),
+                            config: _vm.config,
                           ),
                         ),
                       ],

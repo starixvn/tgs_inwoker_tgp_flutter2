@@ -269,7 +269,12 @@ class _HomeT3State extends BaseState<HomeT3> {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GameT3(gamePlatformCode: "", gameType: gameList[index], index: index))),
+                      builder: (context) => GameT3(
+                            gamePlatformCode: "",
+                            gameType: gameList[index],
+                            index: index,
+                            config: _vm.config,
+                          ))),
               child: Stack(
                 children: [
                   Image.asset("images/home/${gameList[index].getImagePath()}.png"),
