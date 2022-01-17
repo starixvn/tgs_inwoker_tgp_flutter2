@@ -17,6 +17,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GameT3 extends StatefulWidget {
   final String? gamePlatformCode;
@@ -208,7 +209,17 @@ class _GameT3State extends BaseState<GameT3> {
   }
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
-    if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+    if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) || gamePlatformCode == "TCG_SEA") {
+      if (gamePlatformCode == "SW")
+        await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+      else {
+        await _vm.getGameList(gamePlatformCode, gameType);
+        await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      }
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        launch(_vm.url!);
+      });
+    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
@@ -219,14 +230,30 @@ class _GameT3State extends BaseState<GameT3> {
                       gameType: gameType,
                     )));
       });
+    } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
+      //only tcg will need to get gamelist
+      await _vm.getGameList(gamePlatformCode, gameType);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: gamePlatformCode,
+                    gameType: gameType,
+                    gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
+                  )));
     } else {
       //navigate to game web
       /*ProgressDialog.show(context, _vm.brandLogoUrl);
       await _vm.getGameList(gamePlatformCode, gameType);
       ProgressDialog.hide();*/
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                    )));
       });
     }
   }
