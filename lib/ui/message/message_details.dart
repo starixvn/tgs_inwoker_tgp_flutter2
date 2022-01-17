@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/round_check_box.dart';
 import 'package:api/entity/message.dart';
 import 'package:api/extension/format.dart';
@@ -32,7 +33,9 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        title: getTranslatedText("message_center"),
+      ) /*AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         flexibleSpace: Container(
@@ -48,7 +51,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
           getTranslatedText("message_center"),
           style: TextStyle(fontSize: 16.auto),
         ),
-        /*actions: [
+        */ /*actions: [
           InkWell(
             onTap: () => _showActionDialog(),
             child: Container(
@@ -58,8 +61,9 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
               child: Image.asset("images/message/ic_message_action.png"),
             ),
           ),
-        ],*/
-      ),
+        ],*/ /*
+      )*/
+      ,
       body: Container(
           margin: EdgeInsets.all(20.auto),
           padding: EdgeInsets.symmetric(
@@ -71,7 +75,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.auto),
                 child: Text(
-                  widget.message.subject ??"",
+                  widget.message.subject ?? "",
                   style: TextStyle(fontSize: 15.auto, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -94,7 +98,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
     );
   }
 
-  /*_showActionDialog() {
+/*_showActionDialog() {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,

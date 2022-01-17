@@ -109,7 +109,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                 children: [
                   _buildImageSlider(),
                   Expanded(
-                      flex: 3,
+                      flex: 7,
                       child: Column(
                         children: [_buildImageRow(), _buildGameImageGridView()],
                       ))
@@ -127,7 +127,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   _buildImageSlider() {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Expanded(
-        flex: 1,
+        flex: 2,
         child: _vm.bannerList == null || _vm.bannerList!.isEmpty
             ? _buildEmptyContainer()
             :
@@ -265,6 +265,7 @@ class _HomeT3State extends BaseState<HomeT3> {
         child: StaggeredGridView.countBuilder(
           crossAxisCount: 2,
           itemCount: gameList.length,
+          physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) => InkWell(
               onTap: () => Navigator.push(
                   context,

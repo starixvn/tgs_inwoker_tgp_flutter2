@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 
 //import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tgp_flutter2/custom/leave_game_dialog.dart';
@@ -75,12 +76,23 @@ class _GameWebState extends BaseState<GameWeb> {
     );
   }
 
-  _buildAppBar() => AppBar(
+  _buildAppBar() => CustomAppBar(
+        title: getTranslatedText("game"),
+        widget: Container(
+          margin: EdgeInsets.all(5.auto),
+          alignment: Alignment.center,
+          child: IconButton(
+            icon: Image.asset("images/ic_refresh.png"),
+            onPressed: () {
+              _loadWebView();
+            },
+          ),
+        ),
+      );
+
+  /*AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
         title: Text(
           getTranslatedText("game"),
           style: TextStyle(fontSize: 20.auto),
@@ -101,7 +113,7 @@ class _GameWebState extends BaseState<GameWeb> {
             ),
           ),
         ],
-      );
+      );*/
 
   _getSharedPrefs() async {
     prefs = await SharedPreferences.getInstance();

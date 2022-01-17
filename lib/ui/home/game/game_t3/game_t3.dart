@@ -100,7 +100,7 @@ class _GameT3State extends BaseState<GameT3> {
   _buildImageLayout(GameProvider2 gameProvider) {
     var gamePlatformCode = gameProvider.code?.toLowerCase();
 
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         if (gameProvider.status != 0) {
         } else

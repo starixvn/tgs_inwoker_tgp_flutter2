@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -78,7 +79,9 @@ class _AffiliateState extends BaseState<Affiliate> {
     );
   }
 
-  _buildAppBar() => AppBar(
+  _buildAppBar() => CustomAppBar(title: getTranslatedText("affiliate"));
+
+  /* AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         flexibleSpace: Container(
@@ -94,7 +97,7 @@ class _AffiliateState extends BaseState<Affiliate> {
           getTranslatedText("affiliate"),
           style: TextStyle(fontSize: 16.auto),
         ),
-      );
+      );*/
 
   _buildReferIdText() => Container(
         decoration: BoxDecoration(

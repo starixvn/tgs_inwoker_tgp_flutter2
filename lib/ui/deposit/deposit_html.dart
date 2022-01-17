@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -58,7 +59,10 @@ class _DepositHtmlState extends BaseState<DepositHtml> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
-        appBar: AppBar(
+        appBar: CustomAppBar(
+          title: getTranslatedText("deposit"),
+        ),
+        /* AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: gradientDecoration,
@@ -74,7 +78,7 @@ class _DepositHtmlState extends BaseState<DepositHtml> {
               Navigator.pop(context);
             },
           ),
-        ),
+        ),*/
         body: Container(
           width: context.screenWidth,
           height: context.screenHeight,

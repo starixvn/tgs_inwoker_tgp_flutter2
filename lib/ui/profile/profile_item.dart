@@ -59,7 +59,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           EnvironmentConfig.brandName == "HKJP"
               ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
-          _buildMiddleProfileItem("ic_lang", "language", "language", 0),
+          _buildBottomProfileItem("ic_lang", "language", "language", 0),
         ],
       );
 

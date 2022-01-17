@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/deposit_redirect_applepay.dart';
@@ -70,7 +71,9 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         });
   }
 
-  _buildAppBar() => AppBar(
+  _buildAppBar() => CustomAppBar(
+          title: getTranslatedText(
+              "deposit")) /* AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
@@ -86,7 +89,8 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
             Navigator.pop(context);
           },
         ),
-      );
+      )*/
+      ;
 
   _buildManualBankDepositOrder() => ListView(
         children: [
@@ -264,14 +268,14 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex:7,
+              flex: 7,
               child: Text(
                 getTranslatedText("upload_prof_hint"),
                 style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
               ),
             ),
             Expanded(
-              flex:3,
+              flex: 3,
               child: ColorButton(
                 title: getTranslatedText("pick_prof"),
                 width: 70.auto,
