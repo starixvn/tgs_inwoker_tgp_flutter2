@@ -46,7 +46,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
           WidgetsBinding.instance!.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.empty, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
         } else if (eventResult.errorMsgId != null) {
