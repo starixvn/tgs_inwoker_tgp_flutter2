@@ -75,7 +75,7 @@ class _GameT3State extends BaseState<GameT3> {
                   resizeToAvoidBottomInset: false,
                   backgroundColor: CustomColor.theme_bg_color,
                   appBar: CustomAppBar(
-                    title: getTranslatedText("game"),
+                    title: getTranslatedText(widget.gameType!.getName(context, false)),
                     isPassTrueWhenPop: true,
                   ),
                   body: _getGameTypeMap() == null
