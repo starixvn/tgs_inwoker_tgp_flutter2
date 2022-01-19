@@ -6,7 +6,7 @@ flutter_icons:
 environment_config:
   fields:
     jwtKey:
-      default: "miQjLz8Qb5ilLQo1IJitd8iWqM1ch01BhTKeDq3UNjO6eVZurSE806"
+      default: "LKACY35mwhC7X8UOiVQzWBhQXdIHg7hJcLsRXUi2CkiiBsAkFLCGI0"
     url:
       default: "https://chaiyo777.com/"
     currency:
@@ -100,7 +100,7 @@ environment_config:
       type: bool
       default: false
     brandName:
-      default: "M9TH"
+      default: "M9THB"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     default_lang:

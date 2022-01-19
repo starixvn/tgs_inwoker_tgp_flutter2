@@ -105,13 +105,13 @@ class _HomeT3State extends BaseState<HomeT3> {
             body: /* Stack(
               children: [*/
                 Container(
-              margin: EdgeInsets.all(10.auto),
+              padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
               child: Column(
                 children: [
                   _buildImageSlider(),
                   Expanded(
                       flex: 7,
-                      child: Column(
+                      child: ListView(
                         children: [_buildImageRow(), _buildGameImageGridView()],
                       ))
                 ],
@@ -222,8 +222,8 @@ class _HomeT3State extends BaseState<HomeT3> {
         ),
       );
 
-  _buildImageRow() => Expanded(
-        flex: 2,
+  _buildImageRow() => Container(
+        height: 180.auto,
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(gameRowList.length, (index) {
@@ -261,8 +261,9 @@ class _HomeT3State extends BaseState<HomeT3> {
             })),
       );
 
-  _buildGameImageGridView() => Expanded(
-        flex: 3,
+  _buildGameImageGridView() => Container(
+        height: 260.auto,
+        margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
         child: StaggeredGridView.countBuilder(
           crossAxisCount: 2,
           itemCount: gameList.length,
