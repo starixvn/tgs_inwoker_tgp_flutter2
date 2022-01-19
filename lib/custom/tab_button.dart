@@ -29,13 +29,16 @@ class TabButton extends StatelessWidget {
                   color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
                   width: 3))),
       child: Tab(
-        child: AutoSizeText(text,
-            maxLines: 1,
-            minFontSize: 8,
-            maxFontSize: 14,
-            stepGranularity: 1,
-            style: TextStyle(
-                color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 2.auto),
+          child: AutoSizeText(text,
+              maxLines: 2,
+              minFontSize: 8,
+              maxFontSize: 14,
+              stepGranularity: 1,
+              style: TextStyle(
+                  color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color)),
+        ),
       ),
     );
   }

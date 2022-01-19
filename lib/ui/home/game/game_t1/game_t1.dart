@@ -149,13 +149,15 @@ class _GameT1State extends BaseState<GameT1> {
                   ), //Image.asset("images/game_tab/ic_$imagePath.png")),
               AutoSizeText(
                 gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: tabIndex == currentTabIndex
                         ? CustomColor.theme_button_color
                         : CustomColor.theme_text_grey_color),
                 minFontSize: 2,
+                maxFontSize: 13,
                 stepGranularity: 1,
-                maxLines: 1,
+                maxLines: 2,
               ),
             ],
           )),
