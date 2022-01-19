@@ -35,7 +35,7 @@ class _MenuState extends BaseState<Menu> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildTransferButton(),
+                  _buildMenuButton("transfer", "ic_menu_transfer.png", CustomColor.menu_blue, RoutePath.walletTransfer),
                   _buildMenuButton("deposit", "ic_menu_deposit", CustomColor.menu_green, RoutePath.deposit),
                   _buildMenuButton("withdrawal", "ic_menu_withdrawal.png", CustomColor.menu_orange, RoutePath.withdraw),
                 ],
@@ -44,31 +44,6 @@ class _MenuState extends BaseState<Menu> {
           )),
     );
   }
-
-  _buildTransferButton() => InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed(RoutePath.walletTransfer);
-        },
-        child: Container(
-          margin: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: CustomColor.menu_blue,
-          ),
-          width: 100.auto,
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 5.auto),
-          child: AutoSizeText(
-            getTranslatedText("transfer"),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
-            minFontSize: 10,
-            maxLines: 1,
-            stepGranularity: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      );
 
   _buildMenuButton(String title, String imagePath, Color color, String route) => InkWell(
         onTap: () => Navigator.of(context).pushNamed(route),
