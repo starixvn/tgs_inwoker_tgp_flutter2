@@ -110,7 +110,6 @@ class _HomeT3State extends BaseState<HomeT3> {
                 children: [
                   _buildImageSlider(),
                   Expanded(
-                      flex: 7,
                       child: ListView(
                         children: [_buildImageRow(), _buildGameImageGridView()],
                       ))
@@ -127,37 +126,11 @@ class _HomeT3State extends BaseState<HomeT3> {
 
   _buildImageSlider() {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
-    return Expanded(
-        flex: 2,
+    return Container(
+        height: context.screenHeight / 5,
         child: _vm.bannerList == null || _vm.bannerList!.isEmpty
             ? _buildEmptyContainer()
-            :
-            /*Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) => _buildEmptyContainer(),
-                      imageUrl: _vm.bannerList[index].mobileUrl ?? "",
-                      //handling error
-                      fit: BoxFit.fill,
-                      errorWidget: (context, url, error) => _buildEmptyContainer(),
-                    ),
-                  );
-                },
-                autoplay: true,
-                itemCount: 2,
-                pagination: SwiperPagination(
-                  alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.all(context.screenHeight / 150),
-                  builder: DotSwiperPaginationBuilder(
-                    color: Colors.grey,
-                    activeColor: Colors.red,
-                    size: 5.auto,
-                    activeSize: 5.auto,
-                  ),
-                ))*/
-            ClipRRect(
+            : ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Stack(
                   children: [
@@ -172,7 +145,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                                   placeholder: (context, url) => _buildEmptyContainer(),
                                   imageUrl: _vm.bannerList![index].mobileUrl!,
                                   //handling error
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                   errorWidget: (context, url, error) => _buildEmptyContainer(),
                                 ),
                               )),
