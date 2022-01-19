@@ -177,10 +177,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         child: CardTextFormField(
           title: getTranslatedText("deposit_amount") ?? "",
           hintText: getTranslatedText("enter") +
+              " " +
               (Format().amountFormat(paymentMin)) +
               "-" +
-              (Format().amountFormat(paymentMax)) +
-              getTranslatedText("yuan"),
+              (Format().amountFormat(paymentMax)),
           onChanged: (value) => onTextChange(),
           onFieldSubmitted: (value) => onTextChange(),
           controller: _amountController,
