@@ -980,7 +980,7 @@
   "affiliate": "Quảng cáo để kiếm tiền",
   "affiliate_qr_code": "Mã QR được tài trợ",
   "copy": "Sao chép",
-  "edit_bank_card_": "Không thể thêm, sửa và xóa. Nếu bạn cần giúp đỡ, vui lòng liên hệ với bộ phận chăm sóc khách hàng.",
+  "edit_bank_card_cs": "Thêm, chỉnh sửa và xóa không khả dụng, để được hỗ trợ, vui lòng liên hệ với bộ phận dịch vụ khách hàng.",
   "doc_no": "Số tài liệu",
   "enter_doc_no_hint": "Vui lòng nhập số tài liệu",
   "input_length_error": "Độ dài đầu vào của trường phải nhỏ hơn 256 bit",
