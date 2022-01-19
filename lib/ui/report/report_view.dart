@@ -79,7 +79,6 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
                         index: index,
                         currentTabIndex: currentTabIndex,
                         width: 90.auto,
-                        height: 32.auto,
                       );
                     }).toList(),
                   ),
