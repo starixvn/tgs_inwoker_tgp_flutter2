@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:api/entity/env_features_config.dart';
+import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
@@ -66,7 +67,9 @@ class GameItemT1State extends BaseState<GameItemT1> {
     var gamePlatformCode = gameProvider.code?.toLowerCase();
     if (_isSportsHideLogo(gamePlatformCode))
       imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_hkjp.png";
-    else
+    else if(!LanguageProvider.getSingleton().isMandarin() && (gamePlatformCode == "saba" || gamePlatformCode == "imes")){
+      imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_en.png";
+    }else
       imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
     return imagePath;
   }
