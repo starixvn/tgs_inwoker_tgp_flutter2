@@ -65,13 +65,26 @@ class GameItemT1State extends BaseState<GameItemT1> {
     var imagePath;
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
+    var fullPath = "${gameType}_${gamePlatformCode}";
     if (_isSportsHideLogo(gamePlatformCode))
       imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_hkjp.png";
-    else if(!LanguageProvider.getSingleton().isMandarin() && (gamePlatformCode == "saba" || gamePlatformCode == "imes")){
+    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
       imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_en.png";
-    }else
+    } else
       imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
     return imagePath;
+  }
+
+  _isNeedHandleLanguage(String path) {
+    switch (path) {
+      case "sports_saba":
+      case "esports_imes":
+      case "fish_jdb":
+      case "slotGame_jdb":
+        return true;
+      default:
+        return false;
+    }
   }
 
   _buildImageLayout(GameProvider2 gameProvider) {
