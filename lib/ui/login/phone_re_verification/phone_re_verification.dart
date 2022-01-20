@@ -46,8 +46,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
 
   @override
   void initState() {
-    _usernameController.text = widget.username ?? "";
-    _passwordController.text = widget.password ?? "";
     super.initState();
   }
 
@@ -56,6 +54,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
+          if (widget.username != null || widget.password != null) _getText();
           return Container(
             child: Column(
               children: [
@@ -161,7 +160,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
           _onClick();
         },
         isEnabled: isButtonEnabled,
-        color: CustomColor.theme_text_black_color,
         radius: 9.6,
       ));
 
@@ -199,6 +197,11 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   _onClick() async {
     ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
     _vm.phoneVerify(_otpController.text);
+  }
+
+  _getText() {
+    _usernameController.text = widget.username ?? "";
+    _passwordController.text = widget.password ?? "";
   }
 
   _handleApiState() {

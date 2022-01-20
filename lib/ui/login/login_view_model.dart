@@ -42,12 +42,11 @@ class LoginViewModel extends BaseViewModel {
 
   register(String username, String password, String rpassword, String? invitationCode, bool isAgent) async {
     setLoading();
-
-    var _status = await userRepo.register(username, password, rpassword, invitationCode, isAgent);
-    if (_status.isSuccess) {
-      registerApiState = await login(username, password, true);
+    registerApiState = await userRepo.register(username, password, rpassword, invitationCode, isAgent);
+    /*   if (_status.isSuccess) {
+      //registerApiState = await login(username, password, true);
     } else
-      registerApiState = _status;
+      registerApiState = _status;*/
     setLoading(false);
     return registerApiState;
   }

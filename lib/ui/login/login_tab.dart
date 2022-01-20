@@ -106,11 +106,12 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
   }
 
   _navigateToPhoneReVerification(List<String> list) {
-    setState(() {
-      username = list[0];
-      password = list[1];
-    });
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      setState(() {
+        username = list[0];
+        password = list[1];
+        currentTabIndex = 2;
+      });
       tabController!.animateTo(2);
     });
   }
