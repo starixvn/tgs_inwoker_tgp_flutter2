@@ -13,6 +13,8 @@ class QQAccountViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   setQQAccount(String qq) async {
     setLoading();
     var _status = await userRepo.setQQAccount(qq);

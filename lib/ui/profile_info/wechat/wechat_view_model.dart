@@ -13,6 +13,8 @@ class WechatViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   setWechatAccount(String qq) async {
     setLoading();
     var _status = await userRepo.setWechatAccount(qq);
