@@ -52,9 +52,9 @@ class _ProfileState extends BaseState<Profile> {
         });
   }
 
-  _buildUserInfoContainer() => EnvironmentConfig.template_version == 1
-      ? Padding(
-          padding: EdgeInsets.only(top: 10.auto, left: 30.auto, right: 50.auto, bottom: 10.auto),
+  _buildUserInfoContainer() => /*EnvironmentConfig.template_version == 1
+      ? */Padding(
+          padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto, bottom: 10.auto),
           child: Row(
             children: [
               Container(
@@ -68,13 +68,13 @@ class _ProfileState extends BaseState<Profile> {
             ],
           ),
         )
-      : Container(
+      /*: Container(
           padding: EdgeInsets.only(top: 20.auto, left: 20.auto, right: 20.auto),
           // margin: EdgeInsets.only(left: 10.auto),
           child: Row(
             children: [_buildProfileImage(), _buildBalanceText()],
           ),
-        );
+        )*/;
 
   _buildUserInfoText() => Container(
         margin: EdgeInsets.only(left: 20.auto),
