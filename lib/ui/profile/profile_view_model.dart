@@ -20,6 +20,8 @@ class ProfileViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   logout() async {
     setLoading();
     logoutApiState = await userRepo.logout();

@@ -81,7 +81,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         //onFieldSubmitted: (value) => null,
         controller: _usernameController,
         width: context.screenWidth,
-        textInputType: TextInputType.text,
+       // textInputType: TextInputType.text,
         textInputAction: TextInputAction.next,
       );
 

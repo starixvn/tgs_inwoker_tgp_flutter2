@@ -10,7 +10,6 @@ class LoginTextFormField extends StatelessWidget {
   final ValueChanged<String?>? onFieldSubmitted;
   final TextEditingController controller;
   final double width;
-  final TextInputType textInputType;
   final TextInputAction textInputAction;
   final Widget? dropDown;
 
@@ -21,7 +20,6 @@ class LoginTextFormField extends StatelessWidget {
     this.onFieldSubmitted,
     required this.controller,
     required this.width,
-    required this.textInputType,
     required this.textInputAction,
     this.dropDown,
   });
@@ -48,7 +46,8 @@ class LoginTextFormField extends StatelessWidget {
               //  onChanged: (value) => onChanged(value),
               controller: controller,
               //onFieldSubmitted: (value) => onChanged(value),
-              keyboardType: textInputType,
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: true,
               textInputAction: textInputAction,
               style: TextStyle(fontSize: 13.auto),
               decoration: InputDecoration(

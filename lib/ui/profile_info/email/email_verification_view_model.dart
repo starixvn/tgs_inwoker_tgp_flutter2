@@ -14,6 +14,8 @@ class EmailVerificationViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   var securityKey;
 
   getEmailCode(String email) async {
