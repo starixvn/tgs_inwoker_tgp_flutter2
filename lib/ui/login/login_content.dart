@@ -84,7 +84,7 @@ class _LoginContentState extends BaseState<LoginContent> {
           //onFieldSubmitted: (value) => null,
           controller: username,
           width: context.screenWidth,
-          textInputType: TextInputType.text,
+         // textInputType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.next,
         ),
       );
