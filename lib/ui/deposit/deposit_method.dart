@@ -486,7 +486,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         _vm.applePayDepositOrder(
             _amountController.text, _payment!.id, promotionId ?? null, _transferNameController.text);
         break;
-      case "PrimePAu":
+      case "PrimePay":
         _vm.primePayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
         break;
       case "UmPay":
