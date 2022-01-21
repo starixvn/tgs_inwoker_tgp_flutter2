@@ -73,7 +73,7 @@ class _HomeT1State extends BaseState<HomeT1> {
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? "en-US";
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
