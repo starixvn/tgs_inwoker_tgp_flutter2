@@ -49,21 +49,22 @@ class _AffiliateState extends BaseState<Affiliate> {
       backgroundColor: Colors.grey[100],
       appBar: _buildAppBar(),
       body: Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(top: 15.auto, left: 10.auto, right: 10.auto),
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               getTranslatedText("affiliate_qr_code"),
-              style: TextStyle(fontSize: 16.auto),
+              style: TextStyle(fontSize: 14.auto),
               textAlign: TextAlign.center,
             ),
             affiliateUrl == null
                 ? Container()
                 : Container(
-                    margin: EdgeInsets.only(top: 20.auto),
-                    height: 120.auto,
-                    width: 120.auto,
+                    margin: EdgeInsets.only(top: 10.auto),
+                    height: 140.auto,
+                    width: 140.auto,
+                    color: Colors.white,
                     child: QrImage(
                       data: affiliateUrl!,
                       version: QrVersions.auto,
@@ -110,19 +111,26 @@ class _AffiliateState extends BaseState<Affiliate> {
           top: 10.auto,
           bottom: 10.auto,
         ),
-        margin: EdgeInsets.only(top: 20.auto),
+        margin: EdgeInsets.only(top: 10.auto),
         child: Row(
           children: [
-            Container(
-              margin: EdgeInsets.only(right: 10.auto),
-              child: Text(
-                getTranslatedText("my_refer_id"),
-                style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 16.auto),
+            Expanded(
+              flex: 4,
+              child: Container(
+                margin: EdgeInsets.only(right: 10.auto),
+                child: Text(
+                  getTranslatedText("my_refer_id"),
+                  style: TextStyle(
+                      color: CustomColor.theme_text_black_white_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-            Text(
-              _vm.userProfile.playerCode ?? "",
-              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 16.auto),
+            Expanded(
+              flex: 10,
+              child: Text(
+                _vm.userProfile.playerCode ?? "",
+                style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 14.auto),
+              ),
             )
           ],
         ),
@@ -139,31 +147,30 @@ class _AffiliateState extends BaseState<Affiliate> {
           top: 10.auto,
           bottom: 10.auto,
         ),
-        margin: EdgeInsets.only(top: 20.auto),
+        margin: EdgeInsets.only(top: 10.auto),
         child: Row(
           children: [
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
                 margin: EdgeInsets.only(right: 3.auto),
                 child: Text(
                   getTranslatedText("affiliate_link"),
-                  style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 16.auto),
+                  style: TextStyle(
+                      color: CustomColor.theme_text_black_white_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             Expanded(
               flex: 8,
               child: Container(
-                child: AutoSizeText(
+                child: Text(
                   affiliateUrl ?? "",
                   style: TextStyle(
                     color: CustomColor.theme_text_black_white_color,
                   ),
-                  maxFontSize: 11,
-                  maxLines: 2,
-                  stepGranularity: 1,
-                  minFontSize: 5,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -186,6 +193,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                     fontSize: 14,
                     radius: 5,
                     padding: 4,
+                    isBold: true,
                   )),
             )
           ],

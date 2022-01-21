@@ -63,7 +63,7 @@ class _MainCardState extends BaseState<MainCard> {
                                 direction: DismissDirection.endToStart,
                                 behavior: HitTestBehavior.deferToChild,
                                 onDismissed: (_) {
-                                  EnvironmentConfig.brandName == "MESS8"
+                                  (_vm.config?.changesNotAllowed ?? false)
                                       ? _showDialog()
                                       : _delete(_vm.bankCardList![index], index);
                                 },
@@ -176,7 +176,7 @@ class _MainCardState extends BaseState<MainCard> {
           await Navigator.of(context).pushNamed("/add_card");
           _getBankCardList(); //reinitdata after pop from  add card
         },*/
-            EnvironmentConfig.brandName == "MESS8" && _vm.bankCardList!.length >= 1
+            (_vm.config?.changesNotAllowed ?? false) && _vm.bankCardList!.length >= 1
                 ? () => _showDialog()
                 : () async {
                     await Navigator.of(context).pushNamed("/add_card");

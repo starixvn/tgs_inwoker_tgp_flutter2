@@ -59,8 +59,7 @@ class MainViewModel extends BaseViewModel {
 
   getEnvFeatures() async {
     setLoading();
-    EventResult<EnvFeaturesConfig> eventResult = await contentRepo.getEnvFeaturesJson(EnvironmentConfig.brandName);
-    if (eventResult.isSuccess) {}
+    await contentRepo.getEnvFeaturesJson(EnvironmentConfig.brandName);
     setLoading(false);
   }
 

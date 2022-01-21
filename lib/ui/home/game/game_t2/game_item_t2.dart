@@ -95,7 +95,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
             left: context.screenWidth / 12,
             child: Column(
               children: [
-                (EnvironmentConfig.brandName == "MGM" && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia"))
+                (_isSportsHideLogo(gamePlatformCode))
                     ? Container(
                         width: 74.auto,
                         margin: EdgeInsets.only(bottom: 15.auto),

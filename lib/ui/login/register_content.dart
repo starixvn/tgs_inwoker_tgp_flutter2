@@ -83,7 +83,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         //onFieldSubmitted: (value) => null,
         controller: username,
         width: context.screenWidth,
-        textInputType: TextInputType.text,
+        //  textInputType: TextInputType.text,
         textInputAction: TextInputAction.next,
       );
 
@@ -141,7 +141,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
           //onFieldSubmitted: (value) => null,
           controller: pay,
           width: context.screenWidth,
-          textInputType: TextInputType.text,
+          //textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
         ),
       );
@@ -160,9 +160,9 @@ class _RegisterContentState extends BaseState<RegisterContent> {
             onFieldSubmitted: (value) => _register(),
             controller: invitationCode,
             width: context.screenWidth,
-            textInputType: TextInputType.text,
+            //textInputType: TextInputType.text,
             textInputAction: TextInputAction.done,
-            dropDown: EnvironmentConfig.brandName == "HKJP"
+            dropDown: (_vm.config?.haveAffiliateFeature ?? false)
                 ? Container(
                     color: CustomColor.very_light_pink_two,
                     padding: EdgeInsets.only(

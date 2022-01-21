@@ -281,8 +281,12 @@ class _HomeT3State extends BaseState<HomeT3> {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              GameT3(gamePlatformCode: "", gameType: gameRowList[index], index: index))),
+                          builder: (context) => GameT3(
+                                gamePlatformCode: "",
+                                gameType: gameRowList[index],
+                                index: index,
+                                config: _vm.config,
+                              ))),
                   child: Container(
                     width: context.screenWidth / 2 - 15.auto,
                     child: Stack(

@@ -1,3 +1,4 @@
+import 'package:api/entity/env_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,15 +8,11 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/report_view.dart';
 
 class ProfileItem extends StatefulWidget {
-  /*final String title;
-  final String imagePath;
-  final String routePath;
+  final EnvFeaturesConfig? config;
 
   ProfileItem({
-    required this.title,
-    required this.imagePath,
-    required this.routePath,
-  }) ;*/
+    this.config,
+  });
 
   @override
   _ProfileItemState createState() => _ProfileItemState();
@@ -39,7 +36,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer_report", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_account_report", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
-          EnvironmentConfig.brandName == "HKJP"
+          (widget.config?.haveAffiliateFeature ?? false)
               ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
           _buildBottomProfileItem("ic_lang", "language", "language", 0),
@@ -56,7 +53,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
-          EnvironmentConfig.brandName == "HKJP"
+          (widget.config?.haveAffiliateFeature ?? false)
               ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
           _buildBottomProfileItem("ic_lang", "language", "language", 0),
