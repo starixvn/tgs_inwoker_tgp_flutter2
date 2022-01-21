@@ -17,9 +17,12 @@ import 'package:api/extension/screen_apis.dart';
 
 class RegisterContent extends StatefulWidget {
   final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
+  final LoginViewModel vm;
+
 
   RegisterContent({
     this.onSubmitUsernameAndPassword,
+    required this.vm
   });
 
   @override
@@ -36,10 +39,16 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       invitationCode = TextEditingController(),
       phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
-  LoginViewModel _vm = LoginViewModel();
+  var _vm ;
   bool _isTermsChecked = true;
   String? agentPlayer = 'player';
   List agentPlayerList = ['agent', 'player'];
+
+  @override
+  void initState() {
+    _vm = widget.vm;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

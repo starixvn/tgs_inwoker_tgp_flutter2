@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/login/login_content.dart';
+import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 import 'package:tgp_flutter2/ui/login/register_content.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -25,6 +26,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
   String? username, password;
   TabController? tabController;
   var tab = [];
+  LoginViewModel _vm = LoginViewModel();
 
   @override
   void initState() {
@@ -81,39 +83,32 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
             //height: context.screenHeight - 250.auto,
             //width: context.screenWidth,
             child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              controller: tabController,
-              children: _isShowSmsVerification()
-                  ? [
-                      LoginContent(),
-                      RegisterContent(
-                        onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value),
-                      ),
-                      PhoneReVerification(
-                        username: username,
-                        password: password,
-                      )
-                    ]
-                  : [
-                      LoginContent(),
-                      RegisterContent(
-                        onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value),
-                      ),
-                    ],
-            ))
+          physics: NeverScrollableScrollPhysics(),
+          controller: tabController,
+          children: _isShowSmsVerification()
+              ? [
+                  LoginContent(vm: _vm),
+                  RegisterContent(
+                      onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value), vm: _vm),
+                  PhoneReVerification(vm: _vm)
+                ]
+              : [
+                  LoginContent(vm: _vm),
+                  RegisterContent(
+                      onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value), vm: _vm),
+                ],
+        ))
       ],
     );
   }
 
   _navigateToPhoneReVerification(List<String> list) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      setState(() {
-        username = list[0];
-        password = list[1];
-        currentTabIndex = 2;
-      });
-      tabController!.animateTo(2);
+     WidgetsBinding.instance!.addPostFrameCallback((_) {
+    setState(() {
+      currentTabIndex = 2;
     });
+    tabController!.animateTo(2);
+      });
   }
 
   _isShowSmsVerification() => (widget.config?.smsVerification ?? false);

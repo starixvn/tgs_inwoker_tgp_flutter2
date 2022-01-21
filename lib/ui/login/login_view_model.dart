@@ -21,6 +21,7 @@ class LoginViewModel extends BaseViewModel {
       checkUsernameApiState,
       getReVerifyCodeApiState,
       phoneReVerifyApiState;
+  String? username, password;
 
   get brandLogo => contentRepo.brandLogo;
 
@@ -40,15 +41,15 @@ class LoginViewModel extends BaseViewModel {
     return loginApiState;
   }
 
-  register(String username, String password, String rpassword, String? invitationCode, bool isAgent) async {
+  register(String _username, String _password, String rpassword, String? invitationCode, bool isAgent) async {
     setLoading();
-    registerApiState = await userRepo.register(username, password, rpassword, invitationCode, isAgent);
-    /*   if (_status.isSuccess) {
-      //registerApiState = await login(username, password, true);
-    } else
-      registerApiState = _status;*/
+    registerApiState = await userRepo.register(_username, _password, rpassword, invitationCode, isAgent);
+    if (registerApiState.isSuccess && config?.smsVerification) {
+      username = _username;
+      password = _password;
+   }
     setLoading(false);
-    return registerApiState;
+     return registerApiState;
   }
 
   getUserInfo() async {

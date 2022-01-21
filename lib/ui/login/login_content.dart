@@ -18,8 +18,9 @@ import 'package:api/extension/screen_apis.dart';
 
 class LoginContent extends StatefulWidget {
   final child;
+  final LoginViewModel vm;
 
-  LoginContent({this.child}) ;
+  LoginContent({this.child, required this.vm}) ;
 
   @override
   _LoginContentState createState() => _LoginContentState();
@@ -30,10 +31,11 @@ class _LoginContentState extends BaseState<LoginContent> {
   bool _isRememberMe = true;
   var username = TextEditingController();
   var password = TextEditingController();
-  var _vm = LoginViewModel();
+  var _vm ;
 
   @override
   void initState() {
+    _vm = widget.vm;
     super.initState();
     initData();
   }

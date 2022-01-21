@@ -191,7 +191,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.withdraw: (context) => Withdraw(),
                   RoutePath.childGame: (context) => ChildGame(),
                   RoutePath.blacklistedUser: (context) => BlacklistedUser(),
-                  RoutePath.phoneReVerification: (context) => PhoneReVerification(),
+                  //RoutePath.phoneReVerification: (context) => PhoneReVerification(),
                   RoutePath.phoneVerification: (context) => PhoneVerification(),
                   RoutePath.editPhone: (context) => EditPhone(),
                   RoutePath.editEmail: (context) => EditEmail(),

@@ -23,17 +23,17 @@ import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class PhoneReVerification extends StatefulWidget {
-  final String? username;
-  final String? password;
+  final LoginViewModel vm;
 
-  PhoneReVerification({this.username, this.password});
+  PhoneReVerification({required this.vm});
 
   @override
   _PhoneReVerificationState createState() => _PhoneReVerificationState();
 }
 
 class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
-  var _vm = LoginViewModel();
+  var _vm;
+
   TextEditingController _phoneController = TextEditingController(),
       _otpController = TextEditingController(),
       _usernameController = TextEditingController(),
@@ -46,7 +46,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
 
   @override
   void initState() {
-    display = _vm.config.phonePrefix;
+    _initData();
     super.initState();
   }
 
@@ -55,7 +55,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          if (widget.username != null || widget.password != null) _getText();
           return Container(
             child: Column(
               children: [
@@ -200,9 +199,11 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
     _vm.phoneVerify(_otpController.text);
   }
 
-  _getText() {
-    _usernameController.text = widget.username ?? "";
-    _passwordController.text = widget.password ?? "";
+  _initData() {
+    _vm = widget.vm;
+    display = _vm.config.phonePrefix;
+    _usernameController.text = _vm.username ?? "";
+    _passwordController.text = _vm.password ?? "";
   }
 
   _handleApiState() {
