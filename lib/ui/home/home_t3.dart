@@ -5,6 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
@@ -58,7 +60,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   var _vm = HomeViewModel();
   int _current = 0;
   final CarouselController _controller = CarouselController();
-  var languageCode;
+  String? languageCode;
   var _gameViewModel = GameViewModel();
 
   @override
@@ -108,11 +110,12 @@ class _HomeT3State extends BaseState<HomeT3> {
               padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
               child: Column(
                 children: [
+                  _buildTextMarquee(),
                   _buildImageSlider(),
                   Expanded(
                       child: ListView(
-                        children: [_buildImageRow(), _buildGameImageGridView()],
-                      ))
+                    children: [_buildImageRow(), _buildGameImageGridView()],
+                  ))
                 ],
               ),
             ),
@@ -122,6 +125,78 @@ class _HomeT3State extends BaseState<HomeT3> {
             ),*/
           );
         });
+  }
+
+  _buildTextMarquee() {
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
+    return Container(
+      padding: EdgeInsets.only(bottom: 5.auto),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: SvgPicture.asset(
+              "images/home/ic_marquee.svg",
+              height: 15.auto,
+              color: CustomColor.theme_button_color,
+            ),
+          ),
+          Expanded(
+            flex: _getNoticeFlex(),
+            child: Container(
+              // width: (languageCode?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
+              child: Text(
+                getTranslatedText("notice"),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: CustomColor.theme_text_black_white_color,
+                  fontSize: 12.auto,
+                ),
+                /* maxFontSize: 12,
+                minFontSize: 5,*/
+                maxLines: 1,
+                //stepGranularity: 1,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 7,
+            child: announcement.isEmpty
+                ? Container()
+                : Container(
+                    // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+                    margin: EdgeInsets.only(left: 3.auto, right: 10.auto),
+                    height: 18.auto,
+                    child: Marquee(
+                      text: announcement,
+                      style: TextStyle(
+                        color: CustomColor.theme_text_black_white_color,
+                        fontSize: 10.auto,
+                      ),
+                      scrollAxis: Axis.horizontal,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      blankSpace: 300.auto,
+                      pauseAfterRound: Duration(seconds: 1),
+                      showFadingOnlyWhenScrolling: false,
+                    ),
+                  ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _getNoticeFlex() {
+    if ((languageCode?.contains("zh") ?? false))
+      return 1;
+    else if (languageCode == "th-TH" || languageCode == "vi-VN")
+      return 2;
+    else
+      return 3;
+  }
+
+  _removeMultiLine(String text) {
+    return text.replaceAll("\n", " ");
   }
 
   _buildImageSlider() {

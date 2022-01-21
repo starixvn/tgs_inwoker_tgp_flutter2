@@ -133,6 +133,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           radius: 5,
           padding: 4,
           textColor: CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 ? CustomColor.theme_button_color : Colors.white,
         ),
       );
 
@@ -148,6 +149,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           radius: 5,
           padding: 4,
           textColor: CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 ? CustomColor.theme_button_color : Colors.white,
         ),
       );
 

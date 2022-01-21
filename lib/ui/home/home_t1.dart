@@ -207,16 +207,20 @@ class _HomeT1State extends BaseState<HomeT1> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: _getNoticeFlex(),
             child: Container(
-              width: (languageCode?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
-              child: AutoSizeText(
+              // width: (languageCode?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
+              child: Text(
                 getTranslatedText("notice"),
-                style: TextStyle(fontWeight: FontWeight.w600),
-                maxFontSize: 13,
-                minFontSize: 5,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: CustomColor.theme_text_black_white_color,
+                  fontSize: 12.auto,
+                ),
+                /* maxFontSize: 12,
+                minFontSize: 5,*/
                 maxLines: 1,
-                stepGranularity: 1,
+                //stepGranularity: 1,
               ),
             ),
           ),
@@ -244,6 +248,14 @@ class _HomeT1State extends BaseState<HomeT1> {
         ],
       ),
     );
+  }
+
+  _getNoticeFlex(){
+    if((languageCode?.contains("zh") ?? false))
+      return 1;
+    else if(languageCode=="th-TH" || languageCode=="vi-VN")
+      return 2;
+    else return 3;
   }
 
   _removeMultiLine(String text) {
