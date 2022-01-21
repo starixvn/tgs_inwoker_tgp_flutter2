@@ -81,7 +81,7 @@ class _ProfileState extends BaseState<Profile> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AutoSizeText(
             _vm.userProfile?.username ?? "",
-            style: TextStyle(color: CustomColor.theme_text_black_color, fontWeight: FontWeight.bold),
+            style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
             minFontSize: 10,
             stepGranularity: 1,

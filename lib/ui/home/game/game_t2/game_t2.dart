@@ -12,6 +12,7 @@ import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_item_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GameT2 extends StatefulWidget {
   GameT2();
@@ -179,7 +180,21 @@ class _GameT2State extends BaseState<GameT2> {
   }
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
-    if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+    if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
+        gamePlatformCode == "TCG_SEA" ||
+        gamePlatformCode == "TCG_LOTTO" ||
+        gamePlatformCode == "TCG_LOTTO_VN"|| gamePlatformCode == "SG") {
+      if (gamePlatformCode == "SW"|| gamePlatformCode == "SG")
+        await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+      else {
+        await _vm.getGameList(gamePlatformCode, gameType);
+        await _vm.getGameUrl(gamePlatformCode!,
+            _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      }
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        launch(_vm.url!);
+      });
+    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(

@@ -227,8 +227,8 @@ class _GameT3State extends BaseState<GameT3> {
     if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
         gamePlatformCode == "TCG_SEA" ||
         gamePlatformCode == "TCG_LOTTO" ||
-        gamePlatformCode == "TCG_LOTTO_VN") {
-      if (gamePlatformCode == "SW")
+        gamePlatformCode == "TCG_LOTTO_VN"|| gamePlatformCode == "SG") {
+      if (gamePlatformCode == "SW"|| gamePlatformCode == "SG")
         await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
       else {
         await _vm.getGameList(gamePlatformCode, gameType);
