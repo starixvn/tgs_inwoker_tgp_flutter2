@@ -26,10 +26,11 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
-  String display = "+852";
+  String? display;
 
   @override
   void initState() {
+    display = _vm.config.phonePrefix;
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
     });
@@ -75,13 +76,15 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           controller: _phoneController,
           width: context.screenWidth - 30.auto,
           textInputAction: TextInputAction.next,
-          enabled: true,
+          enabled: isTextFieldEnabled,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
         ),
       );
 
-  _buildOtpTextFormField() => OtpTextFormField(
+  _buildOtpTextFormField() => Visibility(
+      visible: _vm.userProfile.phone == null,
+      child: OtpTextFormField(
         hintText: getTranslatedText("enter_email_otp_hint"),
         onChanged: (value) => _onTextChange(),
         controller: _otpController,
@@ -97,7 +100,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           })
         },
         isVisible: true,
-      );
+      ));
 
   _buildButton() => Container(
       width: context.screenWidth,
@@ -108,7 +111,6 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           _onClick();
         },
         isEnabled: isButtonEnabled,
-        color: CustomColor.theme_text_black_white_color,
         radius: 9.6,
       ));
 
@@ -174,13 +176,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   }
 
   _getSmsCode() {
-    if (!validate.validateAreaCodeAndPhone(display, _phoneController.text)) {
+    if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getPhoneVerifyCode(display, _phoneController.text);
+      _vm.getPhoneVerifyCode(display!, _phoneController.text);
     }
   }
 
@@ -190,10 +192,17 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {});
+    handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
+        setState(() {
+          isOtpCountdown = true;
+        });
+      });
+    });
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () {
-     // await _getUserProfile();
+      // await _getUserProfile();
       CustomToast.show(getTranslatedText("success"));
     });
   }

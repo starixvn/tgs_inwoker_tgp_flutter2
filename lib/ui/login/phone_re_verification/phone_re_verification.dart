@@ -42,10 +42,11 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
   bool _obscurePassword = true;
-  String display = "+852";
+  String? display;
 
   @override
   void initState() {
+    display = _vm.config.phonePrefix;
     super.initState();
   }
 
@@ -184,13 +185,13 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   }
 
   _getSmsCode() {
-    if (!validate.validateAreaCodeAndPhone(display, _phoneController.text)) {
+    if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
     } else {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getReVerifyCode(_usernameController.text, _passwordController.text, display, _phoneController.text);
+      _vm.getReVerifyCode(_usernameController.text, _passwordController.text, display!, _phoneController.text);
     }
   }
 
@@ -205,7 +206,14 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getReVerifyCodeApiState, onSuccess: () {});
+    handleApiState(_vm.getReVerifyCodeApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
+        setState(() {
+          isOtpCountdown = true;
+        });
+      });
+    });
 
     handleApiState(_vm.phoneReVerifyApiState, onSuccess: () {
       _navigateToHome();

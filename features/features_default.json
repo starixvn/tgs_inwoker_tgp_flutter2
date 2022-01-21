@@ -20,5 +20,6 @@
   "CustomVIP": false,
   "AddCard_EnglishName": false,
   "ChangesNotAllowed": false,
-  "HaveAffiliateFeature": false
+  "HaveAffiliateFeature": false,
+  "PhonePrefix": "+852"
 }

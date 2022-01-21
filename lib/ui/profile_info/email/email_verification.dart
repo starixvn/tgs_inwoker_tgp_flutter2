@@ -190,6 +190,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
   _handleApiState() {
     handleApiState(_vm.getEmailCodeApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
         });

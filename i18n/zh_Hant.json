@@ -995,5 +995,6 @@
   "to":"至",
   "agent": "代理",
   "player": "玩家",
-  "exit": "登出"
+  "exit": "登出",
+  "verification_code_success": "驗證碼送出成功"
 }

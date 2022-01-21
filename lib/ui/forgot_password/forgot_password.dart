@@ -27,10 +27,11 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   TextEditingController _emailController = TextEditingController(), _otpController = TextEditingController();
   var isButtonEnabled = false, isOtpEnabled = false, isOtpCountdown = false;
   InputValidationProvider validate = new InputValidationProvider();
-  String display = "+852";
+  String? display;
 
   @override
   void initState() {
+    display = _vm.config.phonePrefix;
     super.initState();
   }
 
@@ -147,7 +148,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   _getSmsCode() {
     if (_vm.config?.smsVerification ?? false) {
-      if (!validate.validateAreaCodeAndPhone(display, _emailController.text)) {
+      if (!validate.validateAreaCodeAndPhone(display!, _emailController.text)) {
         setState(() {
           CustomToast.show(getTranslatedText("phone_format_error_msg"));
         });
@@ -170,6 +171,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
   _handleApiState() {
     handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
         });

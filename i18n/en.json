@@ -1008,5 +1008,6 @@
   "to": "To",
   "agent": "Agent",
   "player": "Player",
-  "exit": "Exit"
+  "exit": "Exit",
+  "verification_code_success": "Verification code sent successfully"
 }

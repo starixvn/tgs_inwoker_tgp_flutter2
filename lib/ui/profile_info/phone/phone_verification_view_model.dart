@@ -14,6 +14,8 @@ class PhoneVerificationViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   var securityKey;
 
   getPhoneVerifyCode(String area, String phone) async {

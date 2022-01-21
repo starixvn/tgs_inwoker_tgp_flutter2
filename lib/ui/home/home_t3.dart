@@ -214,7 +214,9 @@ class _HomeT3State extends BaseState<HomeT3> {
                           _vm.bannerList!.length,
                           (index) => ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
+                                child:  _vm.bannerList![index].mobileUrl == null
+                                    ? _buildEmptyContainer()
+                                    : CachedNetworkImage(
                                   height: 400,
                                   width: context.screenWidth,
                                   placeholder: (context, url) => _buildEmptyContainer(),

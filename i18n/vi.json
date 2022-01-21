@@ -994,5 +994,6 @@
   "to": "đến",
   "agent": "Người chơi",
   "player": "Đặc vụ",
-  "exit": "Thoát"
+  "exit": "Thoát",
+  "verification_code_success": "Đã gửi mã xác minh thành công"
 }

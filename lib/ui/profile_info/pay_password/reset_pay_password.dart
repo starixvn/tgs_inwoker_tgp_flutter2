@@ -237,6 +237,7 @@ class _ResetPayPasswordState extends BaseState<ResetPayPassword> {
   _handleApiState() {
     handleApiState(_vm.getPayPasswordCodeApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
         });

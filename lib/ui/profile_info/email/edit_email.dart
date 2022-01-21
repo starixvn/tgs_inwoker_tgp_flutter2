@@ -161,6 +161,7 @@ class _EditEmailState extends BaseState<EditEmail> {
   _handleApiState() {
     handleApiState(_vm.getEmailCodeApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
         });

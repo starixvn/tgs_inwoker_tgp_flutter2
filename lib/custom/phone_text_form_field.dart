@@ -18,16 +18,14 @@ class PhoneTextFormField extends StatefulWidget {
   final String? displayedAreaCode;
 
   PhoneTextFormField(
-      {
-      required this.onChanged,
+      {required this.onChanged,
       required this.onFieldSubmitted,
       required this.controller,
       required this.width,
       required this.textInputAction,
       required this.enabled,
       required this.onAreaCodeClicked,
-      required this.displayedAreaCode})
-      ;
+      required this.displayedAreaCode});
 
   @override
   _PhoneTextFormFieldState createState() => _PhoneTextFormFieldState();
@@ -69,9 +67,11 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                   child: InkWell(
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
-                      onTap: () {
-                        _buildBottomSheet();
-                      },
+                      onTap: widget.enabled
+                          ? () {
+                              _buildBottomSheet();
+                            }
+                          : null,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -140,9 +140,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
         context: context,
         builder: (BuildContext bc) {
           return CustomPickerDialog(
-              title: "area_code",
-              list: areaCodeList,
-              onChanged: (value) => widget.onAreaCodeClicked(value));
+              title: "area_code", list: areaCodeList, onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }
 }
