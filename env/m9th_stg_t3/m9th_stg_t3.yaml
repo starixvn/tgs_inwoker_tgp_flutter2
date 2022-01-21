@@ -66,7 +66,7 @@ environment_config:
       default: 0xffFFFFFF
     theme_text_black_color:
       type: int
-      default: 0xff4B4B4B
+      default: 0xff0E0D12
     theme_text_black_white_color:
       type: int
       default: 0xffFFFFFF

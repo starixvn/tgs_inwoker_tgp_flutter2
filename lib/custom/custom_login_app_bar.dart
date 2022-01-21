@@ -65,7 +65,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getAppBarTitle() => (widget.brandLogoUrl?.isEmpty ?? true)
       ? Container()
       : Container(
-          height: 50,
+          height: 60,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 8.auto),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -127,7 +129,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           isEnabled: true,
           width: 80,
           height: 17,
-          color: Colors.white,
           fontSize: 14,
           radius: 5,
           padding: 4,
@@ -143,7 +144,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           isEnabled: true,
           width: 60,
           height: 17,
-          color: Colors.white,
           fontSize: 14,
           radius: 5,
           padding: 4,
@@ -220,7 +220,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           ],
         ),
       );
-
 
   _getVipPresentText(int level) {
     if (EnvironmentConfig.vipPresentType == 2) {
