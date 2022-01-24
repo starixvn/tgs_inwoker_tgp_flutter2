@@ -19,17 +19,13 @@ class RegisterContent extends StatefulWidget {
   final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
   final LoginViewModel vm;
 
-
-  RegisterContent({
-    this.onSubmitUsernameAndPassword,
-    required this.vm
-  });
+  RegisterContent({this.onSubmitUsernameAndPassword, required this.vm});
 
   @override
   _RegisterContentState createState() => _RegisterContentState();
 }
 
-class _RegisterContentState extends BaseState<RegisterContent> {
+class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
   var username = TextEditingController(),
       password = TextEditingController(),
@@ -39,10 +35,14 @@ class _RegisterContentState extends BaseState<RegisterContent> {
       invitationCode = TextEditingController(),
       phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
-  var _vm ;
+  var _vm;
+
   bool _isTermsChecked = true;
   String? agentPlayer = 'player';
   List agentPlayerList = ['agent', 'player'];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -52,25 +52,25 @@ class _RegisterContentState extends BaseState<RegisterContent> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ProviderWidget<LoginViewModel>(
-      model: _vm,
-      builder: (ctx, vm, _) {
-        _handleApiState();
-        return Container(
-          child: Column(
-            children: [
-              _buildUsernameTextFormField(),
-              _buildPasswordTextFormField(),
-              _buildConfirmPasswordTextFormField(),
-              //_buildPayPasswordTextFormField(),
-              _buildPromotionCodeTextFormField(),
-              _buildRegisterTermsText(),
-              _buildRegisterButton()
-            ],
-          ),
-        );
-      },
-    );
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Container(
+            child: Column(
+              children: [
+                _buildUsernameTextFormField(),
+                _buildPasswordTextFormField(),
+                _buildConfirmPasswordTextFormField(),
+                //_buildPayPasswordTextFormField(),
+                _buildPromotionCodeTextFormField(),
+                _buildRegisterTermsText(),
+                _buildRegisterButton()
+              ],
+            ),
+          );
+        });
   }
 
   _buildUsernameTextFormField() => LoginTextFormField(
@@ -83,7 +83,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
         //onFieldSubmitted: (value) => null,
         controller: username,
         width: context.screenWidth,
-        //  textInputType: TextInputType.text,
+        textInputType: TextInputType.name,
         textInputAction: TextInputAction.next,
       );
 
@@ -141,7 +141,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
           //onFieldSubmitted: (value) => null,
           controller: pay,
           width: context.screenWidth,
-          //textInputType: TextInputType.text,
+          textInputType: TextInputType.name,
           textInputAction: TextInputAction.next,
         ),
       );
@@ -160,7 +160,7 @@ class _RegisterContentState extends BaseState<RegisterContent> {
             onFieldSubmitted: (value) => _register(),
             controller: invitationCode,
             width: context.screenWidth,
-            //textInputType: TextInputType.text,
+            textInputType: TextInputType.name,
             textInputAction: TextInputAction.done,
             dropDown: (_vm.config?.haveAffiliateFeature ?? false)
                 ? Container(

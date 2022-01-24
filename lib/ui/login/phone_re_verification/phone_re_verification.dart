@@ -31,7 +31,7 @@ class PhoneReVerification extends StatefulWidget {
   _PhoneReVerificationState createState() => _PhoneReVerificationState();
 }
 
-class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
+class _PhoneReVerificationState extends BaseState<PhoneReVerification> with AutomaticKeepAliveClientMixin {
   var _vm;
 
   TextEditingController _phoneController = TextEditingController(),
@@ -45,12 +45,23 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   String? display;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     _initData();
     super.initState();
   }
 
+  _initData() {
+    _vm = widget.vm;
+    display = _vm.config.phonePrefix;
+    _usernameController.text = _vm.username ?? "";
+    _passwordController.text = _vm.password ?? "";
+  }
+
   Widget build(BuildContext context) {
+    super.build(context);
     return ProviderWidget<LoginViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
@@ -80,7 +91,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
         //onFieldSubmitted: (value) => null,
         controller: _usernameController,
         width: context.screenWidth,
-       // textInputType: TextInputType.text,
+        textInputType: TextInputType.name,
         textInputAction: TextInputAction.next,
       );
 
@@ -197,13 +208,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> {
   _onClick() async {
     ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
     _vm.phoneVerify(_otpController.text);
-  }
-
-  _initData() {
-    _vm = widget.vm;
-    display = _vm.config.phonePrefix;
-    _usernameController.text = _vm.username ?? "";
-    _passwordController.text = _vm.password ?? "";
   }
 
   _handleApiState() {

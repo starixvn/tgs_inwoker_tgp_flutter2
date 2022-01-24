@@ -20,18 +20,18 @@ class LoginContent extends StatefulWidget {
   final child;
   final LoginViewModel vm;
 
-  LoginContent({this.child, required this.vm}) ;
+  LoginContent({this.child, required this.vm});
 
   @override
   _LoginContentState createState() => _LoginContentState();
 }
 
-class _LoginContentState extends BaseState<LoginContent> {
+class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true;
   bool _isRememberMe = true;
   var username = TextEditingController();
   var password = TextEditingController();
-  var _vm ;
+  var _vm;
 
   @override
   void initState() {
@@ -52,7 +52,11 @@ class _LoginContentState extends BaseState<LoginContent> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ProviderWidget<LoginViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
@@ -72,9 +76,7 @@ class _LoginContentState extends BaseState<LoginContent> {
 
   _buildUsernameTextFormField() => Container(
         margin: EdgeInsets.only(bottom: 10.auto),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.8)
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.8)),
         child: LoginTextFormField(
           icon: SvgPicture.asset(
             "images/login/ic_login_username.svg",
@@ -86,7 +88,7 @@ class _LoginContentState extends BaseState<LoginContent> {
           //onFieldSubmitted: (value) => null,
           controller: username,
           width: context.screenWidth,
-         // textInputType: TextInputType.visiblePassword,
+          textInputType: TextInputType.name,
           textInputAction: TextInputAction.next,
         ),
       );
@@ -123,7 +125,10 @@ class _LoginContentState extends BaseState<LoginContent> {
             },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),
-              style: TextStyle(color: CustomColor.theme_text_black_white_color, decoration: TextDecoration.underline, fontSize: 12.auto),
+              style: TextStyle(
+                  color: CustomColor.theme_text_black_white_color,
+                  decoration: TextDecoration.underline,
+                  fontSize: 12.auto),
             ),
           )
         ],
@@ -184,11 +189,13 @@ class _LoginContentState extends BaseState<LoginContent> {
                     },
                     child: Text(
                       list[index].name,
-                      style:
-                          TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_black_white_color),
+                      style: TextStyle(
+                          color: deviceLanguage == list[index]
+                              ? CustomColor.theme_button_color
+                              : CustomColor.theme_text_black_white_color),
                     )),
                 Visibility(
-                  visible: index+1 != list.length,
+                  visible: index + 1 != list.length,
                   child: VerticalDivider(
                     color: CustomColor.theme_text_black_white_color,
                   ),
