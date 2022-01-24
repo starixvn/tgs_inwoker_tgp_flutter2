@@ -10,6 +10,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -209,12 +210,20 @@ class _GameWebState extends BaseState<GameWeb> {
         isLoading = !isLoading;
       }
       url = _vm.url;
+    }, onError: (_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
+      });
     });
     handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
       if (isLoading) {
         isLoading = !isLoading;
       }
       url = _vm.url;
+    }, onError: (_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
+      });
     });
   }
 }

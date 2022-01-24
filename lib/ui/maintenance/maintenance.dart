@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -73,7 +74,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         });
   }
 
-  _buildAppBar() => AppBar(
+  _buildAppBar() => /*AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         flexibleSpace: Container(
@@ -90,6 +91,9 @@ class _MaintenanceState extends BaseState<Maintenance> {
           getTranslatedText("maintenance"),
           style: TextStyle(fontSize: 16.auto),
         ),
+      )*/
+      CustomAppBar(
+        title: getTranslatedText("maintenance"),
       );
 
   _buildText(String text, {bool isNeedMargin = true}) => Container(
