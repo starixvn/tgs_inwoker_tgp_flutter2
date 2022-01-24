@@ -25,7 +25,9 @@ import 'package:api/extension/screen_apis.dart';
 class PhoneReVerification extends StatefulWidget {
   final LoginViewModel vm;
 
-  PhoneReVerification({required this.vm});
+  PhoneReVerification({
+    required this.vm,
+  });
 
   @override
   _PhoneReVerificationState createState() => _PhoneReVerificationState();
@@ -49,23 +51,28 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   @override
   void initState() {
+    _vm = widget.vm;
+    display = _vm.config.phonePrefix;
     _initData();
     super.initState();
   }
 
   _initData() {
-    _vm = widget.vm;
-    display = _vm.config.phonePrefix;
     _usernameController.text = _vm.username ?? "";
     _passwordController.text = _vm.password ?? "";
   }
 
   Widget build(BuildContext context) {
     super.build(context);
+
     return ProviderWidget<LoginViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
+          if (_vm.isPhoneReVerificationReset) {
+            _initData();
+            _vm.setIsPhoneReVerificationResetToFalse();
+          }
           return Container(
             child: Column(
               children: [
@@ -195,7 +202,17 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
   }
 
   _getSmsCode() {
-    if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
+    if (!validate.validateUsernameLength(_usernameController.text) ||
+        !validate.validateUsernamePassword(_usernameController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("enter_username_error_message"));
+      });
+    } else if (!validate.validatePasswordLength(_passwordController.text) ||
+        !validate.validateUsernamePassword(_passwordController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("enter_password_error_msg"));
+      });
+    } else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });

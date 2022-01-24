@@ -17,16 +17,14 @@ class LoginOtpTextFormField extends StatefulWidget {
   final bool isCountdown;
 
   LoginOtpTextFormField(
-      {
-      required this.hintText,
+      {required this.hintText,
       required this.onChanged,
       required this.controller,
       required this.textInputAction,
       required this.getOtpCode,
       required this.isEnabled,
       required this.isCountdown,
-      required this.onCountDownEnd})
-      ;
+      required this.onCountDownEnd});
 
   @override
   _LoginOtpTextFormFieldState createState() => _LoginOtpTextFormFieldState();
@@ -35,7 +33,7 @@ class LoginOtpTextFormField extends StatefulWidget {
 class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
   Timer? _timer;
   int _start = 0;
-  static const int _duration = 5;
+  static const int _duration = 60;
 
   Widget build(BuildContext context) {
     return Row(

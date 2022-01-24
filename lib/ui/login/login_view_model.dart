@@ -22,6 +22,7 @@ class LoginViewModel extends BaseViewModel {
       getReVerifyCodeApiState,
       phoneReVerifyApiState;
   String? username, password;
+  bool isPhoneReVerificationReset = false;
 
   get brandLogo => contentRepo.brandLogo;
 
@@ -47,9 +48,10 @@ class LoginViewModel extends BaseViewModel {
     if (registerApiState.isSuccess && config?.smsVerification) {
       username = _username;
       password = _password;
-   }
+      isPhoneReVerificationReset = true;
+    }
     setLoading(false);
-     return registerApiState;
+    return registerApiState;
   }
 
   getUserInfo() async {
@@ -123,5 +125,9 @@ class LoginViewModel extends BaseViewModel {
       phoneReVerifyApiState = _status;
     setLoading(false);
     return phoneReVerifyApiState;
+  }
+
+  setIsPhoneReVerificationResetToFalse() {
+    isPhoneReVerificationReset = false;
   }
 }
