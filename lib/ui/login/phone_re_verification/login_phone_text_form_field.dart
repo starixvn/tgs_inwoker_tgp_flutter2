@@ -18,23 +18,21 @@ class LoginPhoneTextFormField extends StatefulWidget {
   final String? displayedAreaCode;
 
   LoginPhoneTextFormField(
-      {
-      required this.onChanged,
+      {required this.onChanged,
       required this.onFieldSubmitted,
       required this.controller,
       required this.width,
       required this.textInputAction,
       required this.enabled,
       required this.onAreaCodeClicked,
-       this.displayedAreaCode})
-      ;
+      this.displayedAreaCode});
 
   @override
   _LoginPhoneTextFormFieldState createState() => _LoginPhoneTextFormFieldState();
 }
 
 class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
-  List areaCodeList = ["+852", "+86", "+60", "+66"];
+  // List areaCodeList = ["+852", "+86", "+60", "+66"];
 
   Widget build(BuildContext context) {
     return Row(children: [
@@ -57,7 +55,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
                   Expanded(
                     flex: 5,
                     child: AutoSizeText(
-                      widget.displayedAreaCode ?? areaCodeList.first,
+                      widget.displayedAreaCode ?? "", //?? areaCodeList.first,
                       style: TextStyle(
                         color: CustomColor.theme_text_black_color,
                       ),
@@ -111,7 +109,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: getTranslatedText("area_code"),
-              list: areaCodeList,
+              list: [widget.displayedAreaCode],//areaCodeList,
               onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }

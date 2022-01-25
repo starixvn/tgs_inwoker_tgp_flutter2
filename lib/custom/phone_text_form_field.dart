@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -32,7 +33,7 @@ class PhoneTextFormField extends StatefulWidget {
 }
 
 class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
-  List areaCodeList = ["+852", "+86", "+60", "+66"];
+ // List areaCodeList = ["+852", "+86", "+60", "+66"];
 
   Widget build(BuildContext context) {
     return Column(
@@ -78,7 +79,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                           Expanded(
                             flex: 5,
                             child: AutoSizeText(
-                              widget.displayedAreaCode ?? areaCodeList.first,
+                              widget.displayedAreaCode??"",
                               style: TextStyle(
                                 color: CustomColor.theme_text_black_color,
                               ),
@@ -140,7 +141,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
         context: context,
         builder: (BuildContext bc) {
           return CustomPickerDialog(
-              title: "area_code", list: areaCodeList, onChanged: (value) => widget.onAreaCodeClicked(value));
+              title: "area_code", list: [widget.displayedAreaCode], onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }
 }
