@@ -35,7 +35,7 @@ class GameViewModel extends BaseViewModel {
   List<List<GameProvider2>>? gameProviderList;
   List<GameType> gameTypeList = [
     GameType.Sportsbook,
-    //GameType.ESports,
+    GameType.ESports,
     GameType.LiveDealerLobby,
     GameType.CardGameLobby,
     GameType.Fishing,
@@ -75,9 +75,11 @@ class GameViewModel extends BaseViewModel {
     gameProviderList = gameTypeList
         .map(
           (type) => list
-              .where((element) => (type == GameType.Sportsbook) //combine eesport to sportbook
+              .where(
+                  (element) => /*(type == GameType.Sportsbook) //combine eesport to sportbook
                   ? (element.gameType == type || element.gameType == GameType.ESports)
-                  : element.gameType == type)
+                  :*/
+                      element.gameType == type)
               .toList(),
         )
         .toList();

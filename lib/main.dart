@@ -32,6 +32,7 @@ import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:tgp_flutter2/ui/menu/menu.dart';
+import 'package:tgp_flutter2/ui/menu/menu_t2.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
 import 'package:tgp_flutter2/ui/profile/profile.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/edit_email.dart';
@@ -164,7 +165,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
                   RoutePath.login: (context) => Login(),
-                  RoutePath.register: (context) => Login(defaultRegisterTab:true),
+                  RoutePath.register: (context) => Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(),
                   RoutePath.splashMaintenance: (context) => Maintenance(
@@ -255,7 +256,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     _page = [
       _getHomeTemplateVersion(),
       Promotion(),
-      Menu(),
+      EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
       CustomerService(),
       Profile(),
     ];
@@ -293,7 +294,9 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             children: [
               _buildBottomBarItem(0, "ic_home", "home"),
               _buildBottomBarItem(1, "ic_promotion", "promotion"),
-              _buildBottomBarItem(2, "ic_deposit", "wallet", isNeedLogin: true),
+              EnvironmentConfig.template_version == 2
+                  ? _buildBottomBarItem(2, "ic_menu", "")
+                  : _buildBottomBarItem(2, "ic_deposit", "wallet", isNeedLogin: true),
               _buildBottomBarItem(3, "ic_cs", "customer_service"),
               _buildBottomBarItem(4, "ic_profile", "my_profile", isNeedLogin: true),
             ],
@@ -325,9 +328,13 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                       Navigator.of(context).pushNamed("/promotion");
                     } else if (index == 3) {
                       Navigator.of(context).pushNamed("/customer_service");
-                    } else if (index == 2) {
+                    } else if (index == 2 && EnvironmentConfig.template_version != 2) {
                       setState(() {
                         isMenu = !isMenu;
+                      });
+                    } else if (index == 2 && EnvironmentConfig.template_version == 2) {
+                      setState(() {
+                        currentBottomIndex = index;
                       });
                     } else {
                       setState(() {
@@ -363,7 +370,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         ),
       );
 
-  _buildImageIcon(String imagePath, int index, bool isNewMessage) => imagePath == "ic_deposit"
+  _buildImageIcon(String imagePath, int index, bool isNewMessage) => index == 2
       ? Image.asset(
           "images/bottom_nav_bar/$imagePath.png",
           matchTextDirection: true,

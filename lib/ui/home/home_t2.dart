@@ -1,8 +1,10 @@
 import 'package:api/entity/game_type.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:marquee/marquee.dart';
@@ -20,6 +22,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
+import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
 class HomeT2 extends StatefulWidget {
@@ -80,9 +83,9 @@ class _HomeT2State extends BaseState<HomeT2> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
-            appBar: CustomLoginAppBar(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: CustomColor.theme_bg_color,
+              /*appBar: CustomLoginAppBar(
               onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
               onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
               onClickLogoutButton: () => _logout(),
@@ -92,8 +95,8 @@ class _HomeT2State extends BaseState<HomeT2> {
               phone: _vm.phone,
               config: _vm.config,
             ),
-            body: /* Stack(
-              children: [*/
+            body: */ /* Stack(
+              children: [*/ /*
                 Container(
               margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
               child: Column(
@@ -103,18 +106,88 @@ class _HomeT2State extends BaseState<HomeT2> {
                   _buildGameView(),
                 ],
               ),
-            ),
-            /*_buildOverlay(),
+            ),*/
+              /*_buildOverlay(),
                 _buildMenu(),
               ],
             ),*/
-          );
+              body: Container(
+                child: Column(
+                  children: [
+                    Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
+                    _buildMarqueeRow(),
+                    HomeUserInfoView(
+                      userProfile: _vm.userProfile,
+                      wallet: _vm.totalBalance,
+                      onLoginTap: () => navigateToLogin(),
+                      onRefreshHomePage: () => _initData(),
+                    ),
+                    GameT2()
+                  ],
+                ),
+              ));
         });
+  }
+
+  _buildBorderCorner() => Positioned(
+        top: context.screenHeight / 5.2,
+        child: Container(
+          width: context.screenWidth,
+          height: context.screenHeight,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+              )),
+        ),
+      );
+
+  _buildMarqueeRow() => Row(
+        children: [
+          Container(
+            width: (languageCode?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
+            padding: EdgeInsets.only(left: 10.auto),
+            child: AutoSizeText(
+              getTranslatedText("notice"),
+              style: TextStyle(fontWeight: FontWeight.w600),
+              maxFontSize: 13,
+              minFontSize: 5,
+              maxLines: 1,
+              stepGranularity: 1,
+            ),
+          ),
+          _buildTextMarquee()
+        ],
+      );
+
+  _buildTextMarquee() {
+    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+        height: 18.auto,
+        child: announcement.isEmpty
+            ? Container()
+            : Marquee(
+                text: announcement,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.auto,
+                ),
+                scrollAxis: Axis.horizontal,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                blankSpace: 300.auto,
+                pauseAfterRound: Duration(seconds: 1),
+                showFadingOnlyWhenScrolling: false),
+      ),
+    );
   }
 
   _buildImageSlider() {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
-    return Container(
+    return /*Container(
       height: context.screenHeight / 5,
       child: _vm.bannerList == null || _vm.bannerList!.isEmpty
           ? _buildEmptyContainer()
@@ -183,6 +256,28 @@ class _HomeT2State extends BaseState<HomeT2> {
                 ),
               ],
             ),
+    )*/
+        Container(
+      height: context.screenHeight / 5,
+      child: _vm.bannerList == null || _vm.bannerList!.isEmpty
+          ? _buildEmptyContainer()
+          : ImageSlideshow(
+              initialPage: 0,
+              indicatorColor: CustomColor.theme_bar_gradient_2,
+              indicatorBackgroundColor: Colors.grey,
+              children: List.generate(
+                  _vm.bannerList!.length,
+                  (index) => _vm.bannerList![index].mobileUrl == null
+                      ? _buildEmptyContainer()
+                      : CachedNetworkImage(
+                          placeholder: (context, url) => _buildEmptyContainer(),
+                          imageUrl: _vm.bannerList![index].mobileUrl!,
+                          //handling error
+                          fit: BoxFit.fill,
+                          errorWidget: (context, url, error) => _buildEmptyContainer(),
+                        )),
+              isLoop: true,
+              autoPlayInterval: 3000),
     );
   }
 
@@ -190,7 +285,7 @@ class _HomeT2State extends BaseState<HomeT2> {
         color: CustomColor.very_light_pink_four,
       );
 
-  _buildTextMarquee() {
+  /*_buildTextMarquee() {
     var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
@@ -227,7 +322,7 @@ class _HomeT2State extends BaseState<HomeT2> {
         ],
       ),
     );
-  }
+  }*/
 
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
