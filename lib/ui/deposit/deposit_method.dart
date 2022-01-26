@@ -248,7 +248,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       );
 
   _buildTransferToAccount(String? methodCode, PaymentQrCode? paymentQrCode) {
-    if (paymentQrCode == null) return Container();
+    if (paymentQrCode == null || (_vm.config?.deposit_DualPage ?? false)) return Container();
 
     List<Widget> content = methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null
         ? _buildTransferToQr(paymentQrCode.qrCodeFileUrl!)
@@ -282,11 +282,22 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _buildTransferToQr(String qrUrl) {
     return [
-      Image.network(
+      /* Image.network(
         qrUrl,
         width: 100,
         height: 100,
-      )
+      )*/
+      CachedNetworkImage(
+        placeholder: (context, url) => Container(
+          color: CustomColor.very_light_pink_four,
+        ),
+        imageUrl: qrUrl,
+        width: 100,
+        height: 100,
+        //handling error
+        fit: BoxFit.cover,
+        errorWidget: (context, url, error) => Container(),
+      ),
     ];
   }
 
@@ -480,7 +491,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     switch (widget.paymentCode) {
       case "Manual":
         _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
-            promotionId ?? null, uploadImage!.path);
+            promotionId ?? null, uploadImage?.path);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(

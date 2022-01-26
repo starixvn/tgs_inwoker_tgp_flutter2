@@ -42,7 +42,7 @@ class DepositMethodViewModel extends BaseViewModel {
     String amount,
     String? paymentId,
     String? promotionId,
-    String imageFile,
+    String? imageFile,
   ) async {
     setLoading();
     if (bankType == BankType.BANK)
@@ -55,7 +55,7 @@ class DepositMethodViewModel extends BaseViewModel {
       if (config.deposit_DualPage)
         getManualDepositOrder(orderNo);
       else
-        uploadDepositImage(imageFile, orderNo);
+        uploadDepositImage(imageFile!, orderNo);
     }
     setLoading(false);
     return getManualDepositIdApiState;
