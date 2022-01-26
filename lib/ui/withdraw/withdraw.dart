@@ -220,33 +220,40 @@ class _WithdrawState extends BaseState<Withdraw> {
     }
   }
 
-  _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) => CardTextFormField(
-        title: getTranslatedText(titleText),
-        hintText: getTranslatedText(hintText),
-        onChanged: (value) => onTextChange(),
-        onFieldSubmitted: (value) => onTextChange(),
-        controller: controller,
-        focusNode: null,
-        width: context.screenWidth - 70.auto,
-        textInputType: isNum ? TextInputType.number : TextInputType.visiblePassword,
-        textInputAction: TextInputAction.done,
+  _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
+          title: getTranslatedText(titleText),
+          hintText: getTranslatedText(hintText),
+          onChanged: (value) => onTextChange(),
+          onFieldSubmitted: (value) => onTextChange(),
+          controller: controller,
+          focusNode: null,
+          width: context.screenWidth - 70.auto,
+          textInputType: isNum ? TextInputType.number : TextInputType.visiblePassword,
+          textInputAction: TextInputAction.done,
+          bottomMargin: 0,
+        ),
       );
 
   _buildHintText() => Container(
-        margin: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
+        margin: EdgeInsets.only(left: 15.auto, bottom: 15.auto),
         child: Text(
           getTranslatedText("withdrawal_warning"),
           style: TextStyle(color: Colors.red, fontSize: 11.auto),
         ),
       );
 
-  _buildButton() => ColorButton(
-        onClick: this.onNextButtonClick,
-        isEnabled: isNextButtonEnabled,
-        radius: 9.6,
-        color: CustomColor.theme_button_color,
-        title: getTranslatedText("submit"),
-      );
+  _buildButton() => Container(
+    margin: EdgeInsets.symmetric(horizontal: 10.auto),
+    child: ColorButton(
+          onClick: this.onNextButtonClick,
+          isEnabled: isNextButtonEnabled,
+          radius: 9.6,
+          color: CustomColor.theme_button_color,
+          title: getTranslatedText("submit"),
+        ),
+  );
 
   _showDialog() {
     showDialog(

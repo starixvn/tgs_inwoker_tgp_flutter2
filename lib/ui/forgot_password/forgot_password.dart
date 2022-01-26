@@ -16,8 +16,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password_view_model.dart';
 import 'package:tgp_flutter2/ui/forgot_password/update_forgot_password.dart';
 
-class
-ForgotPassword extends StatefulWidget {
+class ForgotPassword extends StatefulWidget {
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
@@ -41,25 +40,23 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
-              appBar: CustomAppBar(
-                title: getTranslatedText("forgot_password"),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: CustomColor.theme_bg_color,
+            appBar: CustomAppBar(
+              title: getTranslatedText("forgot_password"),
+            ),
+            body: Container(
+              margin: EdgeInsets.all(10.auto),
+              child: Column(
+                children: [
+                  //CustomTabBar(index:1),
+                  (_vm.config?.smsVerification ?? false) ? _buildPhoneTextFormField() : _buildTextFormField(),
+                  _buildOtpTextFormField(),
+                  _buildButton()
+                ],
               ),
-              body: Container(
-                  child: /*userProfile == null?
-                  Center(child: CircularProgressIndicator(),):*/
-                      Container(
-                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
-                child: Column(
-                  children: [
-                    //CustomTabBar(index:1),
-                    (_vm.config?.smsVerification ?? false) ? _buildPhoneTextFormField() : _buildTextFormField(),
-                    _buildOtpTextFormField(),
-                    _buildButton()
-                  ],
-                ),
-              )));
+            ),
+          );
         });
   }
 
@@ -117,7 +114,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
       );
 
   _buildButton() => Container(
-      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
+      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto, left: 10.auto, right: 10.auto),
       child: ColorButton(
         title: getTranslatedText("next"),
         onClick: () {

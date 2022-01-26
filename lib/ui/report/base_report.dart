@@ -73,14 +73,16 @@ class BaseReportState extends BaseState<BaseReport> {
                           backgroundColor: CustomColor.theme_bg_color,
                           flexibleSpace: FlexibleSpaceBar(
                             collapseMode: CollapseMode.pin,
-                            background: Column(children: [
-                              _getCalendarItem(),
-                              ReportFilterButtonItem(
-                                index: widget.filterIndex,
-                                onTextChanged: (value) => _onDateFilter(value),
-                              ),
-                              widget.getPickerBox
-                            ]),
+                            background: Column(
+                              children: [
+                                _getCalendarItem(),
+                                ReportFilterButtonItem(
+                                  index: widget.filterIndex,
+                                  onTextChanged: (value) => _onDateFilter(value),
+                                ),
+                                widget.getPickerBox
+                              ],
+                            ),
                           ),
                           bottom: PreferredSize(
                             preferredSize: Size.zero,

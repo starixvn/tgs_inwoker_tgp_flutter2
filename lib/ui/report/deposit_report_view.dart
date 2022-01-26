@@ -7,6 +7,7 @@ import 'package:api/entity/status.dart';
 import 'package:api/entity/report_cell_item_type.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/deposit_picker.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -53,7 +54,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             transactionHeaderList: [],
             getPickerBox: _getPickerBox(),
             filterIndex: filterIndex,
-            expandedHeight: 220,
+            expandedHeight: 180,
             vm: _vm,
             getReport: (mIsLoadMore, mStatus) {
               _getReport(isLoadMore: mIsLoadMore, status: mStatus);
@@ -180,7 +181,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomPicker(
+          DepositPicker(
               title: "status",
               displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.depositStatusList,

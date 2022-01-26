@@ -84,32 +84,29 @@ class _WechatState extends BaseState<Wechat> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => Visibility(
-        visible: _vm.userProfile.wechat != null,
-        child: InkWell(
-          onTap: () {
-            (_vm.config?.changesNotAllowed ?? false)
-                ? Navigator.of(context).pushNamed("/customer_service")
-                : setState(() {
-                    isTextFieldEnabled = true;
-                    isButtonEnabled = true;
-                    buttonText = getTranslatedText("edit");
-                    _focusNode.requestFocus();
-                  });
-          },
-          child: Wrap(
-            children: [
-              Text(
-                getTranslatedText("edit_wechat_cs"),
-                style: TextStyle(fontSize: 12.auto),
-              ),
-              Text(
-                (_vm.config?.changesNotAllowed ?? false) ? getTranslatedText("online_cs") : getTranslatedText("here"),
-                style: TextStyle(
-                    decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
-              ),
-            ],
-          ),
+  _buildFooterText() => InkWell(
+        onTap: () {
+          (_vm.config?.changesNotAllowed ?? false)
+              ? Navigator.of(context).pushNamed("/customer_service")
+              : setState(() {
+                  isTextFieldEnabled = true;
+                  isButtonEnabled = true;
+                  buttonText = getTranslatedText("edit");
+                  _focusNode.requestFocus();
+                });
+        },
+        child: Wrap(
+          children: [
+            Text(
+              getTranslatedText("edit_wechat_cs"),
+              style: TextStyle(fontSize: 12.auto),
+            ),
+            Text(
+              (_vm.config?.changesNotAllowed ?? false) ? getTranslatedText("online_cs") : getTranslatedText("here"),
+              style: TextStyle(
+                  decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
+            ),
+          ],
         ),
       );
 

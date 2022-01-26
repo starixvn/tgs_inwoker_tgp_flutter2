@@ -55,7 +55,10 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                       child: CircularProgressIndicator(),
                     )
                   : Container(
-                      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
+                      margin: EdgeInsets.only(
+                        left: 10.auto,
+                        right: 10.auto,
+                      ),
                       child: Column(
                         children: [
                           //CustomTabBar(index:1),
@@ -82,6 +85,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
           textInputType: TextInputType.text,
           textInputAction: TextInputAction.next,
           enabled: isTextFieldEnabled,
+          bottomMargin: 0,
         ),
       );
 

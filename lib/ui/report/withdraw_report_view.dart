@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:api/entity/status.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/deposit_picker.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -51,7 +52,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
             transactionHeaderList: ["time", "status", "amount"],
             getPickerBox: _getPickerBox(),
             filterIndex: filterIndex,
-            expandedHeight: 250,
+            expandedHeight: 210,
             vm: _vm,
             getReport: (mIsLoadMore, mStatus) {
               _getReport(isLoadMore: mIsLoadMore, status: mStatus);
@@ -146,7 +147,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomPicker(
+          DepositPicker(
               title: "status",
               displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.withdrawalStatusList,

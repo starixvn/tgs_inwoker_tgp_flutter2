@@ -16,20 +16,21 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputType textInputType;
   final TextInputAction textInputAction;
   final bool enabled;
+  final double bottomMargin;
 
-  CustomTextFormField({
-    required this.title,
-    required this.hintText,
-    required this.onChanged,
-    required this.onFieldSubmitted,
-    required this.controller,
-     this.focusNode,
-    required this.width,
-     this.button,
-    required this.textInputType,
-    required this.textInputAction,
-     this.enabled = true,
-  });
+  CustomTextFormField(
+      {required this.title,
+      required this.hintText,
+      required this.onChanged,
+      required this.onFieldSubmitted,
+      required this.controller,
+      this.focusNode,
+      required this.width,
+      this.button,
+      required this.textInputType,
+      required this.textInputAction,
+      this.enabled = true,
+      this.bottomMargin = 15});
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
@@ -38,11 +39,11 @@ class CustomTextFormField extends StatefulWidget {
 class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10.auto),
+      margin: EdgeInsets.only(bottom: (widget.bottomMargin).auto),
       child: Column(
         children: [
           Container(
-            width: widget.width,
+            margin: EdgeInsets.symmetric(horizontal: 10.auto),
             alignment: Alignment.topLeft,
             child: Text(
               widget.title,
@@ -82,6 +83,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: widget.hintText,
+                        isDense: true,
                         hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                       ),
                     ),

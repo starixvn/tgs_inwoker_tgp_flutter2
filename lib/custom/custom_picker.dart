@@ -27,64 +27,63 @@ class CustomPicker extends StatefulWidget {
 
 class _CustomPickerState extends BaseState<CustomPicker> {
   Widget build(BuildContext context) {
-    return Card(
-      semanticContainer: true,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
-      child: Container(
-        width: widget.width,
-        height: 50.auto,
-        margin: EdgeInsets.symmetric(vertical: 15.auto, horizontal: 20.auto),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                bottom: 8.auto,
-              ),
-              child: Text(
-                getTranslatedText(widget.title) ?? widget.title,
-                style: TextStyle(
-                  fontSize: 9.auto,
-                ),
+    return Container(
+      margin: EdgeInsets.only(left: 5.auto, right: 5.auto, bottom: 5.auto),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 5.auto, left: 5.auto),
+            alignment: Alignment.topLeft,
+            child: Text(
+              getTranslatedText(widget.title) ?? widget.title,
+              style: TextStyle(
+                fontSize: 12.auto,
               ),
             ),
-            InkWell(
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                onTap: () {
-                  widget.onClick();
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 9,
-                      child: AutoSizeText(
-                        widget.displayText,
-                        style: TextStyle(
-                          color: widget.isHintText ? Colors.grey : CustomColor.theme_button_color,
+          ),
+          Card(
+            semanticContainer: true,
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 5,
+            child: Container(
+                width: context.screenWidth - 60.auto,
+                height: 40.auto,
+                margin: EdgeInsets.symmetric(horizontal: 10.auto),
+                child: InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      widget.onClick();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 9,
+                          child: AutoSizeText(
+                            widget.displayText,
+                            style: TextStyle(
+                              color: widget.isHintText ? Colors.grey : CustomColor.theme_button_color,
+                            ),
+                            maxFontSize: 12,
+                            minFontSize: 8,
+                            maxLines: 1,
+                          ),
                         ),
-                        maxFontSize: 12,
-                        minFontSize: 8,
-                        maxLines: 1,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 18.0,
-                      ),
-                    )
-                  ],
-                ))
-          ],
-        ),
+                        Expanded(
+                          flex: 1,
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 18.0,
+                          ),
+                        )
+                      ],
+                    ))),
+          ),
+        ],
       ),
     );
   }

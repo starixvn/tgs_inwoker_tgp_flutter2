@@ -85,7 +85,7 @@ class _AddCardState extends BaseState<AddCard> {
   _buildAppBar() => CustomAppBar(title: getTranslatedText("add_card"), walletBalance: _vm.wallet?.main);
 
   _buildAddCardTitle() => Container(
-      margin: EdgeInsets.only(top: 10.auto, left: 20.auto, bottom: 10.auto),
+      margin: EdgeInsets.only(top: 10.auto, left: 10.auto, bottom: 25.auto),
       alignment: Alignment.topLeft,
       child: Text(
         getTranslatedText("add_card"),
@@ -102,17 +102,20 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
       });
 
-  _buildChannelPicker() => CustomPicker(
-      title: "channel",
-      displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
-      list: _vm.withdrawalInfoList,
-      isHintText: false,
-      width: context.screenWidth,
-      onClick: () {
-        _buildBottomSheet("channel", _vm.withdrawalInfoList!);
-      });
+  _buildChannelPicker() => Container(
+    margin: EdgeInsets.symmetric(vertical: 10.auto),
+    child: CustomPicker(
+        title: "channel",
+        displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
+        list: _vm.withdrawalInfoList,
+        isHintText: false,
+        width: context.screenWidth,
+        onClick: () {
+          _buildBottomSheet("channel", _vm.withdrawalInfoList!);
+        }),
+  );
 
-  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CardTextFormField(
+  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CustomTextFormField(
         title: getTranslatedText(title),
         hintText: getTranslatedText(hint),
         onChanged: (value) => _onTextChange(value),
@@ -124,7 +127,7 @@ class _AddCardState extends BaseState<AddCard> {
         textInputAction: TextInputAction.next,
       );
 
-  _buildCryptoAddressTextField() => CardTextFormField(
+  _buildCryptoAddressTextField() => CustomTextFormField(
         title: getTranslatedText("address"),
         hintText: getTranslatedText("enter_address"),
         onChanged: (value) => _onTextChange(value),
@@ -136,7 +139,7 @@ class _AddCardState extends BaseState<AddCard> {
         textInputAction: TextInputAction.next,
       );
 
-  _buildRealNameTextField() => CardTextFormField(
+  _buildRealNameTextField() => CustomTextFormField(
         title: getTranslatedText("realname"),
         hintText: getTranslatedText("enter_realname_hint"),
         onChanged: (value) => _onTextChange(value),
@@ -148,7 +151,7 @@ class _AddCardState extends BaseState<AddCard> {
         textInputAction: TextInputAction.next,
       );
 
-  _buildPhoneTextField() => CardTextFormField(
+  _buildPhoneTextField() => CustomTextFormField(
         title: getTranslatedText("phone_number"),
         hintText: getTranslatedText("enter_phone_hint"),
         onChanged: (value) => _onTextChange(value),
@@ -205,15 +208,18 @@ class _AddCardState extends BaseState<AddCard> {
         ),
       );
 
-  _buildConfirmButton() => ColorButton(
-        title: getTranslatedText("confirm"),
-        onClick: () {
-          _onClick();
-        },
-        isEnabled: isButtonEnabled,
-        color: CustomColor.theme_button_color,
-        radius: 9.6,
-      );
+  _buildConfirmButton() => Container(
+    margin: EdgeInsets.symmetric(horizontal: 10.auto),
+    child: ColorButton(
+          title: getTranslatedText("confirm"),
+          onClick: () {
+            _onClick();
+          },
+          isEnabled: isButtonEnabled,
+          color: CustomColor.theme_button_color,
+          radius: 9.6,
+        ),
+  );
 
   _buildBottomSheet(String title, List<dynamic> list) {
     showModalBottomSheet(

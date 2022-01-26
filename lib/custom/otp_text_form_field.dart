@@ -20,18 +20,17 @@ class OtpTextFormField extends StatefulWidget {
   final bool isCountdown;
   final bool isVisible;
 
-  OtpTextFormField(
-      {
-      required this.hintText,
-      required this.onChanged,
-      required this.controller,
-      required this.textInputAction,
-      required this.getOtpCode,
-      required this.isEnabled,
-      required this.isCountdown,
-      required this.onCountDownEnd,
-      this.isVisible = true,})
-      ;
+  OtpTextFormField({
+    required this.hintText,
+    required this.onChanged,
+    required this.controller,
+    required this.textInputAction,
+    required this.getOtpCode,
+    required this.isEnabled,
+    required this.isCountdown,
+    required this.onCountDownEnd,
+    this.isVisible = true,
+  });
 
   @override
   _OtpTextFormFieldState createState() => _OtpTextFormFieldState();
@@ -180,7 +179,7 @@ class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
   @override
   void dispose() {
     print("disposedisposedisposedispose");
-    _timer!.cancel();
+    if (_timer != null) _timer!.cancel();
     super.dispose();
   }
 }

@@ -90,7 +90,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
-                if (_isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto")))
+                if (_isShowExchangeRateText())
                   _buildExchangeRateText(),
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
@@ -121,7 +121,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     } else
       display = "";
     return Container(
-        margin: EdgeInsets.only(top: 10.auto),
+        margin: EdgeInsets.only(bottom: 15.auto,),
         child: Opacity(
           opacity: 1,
           child: CustomPicker(
@@ -173,8 +173,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   _buildAmountTextField() => Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        child: CardTextFormField(
+        //margin: EdgeInsets.only(top: 15.auto),
+        child: CustomTextFormField(
           title: getTranslatedText("deposit_amount") ?? "",
           hintText: getTranslatedText("enter") +
               " " +
@@ -187,12 +187,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           width: context.screenWidth - 70.auto,
           textInputType: TextInputType.number,
           textInputAction: TextInputAction.done,
+          bottomMargin: _isUmPayDeposit()|| _isShowExchangeRateText() ? 0 : 15,
         ),
       );
 
   _buildNameTextField(String title, String hint, TextEditingController controller) => Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        child: CardTextFormField(
+        child: CustomTextFormField(
           title: getTranslatedText(title),
           hintText: getTranslatedText(hint),
           onChanged: (value) => onTextChange(),
@@ -222,7 +222,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         margin: EdgeInsets.only(
           left: 10.auto,
           right: 10.auto,
-          top: 5.auto,
+          bottom: 20.auto
         ),
         child: Row(
           children: [
@@ -262,6 +262,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           left: 10.auto,
           right: 10.auto,
           top: 13.auto,
+          bottom: 18.auto,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +270,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             Text(
               getTranslatedText("deposit_to_account"),
               style: TextStyle(
-                fontSize: 9.auto,
+                fontSize: 12.auto,
               ),
             ),
             SizedBox(height: 3.auto),
@@ -350,7 +351,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         margin: EdgeInsets.only(
           left: 10.auto,
           right: 10.auto,
-          top: 13.auto,
+          bottom: 20.auto
         ),
         child: AutoSizeText(
           getTranslatedText("play_pay_hint_text"),
@@ -364,22 +365,42 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
   _buildUploadImageColumn() => Visibility(
         visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
-        child: Card(
-          semanticContainer: true,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(left: 5.auto, right: 5.auto),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildUploadTextRow(),
-              uploadImage == null
-                  ? Container()
-                  : Container(
-                      padding: EdgeInsets.all(10.auto),
-                      alignment: Alignment.centerRight,
-                      child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+              Container(
+                margin: EdgeInsets.only(
+                  left: 5.auto,
+                  bottom: 5.auto,
+                ),
+                child: Text(
+                  getTranslatedText("upload_prof"),
+                  style: TextStyle(
+                    fontSize: 12.auto,
+                  ),
+                ),
+              ),
+              Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                elevation: 5,
+                child: Column(
+                  children: [
+                    _buildUploadTextRow(),
+                    uploadImage == null
+                        ? Container()
+                        : Container(
+                            padding: EdgeInsets.all(10.auto),
+                            alignment: Alignment.centerRight,
+                            child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -388,7 +409,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   _buildUploadTextRow() => Visibility(
         visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
         child: Container(
-          margin: EdgeInsets.only(top: 10, left: 10.auto, right: 10.auto),
+          margin: EdgeInsets.only(
+            left: 10.auto,
+            right: 10.auto,
+          ),
           decoration: BoxDecoration(
               //bg image
               ),
@@ -407,7 +431,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 child: ColorButton(
                   title: getTranslatedText("pick_prof"),
                   width: 70.auto,
-                  height: 30.auto,
+                  height: 20.auto,
                   onClick: () {
                     chooseImage();
                   },
@@ -529,6 +553,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   _isLeePayDeposit() => widget.paymentCode == "LeePay";
 
   _isUmPayDeposit() => widget.paymentCode == "UmPay";
+
+  _isShowExchangeRateText() => _isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto"));
 
   onSelectedMethod(BankType bankType) async {
     _vm.filterMethod(bankType);
