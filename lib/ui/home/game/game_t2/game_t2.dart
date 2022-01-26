@@ -41,7 +41,7 @@ class _GameT2State extends BaseState<GameT2> {
           _handleApiState();
           return _vm.gameProviderList == null
               ? buildProgressDialog(_vm.brandLogoUrl)
-              : Expanded(
+              : /*Expanded(
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
                     child: Row(
@@ -76,6 +76,39 @@ class _GameT2State extends BaseState<GameT2> {
                                 config: _vm.config,
                               ),
                             ))
+                      ],
+                    ),
+                  ),
+                )*/
+              Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10.auto, bottom: 5.auto),
+                            child: Column(
+                              children: List.generate(_vm.gameTypeList.length, (index) {
+                                return Container(
+                                  margin: EdgeInsets.only(top: 8.auto),
+                                  child: _buildGameTab(index, _vm.gameTypeList[index]),
+                                );
+                              }),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: GameItemT2(
+                            controller: _controller,
+                            currGameType: currentGameType,
+                            gameProviderList: _vm.gameProviderList,
+                            onGameClick: (game) => _onGameClick(game),
+                            config: _vm.config,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -127,7 +160,7 @@ class _GameT2State extends BaseState<GameT2> {
           _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
         });
       },
-      child: Container(
+      child: /*Container(
           padding: EdgeInsets.only(top: 20.auto, left: 10.auto, right: 10.auto),
           child: Column(
             children: [
@@ -150,7 +183,31 @@ class _GameT2State extends BaseState<GameT2> {
                 maxLines: 1,
               ),
             ],
-          )),
+          ))*/
+          Container(
+        width: (62.5).auto,
+        height: (33.5).auto,
+        decoration: BoxDecoration(
+            color: tabIndex == currentTabIndex ? CustomColor.theme_button_color : CustomColor.very_light_pink_four,
+            border: Border.all(color: tabIndex == currentTabIndex ? Colors.black : CustomColor.very_light_pink_two),
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        // tabIndex == currentTabIndex ? gameTabGradientDecoration : gameTabColorDecoration,
+        padding: EdgeInsets.all(3.auto),
+        child: Center(
+            child: Container(
+          width: (62.5).auto,
+          child: AutoSizeText(
+            gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
+            style: TextStyle(
+                color: tabIndex == currentTabIndex ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
+            minFontSize: 2,
+            maxFontSize: 13,
+            stepGranularity: 1,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+          ),
+        )),
+      ),
     );
   }
 
@@ -183,13 +240,13 @@ class _GameT2State extends BaseState<GameT2> {
     if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
         gamePlatformCode == "TCG_SEA" ||
         gamePlatformCode == "TCG_LOTTO" ||
-        gamePlatformCode == "TCG_LOTTO_VN"|| gamePlatformCode == "SG") {
-      if (gamePlatformCode == "SW"|| gamePlatformCode == "SG")
+        gamePlatformCode == "TCG_LOTTO_VN" ||
+        gamePlatformCode == "SG") {
+      if (gamePlatformCode == "SW" || gamePlatformCode == "SG")
         await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
       else {
         await _vm.getGameList(gamePlatformCode, gameType);
-        await _vm.getGameUrl(gamePlatformCode!,
-            _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+        await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
       }
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);

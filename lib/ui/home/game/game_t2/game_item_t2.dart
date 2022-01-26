@@ -45,7 +45,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return /*Container(
         //decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
         child: ListView(
       controller: widget.controller,
@@ -55,7 +55,36 @@ class GameItemT2State extends BaseState<GameItemT2> {
                   left: _itemPaddingLeft, right: _itemPaddingRight, top: _itemPaddingTop, bottom: _itemPaddingBottom),
               child: _buildImageLayout(item)))
           .toList(),
-    ));
+    ))*/
+        Expanded(
+      child: Container(
+          padding: EdgeInsets.only(
+            right: _containerPaddingRight,
+          ),
+          decoration:
+              BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
+          child: RawScrollbar(
+            isAlwaysShown: true,
+            thumbColor: CustomColor.theme_bar_gradient_2,
+            thickness: 3.5,
+            radius: Radius.circular(1.4),
+            controller: widget.controller,
+            child: ListView(
+                padding: EdgeInsets.only(right: _listViewPaddingRight),
+                controller: widget.controller,
+                children: widget.gameProviderList!
+                    .expand((element) => element)
+                    .toList()
+                    .map((item) => Container(
+                        padding: EdgeInsets.only(
+                            left: _itemPaddingLeft,
+                            right: _itemPaddingRight,
+                            top: _itemPaddingTop,
+                            bottom: _itemPaddingBottom),
+                        child: _buildImageLayout(item)))
+                    .toList()),
+          )),
+    );
   }
 
   _getImagePath(GameProvider2 gameProvider) {

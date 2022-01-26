@@ -51,12 +51,8 @@ class _GameT3State extends BaseState<GameT3> {
   List<dynamic>? _getGameTypeMap() {
     if (_vm.gameTypeMap?.isEmpty ?? true)
       return null;
-    else {
-      if (widget.gameType == GameType.Sportsbook || widget.gameType == GameType.ESports)
-        return ([_vm.gameTypeMap![GameType.Sportsbook], _vm.gameTypeMap![GameType.ESports]].expand((x) => x!).toList());
-      else
-        return _vm.gameTypeMap![widget.gameType]!;
-    }
+    else
+      return _vm.gameTypeMap![widget.gameType]!;
   }
 
   @override
@@ -212,8 +208,9 @@ class _GameT3State extends BaseState<GameT3> {
     if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
         gamePlatformCode == "TCG_SEA" ||
         gamePlatformCode == "TCG_LOTTO" ||
-        gamePlatformCode == "TCG_LOTTO_VN"|| gamePlatformCode == "SG") {
-      if (gamePlatformCode == "SW"|| gamePlatformCode == "SG")
+        gamePlatformCode == "TCG_LOTTO_VN" ||
+        gamePlatformCode == "SG") {
+      if (gamePlatformCode == "SW" || gamePlatformCode == "SG")
         await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
       else {
         await _vm.getGameList(gamePlatformCode, gameType);
