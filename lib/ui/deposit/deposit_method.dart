@@ -271,6 +271,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               getTranslatedText("deposit_to_account"),
               style: TextStyle(
                 fontSize: 12.auto,
+                  color: CustomColor.theme_text_black_white_color
               ),
             ),
             SizedBox(height: 3.auto),
@@ -379,6 +380,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   getTranslatedText("upload_prof"),
                   style: TextStyle(
                     fontSize: 12.auto,
+                    color: CustomColor.theme_text_black_white_color
                   ),
                 ),
               ),

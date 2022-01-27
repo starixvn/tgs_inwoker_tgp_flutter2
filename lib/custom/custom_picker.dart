@@ -38,6 +38,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
               getTranslatedText(widget.title) ?? widget.title,
               style: TextStyle(
                 fontSize: 12.auto,
+                color: CustomColor.theme_text_black_white_color
               ),
             ),
           ),
