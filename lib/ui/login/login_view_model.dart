@@ -13,7 +13,7 @@ class LoginViewModel extends BaseViewModel {
 
   String? token;
   bool isUsernameExist = false;
-  var securityKey, _username, _password;
+  var _username, _password;
   var logoutApiState,
       getAllWalletState,
       loginApiState,
@@ -23,6 +23,7 @@ class LoginViewModel extends BaseViewModel {
       phoneReVerifyApiState;
   String? username, password;
   bool isPhoneReVerificationReset = false;
+  String? securityKey;
 
   get brandLogo => contentRepo.brandLogo;
 
@@ -116,7 +117,7 @@ class LoginViewModel extends BaseViewModel {
   phoneVerify(String verificationCode) async {
     setLoading();
     var _status = await authRepo.phoneReVerify(
-      securityKey,
+      securityKey ?? "",
       verificationCode,
     );
     if (_status.isSuccess) {
