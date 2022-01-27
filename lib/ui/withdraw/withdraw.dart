@@ -38,14 +38,20 @@ class _WithdrawState extends BaseState<Withdraw> {
   TextEditingController _amountController = TextEditingController(), _payPasswordController = TextEditingController();
   var amount;
   InputValidationProvider validate = new InputValidationProvider();
+  String? selectedBankCardText;
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _checkUserProfile();
-      _vm.getTurnoverAmount();
-    });
+    _initData();
     super.initState();
+  }
+
+  _initData() async {
+    await _checkUserProfile();
+    _vm.getTurnoverAmount();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _getBankText();
+    });
   }
 
   Widget build(BuildContext context) {
@@ -146,11 +152,11 @@ class _WithdrawState extends BaseState<Withdraw> {
         alignment: Alignment.centerRight,
         child: InkWell(
           onTap: () async {
-            var result = await Navigator.of(context).pushNamed(RoutePath.mainCard);
-            if (result != null) {
-              await _vm.getBankCardList();
-              selectedBankCard = _vm.bankCardList.first;
-            }
+            await Navigator.of(context).pushNamed(RoutePath.mainCard);
+            await _vm.getBankCardList();
+            setState(() {
+              _getBankText();
+            });
           },
           child: Wrap(children: [
             Container(
@@ -172,9 +178,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _buildBankPicker() => CustomPicker(
         title: getTranslatedText("bank_card"),
-        displayText: (_vm.bankCardList == null || _vm.bankCardList.isEmpty)
-            ? getTranslatedText("select_bank_card")
-            : _getBankText(),
+        displayText: selectedBankCardText ?? "",
         list: _vm.bankCardList ?? [],
         isHintText: selectedBankCard != null || _vm.bankCardList != null || _vm.bankCardList.isNotEmpty ? false : true,
         width: context.screenWidth,
@@ -201,10 +205,14 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   _getBankText() {
-    if (selectedBankCard == null) {
-      selectedBankCard = _vm.bankCardList.first;
+    if (_vm.bankCardList == null || _vm.bankCardList.isEmpty) {
+      selectedBankCardText = getTranslatedText("select_bank_card");
+    } else {
+      if (selectedBankCard == null) {
+        selectedBankCard = _vm.bankCardList.first;
+      }
+      selectedBankCardText = _getDisplayBankAccountText(selectedBankCard);
     }
-    return _getDisplayBankAccountText(selectedBankCard);
   }
 
   _getDisplayBankAccountText(BankCard bankCard) {
@@ -312,7 +320,7 @@ class _WithdrawState extends BaseState<Withdraw> {
     //   result = await Navigator.of(context).pushNamed("/pay_password");
     // }
     else {
-      _vm.getBankCardList();
+      await _vm.getBankCardList();
       return;
     }
 
