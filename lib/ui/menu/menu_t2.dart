@@ -111,8 +111,7 @@ class _MenuT2State extends BaseState<MenuT2> {
                 alignment: Alignment.bottomCenter,
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => MyHomePage()), (Route<dynamic> route) => false);
+                    Navigator.pop(context);
                   },
                   child: ImageIcon(
                     AssetImage("images/menu/ic_menu_close.png"),

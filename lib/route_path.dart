@@ -56,4 +56,5 @@ class RoutePath{
   static final  phoneReVerification = '/phone_re_verification';
   static final customerServiceWebView = '/customer_service_web_view';
   static final affiliate = '/affiliate';
+  static final menuT2 = '/menuT2';
 }

@@ -198,6 +198,7 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.editEmail: (context) => EditEmail(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.affiliate: (context) => Affiliate(),
+                  RoutePath.menuT2: (context) => MenuT2(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,
@@ -334,7 +335,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                       });
                     } else if (index == 2 && EnvironmentConfig.template_version == 2) {
                       setState(() {
-                        currentBottomIndex = index;
+                        Navigator.of(context).pushNamed(RoutePath.menuT2);
                       });
                     } else {
                       setState(() {
@@ -348,19 +349,20 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       _buildImageIcon(imagePath, index, isNewMessage),
-                      Container(
-                        margin: EdgeInsets.only(top: 3.auto),
-                        child: Text(
-                          getTranslatedText(title) ?? title,
-                          style: TextStyle(
-                            fontSize: 9.auto,
-                            color: (currentBottomIndex == index && !isMenu)
-                                ? CustomColor.bottom_nav_selected_color
-                                : CustomColor.bottom_nav_unselected_color,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                      if(title.isNotEmpty)
+                           Container(
+                              margin: EdgeInsets.only(top: 3.auto),
+                              child: Text(
+                                getTranslatedText(title) ?? title,
+                                style: TextStyle(
+                                  fontSize: 9.auto,
+                                  color: (currentBottomIndex == index && !isMenu)
+                                      ? CustomColor.bottom_nav_selected_color
+                                      : CustomColor.bottom_nav_unselected_color,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -370,20 +372,36 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         ),
       );
 
-  _buildImageIcon(String imagePath, int index, bool isNewMessage) => index == 2
-      ? Image.asset(
-          "images/bottom_nav_bar/$imagePath.png",
-          matchTextDirection: true,
-          height: 18.auto,
-        )
-      : SvgPicture.asset(
-          "images/bottom_nav_bar/$imagePath.svg",
-          matchTextDirection: true,
-          height: 18.auto,
-          color: currentBottomIndex == index && !isMenu
-              ? CustomColor.bottom_nav_selected_color
-              : CustomColor.bottom_nav_unselected_color,
-        );
+  _buildImageIcon(String imagePath, int index, bool isNewMessage) {
+    if (index == 2 && imagePath == "ic_deposit") {
+      return Image.asset(
+        "images/bottom_nav_bar/$imagePath.png",
+        matchTextDirection: true,
+        height: 18.auto,
+      );
+    } else if (index == 2 && imagePath == "ic_menu") {
+      return Container(
+        height: 35.auto,
+        child: CircleAvatar(
+          backgroundColor: CustomColor.theme_title_text_color,
+          child: ImageIcon(
+            AssetImage("images/bottom_nav_bar/$imagePath.png"),
+            size: 20.auto,
+            color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+          ),
+        ),
+      );
+    } else {
+      return SvgPicture.asset(
+        "images/bottom_nav_bar/$imagePath.svg",
+        matchTextDirection: true,
+        height: 18.auto,
+        color: currentBottomIndex == index && !isMenu
+            ? CustomColor.bottom_nav_selected_color
+            : CustomColor.bottom_nav_unselected_color,
+      );
+    }
+  }
 
   _closeMenu() {
     setState(() {
