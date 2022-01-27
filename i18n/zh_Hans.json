@@ -191,7 +191,7 @@
   "wechat_no_hint": "请输入微信号码",
   "edit_wechat_cs": "如需修改微信号码，请点击",
   "email_hint": "请输入您的邮箱地址",
-  "enter_email_otp_hint": "请输入您的邮箱验证码",
+  "enter_email_otp_hint": "请输入您的验证码",
   "add_pay_password": "添加提款密码",
   "start_game": "立即体验",
   "confirm_leave_game": "确定离开游戏吗？",
