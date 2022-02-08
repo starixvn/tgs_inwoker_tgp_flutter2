@@ -93,6 +93,7 @@ class _HomeT1State extends BaseState<HomeT1> {
               userProfile: _vm.userProfile,
               phone: _vm.phone,
               config: _vm.config,
+              wallet: _vm.wallet,
             ),
             body: /* Stack(
               children: [*/
@@ -250,12 +251,13 @@ class _HomeT1State extends BaseState<HomeT1> {
     );
   }
 
-  _getNoticeFlex(){
-    if((languageCode?.contains("zh") ?? false))
+  _getNoticeFlex() {
+    if ((languageCode?.contains("zh") ?? false))
       return 1;
-    else if(languageCode=="th-TH" || languageCode=="vi-VN")
+    else if (languageCode == "th-TH" || languageCode == "vi-VN")
       return 2;
-    else return 3;
+    else
+      return 3;
   }
 
   _removeMultiLine(String text) {

@@ -103,6 +103,7 @@ class _HomeT3State extends BaseState<HomeT3> {
               userProfile: _vm.userProfile,
               phone: _vm.phone,
               config: _vm.config,
+              wallet: _vm.wallet,
             ),
             body: /* Stack(
               children: [*/
@@ -214,17 +215,17 @@ class _HomeT3State extends BaseState<HomeT3> {
                           _vm.bannerList!.length,
                           (index) => ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child:  _vm.bannerList![index].mobileUrl == null
+                                child: _vm.bannerList![index].mobileUrl == null
                                     ? _buildEmptyContainer()
                                     : CachedNetworkImage(
-                                  height: 400,
-                                  width: context.screenWidth,
-                                  placeholder: (context, url) => _buildEmptyContainer(),
-                                  imageUrl: _vm.bannerList![index].mobileUrl!,
-                                  //handling error
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) => _buildEmptyContainer(),
-                                ),
+                                        height: 400,
+                                        width: context.screenWidth,
+                                        placeholder: (context, url) => _buildEmptyContainer(),
+                                        imageUrl: _vm.bannerList![index].mobileUrl!,
+                                        //handling error
+                                        fit: BoxFit.cover,
+                                        errorWidget: (context, url, error) => _buildEmptyContainer(),
+                                      ),
                               )),
                       options: CarouselOptions(
                         height: 400,
