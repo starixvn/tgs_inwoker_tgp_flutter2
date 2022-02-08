@@ -93,7 +93,7 @@ class _HomeT1State extends BaseState<HomeT1> {
               userProfile: _vm.userProfile,
               phone: _vm.phone,
               config: _vm.config,
-              wallet: _vm.wallet,
+              totalBalance: _vm.totalBalance,
             ),
             body: /* Stack(
               children: [*/

@@ -24,7 +24,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.userProfile,
     this.phone,
     this.config,
-    this.wallet,
+    this.totalBalance,
   });
 
   final Function onClickLoginButton;
@@ -35,7 +35,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final UserProfile? userProfile;
   final String? phone;
   final EnvFeaturesConfig? config;
-  final MainWallet? wallet;
+  final double? totalBalance;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -157,30 +157,35 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  _getUsernameText() => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: AutoSizeText(
-              widget.userProfile?.username ?? "",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-              minFontSize: 10,
-              stepGranularity: 1,
+  _getUsernameText() => Container(
+        height: 60,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 8.auto),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: AutoSizeText(
+                widget.userProfile?.username ?? "",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+                minFontSize: 10,
+                stepGranularity: 1,
+              ),
             ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: AutoSizeText(
-              Format().amountFormat(widget.wallet?.main),
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-              minFontSize: 10,
-              stepGranularity: 1,
+            Container(
+              alignment: Alignment.center,
+              child: AutoSizeText(
+                Format().amountFormat(widget.totalBalance ?? 0),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+                minFontSize: 10,
+                stepGranularity: 1,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 
   _getUserDetailsRow() => Container(
