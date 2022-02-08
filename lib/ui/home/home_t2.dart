@@ -94,6 +94,7 @@ class _HomeT2State extends BaseState<HomeT2> {
               userProfile: _vm.userProfile,
               phone: _vm.phone,
               config: _vm.config,
+              totalBalance: _vm.totalBalance,
             ),
             body: */ /* Stack(
               children: [*/ /*

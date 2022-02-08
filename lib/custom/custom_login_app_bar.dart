@@ -1,5 +1,7 @@
 import 'package:api/entity/env_features_config.dart';
+import 'package:api/entity/main_wallet.dart';
 import 'package:api/entity/user_profile.dart';
+import 'package:api/extension/format.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,15 +15,17 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomLoginAppBar(
-      {required this.onClickLoginButton,
-      required this.onClickRegisterButton,
-      required this.onClickLogoutButton,
-      required this.isLogin,
-      this.brandLogoUrl,
-      this.userProfile,
-      this.phone,
-      this.config});
+  CustomLoginAppBar({
+    required this.onClickLoginButton,
+    required this.onClickRegisterButton,
+    required this.onClickLogoutButton,
+    required this.isLogin,
+    this.brandLogoUrl,
+    this.userProfile,
+    this.phone,
+    this.config,
+    this.totalBalance,
+  });
 
   final Function onClickLoginButton;
   final Function onClickRegisterButton;
@@ -31,6 +35,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final UserProfile? userProfile;
   final String? phone;
   final EnvFeaturesConfig? config;
+  final double? totalBalance;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -143,7 +148,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           title: getTranslatedText("exit"),
           onClick: () => widget.onClickLogoutButton(),
           isEnabled: true,
-          width: getCurrentLanguage().apiCode =="th-TH"?80:60,
+          width: getCurrentLanguage().apiCode == "th-TH" ? 80 : 60,
           height: 17,
           radius: 5,
           padding: 2,
@@ -153,13 +158,33 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getUsernameText() => Container(
+        height: 60,
         alignment: Alignment.center,
-        child: AutoSizeText(
-          widget.userProfile?.username ?? "",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-          minFontSize: 10,
-          stepGranularity: 1,
+        padding: EdgeInsets.symmetric(vertical: 8.auto),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: AutoSizeText(
+                widget.userProfile?.username ?? "",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+                minFontSize: 10,
+                stepGranularity: 1,
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: AutoSizeText(
+                Format().amountFormat(widget.totalBalance ?? 0),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+                minFontSize: 10,
+                stepGranularity: 1,
+              ),
+            ),
+          ],
         ),
       );
 

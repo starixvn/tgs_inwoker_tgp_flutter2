@@ -24,6 +24,8 @@ class HomeViewModel extends BaseViewModel {
 
   get config => contentRepo.featuresConfig;
 
+  get wallet => userRepo.wallet;
+
   bool isNotLogin = false, isExpired = false;
   var getBasicInfoApiState,
       getAnnouncementApiState,

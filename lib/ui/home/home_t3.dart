@@ -104,6 +104,7 @@ class _HomeT3State extends BaseState<HomeT3> {
               userProfile: _vm.userProfile,
               phone: _vm.phone,
               config: _vm.config,
+              totalBalance: _vm.totalBalance,
             ),
             body: /* Stack(
               children: [*/
