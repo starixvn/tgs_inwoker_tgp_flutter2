@@ -174,16 +174,17 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 stepGranularity: 1,
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              child: AutoSizeText(
-                Format().amountFormat(widget.totalBalance ?? 0),
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-                minFontSize: 10,
-                stepGranularity: 1,
+            if (widget.config?.homePageDisplayBalance ?? false)
+              Container(
+                alignment: Alignment.center,
+                child: AutoSizeText(
+                  Format().amountFormat(widget.totalBalance ?? 0),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                  minFontSize: 10,
+                  stepGranularity: 1,
+                ),
               ),
-            ),
           ],
         ),
       );

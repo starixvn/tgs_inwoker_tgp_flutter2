@@ -21,5 +21,6 @@
   "AddCard_EnglishName": false,
   "ChangesNotAllowed": false,
   "HaveAffiliateFeature": false,
-  "PhonePrefix": "+852"
+  "PhonePrefix": "+852",
+  "HomePageDisplayBalance": false
 }
