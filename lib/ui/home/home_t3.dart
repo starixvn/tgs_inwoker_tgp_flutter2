@@ -45,6 +45,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     GameType.LiveDealerLobby,
   ];
   var gameList = [
+    //GameType.ESports,
     GameType.Slot,
     GameType.Fishing,
     GameType.LotteryLobby,
@@ -60,7 +61,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   var _vm = HomeViewModel();
   int _current = 0;
   final CarouselController _controller = CarouselController();
-  String? languageCode;
+  String? languageCode, imageLanguageCode = "en-US";
   var _gameViewModel = GameViewModel();
 
   @override
@@ -70,12 +71,12 @@ class _HomeT3State extends BaseState<HomeT3> {
   }
 
   _initData() async {
+    await getLanguage();
     _vm.getAnnouncement();
     _vm.getBanner();
     _vm.getTotalBalance();
     _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
-    getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
@@ -84,6 +85,8 @@ class _HomeT3State extends BaseState<HomeT3> {
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    imageLanguageCode =
+        ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
   }
 
   Widget build(BuildContext context) {
@@ -290,28 +293,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                               ))),
                   child: Container(
                     width: context.screenWidth / 2 - 15.auto,
-                    child: Stack(
-                      children: [
-                        Image.asset("images/home/${gameRowList[index].getImagePath()}.png"),
-                        Positioned(
-                          bottom: 7.auto,
-                          right: 10.auto,
-                          child: Container(
-                            width: 80.auto,
-                            height: 90.auto,
-                            alignment: Alignment.bottomCenter,
-                            child: AutoSizeText(
-                              // gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
-                              gameRowList[index].getName(context, _vm.config?.menuItemShootFish ?? false),
-                              maxFontSize: 23,
-                              minFontSize: 10,
-                              stepGranularity: 1,
-                              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: Image.asset("images/home/$imageLanguageCode/${gameRowList[index].getImagePath()}.png"),
                   ));
             })),
       );
@@ -324,35 +306,17 @@ class _HomeT3State extends BaseState<HomeT3> {
           itemCount: gameList.length,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) => InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => GameT3(
-                            gamePlatformCode: "",
-                            gameType: gameList[index],
-                            index: index,
-                            config: _vm.config,
-                          ))),
-              child: Stack(
-                children: [
-                  Image.asset("images/home/${gameList[index].getImagePath()}.png"),
-                  Positioned(
-                      bottom: 20.auto,
-                      left: 60.auto,
-                      child: Container(
-                        width: 70.auto,
-                        height: 40.auto,
-                        alignment: Alignment.bottomLeft,
-                        child: AutoSizeText(
-                          gameList[index].getName(context, _vm.config?.menuItemShootFish ?? false),
-                          maxFontSize: 23,
-                          minFontSize: 10,
-                          stepGranularity: 1,
-                          style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
-                        ),
-                      )),
-                ],
-              )),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GameT3(
+                          gamePlatformCode: "",
+                          gameType: gameList[index],
+                          index: index,
+                          config: _vm.config,
+                        ))),
+            child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.png"),
+          ),
           staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
           mainAxisSpacing: 15.auto,
           crossAxisSpacing: 15.auto,
