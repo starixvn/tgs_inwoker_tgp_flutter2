@@ -23,6 +23,7 @@ import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'dart:math';
 
 class HomeT1 extends StatefulWidget {
   final bool isFirstRun;
@@ -52,6 +53,7 @@ class _HomeT1State extends BaseState<HomeT1> {
   CarouselController carouselController = CarouselController();
   var languageCode;
   var _gameViewModel = GameViewModel();
+  var randomNumber;
 
   @override
   void initState() {
@@ -69,6 +71,7 @@ class _HomeT1State extends BaseState<HomeT1> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
+    randomNumber = _randomGenerator();
   }
 
   getLanguage() async {
@@ -198,7 +201,27 @@ class _HomeT1State extends BaseState<HomeT1> {
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          //if (_vm.config?.onlineUser?? false)
+          Expanded(
+            flex: (languageCode?.contains("zh") ?? false)?2:3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getTranslatedText("online_user") + " :",
+                  style: TextStyle(fontSize: 10.auto),
+                ),
+                Container(
+                  child: Text(
+                    (randomNumber ?? 26500).toString(),
+                    style: TextStyle(fontSize: 10.auto),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             flex: 1,
             child: SvgPicture.asset(
@@ -216,7 +239,7 @@ class _HomeT1State extends BaseState<HomeT1> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: CustomColor.theme_text_black_white_color,
-                  fontSize: 12.auto,
+                  fontSize: 11.auto,
                 ),
                 /* maxFontSize: 12,
                 minFontSize: 5,*/
@@ -257,7 +280,7 @@ class _HomeT1State extends BaseState<HomeT1> {
     else if (languageCode == "th-TH" || languageCode == "vi-VN")
       return 2;
     else
-      return 3;
+      return 4;
   }
 
   _removeMultiLine(String text) {
@@ -311,6 +334,14 @@ class _HomeT1State extends BaseState<HomeT1> {
         onClick: () => Navigator.of(context).pop(),
       ),
     );
+  }
+
+  _randomGenerator() {
+    Random _random = new Random();
+    int min = 20000;
+    int max = 30000;
+    int result = min + _random.nextInt(max - min);
+    return result;
   }
 
   _handleApiState() {

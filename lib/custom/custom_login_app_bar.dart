@@ -192,56 +192,71 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _getUserDetailsRow() => Container(
         margin: EdgeInsets.symmetric(vertical: 3.auto),
         child: Row(
-          children: [_getPhoneText(), _getVipText()],
-        ),
-      );
-
-  _getPhoneText() => Visibility(
-        visible: (widget.config?.displayPhone ?? false),
-        child: Row(
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 3.auto),
-              child: Image.asset(
-                "images/home/ic_phone.png",
-                width: 10.auto,
-                height: 10.auto,
-              ),
-            ),
-            AutoSizeText(
-              widget.phone ?? "",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-              minFontSize: 10,
-              stepGranularity: 1,
-            ),
+            if (widget.config?.displayPhone ?? false) _getPhoneText(),
+            if (widget.config?.customVIP ?? false) _getVipText()
           ],
         ),
       );
 
-  _getVipText() => Visibility(
-        visible: widget.config?.customVIP ?? false,
+  _getPhoneText() => Expanded(
+        flex: 1,
         child: Row(
           children: [
-            Visibility(
-              visible: widget.isLogin,
+            Expanded(
+              flex: 1,
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 3.auto),
                 child: Image.asset(
-                  "images/home/ic_vip.png",
+                  "images/home/ic_phone.png",
                   width: 10.auto,
                   height: 10.auto,
                 ),
               ),
             ),
-            Visibility(
-              visible: widget.isLogin,
+            Expanded(
+              flex: 9,
               child: AutoSizeText(
-                _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
+                widget.phone ?? "",
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
-                minFontSize: 5,
+                minFontSize: 1,
                 stepGranularity: 1,
+              ),
+            ),
+          ],
+        ),
+      );
+
+  _getVipText() => Expanded(
+        flex: 1,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Visibility(
+                visible: widget.isLogin,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 3.auto),
+                  child: Image.asset(
+                    "images/home/ic_vip.png",
+                    width: 10.auto,
+                    height: 10.auto,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 9,
+              child: Visibility(
+                visible: widget.isLogin,
+                child: AutoSizeText(
+                  _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                  minFontSize: 5,
+                  stepGranularity: 1,
+                ),
               ),
             ),
           ],
