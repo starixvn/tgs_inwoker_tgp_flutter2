@@ -23,11 +23,14 @@ import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'dart:math';
 
 class HomeT1 extends StatefulWidget {
   final bool isFirstRun;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  HomeT1({this.isFirstRun = false});
+  HomeT1({this.isFirstRun = false, this.onPauseBgMusic, this.onResumeBgMusic});
 
   @override
   _HomeT1State createState() => _HomeT1State();
@@ -52,12 +55,16 @@ class _HomeT1State extends BaseState<HomeT1> {
   CarouselController carouselController = CarouselController();
   var languageCode;
   var _gameViewModel = GameViewModel();
+  var randomNumber;
+  var _assetsAudioPlayer;
 
   @override
   void initState() {
     _initData();
+
     super.initState();
   }
+
 
   _initData() async {
     _vm.getAnnouncement();
@@ -69,6 +76,7 @@ class _HomeT1State extends BaseState<HomeT1> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
+    randomNumber = _randomGenerator();
   }
 
   getLanguage() async {
@@ -85,9 +93,15 @@ class _HomeT1State extends BaseState<HomeT1> {
             resizeToAvoidBottomInset: false,
             backgroundColor: CustomColor.theme_bg_color,
             appBar: CustomLoginAppBar(
-              onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-              onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-              onClickLogoutButton: () => _logout(),
+              onClickLoginButton: () {
+                Navigator.of(context).pushNamed(RoutePath.login);
+              },
+              onClickRegisterButton: () {
+                Navigator.of(context).pushNamed(RoutePath.register);
+              },
+              onClickLogoutButton: () {
+                _logout();
+              },
               isLogin: _vm.userProfile != null,
               brandLogoUrl: _vm.brandLogoUrl,
               userProfile: _vm.userProfile,
@@ -97,7 +111,7 @@ class _HomeT1State extends BaseState<HomeT1> {
             ),
             body: /* Stack(
               children: [*/
-                Container(
+            Container(
               margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
               child: Column(
                 children: [
@@ -105,8 +119,10 @@ class _HomeT1State extends BaseState<HomeT1> {
                   _buildTextMarquee(),
                   _buildGameView(),
                 ],
-              ),
-            ),
+              )
+              ,
+            )
+            ,
             /*_buildOverlay(),
                 _buildMenu(),
               ],
@@ -122,74 +138,76 @@ class _HomeT1State extends BaseState<HomeT1> {
       child: _vm.bannerList == null || _vm.bannerList!.isEmpty
           ? _buildEmptyContainer()
           : Stack(
-              children: [
-                CarouselSlider(
-                  carouselController: carouselController,
-                  items: List.generate(
-                      _vm.bannerList!.length,
-                      (index) => ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: _vm.bannerList![index].mobileUrl == null
-                                ? _buildEmptyContainer()
-                                : CachedNetworkImage(
-                                    height: 400,
-                                    width: context.screenWidth,
-                                    placeholder: (context, url) => _buildEmptyContainer(),
-                                    imageUrl: _vm.bannerList![index].mobileUrl!,
-                                    //handling error
-                                    fit: BoxFit.fill,
-                                    errorWidget: (context, url, error) => _buildEmptyContainer(),
-                                  ),
-                          )),
-                  options: CarouselOptions(
-                    height: 400,
-                    aspectRatio: context.screenWidth / 400,
-                    viewportFraction: 1,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 500),
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    onPageChanged: (index, _) {
-                      setState(() {
-                        _current = index;
-                      });
-                    },
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    carouselController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
-                  },
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.arrow_forward_ios, color: Colors.white),
-                  ),
-                ),
-                Container(
-                  height: 400,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: List.generate(_vm.bannerList!.length, (index) {
-                      return Container(
-                        width: 8.auto,
-                        height: 8.auto,
-                        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
+        children: [
+          CarouselSlider(
+            carouselController: carouselController,
+            items: List.generate(
+                _vm.bannerList!.length,
+                    (index) =>
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: _vm.bannerList![index].mobileUrl == null
+                          ? _buildEmptyContainer()
+                          : CachedNetworkImage(
+                        height: 400,
+                        width: context.screenWidth,
+                        placeholder: (context, url) => _buildEmptyContainer(),
+                        imageUrl: _vm.bannerList![index].mobileUrl!,
+                        //handling error
+                        fit: BoxFit.fill,
+                        errorWidget: (context, url, error) => _buildEmptyContainer(),
+                      ),
+                    )),
+            options: CarouselOptions(
+              height: 400,
+              aspectRatio: context.screenWidth / 400,
+              viewportFraction: 1,
+              initialPage: 0,
+              enableInfiniteScroll: true,
+              autoPlay: true,
+              autoPlayInterval: Duration(seconds: 3),
+              autoPlayAnimationDuration: Duration(milliseconds: 500),
+              enlargeCenterPage: true,
+              scrollDirection: Axis.horizontal,
+              onPageChanged: (index, _) {
+                setState(() {
+                  _current = index;
+                });
+              },
             ),
+          ),
+          InkWell(
+            onTap: () {
+              carouselController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.linear);
+            },
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: Icon(Icons.arrow_forward_ios, color: Colors.white),
+            ),
+          ),
+          Container(
+            height: 400,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: List.generate(_vm.bannerList!.length, (index) {
+                return Container(
+                  width: 8.auto,
+                  height: 8.auto,
+                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  _buildEmptyContainer() => Container(
+  _buildEmptyContainer() =>
+      Container(
         color: CustomColor.very_light_pink_four,
       );
 
@@ -198,7 +216,27 @@ class _HomeT1State extends BaseState<HomeT1> {
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          if (_vm.config?.onlineUser ?? false)
+            Expanded(
+              flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    getTranslatedText("online_user") + " :",
+                    style: TextStyle(fontSize: 10.auto),
+                  ),
+                  Container(
+                    child: Text(
+                      (randomNumber ?? 26500).toString(),
+                      style: TextStyle(fontSize: 10.auto),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           Expanded(
             flex: 1,
             child: SvgPicture.asset(
@@ -216,7 +254,7 @@ class _HomeT1State extends BaseState<HomeT1> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: CustomColor.theme_text_black_white_color,
-                  fontSize: 12.auto,
+                  fontSize: 11.auto,
                 ),
                 /* maxFontSize: 12,
                 minFontSize: 5,*/
@@ -257,16 +295,19 @@ class _HomeT1State extends BaseState<HomeT1> {
     else if (languageCode == "th-TH" || languageCode == "vi-VN")
       return 2;
     else
-      return 3;
+      return 4;
   }
 
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
   }
 
-  _buildGameView() => GameT1(
-        vm: _gameViewModel,
-        onRefreshHomePage: () => _initData(),
+  _buildGameView() =>
+      GameT1(
+          vm: _gameViewModel,
+          onRefreshHomePage: () => _initData(),
+          onPauseBgMusic: () => widget.onPauseBgMusic!(),
+          onResumeBgMusic: () => widget.onResumeBgMusic!()
       );
 
   navigateToLogin() {
@@ -281,17 +322,18 @@ class _HomeT1State extends BaseState<HomeT1> {
     if (_vm.userProfile == null && !loginLater) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_expired"),
-          description: getTranslatedText("login_again"),
-          buttonText1: getTranslatedText("login"),
-          buttonText2: getTranslatedText("no"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            prefs.setBool("login_later", true);
-            Navigator.pop(context);
-          },
-        ),
+        builder: (BuildContext context) =>
+            CustomDialog(
+              title: getTranslatedText("login_expired"),
+              description: getTranslatedText("login_again"),
+              buttonText1: getTranslatedText("login"),
+              buttonText2: getTranslatedText("no"),
+              onClick: this.navigateToLogin,
+              onClick2: () {
+                prefs.setBool("login_later", true);
+                Navigator.pop(context);
+              },
+            ),
       );
     }
   }
@@ -304,13 +346,22 @@ class _HomeT1State extends BaseState<HomeT1> {
   _displayMarqueeDialog() async {
     showDialog(
       context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
-        description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
-        buttonText1: getTranslatedText("confirm"),
-        onClick: () => Navigator.of(context).pop(),
-      ),
+      builder: (BuildContext context) =>
+          CustomDialog(
+            title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
+            description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () => Navigator.of(context).pop(),
+          ),
     );
+  }
+
+  _randomGenerator() {
+    Random _random = new Random();
+    int min = 20000;
+    int max = 30000;
+    int result = min + _random.nextInt(max - min);
+    return result;
   }
 
   _handleApiState() {

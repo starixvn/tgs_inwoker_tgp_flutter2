@@ -2,6 +2,7 @@ import 'package:api/api.dart';
 import 'package:api/entity/language_option.dart';
 import 'package:api/entity/response/login_response.dart';
 import 'package:api/network/event_result.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -52,6 +53,7 @@ import 'package:tgp_flutter2/ui/splash/splash.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
+import 'package:tgp_flutter2/ui/vip/vip.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -159,7 +161,10 @@ class _MyAppState extends BaseState<MyApp> {
                 title: appTitle,
                 initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
                 routes: {
-                  RoutePath.myHome: (context) => MyHomePage(versionUpdate: _vm.versionUpdateState),
+                  RoutePath.myHome: (context) => MyHomePage(
+                        versionUpdate: _vm.versionUpdateState,
+                        isFirstRun: true,
+                      ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.customerService: (context) => CustomerService(),
@@ -198,7 +203,6 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.editEmail: (context) => EditEmail(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.affiliate: (context) => Affiliate(),
-                  RoutePath.menuT2: (context) => MenuT2(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,
@@ -241,11 +245,12 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends BaseState<MyHomePage> {
+class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver {
   int currentBottomIndex = 0;
   List _page = [];
   var isMenu = false;
   var _vm = MainViewModel();
+  var _assetsAudioPlayer, audiobytes;
 
   @override
   void initState() {
@@ -261,17 +266,40 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       CustomerService(),
       Profile(),
     ];
+
+    _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+    if (widget.isFirstRun && (_vm.config?.backgroundMusic ?? false)) {
+      _assetsAudioPlayer.open(Audio("audio/caishendao.mp3"), playInBackground: PlayInBackground.disabledPause);
+    }
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _assetsAudioPlayer.play();
+    } else {
+      _assetsAudioPlayer.pause();
+    }
   }
 
   _getHomeTemplateVersion() {
     switch (EnvironmentConfig.template_version) {
       case 1:
-        return HomeT1();
+        return HomeT1(
+          onPauseBgMusic: () => _assetsAudioPlayer.pause(),
+          onResumeBgMusic: () => _assetsAudioPlayer.play(),
+        );
       case 2:
-        return HomeT2();
+        return HomeT2(
+          onPauseBgMusic: () => _assetsAudioPlayer.pause(),
+          onResumeBgMusic: () => _assetsAudioPlayer.play(),
+        );
       case 3:
-        return HomeT3();
+        return HomeT3(
+          onPauseBgMusic: () => _assetsAudioPlayer.pause(),
+          onResumeBgMusic: () => _assetsAudioPlayer.play(),
+        );
     }
   }
 

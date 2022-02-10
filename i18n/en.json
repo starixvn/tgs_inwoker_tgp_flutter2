@@ -1009,5 +1009,6 @@
   "agent": "Agent",
   "player": "Player",
   "exit": "Exit",
-  "verification_code_success": "Verification code sent successfully"
+  "verification_code_success": "Verification code sent successfully",
+  "online_user": "Online Users"
 }

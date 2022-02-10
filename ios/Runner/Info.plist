@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PG</string>
+	<string>MGM_stg</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -61,6 +61,10 @@
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
+        <key>NSAllowsArbitraryLoadsForMedia</key>
+            <true/>
     </dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>... explain why the app uses the microphone here ...</string>
 </dict>
 </plist>

@@ -12,8 +12,17 @@ class ChildGamePlatformTabBarView extends StatefulWidget {
   final Function? onClick;
   final bool isDisabled;
   final GameViewModel? vm;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  ChildGamePlatformTabBarView({@required this.gameList, this.onClick, this.isDisabled = false, this.vm});
+  ChildGamePlatformTabBarView({
+    @required this.gameList,
+    this.onClick,
+    this.isDisabled = false,
+    this.vm,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic
+  });
 
   @override
   _ChildGamePlatformTabBarViewState createState() => _ChildGamePlatformTabBarViewState();
@@ -24,7 +33,7 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
     return GridView.count(
       padding: EdgeInsets.all(10.auto),
       crossAxisCount: 2,
-     childAspectRatio: 165.5/198,
+      childAspectRatio: 165.5 / 198,
       shrinkWrap: true,
       physics: AlwaysScrollableScrollPhysics(),
       crossAxisSpacing: 10,
@@ -39,6 +48,8 @@ class _ChildGamePlatformTabBarViewState extends BaseState<ChildGamePlatformTabBa
               //isFavourite: true,
               isDisabled: widget.isDisabled,
               vm: widget.vm,
+              onPauseBgMusic: () => widget.onPauseBgMusic!(),
+              onResumeBgMusic: () => widget.onResumeBgMusic!(),
             ));
       }),
     );

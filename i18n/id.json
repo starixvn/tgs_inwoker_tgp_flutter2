@@ -996,5 +996,6 @@
   "agent": "Agen",
   "player": "Pemain",
   "exit": "Exit",
-  "verification_code_success": "Kode verifikasi berhasil dikirim"
+  "verification_code_success": "Kode verifikasi berhasil dikirim",
+  "online_user":"Pengguna online"
 }

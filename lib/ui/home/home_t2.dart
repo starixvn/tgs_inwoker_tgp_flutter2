@@ -27,8 +27,10 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
 class HomeT2 extends StatefulWidget {
   final bool isFirstRun;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  HomeT2({this.isFirstRun = false});
+  HomeT2({this.isFirstRun = false, this.onPauseBgMusic, this.onResumeBgMusic});
 
   @override
   _HomeT2State createState() => _HomeT2State();
@@ -329,7 +331,10 @@ class _HomeT2State extends BaseState<HomeT2> {
     return text.replaceAll("\n", " ");
   }
 
-  _buildGameView() => GameT2();
+  _buildGameView() => GameT2(
+    onPauseBgMusic: () => widget.onPauseBgMusic!(),
+    onResumeBgMusic: () => widget.onResumeBgMusic!(),
+  );
 
   /*_buildGameImageGridView() => Expanded(
         flex: 3,

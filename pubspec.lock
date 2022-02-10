@@ -26,8 +26,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: c3f22ad5d1dfcff19d8a1a8cb133669922ba929d
+      ref: develop
+      resolved-ref: "694ed008b70ffe59910f6207342f8bb5b35b4731"
       url: "https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git"
     source: git
     version: "0.0.0"
@@ -45,6 +45,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.0"
+  assets_audio_player:
+    dependency: "direct main"
+    description:
+      name: assets_audio_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.4+1"
+  assets_audio_player_web:
+    dependency: transitive
+    description:
+      name: assets_audio_player_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.4+1"
   async:
     dependency: transitive
     description:
@@ -673,7 +687,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.0.8"
   path_provider_android:
     dependency: transitive
     description:

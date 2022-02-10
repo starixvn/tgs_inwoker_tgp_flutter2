@@ -19,8 +19,10 @@ import 'package:url_launcher/url_launcher.dart';
 class GameT1 extends StatefulWidget {
   final GameViewModel? vm;
   final Function? onRefreshHomePage;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  GameT1({this.vm, this.onRefreshHomePage});
+  GameT1({this.vm, this.onRefreshHomePage, this.onPauseBgMusic, this.onResumeBgMusic});
 
   @override
   _GameT1State createState() => _GameT1State();
@@ -227,14 +229,16 @@ class _GameT1State extends BaseState<GameT1> {
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                    )));
+                    gamePlatformCode: gamePlatformCode,
+                    gameType: gameType,
+                    onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                    onPauseBgMusic: () => widget.onPauseBgMusic!())));
       });
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        widget.onPauseBgMusic!();
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -242,13 +246,23 @@ class _GameT1State extends BaseState<GameT1> {
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
                       gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
                     )));
       });
     } else {
       //navigate to game web
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
+        widget.onPauseBgMusic!();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                    )));
       });
     }
   }

@@ -24,13 +24,10 @@ class GameT3 extends StatefulWidget {
   final GameType? gameType;
   final int? index;
   final EnvFeaturesConfig? config;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  GameT3({
-    this.gamePlatformCode,
-    this.gameType,
-    this.index,
-    this.config,
-  });
+  GameT3({this.gamePlatformCode, this.gameType, this.index, this.config, this.onPauseBgMusic, this.onResumeBgMusic});
 
   @override
   _GameT3State createState() => _GameT3State();
@@ -228,11 +225,14 @@ class _GameT3State extends BaseState<GameT3> {
                 builder: (context) => ChildGame(
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
                     )));
       });
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
+      widget.onPauseBgMusic!();
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -240,6 +240,8 @@ class _GameT3State extends BaseState<GameT3> {
                     gamePlatformCode: gamePlatformCode,
                     gameType: gameType,
                     gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
+                    onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                    onResumeBgMusic: () => widget.onResumeBgMusic!(),
                   )));
     } else {
       //navigate to game web
@@ -247,12 +249,15 @@ class _GameT3State extends BaseState<GameT3> {
       await _vm.getGameList(gamePlatformCode, gameType);
       ProgressDialog.hide();*/
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        widget.onPauseBgMusic!();
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => GameWeb(
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
                     )));
       });
     }

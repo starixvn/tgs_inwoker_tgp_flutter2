@@ -996,5 +996,6 @@
   "agent": "代理",
   "player": "玩家",
   "exit": "登出",
-  "verification_code_success": "驗證碼送出成功"
+  "verification_code_success": "驗證碼送出成功",
+  "online_user":"在線人數"
 }

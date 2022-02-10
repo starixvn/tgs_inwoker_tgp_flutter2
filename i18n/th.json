@@ -993,5 +993,6 @@
   "agent": "ผู้เล่น",
   "player": "ตัวแทน",
   "exit": "ออกจากระบบ",
-  "verification_code_success": "ส่งรหัสยืนยันเรียบร้อยแล้ว"
+  "verification_code_success": "ส่งรหัสยืนยันเรียบร้อยแล้ว",
+  "online_user":"ผู้ใช้ออนไลน์"
 }
