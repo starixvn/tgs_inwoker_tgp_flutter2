@@ -298,7 +298,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                             ))),
                 child: Container(
                   width: context.screenWidth / 2 - 15.auto,
-                  child: Image.asset("images/home/$imageLanguageCode/${gameRowList[index].getImagePath()}.png"),
+                  child: Image.asset("images/home/$imageLanguageCode/${gameRowList[index].getImagePath()}.gif"),
                 ));
           })),
     );
@@ -324,7 +324,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                         onPauseBgMusic: () => widget.onPauseBgMusic!(),
                         onResumeBgMusic: () => widget.onResumeBgMusic!(),
                       ))),
-          child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.png"),
+          child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.gif"),
         ),
         staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
         mainAxisSpacing: 15.auto,
