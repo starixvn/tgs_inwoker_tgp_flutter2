@@ -120,8 +120,8 @@ class GameItemT2State extends BaseState<GameItemT2> {
                 : _buildImage(gameProvider),
           ),
           Positioned(
-            bottom: context.screenWidth / 30,
-            left: context.screenWidth / 12,
+            bottom: context.screenWidth / 50,
+            left: context.screenWidth / 13,
             child: Column(
               children: [
                 (_isSportsHideLogo(gamePlatformCode))
