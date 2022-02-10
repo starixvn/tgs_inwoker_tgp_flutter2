@@ -15,7 +15,13 @@ import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GameT2 extends StatefulWidget {
-  GameT2();
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
+
+  GameT2({
+    this.onResumeBgMusic,
+    this.onPauseBgMusic,
+  });
 
   @override
   _GameT2State createState() => _GameT2State();
@@ -183,13 +189,13 @@ class _GameT2State extends BaseState<GameT2> {
     if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
         gamePlatformCode == "TCG_SEA" ||
         gamePlatformCode == "TCG_LOTTO" ||
-        gamePlatformCode == "TCG_LOTTO_VN"|| gamePlatformCode == "SG") {
-      if (gamePlatformCode == "SW"|| gamePlatformCode == "SG")
+        gamePlatformCode == "TCG_LOTTO_VN" ||
+        gamePlatformCode == "SG") {
+      if (gamePlatformCode == "SW" || gamePlatformCode == "SG")
         await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
       else {
         await _vm.getGameList(gamePlatformCode, gameType);
-        await _vm.getGameUrl(gamePlatformCode!,
-            _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+        await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
       }
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
@@ -203,12 +209,15 @@ class _GameT2State extends BaseState<GameT2> {
                 builder: (context) => ChildGame(
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
                     )));
       });
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        widget.onPauseBgMusic!();
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -216,13 +225,23 @@ class _GameT2State extends BaseState<GameT2> {
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
                       gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
                     )));
       });
     } else {
       //navigate to game web
+      widget.onPauseBgMusic!();
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: gamePlatformCode, gameType: gameType)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(
+                      gamePlatformCode: gamePlatformCode,
+                      gameType: gameType,
+                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                    )));
       });
     }
   }

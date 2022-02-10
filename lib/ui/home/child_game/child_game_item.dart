@@ -18,8 +18,17 @@ class ChildGameItem extends StatefulWidget {
   final Game? game;
   final bool isDisabled;
   final GameViewModel? vm;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  ChildGameItem({this.isFavourite, this.game, this.isDisabled = false, this.vm});
+  ChildGameItem({
+    this.isFavourite,
+    this.game,
+    this.isDisabled = false,
+    this.vm,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+  });
 
   @override
   _ChildGameItemState createState() => _ChildGameItemState();
@@ -167,12 +176,15 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   _navigateToGameWeb(Game game) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      widget.onPauseBgMusic!();
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => GameWeb(
                     gamePlatformCode: game.gamePlatformCode,
                     gameId: game.id,
+                onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                onResumeBgMusic: () => widget.onResumeBgMusic!(),
                   )));
     });
   }

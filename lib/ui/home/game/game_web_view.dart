@@ -20,8 +20,16 @@ class GameWeb extends StatefulWidget {
   final int? gameId;
   final String? gamePlatformCode;
   final GameType? gameType;
+  final Function? onResumeBgMusic;
+  final Function? onPauseBgMusic;
 
-  GameWeb({this.gameId, this.gameType, this.gamePlatformCode});
+  GameWeb({
+    this.gameId,
+    this.gameType,
+    this.gamePlatformCode,
+    this.onResumeBgMusic,
+    this.onPauseBgMusic,
+  });
 
   @override
   _GameWebState createState() => _GameWebState();
@@ -89,6 +97,10 @@ class _GameWebState extends BaseState<GameWeb> {
             },
           ),
         ),
+        onPop: () {
+          widget.onResumeBgMusic!();
+          Navigator.pop(context);
+        },
       );
 
   /*AppBar(

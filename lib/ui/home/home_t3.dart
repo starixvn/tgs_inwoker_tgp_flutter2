@@ -25,8 +25,10 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
 class HomeT3 extends StatefulWidget {
   final bool isFirstRun;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  HomeT3({this.isFirstRun = false});
+  HomeT3({this.isFirstRun = false, this.onResumeBgMusic, this.onPauseBgMusic});
 
   @override
   _HomeT3State createState() => _HomeT3State();
@@ -85,8 +87,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
-    imageLanguageCode =
-        ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
+    imageLanguageCode = ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
   }
 
   Widget build(BuildContext context) {
@@ -276,52 +277,61 @@ class _HomeT3State extends BaseState<HomeT3> {
         ),
       );
 
-  _buildImageRow() => Container(
-        height: 180.auto,
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(gameRowList.length, (index) {
-              return InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GameT3(
-                                gamePlatformCode: "",
-                                gameType: gameRowList[index],
-                                index: index,
-                                config: _vm.config,
-                              ))),
-                  child: Container(
-                    width: context.screenWidth / 2 - 15.auto,
-                    child: Image.asset("images/home/$imageLanguageCode/${gameRowList[index].getImagePath()}.png"),
-                  ));
-            })),
-      );
+  _buildImageRow() {
+    getLanguage();
+    return Container(
+      height: 180.auto,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(gameRowList.length, (index) {
+            return InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GameT3(
+                              gamePlatformCode: "",
+                              gameType: gameRowList[index],
+                              index: index,
+                              config: _vm.config,
+                              onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                              onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                            ))),
+                child: Container(
+                  width: context.screenWidth / 2 - 15.auto,
+                  child: Image.asset("images/home/$imageLanguageCode/${gameRowList[index].getImagePath()}.png"),
+                ));
+          })),
+    );
+  }
 
-  _buildGameImageGridView() => Container(
-        height: 260.auto,
-        margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
-        child: StaggeredGridView.countBuilder(
-          crossAxisCount: 2,
-          itemCount: gameList.length,
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) => InkWell(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GameT3(
-                          gamePlatformCode: "",
-                          gameType: gameList[index],
-                          index: index,
-                          config: _vm.config,
-                        ))),
-            child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.png"),
-          ),
-          staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-          mainAxisSpacing: 15.auto,
-          crossAxisSpacing: 15.auto,
+  _buildGameImageGridView() {
+    return Container(
+      height: 260.auto,
+      margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
+      child: StaggeredGridView.countBuilder(
+        crossAxisCount: 2,
+        itemCount: gameList.length,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) => InkWell(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GameT3(
+                        gamePlatformCode: "",
+                        gameType: gameList[index],
+                        index: index,
+                        config: _vm.config,
+                        onPauseBgMusic: () => widget.onPauseBgMusic!(),
+                        onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                      ))),
+          child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.png"),
         ),
-      );
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+        mainAxisSpacing: 15.auto,
+        crossAxisSpacing: 15.auto,
+      ),
+    );
+  }
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

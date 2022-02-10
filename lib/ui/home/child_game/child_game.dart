@@ -16,8 +16,10 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 class ChildGame extends StatefulWidget {
   final String? gamePlatformCode;
   final GameType? gameType;
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
 
-  ChildGame({this.gamePlatformCode, this.gameType});
+  ChildGame({this.gamePlatformCode, this.gameType, this.onPauseBgMusic, this.onResumeBgMusic});
 
   @override
   _ChildGameState createState() => _ChildGameState();
@@ -133,7 +135,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               tabs: _groupTabList.map((item) {
                 return Tab(
                   child: Text(getTranslatedText(item),
-                      style: TextStyle(fontFamily: 'PingFang', fontSize: 14.auto,)),
+                      style: TextStyle(
+                        fontFamily: 'PingFang',
+                        fontSize: 14.auto,
+                      )),
                 );
               }).toList(),
             ),
@@ -148,6 +153,8 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
               },
               initialPlatformCode: widget.gamePlatformCode!,
               vm: _vm,
+              onPauseBgMusic: () => widget.onPauseBgMusic!(),
+              onResumeBgMusic: () => widget.onResumeBgMusic!(),
             ),
           ),
         ],
