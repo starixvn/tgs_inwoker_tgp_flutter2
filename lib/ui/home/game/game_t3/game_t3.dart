@@ -61,7 +61,7 @@ class _GameT3State extends BaseState<GameT3> {
     return ProviderWidget<GameViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          //_handleApiState();
+          _handleApiState();
           return ScrollConfiguration(
               behavior: MyBehavior(),
               child: Scaffold(

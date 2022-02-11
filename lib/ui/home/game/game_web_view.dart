@@ -59,6 +59,7 @@ class _GameWebState extends BaseState<GameWeb> {
         }
       });
     }*/
+    widget.onPauseBgMusic!();
     _getSharedPrefs();
     super.initState();
   }
