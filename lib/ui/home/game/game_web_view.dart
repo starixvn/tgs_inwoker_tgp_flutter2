@@ -59,7 +59,7 @@ class _GameWebState extends BaseState<GameWeb> {
         }
       });
     }*/
-    widget.onPauseBgMusic!();
+    if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
     _getSharedPrefs();
     super.initState();
   }
@@ -99,7 +99,7 @@ class _GameWebState extends BaseState<GameWeb> {
           ),
         ),
         onPop: () {
-          widget.onResumeBgMusic!();
+          if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
           Navigator.pop(context);
         },
       );

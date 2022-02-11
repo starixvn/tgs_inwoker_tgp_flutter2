@@ -293,8 +293,9 @@ class _HomeT3State extends BaseState<HomeT3> {
                               gameType: gameRowList[index],
                               index: index,
                               config: _vm.config,
-                              onPauseBgMusic: () => widget.onPauseBgMusic!(),
-                              onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                              onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                              onResumeBgMusic: () =>
+                                  (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                             ))),
                 child: Container(
                   width: context.screenWidth / 2 - 15.auto,
@@ -321,8 +322,8 @@ class _HomeT3State extends BaseState<HomeT3> {
                         gameType: gameList[index],
                         index: index,
                         config: _vm.config,
-                        onPauseBgMusic: () => widget.onPauseBgMusic!(),
-                        onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                       ))),
           child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.gif"),
         ),

@@ -158,13 +158,13 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
   _getAssetsAudioPlayer() {
     if (_vm.config?.backgroundMusic ?? false) {
-    _assetsAudioPlayer.open(
-      Playlist(audios: [
-        Audio("audio/caishendao.mp3"),
-      ]),
-      loopMode: LoopMode.playlist, //loop the full playlist
-    );
-    _assetsAudioPlayer.pause();
+      _assetsAudioPlayer.open(
+        Playlist(audios: [
+          Audio("audio/caishendao.mp3"),
+        ]),
+        loopMode: LoopMode.playlist, //loop the full playlist
+      );
+      _assetsAudioPlayer.pause();
     }
     WidgetsBinding.instance!.addObserver(this);
   }
@@ -306,7 +306,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       CustomerService(),
       Profile(),
     ];
-    widget.onResumeBgMusic!();
+    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
   }
 
@@ -314,18 +314,18 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return HomeT1(
-          onPauseBgMusic: () => widget.onPauseBgMusic!(),
-          onResumeBgMusic: () => widget.onResumeBgMusic!(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         );
       case 2:
         return HomeT2(
-          onPauseBgMusic: () => widget.onPauseBgMusic!(),
-          onResumeBgMusic: () => widget.onResumeBgMusic!(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         );
       case 3:
         return HomeT3(
-          onPauseBgMusic: () => widget.onPauseBgMusic!(),
-          onResumeBgMusic: () => widget.onResumeBgMusic!(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         );
     }
   }

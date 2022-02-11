@@ -225,14 +225,14 @@ class _GameT3State extends BaseState<GameT3> {
                 builder: (context) => ChildGame(
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
-                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
-                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                     )));
       });
     } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(gamePlatformCode, gameType);
-      widget.onPauseBgMusic!();
+      if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -240,8 +240,8 @@ class _GameT3State extends BaseState<GameT3> {
                     gamePlatformCode: gamePlatformCode,
                     gameType: gameType,
                     gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
-                    onPauseBgMusic: () => widget.onPauseBgMusic!(),
-                    onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                   )));
     } else {
       //navigate to game web
@@ -249,15 +249,15 @@ class _GameT3State extends BaseState<GameT3> {
       await _vm.getGameList(gamePlatformCode, gameType);
       ProgressDialog.hide();*/
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        widget.onPauseBgMusic!();
+        if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => GameWeb(
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
-                      onPauseBgMusic: () => widget.onPauseBgMusic!(),
-                      onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                     )));
       });
     }
