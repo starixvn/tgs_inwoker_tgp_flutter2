@@ -602,7 +602,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   isShowBankAcc() =>
-      (_isManualDeposit() || _isApplePayDeposit()) && !(_vm.config?.depositManualApplePayHideBankAcc ?? false);
+      (_isManualDeposit() || _isApplePayDeposit()) && !(_vm.config?.depositManualApplePayHideBankAcc ?? false) &&!(_vm.config?.depositRemoveName ?? false)  ;
 
   _handleApiState() {
     handleApiState(_vm.getLeepayOrderApiState, isRequireResult: true, onSuccess: (result) {
