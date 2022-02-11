@@ -250,7 +250,7 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
   List _page = [];
   var isMenu = false;
   var _vm = MainViewModel();
-  var _assetsAudioPlayer, audiobytes;
+  var _assetsAudioPlayer;
 
   @override
   void initState() {
@@ -269,7 +269,12 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
 
     _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
     if (widget.isFirstRun && (_vm.config?.backgroundMusic ?? false)) {
-      _assetsAudioPlayer.open(Audio("audio/caishendao.mp3"), playInBackground: PlayInBackground.disabledPause);
+      _assetsAudioPlayer.open(
+        Playlist(audios: [
+          Audio("audio/caishendao.mp3"),
+        ]),
+        loopMode: LoopMode.playlist, //loop the full playlist
+      );
     }
     WidgetsBinding.instance!.addObserver(this);
     super.initState();
