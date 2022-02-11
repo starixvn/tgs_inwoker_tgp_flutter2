@@ -20,16 +20,15 @@ class ChildGamePlatform extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
 
-  ChildGamePlatform({
-    this.platformList,
-    this.gameList,
-    this.isSearching = false,
-    this.onFilterPlatform,
-    this.initialPlatformCode,
-    this.vm,
-    this.onPauseBgMusic,
-    this.onResumeBgMusic
-  });
+  ChildGamePlatform(
+      {this.platformList,
+      this.gameList,
+      this.isSearching = false,
+      this.onFilterPlatform,
+      this.initialPlatformCode,
+      this.vm,
+      this.onPauseBgMusic,
+      this.onResumeBgMusic});
 
   @override
   _ChildGamePlatformState createState() => _ChildGamePlatformState();
@@ -67,12 +66,12 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
       _buildPlatformTabBar(),
       Expanded(
           child: ChildGamePlatformTabBarView(
-              gameList: widget.gameList,
-              isDisabled: widget.isSearching,
-              vm: widget.vm,
-              onPauseBgMusic: () => widget.onPauseBgMusic!(),
-            onResumeBgMusic: () => widget.onResumeBgMusic!(),
-          )),
+        gameList: widget.gameList,
+        isDisabled: widget.isSearching,
+        vm: widget.vm,
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+      )),
     ]);
   }
 

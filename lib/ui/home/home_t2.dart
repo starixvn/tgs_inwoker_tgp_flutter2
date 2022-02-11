@@ -237,9 +237,9 @@ class _HomeT2State extends BaseState<HomeT2> {
   }
 
   _buildGameView() => GameT2(
-    onPauseBgMusic: () => widget.onPauseBgMusic!(),
-    onResumeBgMusic: () => widget.onResumeBgMusic!(),
-  );
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+      );
 
   /*_buildGameImageGridView() => Expanded(
         flex: 3,

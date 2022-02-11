@@ -176,15 +176,15 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   _navigateToGameWeb(Game game) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      widget.onPauseBgMusic!();
+      if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => GameWeb(
                     gamePlatformCode: game.gamePlatformCode,
                     gameId: game.id,
-                onPauseBgMusic: () => widget.onPauseBgMusic!(),
-                onResumeBgMusic: () => widget.onResumeBgMusic!(),
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                   )));
     });
   }
