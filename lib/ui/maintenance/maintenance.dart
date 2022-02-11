@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -15,8 +16,9 @@ import 'package:tgp_flutter2/ui/maintenance/maintenance_view_model.dart';
 class Maintenance extends StatefulWidget {
   final bool isShowCS;
   final bool isShowsAppBar;
+  final Function? onResumeBgMusic;
 
-  Maintenance({this.isShowCS = false, this.isShowsAppBar = true});
+  Maintenance({this.isShowCS = false, this.isShowsAppBar = true, this.onResumeBgMusic});
 
   @override
   _MaintenanceState createState() => _MaintenanceState();
@@ -33,6 +35,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
       });
     }
+    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
   }
 
@@ -94,6 +97,10 @@ class _MaintenanceState extends BaseState<Maintenance> {
       )*/
       CustomAppBar(
         title: getTranslatedText("maintenance"),
+        onPop: () {
+          AssetsAudioPlayer().pause();
+          Navigator.pop(context);
+        },
       );
 
   _buildText(String text, {bool isNeedMargin = true}) => Container(

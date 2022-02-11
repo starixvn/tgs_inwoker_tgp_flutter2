@@ -76,13 +76,14 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends BaseState<MyApp> {
+class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   final appTitle = EnvironmentConfig.appTitleName;
 
   Locale? _locale;
   var langList;
   var _vm = MainViewModel();
   var firstInit = true;
+  var _assetsAudioPlayer;
 
   setLocale(Locale locale) {
     setState(() {
@@ -127,6 +128,7 @@ class _MyAppState extends BaseState<MyApp> {
       });
       _getLocale();
       langList = LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
+      _getAssetsAudioPlayer();
       return _vm.getLanguageApiState;
     } else
       return EventResult.loading();
@@ -139,6 +141,33 @@ class _MyAppState extends BaseState<MyApp> {
     } else
       return EventResult.loading();
   }*/
+
+  @override
+  void initState() {
+    _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+    super.initState();
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _assetsAudioPlayer.play();
+    } else {
+      _assetsAudioPlayer.pause();
+    }
+  }
+
+  _getAssetsAudioPlayer() {
+    if (_vm.config?.backgroundMusic ?? false) {
+    _assetsAudioPlayer.open(
+      Playlist(audios: [
+        Audio("audio/caishendao.mp3"),
+      ]),
+      loopMode: LoopMode.playlist, //loop the full playlist
+    );
+    _assetsAudioPlayer.pause();
+    }
+    WidgetsBinding.instance!.addObserver(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +193,8 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.myHome: (context) => MyHomePage(
                         versionUpdate: _vm.versionUpdateState,
                         isFirstRun: true,
+                        onPauseBgMusic: () => _assetsAudioPlayer.pause(),
+                        onResumeBgMusic: () => _assetsAudioPlayer.play(),
                       ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
@@ -172,7 +203,9 @@ class _MyAppState extends BaseState<MyApp> {
                   RoutePath.login: (context) => Login(),
                   RoutePath.register: (context) => Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
-                  RoutePath.maintenance: (context) => Maintenance(),
+                  RoutePath.maintenance: (context) => Maintenance(
+                        onResumeBgMusic: () => _assetsAudioPlayer.play(),
+                      ),
                   RoutePath.splashMaintenance: (context) => Maintenance(
                         isShowCS: true,
                         isShowsAppBar: false,
@@ -238,19 +271,26 @@ class MyHomePage extends StatefulWidget {
   final bool isFirstRun;
   final int? index;
   final dynamic versionUpdate;
+  final Function? onResumeBgMusic;
+  final Function? onPauseBgMusic;
 
-  MyHomePage({this.isFirstRun = false, this.index, this.versionUpdate});
+  MyHomePage({
+    this.isFirstRun = false,
+    this.index,
+    this.versionUpdate,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+  });
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver {
+class _MyHomePageState extends BaseState<MyHomePage> {
   int currentBottomIndex = 0;
   List _page = [];
   var isMenu = false;
   var _vm = MainViewModel();
-  var _assetsAudioPlayer;
 
   @override
   void initState() {
@@ -266,44 +306,26 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
       CustomerService(),
       Profile(),
     ];
-
-    _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
-    if (widget.isFirstRun && (_vm.config?.backgroundMusic ?? false)) {
-      _assetsAudioPlayer.open(
-        Playlist(audios: [
-          Audio("audio/caishendao.mp3"),
-        ]),
-        loopMode: LoopMode.playlist, //loop the full playlist
-      );
-    }
-    WidgetsBinding.instance!.addObserver(this);
+    widget.onResumeBgMusic!();
     super.initState();
-  }
-
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _assetsAudioPlayer.play();
-    } else {
-      _assetsAudioPlayer.pause();
-    }
   }
 
   _getHomeTemplateVersion() {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return HomeT1(
-          onPauseBgMusic: () => _assetsAudioPlayer.pause(),
-          onResumeBgMusic: () => _assetsAudioPlayer.play(),
+          onPauseBgMusic: () => widget.onPauseBgMusic!(),
+          onResumeBgMusic: () => widget.onResumeBgMusic!(),
         );
       case 2:
         return HomeT2(
-          onPauseBgMusic: () => _assetsAudioPlayer.pause(),
-          onResumeBgMusic: () => _assetsAudioPlayer.play(),
+          onPauseBgMusic: () => widget.onPauseBgMusic!(),
+          onResumeBgMusic: () => widget.onResumeBgMusic!(),
         );
       case 3:
         return HomeT3(
-          onPauseBgMusic: () => _assetsAudioPlayer.pause(),
-          onResumeBgMusic: () => _assetsAudioPlayer.play(),
+          onPauseBgMusic: () => widget.onPauseBgMusic!(),
+          onResumeBgMusic: () => widget.onResumeBgMusic!(),
         );
     }
   }
