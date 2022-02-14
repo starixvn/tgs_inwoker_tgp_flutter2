@@ -996,5 +996,19 @@
   "player": "Đặc vụ",
   "exit": "Thoát",
   "verification_code_success": "Đã gửi mã xác minh thành công",
-  "online_user": "Người dùng trực tuyến"
+  "online_user": "Người dùng trực tuyến",
+  "levelKeepAccumulateBetAmount": "Số tiền đặt cược bắt buộc trong tháng hiện tại để duy trì suất xuống hạng",
+  "levelKeepAccumulateDeposit": "Cần đặt cọc cho tháng hiện tại để duy trì cấp độ",
+  "levelUpAccumulateBetAmount": "Số tiền đặt cược cần thiết trong tháng hiện tại để ứng trước",
+  "levelUpAccumulateDeposit": "Cần đặt cọc cho tháng hiện tại để nâng cấp",
+  "birthdayBenefit": "Quyền lợi sinh nhật",
+  "PromotionBenefit": "Lợi ích từ Khuyến mãi",
+  "QuarterBenefit": "Lợi ích hàng quý",
+  "cardGameRebate": "Trò chơi bài",
+  "liveDealerRebate": "Giải trí trực tiếp",
+  "lotteryRebate": "Trò chơi xổ số",
+  "slotRebate": "Trò chơi điện tử",
+  "sportsRebate": "trò chơi thể thao",
+  "virtualSportsRebate": "Trò chơi thể thao điện tử",
+  "vipRebate": "Giảm giá VIP"
 }

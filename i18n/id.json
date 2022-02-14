@@ -997,5 +997,19 @@
   "player": "Pemain",
   "exit": "Exit",
   "verification_code_success": "Kode verifikasi berhasil dikirim",
-  "online_user":"Pengguna online"
+  "online_user":"Pengguna online",
+  "levelKeepAccumulateBetAmount": "Jumlah taruhan yang diperlukan pada bulan ini untuk mempertahankan degradasi",
+  "levelKeepAccumulateDeposit": "Deposit diperlukan untuk bulan ini untuk mempertahankan level",
+  "levelUpAccumulateBetAmount": "Jumlah taruhan yang diperlukan pada bulan ini untuk maju",
+  "levelUpAccumulateDeposit": "Deposit diperlukan untuk bulan ini untuk meningkatkan",
+  "Manfaat Ulang Tahun": "Manfaat Ulang Tahun",
+  "promotionBenefit": "Manfaat Promosi",
+  "Manfaat Kuartalan": "Manfaat Kuartalan",
+  "cardGameRebate":"Permainan Kartu",
+  "liveDealerRebate":"Hiburan Langsung",
+  "lotteryRebate":"Game Lotre",
+  "slotRebate":"Permainan Video",
+  "sportsRebate":"permainan olahraga",
+  "virtualSportsRebate":"Game Esports",
+  "vipRebate": "Rabat VIP"
 }

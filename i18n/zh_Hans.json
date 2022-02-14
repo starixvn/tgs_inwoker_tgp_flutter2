@@ -996,5 +996,19 @@
   "player": "玩家",
   "exit": "登出",
   "verification_code_success": "验证码送出成功",
-  "online_user":"在线人数"
+  "online_user":"在线人数",
+  "levelKeepAccumulateBetAmount": "保级当月所需投注量",
+  "levelKeepAccumulateDeposit": "保级当月所需存款量",
+  "levelUpAccumulateBetAmount": "晋级当月所需投注量",
+  "levelUpAccumulateDeposit": "晋级当月所需存款量",
+  "birthdayBenefit": "生日礼金",
+  "promotionBenefit": "优惠活动利益",
+  "quarterlyBenefit": "季度利益",
+  "cardGameRebate":"棋牌游戏",
+  "liveDealerRebate":"真人娱乐",
+  "lotteryRebate":"彩票游戏",
+  "slotRebate":"电子游戏",
+  "sportsRebate":"体育游戏",
+  "virtualSportsRebate":"电竞游戏",
+  "vipRebate": "VIP 返水"
 }

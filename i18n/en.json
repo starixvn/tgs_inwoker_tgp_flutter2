@@ -1010,5 +1010,19 @@
   "player": "Player",
   "exit": "Exit",
   "verification_code_success": "Verification code sent successfully",
-  "online_user": "Online Users"
+  "online_user": "Online Users",
+  "levelKeepAccumulateBetAmount": "The required bet amount in the current month to keep the relegation",
+  "levelKeepAccumulateDeposit": "Deposit required for the current month to maintain the level",
+  "levelUpAccumulateBetAmount": "The required bet amount in the current month to advance",
+  "levelUpAccumulateDeposit": "Deposit required for the promotion month",
+  "birthdayBenefit": "Birthday Gift",
+  "promotionBenefit": "Promotion Benefit",
+  "quarterlyBenefit": "Quarterly Benefit",
+  "cardGameRebate":"Card Game Rebate",
+  "liveDealerRebate":"Live Dealer Rebate",
+  "lotteryRebate":"Lottery Rebate",
+  "slotRebate":"Slot Game Rebate",
+  "sportsRebate":"Sports Rebate",
+  "virtualSportsRebate":"Virtual Sports Rebate",
+  "vipRebate": "VIP Rebate"
 }
