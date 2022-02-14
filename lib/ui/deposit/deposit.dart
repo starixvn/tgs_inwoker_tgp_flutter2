@@ -5,6 +5,7 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/extension/format.dart';
+import 'package:tgp_flutter2/custom/deposit_dialog.dart';
 import 'package:tgp_flutter2/custom/tab_button.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -138,13 +139,11 @@ class _DepositState extends BaseState<Deposit> {
       if (_vm.config?.depositNotification ?? false) {
         showDialog(
           context: context,
-          builder: (BuildContext context) => CustomDialog(
+          builder: (BuildContext context) => DepositDialog(
             title: getTranslatedText("bank_transferring_notification"),
             description: getTranslatedText("bank_transferring_notification_content"),
             buttonText1: getTranslatedText("confirm"),
-            onClick: () {
-              Navigator.of(context).pop();
-            },
+
           ),
         );
       }
