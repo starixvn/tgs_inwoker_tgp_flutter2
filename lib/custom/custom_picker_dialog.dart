@@ -86,7 +86,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       if (widget.list[index].channelName == "PrimePay_BankTransfer_Custom") {
         return getTranslatedText("custom_bank");
       } else {
-        var code = widget.list[index].channelCode;
+        var code = widget.list[index].channelName;
         return code;
       }
     } else if (widget.list is List<Map<String, String>>) {

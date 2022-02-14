@@ -1010,5 +1010,6 @@
   "slotRebate":"电子游戏",
   "sportsRebate":"体育游戏",
   "virtualSportsRebate":"电竞游戏",
-  "vipRebate": "VIP 返水"
+  "vipRebate": "VIP 返水","bank_transferring_notification": "汇款指引",
+  "bank_transferring_notification_content": "请各位注意，关于汇款帐号，请根据平台的户口进行汇款，如汇款至旧户口，上分可能有时间延迟，亦有可能检查不到，我司不会因这个问题而负上责任，敬请垂注！"
 }

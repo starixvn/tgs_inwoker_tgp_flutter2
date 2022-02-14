@@ -291,7 +291,7 @@ class _AddCardState extends BaseState<AddCard> {
       if (_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom") {
         channelPickerText = getTranslatedText("custom_bank");
       } else {
-        channelPickerText = _vm.pWithdrawalInfo!.channelCode;
+        channelPickerText = _vm.pWithdrawalInfo!.channelName;
       }
     });
   }
