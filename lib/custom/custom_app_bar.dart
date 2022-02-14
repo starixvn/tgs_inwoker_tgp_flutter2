@@ -34,7 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             flexibleSpace: Container(
               decoration: gradientDecoration,
             ),
-      centerTitle: true,
+            centerTitle: true,
             title: Text(
               title,
               style: TextStyle(fontSize: 16.auto),
@@ -68,7 +68,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: EdgeInsets.only(right: 15.auto),
           alignment: Alignment.center,
           child: Text(
-            "${Format().currencyWithDecimalFormat(walletBalance!)}",
+            "${Format().currencyWithDecimalFormat(walletBalance ?? 0)}",
             style: TextStyle(color: Colors.white),
           ));
     } else if (widget != null) {

@@ -59,28 +59,30 @@ class _ProfileState extends BaseState<Profile> {
   }
 
   _buildUserInfoContainer() => /*EnvironmentConfig.template_version == 1
-      ? */Padding(
-          padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto, bottom: 10.auto),
-          child: Row(
-            children: [
-              Container(
-                  width: 65.auto,
-                  height: 65.auto,
-                  decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: new DecorationImage(
-                          fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
-              _buildUserInfoText(),
-            ],
-          ),
-        )
+      ? */
+      Padding(
+        padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto, bottom: 10.auto),
+        child: Row(
+          children: [
+            Container(
+                width: 65.auto,
+                height: 65.auto,
+                decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image:
+                        new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+            _buildUserInfoText(),
+          ],
+        ),
+      )
       /*: Container(
           padding: EdgeInsets.only(top: 20.auto, left: 20.auto, right: 20.auto),
           // margin: EdgeInsets.only(left: 10.auto),
           child: Row(
             children: [_buildProfileImage(), _buildBalanceText()],
           ),
-        )*/;
+        )*/
+      ;
 
   _buildUserInfoText() => Container(
         margin: EdgeInsets.only(left: 20.auto),
@@ -103,7 +105,7 @@ class _ProfileState extends BaseState<Profile> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    " ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
+                    " ${Format().currencyWithDecimalFormat(_vm.wallet.main ?? 0)}",
                     style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
@@ -175,7 +177,7 @@ class _ProfileState extends BaseState<Profile> {
                           color: CustomColor.theme_text_grey_white_color,
                         )),
                     Text(
-                      " ${Format().currencyWithDecimalFormat(_vm.balance ?? 0)}",
+                      " ${Format().currencyWithDecimalFormat(_vm.wallet.main ?? 0)}",
                       style: TextStyle(color: CustomColor.theme_text_grey_white_color),
                     )
                   ],

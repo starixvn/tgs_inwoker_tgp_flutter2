@@ -17,7 +17,7 @@ import 'package:tgp_flutter2/ui/report/withdraw_report_view.dart';
 class ReportView extends StatefulWidget {
   final int? tabIndex;
 
-  ReportView({this.tabIndex}) ;
+  ReportView({this.tabIndex});
 
   @override
   _ReportViewState createState() => _ReportViewState();
@@ -52,7 +52,7 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
             backgroundColor: Colors.white,
             appBar: CustomAppBar(
               title: getTranslatedText((tabList[currentTabIndex]["text"])!),
-              walletBalance: _vm.wallet?.main,
+              walletBalance: _vm.wallet?.totalBalance,
             ),
             body: Column(
               children: [
