@@ -51,7 +51,7 @@
   "enter_amount_hint": "Please enter amount 100–450,000",
   "pay_password": "Pay Password",
   "enter_pay_password": "Please enter pay password",
-  "withdrawal_warning":"Tips: Real name needs to be same as withdrawal bank name to withdraw money",
+  "withdrawal_warning": "Tips: Real name needs to be same as withdrawal bank name to withdraw money",
   "next": "Next",
   "slide_to_delete_card": "Slide to delete bank",
   "add_card": "Add bank account",
@@ -1010,5 +1010,7 @@
   "player": "Player",
   "exit": "Exit",
   "verification_code_success": "Verification code sent successfully",
-  "online_user": "Online Users"
+  "online_user": "Online Users",
+  "bank_transferring_notification": "Bank Transferring Notification",
+  "bank_transferring_notification_content": "IMPORTANT\nDear all VIP members, before making a deposit, please double-check you are using our designated bank account number showed on the Deposit Page.\nIf the incorrect bank account number has been used, we’re NOT responsible for the issues caused, such as: top-up delay, lost track of your deposit, etc.\nThank you for your attention."
 }

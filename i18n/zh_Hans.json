@@ -996,5 +996,6 @@
   "player": "玩家",
   "exit": "登出",
   "verification_code_success": "验证码送出成功",
-  "online_user":"在线人数"
-}
+  "online_user":"在线人数",
+  "bank_transferring_notification": "汇款指引",
+  "bank_transferring_notification_content": "请各位注意，关于汇款帐号，请根据平台的户口进行汇款，如汇款至旧户口，上分可能有时间延迟，亦有可能检查不到，我司不会因这个问题而负上责任，敬请垂注！"}

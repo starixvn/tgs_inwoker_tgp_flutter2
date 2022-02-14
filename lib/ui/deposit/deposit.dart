@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/extension/format.dart';
@@ -31,6 +32,7 @@ class _DepositState extends BaseState<Deposit> {
   void initState() {
     _vm.getPayment();
     _vm.getPlayerPromotionList(1);
+    _displayDepositDialog();
     super.initState();
   }
 
@@ -101,7 +103,7 @@ class _DepositState extends BaseState<Deposit> {
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("deposit"),
         walletBalance: _vm.wallet?.main,
-    isPassTrueWhenPop: true,
+        isPassTrueWhenPop: true,
       );
 
   /*AppBar(
@@ -130,6 +132,24 @@ class _DepositState extends BaseState<Deposit> {
           style: TextStyle(fontSize: 20.auto),
         ),
       );*/
+
+  _displayDepositDialog() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (_vm.config?.depositNotification ?? false) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CustomDialog(
+            title: getTranslatedText("bank_transferring_notification"),
+            description: getTranslatedText("bank_transferring_notification_content"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        );
+      }
+    });
+  }
 
   _handleApiState() {
     handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {

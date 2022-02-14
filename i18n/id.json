@@ -997,5 +997,7 @@
   "player": "Pemain",
   "exit": "Exit",
   "verification_code_success": "Kode verifikasi berhasil dikirim",
-  "online_user":"Pengguna online"
+  "online_user":"Pengguna online",
+  "bank_transferring_notification": "Pemberitahuan Transfer Bank",
+  "bank_transferring_notification_content": "PENTING\nYang terhormat semua anggota VIP, sebelum melakukan setoran, harap periksa kembali apakah Anda menggunakan nomor rekening bank yang kami tunjuk yang tertera di Halaman Setoran.\nJika nomor rekening bank yang digunakan salah, kami TIDAK bertanggung jawab atas masalah yang disebabkan, seperti: keterlambatan pengisian ulang, kehilangan jejak deposit Anda, dll.\nTerima kasih atas perhatian Anda."
 }

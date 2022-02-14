@@ -52,7 +52,6 @@ import 'package:tgp_flutter2/ui/splash/splash.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/localizations/my_localizations.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
-import 'package:tgp_flutter2/ui/vip/vip.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -235,7 +234,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.editEmail: (context) => EditEmail(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.affiliate: (context) => Affiliate(),
-                  RoutePath.vip: (context) => Vip(),
+                  //RoutePath.vip: (context) => Vip(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

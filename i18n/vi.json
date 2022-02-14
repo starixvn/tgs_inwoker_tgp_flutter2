@@ -996,5 +996,7 @@
   "player": "Đặc vụ",
   "exit": "Thoát",
   "verification_code_success": "Đã gửi mã xác minh thành công",
-  "online_user": "Người dùng trực tuyến"
+  "online_user": "Người dùng trực tuyến",
+  "bank_transferring_notification": "Thông báo Chuyển khoản Ngân hàng",
+  "bank_transferring_notification_content": "QUAN TRỌNG \n Kính chào tất cả các thành viên VIP, trước khi gửi tiền, vui lòng kiểm tra kỹ xem bạn có đang sử dụng số tài khoản ngân hàng được chỉ định của chúng tôi được hiển thị trên Trang Gửi tiền không. \nNếu số tài khoản ngân hàng không chính xác đã được sử dụng, chúng tôi KHÔNG chịu trách nhiệm về các vấn đề đã gây ra, chẳng hạn như: chậm trễ nạp tiền, mất dấu khoản tiền gửi của bạn, v.v. \nCảm ơn sự chú ý của bạn. "
 }

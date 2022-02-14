@@ -28,6 +28,8 @@ class DepositViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   getPayment() async {
     setLoading();
     getPaymentApiState = await depositRepo.getPayment();
