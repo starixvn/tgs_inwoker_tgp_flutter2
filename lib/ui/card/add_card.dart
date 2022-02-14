@@ -82,7 +82,10 @@ class _AddCardState extends BaseState<AddCard> {
         });
   }
 
-  _buildAppBar() => CustomAppBar(title: getTranslatedText("add_card"), walletBalance: _vm.wallet?.main);
+  _buildAppBar() => CustomAppBar(
+        title: getTranslatedText("add_card"),
+        walletBalance: _vm.wallet?.totalBalance,
+      );
 
   _buildAddCardTitle() => Container(
       margin: EdgeInsets.only(top: 10.auto, left: 10.auto, bottom: 25.auto),

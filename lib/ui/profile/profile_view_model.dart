@@ -16,7 +16,7 @@ class ProfileViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
-  get balance => userRepo.wallet?.main;
+  get wallet => userRepo.wallet;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -38,7 +38,8 @@ class ProfileViewModel extends BaseViewModel {
       task.add(_getGameWalletBalance(game));
     });
     await Future.wait(task);
-    totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
+    totalBalance = (wallet.main ?? 0.0) + (gameBalance ?? 0.0);
+    wallet.totalBalance = totalBalance;
     notifyListeners();
   }
 
