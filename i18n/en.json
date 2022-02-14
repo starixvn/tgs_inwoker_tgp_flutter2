@@ -1012,5 +1012,5 @@
   "verification_code_success": "Verification code sent successfully",
   "online_user": "Online Users",
   "bank_transferring_notification": "Bank Transferring Notification",
-  "bank_transferring_notification_content": "IMPORTANT\nDear all VIP members, before making a deposit, please double-check you are using our designated bank account number showed on the Deposit Page.\nIf the incorrect bank account number has been used, we’re NOT responsible for the issues caused, such as: top-up delay, lost track of your deposit, etc.\nThank you for your attention."
+  "bank_transferring_notification_content": "*IMPORTANT*\nDear all VIP members, before making a deposit, please double-check you are using our designated bank account number showed on the Deposit Page.\nIf the incorrect bank account number has been used, we’re NOT responsible for the issues caused, such as: top-up delay, lost track of your deposit, etc.\nThank you for your attention."
 }
