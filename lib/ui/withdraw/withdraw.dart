@@ -90,7 +90,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("withdrawal"),
-        walletBalance: _vm.wallet?.totalBalance,
+        walletBalance: _vm.wallet?.main,
         isPassTrueWhenPop: true,
       );
 

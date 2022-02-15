@@ -52,7 +52,7 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
             backgroundColor: Colors.white,
             appBar: CustomAppBar(
               title: getTranslatedText((tabList[currentTabIndex]["text"])!),
-              walletBalance: _vm.wallet?.totalBalance,
+              walletBalance: _vm.wallet?.main,
             ),
             body: Column(
               children: [

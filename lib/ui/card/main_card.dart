@@ -33,7 +33,6 @@ class _MainCardState extends BaseState<MainCard> {
   void initState() {
     _vm.getWithdrawalInfoList();
     _getBankCardList();
-    print(_vm.wallet.totalBalance);
     super.initState();
   }
 
@@ -83,7 +82,7 @@ class _MainCardState extends BaseState<MainCard> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("manage_card"),
-        walletBalance: _vm.wallet?.totalBalance,
+        walletBalance: _vm.wallet?.main,
         isPassTrueWhenPop: true,
       );
 
