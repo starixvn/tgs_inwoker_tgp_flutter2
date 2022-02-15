@@ -105,7 +105,7 @@ class _ProfileState extends BaseState<Profile> {
                     textAlign: TextAlign.start,
                   ),
                   Text(
-                    " ${Format().currencyWithDecimalFormat(_vm.wallet.main ?? 0)}",
+                    " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0)}",
                     style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
@@ -177,7 +177,7 @@ class _ProfileState extends BaseState<Profile> {
                           color: CustomColor.theme_text_grey_white_color,
                         )),
                     Text(
-                      " ${Format().currencyWithDecimalFormat(_vm.wallet.main ?? 0)}",
+                      " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0)}",
                       style: TextStyle(color: CustomColor.theme_text_grey_white_color),
                     )
                   ],

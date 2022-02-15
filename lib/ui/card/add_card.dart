@@ -84,7 +84,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("add_card"),
-        walletBalance: _vm.wallet?.totalBalance,
+        walletBalance: _vm.wallet?.main,
       );
 
   _buildAddCardTitle() => Container(
