@@ -106,17 +106,17 @@ class _AddCardState extends BaseState<AddCard> {
       });
 
   _buildChannelPicker() => Container(
-    margin: EdgeInsets.symmetric(vertical: 10.auto),
-    child: CustomPicker(
-        title: "channel",
-        displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
-        list: _vm.withdrawalInfoList,
-        isHintText: false,
-        width: context.screenWidth,
-        onClick: () {
-          _buildBottomSheet("channel", _vm.withdrawalInfoList!);
-        }),
-  );
+        margin: EdgeInsets.symmetric(vertical: 10.auto),
+        child: CustomPicker(
+            title: "channel",
+            displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
+            list: _vm.withdrawalInfoList,
+            isHintText: false,
+            width: context.screenWidth,
+            onClick: () {
+              _buildBottomSheet("channel", _vm.withdrawalInfoList!);
+            }),
+      );
 
   _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CustomTextFormField(
         title: getTranslatedText(title),
@@ -143,8 +143,22 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildRealNameTextField() => CustomTextFormField(
-        title: getTranslatedText("realname"),
-        hintText: getTranslatedText("enter_realname_hint"),
+        title:  ((() {
+          if (_vm.config?.addCardDisplayFPS?? false)
+            return getTranslatedText("fps_bank_name");
+          else if (_vm.config?.addCardInputAddFPS?? false)
+            return getTranslatedText("fps_name");
+          else
+            return getTranslatedText("realname");
+        })()),
+        hintText: ((() {
+          if (_vm.config?.addCardDisplayFPS?? false)
+            return getTranslatedText("enter_fps_bank_name_hint");
+          else if (_vm.config?.addCardInputAddFPS?? false)
+            return getTranslatedText("enter_fps_name_hint");
+          else
+            return getTranslatedText("enter_realname_hint");
+        })()),
         onChanged: (value) => _onTextChange(value),
         onFieldSubmitted: (value) => _onTextChange(value),
         controller: _realNameController,
@@ -155,8 +169,22 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildPhoneTextField() => CustomTextFormField(
-        title: getTranslatedText("phone_number"),
-        hintText: getTranslatedText("enter_phone_hint"),
+        title:((() {
+          if (_vm.config?.addCardDisplayFPS?? false)
+            return getTranslatedText("fps_phone_number");
+          else if (_vm.config?.addCardInputAddFPS?? false)
+            return getTranslatedText("fps_number");
+          else
+            return getTranslatedText("phone_number");
+        })()),
+        hintText: ((() {
+          if (_vm.config?.addCardDisplayFPS?? false)
+            return getTranslatedText("enter_fps_phone_number_hint");
+          else if (_vm.config?.addCardInputAddFPS?? false)
+            return getTranslatedText("enter_fps_number_hint");
+          else
+            return getTranslatedText("enter_phone_hint");
+        })()),
         onChanged: (value) => _onTextChange(value),
         onFieldSubmitted: (value) => _onTextChange(value),
         controller: _phoneController,
@@ -212,8 +240,8 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildConfirmButton() => Container(
-    margin: EdgeInsets.symmetric(horizontal: 10.auto),
-    child: ColorButton(
+        margin: EdgeInsets.symmetric(horizontal: 10.auto),
+        child: ColorButton(
           title: getTranslatedText("confirm"),
           onClick: () {
             _onClick();
@@ -222,7 +250,7 @@ class _AddCardState extends BaseState<AddCard> {
           color: CustomColor.theme_button_color,
           radius: 9.6,
         ),
-  );
+      );
 
   _buildBottomSheet(String title, List<dynamic> list) {
     showModalBottomSheet(

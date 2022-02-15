@@ -43,7 +43,8 @@ class _HomeT3State extends BaseState<HomeT3> {
 
   //var gameList = ["sport", "live", "slot", "fishing", "lotto", "e-game", "card"];
   var gameRowList = [
-    GameType.Sportsbook,
+    //GameType.Sportsbook,
+    GameType.ESports,
     GameType.LiveDealerLobby,
   ];
   var gameList = [

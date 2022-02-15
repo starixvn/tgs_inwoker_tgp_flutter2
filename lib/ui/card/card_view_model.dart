@@ -33,7 +33,7 @@ class CardViewModel extends BaseViewModel {
     getBankCardListApiState = await bankRepo.getBankCardList();
     if (getBankCardListApiState.isSuccess) {
       bankCardList = getBankCardListApiState.result;
-      if (!config.addCardDisplayFPS) (bankCardList ?? []).removeWhere((e) => e.bankType == BankType.FPS);
+      //if (!config.addCardDisplayFPS) (bankCardList ?? []).removeWhere((e) => e.bankType == BankType.FPS);
     }
     setLoading(false);
     return getBankCardListApiState;
@@ -44,7 +44,7 @@ class CardViewModel extends BaseViewModel {
     getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
     if (getWithdrawalInfoListApiState.isSuccess) {
       List<WithdrawalInfo> list = getWithdrawalInfoListApiState.result;
-      if (!config.addCardDisplayFPS) (list).removeWhere((e) => e.bankType == BankType.FPS);
+      //if (!config.addCardDisplayFPS) (list).removeWhere((e) => e.bankType == BankType.FPS);
       bankTypeList = groupBy(list, (obj) => obj.bankType!);
     }
     setLoading(false);
