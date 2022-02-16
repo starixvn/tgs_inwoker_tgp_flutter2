@@ -20,7 +20,7 @@
   "CustomVIP": false,
   "AddCard_EnglishName": false,
   "ChangesNotAllowed": false,
-  "HaveAffiliateFeature": false,
+  "HaveAffiliateFeature": true,
   "PhonePrefix": "+852",
   "HomePageDisplayBalance": false
 }
