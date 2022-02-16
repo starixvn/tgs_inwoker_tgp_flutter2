@@ -1025,5 +1025,8 @@
   "bank_UOB": "ยูโอบี ( United Overseas Bank - UOB )",
   "bank_CIMB": "ซีไอเอ็มบีไทย ( CIMB THAI - CIMB )",
   "bank_KKP": "เกียรตินาคินภทัร ( Kiatnakin Phatra Bank - KKP )",
-  "bank_GH": "อาคารสงเคราะห์( Government Housing Bank - GH )"
+  "bank_GH": "อาคารสงเคราะห์( Government Housing Bank - GH )",
+  "deposit_bank_tips": "* Silakan isi nama rekening bank yang valid untuk memudahkan penilaian",
+  "deposit_bank_name": "Nama Bank",
+  "enter_deposit_bank_name_hint": "Silakan masukkan nama bank"
 }

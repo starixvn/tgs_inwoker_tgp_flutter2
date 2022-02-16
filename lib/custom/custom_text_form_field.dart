@@ -30,7 +30,8 @@ class CustomTextFormField extends StatefulWidget {
       required this.textInputType,
       required this.textInputAction,
       this.enabled = true,
-      this.bottomMargin = 15});
+      this.bottomMargin = 15,
+      });
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
