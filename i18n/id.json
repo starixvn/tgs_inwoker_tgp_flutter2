@@ -999,5 +999,17 @@
   "verification_code_success": "Kode verifikasi berhasil dikirim",
   "online_user":"Pengguna online",
   "bank_transferring_notification": "Pemberitahuan Transfer Bank",
-  "bank_transferring_notification_content": "PENTING\nYang terhormat semua anggota VIP, sebelum melakukan setoran, harap periksa kembali apakah Anda menggunakan nomor rekening bank yang kami tunjuk yang tertera di Halaman Setoran.\nJika nomor rekening bank yang digunakan salah, kami TIDAK bertanggung jawab atas masalah yang disebabkan, seperti: keterlambatan pengisian ulang, kehilangan jejak deposit Anda, dll.\nTerima kasih atas perhatian Anda."
+  "bank_transferring_notification_content": "PENTING\nYang terhormat semua anggota VIP, sebelum melakukan setoran, harap periksa kembali apakah Anda menggunakan nomor rekening bank yang kami tunjuk yang tertera di Halaman Setoran.\nJika nomor rekening bank yang digunakan salah, kami TIDAK bertanggung jawab atas masalah yang disebabkan, seperti: keterlambatan pengisian ulang, kehilangan jejak deposit Anda, dll.\nTerima kasih atas perhatian Anda.",
+  "bank_KKR": "Kasikorn Bank - KKR",
+  "bank_SCB": "Siam Commercial Bank - SCB",
+  "bank_KTB": "KrungThai Bank - KTB",
+  "bank_BBL": "Bankok Bank - BBL",
+  "bank_GSB": "Government Savings Bank - GSB",
+  "bank_TTB": "TMBThanachart Bank - TTB",
+  "bank_KrungSri": "Bank of Ayudhya - KrungSri",
+  "bank_BAAC": "Bank for Agriculture and Agricultural Cooperatives - BAAC",
+  "bank_UOB": "United Overseas Bank - UOB",
+  "bank_CIMB": "CIMB THAI - CIMB",
+  "bank_KKP": "Kiatnakin Phatra Bank - KKP",
+  "bank_GH": "Government Housing Bank - GH"
 }

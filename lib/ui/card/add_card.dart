@@ -34,7 +34,7 @@ class _AddCardState extends BaseState<AddCard> {
       _phoneController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
-  String? bankTypePickerText, channelPickerText;
+  String? bankTypePickerText, channelPickerText, bankNamePickerText;
   bool isCrypto = true;
   InputValidationProvider validate = new InputValidationProvider();
 
@@ -105,15 +105,18 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
       });
 
-  _buildChannelPicker() => CustomPicker(
-      title: "channel",
-      displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
-      list: _vm.withdrawalInfoList,
-      isHintText: false,
-      width: context.screenWidth,
-      onClick: () {
-        _buildBottomSheet("channel", _vm.withdrawalInfoList!);
-      });
+  _buildChannelPicker() => Visibility(
+        visible:!( _vm.config?.addCardHideChannel ?? false),
+        child: CustomPicker(
+            title: "channel",
+            displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
+            list: _vm.withdrawalInfoList,
+            isHintText: false,
+            width: context.screenWidth,
+            onClick: () {
+              _buildBottomSheet("channel", _vm.withdrawalInfoList!);
+            }),
+      );
 
   _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CardTextFormField(
         title: getTranslatedText(title),
@@ -167,7 +170,17 @@ class _AddCardState extends BaseState<AddCard> {
     switch (_vm.pBankType) {
       case BankType.BANK:
         return [
-          _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
+          (_vm.config?.addCardBankDropDown ?? false)
+              ? CustomPicker(
+                  title: "bank_name",
+                  displayText: bankNamePickerText == null ? getTranslatedText("select_bank_name") : bankNamePickerText,
+                  list: _vm.bankNameList,
+                  isHintText: false,
+                  width: context.screenWidth,
+                  onClick: () {
+                    _buildBottomSheet("bank_name", _vm.bankNameList);
+                  })
+              : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
           Visibility(
             visible: _vm.config.addCardBankBranch,
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
@@ -221,6 +234,7 @@ class _AddCardState extends BaseState<AddCard> {
   _buildBottomSheet(String title, List<dynamic> list) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: title,
@@ -229,7 +243,9 @@ class _AddCardState extends BaseState<AddCard> {
                 setState(() {
                   if (value is BankType)
                     onSelectedBankType(bankType: value);
-                  else if (value is WithdrawalInfo) onSelectedWithdrawalInfo(withdrawalInfo: value);
+                  else if (value is WithdrawalInfo)
+                    onSelectedWithdrawalInfo(withdrawalInfo: value);
+                  else if (value is String) onSelectedBankName(bank: value);
                   Navigator.pop(context);
                 });
               });
@@ -249,8 +265,16 @@ class _AddCardState extends BaseState<AddCard> {
           }
         case BankType.BANK:
           {
-            if ((_bankNumController.text.isNotEmpty) &&
+            //addCardBankDropDown is false, check _bankNameController.text
+            if (!(_vm.config?.addCardBankDropDown ?? false) &&
+                    (_bankNumController.text.isNotEmpty) &&
                     (_bankNameController.text.isNotEmpty) &&
+                    (_nameController.text.isNotEmpty) /*&&
+                (_bankBranchController.text.isNotEmpty)*/
+                )
+              isButtonEnabled = true;
+            else if ((_vm.config?.addCardBankDropDown ?? false) &&
+                    (_bankNumController.text.isNotEmpty) &&
                     (_nameController.text.isNotEmpty) /*&&
                 (_bankBranchController.text.isNotEmpty)*/
                 )
@@ -283,6 +307,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
     await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
+    onSelectedBankName();
     setState(() {
       //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
       if (_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom") {
@@ -293,13 +318,22 @@ class _AddCardState extends BaseState<AddCard> {
     });
   }
 
+  onSelectedBankName({String? bank}) async {
+    await _vm.onSelectedBankName(bankName: bank);
+    setState(() {
+      //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
+      bankNamePickerText = getTranslatedText(_vm.pBankName);
+    });
+  }
+
   _onClick() {
     ProgressDialog.show(context, _vm.brandLogoUrl);
     if (isCrypto)
       _vm.addBankCard(address: _addressController.text);
     else
       _vm.addBankCard(
-        bankName: _bankNameController.text,
+        bankName:
+            (_vm.config?.addCardBankDropDown ?? false) ? getTranslatedText(_vm.pBankName) : _bankNameController.text,
         bankAccount: _bankNumController.text,
         bankBranch: _bankBranchController.text,
         name: _nameController.text,

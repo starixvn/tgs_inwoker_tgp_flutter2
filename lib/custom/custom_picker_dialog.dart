@@ -89,9 +89,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         var code = widget.list[index].channelName;
         return code;
       }
-    } else if (widget.list is List<Map<String, String>>) {
-      String promotionName = widget.list[index]["name"];
-      return getTranslatedText(promotionName) ?? promotionName;
+    } else if (widget.list is List<String>) {
+      String bankName = widget.list[index];
+      return getTranslatedText(bankName) ?? bankName;
     } else {
       return getTranslatedText(widget.list[index]) ?? widget.list[index];
     }
