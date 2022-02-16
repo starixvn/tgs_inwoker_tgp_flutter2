@@ -1013,5 +1013,17 @@
   "virtualSportsRebate":"電競遊戲",
   "vipRebate": "VIP 返水",
   "bank_transferring_notification": "匯款指引",
-  "bank_transferring_notification_content": "請各位注意，關於匯款帳號，請根據平台的戶口進行匯款，如匯款至舊戶口，上分可能有時間延遲，亦有可能檢查不到，我司不會因這個問題而負上責任，敬請垂注！"
+  "bank_transferring_notification_content": "請各位注意，關於匯款帳號，請根據平台的戶口進行匯款，如匯款至舊戶口，上分可能有時間延遲，亦有可能檢查不到，我司不會因這個問題而負上責任，敬請垂注！",
+  "bank_KKR": "Kasikorn Bank - KKR",
+  "bank_SCB": "Siam Commercial Bank - SCB",
+  "bank_KTB": "KrungThai Bank - KTB",
+  "bank_BBL": "Bankok Bank - BBL",
+  "bank_GSB": "Government Savings Bank - GSB",
+  "bank_TTB": "TMBThanachart Bank - TTB",
+  "bank_KrungSri": "Bank of Ayudhya - KrungSri",
+  "bank_BAAC": "Bank for Agriculture and Agricultural Cooperatives - BAAC",
+  "bank_UOB": "United Overseas Bank - UOB",
+  "bank_CIMB": "CIMB THAI - CIMB",
+  "bank_KKP": "Kiatnakin Phatra Bank - KKP",
+  "bank_GH": "Government Housing Bank - GH"
 }

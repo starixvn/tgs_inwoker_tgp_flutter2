@@ -2,6 +2,7 @@ import 'package:api/api.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/withdrawal_info.dart';
+import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:collection/collection.dart';
 
@@ -27,6 +28,21 @@ class CardViewModel extends BaseViewModel {
   List? bankCardList, withdrawalInfoList;
   BankType? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
+  String? pBankName;
+  List<String> bankNameList = [
+    "bank_KKR",
+    "bank_SCB",
+    "bank_KTB",
+    "bank_BBL",
+    "bank_GSB",
+    "bank_TTB",
+    "bank_KrungSri",
+    "bank_BAAC",
+    "bank_UOB",
+    "bank_CIMB",
+    "bank_KKP",
+    "bank_GH",
+  ];
 
   getBankCardList() async {
     setLoading();
@@ -67,6 +83,15 @@ class CardViewModel extends BaseViewModel {
       pWithdrawalInfo = withdrawalInfoList!.first;
     else
       pWithdrawalInfo = withdrawalInfo;
+    notifyListeners();
+  }
+
+  onSelectedBankName({String? bankName}) async {
+    if (bankTypeList.isEmpty) await getWithdrawalInfoList();
+    if (bankName == null)
+      pBankName = bankNameList.first;
+    else
+      pBankName = bankName;
     notifyListeners();
   }
 

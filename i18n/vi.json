@@ -1012,5 +1012,17 @@
   "virtualSportsRebate": "Trò chơi thể thao điện tử",
   "vipRebate": "Giảm giá VIP",
   "bank_transferring_notification": "Thông báo Chuyển khoản Ngân hàng",
-  "bank_transferring_notification_content": "QUAN TRỌNG \n Kính chào tất cả các thành viên VIP, trước khi gửi tiền, vui lòng kiểm tra kỹ xem bạn có đang sử dụng số tài khoản ngân hàng được chỉ định của chúng tôi được hiển thị trên Trang Gửi tiền không. \nNếu số tài khoản ngân hàng không chính xác đã được sử dụng, chúng tôi KHÔNG chịu trách nhiệm về các vấn đề đã gây ra, chẳng hạn như: chậm trễ nạp tiền, mất dấu khoản tiền gửi của bạn, v.v. \nCảm ơn sự chú ý của bạn. "
+  "bank_transferring_notification_content": "QUAN TRỌNG \n Kính chào tất cả các thành viên VIP, trước khi gửi tiền, vui lòng kiểm tra kỹ xem bạn có đang sử dụng số tài khoản ngân hàng được chỉ định của chúng tôi được hiển thị trên Trang Gửi tiền không. \nNếu số tài khoản ngân hàng không chính xác đã được sử dụng, chúng tôi KHÔNG chịu trách nhiệm về các vấn đề đã gây ra, chẳng hạn như: chậm trễ nạp tiền, mất dấu khoản tiền gửi của bạn, v.v. \nCảm ơn sự chú ý của bạn. ",
+  "bank_KKR": "Kasikorn Bank - KKR",
+  "bank_SCB": "Siam Commercial Bank - SCB",
+  "bank_KTB": "KrungThai Bank - KTB",
+  "bank_BBL": "Bankok Bank - BBL",
+  "bank_GSB": "Government Savings Bank - GSB",
+  "bank_TTB": "TMBThanachart Bank - TTB",
+  "bank_KrungSri": "Bank of Ayudhya - KrungSri",
+  "bank_BAAC": "Bank for Agriculture and Agricultural Cooperatives - BAAC",
+  "bank_UOB": "United Overseas Bank - UOB",
+  "bank_CIMB": "CIMB THAI - CIMB",
+  "bank_KKP": "Kiatnakin Phatra Bank - KKP",
+  "bank_GH": "Government Housing Bank - GH"
 }
