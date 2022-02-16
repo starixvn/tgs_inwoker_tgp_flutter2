@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
@@ -106,11 +107,14 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return _buildText(index);
   }
 
-  _buildText(int index) => Text(
+  _buildText(int index) => AutoSizeText(
         _getText(index),
-        style: TextStyle(fontSize: 13.auto),
+       // style: TextStyle(fontSize: 13.auto),
         textAlign: TextAlign.center,
-        overflow: TextOverflow.ellipsis,
+        //overflow: TextOverflow.ellipsis,
+    minFontSize: 10,
+    maxFontSize: 13,
+    stepGranularity: 1,
       );
 
   buildWalletItem(index) {
