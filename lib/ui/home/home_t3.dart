@@ -77,9 +77,9 @@ class _HomeT3State extends BaseState<HomeT3> {
     await getLanguage();
     _vm.getAnnouncement();
     _vm.getBanner();
-    _vm.getTotalBalance();
     _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
+    _vm.getTotalBalance();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });

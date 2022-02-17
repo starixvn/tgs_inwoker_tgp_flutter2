@@ -82,7 +82,7 @@ class _MainCardState extends BaseState<MainCard> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("manage_card"),
-        walletBalance: _vm.wallet?.main,
+        walletBalance: _vm.wallet?.totalBalance,
         isPassTrueWhenPop: true,
       );
 

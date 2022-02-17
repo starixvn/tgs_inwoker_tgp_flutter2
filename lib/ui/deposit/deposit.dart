@@ -103,7 +103,7 @@ class _DepositState extends BaseState<Deposit> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("deposit"),
-        walletBalance: _vm.wallet?.main,
+        walletBalance: _vm.wallet?.totalBalance,
         isPassTrueWhenPop: true,
       );
 
@@ -143,7 +143,6 @@ class _DepositState extends BaseState<Deposit> {
             title: getTranslatedText("bank_transferring_notification"),
             description: getTranslatedText("bank_transferring_notification_content"),
             buttonText1: getTranslatedText("confirm"),
-
           ),
         );
       }

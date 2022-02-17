@@ -90,6 +90,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         var code = widget.list[index].channelName;
         return code;
       }
+    } else if (widget.list is List<Map<String, String>>) {
+      String promotionName = widget.list[index]["name"];
+      return getTranslatedText(promotionName) ?? promotionName;
     } else if (widget.list is List<String>) {
       String bankName = widget.list[index];
       return getTranslatedText(bankName) ?? bankName;
@@ -109,12 +112,12 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
 
   _buildText(int index) => AutoSizeText(
         _getText(index),
-       // style: TextStyle(fontSize: 13.auto),
+        // style: TextStyle(fontSize: 13.auto),
         textAlign: TextAlign.center,
         //overflow: TextOverflow.ellipsis,
-    minFontSize: 10,
-    maxFontSize: 13,
-    stepGranularity: 1,
+        minFontSize: 10,
+        maxFontSize: 13,
+        stepGranularity: 1,
       );
 
   buildWalletItem(index) {

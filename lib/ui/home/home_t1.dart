@@ -68,9 +68,10 @@ class _HomeT1State extends BaseState<HomeT1> {
   _initData() async {
     _vm.getAnnouncement();
     _vm.getBanner();
-    _vm.getTotalBalance();
+
     _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
+    _vm.getTotalBalance();
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();

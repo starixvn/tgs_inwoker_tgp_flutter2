@@ -84,7 +84,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("add_card"),
-        walletBalance: _vm.wallet?.main,
+        walletBalance: _vm.wallet?.totalBalance,
       );
 
   _buildAddCardTitle() => Container(
@@ -105,9 +105,8 @@ class _AddCardState extends BaseState<AddCard> {
         _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
       });
 
-
   _buildChannelPicker() => Visibility(
-        visible:!( _vm.config?.addCardHideChannel ?? false),
+        visible: !(_vm.config?.addCardHideChannel ?? false),
         child: CustomPicker(
             title: "channel",
             displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
@@ -144,18 +143,18 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildRealNameTextField() => CustomTextFormField(
-        title:  ((() {
-          if (_vm.config?.addCardDisplayFPS?? false)
+        title: ((() {
+          if (_vm.config?.addCardDisplayFPS ?? false)
             return getTranslatedText("fps_bank_name");
-          else if (_vm.config?.addCardInputAddFPS?? false)
+          else if (_vm.config?.addCardInputAddFPS ?? false)
             return getTranslatedText("fps_name");
           else
             return getTranslatedText("realname");
         })()),
         hintText: ((() {
-          if (_vm.config?.addCardDisplayFPS?? false)
+          if (_vm.config?.addCardDisplayFPS ?? false)
             return getTranslatedText("enter_fps_bank_name_hint");
-          else if (_vm.config?.addCardInputAddFPS?? false)
+          else if (_vm.config?.addCardInputAddFPS ?? false)
             return getTranslatedText("enter_fps_name_hint");
           else
             return getTranslatedText("enter_realname_hint");
@@ -170,18 +169,18 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildPhoneTextField() => CustomTextFormField(
-        title:((() {
-          if (_vm.config?.addCardDisplayFPS?? false)
+        title: ((() {
+          if (_vm.config?.addCardDisplayFPS ?? false)
             return getTranslatedText("fps_phone_number");
-          else if (_vm.config?.addCardInputAddFPS?? false)
+          else if (_vm.config?.addCardInputAddFPS ?? false)
             return getTranslatedText("fps_number");
           else
             return getTranslatedText("phone_number");
         })()),
         hintText: ((() {
-          if (_vm.config?.addCardDisplayFPS?? false)
+          if (_vm.config?.addCardDisplayFPS ?? false)
             return getTranslatedText("enter_fps_phone_number_hint");
-          else if (_vm.config?.addCardInputAddFPS?? false)
+          else if (_vm.config?.addCardInputAddFPS ?? false)
             return getTranslatedText("enter_fps_number_hint");
           else
             return getTranslatedText("enter_phone_hint");
