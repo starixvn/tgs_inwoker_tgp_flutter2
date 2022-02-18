@@ -215,8 +215,8 @@
   "select_bank_type": "請選擇銀行賬號類別",
   "select_bank_name": "請選擇銀行賬號名稱",
   "add_card_hint": "資訊加密處理，僅用銀行驗證",
-  "address": "加密貨幣地址",
-  "enter_address": "輸入加密貨幣地址",
+  "crypto_address": "銀行卡號碼/加密貨幣地址",
+  "enter_crypto_address": "請輸入銀行卡號碼/加密貨幣地址",
   "delete": "刪除",
   "enter_bank_name": "請輸入銀行名稱",
   "enter": "請輸入",
@@ -1028,5 +1028,15 @@
   "bank_GH": "อาคารสงเคราะห์( Government Housing Bank - GH )",
   "deposit_bank_tips": "* 請填寫有效匯款戶口姓名，方便上分",
   "deposit_bank_name": "銀行名稱",
-  "enter_deposit_bank_name_hint": "請填寫銀行名稱"
+  "enter_deposit_bank_name_hint": "請填寫銀行名稱",
+  "fps_bank_name": "銀行名稱/FPS(轉數快)",
+  "enter_fps_bank_name_hint": "請輸入銀行名稱/FPS(轉數快)",
+  "fps_name": "轉數快帳號名稱",
+  "enter_fps_name_hint": "請輸入轉數快帳號名稱",
+  "fps_phone_number": "手機號碼/FPS(轉數快)ID",
+  "enter_fps_phone_number_hint": "請輸入手機號碼/FPS(轉數快)ID",
+  "fps_number": "轉數快號碼",
+  "enter_fps_number_hint": "請輸入轉數快號碼或電子郵件",
+  "gcash_bank_name": "銀行帳號/Gcash 號碼",
+  "enter_gcash_bank name": "請輸入銀行帳號/ Gcash 號碼"
 }

@@ -215,8 +215,8 @@
   "select_bank_type": "กรุณาเลือกประเภทบัญชีธนาคาร",
   "select_bank_name": "กรุณาเลือกชื่อบัญชีธนาคาร",
   "add_card_hint": "การประมวลผลการเข้ารหัสข้อมูล ใช้เฉพาะการยืนยันธนาคารเท่านั้น",
-  "address": "ที่อยู่สกุลเงินดิจิตอล",
-  "enter_address": "โปรดป้อนที่อยู่ของสกุลเงินดิจิทัล",
+  "crypto_address": "หมายเลขบัตรธนาคาร/ที่อยู่สกุลเงินดิจิตอล",
+  "enter_crypto_address": "กรุณากรอกหมายเลขบัตรธนาคาร/ที่อยู่สกุลเงินดิจิตอล",
   "delete": "ลบ",
   "enter_bank_name": "กรุณากรอกชื่อธนาคาร",
   "enter": "กรุณาป้อน",
@@ -1025,5 +1025,15 @@
   "bank_GH": "อาคารสงเคราะห์( Government Housing Bank - GH )",
   "deposit_bank_tips": "* กรุณากรอกชื่อบัญชีธนาคารที่ถูกต้องเพื่ออำนวยความสะดวกในการให้คะแนน",
   "deposit_bank_name": "ชื่อธนาคาร",
-  "enter_deposit_bank_name_hint": "กรุณากรอกชื่อธนาคาร"
+  "enter_deposit_bank_name_hint": "กรุณากรอกชื่อธนาคาร",
+  "fps_bank_name": "ชื่อธนาคาร/ชื่อ FPS",
+  "enter_fps_bank_name_hint": "กรุณากรอกชื่อธนาคาร/ชื่อ FPS",
+  "fps_name": "ชื่อบัญชี FPS",
+  "enter_fps_name_hint": "โปรดป้อนชื่อบัญชี FPS",
+  "fps_phone_number": "หมายเลขโทรศัพท์/FPS ID",
+  "enter_fps_phone_number_hint": "กรุณากรอกหมายเลขโทรศัพท์/FPS ID",
+  "fps_number": "หมายเลข FPS",
+  "enter_fps_number_hint": "โปรดป้อนหมายเลข FPS หรืออีเมล",
+  "gcash_bank_name": "หมายเลขบัญชีธนาคาร/หมายเลข Gcash",
+  "enter_gcash_bank name": "โปรดป้อนหมายเลขบัญชีธนาคาร/หมายเลข Gcash"
 }

@@ -28,7 +28,7 @@ class CustomPicker extends StatefulWidget {
 class _CustomPickerState extends BaseState<CustomPicker> {
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 5.auto, right: 5.auto, bottom: 5.auto),
+      margin: EdgeInsets.only(left: 5.auto, right: 5.auto, bottom: 15.auto),
       child: Column(
         children: [
           Container(

@@ -131,8 +131,9 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildCryptoAddressTextField() => CustomTextFormField(
-        title: getTranslatedText("address"),
-        hintText: getTranslatedText("enter_address"),
+        title: getTranslatedText(_isAddCardDisplayGCash() ? "gcash_bank_name" : "crypto_address"),
+        hintText: getTranslatedText(
+            _isAddCardDisplayGCash() ? "enter_gcash_bank_name" : "enter_crypto_address"),
         onChanged: (value) => _onTextChange(value),
         onFieldSubmitted: (value) => _onTextChange(value),
         controller: _addressController,
@@ -372,6 +373,8 @@ class _AddCardState extends BaseState<AddCard> {
         realName: _realNameController.text,
       );
   }
+
+  _isAddCardDisplayGCash() => (_vm.config?.addCardDisplayGCash ?? false) && getCurrentLanguage().apiCode == "en-US";
 
   _handleApiState() {
     handleApiState(_vm.addBankCardApiState, onSuccess: () {

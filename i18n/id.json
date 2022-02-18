@@ -216,8 +216,8 @@
   "select_bank_type": "Silakan pilih jenis rekening bank",
   "select_bank_name": "Silakan pilih nama rekening bank",
   "add_card_hint": "Pemrosesan enkripsi informasi, hanya verifikasi bank yang digunakan",
-  "address": "alamat mata uang kripto",
-  "enter_address": "Silakan masukkan alamat mata uang kripto",
+  "crypto_address": "nomor kartu bank/alamat mata uang kripto",
+  "enter_crypto_address": "Silakan masukkan nomor kartu bank/alamat mata uang kripto",
   "delete": "Hapus",
   "enter_bank_name": "Silakan masukkan nama bank",
   "enter": "Silahkan masuk",
@@ -1028,5 +1028,15 @@
   "bank_GH": "อาคารสงเคราะห์( Government Housing Bank - GH )",
   "deposit_bank_tips": "* Silakan isi nama rekening bank yang valid untuk memudahkan penilaian",
   "deposit_bank_name": "Nama Bank",
-  "enter_deposit_bank_name_hint": "Silakan masukkan nama bank"
+  "enter_deposit_bank_name_hint": "Silakan masukkan nama bank",
+  "fps_bank_name": "Nama Bank/nama FPS",
+  "enter_fps_bank_name_hint": "Silakan masukkan nama bank/nama FPS",
+  "fps_name": "Nama akun FPS",
+  "enter_fps_name_hint": "Silakan masukkan nama akun FPS",
+  "fps_phone_number": "Nomor telepon/ID FPS",
+  "enter_fps_phone_number_hint": "Silakan masukkan nomor telepon/ID FPS",
+  "fps_number": "nomor FPS",
+  "enter_fps_number_hint": "Silakan masukkan nomor FPS atau email",
+  "gcash_bank_name": "Nomor Rekening Bank/Nomor Gcash",
+  "enter_gcash_bank name": "Silakan masukkan nomor rekening bank/nomor Gcash"
 }
