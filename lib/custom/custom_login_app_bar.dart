@@ -15,17 +15,17 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomLoginAppBar({
-    required this.onClickLoginButton,
-    required this.onClickRegisterButton,
-    required this.onClickLogoutButton,
-    required this.isLogin,
-    this.brandLogoUrl,
-    this.userProfile,
-    this.phone,
-    this.config,
-    this.totalBalance,
-  });
+  CustomLoginAppBar(
+      {required this.onClickLoginButton,
+      required this.onClickRegisterButton,
+      required this.onClickLogoutButton,
+      required this.isLogin,
+      this.brandLogoUrl,
+      this.userProfile,
+      this.phone,
+      this.config,
+      this.totalBalance,
+      this.brandName});
 
   final Function onClickLoginButton;
   final Function onClickRegisterButton;
@@ -36,6 +36,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? phone;
   final EnvFeaturesConfig? config;
   final double? totalBalance;
+  final String? brandName;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -88,7 +89,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                   imageUrl: widget.brandLogoUrl!,
                   //handling error
                   height: 30.auto,
-                  fit: BoxFit.cover,
+                  fit: widget.brandName == "PISOBET" ? BoxFit.fitWidth : BoxFit.cover,
                   alignment: Alignment.centerLeft,
                   errorWidget: (context, url, error) => Container(),
                 ),

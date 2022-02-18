@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -25,6 +28,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var isButtonEnabled = false, isTextFieldEnabled = false, isShowICNo;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
+  File? uploadImage;
 
   @override
   void initState() {
@@ -52,17 +56,64 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _buildUploadDocColumn() => Column(
         children: [
-          _buildTextFormField("doc_no", "enter_doc_no_hint", _docNoController, false),
+          _buildDocNumberTextFormField(),
           _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true),
-          /*GradientButton(
-            title: getTranslatedText("upload_prof"),
-            onClick: () => _vm.uploadDepositImage(uploadImage!.path, " "),
-            isEnabled: uploadImage == null ? false : true,
-            radius: 9.6,
-            height: 44.5,
-          ),*/
+          _buildUploadImageButton(),
           _buildButton(),
         ],
+      );
+
+  _buildUploadImageButton() => Container(
+        padding: EdgeInsets.symmetric(horizontal: 5.auto),
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          elevation: 5,
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 10.auto, right: 10.auto),
+                decoration: BoxDecoration(
+                    //bg image
+                    ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: Text(
+                        getTranslatedText("upload_ic_prof_hint"),
+                        style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: ColorButton(
+                        title: getTranslatedText("pick_prof"),
+                        width: 70.auto,
+                        height: 30.auto,
+                        onClick: () {
+                          chooseImage();
+                        },
+                        isEnabled: true,
+                        radius: 9.6,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              uploadImage == null
+                  ? Container()
+                  : Container(
+                      padding: EdgeInsets.all(10.auto),
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+            ],
+          ),
+        ),
       );
 
   _buildRealNameColumn() => Column(
@@ -75,6 +126,19 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
           _buildButton(),
           _buildFooterText()
         ],
+      );
+
+  _buildDocNumberTextFormField() => CustomTextFormField(
+        title: getTranslatedText("doc_no"),
+        hintText: getTranslatedText("enter_doc_no_hint"),
+        onChanged: (value) => _onTextChange(),
+        onFieldSubmitted: (value) {},
+        controller: _docNoController,
+        focusNode: null,
+        width: context.screenWidth - 40.auto,
+        textInputType: TextInputType.number,
+        textInputAction: TextInputAction.next,
+        enabled: isTextFieldEnabled,
       );
 
   _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => CustomTextFormField(
@@ -111,7 +175,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
             children: [
               Text(
                 getTranslatedText("edit_ic_no_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_title_text_color),
+                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
               ),
               Text(
                 getTranslatedText("online_cs"),
@@ -147,8 +211,11 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _onTextChange() {
     setState(() {
-      if ((_isShowIcVerificationUpload() && _realNameController.text.isNotEmpty && _docNoController.text.isNotEmpty) ||
-          (_realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty)) {
+      if ((_isShowIcVerificationUpload() &&
+              _realNameController.text.isNotEmpty &&
+              _docNoController.text.isNotEmpty &&
+              uploadImage?.path != null) ||
+          (!_isShowIcVerificationUpload() && _realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty)) {
         isButtonEnabled = true;
       } else {
         isButtonEnabled = false;
@@ -158,18 +225,42 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _onClick() async {
     if (_isShowIcVerificationUpload() &&
-        validate.validateInputLength(_docNoController.text) &&
-        validate.validateInputLength(_realNameController.text)) {
+        !validate.validateInputLength(_docNoController.text) &&
+        !validate.validateInputLength(_realNameController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("input_length_error"));
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.idVerify(_realNameController.text, _icNoController.text);
+      _vm.idVerify(
+          _realNameController.text, _isShowIcVerificationUpload() ? _docNoController.text : _icNoController.text);
     }
   }
 
   _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
+
+  Future<void> chooseImage() async {
+    /*File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //set source: ImageSource.camera to get image from camera
+    setState(() {
+      uploadImage = choosedImage;
+    });*/
+
+    ImagePicker picker = ImagePicker();
+    XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
+    File imageFile;
+    imageFile = File(choosedImage!.path);
+    var bytes = imageFile.readAsBytesSync().lengthInBytes;
+    if (bytes > 10485760) {
+      //restrict upload image to 10MB
+      CustomToast.show(getTranslatedText("image_size_limit"));
+    } else {
+      setState(() {
+        uploadImage = imageFile;
+      });
+      _onTextChange();
+    }
+  }
 
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {

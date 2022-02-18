@@ -157,6 +157,7 @@
   "upload_prof": "อัปโหลดข้อมูลประจำตัว",
   "pick_prof": "ตกลง",
   "upload_prof_hint": "อัปโหลดสลิป",
+  "upload_ic_prof_hint": "โปรดอัปโหลด IC เพื่อดำเนินการต่อ",
   "trade_order_no": "หมายเลขคำสั่งซื้อ",
   "bet_amount": "จำนวนเงินเดิมพัน",
   "valid_bet_amount": "จำนวนเงินเดิมพันที่ถูกต้อง",

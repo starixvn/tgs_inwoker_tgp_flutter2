@@ -159,6 +159,7 @@
   "upload_prof": "Upload Deposit Proof",
   "pick_prof": "Select",
   "upload_prof_hint": "Please upload receipt in order to proceed",
+  "upload_ic_prof_hint": "Please upload IC in order to proceed",
   "trade_order_no": "Order Number",
   "bet_amount": "Bet Amount",
   "valid_bet_amount": "Valid Turnover",

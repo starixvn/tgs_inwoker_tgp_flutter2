@@ -108,6 +108,7 @@ class _HomeT1State extends BaseState<HomeT1> {
               phone: _vm.phone,
               config: _vm.config,
               totalBalance: _vm.totalBalance,
+              brandName: EnvironmentConfig.brandName,
             ),
             body: /* Stack(
               children: [*/

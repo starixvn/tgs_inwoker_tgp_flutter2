@@ -253,15 +253,15 @@ class _WithdrawState extends BaseState<Withdraw> {
       );
 
   _buildButton() => Container(
-    margin: EdgeInsets.symmetric(horizontal: 10.auto),
-    child: ColorButton(
+        margin: EdgeInsets.symmetric(horizontal: 10.auto),
+        child: ColorButton(
           onClick: this.onNextButtonClick,
           isEnabled: isNextButtonEnabled,
           radius: 9.6,
           color: CustomColor.theme_button_color,
           title: getTranslatedText("submit"),
         ),
-  );
+      );
 
   _showDialog() {
     showDialog(

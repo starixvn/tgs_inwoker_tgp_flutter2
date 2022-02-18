@@ -157,6 +157,7 @@
   "upload_prof": "上傳憑證",
   "pick_prof": "選擇憑證",
   "upload_prof_hint": "請完成轉賬後立即上傳憑證以便後台核實",
+  "upload_ic_prof_hint": "請上傳身份證以便後台核實",
   "trade_order_no": "訂單號",
   "bet_amount": "投注金額",
   "valid_bet_amount": "有效投注",

@@ -157,6 +157,7 @@
   "upload_prof": "Tải lên thông tin đăng nhập",
   "pick_prof": "Chọn chứng chỉ",
   "upload_prof_hint": "Vui lòng tải phiếu thưởng lên ngay sau khi hoàn tất chuyển khoản để xác minh lý lịch",
+  "upload_ic_prof_hint": "Vui lòng tải lên IC để tiếp tục",
   "trade_order_no": "Số Đơn đặt hàng",
   "bet_amount": "Số tiền đặt cược",
   "valid_bet_amount": "Số tiền đặt cược hợp lệ",
