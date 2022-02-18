@@ -145,7 +145,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   _getSmsCode() {
     if (_vm.config?.smsVerification ?? false) {
-      if (!validate.validateAreaCodeAndPhone(display!, _emailController.text)) {
+      if (!validate.validatePhoneLength(_emailController.text)) {
         setState(() {
           CustomToast.show(getTranslatedText("phone_format_error_msg"));
         });

@@ -176,11 +176,17 @@ class _EditPhoneState extends BaseState<EditPhone> {
   }
 
   _getSmsCode() {
-    if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
+    if (!validate.validatePhoneLength(_phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    } else {
+    }
+    /*else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("phone_format_error_msg"));
+      });
+    }*/
+    else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getPhoneVerifyCode(display!, _phoneController.text);
     }
