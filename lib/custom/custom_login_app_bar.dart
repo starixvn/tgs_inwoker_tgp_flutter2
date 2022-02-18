@@ -73,31 +73,25 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       : Container(
           height: 60,
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top: 8.auto),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 2,
-                child: CachedNetworkImage(
-                  placeholder: (context, url) => Container(
-                    height: 30.auto,
-                    width: 30.auto,
-                  ),
-                  imageUrl: widget.brandLogoUrl!,
-                  //handling error
+              CachedNetworkImage(
+                placeholder: (context, url) => Container(
                   height: 30.auto,
-                  fit: widget.brandName == "PISOBET" ? BoxFit.fitWidth : BoxFit.cover,
-                  alignment: Alignment.centerLeft,
-                  errorWidget: (context, url, error) => Container(),
+                  width: 30.auto,
                 ),
+                imageUrl: widget.brandLogoUrl!,
+                //handling error
+                height: _isDisplayUserDetailsRow() ? 38.auto : 50.auto,
+                width: 100.auto,
+                fit: BoxFit.contain,
+                alignment: Alignment.centerLeft,
+                errorWidget: (context, url, error) => Container(),
               ),
-              Expanded(
-                flex: (widget.config?.displayPhone ?? false) ? 1 : 0,
-                child: _getUserDetailsRow(),
-              )
+              _getUserDetailsRow(),
             ],
           ),
         );
@@ -190,16 +184,19 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  _getUserDetailsRow() => Container(
-        margin: EdgeInsets.symmetric(vertical: 3.auto),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            if (widget.config?.displayPhone ?? false) _getPhoneText(),
-            if (widget.config?.customVIP ?? false) _getVipText()
-          ],
-        ),
-      );
+  _getUserDetailsRow() => _isDisplayUserDetailsRow()
+      ? Container(
+          height: 12.auto,
+          margin: EdgeInsets.only(top: 2.auto, right: 10.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              if (widget.config?.displayPhone ?? false) _getPhoneText(),
+              if (widget.config?.customVIP ?? false) _getVipText()
+            ],
+          ),
+        )
+      : Container();
 
   _getPhoneText() => Row(
         children: [
@@ -270,4 +267,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       return "VIP $level";
     }
   }
+
+  _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) || (widget.config?.customVIP ?? false));
 }

@@ -132,8 +132,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildCryptoAddressTextField() => CustomTextFormField(
         title: getTranslatedText(_isAddCardDisplayGCash() ? "gcash_bank_name" : "crypto_address"),
-        hintText: getTranslatedText(
-            _isAddCardDisplayGCash() ? "enter_gcash_bank_name" : "enter_crypto_address"),
+        hintText: getTranslatedText(_isAddCardDisplayGCash() ? "enter_gcash_bank_name" : "enter_crypto_address"),
         onChanged: (value) => _onTextChange(value),
         onFieldSubmitted: (value) => _onTextChange(value),
         controller: _addressController,
@@ -215,7 +214,12 @@ class _AddCardState extends BaseState<AddCard> {
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
-          _buildBankTextField("card_number", "enter_card_number", _bankNumController, true),
+          _buildBankTextField(
+            _isAddCardDisplayGCash() ? "gcash_bank_name" : "crypto_address",
+            _isAddCardDisplayGCash() ? "enter_gcash_bank_name" : "enter_crypto_address",
+            _bankNumController,
+            true,
+          ),
         ];
       case BankType.CRYPTO:
         return [

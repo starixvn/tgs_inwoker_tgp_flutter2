@@ -56,9 +56,15 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _buildUploadDocColumn() => Column(
         children: [
-          _buildDocNumberTextFormField(),
+          Visibility(
+            visible: _vm.userProfile.realname == null,
+            child: _buildDocNumberTextFormField(),
+          ),
           _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true),
-          _buildUploadImageButton(),
+          Visibility(
+            visible: _vm.userProfile.realname == null,
+            child: _buildUploadImageButton(),
+          ),
           _buildButton(),
         ],
       );
