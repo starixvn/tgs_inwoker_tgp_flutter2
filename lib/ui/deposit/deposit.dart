@@ -31,10 +31,14 @@ class _DepositState extends BaseState<Deposit> {
 
   @override
   void initState() {
-    _vm.getPayment();
-    _vm.getPlayerPromotionList(1);
-    _displayDepositDialog();
+    _initData();
     super.initState();
+  }
+
+  _initData()async{
+    await _vm.getPlayerPromotionList(1);
+    _vm.getPayment();
+    _displayDepositDialog();
   }
 
   Widget build(BuildContext context) {

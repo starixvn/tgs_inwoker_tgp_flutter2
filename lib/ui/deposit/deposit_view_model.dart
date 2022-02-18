@@ -57,10 +57,13 @@ class DepositViewModel extends BaseViewModel {
     if (getPlayerPromotionListApiState.isSuccess) {
       List<Promotion> list = getPlayerPromotionListApiState.result.items;
       list.forEach((value) {
-        displayPromotionList.add({
-          "name": ((value.localization?.name?.isNotEmpty ?? false) ? value.localization?.name : value.name) ?? "",
-          "id": value.id ?? ""
-        });
+        if (value.promotionType == "FirstDeposit" ||
+            value.promotionType == "DailySecondDeposit" ||
+            value.promotionType == "DailyFirstDeposit")
+          displayPromotionList.add({
+            "name": ((value.localization?.name?.isNotEmpty ?? false) ? value.localization?.name : value.name) ?? "",
+            "id": value.id ?? ""
+          });
       });
       setLoading(false);
       return getPlayerPromotionListApiState;

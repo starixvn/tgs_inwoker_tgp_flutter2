@@ -22,7 +22,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 30.auto),
-      child: /*EnvironmentConfig.template_version == 1 ?*/ _buildT1ProfileItem()/* : _buildOthersTemplateProfileItem()*/,
+      child: /*EnvironmentConfig.template_version == 1 ?*/ _buildT1ProfileItem() /* : _buildOthersTemplateProfileItem()*/,
     );
   }
 
@@ -36,10 +36,10 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer_report", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_account_report", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
+          _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.config?.haveAffiliateFeature ?? false)
               ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
-          _buildMiddleProfileItem("ic_vip", "vip", "vip", 0),
           _buildBottomProfileItem("ic_lang", "language", "language", 0),
         ],
       );
@@ -54,6 +54,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
+          _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.config?.haveAffiliateFeature ?? false)
               ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
@@ -112,20 +113,21 @@ class _ProfileItemState extends BaseState<ProfileItem> {
         child: Row(
           children: [
             Expanded(
-              flex: 1,
-              child: /*EnvironmentConfig.template_version == 1
-                  ? */SvgPicture.asset(
-                      "images/profile/t1/$imagePath.svg",
-                      matchTextDirection: true,
-                      height: 18.auto,
-                      color: CustomColor.theme_button_color,
-                    )
-                  /*: ImageIcon(
+                flex: 1,
+                child: /*EnvironmentConfig.template_version == 1
+                  ? */
+                    SvgPicture.asset(
+                  "images/profile/t1/$imagePath.svg",
+                  matchTextDirection: true,
+                  height: 18.auto,
+                  color: CustomColor.theme_button_color,
+                )
+                /*: ImageIcon(
                       AssetImage("images/profile/t2/$imagePath.png"),
                       size: title == "deposit" || title == "withdrawal" ? 20.auto : 15.auto,
                       color: CustomColor.theme_button_color,
                     ),*/
-            ),
+                ),
             Expanded(
                 flex: 7,
                 child: Text(

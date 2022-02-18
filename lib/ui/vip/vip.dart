@@ -44,10 +44,13 @@ class _VipViewState extends BaseState<VipView> {
             body: _vm.vipList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(
+                    height: context.screenHeight,
                     margin: EdgeInsets.all(15.auto),
                     decoration:
                         BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    child: Wrap(
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       children: [
                         Container(
                           height: 120.auto,
@@ -105,18 +108,20 @@ class _VipViewState extends BaseState<VipView> {
       );
 
   _buildVipDetails() => Container(
-    padding: EdgeInsets.all(15.auto),
-    child: Column(
-      children: /*[
+        padding: EdgeInsets.all(15.auto),
+        height: context.screenHeight - 200.auto,
+        child: ListView(
+          shrinkWrap: true,
+          children: /*[
             _buildVipDetailsRow("hshs", "0"),
           ]*/
-      _vm.vipMap.entries.map((e) {
-        return Container(
-          child: _buildVipDetailsColumn(e.key, e.value),
-        );
-      }).toList(),
-    ),
-  );
+              _vm.vipMap.entries.map((e) {
+            return Container(
+              child: _buildVipDetailsColumn(e.key, e.value),
+            );
+          }).toList(),
+        ),
+      );
 
   _buildVipDetailsColumn(int key, Vip vip) => Visibility(
         visible: key == vipIndex + 1,
@@ -142,13 +147,13 @@ class _VipViewState extends BaseState<VipView> {
             _buildVipDetailsRow("lotteryRebate", _getRebateAmount(vip.lotteryRebate)),
             _buildVipDetailsRow("slotRebate", _getRebateAmount(vip.slotRebate)),
             _buildVipDetailsRow("sportsRebate", _getRebateAmount(vip.sportsRebate)),
-            _buildVipDetailsRow("virtualSportsRebate", _getRebateAmount(vip.virtualSportsRebate)),
+            _buildVipDetailsRow("virtualSportsRebate", _getRebateAmount(vip.virtualSportsRebate), isLast: true),
           ],
         ),
       );
 
-  _buildVipDetailsRow(String title, String content) => Container(
-        margin: EdgeInsets.symmetric(vertical: 5.auto),
+  _buildVipDetailsRow(String title, String content, {bool isLast = false}) => Container(
+        margin: EdgeInsets.only(top: 5.auto,bottom: isLast ? 15.auto : 5.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -176,6 +181,6 @@ class _VipViewState extends BaseState<VipView> {
   _getRebateAmount(double? amount) => "${((amount ?? 0).toInt().toString())}%";
 
   _handleApiState() {
-    //dd
+    handleApiState(_vm.getVipApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }
