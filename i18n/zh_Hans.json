@@ -1032,11 +1032,11 @@
   "fps_bank_name": "银行名称/FPS(转数快)",
   "enter_fps_bank_name_hint": "请输入银行名称/FPS(转数快)",
   "fps_name": "转数快帐号名称",
-  "enter_fps_name_hint": "请输入转数快帐号名称",
+  "enter_fps_name_hint": "请填写转数快帐号名称",
   "fps_phone_number": "手机号码/转数快ID",
   "enter_fps_phone_number_hint": "请输入手机号码/FPS(转数快)ID",
   "fps_number": "转数快号码",
-  "enter_fps_number_hint": "请输入转数快号码或电子邮件",
+  "enter_fps_number_hint": "请填写转数快号码或电子邮件",
   "gcash_bank_name": "银行帐号/Gcash 号码",
   "enter_gcash_bank name": "请输入银行帐号/ Gcash 号码"
 }

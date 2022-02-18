@@ -1033,11 +1033,11 @@
   "fps_bank_name": "銀行名稱/FPS(轉數快)",
   "enter_fps_bank_name_hint": "請輸入銀行名稱/FPS(轉數快)",
   "fps_name": "轉數快帳號名稱",
-  "enter_fps_name_hint": "請輸入轉數快帳號名稱",
+  "enter_fps_name_hint": "請填寫轉數快帳號名稱",
   "fps_phone_number": "手機號碼/FPS(轉數快)ID",
   "enter_fps_phone_number_hint": "請輸入手機號碼/FPS(轉數快)ID",
   "fps_number": "轉數快號碼",
-  "enter_fps_number_hint": "請輸入轉數快號碼或電子郵件",
+  "enter_fps_number_hint": "請填寫轉數快號碼或電子郵件",
   "gcash_bank_name": "銀行帳號/Gcash 號碼",
   "enter_gcash_bank name": "請輸入銀行帳號/ Gcash 號碼"
 }
