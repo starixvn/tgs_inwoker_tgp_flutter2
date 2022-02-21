@@ -106,7 +106,7 @@ class HomeViewModel extends BaseViewModel {
     });
     await Future.wait(task);
     totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
-    wallet.totalBalance = totalBalance;
+    wallet?.totalBalance = totalBalance;
     notifyListeners();
   }
 

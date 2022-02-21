@@ -126,7 +126,8 @@ class _HomeT2State extends BaseState<HomeT2> {
                       onLoginTap: () => navigateToLogin(),
                       onRefreshHomePage: () => _initData(),
                     ),
-                    GameT2()
+                    //GameT2()
+                    _buildGameView(),
                   ],
                 ),
               ));
@@ -333,9 +334,10 @@ class _HomeT2State extends BaseState<HomeT2> {
   }
 
   _buildGameView() => GameT2(
-        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
+    vm: _gameViewModel,
+    onRefreshHomePage: () => _initData(),
+    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,);
 
   /*_buildGameImageGridView() => Expanded(
         flex: 3,

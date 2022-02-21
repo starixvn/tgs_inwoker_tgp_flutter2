@@ -208,20 +208,16 @@ class _GameT1State extends BaseState<GameT1> {
   }
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
-    if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
-        gamePlatformCode == "TCG_SEA" ||
-        gamePlatformCode == "TCG_LOTTO" ||
-        gamePlatformCode == "TCG_LOTTO_VN" ||
-        gamePlatformCode == "SG") {
-      if (gamePlatformCode == "SW" || gamePlatformCode == "SG")
-        await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
-      else {
-        await _vm.getGameList(gamePlatformCode, gameType);
-        await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
-      }
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // if (_isSWGame(gamePlatformCode, gameType)) {
+    if (_isSWGame(gamePlatformCode, gameType) || _isSGGame(gamePlatformCode))
+      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+    else if (_isTcgGame(gamePlatformCode)) {
+      await _vm.getGameList(gamePlatformCode, gameType);
+      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      // }
+      /*WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
-      });
+      });*/
     } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -267,8 +263,36 @@ class _GameT1State extends BaseState<GameT1> {
     }
   }
 
+  _isTcgGame(String? gamePlatformCode) =>
+      gamePlatformCode == "TCG_SEA" || gamePlatformCode == "TCG_LOTTO" || gamePlatformCode == "TCG_LOTTO_VN";
+
+  _isSWGame(String? gamePlatformCode, GameType? gameType) =>
+      (gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby);
+
+  _isSGGame(String? gamePlatformCode) => gamePlatformCode == "SG";
+
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameApiState, onSuccess: () {});
+
+    handleApiState(_vm.getLobbyGameUrlApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        launch(_vm.url!);
+      });
+    }, onError: (_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.maintenance);
+      });
+    });
+
+    handleApiState(_vm.getGameUrlApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        launch(_vm.url!);
+      });
+    }, onError: (_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.maintenance);
+      });
+    });
   }
 }

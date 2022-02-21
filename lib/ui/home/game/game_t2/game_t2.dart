@@ -17,10 +17,13 @@ import 'package:url_launcher/url_launcher.dart';
 class GameT2 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final GameViewModel? vm;
+  final Function? onRefreshHomePage;
 
   GameT2({
     this.onResumeBgMusic,
     this.onPauseBgMusic,
+    this.vm, this.onRefreshHomePage,
   });
 
   @override
@@ -30,12 +33,15 @@ class GameT2 extends StatefulWidget {
 class _GameT2State extends BaseState<GameT2> {
   var _controller = ScrollController();
   var currentTabIndex = 0, currentGameType = GameType.Sportsbook;
-  var _vm = GameViewModel();
+  late GameViewModel _vm ;
   var gameName;
+  GlobalKey<GameItemT2State> gameViewItem = GlobalKey();
 
   @override
   void initState() {
-    _vm.getGameProviderList();
+    _vm = widget.vm!;
+    //_vm.getGameProviderList();
+    _controller.addListener(_scrollListener);
     super.initState();
   }
 
@@ -108,6 +114,7 @@ class _GameT2State extends BaseState<GameT2> {
                         ),
                         Container(
                           child: GameItemT2(
+                            gameViewItem,
                             controller: _controller,
                             currGameType: currentGameType,
                             gameProviderList: _vm.gameProviderList,
@@ -162,8 +169,9 @@ class _GameT2State extends BaseState<GameT2> {
     return InkWell(
       onTap: () {
         setState(() {
-          currentGameType = gameType;
-          _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
+          _onTabClick(tabIndex);
+          //currentGameType = gameType;
+          //_controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
         });
       },
       child: /*Container(
@@ -236,6 +244,39 @@ class _GameT2State extends BaseState<GameT2> {
       _navigate(gameProvider.code, gameProvider.gameType);
   }
 
+  _onTabClick(int tabIndex) {
+    var itemHeight = gameViewItem.currentState!.itemHeight;
+    var des = 0.0;
+
+    _vm.gameProviderList!.asMap().forEach((i, element) {
+      if (tabIndex > i) {
+        des += itemHeight * _vm.gameProviderList![i].length;
+      }
+    });
+    setState(() {
+      //  currentTabIndex = tabIndex;
+      _controller.animateTo(des, curve: Curves.linear, duration: Duration(milliseconds: 250));
+    });
+  }
+
+  _scrollListener() {
+    var scrollTab = gameViewItem.currentState!.itemHeight;
+    var des = 0.0;
+    var index = 0;
+
+    _vm.gameProviderList!.asMap().forEach((i, element) {
+      if (_controller.offset >= des) {
+        des += scrollTab * _vm.gameProviderList![i].length;
+        index = i;
+      } else if (_controller.offset >= _controller.position.maxScrollExtent) {
+        index = _vm.gameProviderList!.length - 1;
+      }
+    });
+    setState(() {
+      currentTabIndex = index; //1
+    });
+  }
+
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
@@ -243,21 +284,17 @@ class _GameT2State extends BaseState<GameT2> {
   }
 
   _navigate(String? gamePlatformCode, GameType? gameType) async {
-    if ((gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby) ||
-        gamePlatformCode == "TCG_SEA" ||
-        gamePlatformCode == "TCG_LOTTO" ||
-        gamePlatformCode == "TCG_LOTTO_VN" ||
-        gamePlatformCode == "SG") {
-      if (gamePlatformCode == "SW" || gamePlatformCode == "SG")
-        await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
-      else {
-        await _vm.getGameList(gamePlatformCode, gameType);
-        await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
-      }
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // if (_isSWGame(gamePlatformCode, gameType)) {
+    if (_isSWGame(gamePlatformCode, gameType) || _isSGGame(gamePlatformCode))
+      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+    else if (_isTcgGame(gamePlatformCode)) {
+      await _vm.getGameList(gamePlatformCode, gameType);
+      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      // }
+      /*WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
-      });
-    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+      });*/
+    }  else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
@@ -303,8 +340,36 @@ class _GameT2State extends BaseState<GameT2> {
     }
   }
 
+  _isTcgGame(String? gamePlatformCode) =>
+      gamePlatformCode == "TCG_SEA" || gamePlatformCode == "TCG_LOTTO" || gamePlatformCode == "TCG_LOTTO_VN";
+
+  _isSWGame(String? gamePlatformCode, GameType? gameType) =>
+      (gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby);
+
+  _isSGGame(String? gamePlatformCode) => gamePlatformCode == "SG";
+
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameApiState, onSuccess: () {});
+
+    handleApiState(_vm.getLobbyGameUrlApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        launch(_vm.url!);
+      });
+    }, onError: (_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.maintenance);
+      });
+    });
+
+    handleApiState(_vm.getGameUrlApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        launch(_vm.url!);
+      });
+    }, onError: (_) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.maintenance);
+      });
+    });
   }
 }

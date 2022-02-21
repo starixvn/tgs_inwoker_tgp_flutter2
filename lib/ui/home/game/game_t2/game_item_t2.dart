@@ -14,8 +14,9 @@ class GameItemT2 extends StatefulWidget {
   final Function(GameProvider2)? onGameClick;
   final GameType? currGameType;
   final EnvFeaturesConfig? config;
+  final Key key;
 
-  GameItemT2({
+  GameItemT2(this.key,{
     this.gameProviderList,
     this.onGameClick,
     this.currGameType,
@@ -65,7 +66,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
               BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
           child: RawScrollbar(
             isAlwaysShown: true,
-            thumbColor: CustomColor.theme_bar_gradient_2,
+            thumbColor: CustomColor.theme_button_color,
             thickness: 3.5,
             radius: Radius.circular(1.4),
             controller: widget.controller,

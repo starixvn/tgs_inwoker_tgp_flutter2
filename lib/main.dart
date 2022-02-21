@@ -236,7 +236,8 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.editEmail: (context) => EditEmail(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.affiliate: (context) => Affiliate(),
-                  RoutePath.vip: (context) => VipView()
+                  RoutePath.vip: (context) => VipView(),
+                  RoutePath.menuT2: (context) => MenuT2()
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,
