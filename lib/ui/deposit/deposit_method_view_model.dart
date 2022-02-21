@@ -2,6 +2,7 @@ import 'package:api/api.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/payment.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
+import 'dart:io';
 
 class DepositMethodViewModel extends BaseViewModel {
   final depositRepo = BankRepository.getSingleton();
@@ -42,7 +43,7 @@ class DepositMethodViewModel extends BaseViewModel {
     String amount,
     String? paymentId,
     String? promotionId,
-    String? imageFile,
+    File? imageFile,
   ) async {
     setLoading();
     if (bankType == BankType.BANK)
@@ -146,7 +147,7 @@ class DepositMethodViewModel extends BaseViewModel {
     return skyPayDepositOrderApiState;
   }
 
-  uploadDepositImage(String imageFile, String id) async {
+  uploadDepositImage(File imageFile, String id) async {
     setLoading();
     uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
     if (uploadDepositImageApiState.isSuccess) {}

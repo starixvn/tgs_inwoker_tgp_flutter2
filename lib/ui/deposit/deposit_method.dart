@@ -48,9 +48,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   TextEditingController _amountController = TextEditingController(),
       _bankNameController = TextEditingController(),
       _transferNameController = TextEditingController();
-  var isButtonEnabled = false,
-      isHintText = false,
-      isPromotionEnabled = false;
+  var isButtonEnabled = false, isHintText = false, isPromotionEnabled = false;
   var selectedPayment;
   var paymentMin, paymentMax;
   int? amount;
@@ -82,24 +80,20 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           _handleApiState();
           return Container(
             margin: EdgeInsets.only(
-                left: 10.auto, right: 10.auto, top: 10.auto, bottom: MediaQuery
-                .of(context)
-                .viewInsets
-                .bottom),
+                left: 10.auto, right: 10.auto, top: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ListView(
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList!.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
                 if (_isManualDeposit()) _buildTransferToAccount(_payment?.methodCode, _payment?.qrCode),
-                if (isShowBankAcc() && !(_vm.config?.depositCustomBankNameTranslation ??false))
+                if (isShowBankAcc() && !(_vm.config?.depositCustomBankNameTranslation ?? false))
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
-                if (isShowBankAcc() && (_vm.config?.depositCustomBankNameTranslation ??false))
+                if (isShowBankAcc() && (_vm.config?.depositCustomBankNameTranslation ?? false))
                   _buildNameTextFieldWithTips("deposit_bank_name", "enter_deposit_bank_name_hint", _bankNameController),
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
-                if (_isShowExchangeRateText())
-                  _buildExchangeRateText(),
+                if (_isShowExchangeRateText()) _buildExchangeRateText(),
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildUploadImageColumn(),
@@ -129,7 +123,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     } else
       display = "";
     return Container(
-        margin: EdgeInsets.only(bottom: 15.auto,),
+        margin: EdgeInsets.only(
+          bottom: 15.auto,
+        ),
         child: Opacity(
           opacity: 1,
           child: CustomPicker(
@@ -141,11 +137,11 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             width: context.screenWidth,
             onClick: (list?.isEmpty ?? true)
                 ? () {
-              CustomToast.show(getTranslatedText("empty_promotion"));
-            }
+                    CustomToast.show(getTranslatedText("empty_promotion"));
+                  }
                 : () {
-              _buildBottomSheet(title, list ?? []);
-            },
+                    _buildBottomSheet(title, list ?? []);
+                  },
           ),
         ));
   }
@@ -180,8 +176,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         });
   }
 
-  _buildAmountTextField() =>
-      Container(
+  _buildAmountTextField() => Container(
         //margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
           title: getTranslatedText("deposit_amount") ?? "",
@@ -200,8 +195,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildNameTextField(String title, String hint, TextEditingController controller) =>
-      Container(
+  _buildNameTextField(String title, String hint, TextEditingController controller) => Container(
         child: CustomTextFormField(
           title: getTranslatedText(title),
           hintText: getTranslatedText(hint),
@@ -214,10 +208,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildNameTextFieldWithTips(String title, String hint, TextEditingController controller) =>
-      Container(
+  _buildNameTextFieldWithTips(String title, String hint, TextEditingController controller) => Container(
         child: CustomTextFormField(
-          title: getTranslatedText(title) + " "+ getTranslatedText("deposit_bank_tips"),
+          title: getTranslatedText(title) + " " + getTranslatedText("deposit_bank_tips"),
           hintText: getTranslatedText(hint),
           onChanged: (value) => onTextChange(),
           onFieldSubmitted: (value) => onTextChange(),
@@ -228,28 +221,22 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildButton() =>
-      Container(
-          margin: EdgeInsets.only(
-            left: 10.auto,
-            right: 10.auto,
-            top: 15.auto,
-          ),
-          child: ColorButton(
-            onClick: () => _onClick(),
-            title: getTranslatedText("submit"),
-            color: CustomColor.theme_button_color,
-            radius: 9.6,
-            isEnabled: isButtonEnabled,
-          ));
+  _buildButton() => Container(
+      margin: EdgeInsets.only(
+        left: 10.auto,
+        right: 10.auto,
+        top: 15.auto,
+      ),
+      child: ColorButton(
+        onClick: () => _onClick(),
+        title: getTranslatedText("submit"),
+        color: CustomColor.theme_button_color,
+        radius: 9.6,
+        isEnabled: isButtonEnabled,
+      ));
 
-  _buildExchangeRateText() =>
-      Container(
-        margin: EdgeInsets.only(
-            left: 10.auto,
-            right: 10.auto,
-            bottom: 20.auto
-        ),
+  _buildExchangeRateText() => Container(
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
         child: Row(
           children: [
             Text(
@@ -279,8 +266,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     List<Widget> content = methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null
         ? _buildTransferToQr(paymentQrCode.qrCodeFileUrl!)
         : (paymentQrCode.name != null && paymentQrCode.bankAccount != null)
-        ? _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!, paymentQrCode.bankAccount!)
-        : [];
+            ? _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!, paymentQrCode.bankAccount!)
+            : [];
 
     if (content.isNotEmpty) {
       return Container(
@@ -295,14 +282,10 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           children: [
             Text(
               getTranslatedText("deposit_to_account"),
-              style: TextStyle(
-                  fontSize: 12.auto,
-                  color: CustomColor.theme_text_black_white_color
-              ),
+              style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
             ),
             SizedBox(height: 3.auto),
-          ]
-            ..addAll(content),
+          ]..addAll(content),
         ),
       );
     }
@@ -317,10 +300,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         height: 100,
       )*/
       CachedNetworkImage(
-        placeholder: (context, url) =>
-            Container(
-              color: CustomColor.very_light_pink_four,
-            ),
+        placeholder: (context, url) => Container(
+          color: CustomColor.very_light_pink_four,
+        ),
         imageUrl: qrUrl,
         width: 100,
         height: 100,
@@ -335,14 +317,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     return [
       logo != null
           ? CachedNetworkImage(
-          width: 120.auto,
-          placeholder: (context, url) =>
-              Container(
-                color: CustomColor.very_light_pink_four,
-              ),
-          imageUrl: logo,
-          //handling error
-          fit: BoxFit.fill)
+              width: 120.auto,
+              placeholder: (context, url) => Container(
+                    color: CustomColor.very_light_pink_four,
+                  ),
+              imageUrl: logo,
+              //handling error
+              fit: BoxFit.fill)
           : Container(),
       SizedBox(height: 3.auto),
       Wrap(
@@ -377,13 +358,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ];
   }
 
-  _buildHintText() =>
-      Container(
-        margin: EdgeInsets.only(
-            left: 10.auto,
-            right: 10.auto,
-            bottom: 20.auto
-        ),
+  _buildHintText() => Container(
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
         child: AutoSizeText(
           getTranslatedText("play_pay_hint_text"),
           style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: 15),
@@ -394,8 +370,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildUploadImageColumn() =>
-      Visibility(
+  _buildUploadImageColumn() => Visibility(
         visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
         child: Container(
           padding: EdgeInsets.only(left: 5.auto, right: 5.auto),
@@ -409,10 +384,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 ),
                 child: Text(
                   getTranslatedText("upload_prof"),
-                  style: TextStyle(
-                      fontSize: 12.auto,
-                      color: CustomColor.theme_text_black_white_color
-                  ),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
                 ),
               ),
               Card(
@@ -428,9 +400,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                     uploadImage == null
                         ? Container()
                         : Container(
-                        padding: EdgeInsets.all(10.auto),
-                        alignment: Alignment.centerRight,
-                        child: SizedBox(height: 80, child: Image.file(uploadImage!))),
+                            padding: EdgeInsets.all(10.auto),
+                            alignment: Alignment.centerRight,
+                            child: SizedBox(height: 80, child: Image.file(uploadImage!))),
                   ],
                 ),
               ),
@@ -439,8 +411,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildUploadTextRow() =>
-      Visibility(
+  _buildUploadTextRow() => Visibility(
         visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
         child: Container(
           margin: EdgeInsets.only(
@@ -448,8 +419,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             right: 10.auto,
           ),
           decoration: BoxDecoration(
-            //bg image
-          ),
+              //bg image
+              ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -489,9 +460,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     XFile? choosedImage = await picker.pickImage(source: ImageSource.gallery);
     File imageFile;
     imageFile = File(choosedImage!.path);
-    var bytes = imageFile
-        .readAsBytesSync()
-        .lengthInBytes;
+    var bytes = imageFile.readAsBytesSync().lengthInBytes;
     if (bytes > 10485760) {
       //restrict upload image to 10MB
       CustomToast.show(getTranslatedText("image_size_limit"));
@@ -551,7 +520,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     switch (widget.paymentCode) {
       case "Manual":
         _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
-            promotionId ?? null, uploadImage?.path);
+            promotionId ?? null, uploadImage);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(
@@ -577,7 +546,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         break;
       default:
         _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
-            promotionId ?? null, uploadImage!.path);
+            promotionId ?? null, uploadImage);
         break;
     }
   }
@@ -637,8 +606,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   }
 
   isShowBankAcc() =>
-      (_isManualDeposit() || _isApplePayDeposit()) && !(_vm.config?.depositManualApplePayHideBankAcc ?? false) &&
-          !(_vm.config?.depositRemoveName ?? false);
+      (_isManualDeposit() || _isApplePayDeposit()) &&
+      !(_vm.config?.depositManualApplePayHideBankAcc ?? false) &&
+      !(_vm.config?.depositRemoveName ?? false);
 
   _handleApiState() {
     handleApiState(_vm.getLeepayOrderApiState, isRequireResult: true, onSuccess: (result) {
@@ -650,9 +620,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     handleApiState(_vm.getUmPayDepositOrderApiState, isRequireResult: true, onSuccess: (result) {
       methodPickerText == "Crypto"
           ? _navigateToDepositOrder(
-          depositRedirect: _vm.getUmPayDepositOrderApiState.result,
-          exchangeRate: _vm.exchangeRate,
-          expectedAmount: _calculateExpectedAmount())
+              depositRedirect: _vm.getUmPayDepositOrderApiState.result,
+              exchangeRate: _vm.exchangeRate,
+              expectedAmount: _calculateExpectedAmount())
           : _navigateToDepositOrder(depositRedirect: _vm.getUmPayDepositOrderApiState.result);
     });
     handleApiState(_vm.primePayDepositOrderApiState, onSuccess: () {
@@ -670,8 +640,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    ManualDepositOrderView(
+                builder: (context) => ManualDepositOrderView(
                       id: paymentChannelId,
                       method: _payment!.methodCode,
                       depositAmount: Format().currencyWithDecimalFormat(double.parse(_amountController.text)),
@@ -722,8 +691,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    DepositHtml(
+                builder: (context) => DepositHtml(
                       htmlText: _vm.getHelp2PayHtmlTextApiState.result.toString(),
                     )));
       });
@@ -739,18 +707,17 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
-          builder: (BuildContext context) =>
-              CustomDialog(
-                title: null,
-                description: getTranslatedText("upload_success"),
-                buttonText1: getTranslatedText("confirm"),
-                onClick: () {
-                  Navigator.pop(
-                    context,
-                  );
-                  _clearTextField();
-                },
-              ),
+          builder: (BuildContext context) => CustomDialog(
+            title: null,
+            description: getTranslatedText("upload_success"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+              _clearTextField();
+            },
+          ),
         );
       });
     });
@@ -767,8 +734,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         await Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    DepositOrderView(
+                builder: (context) => DepositOrderView(
                       method: _payment?.methodCode,
                       depositRedirect: depositRedirect,
                       depositAmount: Format().currencyWithDecimalFormat(double.parse(_amountController.text)),

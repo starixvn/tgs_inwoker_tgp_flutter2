@@ -163,7 +163,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
               children: [
                 ColorButton(
                   title: getTranslatedText("upload_prof"),
-                  onClick: () => _vm.uploadDepositImage(uploadImage!.path, widget.id!),
+                  onClick: () => _vm.uploadDepositImage(uploadImage!, widget.id!),
                   isEnabled: uploadImage == null ? false : true,
                   radius: 4.8,
                   height: 44.5,

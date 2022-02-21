@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api/api.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/payment.dart';
@@ -43,7 +45,7 @@ class DepositViewModel extends BaseViewModel {
     return getPaymentApiState;
   }
 
-  uploadDepositImage(String imageFile, String id) async {
+  uploadDepositImage(File imageFile, String id) async {
     setLoading();
     uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
     if (uploadDepositImageApiState.isSuccess) {}

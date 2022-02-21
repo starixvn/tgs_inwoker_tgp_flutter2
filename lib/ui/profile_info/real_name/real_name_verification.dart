@@ -239,7 +239,10 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.idVerify(
-          _realNameController.text, _isShowIcVerificationUpload() ? _docNoController.text : _icNoController.text);
+        _realNameController.text,
+        _isShowIcVerificationUpload() ? _docNoController.text : _icNoController.text,
+        imageFile: uploadImage,
+      );
     }
   }
 

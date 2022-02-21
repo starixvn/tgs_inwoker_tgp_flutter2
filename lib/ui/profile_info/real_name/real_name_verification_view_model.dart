@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:api/api.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
@@ -15,7 +17,7 @@ class RealNameVerificationViewModel extends BaseViewModel {
 
   get config => contentRepo.featuresConfig;
 
-  idVerify(String realname, String id, {String? imageFile}) async {
+  idVerify(String realname, String id, {File? imageFile}) async {
     setLoading();
     var _status = idVerifyApiState = await userRepo.setIdentity(realname, id);
     if (_status.isSuccess) {
@@ -29,7 +31,7 @@ class RealNameVerificationViewModel extends BaseViewModel {
     return idVerifyApiState;
   }
 
-  uploadIdImage(String imageFile) async {
+  uploadIdImage(File imageFile) async {
     setLoading();
     uploadIdImageApiState = await userRepo.uploadIdImage(imageFile);
     if (uploadIdImageApiState.isSuccess) {}
