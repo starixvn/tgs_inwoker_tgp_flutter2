@@ -32,7 +32,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
 
   @override
   void initState() {
-    display = _vm.config.phonePrefix;
+    display = _vm.config?.phonePrefix ?? "+852";
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserProfile();
     });

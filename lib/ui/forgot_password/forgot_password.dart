@@ -30,7 +30,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   @override
   void initState() {
-    display = _vm.config.phonePrefix;
+    display = _vm.config?.phonePrefix ?? "+852";
     super.initState();
   }
 

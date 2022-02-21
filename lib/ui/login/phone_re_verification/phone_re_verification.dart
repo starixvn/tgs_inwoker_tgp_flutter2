@@ -52,7 +52,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
   @override
   void initState() {
     _vm = widget.vm;
-    display = _vm.config.phonePrefix;
+    display = _vm.config?.phonePrefix ?? "+852";
     _initData();
     super.initState();
   }
