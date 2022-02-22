@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -210,10 +211,10 @@ class _GameT1State extends BaseState<GameT1> {
   _navigate(String? gamePlatformCode, GameType? gameType) async {
     // if (_isSWGame(gamePlatformCode, gameType)) {
     if (_isSWGame(gamePlatformCode, gameType) || _isSGGame(gamePlatformCode))
-      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, EnvironmentConfig.url);
     else if (_isTcgGame(gamePlatformCode)) {
       await _vm.getGameList(gamePlatformCode, gameType);
-      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, EnvironmentConfig.url);
       // }
       /*WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);

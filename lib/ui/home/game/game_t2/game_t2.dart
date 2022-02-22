@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -23,7 +24,8 @@ class GameT2 extends StatefulWidget {
   GameT2({
     this.onResumeBgMusic,
     this.onPauseBgMusic,
-    this.vm, this.onRefreshHomePage,
+    this.vm,
+    this.onRefreshHomePage,
   });
 
   @override
@@ -33,7 +35,8 @@ class GameT2 extends StatefulWidget {
 class _GameT2State extends BaseState<GameT2> {
   var _controller = ScrollController();
   var currentTabIndex = 0, currentGameType = GameType.Sportsbook;
-  late GameViewModel _vm ;
+  late GameViewModel _vm;
+
   var gameName;
   GlobalKey<GameItemT2State> gameViewItem = GlobalKey();
 
@@ -286,15 +289,15 @@ class _GameT2State extends BaseState<GameT2> {
   _navigate(String? gamePlatformCode, GameType? gameType) async {
     // if (_isSWGame(gamePlatformCode, gameType)) {
     if (_isSWGame(gamePlatformCode, gameType) || _isSGGame(gamePlatformCode))
-      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, EnvironmentConfig.url);
     else if (_isTcgGame(gamePlatformCode)) {
       await _vm.getGameList(gamePlatformCode, gameType);
-      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, EnvironmentConfig.url);
       // }
       /*WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
       });*/
-    }  else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(

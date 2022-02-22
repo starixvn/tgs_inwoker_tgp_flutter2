@@ -260,7 +260,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     File imageFile;
     imageFile = File(choosedImage!.path);
     var bytes = imageFile.readAsBytesSync().lengthInBytes;
-    if (bytes > 10485760) {
+    if (bytes > 2097152) {
       //restrict upload image to 10MB
       CustomToast.show(getTranslatedText("image_size_limit"));
     } else {

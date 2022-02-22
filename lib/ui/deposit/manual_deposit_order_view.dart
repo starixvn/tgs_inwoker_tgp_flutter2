@@ -303,8 +303,8 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
     File imageFile;
     imageFile = File(choosedImage!.path);
     var bytes = imageFile.readAsBytesSync().lengthInBytes;
-    if (bytes > 10485760) {
-      //restrict upload image to 10MB
+    if (bytes > 2097152) {
+      //restrict upload image size to 2MB
       CustomToast.show(getTranslatedText("image_size_limit"));
     } else {
       setState(() {

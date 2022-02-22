@@ -204,10 +204,10 @@ class _GameT3State extends BaseState<GameT3> {
   _navigate(String? gamePlatformCode, GameType? gameType) async {
     // if (_isSWGame(gamePlatformCode, gameType)) {
     if (_isSWGame(gamePlatformCode, gameType) || _isSGGame(gamePlatformCode))
-      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, " ");
+      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, EnvironmentConfig.url);
     else if (_isTcgGame(gamePlatformCode)) {
       await _vm.getGameList(gamePlatformCode, gameType);
-      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, "");
+      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, EnvironmentConfig.url);
       // }
       /*WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
