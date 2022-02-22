@@ -43,6 +43,8 @@ class GameViewModel extends BaseViewModel {
     GameType.Slot,
     GameType.EGame,
   ];
+  List<GameType> nonExistGameTypeList = [];
+
   var _context;
   Map<GameType, List<GameProvider2>>? gameTypeMap = new Map<GameType, List<GameProvider2>>();
   bool isGamePlatformInactive = false;
@@ -83,7 +85,19 @@ class GameViewModel extends BaseViewModel {
               .toList(),
         )
         .toList();
+
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
+
+    //check which game type not exist in gameProviderList and remove it
+    gameTypeList.forEach((element) {
+      if(gameTypeMap?[element]?.isEmpty?? true){
+        nonExistGameTypeList.add(element);
+      }
+    });
+    nonExistGameTypeList.forEach((element) {
+      gameTypeList.remove(element);
+    });
+
     setLoading(false);
     return getGameProviderListApiState;
   }

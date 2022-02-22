@@ -83,6 +83,10 @@ class _HomeT3State extends BaseState<HomeT3> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
     });
+    _gameViewModel.nonExistGameTypeList.forEach((element) {
+      gameRowList.remove(element);
+      gameList.remove(element);
+    });
   }
 
   getLanguage() async {
