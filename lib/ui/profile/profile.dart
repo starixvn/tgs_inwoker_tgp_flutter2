@@ -5,11 +5,15 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
+import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
+import 'package:tgp_flutter2/ui/profile/T2/profile_bottom_item.dart';
 import 'package:tgp_flutter2/ui/profile/profile_item.dart';
+import 'package:tgp_flutter2/ui/profile/T2/profile_t2.dart';
+import 'package:tgp_flutter2/ui/profile/T2/profile_top_item.dart';
 import 'package:tgp_flutter2/ui/profile/profile_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
@@ -43,18 +47,20 @@ class _ProfileState extends BaseState<Profile> {
           return Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: CustomColor.theme_bg_color,
-              body: Container(
-                padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
-                child: ListView(
-                  children: [
-                    _buildUserInfoContainer(),
-                    ProfileItem(
-                      config: _vm.config,
-                    ),
-                    _buildLogoutButton()
-                  ],
-                ),
-              ));
+              body: EnvironmentConfig.template_version == 2
+                  ? ProfileT2(vm: _vm)
+                  : Container(
+                      padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
+                      child: ListView(
+                        children: [
+                          _buildUserInfoContainer(),
+                          ProfileItem(
+                            config: _vm.config,
+                          ),
+                          _buildLogoutButton()
+                        ],
+                      ),
+                    ));
         });
   }
 
@@ -129,78 +135,6 @@ class _ProfileState extends BaseState<Profile> {
             ],
           )
         ]),
-      );
-
-  _buildProfileImage() => Expanded(
-        flex: 2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                width: 65.auto,
-                height: 65.auto,
-                decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image:
-                        new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
-            Container(
-              margin: EdgeInsets.only(top: 3.auto),
-              child: AutoSizeText(
-                "${_vm.userProfile?.username} (VIP ${_vm.userProfile?.vipLevel})",
-                style: TextStyle(color: CustomColor.theme_text_grey_white_color),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                minFontSize: 10,
-                stepGranularity: 1,
-              ),
-            )
-          ],
-        ),
-      );
-
-  _buildBalanceText() => Expanded(
-        flex: 3,
-        child: Container(
-          padding: EdgeInsets.only(left: 20.auto),
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 5.auto),
-                child: Row(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.only(right: 5.auto),
-                        //decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
-                        child: ImageIcon(
-                          AssetImage("images/profile/t2/ic_balance.png"),
-                          color: CustomColor.theme_text_grey_white_color,
-                        )),
-                    Text(
-                      " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0)}",
-                      style: TextStyle(color: CustomColor.theme_text_grey_white_color),
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(right: 5.auto),
-                      //decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.auto)),
-                      child: ImageIcon(
-                        AssetImage("images/profile/t2/ic_balance.png"),
-                        color: CustomColor.theme_button_color,
-                      )),
-                  Text(
-                    _vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}" : "-",
-                    style: TextStyle(color: CustomColor.theme_button_color),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
       );
 
   _buildLogoutButton() => Container(

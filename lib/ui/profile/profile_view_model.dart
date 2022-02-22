@@ -39,7 +39,7 @@ class ProfileViewModel extends BaseViewModel {
     });
     await Future.wait(task);
     totalBalance = (wallet?.main ?? 0.0) + (gameBalance ?? 0.0);
-    wallet.totalBalance = totalBalance;
+    wallet?.totalBalance = totalBalance;
     notifyListeners();
   }
 
