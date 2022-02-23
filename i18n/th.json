@@ -1036,5 +1036,7 @@
   "fps_number": "หมายเลข FPS",
   "enter_fps_number_hint": "โปรดป้อนหมายเลข FPS หรืออีเมล",
   "gcash_bank_name": "หมายเลขบัญชีธนาคาร/หมายเลข Gcash",
-  "enter_gcash_bank name": "โปรดป้อนหมายเลขบัญชีธนาคาร/หมายเลข Gcash"
+  "enter_gcash_bank name": "โปรดป้อนหมายเลขบัญชีธนาคาร/หมายเลข Gcash",
+  "not_verified": "ยังไม่ได้ตรวจสอบ",
+  "verify_realname": "ยืนยันชื่อจริง"
 }

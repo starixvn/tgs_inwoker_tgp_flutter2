@@ -49,7 +49,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                             [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
                             ["real_name_verification", "phone_verification", "email_verification"],
                             itemDescriptionList: [
-                              _getItemText(_vm.userProfile.realname),
+                              _getItemText(_vm.userProfile.realname, isRealName: true),
                               _getItemText(_vm.userProfile.phone),
                               _getItemText(_vm.userProfile.email)
                             ],
@@ -207,8 +207,12 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _getItemText(String? text) {
-    if (text != null && text.isNotEmpty)
+  _getItemText(String? text, {bool isRealName = false}) {
+    if (text != null && text.isNotEmpty) if (isRealName && _vm.userProfile.identityAuthentication) {
+      return text + " (${getTranslatedText("verified")})";
+    } else if (isRealName && !_vm.userProfile.identityAuthentication)
+      return text + " (${getTranslatedText("not_verified")})";
+    else
       return text;
     else
       return getTranslatedText("not_configured");

@@ -1038,5 +1038,7 @@
   "fps_number": "Số FPS",
   "enter_fps_number_hint": "Vui lòng nhập số FPS hoặc email",
   "gcash_bank_name": "Số tài khoản ngân hàng / Số Gcash",
-  "enter_gcash_bank name": "Vui lòng nhập số tài khoản ngân hàng / số Gcash"
+  "enter_gcash_bank name": "Vui lòng nhập số tài khoản ngân hàng / số Gcash",
+  "not_verified": "Chưa được xác minh",
+  "verify_realname": "Xác minh tên thật"
 }

@@ -1039,5 +1039,7 @@
   "fps_number": "轉數快號碼",
   "enter_fps_number_hint": "請填寫轉數快號碼或電子郵件",
   "gcash_bank_name": "銀行帳號/Gcash 號碼",
-  "enter_gcash_bank name": "請輸入銀行帳號/ Gcash 號碼"
+  "enter_gcash_bank name": "請輸入銀行帳號/ Gcash 號碼",
+  "not_verified": "未驗證",
+  "verify_realname": "驗證真實姓名"
 }

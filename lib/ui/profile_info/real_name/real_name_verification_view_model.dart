@@ -19,12 +19,10 @@ class RealNameVerificationViewModel extends BaseViewModel {
 
   idVerify(String realname, String id, {File? imageFile}) async {
     setLoading();
-    var _status = idVerifyApiState = await userRepo.setIdentity(realname, id);
+    var _status = await userRepo.setIdentity(realname, id);
     if (_status.isSuccess) {
-      if (imageFile != null)
-        idVerifyApiState = await uploadIdImage(imageFile);
-      else
-        idVerifyApiState = await userRepo.getBasicInfo();
+      if (imageFile != null) await uploadIdImage(imageFile);
+      idVerifyApiState = await userRepo.getBasicInfo();
     } else
       idVerifyApiState = _status;
     setLoading(false);

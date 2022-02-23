@@ -1039,5 +1039,7 @@
   "fps_number": "nomor FPS",
   "enter_fps_number_hint": "Silakan masukkan nomor FPS atau email",
   "gcash_bank_name": "Nomor Rekening Bank/Nomor Gcash",
-  "enter_gcash_bank name": "Silakan masukkan nomor rekening bank/nomor Gcash"
+  "enter_gcash_bank name": "Silakan masukkan nomor rekening bank/nomor Gcash",
+  "not_verified": "Belum diverifikasi",
+  "verify_realname": "Verifikasi Nama Asli"
 }

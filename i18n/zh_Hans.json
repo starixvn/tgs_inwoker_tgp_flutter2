@@ -1038,5 +1038,7 @@
   "fps_number": "转数快号码",
   "enter_fps_number_hint": "请填写转数快号码或电子邮件",
   "gcash_bank_name": "银行帐号/Gcash 号码",
-  "enter_gcash_bank name": "请输入银行帐号/ Gcash 号码"
+  "enter_gcash_bank name": "请输入银行帐号/ Gcash 号码",
+  "not_verified": "未验证",
+  "verify_realname": "验证真实姓名"
 }

@@ -1052,5 +1052,7 @@
   "fps_number": "FPS number",
   "enter_fps_number_hint": "Please enter the FPS number or email",
   "gcash_bank_name": "Bank Account Number/Gcash Number",
-  "enter_gcash_bank_name": "Please enter bank account number/ Gcash number"
+  "enter_gcash_bank_name": "Please enter bank account number/ Gcash number",
+  "not_verified": "Not verified",
+  "verify_realname": "Verify Real Name"
 }

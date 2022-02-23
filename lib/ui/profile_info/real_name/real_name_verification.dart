@@ -57,12 +57,12 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   _buildUploadDocColumn() => Column(
         children: [
           Visibility(
-            visible: _vm.userProfile.realname == null,
+            visible: _vm.userProfile.realname == null || !_vm.userProfile.identityAuthentication,
             child: _buildDocNumberTextFormField(),
           ),
-          _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true),
+          _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true, isRealname: true),
           Visibility(
-            visible: _vm.userProfile.realname == null,
+            visible: _vm.userProfile.realname == null || !_vm.userProfile.identityAuthentication,
             child: _buildUploadImageButton(),
           ),
           _buildButton(),
@@ -124,9 +124,9 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _buildRealNameColumn() => Column(
         children: [
-          _buildTextFormField("realname", "enter_realname_hint", _realNameController, false),
+          _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
-            visible: _vm.userProfile.realname == null,
+            visible: _vm.userProfile.realname == null || !_vm.userProfile.identityAuthentication,
             child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
           ),
           _buildButton(),
@@ -147,7 +147,9 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         enabled: isTextFieldEnabled,
       );
 
-  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast) => CustomTextFormField(
+  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast,
+          {bool isRealname = false}) =>
+      CustomTextFormField(
         title: getTranslatedText(title),
         hintText: getTranslatedText(hint),
         onChanged: (value) => _onTextChange(),
@@ -200,8 +202,8 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       var _realname = _vm.userProfile.realname;
       setState(() {
-        if (_realname != null) {
-          if (_realname.isNotEmpty) {
+        if (_realname != null&& _vm.userProfile.identityAuthentication) {
+          if (_realname.isNotEmpty ) {
             _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
@@ -246,7 +248,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     }
   }
 
-  _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
+  _isShowIcVerificationUpload() => true;//(_vm.config?.icVerificationUpload ?? false);
 
   Future<void> chooseImage() async {
     /*File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -273,8 +275,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {
-      CustomToast.show(getTranslatedText("success"));
-      _getUserProfile();
+      Navigator.pop(context);
     });
   }
 }

@@ -270,7 +270,12 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: "",
         description: getTranslatedText("withdraw_success"),
         buttonText1: getTranslatedText("confirm"),
+        buttonText2:
+            (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication) ? getTranslatedText("verify_realname") : null,
         onClick: () => Navigator.pop(context),
+        onClick2: () => (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
+            ? Navigator.pushNamed(context, RoutePath.realNameVerification)
+            : null,
       ),
     );
   }
@@ -308,12 +313,14 @@ class _WithdrawState extends BaseState<Withdraw> {
     //fetch bank list
 
     if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? false)) {
-      result = await Navigator.push(
-        context,
-        new MaterialPageRoute(
-          builder: (context) => EmailVerification(1),
-        ),
-      );
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(
+            builder: (context) => EmailVerification(1),
+          ),
+        );
+      });
       //Navigator.of(context).pushNamed("/email_verification");
     }
     // else if (_vm.userProfile.isSetPayPassword == false) {
