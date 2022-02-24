@@ -52,20 +52,6 @@ class EnvironmentConfig {
 
   static const int theme_text_grey_white_color = 4285558896;
 
-  static const bool isShowSmsVerification = true;
-
-  static const bool isShowEmailVerification = false;
-
-  static const bool isShowBankBranch = true;
-
-  static const bool isShowIcVerification = true;
-
-  static const bool isShowWechatQQ = true;
-
-  static const bool isShowBankAcc = true;
-
-  static const bool isShowMarqueePopUp = false;
-
   static const String default_lang = 'en-US';
 
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
@@ -74,7 +60,5 @@ class EnvironmentConfig {
 
   static const int vipPresentType = 1;
 
-  static const bool isShowPhoneNumber = false;
-
-  static const bool isShowVipInHome = false;
+  static const int theme_announcement_icon_color = 4291206250;
 }
