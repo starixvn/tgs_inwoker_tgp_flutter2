@@ -239,7 +239,7 @@ class _HomeT1State extends BaseState<HomeT1> {
             child: SvgPicture.asset(
               "images/home/ic_marquee.svg",
               height: 15.auto,
-              color: CustomColor.theme_button_color,
+              color: CustomColor.theme_announcement_icon_color,
             ),
           ),
           Expanded(
@@ -300,10 +300,11 @@ class _HomeT1State extends BaseState<HomeT1> {
   }
 
   _buildGameView() => GameT1(
-      vm: _gameViewModel,
-      onRefreshHomePage: () => _initData(),
-      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,);
+        vm: _gameViewModel,
+        onRefreshHomePage: () => _initData(),
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+      );
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

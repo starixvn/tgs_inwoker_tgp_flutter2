@@ -108,33 +108,58 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _getLoginButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: OutlineBorderButton(
-          title: getTranslatedText("login"),
-          onClick: () => widget.onClickLoginButton(),
-          isEnabled: true,
-          width: 60,
-          height: 17,
-          color: Colors.white,
-          fontSize: 14,
-          radius: 5,
-          padding: 4,
-        ),
+        child: EnvironmentConfig.template_version != 8
+            ? OutlineBorderButton(
+                title: getTranslatedText("login"),
+                onClick: () => widget.onClickLoginButton(),
+                isEnabled: true,
+                width: 60,
+                height: 17,
+                color: Colors.white,
+                fontSize: 14,
+                radius: 5,
+                padding: 4,
+              )
+            : ColorButton(
+                title: getTranslatedText("login"),
+                onClick: () => widget.onClickLoginButton(),
+                isEnabled: true,
+                width: 60,
+                height: 17,
+                fontSize: 14,
+                radius: 5,
+                padding: 4,
+                textColor: Colors.white,
+                color: CustomColor.theme_button_color,
+              ),
       );
 
   _getRegisterButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: ColorButton(
-          title: getTranslatedText("register"),
-          onClick: () => widget.onClickRegisterButton(),
-          isEnabled: true,
-          width: 80,
-          height: 17,
-          fontSize: 14,
-          radius: 5,
-          padding: 4,
-          textColor: CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 ? CustomColor.theme_button_color : Colors.white,
-        ),
+        child: EnvironmentConfig.template_version != 8
+            ? ColorButton(
+                title: getTranslatedText("register"),
+                onClick: () => widget.onClickRegisterButton(),
+                isEnabled: true,
+                width: 80,
+                height: 17,
+                fontSize: 14,
+                radius: 5,
+                padding: 4,
+                textColor: CustomColor.theme_text_black_color,
+                color: EnvironmentConfig.template_version == 3 ? CustomColor.theme_button_color : Colors.white,
+              )
+            : OutlineBorderButton(
+                title: getTranslatedText("register"),
+                onClick: () => widget.onClickRegisterButton(),
+                isEnabled: true,
+                width: 80,
+                height: 17,
+                fontSize: 14,
+                radius: 5,
+                padding: 4,
+                color: CustomColor.theme_text_black_color,
+              ),
       );
 
   _getLogoutButton() => Container(

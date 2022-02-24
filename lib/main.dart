@@ -28,6 +28,7 @@ import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
+import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
@@ -314,11 +315,11 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
   _getHomeTemplateVersion() {
     switch (EnvironmentConfig.template_version) {
-      case 1:
+      /* case 1:
         return HomeT1(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );
+        );*/
       case 2:
         return HomeT2(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
@@ -326,6 +327,16 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         );
       case 3:
         return HomeT3(
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        );
+      case 8:
+        return HomeT8(
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        );
+      default:
+        return HomeT1(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         );
@@ -406,20 +417,20 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       _buildImageIcon(imagePath, index, isNewMessage),
-                      if(title.isNotEmpty)
-                           Container(
-                              margin: EdgeInsets.only(top: 3.auto),
-                              child: Text(
-                                getTranslatedText(title) ?? title,
-                                style: TextStyle(
-                                  fontSize: 9.auto,
-                                  color: (currentBottomIndex == index && !isMenu)
-                                      ? CustomColor.bottom_nav_selected_color
-                                      : CustomColor.bottom_nav_unselected_color,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                      if (title.isNotEmpty)
+                        Container(
+                          margin: EdgeInsets.only(top: 3.auto),
+                          child: Text(
+                            getTranslatedText(title) ?? title,
+                            style: TextStyle(
+                              fontSize: 9.auto,
+                              color: (currentBottomIndex == index && !isMenu)
+                                  ? CustomColor.bottom_nav_selected_color
+                                  : CustomColor.bottom_nav_unselected_color,
                             ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                     ],
                   ),
                 ),
