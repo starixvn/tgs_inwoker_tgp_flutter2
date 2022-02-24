@@ -201,7 +201,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   }
 
   _getReport({bool isLoadMore = false}) async {
-    await _vm.getAccountReport(isLoadMore: isLoadMore);
+    await _vm. getAccountReport(isLoadMore: isLoadMore);
   }
 
   _handleApiState() {

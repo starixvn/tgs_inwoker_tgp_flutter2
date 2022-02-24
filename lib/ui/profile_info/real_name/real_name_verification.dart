@@ -248,7 +248,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     }
   }
 
-  _isShowIcVerificationUpload() => true;//(_vm.config?.icVerificationUpload ?? false);
+  _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
 
   Future<void> chooseImage() async {
     /*File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);
