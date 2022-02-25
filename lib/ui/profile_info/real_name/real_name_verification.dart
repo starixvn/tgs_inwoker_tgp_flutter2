@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:api/entity/identity_status.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -57,12 +58,14 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   _buildUploadDocColumn() => Column(
         children: [
           Visibility(
-            visible: _vm.userProfile.realname == null || !_vm.userProfile.identityAuthentication,
+            visible:
+                _vm.userProfile.identityFormStatus == IdentityStatus.Reject || _vm.userProfile.identityFormId == null,
             child: _buildDocNumberTextFormField(),
           ),
           _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true, isRealname: true),
           Visibility(
-            visible: _vm.userProfile.realname == null || !_vm.userProfile.identityAuthentication,
+            visible:
+                _vm.userProfile.identityFormStatus == IdentityStatus.Reject || _vm.userProfile.identityFormId == null,
             child: _buildUploadImageButton(),
           ),
           _buildButton(),
@@ -126,7 +129,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         children: [
           _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
-            visible: _vm.userProfile.realname == null || !_vm.userProfile.identityAuthentication,
+            visible: _vm.userProfile.realname == null,
             child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
           ),
           _buildButton(),
@@ -202,13 +205,20 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       var _realname = _vm.userProfile.realname;
       setState(() {
-        if (_realname != null&& _vm.userProfile.identityAuthentication) {
-          if (_realname.isNotEmpty ) {
+        //_isShowIcVerificationUpload
+        if (!_isShowIcVerificationUpload() && _realname != null ||
+            _isShowIcVerificationUpload()&& _vm.userProfile.identityFormStatus == IdentityStatus.Approve) {
+          if (_realname.isNotEmpty) {
             _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
+        } else if (_isShowIcVerificationUpload()&& _vm.userProfile.identityFormId != null&&_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
+          _realNameController.text = _realname;
+          buttonText = getTranslatedText("not_verified");
+          isButtonEnabled = false;
+          isTextFieldEnabled = false;
         } else {
           buttonText = getTranslatedText("done");
           isTextFieldEnabled = true;
@@ -275,7 +285,8 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {
-      Navigator.pop(context);
+      CustomToast.show(getTranslatedText("success"));
+      _getUserProfile();
     });
   }
 }
