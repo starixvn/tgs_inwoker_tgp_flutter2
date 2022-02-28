@@ -63,9 +63,12 @@ class _MainCardState extends BaseState<MainCard> {
                                 direction: DismissDirection.endToStart,
                                 behavior: HitTestBehavior.deferToChild,
                                 onDismissed: (_) {
-                                  (_vm.config?.changesNotAllowed ?? false)
-                                      ? _showDialog()
-                                      : _delete(_vm.bankCardList![index], index);
+                                  if (_vm.config?.changesNotAllowed ?? false)
+                                    _showNotAllowedEditDeleteDialog();
+                                  /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
+                                    _showNoCardDialog();*/
+                                  else
+                                    _delete(_vm.bankCardList![index], index);
                                 },
                               ));
                             }),
@@ -172,16 +175,16 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildAddCardItem() => InkWell(
-        onTap: /*() async {
-          await Navigator.of(context).pushNamed("/add_card");
-          _getBankCardList(); //reinitdata after pop from  add card
-        },*/
-            (_vm.config?.changesNotAllowed ?? false) && _vm.bankCardList!.length >= 1
-                ? () => _showDialog()
-                : () async {
-                    await Navigator.of(context).pushNamed("/add_card");
-                    _getBankCardList(); //reinitdata after pop from  add card
-                  },
+        onTap: () async {
+          if (_vm.config?.changesNotAllowed ?? false)
+            _showNotAllowedEditDeleteDialog();
+          /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
+            _showNoCardDialog();*/
+          else {
+            await Navigator.of(context).pushNamed("/add_card");
+            _getBankCardList(); //reinitdata after pop from  add card
+          }
+        },
         child: Container(
           margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
           child: DottedBorder(
@@ -245,13 +248,17 @@ class _MainCardState extends BaseState<MainCard> {
 
   _checkBankCardListLength() async {
     if (_vm.bankCardList!.length == 0) {
-      var result = await Navigator.of(context).pushNamed("/add_card");
-      if (result == null) //no result mean no card added
-        Navigator.pop(context);
-      else {
-        _getBankCardList();
-      } //fetch bank list
-      return;
+      /*if (_vm.config?.addCardNotAllowedEditDelete ?? false) {
+        _showNoCardDialog();
+      } else {*/
+        var result = await Navigator.of(context).pushNamed("/add_card");
+        if (result == null) //no result mean no card added
+          Navigator.pop(context);
+        else {
+          _getBankCardList();
+        } //fetch bank list
+        return;
+      //}
     }
   }
 
@@ -268,7 +275,7 @@ class _MainCardState extends BaseState<MainCard> {
     }
   }
 
-  _showDialog() => showDialog(
+  _showNotAllowedEditDeleteDialog() => showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
           description: getTranslatedText("edit_bank_card_cs"),
@@ -279,6 +286,19 @@ class _MainCardState extends BaseState<MainCard> {
           },
         ),
       );
+
+/*  _showNoCardDialog() => showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: getTranslatedText("no_card_title"),
+          description: getTranslatedText("no_card_description"),
+          buttonText1: getTranslatedText("confirm"),
+          onClick: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+        ),
+      );*/
 
   _handleApiState() async {
     handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: isInitLoading, onSuccess: () {

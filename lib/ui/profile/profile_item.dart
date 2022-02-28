@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/report_view.dart';
@@ -139,7 +140,9 @@ class _ProfileItemState extends BaseState<ProfileItem> {
       );
 
   _navigate(String routePath, int navigationID) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (navigationID == 0) {
+        if (routePath == "main_card" && (widget.config?.addCardNotAllowedEditDelete ?? false))
+          _showNoCardDialog();
+        else if (navigationID == 0) {
           Navigator.of(context).pushNamed("/$routePath");
         } else {
           Navigator.push(
@@ -150,4 +153,14 @@ class _ProfileItemState extends BaseState<ProfileItem> {
                       )));
         }
       });
+
+  _showNoCardDialog() => showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+          title: getTranslatedText("no_card_title"),
+          description: getTranslatedText("no_card_description"),
+          buttonText1: getTranslatedText("confirm"),
+          onClick: () {
+            Navigator.pop(context);
+          }));
 }

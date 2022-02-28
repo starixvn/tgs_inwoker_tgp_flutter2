@@ -11,4 +11,8 @@ class ProfileInfoViewModel extends BaseViewModel {
   get userProfile => userRepo.userProfile;
 
   get config => contentRepo.featuresConfig;
+
+  getUserProfile() async {
+    await userRepo.getBasicInfo();
+  }
 }

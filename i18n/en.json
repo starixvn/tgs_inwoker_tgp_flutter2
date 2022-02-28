@@ -1054,5 +1054,7 @@
   "gcash_bank_name": "Bank Account Number/Gcash Number",
   "enter_gcash_bank_name": "Please enter bank account number/ Gcash number",
   "not_verified": "Not verified",
-  "verify_realname": "Verify Real Name"
+  "verify_realname": "Verify Real Name",
+  "no_card_title": "No bank cards were found in your account",
+  "no_card_description": "If need too add bank card, please contact customer service."
 }

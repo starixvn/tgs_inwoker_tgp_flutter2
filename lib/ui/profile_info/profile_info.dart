@@ -1,3 +1,4 @@
+import 'package:api/entity/identity_status.dart';
 import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -19,6 +20,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
 
   @override
   void initState() {
+    _vm.getUserProfile();
     super.initState();
   }
 
@@ -49,7 +51,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                             [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
                             ["real_name_verification", "phone_verification", "email_verification"],
                             itemDescriptionList: [
-                              _getItemText(_vm.userProfile.realname, isRealName: true),
+                              _getItemText(_vm.userProfile.realname, isShowIdStatus: _isShowIcVerificationUpload()),
                               _getItemText(_vm.userProfile.phone),
                               _getItemText(_vm.userProfile.email)
                             ],
@@ -207,14 +209,22 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _getItemText(String? text, {bool isRealName = false}) {
-    if (text != null && text.isNotEmpty) if (isRealName && _vm.userProfile.identityAuthentication) {
-      return text + " (${getTranslatedText("verified")})";
-    } else if (isRealName && !_vm.userProfile.identityAuthentication)
-      return text + " (${getTranslatedText("not_verified")})";
-    else
-      return text;
-    else
+  _getItemText(String? text, {bool isShowIdStatus = false}) {
+    if (text != null && text.isNotEmpty) {
+      if (isShowIdStatus) {
+        if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
+          return text + " (${getTranslatedText("verified")})";
+        else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
+          return text + " (${getTranslatedText("not_verified")})";
+        else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject)
+          return text + " (${getTranslatedText("rejected")})";
+        else
+          return text;
+      } else
+        return text;
+    } else
       return getTranslatedText("not_configured");
   }
+
+  _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
 }

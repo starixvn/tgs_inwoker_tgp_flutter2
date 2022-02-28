@@ -10,6 +10,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter2/custom/phone_text_form_field.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -216,13 +217,11 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    }
-    /*else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
+    } else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    }*/
-    else {
+    } else {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getReVerifyCode(_usernameController.text, _passwordController.text, display!, _phoneController.text);
     }
@@ -244,13 +243,28 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
     });
 
     handleApiState(_vm.phoneReVerifyApiState, onSuccess: () {
-      _navigateToHome();
+      if (_vm.config?.navigateToAddCard)
+        _navigateToAddCard();
+      else
+        _navigateToHome();
     });
   }
 
   _navigateToHome() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
+    });
+  }
+
+  _navigateToAddCard() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    index: 4,
+                  )));
+      Navigator.pushNamed(context, RoutePath.addCard);
     });
   }
 }
