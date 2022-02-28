@@ -25,13 +25,13 @@ class GameItemT8 extends StatefulWidget {
 }
 
 class GameItemT8State extends BaseState<GameItemT8> {
-  double _imageRatio = 373/139;
+  double _imageRatio = 355 / 120;
   double _containerPaddingRight = 5.auto;
-  double _listViewPaddingRight =  0;//5.auto;
-  double _itemPaddingRight = 0;//5.auto;
-  double _itemPaddingLeft =  0;//(8.5).auto;
-  double _itemPaddingTop =  (12.5).auto;
-  double _itemPaddingBottom =  (5).auto;
+  double _listViewPaddingRight = 5.auto;
+  double _itemPaddingRight = 5.auto;
+  double _itemPaddingLeft = (8.5).auto;
+  double _itemPaddingTop = (12.5).auto;
+  double _itemPaddingBottom = (5).auto;
 
   double get _itemWidth => context.size!.width - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
 
@@ -95,12 +95,17 @@ class GameItemT8State extends BaseState<GameItemT8> {
           AspectRatio(
             aspectRatio: _imageRatio,
             child: gameProvider.status != 0
-                ? ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      Colors.black,
-                      BlendMode.saturation,
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black,
+                        BlendMode.saturation,
+                      ),
+                      child: _buildImage(gameProvider),
                     ),
-                    child: _buildImage(gameProvider))
+                  )
                 : _buildImage(gameProvider),
           ),
           Positioned(
@@ -144,7 +149,10 @@ class GameItemT8State extends BaseState<GameItemT8> {
             child: AspectRatio(
               aspectRatio: _imageRatio,
               child: Container(
-                decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: Center(
                   child: Text(getTranslatedText("maintenance"),
                       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
@@ -157,14 +165,16 @@ class GameItemT8State extends BaseState<GameItemT8> {
     );
   }
 
-  _buildImage(GameProvider2 gameProvider) => Container(
-    width: context.screenWidth,
-      alignment: Alignment.center,
-      child: Image.asset(
-        _getImagePath(gameProvider),
-        width: context.screenWidth,
-        fit: BoxFit.cover,
-      ));
+  _buildImage(GameProvider2 gameProvider) => ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          alignment: Alignment.center,
+          child: Image.asset(
+            _getImagePath(gameProvider),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
 
   _isSportsHideLogo(String? gamePlatformCode) =>
       (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
