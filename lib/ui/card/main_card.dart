@@ -65,8 +65,8 @@ class _MainCardState extends BaseState<MainCard> {
                                 onDismissed: (_) {
                                   if (_vm.config?.changesNotAllowed ?? false)
                                     _showNotAllowedEditDeleteDialog();
-                                  else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
-                                    _showNoCardDialog();
+                                  /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
+                                    _showNoCardDialog();*/
                                   else
                                     _delete(_vm.bankCardList![index], index);
                                 },
@@ -178,8 +178,8 @@ class _MainCardState extends BaseState<MainCard> {
         onTap: () async {
           if (_vm.config?.changesNotAllowed ?? false)
             _showNotAllowedEditDeleteDialog();
-          else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
-            _showNoCardDialog();
+          /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
+            _showNoCardDialog();*/
           else {
             await Navigator.of(context).pushNamed("/add_card");
             _getBankCardList(); //reinitdata after pop from  add card
@@ -248,9 +248,9 @@ class _MainCardState extends BaseState<MainCard> {
 
   _checkBankCardListLength() async {
     if (_vm.bankCardList!.length == 0) {
-      if (_vm.config?.addCardNotAllowedEditDelete ?? false) {
+      /*if (_vm.config?.addCardNotAllowedEditDelete ?? false) {
         _showNoCardDialog();
-      } else {
+      } else {*/
         var result = await Navigator.of(context).pushNamed("/add_card");
         if (result == null) //no result mean no card added
           Navigator.pop(context);
@@ -258,7 +258,7 @@ class _MainCardState extends BaseState<MainCard> {
           _getBankCardList();
         } //fetch bank list
         return;
-      }
+      //}
     }
   }
 
@@ -287,7 +287,7 @@ class _MainCardState extends BaseState<MainCard> {
         ),
       );
 
-  _showNoCardDialog() => showDialog(
+/*  _showNoCardDialog() => showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
           title: getTranslatedText("no_card_title"),
@@ -298,7 +298,7 @@ class _MainCardState extends BaseState<MainCard> {
             Navigator.pop(context);
           },
         ),
-      );
+      );*/
 
   _handleApiState() async {
     handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: isInitLoading, onSuccess: () {

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/menu/menu_view_model.dart';
 
 class Menu extends StatefulWidget {
   final Function? onCloseMenu;
@@ -18,6 +20,8 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends BaseState<Menu> {
+  var _vm = MenuViewModel();
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +50,12 @@ class _MenuState extends BaseState<Menu> {
   }
 
   _buildMenuButton(String title, String imagePath, Color color, String route) => InkWell(
-        onTap: () => Navigator.of(context).pushNamed(route),
+        onTap: () {
+          if (route == RoutePath.withdraw && (_vm.config?.addCardNotAllowedEditDelete ?? false))
+            _showNoCardDialog();
+          else
+            Navigator.of(context).pushNamed(route);
+        },
         child: Container(
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
@@ -86,4 +95,14 @@ class _MenuState extends BaseState<Menu> {
           ),
         ),
       );
+
+  _showNoCardDialog() => showDialog(
+      context: context,
+      builder: (BuildContext context) => CustomDialog(
+          title: getTranslatedText("no_card_title"),
+          description: getTranslatedText("no_card_description"),
+          buttonText1: getTranslatedText("confirm"),
+          onClick: () {
+            Navigator.pop(context);
+          }));
 }
