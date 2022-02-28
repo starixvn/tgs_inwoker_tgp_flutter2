@@ -313,8 +313,8 @@ class _WithdrawState extends BaseState<Withdraw> {
     //fetch bank list
 
     if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? false)) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.push(
+      WidgetsBinding.instance!.addPostFrameCallback((_) async{
+        result = await Navigator.push(
           context,
           new MaterialPageRoute(
             builder: (context) => EmailVerification(1),

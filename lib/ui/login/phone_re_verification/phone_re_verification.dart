@@ -217,13 +217,11 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    }
-    /*else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
+    } else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    }*/
-    else {
+    } else {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getReVerifyCode(_usernameController.text, _passwordController.text, display!, _phoneController.text);
     }
@@ -264,8 +262,8 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
           context,
           MaterialPageRoute(
               builder: (context) => MyHomePage(
-                index: 4,
-              )));
+                    index: 4,
+                  )));
       Navigator.pushNamed(context, RoutePath.addCard);
     });
   }
