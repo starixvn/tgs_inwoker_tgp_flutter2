@@ -1042,5 +1042,6 @@
   "not_verified": "Chưa được xác minh",
   "verify_realname": "Xác minh tên thật",
   "no_card_title": "Không tìm thấy thẻ ngân hàng nào trong tài khoản của bạn",
-  "no_card_description": "Nếu cần thêm thẻ ngân hàng, vui lòng liên hệ với bộ phận dịch vụ khách hàng."
+  "no_card_description": "Nếu cần thêm thẻ ngân hàng, vui lòng liên hệ với bộ phận dịch vụ khách hàng.",
+  "cancel_search ":" Hủy tìm kiếm "
 }

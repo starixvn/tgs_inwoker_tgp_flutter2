@@ -76,6 +76,9 @@ environment_config:
     theme_text_grey_white_color:
       type: int
       default: 0xff707070
+    theme_app_bar_text_color:
+      type: int
+      default: 0xffFFFFFF
     brandName:
       default: "MESS8"
     assetUrl:
@@ -85,6 +88,3 @@ environment_config:
     vipPresentType:
       type: int
       default: 2
-    theme_announcement_icon_color:
-      type: int
-      default: 0xffC69C6A

@@ -1042,6 +1042,6 @@
   "not_verified": "未验证",
   "verify_realname": "验证真实姓名",
   "no_card_title": "在您的账户中未找到任何银行卡",
-  "no_card_description": "如需添加银行卡，请联系客服。"
-
+  "no_card_description": "如需添加银行卡，请联系客服。",
+  "cancel_search": "取消搜索"
 }

@@ -108,58 +108,35 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _getLoginButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: EnvironmentConfig.template_version != 8
-            ? OutlineBorderButton(
-                title: getTranslatedText("login"),
-                onClick: () => widget.onClickLoginButton(),
-                isEnabled: true,
-                width: 60,
-                height: 17,
-                color: Colors.white,
-                fontSize: 14,
-                radius: 5,
-                padding: 4,
-              )
-            : ColorButton(
-                title: getTranslatedText("login"),
-                onClick: () => widget.onClickLoginButton(),
-                isEnabled: true,
-                width: 60,
-                height: 17,
-                fontSize: 14,
-                radius: 5,
-                padding: 4,
-                textColor: Colors.white,
-                color: CustomColor.theme_button_color,
-              ),
+        child: OutlineBorderButton(
+          title: getTranslatedText("login"),
+          onClick: () => widget.onClickLoginButton(),
+          isEnabled: true,
+          width: 60,
+          height: 17,
+          color: EnvironmentConfig.template_version == 8 ? CustomColor.theme_text_black_color : Colors.white,
+          fontSize: 14,
+          radius: 5,
+          padding: 4,
+        ),
       );
 
   _getRegisterButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
-        child: EnvironmentConfig.template_version != 8
-            ? ColorButton(
-                title: getTranslatedText("register"),
-                onClick: () => widget.onClickRegisterButton(),
-                isEnabled: true,
-                width: 80,
-                height: 17,
-                fontSize: 14,
-                radius: 5,
-                padding: 4,
-                textColor: CustomColor.theme_text_black_color,
-                color: EnvironmentConfig.template_version == 3 ? CustomColor.theme_button_color : Colors.white,
-              )
-            : OutlineBorderButton(
-                title: getTranslatedText("register"),
-                onClick: () => widget.onClickRegisterButton(),
-                isEnabled: true,
-                width: 80,
-                height: 17,
-                fontSize: 14,
-                radius: 5,
-                padding: 4,
-                color: CustomColor.theme_text_black_color,
-              ),
+        child: ColorButton(
+          title: getTranslatedText("register"),
+          onClick: () => widget.onClickRegisterButton(),
+          isEnabled: true,
+          width: 80,
+          height: 17,
+          fontSize: 14,
+          radius: 5,
+          padding: 4,
+          textColor: EnvironmentConfig.template_version == 8 ? Colors.white : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 8
+              ? CustomColor.theme_button_color
+              : Colors.white,
+        ),
       );
 
   _getLogoutButton() => Container(
@@ -172,8 +149,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 ? CustomColor.theme_button_color : Colors.white,
+          textColor: EnvironmentConfig.template_version == 8 ? Colors.white : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 8
+              ? CustomColor.theme_button_color
+              : Colors.white,
         ),
       );
 
@@ -188,7 +167,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               alignment: Alignment.center,
               child: AutoSizeText(
                 widget.userProfile?.username ?? "",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
                 minFontSize: 10,
                 stepGranularity: 1,
@@ -199,7 +178,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 alignment: Alignment.center,
                 child: AutoSizeText(
                   Format().amountFormat(widget.totalBalance ?? 0),
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.left,
                   minFontSize: 10,
                   stepGranularity: 1,
@@ -237,7 +216,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             margin: EdgeInsets.only(right: 5.auto),
             child: AutoSizeText(
               widget.phone ?? "",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
               minFontSize: 10,
               stepGranularity: 1,
@@ -263,7 +242,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             visible: widget.isLogin,
             child: AutoSizeText(
               _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
               minFontSize: 10,
               stepGranularity: 1,

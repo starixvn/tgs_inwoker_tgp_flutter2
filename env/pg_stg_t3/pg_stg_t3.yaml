@@ -80,6 +80,9 @@ environment_config:
     theme_text_grey_white_color:
       type: int
       default: 0xffFFFFFF
+    theme_app_bar_text_color:
+      type: int
+      default: 0xffFFFFFF
     default_lang:
       default: "en-US"
     assetUrl:
@@ -89,6 +92,3 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
-    theme_announcement_icon_color:
-      type: int
-      default: 0xffFF9900

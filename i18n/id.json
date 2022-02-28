@@ -1043,5 +1043,6 @@
   "not_verified": "Belum diverifikasi",
   "verify_realname": "Verifikasi Nama Asli",
   "no_card_title": "Tidak ada kartu bank yang ditemukan di akun Anda",
-  "no_card_description": "Jika perlu menambahkan kartu bank, silakan hubungi layanan pelanggan."
+  "no_card_description": "Jika perlu menambahkan kartu bank, silakan hubungi layanan pelanggan.",
+  "cancel_search": "Batalkan pencarian"
 }

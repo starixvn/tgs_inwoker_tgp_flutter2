@@ -1043,5 +1043,6 @@
   "not_verified": "未驗證",
   "verify_realname": "驗證真實姓名",
   "no_card_title": "在您的賬戶中未找到任何銀行卡",
-  "no_card_description": "如需添加銀行卡，請聯繫客服。"
+  "no_card_description": "如需添加銀行卡，請聯繫客服。",
+  "cancel_search": "取消搜索"
 }

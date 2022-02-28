@@ -1056,5 +1056,6 @@
   "not_verified": "Not verified",
   "verify_realname": "Verify Real Name",
   "no_card_title": "No bank cards were found in your account",
-  "no_card_description": "If need too add bank card, please contact customer service."
+  "no_card_description": "If need too add bank card, please contact customer service.",
+  "cancel_search": "Cancel searching"
 }

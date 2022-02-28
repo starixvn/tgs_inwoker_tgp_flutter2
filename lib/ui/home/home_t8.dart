@@ -22,6 +22,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
@@ -115,7 +116,7 @@ class _HomeT8State extends BaseState<HomeT8> {
               children: [
                 _buildImageSlider(),
                 Container(
-                  height: context.screenHeight - (context.screenHeight / 5),
+                  height: context.screenHeight - 288.auto,
                   margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                   child: Column(
                     children: [
@@ -136,8 +137,8 @@ class _HomeT8State extends BaseState<HomeT8> {
             ? _buildEmptyContainer()
             : ImageSlideshow(
                 initialPage: 0,
-                indicatorColor: CustomColor.theme_button_color,
-                indicatorBackgroundColor: Colors.grey,
+                indicatorColor: Colors.transparent,
+                indicatorBackgroundColor: Colors.transparent,
                 children: List.generate(
                     _vm.bannerList!.length,
                     (index) => _vm.bannerList![index].mobileUrl == null
@@ -188,7 +189,7 @@ class _HomeT8State extends BaseState<HomeT8> {
             child: SvgPicture.asset(
               "images/home/ic_marquee.svg",
               height: 15.auto,
-              color: CustomColor.theme_announcement_icon_color,
+              color: CustomColor.theme_button_color,
             ),
           ),
           Expanded(
@@ -248,7 +249,7 @@ class _HomeT8State extends BaseState<HomeT8> {
     return text.replaceAll("\n", " ");
   }
 
-  _buildGameView() => GameT1(
+  _buildGameView() => GameT8(
         vm: _gameViewModel,
         onRefreshHomePage: () => _initData(),
         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
