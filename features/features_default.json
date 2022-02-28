@@ -2,7 +2,7 @@
   "SMSVerification": false,
   "EmailVerification": true,
   "ICVerification": true,
-  "ICVerificationUpload": false,
+  "ICVerificationUpload": true,
   "QQWeChat": true,
   "SportsHideLogo": false,
   "PopupAnnouncement": false,
