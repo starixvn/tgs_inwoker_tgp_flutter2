@@ -28,8 +28,8 @@ class GameItemT8State extends BaseState<GameItemT8> {
   double _imageRatio = 355 / 120;
   double _containerPaddingRight = 5.auto;
   double _listViewPaddingRight = 5.auto;
-  double _itemPaddingRight = 5.auto;
-  double _itemPaddingLeft = (8.5).auto;
+  double _itemPaddingRight = 0;//5.auto;
+  double _itemPaddingLeft = 0;//(8.5).auto;
   double _itemPaddingTop = (12.5).auto;
   double _itemPaddingBottom = (5).auto;
 
@@ -42,8 +42,8 @@ class GameItemT8State extends BaseState<GameItemT8> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(),
-      decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
+      //padding: EdgeInsets.only(),
+      //decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),
           controller: widget.controller,

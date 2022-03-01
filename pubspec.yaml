@@ -145,6 +145,7 @@ flutter:
     - images/home/th-TH/
     - images/home/en-US/
     - audio/
+    - images/maintenance/
 
 
     - loading/
