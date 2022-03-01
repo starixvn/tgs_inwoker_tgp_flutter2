@@ -141,6 +141,7 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
             value: this._isRememberMe,
             checkColor: Colors.white,
             activeColor: Colors.black,
+            fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
             onChanged: (val) => this.setState(() {
               this._isRememberMe = !this._isRememberMe;
               if (!_isRememberMe) _vm.removePrefs();
