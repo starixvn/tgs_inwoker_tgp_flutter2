@@ -215,7 +215,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
           return text + " (${getTranslatedText("verified")})";
         else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
-          return text + " (${getTranslatedText("not_verified")})";
+          return text + " (${getTranslatedText("waiting_verify")})";
         else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject)
           return text + " (${getTranslatedText("rejected")})";
         else
