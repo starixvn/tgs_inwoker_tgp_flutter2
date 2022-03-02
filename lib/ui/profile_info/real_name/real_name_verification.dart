@@ -25,7 +25,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var _vm = RealNameVerificationViewModel();
   TextEditingController _realNameController = TextEditingController(),
       _icNoController = TextEditingController(),
-      _docNoController = TextEditingController();
+      _icNumberController = TextEditingController();
   var isButtonEnabled = false, isTextFieldEnabled = false, isShowICNo;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
@@ -57,11 +57,11 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _buildUploadDocColumn() => Column(
         children: [
-          _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true, isRealname: true),
+          _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
             visible:
                 _vm.userProfile.identityFormStatus == IdentityStatus.Reject || _vm.userProfile.identityFormId == null,
-            child: _buildDocNumberTextFormField(),
+            child: _buildICNumberTextFormField(),
           ),
           Visibility(
             visible:
@@ -137,15 +137,15 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         ],
       );
 
-  _buildDocNumberTextFormField() => CustomTextFormField(
-        title: getTranslatedText("doc_no"),
-        hintText: getTranslatedText("enter_doc_no_hint"),
+  _buildICNumberTextFormField() => CustomTextFormField(
+        title: getTranslatedText("ic_no"),
+        hintText: getTranslatedText("enter_ic_no_hint"),
         onChanged: (value) => _onTextChange(),
         onFieldSubmitted: (value) {},
-        controller: _docNoController,
+        controller: _icNumberController,
         focusNode: null,
         width: context.screenWidth - 40.auto,
-        textInputType: TextInputType.number,
+        textInputType: TextInputType.text,
         textInputAction: TextInputAction.next,
         enabled: isTextFieldEnabled,
       );
@@ -233,7 +233,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     setState(() {
       if ((_isShowIcVerificationUpload() &&
               _realNameController.text.isNotEmpty &&
-              _docNoController.text.isNotEmpty &&
+              _icNumberController.text.isNotEmpty &&
               uploadImage?.path != null) ||
           (!_isShowIcVerificationUpload() && _realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty)) {
         isButtonEnabled = true;
@@ -245,7 +245,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _onClick() async {
     if (_isShowIcVerificationUpload() &&
-        !validate.validateInputLength(_docNoController.text) &&
+        !validate.validateInputLength(_icNumberController.text) &&
         !validate.validateInputLength(_realNameController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("input_length_error"));
@@ -254,7 +254,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.idVerify(
         _realNameController.text,
-        _isShowIcVerificationUpload() ? _docNoController.text : _icNoController.text,
+        _isShowIcVerificationUpload() ? _icNumberController.text : _icNoController.text,
         imageFile: uploadImage,
       );
     }
