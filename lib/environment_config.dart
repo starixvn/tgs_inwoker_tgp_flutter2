@@ -52,6 +52,8 @@ class EnvironmentConfig {
 
   static const int theme_text_grey_white_color = 4285558896;
 
+  static const int theme_app_bar_text_color = 4294967295;
+
   static const String default_lang = 'en-US';
 
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
@@ -59,6 +61,4 @@ class EnvironmentConfig {
   static const String brandName = 'GPI';
 
   static const int vipPresentType = 1;
-
-  static const int theme_announcement_icon_color = 4291206250;
 }
