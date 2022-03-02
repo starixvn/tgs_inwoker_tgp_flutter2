@@ -1041,6 +1041,7 @@
   "gcash_bank_name": "Nomor Rekening Bank/Nomor Gcash",
   "enter_gcash_bank name": "Silakan masukkan nomor rekening bank/nomor Gcash",
   "not_verified": "Belum diverifikasi",
+  "waiting_verify": "Menunggu verifikasi",
   "verify_realname": "Verifikasi Nama Asli",
   "no_card_title": "Tidak ada kartu bank yang ditemukan di akun Anda",
   "no_card_description": "Jika perlu menambahkan kartu bank, silakan hubungi layanan pelanggan."
