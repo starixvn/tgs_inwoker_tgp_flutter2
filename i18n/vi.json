@@ -1040,6 +1040,7 @@
   "gcash_bank_name": "Số tài khoản ngân hàng / Số Gcash",
   "enter_gcash_bank name": "Vui lòng nhập số tài khoản ngân hàng / số Gcash",
   "not_verified": "Chưa được xác minh",
+  "wait_verify": "Đang chờ xác minh",
   "verify_realname": "Xác minh tên thật",
   "no_card_title": "Không tìm thấy thẻ ngân hàng nào trong tài khoản của bạn",
   "no_card_description": "Nếu cần thêm thẻ ngân hàng, vui lòng liên hệ với bộ phận dịch vụ khách hàng.",

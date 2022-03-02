@@ -1041,6 +1041,7 @@
   "gcash_bank_name": "銀行帳號/Gcash 號碼",
   "enter_gcash_bank name": "請輸入銀行帳號/ Gcash 號碼",
   "not_verified": "未驗證",
+  "waiting_verify": "驗證中",
   "verify_realname": "驗證真實姓名",
   "no_card_title": "在您的賬戶中未找到任何銀行卡",
   "no_card_description": "如需添加銀行卡，請聯繫客服。",

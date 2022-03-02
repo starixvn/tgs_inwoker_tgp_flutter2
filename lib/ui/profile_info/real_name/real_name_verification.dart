@@ -57,12 +57,12 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _buildUploadDocColumn() => Column(
         children: [
+          _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true, isRealname: true),
           Visibility(
             visible:
                 _vm.userProfile.identityFormStatus == IdentityStatus.Reject || _vm.userProfile.identityFormId == null,
             child: _buildDocNumberTextFormField(),
           ),
-          _buildTextFormField("full_name", "enter_full_name_hint", _realNameController, true, isRealname: true),
           Visibility(
             visible:
                 _vm.userProfile.identityFormStatus == IdentityStatus.Reject || _vm.userProfile.identityFormId == null,
@@ -207,16 +207,18 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       setState(() {
         //_isShowIcVerificationUpload
         if (!_isShowIcVerificationUpload() && _realname != null ||
-            _isShowIcVerificationUpload()&& _vm.userProfile.identityFormStatus == IdentityStatus.Approve) {
+            _isShowIcVerificationUpload() && _vm.userProfile.identityFormStatus == IdentityStatus.Approve) {
           if (_realname.isNotEmpty) {
             _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
-        } else if (_isShowIcVerificationUpload()&& _vm.userProfile.identityFormId != null&&_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
+        } else if (_isShowIcVerificationUpload() &&
+            _vm.userProfile.identityFormId != null &&
+            _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
           _realNameController.text = _realname;
-          buttonText = getTranslatedText("not_verified");
+          buttonText = getTranslatedText("waiting_verify");
           isButtonEnabled = false;
           isTextFieldEnabled = false;
         } else {
