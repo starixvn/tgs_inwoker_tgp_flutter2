@@ -95,18 +95,20 @@ class _WechatState extends BaseState<Wechat> {
                   _focusNode.requestFocus();
                 });
         },
-        child: Wrap(
-          children: [
-            Text(
-              getTranslatedText("edit_wechat_cs"),
-              style: TextStyle(fontSize: 12.auto),
-            ),
-            Text(
-              (_vm.config?.changesNotAllowed ?? false) ? getTranslatedText("online_cs") : getTranslatedText("here"),
-              style: TextStyle(
-                  decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
-            ),
-          ],
+        child: RichText(
+          text: TextSpan(
+            text: getTranslatedText("edit_wechat_cs"),
+            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+            children: [
+              TextSpan(
+                text: (_vm.config?.changesNotAllowed ?? false)
+                    ? getTranslatedText("online_cs")
+                    : getTranslatedText("here"),
+                style: TextStyle(
+                    decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+              ),
+            ],
+          ),
         ),
       );
 

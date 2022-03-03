@@ -114,26 +114,31 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         radius: 9.6,
       ));
 
-  _buildEditPhoneText() => Wrap(
-        children: [
-          Text(
-            getTranslatedText("edit_phone_cs"),
-            style: TextStyle(color: CustomColor.theme_text_black_white_color),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context)
+  _buildEditPhoneText() => InkWell(
+        onTap: () {
+          _isNotAllowedEditPhone()
+              ? Navigator.of(context).pushNamed("/customer_service")
+              : Navigator.of(context)
                   .pushNamed(RoutePath.editPhone)
                   .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
                         _getUserProfile();
                       }));
-            },
-            child: Text(
-              getTranslatedText("here"),
-              style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_button_color),
-            ),
+        },
+        child: RichText(
+          text: TextSpan(
+            text: getTranslatedText("edit_phone_cs"),
+            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+            children: [
+              TextSpan(
+                text:  _isNotAllowedEditPhone()
+                    ? getTranslatedText("online_cs")
+                    : getTranslatedText("here"),
+                style: TextStyle(
+                    decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+              ),
+            ],
           ),
-        ],
+        ),
       );
 
   _onTextChange() {
@@ -196,6 +201,9 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.submitVerifyCode(1, _otpController.text);
   }
+
+  _isNotAllowedEditPhone() =>
+      (_vm.config?.changesNotAllowed ?? false) || (_vm.config?.profileNotAllowChangePhone ?? false);
 
   _handleApiState() {
     handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {

@@ -131,7 +131,12 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
     else
       return InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed("/$routePath");
+          if (routePath == "phone_verification" &&
+              (_vm.userProfile.phone !=null) &&
+              (_vm.config?.profileNotAllowChangePhone ?? false))
+            return;
+          else
+            Navigator.of(context).pushNamed("/$routePath");
         },
         highlightColor: Colors.transparent,
         child: Container(
