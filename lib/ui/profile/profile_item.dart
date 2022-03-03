@@ -1,3 +1,4 @@
+import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/env_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -10,9 +11,11 @@ import 'package:tgp_flutter2/ui/report/report_view.dart';
 
 class ProfileItem extends StatefulWidget {
   final EnvFeaturesConfig? config;
+  final List<BankCard>? bankCardList;
 
   ProfileItem({
     this.config,
+    this.bankCardList,
   });
 
   @override
@@ -140,7 +143,9 @@ class _ProfileItemState extends BaseState<ProfileItem> {
       );
 
   _navigate(String routePath, int navigationID) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (routePath == "main_card" && (widget.config?.addCardNotAllowedEditDelete ?? false))
+        if (routePath == "main_card" &&
+            (widget.config?.addCardNotAllowedEditDelete ?? false) &&
+            (widget.bankCardList?.isEmpty ?? false))
           _showNoCardDialog();
         else if (navigationID == 0) {
           Navigator.of(context).pushNamed("/$routePath");

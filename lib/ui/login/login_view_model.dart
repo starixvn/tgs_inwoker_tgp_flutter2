@@ -7,6 +7,7 @@ class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   final authRepo = AuthenticationRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [userRepo];
@@ -20,7 +21,8 @@ class LoginViewModel extends BaseViewModel {
       registerApiState,
       checkUsernameApiState,
       getReVerifyCodeApiState,
-      phoneReVerifyApiState;
+      phoneReVerifyApiState,
+      getBankCardListApiState;
   String? username, password;
   bool isPhoneReVerificationReset = false;
   String? securityKey;
@@ -38,6 +40,7 @@ class LoginViewModel extends BaseViewModel {
       savePreferences(username, password, rememberMe);
       getUserInfo();
       getWalletBalance();
+      getBankCardList();
     }
     setLoading(false);
     return loginApiState;
@@ -130,5 +133,12 @@ class LoginViewModel extends BaseViewModel {
 
   setIsPhoneReVerificationResetToFalse() {
     isPhoneReVerificationReset = false;
+  }
+
+  getBankCardList() async {
+    setLoading();
+    getBankCardListApiState = await bankRepo.getBankCardList();
+    setLoading(false);
+    return getBankCardListApiState;
   }
 }

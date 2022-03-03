@@ -54,9 +54,7 @@ class _ProfileState extends BaseState<Profile> {
                       child: ListView(
                         children: [
                           _buildUserInfoContainer(),
-                          ProfileItem(
-                            config: _vm.config,
-                          ),
+                          ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList),
                           _buildLogoutButton()
                         ],
                       ),
