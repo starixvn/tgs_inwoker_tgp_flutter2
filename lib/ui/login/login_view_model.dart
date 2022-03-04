@@ -14,7 +14,8 @@ class LoginViewModel extends BaseViewModel {
 
   String? token;
   bool isUsernameExist = false;
-  var _username, _password;
+
+  // var _username, _password;
   var logoutApiState,
       getAllWalletState,
       loginApiState,
@@ -105,13 +106,13 @@ class LoginViewModel extends BaseViewModel {
     await userRepo.getApiErrorLocalization();
   }
 
-  getReVerifyCode(String username, String password, String areaCode, String phone) async {
+  getReVerifyCode(String _username, String _password, String areaCode, String phone) async {
     setLoading();
-    getReVerifyCodeApiState = await authRepo.getReVerifyCode(username, password, areaCode, phone);
+    getReVerifyCodeApiState = await authRepo.getReVerifyCode(_username, _password, areaCode, phone);
     if (getReVerifyCodeApiState.isSuccess) {
       securityKey = getReVerifyCodeApiState.result;
-      _username = username;
-      _password = password;
+      username = _username;
+      password = _password;
     }
     setLoading(false);
     return getReVerifyCodeApiState;
@@ -119,14 +120,10 @@ class LoginViewModel extends BaseViewModel {
 
   phoneVerify(String verificationCode) async {
     setLoading();
-    var _status = await authRepo.phoneReVerify(
+    phoneReVerifyApiState = await authRepo.phoneReVerify(
       securityKey ?? "",
       verificationCode,
     );
-    if (_status.isSuccess) {
-      phoneReVerifyApiState = await login(_username, _password, true);
-    } else
-      phoneReVerifyApiState = _status;
     setLoading(false);
     return phoneReVerifyApiState;
   }
