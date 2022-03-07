@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/manual_deposit_order.dart';
-import 'package:api/entity/payment_qr_code.dart';
+import 'package:api/entity/payment_extended.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -260,7 +260,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildTransferToAccount(String? methodCode, PaymentQrCode? paymentQrCode) {
+  _buildTransferToAccount(String? methodCode, PaymentExtended? paymentQrCode) {
     if (paymentQrCode == null || (_vm.config?.deposit_DualPage ?? false)) return Container();
 
     List<Widget> content = methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null

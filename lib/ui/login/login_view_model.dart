@@ -27,6 +27,7 @@ class LoginViewModel extends BaseViewModel {
   String? username, password;
   bool isPhoneReVerificationReset = false;
   String? securityKey;
+  bool isNavigateFromSmsVerification = false;
 
   get brandLogo => contentRepo.brandLogo;
 
@@ -39,9 +40,9 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, rememberMe);
-      getUserInfo();
-      getWalletBalance();
-      getBankCardList();
+      await getUserInfo();
+      await getWalletBalance();
+      await getBankCardList();
     }
     setLoading(false);
     return loginApiState;
@@ -124,6 +125,7 @@ class LoginViewModel extends BaseViewModel {
       securityKey ?? "",
       verificationCode,
     );
+    isNavigateFromSmsVerification = true;
     setLoading(false);
     return phoneReVerifyApiState;
   }
@@ -137,5 +139,9 @@ class LoginViewModel extends BaseViewModel {
     getBankCardListApiState = await bankRepo.getBankCardList();
     setLoading(false);
     return getBankCardListApiState;
+  }
+
+  setIsNavigateFromSmsVerificationToTrue(){
+    isNavigateFromSmsVerification = true;
   }
 }
