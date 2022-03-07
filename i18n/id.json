@@ -1047,5 +1047,7 @@
   "no_card_description": "Jika perlu menambahkan kartu bank, silakan hubungi layanan pelanggan.",
   "fps_phone": "Nomor telepon",
   "fps_email": "Email",
-  "fps_id": "ID FPS"
+  "fps_id": "ID FPS",
+  "deposit_bank_account_name": "Rekening/Nama Bank",
+  "enter_deposit_bank_account_name_hint": "Silakan masukkan rekening/nama bank"
 }

@@ -1060,5 +1060,8 @@
   "no_card_description": "If need too add bank card, please contact customer service.",
   "fps_phone": "Phone number",
   "fps_email": "Email",
-  "fps_id": "FPS ID"
+  "fps_id": "FPS ID",
+  "deposit_bank_account_name": "Bank Account/Name",
+  "enter_deposit_bank_account_name_hint": "Please enter bank account/name"
+
 }

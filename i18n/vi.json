@@ -1046,5 +1046,7 @@
   "no_card_description": "Nếu cần thêm thẻ ngân hàng, vui lòng liên hệ với bộ phận dịch vụ khách hàng.",
   "fps_phone": "Số điện thoại",
   "fps_email": "Email",
-  "fps_id": "FPS ID"
+  "fps_id": "FPS ID",
+  "secure_bank_account_name": "Tên / Tài khoản Ngân hàng",
+  "enter_deposit_bank_account_name_hint": "Vui lòng nhập tên / tài khoản ngân hàng"
 }

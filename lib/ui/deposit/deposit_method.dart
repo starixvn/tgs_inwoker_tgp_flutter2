@@ -47,7 +47,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   String? methodPickerText, channelPickerText, promotionPickerText;
   TextEditingController _amountController = TextEditingController(),
       _bankNameController = TextEditingController(),
-      _transferNameController = TextEditingController();
+      _transferNameController = TextEditingController(),
+      _bankAccNameController = TextEditingController();
+
   var isButtonEnabled = false, isHintText = false, isPromotionEnabled = false;
   var selectedPayment;
   var paymentMin, paymentMax;
@@ -90,6 +92,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (isShowBankAcc() && (_vm.config?.depositCustomBankNameTranslation ?? false))
                   _buildNameTextFieldWithTips("deposit_bank_name", "enter_deposit_bank_name_hint", _bankNameController),
+                if (isShowBankAcc() && (_vm.config?.depositCustomBankNameTranslation ?? false))
+                  _buildNameTextFieldWithTips(
+                      "deposit_bank_account_name", "enter_deposit_bank_account_name_hint", _bankAccNameController),
                 if (_isApplePayDeposit())
                   _buildNameTextField("transfer_name", "enter_transfer_name", _transferNameController),
                 _buildAmountTextField(),
@@ -267,7 +272,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       if (methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null)
         return _buildTransferToQr(paymentQrCode.qrCodeFileUrl!);
       else if (methodCode?.toUpperCase() == "FPS")
-        return _buildTransferToFps(paymentQrCode.logo, paymentQrCode.phone, paymentQrCode.email, paymentQrCode.fpsId);
+        return _buildTransferToFps(
+            paymentQrCode.qrCodeFileUrl, paymentQrCode.phone, paymentQrCode.email, paymentQrCode.fpsId);
       else if (paymentQrCode.name != null && paymentQrCode.bankAccount != null)
         return _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!, paymentQrCode.bankAccount!);
       else
@@ -558,11 +564,23 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       amount = 0;
     }
     if (isShowBankAcc() &&
+        (_vm.config?.depositCustomBankNameTranslation ?? false) &&
+        _bankNameController.text.isNotEmpty &&
+        _bankAccNameController.text.isNotEmpty &&
+        uploadImage?.path != null &&
+        amount! >= paymentMin &&
+        amount! <= paymentMax) {
+      //is manual deposit or apple deposit, and showing bank name and bank acc name
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else if (isShowBankAcc() &&
+        !(_vm.config?.depositCustomBankNameTranslation ?? false) &&
         _bankNameController.text.isNotEmpty &&
         uploadImage?.path != null &&
         amount! >= paymentMin &&
         amount! <= paymentMax) {
-      //is manual deposit or apple deposit, and showing bank account
+      //is manual deposit or apple deposit, and showing bank name but not showing bank acc name
       setState(() {
         isButtonEnabled = true;
       });
@@ -575,7 +593,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       setState(() {
         isButtonEnabled = true;
       });
-    } else if (!(_isManualDeposit() && _isApplePayDeposit()) && amount! >= paymentMin && amount! <= paymentMax) {
+    } else if (!_isManualDeposit() && !_isApplePayDeposit() && amount! >= paymentMin && amount! <= paymentMax) {
       setState(() {
         isButtonEnabled = true;
       });
@@ -591,7 +609,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     switch (widget.paymentCode) {
       case "Manual":
         _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
-            promotionId ?? null, uploadImage);
+            promotionId ?? null, uploadImage, _bankAccNameController.text);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(
@@ -617,7 +635,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         break;
       default:
         _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
-            promotionId ?? null, uploadImage);
+            promotionId ?? null, uploadImage, _bankAccNameController.text);
         break;
     }
   }

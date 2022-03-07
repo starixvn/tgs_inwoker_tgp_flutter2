@@ -1044,5 +1044,7 @@
   "no_card_description": "หากต้องการเพิ่มบัตรธนาคาร โปรดติดต่อฝ่ายบริการลูกค้า",
   "fps_phone": "หมายเลขโทรศัพท์",
   "fps_email": "อีเมล",
-  "fps_id": "FPS ID"
+  "fps_id": "FPS ID",
+  "deposit_bank_account_name": "บัญชีธนาคาร/ชื่อ",
+  "enter_deposit_bank_account_name_hint": "กรุณากรอกบัญชีธนาคาร/ชื่อ"
 }

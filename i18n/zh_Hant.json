@@ -1047,5 +1047,7 @@
   "no_card_description": "如需添加銀行卡，請聯繫客服。",
   "fps_phone": "電話號碼",
   "fps_email": "電子郵件",
-  "fps_id": "FPS ID"
+  "fps_id": "FPS ID",
+  "deposit_bank_account_name": "銀行賬戶/姓名",
+  "enter_deposit_bank_account_name_hint": "請填寫銀行賬戶/姓名"
 }
