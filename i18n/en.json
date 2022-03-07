@@ -1057,5 +1057,8 @@
   "waiting_verify": "Waiting verify",
   "verify_realname": "Verify Real Name",
   "no_card_title": "No bank cards were found in your account",
-  "no_card_description": "If need too add bank card, please contact customer service."
+  "no_card_description": "If need too add bank card, please contact customer service.",
+  "fps_phone": "Phone number",
+  "fps_email": "Email",
+  "fps_id": "FPS ID"
 }

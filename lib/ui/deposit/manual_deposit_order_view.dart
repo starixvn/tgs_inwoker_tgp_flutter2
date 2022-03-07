@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:api/entity/payment_extended.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,7 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/deposit_redirect_applepay.dart';
 import 'package:api/entity/manual_deposit_order.dart';
-import 'package:api/entity/payment_qr_code.dart';
+
 import 'package:api/entity/promotion.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -32,7 +33,7 @@ class ManualDepositOrderView extends StatefulWidget {
   final String? depositChannel;
   final String? orderNo;
   final String? promotionName;
-  final PaymentQrCode? paymentQrCode;
+  final PaymentExtended? paymentQrCode;
 
   ManualDepositOrderView(
       {this.method,

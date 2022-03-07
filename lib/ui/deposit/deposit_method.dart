@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/manual_deposit_order.dart';
-import 'package:api/entity/payment_qr_code.dart';
+import 'package:api/entity/payment_extended.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -260,14 +261,19 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         ),
       );
 
-  _buildTransferToAccount(String? methodCode, PaymentQrCode? paymentQrCode) {
+  _buildTransferToAccount(String? methodCode, PaymentExtended? paymentQrCode) {
     if (paymentQrCode == null || (_vm.config?.deposit_DualPage ?? false)) return Container();
 
-    List<Widget> content = methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null
-        ? _buildTransferToQr(paymentQrCode.qrCodeFileUrl!)
-        : (paymentQrCode.name != null && paymentQrCode.bankAccount != null)
-            ? _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!, paymentQrCode.bankAccount!)
-            : [];
+    List<Widget> content = ((() {
+      if (methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null)
+        return _buildTransferToQr(paymentQrCode.qrCodeFileUrl!);
+      else if (methodCode?.toUpperCase() == "FPS")
+        return _buildTransferToFps(paymentQrCode.logo, paymentQrCode.phone, paymentQrCode.email, paymentQrCode.fpsId);
+      else if (paymentQrCode.name != null && paymentQrCode.bankAccount != null)
+        return _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!, paymentQrCode.bankAccount!);
+      else
+        return [];
+    })());
 
     if (content.isNotEmpty) {
       return Container(
@@ -355,6 +361,72 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           ),
         ],
       ),
+    ];
+  }
+
+  _buildTransferToFps(String? logo, String? phone, String? email, String? fpsId) {
+    return [
+      logo != null
+          ? CachedNetworkImage(
+              width: 120.auto,
+              placeholder: (context, url) => Container(
+                    color: CustomColor.very_light_pink_four,
+                  ),
+              imageUrl: logo,
+              //handling error
+              fit: BoxFit.fill)
+          : Container(),
+      SizedBox(height: 3.auto),
+      (phone?.isNotEmpty ?? false)
+          ? Wrap(
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                Text(
+                  getTranslatedText("fps_phone") + ": ",
+                  style: TextStyle(
+                      fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+                ),
+                Text(
+                  phone!,
+                  style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                ),
+              ],
+            )
+          : Container(),
+      SizedBox(height: 3.auto),
+      (email?.isNotEmpty ?? false)
+          ? Wrap(
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                Text(
+                  getTranslatedText("fps_email") + ": ",
+                  style: TextStyle(
+                      fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+                ),
+                Text(
+                  email!,
+                  style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                ),
+              ],
+            )
+          : Container(),
+      SizedBox(height: 3.auto),
+      (fpsId?.isNotEmpty ?? false)
+          ? Wrap(
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                Text(
+                  getTranslatedText("fps_id") + ": ",
+                  style: TextStyle(
+                      fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+                ),
+                Text(
+                  fpsId!,
+                  style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                ),
+              ],
+            )
+          : Container(),
     ];
   }
 

@@ -1044,5 +1044,8 @@
   "waiting_verify": "Menunggu verifikasi",
   "verify_realname": "Verifikasi Nama Asli",
   "no_card_title": "Tidak ada kartu bank yang ditemukan di akun Anda",
-  "no_card_description": "Jika perlu menambahkan kartu bank, silakan hubungi layanan pelanggan."
+  "no_card_description": "Jika perlu menambahkan kartu bank, silakan hubungi layanan pelanggan.",
+  "fps_phone": "Nomor telepon",
+  "fps_email": "Email",
+  "fps_id": "ID FPS"
 }
