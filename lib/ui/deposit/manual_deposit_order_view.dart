@@ -11,7 +11,6 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/deposit_redirect_applepay.dart';
 import 'package:api/entity/manual_deposit_order.dart';
-
 import 'package:api/entity/promotion.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';

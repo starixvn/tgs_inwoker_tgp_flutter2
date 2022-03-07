@@ -242,12 +242,12 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
       });
     });
 
-    handleApiState(_vm.phoneReVerifyApiState, onSuccess: () async{
-      if (_vm.config?.navigateToAddCard){
-        await _vm.login(_vm.username, _vm, true);
+    handleApiState(_vm.phoneReVerifyApiState, onSuccess: () async {
+     await _vm.login(_vm.username, _vm.password, true);
+      if (_vm.config?.navigateToAddCard ?? false)
         _navigateToAddCard();
-      }else
-        _navigateToHome();
+      else
+       _navigateToHome();
     });
   }
 

@@ -32,7 +32,7 @@ class _ProfileState extends BaseState<Profile> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
         _vm.computeTotalBalance();
-      } else {
+      } else  {
         Navigator.of(context).pushNamed(RoutePath.login);
       }
     });

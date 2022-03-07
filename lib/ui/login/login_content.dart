@@ -239,7 +239,8 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
 
   _handleApiState() {
     handleApiState(_vm.loginApiState, isCheckSessionExpired: false, onSuccess: () {
-      _navigateToHome();
+      if(!_vm.isisNavigateFromSmsVerification) _navigateToHome();
+      else _vm.setIsNavigateFromSmsVerificationToTrue();
     });
   }
 }
