@@ -104,7 +104,7 @@ class CardViewModel extends BaseViewModel {
         phone: phone,
         realName: realName);
     //get bank card list if navigate from profile
-    if (addBankCardApiState.isSuccess && config?.navigateToAddCard) getBankCardList();
+    if (addBankCardApiState.isSuccess && (config?.navigateToAddCard ?? false)) getBankCardList();
     setLoading(false);
     return addBankCardApiState;
   }
