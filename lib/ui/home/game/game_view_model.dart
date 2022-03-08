@@ -44,6 +44,19 @@ class GameViewModel extends BaseViewModel {
     GameType.EGame,
   ];
   List<GameType> nonExistGameTypeList = [];
+  var _gameRowListT3 = [
+    GameType.Sportsbook,
+    GameType.LiveDealerLobby,
+  ];
+  var _gameListT3 = [
+    GameType.ESports,
+    GameType.Slot,
+    GameType.Fishing,
+    GameType.LotteryLobby,
+    GameType.EGame,
+    GameType.CardGameLobby,
+  ];
+  List<GameType>? gameRowListT3, gameListT3;
 
   var _context;
   Map<GameType, List<GameProvider2>>? gameTypeMap = new Map<GameType, List<GameProvider2>>();
@@ -74,29 +87,23 @@ class GameViewModel extends BaseViewModel {
         });
       }
     });
-    gameProviderList = gameTypeList
-        .map(
-          (type) => list
-              .where(
-                  (element) => /*(type == GameType.Sportsbook) //combine eesport to sportbook
-                  ? (element.gameType == type || element.gameType == GameType.ESports)
-                  :*/
-                      element.gameType == type)
-              .toList(),
-        )
-        .toList();
+    gameProviderList = gameTypeList.map((type) => list.where((element) => element.gameType == type).toList()).toList();
 
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
 
     //check which game type not exist in gameProviderList and remove it
     gameTypeList.forEach((element) {
-      if(gameTypeMap?[element]?.isEmpty?? true){
+      if (gameTypeMap?[element]?.isEmpty ?? true) {
         nonExistGameTypeList.add(element);
       }
     });
     nonExistGameTypeList.forEach((element) {
       gameTypeList.remove(element);
+      _gameRowListT3.remove(element);
+      _gameListT3.remove(element);
     });
+    gameRowListT3 = _gameRowListT3;
+    gameListT3 = _gameListT3;
 
     setLoading(false);
     return getGameProviderListApiState;
