@@ -208,8 +208,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
-    } else if (!validate.validatePasswordLength(_passwordController.text) ||
-        !validate.validateUsernamePassword(_passwordController.text)) {
+    } else if (!validate.validatePasswordLength(_passwordController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
