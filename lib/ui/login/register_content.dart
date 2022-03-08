@@ -247,7 +247,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
-    } else if (!validate.validatePasswordLength(password.text) || !validate.validateUsernamePassword(password.text)) {
+    } else if (!validate.validatePasswordLength(password.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_password_error_msg"));
       });
