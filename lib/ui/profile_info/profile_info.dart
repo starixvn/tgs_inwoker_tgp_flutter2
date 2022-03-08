@@ -51,9 +51,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                             [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
                             ["real_name_verification", "phone_verification", "email_verification"],
                             itemDescriptionList: [
-                              _getItemText(_vm.userProfile.realname, isShowIdStatus: _isShowIcVerificationUpload()),
+                              _getRealName(),
                               _getItemText(_vm.userProfile.phone),
-                              _getItemText(_vm.userProfile.email)
+                              _getItemText(_vm.userProfile.email, isShowFirstText: false)
                             ],
                           ),
                           (_vm.config?.qqWeChat ?? false)
@@ -131,7 +131,10 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
     else
       return InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed("/$routePath");
+          if (_isDisableEditPhone(routePath))
+            return;
+          else
+            Navigator.of(context).pushNamed("/$routePath");
         },
         highlightColor: Colors.transparent,
         child: Container(
@@ -164,9 +167,12 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 ],
               ),
               Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 13.auto,
+              Visibility(
+                visible: !_isDisableEditPhone(routePath),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 13.auto,
+                ),
               ),
             ],
           ),
@@ -200,31 +206,48 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 ],
               ),
               Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 13.auto,
+              Visibility(
+                visible: _isDisableEditPhone(routePath),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 13.auto,
+                ),
               ),
             ],
           ),
         ),
       );
 
-  _getItemText(String? text, {bool isShowIdStatus = false}) {
-    if (text != null && text.isNotEmpty) {
-      if (isShowIdStatus) {
+  _getRealName() {
+    var realName = _vm.userProfile.realname;
+    if (realName != null && realName.isNotEmpty) {
+      if (_isShowIcVerificationUpload()) {
         if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
-          return text + " (${getTranslatedText("verified")})";
+          return realName + " (${getTranslatedText("verified")})";
         else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
-          return text + " (${getTranslatedText("waiting_verify")})";
+          return realName + " (${getTranslatedText("waiting_verify")})";
         else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject)
-          return text + " (${getTranslatedText("rejected")})";
-        else
-          return text;
+          return realName + " (${getTranslatedText("rejected")})";
       } else
+        return realName;
+    } else
+      return getTranslatedText("not_configured");
+  }
+
+  _getItemText(String? text, {bool isShowFirstText = true}) {
+    if (text != null && text.isNotEmpty) {
+      if (isShowFirstText)
+        return text[0] + "**";
+      else
         return text;
     } else
       return getTranslatedText("not_configured");
   }
 
   _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
+
+  _isDisableEditPhone(String routePath) =>
+      routePath == "phone_verification" &&
+      (_vm.userProfile.phone != null) &&
+      (_vm.config?.profileNotAllowChangePhone ?? false);
 }

@@ -23,9 +23,11 @@ class CardViewModel extends BaseViewModel {
 
   get config => contentRepo.featuresConfig;
 
+  get bankCardList => bankRepo.bankCardList;
+
   var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
-  List? bankCardList, withdrawalInfoList;
+  List? withdrawalInfoList;
   BankType? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
   String? pBankName;
@@ -47,10 +49,6 @@ class CardViewModel extends BaseViewModel {
   getBankCardList() async {
     setLoading();
     getBankCardListApiState = await bankRepo.getBankCardList();
-    if (getBankCardListApiState.isSuccess) {
-      bankCardList = getBankCardListApiState.result;
-      //if (!config.addCardDisplayFPS) (bankCardList ?? []).removeWhere((e) => e.bankType == BankType.FPS);
-    }
     setLoading(false);
     return getBankCardListApiState;
   }
@@ -105,6 +103,8 @@ class CardViewModel extends BaseViewModel {
         name: name,
         phone: phone,
         realName: realName);
+    //get bank card list if navigate from profile
+    if (addBankCardApiState.isSuccess && (config?.navigateToAddCard ?? false)) getBankCardList();
     setLoading(false);
     return addBankCardApiState;
   }

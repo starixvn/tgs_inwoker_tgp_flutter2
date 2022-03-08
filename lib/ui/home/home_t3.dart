@@ -42,18 +42,6 @@ class _HomeT3State extends BaseState<HomeT3> {
   ];
 
   //var gameList = ["sport", "live", "slot", "fishing", "lotto", "e-game", "card"];
-  var gameRowList = [
-    GameType.Sportsbook,
-    GameType.LiveDealerLobby,
-  ];
-  var gameList = [
-    GameType.ESports,
-    GameType.Slot,
-    GameType.Fishing,
-    GameType.LotteryLobby,
-    GameType.EGame,
-    GameType.CardGameLobby,
-  ];
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -78,13 +66,9 @@ class _HomeT3State extends BaseState<HomeT3> {
     _vm.getBanner();
     _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
-    _vm.getTotalBalance();
+    _vm.getUserDetails();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
-    });
-    _gameViewModel.nonExistGameTypeList.forEach((element) {
-      gameRowList.remove(element);
-      gameList.remove(element);
     });
   }
 
@@ -123,7 +107,9 @@ class _HomeT3State extends BaseState<HomeT3> {
                   _buildTextMarquee(),
                   _buildImageSlider(),
                   Expanded(
-                      child: ListView(
+                      child: _gameViewModel.gameRowListT3 == null ||_gameViewModel.gameListT3 == null
+                          ? buildProgressDialog(_vm.brandLogoUrl)
+                          : ListView(
                     children: [_buildImageRow(), _buildGameImageGridView()],
                   ))
                 ],
@@ -285,58 +271,62 @@ class _HomeT3State extends BaseState<HomeT3> {
   _buildImageRow() {
     getLanguage();
     return Container(
-      height: 180.auto,
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(gameRowList.length, (index) {
-            return InkWell(
+            height: 180.auto,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(_gameViewModel.gameRowListT3!.length, (index) {
+                  return InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GameT3(
+                                    gamePlatformCode: "",
+                                    gameType: _gameViewModel.gameRowListT3![index],
+                                    index: index,
+                                    config: _vm.config,
+                                    onPauseBgMusic: () =>
+                                        (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                                    onResumeBgMusic: () =>
+                                        (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                                  ))),
+                      child: Container(
+                        width: context.screenWidth / 2 - 15.auto,
+                        child: Image.asset(
+                            "images/home/$imageLanguageCode/${_gameViewModel.gameRowListT3![index].getImagePath()}.gif"),
+                      ));
+                })),
+          );
+  }
+
+  _buildGameImageGridView() {
+    return Container(
+            height: 260.auto,
+            margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
+            child: StaggeredGridView.countBuilder(
+              crossAxisCount: 2,
+              itemCount: _gameViewModel.gameListT3!.length,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) => InkWell(
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => GameT3(
                               gamePlatformCode: "",
-                              gameType: gameRowList[index],
+                              gameType: _gameViewModel.gameListT3![index],
                               index: index,
                               config: _vm.config,
                               onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                               onResumeBgMusic: () =>
                                   (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                             ))),
-                child: Container(
-                  width: context.screenWidth / 2 - 15.auto,
-                  child: Image.asset("images/home/$imageLanguageCode/${gameRowList[index].getImagePath()}.gif"),
-                ));
-          })),
-    );
-  }
-
-  _buildGameImageGridView() {
-    return Container(
-      height: 260.auto,
-      margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
-      child: StaggeredGridView.countBuilder(
-        crossAxisCount: 2,
-        itemCount: gameList.length,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) => InkWell(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GameT3(
-                        gamePlatformCode: "",
-                        gameType: gameList[index],
-                        index: index,
-                        config: _vm.config,
-                        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                      ))),
-          child: Image.asset("images/home/$imageLanguageCode/${gameList[index].getImagePath()}.gif"),
-        ),
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-        mainAxisSpacing: 15.auto,
-        crossAxisSpacing: 15.auto,
-      ),
-    );
+                child: Image.asset(
+                    "images/home/$imageLanguageCode/${_gameViewModel.gameListT3![index].getImagePath()}.gif"),
+              ),
+              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+              mainAxisSpacing: 15.auto,
+              crossAxisSpacing: 15.auto,
+            ),
+          );
   }
 
   navigateToLogin() {

@@ -12,6 +12,7 @@ class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   final walletRepo = WalletRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [userRepo, contentRepo];
@@ -32,7 +33,8 @@ class HomeViewModel extends BaseViewModel {
       getApiErrorLocalizationApiState,
       getBannerApiState,
       logoutApiState,
-      getBrandCommunicationApiState;
+      getBrandCommunicationApiState,
+      getBankCardListApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -135,7 +137,7 @@ class HomeViewModel extends BaseViewModel {
     return getBasicInfoApiState;
   }
 
-  getTotalBalance() async {
+  _getTotalBalance() async {
     setLoading();
     await userRepo.getWalletBalance();
     await _computeTotalBalance();
@@ -158,5 +160,19 @@ class HomeViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getBrandCommunicationApiState;
+  }
+
+  _getBankCardList() async {
+    setLoading();
+    getBankCardListApiState = await bankRepo.getBankCardList();
+    setLoading(false);
+    return getBankCardListApiState;
+  }
+
+  getUserDetails() {
+    if (userProfile != null) {
+      _getTotalBalance();
+      _getBankCardList();
+    }
   }
 }

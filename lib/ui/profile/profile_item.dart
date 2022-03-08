@@ -1,3 +1,4 @@
+import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/env_features_config.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -10,9 +11,11 @@ import 'package:tgp_flutter2/ui/report/report_view.dart';
 
 class ProfileItem extends StatefulWidget {
   final EnvFeaturesConfig? config;
+  final List<BankCard>? bankCardList;
 
   ProfileItem({
     this.config,
+    this.bankCardList,
   });
 
   @override
@@ -23,6 +26,14 @@ class _ProfileItemState extends BaseState<ProfileItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 30.auto),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(5),
+            topLeft: Radius.circular(5),
+            bottomRight: Radius.circular(5),
+            bottomLeft: Radius.circular(5),
+          ),
+          color: Colors.white),
       child: /*EnvironmentConfig.template_version == 1 ?*/ _buildT1ProfileItem() /* : _buildOthersTemplateProfileItem()*/,
     );
   }
@@ -67,12 +78,6 @@ class _ProfileItemState extends BaseState<ProfileItem> {
       onTap: () => _navigate(routePath, navigationID),
       child: Container(
           padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 20.auto),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(5),
-                topLeft: Radius.circular(5),
-              ),
-              color: Colors.white),
           child: Column(
             children: [
               _buildProfileItem(imagePath, title, routePath, navigationID),
@@ -87,12 +92,6 @@ class _ProfileItemState extends BaseState<ProfileItem> {
       onTap: () => _navigate(routePath, navigationID),
       child: Container(
           padding: EdgeInsets.only(bottom: 10.auto, left: 10.auto, right: 20.auto),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(5),
-                bottomLeft: Radius.circular(5),
-              ),
-              color: Colors.white),
           child: _buildProfileItem(imagePath, title, routePath, navigationID)));
 
   _buildMiddleProfileItem(String imagePath, String title, String routePath, int navigationID) => InkWell(
@@ -131,16 +130,21 @@ class _ProfileItemState extends BaseState<ProfileItem> {
                 ),
             Expanded(
                 flex: 7,
-                child: Text(
-                  getTranslatedText(title) ?? title,
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
+                child: Container(
+                  color: Colors.white,
+                  child: Text(
+                    getTranslatedText(title) ?? title,
+                    style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
+                  ),
                 ))
           ],
         ),
       );
 
   _navigate(String routePath, int navigationID) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (routePath == "main_card" && (widget.config?.addCardNotAllowedEditDelete ?? false))
+        if (routePath == "main_card" &&
+            (widget.config?.addCardNotAllowedEditDelete ?? false) &&
+            (widget.bankCardList?.isEmpty ?? false))
           _showNoCardDialog();
         else if (navigationID == 0) {
           Navigator.of(context).pushNamed("/$routePath");

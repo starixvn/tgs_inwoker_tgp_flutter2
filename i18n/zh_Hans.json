@@ -1044,5 +1044,10 @@
   "verify_realname": "验证真实姓名",
   "no_card_title": "在您的账户中未找到任何银行卡",
   "no_card_description": "如需添加银行卡，请联系客服。",
-  "cancel_search": "取消搜索"
+  "cancel_search": "取消搜索",
+  "fps_phone": "电话号码",
+  "fps_email": "电子邮件",
+  "fps_id": "FPS ID",
+  "deposit_bank_account_name": "银行账户/姓名",
+  "enter_deposit_bank_account_name_hint": "请填写银行账户/姓名"
 }

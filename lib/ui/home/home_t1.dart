@@ -61,17 +61,15 @@ class _HomeT1State extends BaseState<HomeT1> {
   @override
   void initState() {
     _initData();
-
     super.initState();
   }
 
   _initData() async {
     _vm.getAnnouncement();
     _vm.getBanner();
-
     _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
-    _vm.getTotalBalance();
+    _vm.getUserDetails();
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();

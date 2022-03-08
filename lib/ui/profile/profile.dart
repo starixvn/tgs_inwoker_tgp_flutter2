@@ -32,7 +32,7 @@ class _ProfileState extends BaseState<Profile> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
         _vm.computeTotalBalance();
-      } else {
+      } else  {
         Navigator.of(context).pushNamed(RoutePath.login);
       }
     });
@@ -54,9 +54,7 @@ class _ProfileState extends BaseState<Profile> {
                       child: ListView(
                         children: [
                           _buildUserInfoContainer(),
-                          ProfileItem(
-                            config: _vm.config,
-                          ),
+                          ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList),
                           _buildLogoutButton()
                         ],
                       ),

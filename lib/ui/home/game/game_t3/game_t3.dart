@@ -281,23 +281,29 @@ class _GameT3State extends BaseState<GameT3> {
     handleApiState(_vm.getGameApiState, onSuccess: () {});
 
     handleApiState(_vm.getLobbyGameUrlApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        launch(_vm.url!);
-      });
+      if (_vm.url != null)
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          launch(_vm.url!);
+        });
+      else
+        _navigateToMaintenance();
     }, onError: (_) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(RoutePath.maintenance);
-      });
+      _navigateToMaintenance();
     });
 
     handleApiState(_vm.getGameUrlApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        launch(_vm.url!);
-      });
+      if (_vm.url != null)
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          launch(_vm.url!);
+        });
+      else
+        _navigateToMaintenance();
     }, onError: (_) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(RoutePath.maintenance);
-      });
+      _navigateToMaintenance();
     });
   }
+
+  _navigateToMaintenance() => WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamed(RoutePath.maintenance);
+      });
 }

@@ -6,6 +6,7 @@ class ProfileViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   final walletRepo = WalletRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
 
   var logoutApiState, getWalletBalanceApiState;
   double? gameBalance;
@@ -21,6 +22,8 @@ class ProfileViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get config => contentRepo.featuresConfig;
+
+  get bankCardList => bankRepo.bankCardList;
 
   logout() async {
     setLoading();

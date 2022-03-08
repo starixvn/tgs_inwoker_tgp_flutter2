@@ -7,23 +7,27 @@ class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
   final authRepo = AuthenticationRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [userRepo];
 
   String? token;
   bool isUsernameExist = false;
-  var _username, _password;
+
+  // var _username, _password;
   var logoutApiState,
       getAllWalletState,
       loginApiState,
       registerApiState,
       checkUsernameApiState,
       getReVerifyCodeApiState,
-      phoneReVerifyApiState;
+      phoneReVerifyApiState,
+      getBankCardListApiState;
   String? username, password;
   bool isPhoneReVerificationReset = false;
   String? securityKey;
+  bool isNavigateFromSmsVerification = false;
 
   get brandLogo => contentRepo.brandLogo;
 
@@ -36,8 +40,9 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, rememberMe);
-      getUserInfo();
-      getWalletBalance();
+      await getUserInfo();
+      await getWalletBalance();
+      await getBankCardList();
     }
     setLoading(false);
     return loginApiState;
@@ -102,13 +107,13 @@ class LoginViewModel extends BaseViewModel {
     await userRepo.getApiErrorLocalization();
   }
 
-  getReVerifyCode(String username, String password, String areaCode, String phone) async {
+  getReVerifyCode(String _username, String _password, String areaCode, String phone) async {
     setLoading();
-    getReVerifyCodeApiState = await authRepo.getReVerifyCode(username, password, areaCode, phone);
+    getReVerifyCodeApiState = await authRepo.getReVerifyCode(_username, _password, areaCode, phone);
     if (getReVerifyCodeApiState.isSuccess) {
       securityKey = getReVerifyCodeApiState.result;
-      _username = username;
-      _password = password;
+      username = _username;
+      password = _password;
     }
     setLoading(false);
     return getReVerifyCodeApiState;
@@ -116,19 +121,27 @@ class LoginViewModel extends BaseViewModel {
 
   phoneVerify(String verificationCode) async {
     setLoading();
-    var _status = await authRepo.phoneReVerify(
+    phoneReVerifyApiState = await authRepo.phoneReVerify(
       securityKey ?? "",
       verificationCode,
     );
-    if (_status.isSuccess) {
-      phoneReVerifyApiState = await login(_username, _password, true);
-    } else
-      phoneReVerifyApiState = _status;
+    isNavigateFromSmsVerification = true;
     setLoading(false);
     return phoneReVerifyApiState;
   }
 
   setIsPhoneReVerificationResetToFalse() {
     isPhoneReVerificationReset = false;
+  }
+
+  getBankCardList() async {
+    setLoading();
+    getBankCardListApiState = await bankRepo.getBankCardList();
+    setLoading(false);
+    return getBankCardListApiState;
+  }
+
+  setIsNavigateFromSmsVerificationToTrue(){
+    isNavigateFromSmsVerification = true;
   }
 }

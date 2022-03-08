@@ -51,7 +51,9 @@ class _MenuState extends BaseState<Menu> {
 
   _buildMenuButton(String title, String imagePath, Color color, String route) => InkWell(
         onTap: () {
-          if (route == RoutePath.withdraw && (_vm.config?.addCardNotAllowedEditDelete ?? false))
+          if (route == RoutePath.withdraw &&
+              (_vm.config?.addCardNotAllowedEditDelete ?? false) &&
+              (_vm.bankCardList?.isEmpty ?? false))
             _showNoCardDialog();
           else
             Navigator.of(context).pushNamed(route);

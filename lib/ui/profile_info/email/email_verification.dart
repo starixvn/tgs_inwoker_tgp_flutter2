@@ -121,28 +121,31 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
       ));
 
   _buildEditEmailText() => InkWell(
-      onTap: () {
-        (_vm.config?.changesNotAllowed ?? false)
-            ? Navigator.of(context).pushNamed("/customer_service")
-            : Navigator.of(context)
-                .pushNamed(RoutePath.editEmail)
-                .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-                      _getUserProfile();
-                    }));
-      },
-      child: Wrap(
-        children: [
-          Text(
-            getTranslatedText("edit_email_cs"),
-            style: TextStyle(fontSize: 12.auto),
+        onTap: () {
+          (_vm.config?.changesNotAllowed ?? false)
+              ? Navigator.of(context).pushNamed("/customer_service")
+              : Navigator.of(context)
+                  .pushNamed(RoutePath.editEmail)
+                  .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        _getUserProfile();
+                      }));
+        },
+        child: RichText(
+          text: TextSpan(
+            text: getTranslatedText("edit_email_cs"),
+            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+            children: [
+              TextSpan(
+                text: (_vm.config?.changesNotAllowed ?? false)
+                    ? getTranslatedText("online_cs")
+                    : getTranslatedText("here"),
+                style: TextStyle(
+                    decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+              ),
+            ],
           ),
-          Text(
-            (_vm.config?.changesNotAllowed ?? false) ? getTranslatedText("online_cs") : getTranslatedText("here"),
-            style: TextStyle(
-                decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 12.auto),
-          ),
-        ],
-      ));
+        ),
+      );
 
   _onTextChange() {
     setState(() {

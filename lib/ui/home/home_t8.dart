@@ -73,7 +73,6 @@ class _HomeT8State extends BaseState<HomeT8> {
 
     _vm.getBrandCommunication();
     await _gameViewModel.getGameProviderList(isRefresh: true);
-    _vm.getTotalBalance();
     getLanguage();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();

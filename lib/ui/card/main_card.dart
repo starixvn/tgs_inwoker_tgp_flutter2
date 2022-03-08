@@ -56,21 +56,21 @@ class _MainCardState extends BaseState<MainCard> {
                           Wrap(
                             children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
-                                  child: Dismissible(
-                                key: UniqueKey(),
-                                child: _buildBankCardItem(_vm.bankCardList![index]),
-                                background: _swipeLeftBackground(),
-                                direction: DismissDirection.endToStart,
-                                behavior: HitTestBehavior.deferToChild,
-                                onDismissed: (_) {
-                                  if (_vm.config?.changesNotAllowed ?? false)
-                                    _showNotAllowedEditDeleteDialog();
-                                  /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
-                                    _showNoCardDialog();*/
-                                  else
-                                    _delete(_vm.bankCardList![index], index);
-                                },
-                              ));
+                                  child: (_vm.config?.addCardNotAllowedEditDelete ?? false)
+                                      ? _buildBankCardItem(_vm.bankCardList![index])
+                                      : Dismissible(
+                                          key: UniqueKey(),
+                                          child: _buildBankCardItem(_vm.bankCardList![index]),
+                                          background: _swipeLeftBackground(),
+                                          direction: DismissDirection.endToStart,
+                                          behavior: HitTestBehavior.deferToChild,
+                                          onDismissed: (_) {
+                                            if (_vm.config?.changesNotAllowed ?? false)
+                                              _showNotAllowedEditDeleteDialog();
+                                            else
+                                              _delete(_vm.bankCardList![index], index);
+                                          },
+                                        ));
                             }),
                           ),
                           _buildDeleteHintText(),
@@ -151,87 +151,93 @@ class _MainCardState extends BaseState<MainCard> {
         ),
       );
 
-  _buildDeleteHintText() => Container(
-        margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ImageIcon(
-              AssetImage(
-                "images/card/ic_card_delete_hint.png",
+  _buildDeleteHintText() => Visibility(
+    visible: !(_vm.config?.addCardNotAllowedEditDelete ?? false),
+    child: Container(
+          margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ImageIcon(
+                AssetImage(
+                  "images/card/ic_card_delete_hint.png",
+                ),
+                size: 15.auto,
+                color: CustomColor.theme_text_grey_white_color,
               ),
-              size: 15.auto,
-              color: CustomColor.theme_text_grey_white_color,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 5.auto),
-              child: Text(
-                getTranslatedText("slide_to_delete_card"),
-                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+              Container(
+                margin: EdgeInsets.only(left: 5.auto),
+                child: Text(
+                  getTranslatedText("slide_to_delete_card"),
+                  style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      );
+  );
 
-  _buildAddCardItem() => InkWell(
-        onTap: () async {
-          if (_vm.config?.changesNotAllowed ?? false)
-            _showNotAllowedEditDeleteDialog();
-          /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
-            _showNoCardDialog();*/
-          else {
-            await Navigator.of(context).pushNamed("/add_card");
-            _getBankCardList(); //reinitdata after pop from  add card
-          }
-        },
-        child: Container(
-          margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
-          child: DottedBorder(
-              color: CustomColor.theme_text_grey_white_color,
-              borderType: BorderType.RRect,
-              radius: Radius.circular(10.auto),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 8,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            getTranslatedText("add_card"),
-                            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 5.auto),
-                            child: Text(
-                              getTranslatedText("max_card_hint"),
-                              style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+  _buildAddCardItem() => Visibility(
+    visible: !(_vm.config?.addCardNotAllowedEditDelete ?? false),
+    child: InkWell(
+          onTap: () async {
+            if (_vm.config?.changesNotAllowed ?? false)
+              _showNotAllowedEditDeleteDialog();
+            /*else if (_vm.config?.addCardNotAllowedEditDelete ?? false)
+              _showNoCardDialog();*/
+            else {
+              await Navigator.of(context).pushNamed("/add_card");
+              _getBankCardList(); //reinitdata after pop from  add card
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
+            child: DottedBorder(
+                color: CustomColor.theme_text_grey_white_color,
+                borderType: BorderType.RRect,
+                radius: Radius.circular(10.auto),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              getTranslatedText("add_card"),
+                              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
                             ),
-                          )
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(top: 5.auto),
+                              child: Text(
+                                getTranslatedText("max_card_hint"),
+                                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                        child: ImageIcon(
-                            AssetImage(
-                              "images/card/ic_add_card.png",
-                            ),
-                            size: 23.auto,
-                            color: CustomColor.theme_text_grey_white_color)),
-                  ),
-                ],
-              )),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                          child: ImageIcon(
+                              AssetImage(
+                                "images/card/ic_add_card.png",
+                              ),
+                              size: 23.auto,
+                              color: CustomColor.theme_text_grey_white_color)),
+                    ),
+                  ],
+                )),
+          ),
         ),
-      );
+  );
 
   _delete(BankCard card, int index) async {
     if (_vm.bankCardList!.length > 1) //only show when existing list more than 1, else overlapped
@@ -251,13 +257,13 @@ class _MainCardState extends BaseState<MainCard> {
       /*if (_vm.config?.addCardNotAllowedEditDelete ?? false) {
         _showNoCardDialog();
       } else {*/
-        var result = await Navigator.of(context).pushNamed("/add_card");
-        if (result == null) //no result mean no card added
-          Navigator.pop(context);
-        else {
-          _getBankCardList();
-        } //fetch bank list
-        return;
+      var result = await Navigator.of(context).pushNamed("/add_card");
+      if (result == null) //no result mean no card added
+        Navigator.pop(context);
+      else {
+        _getBankCardList();
+      } //fetch bank list
+      return;
       //}
     }
   }
