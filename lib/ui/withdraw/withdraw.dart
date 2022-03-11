@@ -198,6 +198,7 @@ class _WithdrawState extends BaseState<Withdraw> {
               onChanged: (value) {
                 setState(() {
                   selectedBankCard = value;
+                  selectedBankCardText = _getDisplayBankAccountText(selectedBankCard);
                   Navigator.pop(context);
                 });
               });
@@ -270,8 +271,9 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: "",
         description: getTranslatedText("withdraw_success"),
         buttonText1: getTranslatedText("confirm"),
-        buttonText2:
-            (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication) ? getTranslatedText("verify_realname") : null,
+        buttonText2: (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
+            ? getTranslatedText("verify_realname")
+            : null,
         onClick: () => Navigator.pop(context),
         onClick2: () => (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
             ? Navigator.pushNamed(context, RoutePath.realNameVerification)
@@ -285,7 +287,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       amount = int.parse(_amountController.text);
     } else
       amount = 0;
-    if (amount == 0 || amount > _vm.wallet.main) {
+    if (amount == 0) {
       setState(() {
         isNextButtonEnabled = false;
       });
@@ -302,6 +304,30 @@ class _WithdrawState extends BaseState<Withdraw> {
       setState(() {
         CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
       });
+    } else if (amount > (selectedBankCard?.transferLimit?.to ?? 0)) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+            description: getTranslatedText("withdraw_reach_max"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+            }),
+      );
+    } else if (amount < (selectedBankCard?.transferLimit?.from ?? 0)) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+            description: getTranslatedText("withdraw_reach_min"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+            }),
+      );
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
@@ -313,7 +339,7 @@ class _WithdrawState extends BaseState<Withdraw> {
     //fetch bank list
 
     if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? false)) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async{
+      WidgetsBinding.instance!.addPostFrameCallback((_) async {
         result = await Navigator.push(
           context,
           new MaterialPageRoute(

@@ -1046,5 +1046,7 @@
   "fps_email": "อีเมล",
   "fps_id": "FPS ID",
   "deposit_bank_account_name": "บัญชีธนาคาร/ชื่อ",
-  "enter_deposit_bank_account_name_hint": "กรุณากรอกบัญชีธนาคาร/ชื่อ"
+  "enter_deposit_bank_account_name_hint": "กรุณากรอกบัญชีธนาคาร/ชื่อ",
+  "withdraw_reach_min": "จำนวนเงินที่ถอนไม่ถึงจำนวนเงินขั้นต่ำ",
+  "withdraw_reach_max": "จำนวนเงินที่ถอนได้ถึงจำนวนสูงสุด"
 }

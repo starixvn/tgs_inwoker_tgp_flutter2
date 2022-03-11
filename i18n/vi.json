@@ -1048,5 +1048,7 @@
   "fps_email": "Email",
   "fps_id": "FPS ID",
   "secure_bank_account_name": "Tên / Tài khoản Ngân hàng",
-  "enter_deposit_bank_account_name_hint": "Vui lòng nhập tên / tài khoản ngân hàng"
+  "enter_deposit_bank_account_name_hint": "Vui lòng nhập tên / tài khoản ngân hàng",
+  "withdraw_reach_min": "số tiền rút không đạt số tiền tối thiểu",
+  "withdraw_reach_max": "số tiền rút đã đạt đến số tiền tối đa"
 }
