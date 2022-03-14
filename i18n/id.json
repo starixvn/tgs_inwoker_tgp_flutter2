@@ -1050,5 +1050,7 @@
   "fps_email": "Email",
   "fps_id": "ID FPS",
   "deposit_bank_account_name": "Rekening/Nama Bank",
-  "enter_deposit_bank_account_name_hint": "Silakan masukkan rekening/nama bank"
+  "enter_deposit_bank_account_name_hint": "Silakan masukkan rekening/nama bank",
+  "withdraw_reach_min": "Jumlah penarikan tidak mencapai jumlah minimum.",
+  "withdraw_reach_max": "Jumlah penarikan tidak mencapai jumlah maksimum."
 }

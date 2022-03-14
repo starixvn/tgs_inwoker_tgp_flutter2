@@ -49,7 +49,7 @@ class DepositMethodViewModel extends BaseViewModel {
     setLoading();
     if (bankType == BankType.BANK)
       getManualDepositIdApiState =
-          await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId, "", bankType.getJson);
+          await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId, name, bankType.getJson);
     else
       getManualDepositIdApiState =
           await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
