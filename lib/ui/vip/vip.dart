@@ -55,8 +55,8 @@ class _VipViewState extends BaseState<VipView> {
                         Container(
                           height: 120.auto,
                           padding: EdgeInsets.only(top: 15.auto),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
                             children: List.generate(
                               _vm.vipList!.length,
                               (index) {
@@ -158,13 +158,13 @@ class _VipViewState extends BaseState<VipView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex: 8,
+              flex: 7,
               child: Text(
                 getTranslatedText(title),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 alignment: Alignment.centerRight,
                 child: Text(

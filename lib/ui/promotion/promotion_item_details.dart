@@ -1,6 +1,7 @@
 import 'package:api/entity/promotion.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:simple_html_css/simple_html_css.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -47,9 +48,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               Format().dateTimeFormat(widget.promotion.from) +
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
-          _buildPromotionContentText(
-              parseHtmlString(widget.promotion.localization?.content ?? widget.promotion.content ?? "")),
-          _buildPromotionContentText(parseHtmlString(widget.promotion.terms ?? "")),
+          _buildPromotionTermsText(
+              /*parseHtmlString(*/widget.promotion.localization?.content ?? widget.promotion.content ?? ""),
+          _buildPromotionTermsText(/*parseHtmlString(*/widget.promotion.terms ?? ""),
           _buildJoinButton()
         ],
       ),
@@ -133,7 +134,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       child: RichText(
         text: TextSpan(
           text: displayText,
-          style: TextStyle(color: CustomColor.theme_text_black_white_color, height: 2),
+          style: TextStyle(color: CustomColor.theme_text_black_color, height: 2),
         ),
       ),
     );
@@ -141,15 +142,15 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
 
   _buildPromotionTermsText(String? displayText) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-        child: RichText(
-            text: HTML.toTextSpan(
-          context,
-          displayText ?? "",
-          defaultTextStyle: TextStyle(fontSize: 12.auto),
+        child: //RichText(
+             Html(
+          //context,
+          data: displayText ?? "",
+  //defaultTextStyle: TextStyle(fontSize: 12.auto),
           /*overrideStyle: <String, TextStyle>{
             'p': TextStyle(fontSize: 15.auto),
             'span': TextStyle(fontSize: 15.auto),
           },*/
-        )),
+        )//),
       );
 }
