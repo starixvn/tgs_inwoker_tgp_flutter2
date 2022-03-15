@@ -121,10 +121,9 @@ class _GameT8State extends BaseState<GameT8> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                  child: Image.asset(
-                // images/game_tab/t1/ic_eGame.svg
-                "images/game_tab/t8/ic_${gameType.getImagePath()}.png",
-                width: 20.auto,
+                  child: SvgPicture.asset(
+                "images/game_tab/t8/ic_${gameType.getImagePath()}.svg",
+                matchTextDirection: true,
                 height: 20.auto,
                 color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2),
               )), //Image.asset("images/game_tab/ic_$imagePath.png")),

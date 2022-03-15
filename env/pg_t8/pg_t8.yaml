@@ -48,13 +48,13 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xffC40511
+      default: 0xff6589F7
     tab_unselected_color:
       type: int
       default: 0xff707070
     bottom_nav_selected_color:
       type: int
-      default: 0xff91030C
+      default: 0xff6589F7
     bottom_nav_unselected_color:
       type: int
       default: 0xff707070
