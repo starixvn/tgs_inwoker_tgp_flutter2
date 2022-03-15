@@ -7,6 +7,7 @@ import 'dart:io';
 class DepositMethodViewModel extends BaseViewModel {
   final depositRepo = BankRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
   final Map<BankType, List<Payment>>? depositMethodList;
 
   DepositMethodViewModel(this.depositMethodList);
@@ -31,6 +32,8 @@ class DepositMethodViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get config => contentRepo.featuresConfig;
+
+  get bankCardList => bankRepo.bankCardList;
 
   filterMethod(BankType bankType) async {
     paymentList = depositMethodList![bankType];

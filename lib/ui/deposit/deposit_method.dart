@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/manual_deposit_order.dart';
@@ -611,6 +612,15 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       setState(() {
         isButtonEnabled = true;
       });
+    } else if ((_isManualDeposit() || _isApplePayDeposit()) &&
+        !(_vm.config?.depositManualApplePayHideBankAcc ?? false) &&
+        uploadImage?.path != null &&
+        amount! >= paymentMin &&
+        amount! <= paymentMax) {
+      //is manual deposit or apple deposit, but showing bank account
+      setState(() {
+        isButtonEnabled = true;
+      });
     } else if (!_isManualDeposit() && !_isApplePayDeposit() && amount! >= paymentMin && amount! <= paymentMax) {
       setState(() {
         isButtonEnabled = true;
@@ -626,8 +636,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context, _vm.brandLogoUrl);
     switch (widget.paymentCode) {
       case "Manual":
-        _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
-            promotionId ?? null, uploadImage, _bankAccNameController.text);
+        if (_vm.config?.depositAutoFillFirstCard && _vm.bankCardList.length>1)
+          _vm.getManualDepositId(currBankType, _vm.bankCardList.first.bankDetail?.bankAccount ?? "", _amountController.text,
+              _payment!.id, promotionId ?? null, uploadImage, _vm.bankCardList.first.bankDetail?.name ?? "");
+        else
+          _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
+              promotionId ?? null, uploadImage, _bankAccNameController.text);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(
