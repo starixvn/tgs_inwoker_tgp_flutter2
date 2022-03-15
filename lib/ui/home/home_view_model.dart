@@ -170,9 +170,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   getUserDetails() {
-    if (userProfile != null) {
-      _getTotalBalance();
-      _getBankCardList();
-    }
+    //if (userProfile != null) {
+    _getTotalBalance();
+    _getBankCardList();
   }
 }
