@@ -7,6 +7,7 @@ import 'package:api/entity/payment_extended.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -349,6 +350,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             name,
             style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
           ),
+          _getClipboardIcon(name),
         ],
       ),
       SizedBox(height: 3.auto),
@@ -364,10 +366,26 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             bankAccount,
             style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
           ),
+          _getClipboardIcon(bankAccount),
         ],
       ),
     ];
   }
+
+  _getClipboardIcon(String copyText) => InkWell(
+        onTap: () {
+          Clipboard.setData(ClipboardData(text: copyText));
+          CustomToast.show(getTranslatedText("copy_text"));
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 10.auto),
+          child: ImageIcon(
+            AssetImage("images/support/ic_copy.png"),
+            size: 23.auto,
+            color: CustomColor.theme_button_color,
+          ),
+        ),
+      );
 
   _buildTransferToFps(String? logo, String? phone, String? email, String? fpsId) {
     return [
