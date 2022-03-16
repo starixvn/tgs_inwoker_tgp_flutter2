@@ -49,8 +49,11 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
               " - " +
               Format().dateTimeFormat(widget.promotion.to)),
           _buildPromotionTermsText(
-              /*parseHtmlString(*/widget.promotion.localization?.content ?? widget.promotion.content ?? ""),
-          _buildPromotionTermsText(/*parseHtmlString(*/widget.promotion.terms ?? ""),
+              /*parseHtmlString(*/
+              (widget.promotion.localization?.content?.isNotEmpty ?? false)
+                  ? widget.promotion.localization?.content
+                  : widget.promotion.content ?? ""),
+          _buildPromotionTermsText(/*parseHtmlString(*/ widget.promotion.terms ?? ""),
           _buildJoinButton()
         ],
       ),
@@ -124,7 +127,11 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   }
 
   _buildPromotionText(String displayText) => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto,),
+        margin: EdgeInsets.only(
+          left: 10.auto,
+          right: 10.auto,
+          top: 15.auto,
+        ),
         child: Text(displayText),
       );
 
@@ -141,16 +148,8 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   }
 
   _buildPromotionTermsText(String? displayText) => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-        child: //RichText(
-             Html(
-          //context,
-          data: displayText ?? "",
-  //defaultTextStyle: TextStyle(fontSize: 12.auto),
-          /*overrideStyle: <String, TextStyle>{
-            'p': TextStyle(fontSize: 15.auto),
-            'span': TextStyle(fontSize: 15.auto),
-          },*/
-        )//),
-      );
+      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+      child: Html(
+        data: """<style>tr{ border: 1px solid;}td {padding: 5px;} </style>""" + (displayText ?? ""),
+      ));
 }
