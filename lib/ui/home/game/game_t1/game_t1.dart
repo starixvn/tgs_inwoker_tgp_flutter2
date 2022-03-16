@@ -39,7 +39,7 @@ class _GameT1State extends BaseState<GameT1> {
   @override
   void initState() {
     _vm = widget.vm!;
-   // _controller.addListener(_scrollListener);
+    _controller.addListener(_scrollListener);
     super.initState();
   }
 
@@ -79,7 +79,7 @@ class _GameT1State extends BaseState<GameT1> {
                           child: GameItemT1(
                             gameViewItem,
                             controller: _controller,
-                            gameProviderList: _getGameTypeMap(),//_vm.gameProviderList,
+                            gameProviderList: _vm.gameProviderList,
                             onGameClick: (game) => _onGameClick(game),
                             config: _vm.config,
                           ),
@@ -130,7 +130,7 @@ class _GameT1State extends BaseState<GameT1> {
     // var bgImage = tabIndex == currentTabIndex ? "btn_home_game_category_selected_bg" : "btn_home_game_category_bg";
     return InkWell(
       onTap: () {
-        _onTabClick(tabIndex, gameType);
+        _onTabClick(tabIndex);
       },
       child: Container(
           padding: EdgeInsets.only(top: 20.auto, left: 10.auto, right: 10.auto),
@@ -168,8 +168,8 @@ class _GameT1State extends BaseState<GameT1> {
     );
   }
 
-  _onTabClick(int tabIndex, GameType gameType) {
-   /* var itemHeight = gameViewItem.currentState!.itemHeight;
+  _onTabClick(int tabIndex) {
+    var itemHeight = gameViewItem.currentState!.itemHeight;
     var des = 0.0;
 
     _vm.gameProviderList!.asMap().forEach((i, element) {
@@ -180,11 +180,6 @@ class _GameT1State extends BaseState<GameT1> {
     setState(() {
       //  currentTabIndex = tabIndex;
       _controller.animateTo(des, curve: Curves.linear, duration: Duration(milliseconds: 250));
-    });*/
-    setState(() {
-      currentGameType = gameType;
-      currentTabIndex = tabIndex;
-      _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
     });
   }
 
