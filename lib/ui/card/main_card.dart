@@ -152,8 +152,8 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildDeleteHintText() => Visibility(
-    visible: !(_vm.config?.addCardNotAllowedEditDelete ?? false),
-    child: Container(
+        visible: !(_vm.config?.addCardNotAllowedEditDelete ?? false),
+        child: Container(
           margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -175,11 +175,11 @@ class _MainCardState extends BaseState<MainCard> {
             ],
           ),
         ),
-  );
+      );
 
   _buildAddCardItem() => Visibility(
-    visible: !(_vm.config?.addCardNotAllowedEditDelete ?? false),
-    child: InkWell(
+        visible: !(EnvironmentConfig.template_version == 8 && _vm.bankCardList.length == 4),
+        child: InkWell(
           onTap: () async {
             if (_vm.config?.changesNotAllowed ?? false)
               _showNotAllowedEditDeleteDialog();
@@ -237,7 +237,7 @@ class _MainCardState extends BaseState<MainCard> {
                 )),
           ),
         ),
-  );
+      );
 
   _delete(BankCard card, int index) async {
     if (_vm.bankCardList!.length > 1) //only show when existing list more than 1, else overlapped
