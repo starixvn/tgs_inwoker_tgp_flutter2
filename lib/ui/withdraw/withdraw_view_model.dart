@@ -1,6 +1,7 @@
 import 'package:api/api.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/payment.dart';
+import 'package:api/entity/withdrawal_info.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
 class WithdrawViewModel extends BaseViewModel {
@@ -10,9 +11,9 @@ class WithdrawViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getPaymentApiState;
+  var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getWithdrawalInfoListApiState;
   var bankCardList, turnover;
-  List<Payment>? paymentList;
+  List<WithdrawalInfo>? withdrawList;
 
   get wallet => userRepo.wallet;
 
@@ -27,11 +28,11 @@ class WithdrawViewModel extends BaseViewModel {
     getBankCardListApiState = await bankRepo.getBankCardList();
     if (getBankCardListApiState.isSuccess) {
       bankCardList = getBankCardListApiState.result;
-      await getPayment();
-      paymentList!.forEach((payment) {
+      await getWithdrawalInfoList();
+      withdrawList!.forEach((withdraw) {
         bankCardList!.forEach((bankCard) {
-          if(payment.channelId == bankCard.paymentChannelId)
-            bankCard.transferLimit = payment.transferLimit;
+          if(withdraw.channelId == bankCard.paymentChannelId)
+            bankCard.transferLimit = withdraw.transferLimit;
         });
       });
     }
@@ -60,13 +61,13 @@ class WithdrawViewModel extends BaseViewModel {
     return getTurnoverAmountApiState;
   }
 
-  getPayment() async {
+  getWithdrawalInfoList() async {
     setLoading();
-    getPaymentApiState = await bankRepo.getPayment();
-    if (getPaymentApiState.isSuccess) {
-      paymentList = getPaymentApiState.result;
+    getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
+    if (getWithdrawalInfoListApiState.isSuccess) {
+      withdrawList = getWithdrawalInfoListApiState.result;
     }
     setLoading(false);
-    return getPaymentApiState;
+    return getWithdrawalInfoListApiState;
   }
 }
