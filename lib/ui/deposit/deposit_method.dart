@@ -414,6 +414,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   phone!,
                   style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
                 ),
+                _getClipboardIcon(phone),
               ],
             )
           : Container(),
@@ -431,6 +432,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   email!,
                   style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
                 ),
+                _getClipboardIcon(email),
               ],
             )
           : Container(),
@@ -448,6 +450,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                   fpsId!,
                   style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
                 ),
+                _getClipboardIcon(fpsId),
               ],
             )
           : Container(),
@@ -636,9 +639,15 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context, _vm.brandLogoUrl);
     switch (widget.paymentCode) {
       case "Manual":
-        if (_vm.config?.depositAutoFillFirstCard && _vm.bankCardList.length>1)
-          _vm.getManualDepositId(currBankType, _vm.bankCardList.first.bankDetail?.bankAccount ?? "", _amountController.text,
-              _payment!.id, promotionId ?? null, uploadImage, _vm.bankCardList.first.bankDetail?.name ?? "");
+        if (_vm.config?.depositAutoFillFirstCard && (_vm.bankCardList?.length ?? 0) > 1)
+          _vm.getManualDepositId(
+              currBankType,
+              _vm.bankCardList.first.bankDetail?.bankAccount ?? "",
+              _amountController.text,
+              _payment!.id,
+              promotionId ?? null,
+              uploadImage,
+              _vm.bankCardList.first.bankDetail?.name ?? "");
         else
           _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
               promotionId ?? null, uploadImage, _bankAccNameController.text);
