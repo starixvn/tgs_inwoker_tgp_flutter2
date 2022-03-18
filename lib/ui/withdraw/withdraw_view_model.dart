@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:api/api.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/payment.dart';
@@ -14,6 +16,7 @@ class WithdrawViewModel extends BaseViewModel {
   var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getWithdrawalInfoListApiState;
   var bankCardList, turnover;
   List<WithdrawalInfo>? withdrawList;
+  var maxTransferLimit, minTransferLimit;
 
   get wallet => userRepo.wallet;
 
@@ -28,13 +31,6 @@ class WithdrawViewModel extends BaseViewModel {
     getBankCardListApiState = await bankRepo.getBankCardList();
     if (getBankCardListApiState.isSuccess) {
       bankCardList = getBankCardListApiState.result;
-      await getWithdrawalInfoList();
-      withdrawList!.forEach((withdraw) {
-        bankCardList!.forEach((bankCard) {
-          if(withdraw.channelId == bankCard.paymentChannelId)
-            bankCard.transferLimit = withdraw.transferLimit;
-        });
-      });
     }
     setLoading(false);
     return getBankCardListApiState;
@@ -65,7 +61,14 @@ class WithdrawViewModel extends BaseViewModel {
     setLoading();
     getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
     if (getWithdrawalInfoListApiState.isSuccess) {
+      List<double> minTransferLimitList = [], maxTransferLimitList = [];
       withdrawList = getWithdrawalInfoListApiState.result;
+      withdrawList!.forEach((withdraw) {
+        minTransferLimitList.add(withdraw.transferLimit?.from ?? 0);
+        maxTransferLimitList.add(withdraw.transferLimit?.to ?? 0);
+      });
+      minTransferLimit = minTransferLimitList.reduce(min);
+      maxTransferLimit = maxTransferLimitList.reduce(max);
     }
     setLoading(false);
     return getWithdrawalInfoListApiState;
