@@ -641,14 +641,8 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     switch (widget.paymentCode) {
       case "Manual":
         if ((_vm.config?.depositAutoFillFirstCard ?? false) && (_vm.bankCardList?.length ?? 0) > 1)
-          _vm.getManualDepositId(
-              currBankType,
-              _vm.bankCardList.first.bankDetail?.bankAccount ?? "",
-              _amountController.text,
-              _payment!.id,
-              promotionId ?? null,
-              uploadImage,
-              _vm.userProfile.identityFormStatus == IdentityStatus.Approve ? _vm.userProfile.realname : "");
+          _vm.getManualDepositId(currBankType, _vm.bankCardList.first.bankDetail?.bankAccount ?? "",
+              _amountController.text, _payment!.id, promotionId ?? null, uploadImage, _vm.userProfile.realname ?? "",);
         else
           _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
               promotionId ?? null, uploadImage, _bankAccNameController.text);
