@@ -25,7 +25,8 @@ class DepositMethodViewModel extends BaseViewModel {
       help2PayDepositOrderApiState,
       getHelp2PayHtmlTextApiState,
       skyPayDepositOrderApiState,
-      uploadDepositImageApiState;
+      uploadDepositImageApiState,
+      zeroNineNinePayDepositOrderApiState;
   List<Payment>? paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -150,6 +151,13 @@ class DepositMethodViewModel extends BaseViewModel {
     skyPayDepositOrderApiState = await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return skyPayDepositOrderApiState;
+  }
+
+  zeroNineNinePayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+    setLoading();
+    zeroNineNinePayDepositOrderApiState = await depositRepo.zeroNineNinePayDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return zeroNineNinePayDepositOrderApiState;
   }
 
   uploadDepositImage(File imageFile, String id) async {

@@ -674,6 +674,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       case "SkyPay":
         _vm.skyPayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
         break;
+      case "ZeroNineNinePay":
+        _vm.zeroNineNinePayDepositOrder(_amountController.text, _payment!.id, promotionId ?? null);
+        break;
       default:
         _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
             promotionId ?? null, uploadImage, _bankAccNameController.text);
@@ -850,6 +853,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           ),
         );
       });
+    });
+
+    handleApiState(_vm.zeroNineNinePayDepositOrderApiState, onSuccess: () {
+      _navigateToDepositOrder(
+        depositRedirect: _vm.zeroNineNinePayDepositOrderApiState.result,
+      );
     });
   }
 

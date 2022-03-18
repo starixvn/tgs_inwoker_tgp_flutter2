@@ -239,6 +239,7 @@
   "PrimePay": "PrimePay",
   "ApplePay": "ApplePay",
   "UmPay": "PlayPay",
+  "ZeroNineNinePay": "099Pay",
   "enter_bank_acc_name": "Please enter bank holder name",
   "player_not_found": "Player not found",
   "invalid_credentials": "Invalid Credentials",
