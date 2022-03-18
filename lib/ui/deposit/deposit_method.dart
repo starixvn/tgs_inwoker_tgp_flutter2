@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
+import 'package:api/entity/identity_status.dart';
 import 'package:api/entity/manual_deposit_order.dart';
 import 'package:api/entity/payment_extended.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -647,7 +648,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               _payment!.id,
               promotionId ?? null,
               uploadImage,
-              _vm.bankCardList.first.bankDetail?.name ?? "");
+              _vm.userProfile.identityFormStatus == IdentityStatus.Approve ? _vm.userProfile.realname : "");
         else
           _vm.getManualDepositId(currBankType, _bankNameController.text, _amountController.text, _payment!.id,
               promotionId ?? null, uploadImage, _bankAccNameController.text);
