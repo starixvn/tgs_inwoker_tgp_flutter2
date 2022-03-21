@@ -636,7 +636,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     ProgressDialog.show(context, _vm.brandLogoUrl);
     switch (widget.paymentCode) {
       case "Manual":
-        if (_vm.config?.depositAutoFillFirstCard && _vm.bankCardList.length>1)
+        if ((_vm.config?.depositAutoFillFirstCard??false) && _vm.bankCardList.length>1)
           _vm.getManualDepositId(currBankType, _vm.bankCardList.first.bankDetail?.bankAccount ?? "", _amountController.text,
               _payment!.id, promotionId ?? null, uploadImage, _vm.bankCardList.first.bankDetail?.name ?? "");
         else

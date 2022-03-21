@@ -90,83 +90,88 @@ class GameItemT8State extends BaseState<GameItemT8> {
         } else
           widget.onGameClick!(gameProvider);
       },
-      child: Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: _imageRatio,
-            child: gameProvider.status != 0
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
+      child: Container(
+        width: 355,
+        height: 120,
+        alignment: Alignment.center,
+        child: Stack(
+          children: [
+            AspectRatio(
+              aspectRatio: _imageRatio,
+              child: gameProvider.status != 0
+                  ? ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
 
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black,
-                        BlendMode.saturation,
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.saturation,
+                  ),
+                  child: _buildImage(gameProvider),
+                ),
+              )
+                  : _buildImage(gameProvider),
+            ),
+            Positioned(
+              bottom: context.screenWidth / 50,
+              left: context.screenWidth / 13,
+              child: Column(
+                children: [
+                  _isSportsHideLogo(gamePlatformCode)
+                      ? Container(
+                          width: 74.auto,
+                          margin: EdgeInsets.only(bottom: 15.auto),
+                          child: Text(
+                            getTranslatedText("sports_$gamePlatformCode"),
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : Container(),
+                  Container(
+                    width: 74.auto,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration:
+                        BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: AutoSizeText(
+                        getTranslatedText("start_game"),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        minFontSize: 5,
+                        maxFontSize: 8,
+                        stepGranularity: 1,
                       ),
-                      child: _buildImage(gameProvider),
-                    ),
-                  )
-                : _buildImage(gameProvider),
-          ),
-          Positioned(
-            bottom: context.screenWidth / 50,
-            left: context.screenWidth / 13,
-            child: Column(
-              children: [
-                _isSportsHideLogo(gamePlatformCode)
-                    ? Container(
-                        width: 74.auto,
-                        margin: EdgeInsets.only(bottom: 15.auto),
-                        child: Text(
-                          getTranslatedText("sports_$gamePlatformCode"),
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    : Container(),
-                Container(
-                  width: 74.auto,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration:
-                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    child: AutoSizeText(
-                      getTranslatedText("start_game"),
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                      minFontSize: 5,
-                      maxFontSize: 8,
-                      stepGranularity: 1,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Visibility(
-            visible: gameProvider.status != 0,
-            child: AspectRatio(
-              aspectRatio: _imageRatio,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Center(
-                  child: Text(getTranslatedText("maintenance"),
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+            Visibility(
+              visible: gameProvider.status != 0,
+              child: AspectRatio(
+                aspectRatio: _imageRatio,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Center(
+                    child: Text(getTranslatedText("maintenance"),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   _buildImage(GameProvider2 gameProvider) => ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(10.0),
         child: Container(
           alignment: Alignment.center,
           child: Image.asset(

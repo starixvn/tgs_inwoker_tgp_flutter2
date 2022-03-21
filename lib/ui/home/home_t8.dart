@@ -113,15 +113,17 @@ class _HomeT8State extends BaseState<HomeT8> {
             ),
             body: Column(
               children: [
-                _buildImageSlider(),
-                Container(
-                  height: context.screenHeight - 288.auto,
-                  margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
-                  child: Column(
-                    children: [
-                      _buildTextMarquee(),
-                      _buildGameView(),
-                    ],
+                Expanded(flex:1,child: _buildImageSlider(),),
+                Expanded(
+                  flex:3,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
+                    child: Column(
+                      children: [
+                        _buildTextMarquee(),
+                        _buildGameView(),
+                      ],
+                    ),
                   ),
                 ),
               ],

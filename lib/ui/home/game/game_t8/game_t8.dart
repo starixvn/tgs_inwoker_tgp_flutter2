@@ -73,6 +73,7 @@ class _GameT8State extends BaseState<GameT8> {
                               childAspectRatio: 1.5,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
+                              physics: NeverScrollableScrollPhysics(),
                               children: List.generate(
                                   _vm.gameTypeList.length,
                                   (index) => Container(
