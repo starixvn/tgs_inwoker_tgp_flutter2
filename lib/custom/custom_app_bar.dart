@@ -52,10 +52,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             //widget == null ? true : false,
             title: Text(
               title,
-              style: TextStyle(fontSize: 16.auto),
+              style: TextStyle(fontSize: 16.auto, color: CustomColor.theme_app_bar_text_color),
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(
+                Icons.arrow_back,
+                color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white,
+              ),
               onPressed: () => _onPress(context),
             ),
             actions: [_getAppBarWidget()],

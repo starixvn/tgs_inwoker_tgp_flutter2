@@ -79,7 +79,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         centerTitle: true,
         backgroundColor: CustomColor.theme_app_bar_color,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: CustomColor.theme_app_bar_text_color,
+          ),
           onPressed: () {
             Navigator.pop(context, true);
           },
@@ -88,7 +91,10 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
             ? _buildSearchTextField()
             : Text(
                 _getAppTitle(),
-                style: TextStyle(fontSize: 16.auto),
+                style: TextStyle(
+                  fontSize: 16.auto,
+                  color: CustomColor.theme_app_bar_text_color,
+                ),
               ),
         actions: [_getAction()],
       );
@@ -188,24 +194,27 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              Container(
-                width: 110.auto,
-                padding: EdgeInsets.symmetric(horizontal: 10.auto),
-                child: TextFormField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    border: InputBorder.none,
-                    hintText: getTranslatedText("search_keyword"),
-                    hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 110.auto,
+                  padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                  child: TextFormField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      border: InputBorder.none,
+                      hintText: getTranslatedText("search_keyword"),
+                      hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                    ),
+                    focusNode: _focusNode,
+                    autofocus: true,
+                    onChanged: (value) => _onTextChange(),
                   ),
-                  focusNode: _focusNode,
-                  autofocus: true,
-                  onChanged: (value) => _onTextChange(),
                 ),
-              ),
-            ]),
+              ],
+            ),
             Icon(
               Icons.search,
               color: CustomColor.theme_button_color,
@@ -232,7 +241,16 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           });
           _vm.filter(searchQuery: "");
         },
-        child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消")),
+        child: Container(
+          padding: EdgeInsets.only(right: 8.auto),
+          alignment: Alignment.center,
+          child: Text(
+            getTranslatedText("cancel"),
+            style: TextStyle(
+              color: CustomColor.theme_app_bar_text_color,
+            ),
+          ),
+        ),
       );
     } else {
       if (_vm.mSearchQuery?.isEmpty ?? false) {
@@ -248,6 +266,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
             padding: EdgeInsets.only(right: 8.auto),
             child: Icon(
               Icons.search,
+              color: CustomColor.theme_app_bar_text_color,
             ),
           ),
         );
@@ -257,7 +276,16 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           onTap: () {
             _vm.filter(searchQuery: "");
           },
-          child: Container(padding: EdgeInsets.only(right: 8.auto), alignment: Alignment.center, child: Text("取消搜索")),
+          child: Container(
+            padding: EdgeInsets.only(right: 8.auto),
+            alignment: Alignment.center,
+            child: Text(
+              getTranslatedText("cancel_search"),
+              style: TextStyle(
+                color: CustomColor.theme_app_bar_text_color,
+              ),
+            ),
+          ),
         );
       }
     }

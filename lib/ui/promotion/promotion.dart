@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -20,11 +22,12 @@ class _PromotionState extends BaseState<Promotion> {
   var currentBottomIndex = 1;
   PromotionViewModel _vm = PromotionViewModel();
   BuildContext? key = GlobalKey().currentContext;
+  var languageCode;
 
   @override
   void initState() {
-    super.initState();
     _vm.getPromotionList();
+    super.initState();
   }
 
   @override
@@ -38,7 +41,7 @@ class _PromotionState extends BaseState<Promotion> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return Scaffold(
-            backgroundColor: CustomColor.theme_bg_color,
+              backgroundColor: CustomColor.theme_bg_color,
               appBar: CustomAppBar(
                 title: getTranslatedText("promotion_center"),
               ),
@@ -47,6 +50,11 @@ class _PromotionState extends BaseState<Promotion> {
   }
 
   _buildPromotion() {
+    var code = getCurrentLanguage().apiCode;
+    if (code == "zh-CN" || code == "zh-TW")
+      languageCode = code;
+    else
+      languageCode = "en-US";
     if (_vm.promotionList == null)
       return buildProgressDialog(_vm.brandLogoUrl);
     else if (_vm.promotionList.isEmpty) {
@@ -59,12 +67,14 @@ class _PromotionState extends BaseState<Promotion> {
               borderRadius: BorderRadius.circular(8),
               child: Container(
                 child: Image.asset(
-                  "images/promotion/promo_empty.png",
+                  "images/promotion/promo_empty${EnvironmentConfig.template_version == 8 ? "_t8_$languageCode" : ""}.png",
                   fit: BoxFit.fill,
                 ),
               ),
             ),
-            Container(
+            Visibility(
+              visible: EnvironmentConfig.template_version != 8,
+              child: Container(
                 margin: EdgeInsets.only(
                   left: 15.auto,
                   right: 15.auto,
@@ -76,7 +86,9 @@ class _PromotionState extends BaseState<Promotion> {
                     _buildGradientText(getTranslatedText("promotion_empty1")),
                     _buildGradientText(getTranslatedText("promotion_empty2")),
                   ],
-                ))
+                ),
+              ),
+            ),
           ],
         ),
       );
@@ -92,23 +104,23 @@ class _PromotionState extends BaseState<Promotion> {
   }
 
   _buildGradientText(String text) => ShaderMask(
-    shaderCallback: (bounds) {
-      return LinearGradient(
-        colors: [
-          Color(0xff446597),
-          Color(0xff282828),
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ).createShader(Offset.zero & bounds.size);
-    },
-    child: Text(
-      text,
-      textAlign: TextAlign.center,
-      style:
-      TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
-    ),
-  );
+        shaderCallback: (bounds) {
+          return LinearGradient(
+            colors: [
+              Color(0xff446597),
+              Color(0xff282828),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ).createShader(Offset.zero & bounds.size);
+        },
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+        ),
+      );
 
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {

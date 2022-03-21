@@ -76,29 +76,9 @@ environment_config:
     theme_text_grey_white_color:
       type: int
       default: 0xff707070
-    isShowSmsVerification:
-      type: bool
-      default: false
-    isShowEmailVerification:
-      type: bool
-      default: true
-    isShowBankBranch:
-      #add bank card
-      type: bool
-      default: true
-    isShowIcVerification:
-      type: bool
-      default: true
-    isShowWechatQQ:
-      type: bool
-      default: true
-    isShowBankAcc:
-      #deposit
-      type: bool
-      default: true
-    isShowMarqueePopUp:
-      type: bool
-      default: false
+    theme_app_bar_text_color:
+      type: int
+      default: 0xffFFFFFF
     brandName:
       default: "MESS8"
     assetUrl:
@@ -106,11 +86,5 @@ environment_config:
     default_lang:
       default: "vi-VN"
     vipPresentType:
-        type: int
-        default: 2
-    isShowPhoneNumber:
-      type: bool
-      default: true
-    isShowVipInHome:
-      type: bool
-      default: true
+      type: int
+      default: 2

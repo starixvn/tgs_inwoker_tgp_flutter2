@@ -76,29 +76,9 @@ environment_config:
     theme_text_grey_white_color:
       type: int
       default: 0xffFFFFFF
-    isShowSmsVerification:
-      type: bool
-      default: true
-    isShowEmailVerification:
-      type: bool
-      default: false
-    isShowBankBranch:
-      #add bank card
-      type: bool
-      default: true
-    isShowIcVerification:
-      type: bool
-      default: true
-    isShowWechatQQ:
-      type: bool
-      default: true
-    isShowBankAcc:
-      #deposit
-      type: bool
-      default: true
-    isShowMarqueePopUp:
-      type: bool
-      default: false
+    theme_app_bar_text_color:
+      type: int
+      default: 0xffFFFFFF
     default_lang:
       default: "en-US"
     assetUrl:
@@ -108,9 +88,3 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
-    isShowPhoneNumber:
-      type: bool
-      default: false
-    isShowVipInHome:
-      type: bool
-      default: false
