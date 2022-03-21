@@ -72,7 +72,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.center,
           child: Text(
             "${Format().currencyWithDecimalFormat(walletBalance ?? 0)}",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white),
           ));
     } else if (widget != null) {
       return widget;

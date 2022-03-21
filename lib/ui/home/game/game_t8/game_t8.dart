@@ -60,7 +60,7 @@ class _GameT8State extends BaseState<GameT8> {
                       children: [
                          Container(
                             //padding: EdgeInsets.only(bottom: 20.auto),
-                            height: 110.auto,
+                            height: 115.auto,
                             margin: EdgeInsets.only(right: 5.auto),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -80,17 +80,20 @@ class _GameT8State extends BaseState<GameT8> {
                                       child: _buildGameTab(index, _vm.gameTypeList[index]),
                                     ))),
                           ),
-                         Container(
-                           height: context.screenHeight / 2 - 77.auto,
-                            child: GameItemT8(
-                              gameViewItem,
-                              controller: _controller,
-                              gameProviderList: _getGameTypeMap(),
-                              onGameClick: (game) => _onGameClick(game),
-                              config: _vm.config,
-                            ),
+                         Flexible(
+                           flex:1,
+                           child: Container(
+                             height: context.screenHeight / 2 - 77.auto,
+                              child: GameItemT8(
+                                gameViewItem,
+                                controller: _controller,
+                                gameProviderList: _getGameTypeMap(),
+                                onGameClick: (game) => _onGameClick(game),
+                                config: _vm.config,
+                              ),
 
                         ),
+                         ),
                       ],
                     ),
                   ),
