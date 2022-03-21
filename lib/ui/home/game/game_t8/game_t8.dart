@@ -58,11 +58,9 @@ class _GameT8State extends BaseState<GameT8> {
                     child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
+                         Container(
                             //padding: EdgeInsets.only(bottom: 20.auto),
-                            height: context.screenHeight / 6,
+                            height: 110.auto,
                             margin: EdgeInsets.only(right: 5.auto),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -82,11 +80,8 @@ class _GameT8State extends BaseState<GameT8> {
                                       child: _buildGameTab(index, _vm.gameTypeList[index]),
                                     ))),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            height: context.screenHeight / 2 - 77.auto,
+                         Container(
+                           height: context.screenHeight / 2 - 77.auto,
                             child: GameItemT8(
                               gameViewItem,
                               controller: _controller,
@@ -94,7 +89,7 @@ class _GameT8State extends BaseState<GameT8> {
                               onGameClick: (game) => _onGameClick(game),
                               config: _vm.config,
                             ),
-                          ),
+
                         ),
                       ],
                     ),
