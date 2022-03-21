@@ -58,36 +58,42 @@ class _GameT8State extends BaseState<GameT8> {
                     child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          //padding: EdgeInsets.only(bottom: 20.auto),
-                          height: context.screenHeight / 6,
-                          margin: EdgeInsets.only(right: 5.auto),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            //padding: EdgeInsets.only(bottom: 20.auto),
+                            height: context.screenHeight / 6,
+                            margin: EdgeInsets.only(right: 5.auto),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
+                            child: GridView.count(
+                                crossAxisCount: 4,
+                                shrinkWrap: true,
+                                childAspectRatio: 1.5,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                physics: NeverScrollableScrollPhysics(),
+                                children: List.generate(
+                                    _vm.gameTypeList.length,
+                                        (index) => Container(
+                                      child: _buildGameTab(index, _vm.gameTypeList[index]),
+                                    ))),
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
-                          child: GridView.count(
-                              crossAxisCount: 4,
-                              shrinkWrap: true,
-                              childAspectRatio: 1.5,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: List.generate(
-                                  _vm.gameTypeList.length,
-                                  (index) => Container(
-                                        child: _buildGameTab(index, _vm.gameTypeList[index]),
-                                      ))),
                         ),
-                        Container(
-                          height: context.screenHeight / 2 - 77.auto,
-                          child: GameItemT8(
-                            gameViewItem,
-                            controller: _controller,
-                            gameProviderList: _getGameTypeMap(),
-                            onGameClick: (game) => _onGameClick(game),
-                            config: _vm.config,
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            height: context.screenHeight / 2 - 77.auto,
+                            child: GameItemT8(
+                              gameViewItem,
+                              controller: _controller,
+                              gameProviderList: _getGameTypeMap(),
+                              onGameClick: (game) => _onGameClick(game),
+                              config: _vm.config,
+                            ),
                           ),
                         ),
                       ],
