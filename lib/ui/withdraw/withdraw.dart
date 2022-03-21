@@ -49,6 +49,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   _initData() async {
     await _checkUserProfile();
     _vm.getTurnoverAmount();
+    _vm.getWithdrawalInfoList();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getBankText();
     });
@@ -304,7 +305,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       setState(() {
         CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
       });
-    } else if (amount > (selectedBankCard?.transferLimit?.to ?? 0)) {
+    } else if (amount > (_vm.maxTransferLimit ?? 0)) {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
@@ -316,7 +317,7 @@ class _WithdrawState extends BaseState<Withdraw> {
               );
             }),
       );
-    } else if (amount < (selectedBankCard?.transferLimit?.from ?? 0)) {
+    } else if (amount < (_vm.minTransferLimit ?? 0)) {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
