@@ -65,22 +65,22 @@ class GameItemT1State extends BaseState<GameItemT1> {
     var imagePath;
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var fullPath = "${gameType}_${gamePlatformCode}";
+    var fullPath = "${gameType}_$gamePlatformCode";
     if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_hkjp.png";
+      imagePath = "images/game/T2/$gameType-$gamePlatformCode-hkjp.jpg";
     else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
-      imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_en.png";
+      imagePath = "images/game/T2/${gameType}_$gamePlatformCode-en.jpg";
     } else
-      imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
+      imagePath = "images/game/T2/$gameType-$gamePlatformCode.jpg";
     return imagePath;
   }
 
   _isNeedHandleLanguage(String path) {
     switch (path) {
-      case "sports_saba":
-      case "esports_imes":
-      case "fish_jdb":
-      case "slotGame_jdb":
+      case "sports-saba":
+      case "esports-imes":
+      case "fish-jdb":
+      case "slot-jdb":
         return true;
       default:
         return false;
@@ -129,7 +129,7 @@ class GameItemT1State extends BaseState<GameItemT1> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   decoration:
-                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
+                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn-start-game.jpg"))),
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: AutoSizeText(

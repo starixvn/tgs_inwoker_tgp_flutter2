@@ -66,16 +66,16 @@ class GameItemT8State extends BaseState<GameItemT8> {
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
     var fullPath = "${gameType}_${gamePlatformCode}";
-    imagePath = "images/game/T8/${gameType}_$gamePlatformCode.png";
+    imagePath = "images/game/T8/${gameType}-$gamePlatformCode.jpg";
     return imagePath;
   }
 
   _isNeedHandleLanguage(String path) {
     switch (path) {
-      case "sports_saba":
-      case "esports_imes":
-      case "fish_jdb":
-      case "slotGame_jdb":
+      case "sports-saba":
+      case "sports-imes":
+      case "fish-jdb":
+      case "slot-jdb":
         return true;
       default:
         return false;
@@ -133,7 +133,7 @@ class GameItemT8State extends BaseState<GameItemT8> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration:
-                        BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
+                        BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn-start-game.jpg"))),
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: AutoSizeText(
