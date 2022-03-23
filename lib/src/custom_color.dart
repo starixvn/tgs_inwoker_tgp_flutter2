@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:tgp_flutter2/environment_config.dart';
 
-class CustomColor{
+class CustomColor {
   /*static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
   static const Color theme_bar_gradient_2 = Color(EnvironmentConfig.primaryGradientColorCode);
   static const Color theme_button_disable_bg = Color(0xff404040);
@@ -37,6 +37,7 @@ class CustomColor{
   static const theme_text_black_white_color = Color(EnvironmentConfig.theme_text_black_white_color);
   static const theme_text_grey_color = Color(EnvironmentConfig.theme_text_grey_color);
   static const theme_text_grey_white_color = Color(EnvironmentConfig.theme_text_grey_white_color);
+  static const theme_app_bar_text_color = Color(EnvironmentConfig.theme_app_bar_text_color);
 
   static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
   static const Color theme_bar_gradient_2 = Color(EnvironmentConfig.primaryGradientColorCode);
@@ -50,6 +51,4 @@ class CustomColor{
   static const menu_green = Color(0xff0A9D4C);
   static const menu_orange = Color(0xffF79319);
   static const menu_blue = Color(0xff3C92C5);
-
-
 }

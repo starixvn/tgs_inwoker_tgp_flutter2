@@ -52,10 +52,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             //widget == null ? true : false,
             title: Text(
               title,
-              style: TextStyle(fontSize: 16.auto),
+              style: TextStyle(fontSize: 16.auto, color: CustomColor.theme_app_bar_text_color),
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(
+                Icons.arrow_back,
+                color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white,
+              ),
               onPressed: () => _onPress(context),
             ),
             actions: [_getAppBarWidget()],
@@ -69,7 +72,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: Alignment.center,
           child: Text(
             "${Format().currencyWithDecimalFormat(walletBalance ?? 0)}",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white),
           ));
     } else if (widget != null) {
       return widget;

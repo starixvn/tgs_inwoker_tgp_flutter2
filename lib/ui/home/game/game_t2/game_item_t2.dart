@@ -93,9 +93,9 @@ class GameItemT2State extends BaseState<GameItemT2> {
     var gamePlatformCode = gameProvider.code?.toLowerCase();
     var imagePath;
     if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "images/game/T2/${gameType}_${gamePlatformCode}_hkjp.png";
+      imagePath = "images/game/T2/${gameType}-${gamePlatformCode}-hkjp.jpg";
     else
-      imagePath = "images/game/T2/${gameType}_$gamePlatformCode.png";
+      imagePath = "images/game/T2/${gameType}-$gamePlatformCode.jpg";
     return imagePath;
   }
 
@@ -141,7 +141,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   decoration:
-                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn_start_game.png"))),
+                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn-start-game.jpg"))),
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: AutoSizeText(
