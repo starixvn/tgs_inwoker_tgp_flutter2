@@ -13,6 +13,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -103,7 +104,8 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           child: RotationTransition(
             turns: _animation!,
             child: IconButton(
-              icon: Image.asset("images/ic_refresh.png"),
+              icon: Image.asset("images/ic_refresh.png",
+              color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white,),
               onPressed: () {
                 _vm.getAllWallet();
               },

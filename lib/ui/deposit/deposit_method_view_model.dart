@@ -7,6 +7,8 @@ import 'dart:io';
 class DepositMethodViewModel extends BaseViewModel {
   final depositRepo = BankRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
+  final userRepo = UserRepository.getSingleton();
   final Map<BankType, List<Payment>>? depositMethodList;
 
   DepositMethodViewModel(this.depositMethodList);
@@ -24,13 +26,18 @@ class DepositMethodViewModel extends BaseViewModel {
       help2PayDepositOrderApiState,
       getHelp2PayHtmlTextApiState,
       skyPayDepositOrderApiState,
-      uploadDepositImageApiState;
+      uploadDepositImageApiState,
+      zeroNineNinePayDepositOrderApiState;
   List<Payment>? paymentList;
   var depositOrder, orderNo, exchangeRate;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get config => contentRepo.featuresConfig;
+
+  get bankCardList => bankRepo.bankCardList;
+
+  get userProfile => userRepo.userProfile;
 
   filterMethod(BankType bankType) async {
     paymentList = depositMethodList![bankType];
@@ -147,6 +154,13 @@ class DepositMethodViewModel extends BaseViewModel {
     skyPayDepositOrderApiState = await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return skyPayDepositOrderApiState;
+  }
+
+  zeroNineNinePayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+    setLoading();
+    zeroNineNinePayDepositOrderApiState = await depositRepo.zeroNineNinePayDepositOrder(amount, paymentId, promotionId);
+    setLoading(false);
+    return zeroNineNinePayDepositOrderApiState;
   }
 
   uploadDepositImage(File imageFile, String id) async {

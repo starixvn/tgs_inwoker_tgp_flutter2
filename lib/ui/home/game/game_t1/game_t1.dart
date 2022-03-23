@@ -92,9 +92,9 @@ class _GameT1State extends BaseState<GameT1> {
   }
 
   _getGameTypeMap() {
-    if (currentGameType == GameType.Sportsbook)
+    /*if (currentGameType == GameType.Sportsbook)
       return ([_vm.gameTypeMap![GameType.ESports], _vm.gameTypeMap![GameType.Sportsbook]].expand((x) => x!).toList());
-    else
+    else*/
       return _vm.gameTypeMap![currentGameType];
   }
 

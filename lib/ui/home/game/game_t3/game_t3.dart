@@ -85,9 +85,9 @@ class _GameT3State extends BaseState<GameT3> {
     //var imagePath = "images/game/T3/${gameType}_${gamePlatformCode}.png";
     var imagePath;
     if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "images/game/T3/${gameType}_${gamePlatformCode}_hkjp.png";
+      imagePath = "images/game/T3/$gameType-$gamePlatformCode-hkjp.jpg";
     else
-      imagePath = "images/game/T3/${gameType}_$gamePlatformCode.png";
+      imagePath = "images/game/T3/$gameType-$gamePlatformCode.jpg";
     return imagePath;
   }
 
@@ -162,7 +162,7 @@ class _GameT3State extends BaseState<GameT3> {
         width: 74.auto,
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn_start_game.png"))),
+        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn-start-game.jpg"))),
         child: Text(
           getTranslatedText("start_game"),
           style: TextStyle(

@@ -52,19 +52,7 @@ class EnvironmentConfig {
 
   static const int theme_text_grey_white_color = 4285558896;
 
-  static const bool isShowSmsVerification = true;
-
-  static const bool isShowEmailVerification = false;
-
-  static const bool isShowBankBranch = true;
-
-  static const bool isShowIcVerification = true;
-
-  static const bool isShowWechatQQ = true;
-
-  static const bool isShowBankAcc = true;
-
-  static const bool isShowMarqueePopUp = false;
+  static const int theme_app_bar_text_color = 4294967295;
 
   static const String default_lang = 'en-US';
 
@@ -73,8 +61,4 @@ class EnvironmentConfig {
   static const String brandName = 'GPI';
 
   static const int vipPresentType = 1;
-
-  static const bool isShowPhoneNumber = false;
-
-  static const bool isShowVipInHome = false;
 }

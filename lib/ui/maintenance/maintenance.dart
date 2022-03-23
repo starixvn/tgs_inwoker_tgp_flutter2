@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -59,7 +60,10 @@ class _MaintenanceState extends BaseState<Maintenance> {
               width: context.screenWidth,
               height: context.screenHeight,
               decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage("images/maintenance.png"), fit: BoxFit.fill),
+                image: DecorationImage(
+                    image: AssetImage(
+                        "images/maintenance/maintenance${EnvironmentConfig.template_version == 8 ? "_t8" : ""}.png"),
+                    fit: BoxFit.fill),
               ),
               child: Column(
                 children: [
@@ -69,6 +73,11 @@ class _MaintenanceState extends BaseState<Maintenance> {
                       "please try again later."),
                   _buildText("If have any questions,", isNeedMargin: false),
                   _buildText("please contact our customer service,"),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 40.auto),
+                    child: _buildText(
+                        "Hiện chúng tôi đang được bảo trì, bạn có thẻ liên hệ với bộ phận hồ trở khách hàng 24/7 của chúng tôi đễ biểt thêm thống tin"),
+                  ),
                   Visibility(visible: widget.isShowCS, child: _buildButton())
                 ],
               ),

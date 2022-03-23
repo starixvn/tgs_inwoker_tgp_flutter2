@@ -52,8 +52,10 @@ class WalletTransferViewModel extends BaseViewModel {
       var state = await walletRepo.getGameWallet(wallet.gpCode);
       if (state.isSuccess) {
         wallet.balance = state.result?.balance ?? 0.0;
-      } else
+      } else {
         wallet.balance = null;
+        walletList.removeWhere((element) => element.gpCode == wallet.gpCode);
+      }
     }
     notifyListeners();
   }
