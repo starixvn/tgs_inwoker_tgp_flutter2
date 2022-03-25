@@ -37,6 +37,7 @@ class _AddCardState extends BaseState<AddCard> {
   String? bankTypePickerText, channelPickerText, bankNamePickerText;
   bool isCrypto = true;
   InputValidationProvider validate = new InputValidationProvider();
+  bool isBankNameEnabledEdit = true;
 
   @override
   void initState() {
@@ -118,7 +119,9 @@ class _AddCardState extends BaseState<AddCard> {
             }),
       );
 
-  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum) => CustomTextFormField(
+  _buildBankTextField(String title, String hint, TextEditingController controller, bool isNum,
+          {bool isBankName = false}) =>
+      CustomTextFormField(
         title: getTranslatedText(title),
         hintText: getTranslatedText(hint),
         onChanged: (value) => _onTextChange(value),
@@ -128,6 +131,7 @@ class _AddCardState extends BaseState<AddCard> {
         width: context.screenWidth - 70.auto,
         textInputType: isNum ? TextInputType.number : TextInputType.text,
         textInputAction: TextInputAction.next,
+        enabled: isBankName ? isBankNameEnabledEdit : true,
       );
 
   _buildCryptoAddressTextField() => CustomTextFormField(
@@ -198,7 +202,7 @@ class _AddCardState extends BaseState<AddCard> {
     switch (_vm.pBankType) {
       case BankType.BANK:
         return [
-          (_vm.config?.addCardBankDropDown ?? false)
+          ((_vm.config?.addCardBankDropDown ?? false))
               ? CustomPicker(
                   title: "bank_name",
                   displayText: bankNamePickerText == null ? getTranslatedText("select_bank_name") : bankNamePickerText,
@@ -208,7 +212,7 @@ class _AddCardState extends BaseState<AddCard> {
                   onClick: () {
                     _buildBottomSheet("bank_name", _vm.bankNameList);
                   })
-              : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false),
+              : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true),
           Visibility(
             visible: _vm.config.addCardBankBranch,
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
@@ -344,12 +348,16 @@ class _AddCardState extends BaseState<AddCard> {
   onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
     await _vm.onSelectedWithdrawalInfo(withdrawalInfo: withdrawalInfo);
     onSelectedBankName();
+
     setState(() {
       //  channelPickerText = _vm.pWithdrawalInfo.channelName.replaceAll(RegExp("_"), " ");
-      if (_vm.pWithdrawalInfo!.channelName == "PrimePay_BankTransfer_Custom") {
-        channelPickerText = getTranslatedText("custom_bank");
-      } else {
-        channelPickerText = _vm.pWithdrawalInfo!.channelName;
+      channelPickerText = _vm.pWithdrawalInfo!.channelName;
+      if (_vm.pWithdrawalInfo?.channelCode != "CustomBank") {
+        _bankNameController.text = _vm.pWithdrawalInfo?.channelCode ?? "";
+        isBankNameEnabledEdit = false;
+      }else {
+        _bankNameController.text = "";
+        isBankNameEnabledEdit = true;
       }
     });
   }
