@@ -62,7 +62,7 @@ class DepositDialog extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center),
               ),
-              (description.contains("\\n"))
+              (description.contains("\n"))
                   ? Container(
                       width: context.screenWidth,
                       padding: EdgeInsets.only(bottom: 20.auto, left: 10.auto, right: 10.auto),
