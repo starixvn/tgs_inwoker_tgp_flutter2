@@ -58,7 +58,7 @@ class _SplashState extends BaseState<Splash> {
                   Container(
                     width: context.screenWidth / 2.5,
                     alignment: Alignment.bottomCenter,
-                    child: Lottie.asset("loading/loading_t${EnvironmentConfig.template_version}.json"),
+                    child: Lottie.asset("loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json"),
                   ),
                 ],
               ),

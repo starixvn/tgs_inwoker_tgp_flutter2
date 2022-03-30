@@ -23,6 +23,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t8_dark/game_t8_dark.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
@@ -113,9 +114,12 @@ class _HomeT8State extends BaseState<HomeT8> {
             ),
             body: Column(
               children: [
-                Expanded(flex:1,child: _buildImageSlider(),),
                 Expanded(
-                  flex:3,
+                  flex: 1,
+                  child: _buildImageSlider(),
+                ),
+                Expanded(
+                  flex: 3,
                   child: Container(
                     margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                     child: Column(
@@ -250,12 +254,19 @@ class _HomeT8State extends BaseState<HomeT8> {
     return text.replaceAll("\n", " ");
   }
 
-  _buildGameView() => GameT8(
-        vm: _gameViewModel,
-        onRefreshHomePage: () => _initData(),
-        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
+  _buildGameView() => EnvironmentConfig.dark_mode
+      ? GameT8Dark(
+          vm: _gameViewModel,
+          onRefreshHomePage: () => _initData(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        )
+      : GameT8(
+          vm: _gameViewModel,
+          onRefreshHomePage: () => _initData(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        );
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

@@ -58,42 +58,41 @@ class _GameT8State extends BaseState<GameT8> {
                     child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Container(
-                            //padding: EdgeInsets.only(bottom: 20.auto),
-                            height: 115.auto,
-                            margin: EdgeInsets.only(right: 5.auto),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 15.auto),
-                            child: GridView.count(
-                                crossAxisCount: 4,
-                                shrinkWrap: true,
-                                childAspectRatio: 1.5,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                physics: NeverScrollableScrollPhysics(),
-                                children: List.generate(
-                                    _vm.gameTypeList.length,
-                                        (index) => Container(
-                                      child: _buildGameTab(index, _vm.gameTypeList[index]),
-                                    ))),
-                          ),
-                         Flexible(
-                           flex:1,
-                           child: Container(
-                             height: context.screenHeight / 2 - 77.auto,
-                              child: GameItemT8(
-                                gameViewItem,
-                                controller: _controller,
-                                gameProviderList: _getGameTypeMap(),
-                                onGameClick: (game) => _onGameClick(game),
-                                config: _vm.config,
-                              ),
-
+                        Container(
+                          //padding: EdgeInsets.only(bottom: 20.auto),
+                          height: 135.auto,
+                          margin: EdgeInsets.only(right: 5.auto),
+                          decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                          padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
+                          child: GridView.count(
+                              crossAxisCount: 4,
+                              shrinkWrap: true,
+                              childAspectRatio: 1.2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: List.generate(
+                                  _vm.gameTypeList.length,
+                                  (index) => Container(
+                                        child: _buildGameTab(index, _vm.gameTypeList[index]),
+                                      ))),
                         ),
-                         ),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            height: context.screenHeight / 2 - 77.auto,
+                            child: GameItemT8(
+                              gameViewItem,
+                              controller: _controller,
+                              gameProviderList: _getGameTypeMap(),
+                              onGameClick: (game) => _onGameClick(game),
+                              config: _vm.config,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -112,13 +111,12 @@ class _GameT8State extends BaseState<GameT8> {
         _onTabClick(tabIndex, gameType);
       },
       child: Container(
+          padding: EdgeInsets.only(top: 5.auto),
           decoration: tabIndex == currentTabIndex
               ? BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/game_tab/t8/selected_game_bg.png"),
-                    fit: BoxFit.cover,
-                  ),
-                )
+                      color: Color(0xff8CA6F1),
+                      borderRadius: BorderRadius.circular(5),
+                    )
               : BoxDecoration(),
           alignment: Alignment.center,
           child: Column(

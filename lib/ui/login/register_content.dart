@@ -226,6 +226,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                 value: this._isTermsChecked,
                 checkColor: Colors.white,
                 activeColor: Colors.black,
+                fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
                 onChanged: (val) => this.setState(() {
                   this._isTermsChecked = !this._isTermsChecked;
                 }),
@@ -235,7 +236,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
               flex: 9,
               child: Text(
                 getTranslatedText("register_terms"),
-                style: TextStyle(color: Colors.black, fontSize: 12.auto),
+                style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
               ),
             ),
           ],
