@@ -30,8 +30,20 @@ class HomeT2 extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final Function initData;
+  final HomeViewModel homeViewModel;
+  final GameViewModel gameViewModel;
+  final String? language;
 
-  HomeT2({this.isFirstRun = false, this.onPauseBgMusic, this.onResumeBgMusic});
+  HomeT2({
+    this.isFirstRun = false,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+    required this.initData,
+    required this.homeViewModel,
+    required this.gameViewModel,
+    this.language,
+  });
 
   @override
   _HomeT2State createState() => _HomeT2State();
@@ -51,33 +63,18 @@ class _HomeT2State extends BaseState<HomeT2> {
   var isMenu = false;
 
   var itemHeightRatio = 335 / 90;
-  var _vm = HomeViewModel();
+
+  //var widget.homeViewModel = HomeViewModel();
   int _current = 0;
   CarouselController carouselController = CarouselController();
+
+  //var widget.gameViewModel = GameViewModel();
   var languageCode;
-  var _gameViewModel = GameViewModel();
 
   @override
   void initState() {
-    _initData();
-    super.initState();
-  }
-
-  _initData() async {
-    var task = <Future>[];
-    task.add(_vm.getAnnouncement());
-    task.add(_vm.getPromotionList());
-    task.add(_vm.getBanner());
-    task.add(_vm.getBrandCommunication());
-    task.add(_gameViewModel.getGameProviderList(isRefresh: true));
-    await Future.wait(task);
-    _vm.getUserDetails();
     getLanguage();
-    //randomNumber = _randomGenerator();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
-      if ((_vm.config?.popupPromotion ?? false) && _vm.promotionList != null) _displayPromotionDialog();
-    });
+    super.initState();
   }
 
   getLanguage() async {
@@ -86,30 +83,22 @@ class _HomeT2State extends BaseState<HomeT2> {
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<HomeViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
-              body: Container(
-                child: Column(
-                  children: [
-                    Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
-                    _buildMarqueeRow(),
-                    HomeUserInfoView(
-                      userProfile: _vm.userProfile,
-                      wallet: _vm.totalBalance,
-                      onLoginTap: () => navigateToLogin(),
-                      onRefreshHomePage: () => _initData(),
-                    ),
-                    //GameT2()
-                    _buildGameView(),
-                  ],
-                ),
-              ));
-        });
+    return Container(
+      child: Column(
+        children: [
+          Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
+          _buildMarqueeRow(),
+          HomeUserInfoView(
+            userProfile: widget.homeViewModel.userProfile,
+            wallet: widget.homeViewModel.totalBalance,
+            onLoginTap: () => navigateToLogin(),
+            onRefreshHomePage: () => widget.initData(),
+          ),
+          //GameT2()
+          _buildGameView(),
+        ],
+      ),
+    );
   }
 
   _buildBorderCorner() => Positioned(
@@ -129,7 +118,7 @@ class _HomeT2State extends BaseState<HomeT2> {
   _buildMarqueeRow() => Row(
         children: [
           Container(
-            width: (languageCode?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
+            width: (widget.language?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
             padding: EdgeInsets.only(left: 10.auto),
             child: AutoSizeText(
               getTranslatedText("notice"),
@@ -145,7 +134,7 @@ class _HomeT2State extends BaseState<HomeT2> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
+    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Expanded(
       child: Container(
         decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
@@ -172,19 +161,19 @@ class _HomeT2State extends BaseState<HomeT2> {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
       height: context.screenHeight / 5,
-      child: _vm.bannerList == null || _vm.bannerList!.isEmpty
+      child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
           ? _buildEmptyContainer()
           : ImageSlideshow(
               initialPage: 0,
               indicatorColor: CustomColor.theme_bar_gradient_2,
               indicatorBackgroundColor: Colors.grey,
               children: List.generate(
-                  _vm.bannerList!.length,
-                  (index) => _vm.bannerList![index].mobileUrl == null
+                  widget.homeViewModel.bannerList!.length,
+                  (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
                       ? _buildEmptyContainer()
                       : CachedNetworkImage(
                           placeholder: (context, url) => _buildEmptyContainer(),
-                          imageUrl: _vm.bannerList![index].mobileUrl!,
+                          imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                           //handling error
                           fit: BoxFit.fill,
                           errorWidget: (context, url, error) => _buildEmptyContainer(),
@@ -198,157 +187,20 @@ class _HomeT2State extends BaseState<HomeT2> {
         color: CustomColor.very_light_pink_four,
       );
 
-  /*_buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
-    return Container(
-      padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: SvgPicture.asset(
-              "images/home/ic_marquee.svg",
-              height: 15.auto,
-            ),
-          ),
-          Expanded(
-              flex: 9,
-              child: handleNullWidget(
-                announcement.isEmpty,
-                Container(
-                  // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
-                  margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
-                  height: 18.auto,
-                  child: Marquee(
-                      text: announcement,
-                      style: TextStyle(
-                        color: CustomColor.theme_text_grey_color,
-                        fontSize: 10.auto,
-                      ),
-                      scrollAxis: Axis.horizontal,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      blankSpace: 300.auto,
-                      pauseAfterRound: Duration(seconds: 1),
-                      showFadingOnlyWhenScrolling: false),
-                ),
-              ))
-        ],
-      ),
-    );
-  }*/
-
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
   }
 
   _buildGameView() => GameT2(
-        vm: _gameViewModel,
-        onRefreshHomePage: () => _initData(),
+        vm: widget.gameViewModel,
+        onRefreshHomePage: () => widget.initData(),
         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
         onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
       );
-
-  /*_buildGameImageGridView() => Expanded(
-        flex: 3,
-        child: StaggeredGridView.countBuilder(
-          crossAxisCount: 2,
-          itemCount: gameList.length,
-          itemBuilder: (BuildContext context, int index) => InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Game(gamePlatformCode: "", gameType: gameList[index], index: index))),
-              child: Stack(
-                children: [
-                  Image.asset("images/home/${gameList[index].getImagePath()}.png"),
-                  Positioned(
-                    bottom: 20.auto,
-                    left: 55.auto,
-                    child: Text(
-                      gameList[index].getName(context),
-                      style: TextStyle(color: Colors.white, fontSize: 23.auto),
-                    ),
-                  ),
-                ],
-              )),
-          staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-          mainAxisSpacing: 15.auto,
-          crossAxisSpacing: 15.auto,
-        ),
-      );*/
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
-  }
-
-  _displayLoginDialog() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var loginLater = prefs.getBool("login_later") ?? false;
-    if (_vm.userProfile == null && !loginLater) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_expired"),
-          description: getTranslatedText("login_again"),
-          buttonText1: getTranslatedText("login"),
-          buttonText2: getTranslatedText("no"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            prefs.setBool("login_later", true);
-            Navigator.pop(context);
-          },
-        ),
-      );
-    }
-  }
-
-  _logout() {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.logout();
-  }
-
-  _displayMarqueeDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
-        description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
-        buttonText1: getTranslatedText("confirm"),
-        onClick: () => Navigator.of(context).pop(),
-      ),
-    );
-  }
-
-  _displayPromotionDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => PromotionDialog(
-        promotionList: _vm.promotionList!,
-      ),
-    );
-  }
-
-  _handleApiState() {
-    if (widget.isFirstRun) {
-      if (_vm.isNotLogin) {
-        navigateToLogin();
-        _vm.markIsNotLogin();
-      } else if (_vm.isExpired) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _displayLoginDialog();
-        });
-      }
-    }
-    handleApiState(_vm.logoutApiState, isLogoutApiState: true, onSuccess: () {
-      ProgressDialog.hide();
-    }, onLogout: () {
-      ProgressDialog.hide();
-    });
-    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

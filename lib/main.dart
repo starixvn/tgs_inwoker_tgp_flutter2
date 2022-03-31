@@ -25,6 +25,7 @@ import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart'
 import 'package:tgp_flutter2/ui/deposit/deposit.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
+import 'package:tgp_flutter2/ui/home/home.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
@@ -303,7 +304,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
 
     if (widget.index != null) currentBottomIndex = widget.index!;
     _page = [
-      _getHomeTemplateVersion(),
+      Home(),
       Promotion(),
       EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
       CustomerService(),
@@ -313,35 +314,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     super.initState();
   }
 
-  _getHomeTemplateVersion() {
-    switch (EnvironmentConfig.template_version) {
-      /* case 1:
-        return HomeT1(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );*/
-      case 2:
-        return HomeT2(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );
-      case 3:
-        return HomeT3(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );
-      case 8:
-        return HomeT8(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );
-      default:
-        return HomeT1(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {

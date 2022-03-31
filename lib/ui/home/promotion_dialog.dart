@@ -52,8 +52,20 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
           ),
         ],
       ),
-      child: Wrap(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
+          Container(
+            padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
+            alignment: Alignment.topLeft,
+            child: Text(
+              getTranslatedText("promotion_center"),
+              style: TextStyle(
+                fontSize: 18.auto,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           Flexible(
             flex: 19,
             child: ScrollConfiguration(

@@ -33,8 +33,20 @@ class HomeT8 extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final Function initData;
+  final HomeViewModel homeViewModel;
+  final GameViewModel gameViewModel;
+  final int? randomNumber;
 
-  HomeT8({this.isFirstRun = false, this.onPauseBgMusic, this.onResumeBgMusic});
+  HomeT8({
+    this.isFirstRun = false,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+    required this.initData,
+    required this.homeViewModel,
+    required this.gameViewModel,
+    this.randomNumber
+  });
 
   @override
   _HomeT8State createState() => _HomeT8State();
@@ -54,36 +66,15 @@ class _HomeT8State extends BaseState<HomeT8> {
   var isMenu = false;
 
   var itemHeightRatio = 335 / 90;
-  var _vm = HomeViewModel();
   int _current = 0;
   CarouselController carouselController = CarouselController();
   var languageCode;
-  var _gameViewModel = GameViewModel();
-  var randomNumber;
-  var _assetsAudioPlayer;
+
 
   @override
   void initState() {
-    _initData();
-
-    super.initState();
-  }
-
-  _initData() async {
-    var task = <Future>[];
-    task.add(_vm.getAnnouncement());
-    task.add(_vm.getPromotionList());
-    task.add(_vm.getBanner());
-    task.add(_vm.getBrandCommunication());
-    task.add(_gameViewModel.getGameProviderList(isRefresh: true));
-    await Future.wait(task);
-    _vm.getUserDetails();
     getLanguage();
-    randomNumber = _randomGenerator();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
-      if ((_vm.config?.popupPromotion ?? false) && _vm.promotionList != null) _displayPromotionDialog();
-    });
+    super.initState();
   }
 
   getLanguage() async {
@@ -91,71 +82,45 @@ class _HomeT8State extends BaseState<HomeT8> {
     languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
+
   Widget build(BuildContext context) {
-    return ProviderWidget<HomeViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
-            appBar: CustomLoginAppBar(
-              onClickLoginButton: () {
-                Navigator.of(context).pushNamed(RoutePath.login);
-              },
-              onClickRegisterButton: () {
-                Navigator.of(context).pushNamed(RoutePath.register);
-              },
-              onClickLogoutButton: () {
-                _logout();
-              },
-              isLogin: _vm.userProfile != null,
-              brandLogoUrl: _vm.brandLogoUrl,
-              userProfile: _vm.userProfile,
-              phone: _vm.phone,
-              config: _vm.config,
-              totalBalance: _vm.totalBalance,
-              brandName: EnvironmentConfig.brandName,
-            ),
-            body: Column(
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: _buildImageSlider(),
+        ),
+        Expanded(
+          flex: 3,
+          child: Container(
+            margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
+            child: Column(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: _buildImageSlider(),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
-                    child: Column(
-                      children: [
-                        _buildTextMarquee(),
-                        _buildGameView(),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildTextMarquee(),
+                _buildGameView(),
               ],
             ),
-          );
-        });
+          ),
+        ),
+      ],
+    );
   }
 
   _buildImageSlider() => Container(
         height: context.screenHeight / 5,
-        child: _vm.bannerList == null || _vm.bannerList!.isEmpty
+        child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
             ? _buildEmptyContainer()
             : ImageSlideshow(
                 initialPage: 0,
                 indicatorColor: Colors.transparent,
                 indicatorBackgroundColor: Colors.transparent,
                 children: List.generate(
-                    _vm.bannerList!.length,
-                    (index) => _vm.bannerList![index].mobileUrl == null
+                    widget.homeViewModel.bannerList!.length,
+                    (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
                         ? _buildEmptyContainer()
                         : CachedNetworkImage(
                             placeholder: (context, url) => _buildEmptyContainer(),
-                            imageUrl: _vm.bannerList![index].mobileUrl!,
+                            imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                             //handling error
                             fit: BoxFit.fill,
                             errorWidget: (context, url, error) => _buildEmptyContainer(),
@@ -169,13 +134,13 @@ class _HomeT8State extends BaseState<HomeT8> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
+    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (_vm.config?.onlineUser ?? false)
+          if (widget.homeViewModel.config?.onlineUser ?? false)
             Expanded(
               flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
               child: Column(
@@ -187,7 +152,7 @@ class _HomeT8State extends BaseState<HomeT8> {
                   ),
                   Container(
                     child: Text(
-                      (randomNumber ?? 26500).toString(),
+                      (widget.randomNumber ?? 26500).toString(),
                       style: TextStyle(fontSize: 10.auto),
                     ),
                   ),
@@ -260,8 +225,8 @@ class _HomeT8State extends BaseState<HomeT8> {
   }
 
   _buildGameView() => GameT8(
-        vm: _gameViewModel,
-        onRefreshHomePage: () => _initData(),
+        vm: widget.gameViewModel,
+        onRefreshHomePage: () => widget.initData(),
         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
         onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
       );
@@ -270,82 +235,5 @@ class _HomeT8State extends BaseState<HomeT8> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
-  }
-
-  _displayLoginDialog() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var loginLater = prefs.getBool("login_later") ?? false;
-    if (_vm.userProfile == null && !loginLater) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_expired"),
-          description: getTranslatedText("login_again"),
-          buttonText1: getTranslatedText("login"),
-          buttonText2: getTranslatedText("no"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            prefs.setBool("login_later", true);
-            Navigator.pop(context);
-          },
-        ),
-      );
-    }
-  }
-
-  _logout() {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.logout();
-  }
-
-  _displayMarqueeDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
-        description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
-        buttonText1: getTranslatedText("confirm"),
-        onClick: () => Navigator.of(context).pop(),
-      ),
-    );
-  }
-
-  _displayPromotionDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => PromotionDialog(
-        promotionList: _vm.promotionList!,
-      ),
-    );
-  }
-
-  _randomGenerator() {
-    Random _random = new Random();
-    int min = 20000;
-    int max = 30000;
-    int result = min + _random.nextInt(max - min);
-    return result;
-  }
-
-  _handleApiState() {
-    if (widget.isFirstRun) {
-      if (_vm.isNotLogin) {
-        navigateToLogin();
-        _vm.markIsNotLogin();
-      } else if (_vm.isExpired) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _displayLoginDialog();
-        });
-      }
-    }
-    handleApiState(_vm.logoutApiState, isLogoutApiState: true, onSuccess: () {
-      ProgressDialog.hide();
-    }, onLogout: () {
-      ProgressDialog.hide();
-    });
-    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
