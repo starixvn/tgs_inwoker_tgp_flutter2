@@ -242,7 +242,7 @@ class GameViewModel extends BaseViewModel {
 
   getPlatformList(GameType gameType) {
     List<GameProvider2> list = gameProviderList!.expand((e) => e).toList();
-    platformList = list.where((element) => element.gameType == gameType).toList();
+    platformList = list.where((element) => element.gameType == gameType && element.status==0).toList();
     notifyListeners();
   }
 

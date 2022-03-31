@@ -22,6 +22,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 
 class HomeT3 extends StatefulWidget {
   final bool isFirstRun;
@@ -61,14 +62,19 @@ class _HomeT3State extends BaseState<HomeT3> {
   }
 
   _initData() async {
-    await getLanguage();
-    _vm.getAnnouncement();
-    _vm.getBanner();
-    _vm.getBrandCommunication();
-    await _gameViewModel.getGameProviderList(isRefresh: true);
+    var task = <Future>[];
+    task.add(_vm.getAnnouncement());
+    task.add(_vm.getPromotionList());
+    task.add(_vm.getBanner());
+    task.add(_vm.getBrandCommunication());
+    task.add(_gameViewModel.getGameProviderList(isRefresh: true));
+    await Future.wait(task);
     _vm.getUserDetails();
+    getLanguage();
+   // randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
+      if ((_vm.config?.popupPromotion ?? false) && _vm.promotionList != null) _displayPromotionDialog();
     });
   }
 
@@ -373,6 +379,15 @@ class _HomeT3State extends BaseState<HomeT3> {
     );
   }
 
+  _displayPromotionDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => PromotionDialog(
+        promotionList: _vm.promotionList!,
+      ),
+    );
+  }
+
   _handleApiState() {
     if (widget.isFirstRun) {
       if (_vm.isNotLogin) {
@@ -392,5 +407,6 @@ class _HomeT3State extends BaseState<HomeT3> {
     handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

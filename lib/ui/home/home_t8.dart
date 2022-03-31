@@ -27,6 +27,8 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
 
+import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
+
 class HomeT8 extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
@@ -68,16 +70,20 @@ class _HomeT8State extends BaseState<HomeT8> {
   }
 
   _initData() async {
-    _vm.getAnnouncement();
-    _vm.getBanner();
-
-    _vm.getBrandCommunication();
-    await _gameViewModel.getGameProviderList(isRefresh: true);
+    var task = <Future>[];
+    task.add(_vm.getAnnouncement());
+    task.add(_vm.getPromotionList());
+    task.add(_vm.getBanner());
+    task.add(_vm.getBrandCommunication());
+    task.add(_gameViewModel.getGameProviderList(isRefresh: true));
+    await Future.wait(task);
+    _vm.getUserDetails();
     getLanguage();
+    randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
+      if ((_vm.config?.popupPromotion ?? false) && _vm.promotionList != null) _displayPromotionDialog();
     });
-    randomNumber = _randomGenerator();
   }
 
   getLanguage() async {
@@ -113,9 +119,12 @@ class _HomeT8State extends BaseState<HomeT8> {
             ),
             body: Column(
               children: [
-                Expanded(flex:1,child: _buildImageSlider(),),
                 Expanded(
-                  flex:3,
+                  flex: 1,
+                  child: _buildImageSlider(),
+                ),
+                Expanded(
+                  flex: 3,
                   child: Container(
                     margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
                     child: Column(
@@ -301,6 +310,15 @@ class _HomeT8State extends BaseState<HomeT8> {
     );
   }
 
+  _displayPromotionDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => PromotionDialog(
+        promotionList: _vm.promotionList!,
+      ),
+    );
+  }
+
   _randomGenerator() {
     Random _random = new Random();
     int min = 20000;
@@ -328,5 +346,6 @@ class _HomeT8State extends BaseState<HomeT8> {
     handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

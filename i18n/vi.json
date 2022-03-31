@@ -1052,5 +1052,6 @@
   "secure_bank_account_name": "Tên / Tài khoản Ngân hàng",
   "enter_deposit_bank_account_name_hint": "Vui lòng nhập tên / tài khoản ngân hàng",
   "withdraw_reach_min": "số tiền rút không đạt số tiền tối thiểu",
-  "withdraw_reach_max": "số tiền rút đã đạt đến số tiền tối đa"
+  "withdraw_reach_max": "số tiền rút đã đạt đến số tiền tối đa",
+  "bank_transferring_notification_content_GMO": "Quan trọng! \ n \ nHãy đảm bảo rằng tài khoản ngân hàng rút tiền của bạn là CÙNG với tài khoản tiền gửi của bạn để ngăn chặn rửa tiền. \ n \ nLiên hệ với CS nếu bạn có bất kỳ câu hỏi nào về rút tiền, cảm ơn bạn."
 }

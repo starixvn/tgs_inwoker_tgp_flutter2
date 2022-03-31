@@ -1,4 +1,5 @@
 import 'package:api/entity/home_banner.dart';
+import 'package:api/entity/promotion.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/announcement.dart';
 import 'package:api/entity/game.dart';
@@ -34,31 +35,18 @@ class HomeViewModel extends BaseViewModel {
       getBannerApiState,
       logoutApiState,
       getBrandCommunicationApiState,
-      getBankCardListApiState;
+      getBankCardListApiState,
+      getPromotionListApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
   List<HomeBanner>? bannerList;
   Announcement? firstAnnouncement;
   String? phone;
-
-  /*resumeIfNeed() async {
-    setLoading();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString("token");
-    if (token != null) {
-      print(token);
-      await userRepo.getBasicInfo();
-      await userRepo.getWalletBalance();
-      await _computeTotalBalance();
-      if (userProfile == null) isExpired = true;
-      print("Token: " + token);
-      print("Authorization: " + prefs.getString("auth_token")!);
-    } else
-      isNotLogin = true;
-    setLoading(false);
-    notifyListeners();
-  }*/
+  int? page;
+  int rows = 10;
+  bool endRecord = false;
+  List<Promotion>? promotionList;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -99,7 +87,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    //if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
 
     var task = <Future>[];
@@ -156,7 +144,8 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getBrandCommunicationApiState = await userRepo.getBrandCommunication();
     if (getBrandCommunicationApiState.isSuccess) {
-      phone = getBrandCommunicationApiState.result.first.phone;
+      if (getBrandCommunicationApiState.result.isNotEmpty ?? false)
+        phone = getBrandCommunicationApiState.result?.first.phone;
     }
     setLoading(false);
     return getBrandCommunicationApiState;
@@ -173,5 +162,32 @@ class HomeViewModel extends BaseViewModel {
     //if (userProfile != null) {
     _getTotalBalance();
     _getBankCardList();
+  }
+
+  getPromotionList({isLoadMore = false}) async {
+    setLoading();
+
+    if (isLoadMore) {
+      if (page! * rows < getPromotionListApiState.result.totalCount)
+        page = page! + 1;
+      else
+        return;
+    } else
+      page = 1;
+
+    //if (userProfile == null)
+    getPromotionListApiState = await contentRepo.getPromotionList(page!, rows, true, true, userProfile == null);
+    // else
+    //   getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
+    List<Promotion> list = [];
+    if (getPromotionListApiState.isSuccess) {
+      list = getPromotionListApiState.result.items;
+      if (promotionList == null) promotionList = [];
+      if (list.isNotEmpty) promotionList!.addAll(list);
+      endRecord = promotionList!.length >= getPromotionListApiState.result.totalCount ? true : false;
+    } else
+      promotionList = [];
+    setLoading(false);
+    return getPromotionListApiState;
   }
 }

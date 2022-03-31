@@ -7,6 +7,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/extension/format.dart';
 import 'package:tgp_flutter2/custom/deposit_dialog.dart';
 import 'package:tgp_flutter2/custom/tab_button.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -35,7 +36,7 @@ class _DepositState extends BaseState<Deposit> {
     super.initState();
   }
 
-  _initData()async{
+  _initData() async {
     await _vm.getPlayerPromotionList(1);
     _vm.getPayment();
     _displayDepositDialog();
@@ -141,17 +142,23 @@ class _DepositState extends BaseState<Deposit> {
   _displayDepositDialog() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.config?.depositNotification ?? false) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => DepositDialog(
-            title: getTranslatedText("bank_transferring_notification"),
-            description: getTranslatedText("bank_transferring_notification_content"),
-            buttonText1: getTranslatedText("confirm"),
-          ),
-        );
+        if (EnvironmentConfig.brandName == "GMO") {
+          _showDialog( "bank_transferring_notification_content_GMO");
+        } else {
+          _showDialog( "bank_transferring_notification_content");
+        }
       }
     });
   }
+
+  _showDialog(String content) => showDialog(
+    context: context,
+    builder: (BuildContext context) => DepositDialog(
+      title: getTranslatedText("bank_transferring_notification"),
+      description: getTranslatedText(content),
+      buttonText1: getTranslatedText("confirm"),
+    ),
+  );
 
   _handleApiState() {
     handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {

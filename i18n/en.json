@@ -1066,5 +1066,6 @@
   "deposit_bank_account_name": "Bank Account/Name",
   "enter_deposit_bank_account_name_hint": "Please enter bank account/name",
   "withdraw_reach_min": "Withdrawal amount is not reach minimum amount.",
-  "withdraw_reach_max": "Withdrawal amount is not reach maximum amount."
+  "withdraw_reach_max": "Withdrawal amount is not reach maximum amount.",
+  "bank_transferring_notification_content_GMO": "Important!\n\nPlease ensure your withdrawal bank account is the SAME as your deposit account to prevent money laundering.\n\nContact CS if you have any withdrawal questions, thanks you."
 }
