@@ -58,8 +58,11 @@ class MainViewModel extends BaseViewModel {
   }
 
   getEnvFeatures() async {
+    var brand = EnvironmentConfig.brandName == "WLGHK" && EnvironmentConfig.environmentStage == "staging"
+        ? "stg_WLGHK"
+        : EnvironmentConfig.brandName;
     setLoading();
-    await contentRepo.getEnvFeaturesJson(EnvironmentConfig.brandName);
+    await contentRepo.getEnvFeaturesJson(brand);
     setLoading(false);
   }
 

@@ -83,7 +83,7 @@ class _HomeState extends BaseState<Home> {
     randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
-      if ((_vm.config?.popupPromotion ?? false) && _vm.promotionList != null) _displayPromotionDialog();
+      if ((_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false)) _displayPromotionDialog();
     });
   }
 
