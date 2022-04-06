@@ -28,8 +28,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(45);
 
   Widget build(BuildContext context) {
-    return EnvironmentConfig.template_version == 1
-        ? AppBar(
+     if(EnvironmentConfig.template_version == 1)
+        return AppBar(
             automaticallyImplyLeading: false,
             flexibleSpace: Container(
               decoration: gradientDecoration,
@@ -44,8 +44,32 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () => _onPress(context),
             ),
             actions: [_getAppBarWidget()],
-          )
-        : AppBar(
+          );
+     else if (EnvironmentConfig.template_version == 8 &&( EnvironmentConfig.dark_mode)) {
+       return AppBar(
+         automaticallyImplyLeading: false,
+         flexibleSpace: Container(
+           decoration: BoxDecoration(
+             gradient: LinearGradient(
+                 colors: [Colors.transparent.withOpacity(1.0), Color(0xff000129)],
+                 begin: Alignment.bottomCenter,
+                 end: Alignment.topCenter,
+                 stops: [0, 0.5]),
+           ),
+         ),
+         centerTitle: true,
+         title: Text(
+           title,
+           style: TextStyle(fontSize: 16.auto),
+         ),
+         leading: IconButton(
+           icon: Icon(Icons.arrow_back),
+           onPressed: () => _onPress(context),
+         ),
+         actions: [_getAppBarWidget()],
+       );
+     }
+        else return  AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: CustomColor.theme_app_bar_color,
             centerTitle: true,

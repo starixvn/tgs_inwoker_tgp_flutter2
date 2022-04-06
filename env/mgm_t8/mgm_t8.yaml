@@ -22,6 +22,9 @@ environment_config:
     template_version:
       type: int
       default: 8
+    dark_mode:
+      type: bool
+      default: false
     primaryColorCode:
       type: int
       default: 0xff044BA3
@@ -79,12 +82,16 @@ environment_config:
     theme_app_bar_text_color:
       type: int
       default: 0xff000000
+    announcement_icon_color:
+      type: int
+      default: 0xff6589F7
     brandName:
       default: "MGM"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
+
     default_lang:
-      default: "zh-TW"
+      default:  "zh-TW"
     vipPresentType:
       type: int
       default: 1

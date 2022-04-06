@@ -16,6 +16,8 @@ class EnvironmentConfig {
 
   static const int template_version = 2;
 
+  static const bool dark_mode = false;
+
   static const int primaryColorCode = 4278471587;
 
   static const int primaryGradientColorCode = 4279994055;
@@ -53,6 +55,8 @@ class EnvironmentConfig {
   static const int theme_text_grey_white_color = 4285558896;
 
   static const int theme_app_bar_text_color = 4294967295;
+
+  static const int announcement_icon_color = 4291206250;
 
   static const String default_lang = 'en-US';
 

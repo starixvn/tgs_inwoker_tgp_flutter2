@@ -23,6 +23,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t8_dark/game_t8_dark.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
@@ -38,15 +39,14 @@ class HomeT8 extends StatefulWidget {
   final GameViewModel gameViewModel;
   final int? randomNumber;
 
-  HomeT8({
-    this.isFirstRun = false,
-    this.onPauseBgMusic,
-    this.onResumeBgMusic,
-    required this.initData,
-    required this.homeViewModel,
-    required this.gameViewModel,
-    this.randomNumber
-  });
+  HomeT8(
+      {this.isFirstRun = false,
+      this.onPauseBgMusic,
+      this.onResumeBgMusic,
+      required this.initData,
+      required this.homeViewModel,
+      required this.gameViewModel,
+      this.randomNumber});
 
   @override
   _HomeT8State createState() => _HomeT8State();
@@ -70,7 +70,6 @@ class _HomeT8State extends BaseState<HomeT8> {
   CarouselController carouselController = CarouselController();
   var languageCode;
 
-
   @override
   void initState() {
     getLanguage();
@@ -81,7 +80,6 @@ class _HomeT8State extends BaseState<HomeT8> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
-
 
   Widget build(BuildContext context) {
     return Column(
@@ -148,12 +146,18 @@ class _HomeT8State extends BaseState<HomeT8> {
                 children: [
                   Text(
                     getTranslatedText("online_user") + " :",
-                    style: TextStyle(fontSize: 10.auto),
+                    style: TextStyle(
+                      fontSize: 10.auto,
+                      color: CustomColor.theme_text_black_white_color,
+                    ),
                   ),
                   Container(
                     child: Text(
                       (widget.randomNumber ?? 26500).toString(),
-                      style: TextStyle(fontSize: 10.auto),
+                      style: TextStyle(
+                        fontSize: 10.auto,
+                        color: CustomColor.theme_text_black_white_color,
+                      ),
                     ),
                   ),
                 ],
@@ -224,12 +228,19 @@ class _HomeT8State extends BaseState<HomeT8> {
     return text.replaceAll("\n", " ");
   }
 
-  _buildGameView() => GameT8(
-        vm: widget.gameViewModel,
-        onRefreshHomePage: () => widget.initData(),
-        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
+  _buildGameView() => EnvironmentConfig.dark_mode
+      ? GameT8Dark(
+          vm: widget.gameViewModel,
+          onRefreshHomePage: () => widget.initData(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        )
+      : GameT8(
+          vm: widget.gameViewModel,
+          onRefreshHomePage: () => widget.initData(),
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        );
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

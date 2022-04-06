@@ -63,7 +63,7 @@ class _MessageViewState extends BaseState<MessageView> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Lottie.asset(
-                            "loading/loading_t${EnvironmentConfig.template_version}.json",
+                            "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json",
                             width: 100,
                             height: 100,
                           ),

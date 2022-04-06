@@ -22,6 +22,9 @@ environment_config:
     template_version:
       type: int
       default: 1
+    dark_mode:
+      type: bool
+      default: false
     primaryColorCode:
       type: int
       default: 0xff91030c
@@ -79,12 +82,15 @@ environment_config:
     theme_app_bar_text_color:
       type: int
       default: 0xffFFFFFF
+        announcement_icon_color:
+          type: int
+          default: 0xffC40511
     brandName:
       default: "MESS8"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     default_lang:
-      default: "vi-VN"
+      default:  "vi-VN"
     vipPresentType:
       type: int
       default: 2

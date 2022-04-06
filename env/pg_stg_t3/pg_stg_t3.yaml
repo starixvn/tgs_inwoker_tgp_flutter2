@@ -26,6 +26,9 @@ environment_config:
     template_version:
       type: int
       default: 3
+    dark_mode:
+      type: bool
+      default: false
     primaryColorCode:
       type: int
       default: 0xff044BA3
@@ -83,8 +86,11 @@ environment_config:
     theme_app_bar_text_color:
       type: int
       default: 0xffFFFFFF
+    announcement_icon_color:
+      type: int
+      default: 0xffFF9900
     default_lang:
-      default: "en-US"
+      default:  "en-US"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     brandName:
