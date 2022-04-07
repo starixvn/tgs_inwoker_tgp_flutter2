@@ -26,6 +26,7 @@ import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
+import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
 
@@ -151,6 +152,14 @@ class _HomeState extends BaseState<Home> {
         );
       case 8:
         return HomeT8(
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          initData: () => _initData(),
+          homeViewModel: _vm,
+          gameViewModel: _gameViewModel,
+        );
+      case 9:
+        return HomeT9(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
