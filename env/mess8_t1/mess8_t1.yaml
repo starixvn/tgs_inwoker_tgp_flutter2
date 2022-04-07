@@ -82,9 +82,9 @@ environment_config:
     theme_app_bar_text_color:
       type: int
       default: 0xffFFFFFF
-        announcement_icon_color:
-          type: int
-          default: 0xffC40511
+    announcement_icon_color:
+      type: int
+      default: 0xffC40511
     brandName:
       default: "MESS8"
     assetUrl:

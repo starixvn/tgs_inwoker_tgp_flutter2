@@ -89,7 +89,6 @@ environment_config:
       default: "MGM"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
-
     default_lang:
       default:  "zh-TW"
     vipPresentType:
