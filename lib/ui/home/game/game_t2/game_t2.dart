@@ -241,6 +241,7 @@ class _GameT2State extends BaseState<GameT2> {
           onClick2: () {
             Navigator.pop(context);
           },
+          popIndex: 2,
         ),
       );
     } else

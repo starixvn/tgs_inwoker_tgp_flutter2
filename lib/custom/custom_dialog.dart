@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 
-class CustomDialog extends StatelessWidget {
+class CustomDialog extends StatefulWidget {
   final String? title, description, buttonText1;
   final String? buttonText2;
   final Function onClick;
   final Function? onClick2;
+  final int popIndex;
 
   CustomDialog({
     this.title,
@@ -18,7 +20,35 @@ class CustomDialog extends StatelessWidget {
     this.buttonText2,
     required this.onClick,
     this.onClick2,
+    this.popIndex = 1,
   });
+
+  @override
+  _CustomDialogState createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends BaseState<CustomDialog> {
+  var isButtonClicked = false, isButton2Clicked = false;
+
+  @override
+  void deactivate() {
+    if (!isButton2Clicked && !isButtonClicked) {
+      if (widget.popIndex == 1)
+        widget.onClick();
+      else if (widget.popIndex == 2) widget.onClick2!();
+    }
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    if (!isButton2Clicked && !isButtonClicked) {
+      if (widget.popIndex == 1)
+        widget.onClick();
+      else if (widget.popIndex == 2) widget.onClick2!();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +85,13 @@ class CustomDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min, // To make the card compact
             children: <Widget>[
-              title == null
+              widget.title == null
                   ? Container()
                   : Container(
                       padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        title!,
+                        widget.title!,
                         style: TextStyle(
                           fontSize: 18.auto,
                           fontWeight: FontWeight.w500,
@@ -72,21 +102,23 @@ class CustomDialog extends StatelessWidget {
                 width: context.screenWidth,
                 padding: EdgeInsets.only(bottom: 20.auto, left: 10.auto, right: 10.auto),
                 child: Text(
-                  description!,
+                  widget.description!,
                   style: TextStyle(
                     fontSize: 13.auto,
                     color: Colors.black54,
                   ),
-                  textAlign: title == null ? TextAlign.center : TextAlign.start,
+                  textAlign: widget.title == null ? TextAlign.center : TextAlign.start,
                 ),
               ),
-              buttonText2 == null
+              widget.buttonText2 == null
                   ? _buildDoneButton(context)
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(flex: 1, child: _buildDoneButton(context)),
-                        Container(width: 10.auto,),
+                        Container(
+                          width: 10.auto,
+                        ),
                         Expanded(flex: 1, child: _buildBackButton(context))
                       ],
                     )
@@ -98,13 +130,13 @@ class CustomDialog extends StatelessWidget {
   }
 
   _buildDoneButton(BuildContext context) => ColorButton(
-        onClick: () => this.onClick(),
-        title: buttonText1!,
-        /*text: Text(
-          buttonText1,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: CustomColor.theme_text_grey_color),
-        ),*/
+        onClick: () {
+          setState(() {
+            isButtonClicked = true;
+          });
+          widget.onClick();
+        },
+        title: widget.buttonText1!,
         isEnabled: true,
         radius: 45.auto,
         width: context.screenWidth / 3.5,
@@ -112,8 +144,13 @@ class CustomDialog extends StatelessWidget {
       );
 
   _buildBackButton(BuildContext context) => OutlineBorderButton(
-        onClick: () => this.onClick2!(),
-        title: buttonText2!,
+        onClick: () {
+          setState(() {
+            isButton2Clicked = true;
+          });
+          widget.onClick2!();
+        },
+        title: widget.buttonText2!,
         isEnabled: true,
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,

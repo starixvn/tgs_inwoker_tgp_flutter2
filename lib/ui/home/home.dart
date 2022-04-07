@@ -82,8 +82,8 @@ class _HomeState extends BaseState<Home> {
     getLanguage();
     randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
-      if ((_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false)) _displayPromotionDialog();
+      _displayMarqueeDialog();
+      _displayPromotionDialog();
     });
   }
 
@@ -190,6 +190,7 @@ class _HomeState extends BaseState<Home> {
             prefs.setBool("login_later", true);
             Navigator.pop(context);
           },
+          popIndex: 2,
         ),
       );
     }
@@ -200,26 +201,47 @@ class _HomeState extends BaseState<Home> {
     _vm.logout();
   }
 
-  _displayMarqueeDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
-        description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
-        buttonText1: getTranslatedText("confirm"),
-        onClick: () => Navigator.of(context).pop(),
-      ),
-    );
+  _displayMarqueeDialog() {
+    if (isShowAnnouncement()) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
+          description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
+          buttonText1: getTranslatedText("confirm"),
+          onClick: () {
+            if (isShowPromotion()) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                _displayPromotionDialog();
+              });
+            } else
+              Navigator.of(context).pop();
+          },
+        ),
+      );
+    }
   }
 
-  _displayPromotionDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => PromotionDialog(
-        promotionList: _vm.promotionList!,
-      ),
-    );
+  _displayPromotionDialog() {
+    if (isShowPromotion()) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => PromotionDialog(
+          promotionList: _vm.promotionList!,
+          onClick: () {
+            if (isShowAnnouncement()) {
+              Navigator.of(context).pop();
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    }
   }
+
+  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null;
+
+  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
 
   _randomGenerator() {
     Random _random = new Random();

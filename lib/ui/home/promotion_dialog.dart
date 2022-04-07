@@ -13,8 +13,9 @@ import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 
 class PromotionDialog extends StatefulWidget {
   final List<Promotion> promotionList;
+  final Function onClick;
 
-  PromotionDialog({required this.promotionList});
+  PromotionDialog({required this.promotionList, required this.onClick});
 
   @override
   _PromotionDialogState createState() => _PromotionDialogState();
@@ -22,6 +23,23 @@ class PromotionDialog extends StatefulWidget {
 
 class _PromotionDialogState extends BaseState<PromotionDialog> {
   PromotionViewModel vm = PromotionViewModel();
+  var isButtonClicked = false;
+
+  @override
+  void deactivate() {
+    if (!isButtonClicked) {
+      widget.onClick();
+    }
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    if (!isButtonClicked) {
+      widget.onClick();
+    }
+    super.dispose();
+  }
 
   Widget build(BuildContext context) {
     return Dialog(
@@ -131,7 +149,12 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
   }
 
   _buildDoneButton() => ColorButton(
-        onClick: () => Navigator.pop(context),
+        onClick: () {
+          setState(() {
+            isButtonClicked = true;
+          });
+          widget.onClick();
+        },
         title: getTranslatedText("confirm"),
         isEnabled: true,
         radius: 45.auto,

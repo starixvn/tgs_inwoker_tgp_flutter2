@@ -333,6 +333,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
             onClick2: () {
               Navigator.pop(context);
             },
+            popIndex: 2,
           ),
         );
       });

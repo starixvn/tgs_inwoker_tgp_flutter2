@@ -22,6 +22,9 @@ environment_config:
     template_version:
       type: int
       default: 1
+    dark_mode:
+      type: bool
+      default: false
     primaryColorCode:
       type: int
       default: 0xff044BA3

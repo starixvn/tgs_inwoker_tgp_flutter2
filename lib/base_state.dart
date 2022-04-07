@@ -17,13 +17,13 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-abstract class
-BaseState<T extends StatefulWidget> extends State<T> {
+abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
 
   get apiError => userRepo.apiError;
 
-  getTranslatedText(String? key, {bool isByBrand = false}) => LanguageProvider.getSingleton().getTranslated(context, key,isByBrand: isByBrand);
+  getTranslatedText(String? key, {bool isByBrand = false}) =>
+      LanguageProvider.getSingleton().getTranslated(context, key, isByBrand: isByBrand);
 
   handleApiState(
     EventResult? eventResult, {
@@ -105,7 +105,7 @@ BaseState<T extends StatefulWidget> extends State<T> {
             //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
             //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
             Lottie.asset(
-              "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json",
+              "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode ? "_dark" : ""}.json",
               width: 150,
               height: 150,
             ),
@@ -132,7 +132,7 @@ BaseState<T extends StatefulWidget> extends State<T> {
     if (errorKey != null) {
       errorMessage = getTranslatedText(errorKey);
     }
-    CustomToast.show(errorMessage!);
+    CustomToast.show(errorMessage ?? "");
   }
 
   showApiErrorMessageInDialog(EventResult eventResult) {
@@ -269,6 +269,7 @@ BaseState<T extends StatefulWidget> extends State<T> {
               onClick2: () {
                 Navigator.pop(context);
               },
+              popIndex: 2,
             ));
   }
 }
