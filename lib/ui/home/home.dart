@@ -84,7 +84,7 @@ class _HomeState extends BaseState<Home> {
     randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _displayMarqueeDialog();
-      _displayPromotionDialog();
+      if (!isShowAnnouncement() && isShowPromotion()) _displayPromotionDialog();
     });
   }
 
