@@ -130,7 +130,7 @@ class GameItemT8DarkState extends BaseState<GameItemT8Dark> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage("images/game/T8_dark/btn-start-game.jpg"))),
+                        image: DecorationImage(image: AssetImage("images/game/T8/btn-start-game.jpg"))),
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: AutoSizeText(
