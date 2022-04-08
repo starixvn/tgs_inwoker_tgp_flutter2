@@ -25,7 +25,7 @@ class GameItemT9 extends StatefulWidget {
 }
 
 class GameItemT9State extends BaseState<GameItemT9> {
-  double _imageRatio = 377 / 254;
+  double _imageRatio = 357 / 254;
   double _containerPaddingRight = 5.auto;
   double _listViewPaddingRight = 5.auto;
   double _itemPaddingRight = 0; //5.auto;
@@ -43,10 +43,10 @@ class GameItemT9State extends BaseState<GameItemT9> {
   Widget build(BuildContext context) {
     return Container(
       child: GridView.count(
+        controller: widget.controller,
           padding: EdgeInsets.symmetric(vertical: 10.auto),
           crossAxisCount: 2,
           shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
           childAspectRatio: _imageRatio,
           crossAxisSpacing: 5,
           mainAxisSpacing: 5,
