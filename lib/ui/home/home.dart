@@ -83,9 +83,14 @@ class _HomeState extends BaseState<Home> {
     getLanguage();
     randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _displayMarqueeDialog();
-      if (!isShowAnnouncement() && isShowPromotion()) _displayPromotionDialog();
+      _displayDialog();
     });
+  }
+
+  _displayDialog() {
+    if (isShowAnnouncement()) {
+      _displayMarqueeDialog();
+    } else if (isShowPromotion()) _displayPromotionDialog();
   }
 
   getLanguage() async {
@@ -99,6 +104,7 @@ class _HomeState extends BaseState<Home> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return Scaffold(
+            //key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
             backgroundColor: CustomColor.theme_bg_color,
             appBar: CustomLoginAppBar(
@@ -214,17 +220,15 @@ class _HomeState extends BaseState<Home> {
     if (isShowAnnouncement()) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => CustomDialog(
+        builder: (BuildContext context2) => CustomDialog(
           title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
           description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
           buttonText1: getTranslatedText("confirm"),
           onClick: () {
             if (isShowPromotion()) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
                 _displayPromotionDialog();
-              });
             } else
-              Navigator.of(context).pop();
+              Navigator.of(context2).pop();
           },
         ),
       );
@@ -232,20 +236,18 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayPromotionDialog() {
-    if (isShowPromotion()) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => PromotionDialog(
-          promotionList: _vm.promotionList!,
-          onClick: () {
-            if (isShowAnnouncement()) {
-              Navigator.of(context).pop();
-            }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => PromotionDialog(
+        promotionList: _vm.promotionList!,
+        onClick: (){
+          if(isShowAnnouncement()){
             Navigator.of(context).pop();
-          },
-        ),
-      );
-    }
+          }
+          Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 
   isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null;

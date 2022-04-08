@@ -33,9 +33,11 @@ class _CustomDialogState extends BaseState<CustomDialog> {
   @override
   void deactivate() {
     if (!isButton2Clicked && !isButtonClicked) {
-      if (widget.popIndex == 1)
-        widget.onClick();
-      else if (widget.popIndex == 2) widget.onClick2!();
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (widget.popIndex == 1)
+          widget.onClick();
+        else if (widget.popIndex == 2) widget.onClick2!();
+      });
     }
     super.deactivate();
   }
@@ -43,9 +45,11 @@ class _CustomDialogState extends BaseState<CustomDialog> {
   @override
   void dispose() {
     if (!isButton2Clicked && !isButtonClicked) {
-      if (widget.popIndex == 1)
-        widget.onClick();
-      else if (widget.popIndex == 2) widget.onClick2!();
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (widget.popIndex == 1)
+          widget.onClick();
+        else if (widget.popIndex == 2) widget.onClick2!();
+      });
     }
     super.dispose();
   }

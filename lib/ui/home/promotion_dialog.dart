@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -15,7 +16,10 @@ class PromotionDialog extends StatefulWidget {
   final List<Promotion> promotionList;
   final Function onClick;
 
-  PromotionDialog({required this.promotionList, required this.onClick});
+  PromotionDialog({
+    required this.promotionList,
+    required this.onClick
+  });
 
   @override
   _PromotionDialogState createState() => _PromotionDialogState();
@@ -23,23 +27,6 @@ class PromotionDialog extends StatefulWidget {
 
 class _PromotionDialogState extends BaseState<PromotionDialog> {
   PromotionViewModel vm = PromotionViewModel();
-  var isButtonClicked = false;
-
-  @override
-  void deactivate() {
-    if (!isButtonClicked) {
-      widget.onClick();
-    }
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    if (!isButtonClicked) {
-      widget.onClick();
-    }
-    super.dispose();
-  }
 
   Widget build(BuildContext context) {
     return Dialog(
@@ -150,9 +137,6 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
 
   _buildDoneButton() => ColorButton(
         onClick: () {
-          setState(() {
-            isButtonClicked = true;
-          });
           widget.onClick();
         },
         title: getTranslatedText("confirm"),
