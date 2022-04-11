@@ -34,7 +34,7 @@ class GameT2 extends StatefulWidget {
 
 class _GameT2State extends BaseState<GameT2> {
   var _controller = ScrollController();
-  var currentTabIndex = 0, currentGameType = GameType.Sportsbook;
+  var currentTabIndex = 0, currentGameType = GameType.Sportsbook, currentGamePlatformCode;
   late GameViewModel _vm;
 
   var gameName;
@@ -244,8 +244,13 @@ class _GameT2State extends BaseState<GameT2> {
           popIndex: 2,
         ),
       );
-    } else
-      _navigate(gameProvider.code, gameProvider.gameType);
+    } else {
+      setState(() {
+        currentGameType = gameProvider.gameType!;
+        currentGamePlatformCode = gameProvider.code;
+      });
+      _navigate();
+    }
   }
 
   _onTabClick(int tabIndex) {
@@ -287,56 +292,51 @@ class _GameT2State extends BaseState<GameT2> {
     });
   }
 
-  _navigate(String? gamePlatformCode, GameType? gameType) async {
-    // if (_isSWGame(gamePlatformCode, gameType)) {
-    if (_isSWGame(gamePlatformCode, gameType) || _isSGGame(gamePlatformCode))
-      await _vm.getLobbyGameUrl(gamePlatformCode!, gameType!, EnvironmentConfig.url);
-    else if (_isTcgGame(gamePlatformCode)) {
-      await _vm.getGameList(gamePlatformCode, gameType);
-      await _vm.getGameUrl(gamePlatformCode!, _vm.gameListMap[gamePlatformCode]!.first.id!, EnvironmentConfig.url);
-      // }
-      /*WidgetsBinding.instance!.addPostFrameCallback((_) {
-        launch(_vm.url!);
-      });*/
-    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+  _navigate() async {
+    if (_isSWGame() || _isSGGame())
+      await _vm.getLobbyGameUrl(currentGamePlatformCode!, currentGameType, EnvironmentConfig.url);
+    else if (_isTcgGame()) {
+      await _vm.getGameList(currentGamePlatformCode, currentGameType);
+      await _vm.getGameUrl(
+          currentGamePlatformCode, _vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
+    } else if (_isChildGame()) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                    )));
+                    gamePlatformCode: currentGamePlatformCode,
+                    gameType: currentGameType,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null)));
       });
-    } else if (gameType == GameType.Lottery || gameType == GameType.LotteryLobby) {
+    } else if (currentGameType == GameType.Lottery || currentGameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
-      await _vm.getGameList(gamePlatformCode, gameType);
+      await _vm.getGameList(currentGamePlatformCode, currentGameType);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => GameWeb(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
-                      gameId: _vm.gameListMap[gamePlatformCode]!.first.id,
+                      gamePlatformCode: currentGamePlatformCode,
+                      gameType: currentGameType,
+                      gameId: _vm.gameListMap[currentGamePlatformCode]!.first.id,
                       onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                     )));
       });
     } else {
       //navigate to game web
-      if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => GameWeb(
-                      gamePlatformCode: gamePlatformCode,
-                      gameType: gameType,
+                      gamePlatformCode: currentGamePlatformCode,
+                      gameType: currentGameType,
                       onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                     )));
@@ -344,36 +344,51 @@ class _GameT2State extends BaseState<GameT2> {
     }
   }
 
-  _isTcgGame(String? gamePlatformCode) =>
-      gamePlatformCode == "TCG_SEA" || gamePlatformCode == "TCG_LOTTO" || gamePlatformCode == "TCG_LOTTO_VN";
+  _isTcgGame() =>
+      currentGamePlatformCode == "TCG_SEA" ||
+      currentGamePlatformCode == "TCG_LOTTO" ||
+      currentGamePlatformCode == "TCG_LOTTO_VN";
 
-  _isSWGame(String? gamePlatformCode, GameType? gameType) =>
-      (gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby);
+  _isSWGame() => (currentGamePlatformCode == "SW" && currentGameType == GameType.LiveDealerLobby);
 
-  _isSGGame(String? gamePlatformCode) => gamePlatformCode == "SG";
+  _isSGGame() => currentGamePlatformCode == "SG";
+
+  _isChildGame() =>
+      (currentGameType == GameType.Slot || currentGameType == GameType.EGame || currentGameType == GameType.Fishing);
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameApiState, onSuccess: () {});
 
     handleApiState(_vm.getLobbyGameUrlApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        launch(_vm.url!);
-      });
+      if (_vm.url == null)
+        _navigateToMaintenance();
+      else if (_isSWGame() || _isSGGame() || _isTcgGame())
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          launch(_vm.url!);
+        });
     }, onError: (_) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(RoutePath.maintenance);
-      });
+      _navigateToMaintenance();
     });
 
     handleApiState(_vm.getGameUrlApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        launch(_vm.url!);
-      });
+      if (_vm.url == null)
+        _navigateToMaintenance();
+      else if (_isSWGame() || _isSGGame() || _isTcgGame())
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          launch(_vm.url!);
+        });
     }, onError: (_) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _navigateToMaintenance();
+    });
+  }
+
+  _navigateToMaintenance() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (_isSWGame() || _isSGGame() || _isTcgGame())
         Navigator.of(context).pushNamed(RoutePath.maintenance);
-      });
+      else
+        Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
     });
   }
 }
