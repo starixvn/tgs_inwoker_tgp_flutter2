@@ -1,17 +1,13 @@
 import 'dart:io';
 
-import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_redirect.dart';
-import 'package:api/entity/identity_status.dart';
-import 'package:api/entity/manual_deposit_order.dart';
 import 'package:api/entity/payment_extended.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
@@ -22,7 +18,6 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/payment.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -699,6 +694,19 @@ class _DepositMethodState extends BaseState<DepositMethod>
     }
   }
 
+  _assignDepositType(BankType? type) {
+    switch (type) {
+      case BankType.BANK:
+        return "bank";
+      case BankType.THIRD_PARTY:
+        return "thirdparty";
+      case BankType.CRYPTO:
+        return "crypto";
+      default:
+        return type.toString();
+    }
+  }
+
   _onClick() {
     ProgressDialog.show(context, _vm.brandLogoUrl);
     switch (widget.paymentCode) {
@@ -755,6 +763,10 @@ class _DepositMethodState extends BaseState<DepositMethod>
       case "ZeroNineNinePay":
         _vm.zeroNineNinePayDepositOrder(
             _amountController.text, _payment!.id, promotionId ?? null);
+        break;
+      case "MalakiPay":
+        _vm.malakiPayDepositOrder(_amountController.text, _payment!.id,
+            promotionId ?? null, _assignDepositType(currBankType));
         break;
       default:
         _vm.getManualDepositId(
@@ -955,6 +967,32 @@ class _DepositMethodState extends BaseState<DepositMethod>
       _navigateToDepositOrder(
         depositRedirect: _vm.zeroNineNinePayDepositOrderApiState.result,
       );
+    });
+
+    handleApiState(_vm.malakiPayDepositOrderApiState, onSuccess: () {
+      _navigateToDepositOrder(
+        depositRedirect: _vm.malakiPayDepositOrderApiState.result,
+      );
+    });
+
+    handleApiState(_vm.depositOrderApiState, onSuccess: () {
+      String url = _vm.depositOrderApiState.result?.paymentUrl;
+      print("URL: " + url);
+      String suffix = url.split('/')[4];
+
+      switch (suffix) {
+        case "help2pay":
+          return WidgetsBinding.instance!.addPostFrameCallback((_) async {
+            await _vm.getHelp2PayHtmlText(
+                _vm.depositOrderApiState.result.paymentUrl);
+          });
+
+        default:
+          return _navigateToDepositOrder(
+              depositRedirect: _vm.depositOrderApiState.result,
+              exchangeRate: _vm.exchangeRate,
+              expectedAmount: _calculateExpectedAmount());
+      }
     });
   }
 

@@ -27,7 +27,9 @@ class DepositMethodViewModel extends BaseViewModel {
       getHelp2PayHtmlTextApiState,
       skyPayDepositOrderApiState,
       uploadDepositImageApiState,
-      zeroNineNinePayDepositOrderApiState;
+      zeroNineNinePayDepositOrderApiState,
+      malakiPayDepositOrderApiState,
+      depositOrderApiState;
   List<Payment>? paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -183,6 +185,24 @@ class DepositMethodViewModel extends BaseViewModel {
         .zeroNineNinePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return zeroNineNinePayDepositOrderApiState;
+  }
+
+  malakiPayDepositOrder(String amount, String? paymentId, String? promotionId,
+      String? type) async {
+    setLoading();
+    malakiPayDepositOrderApiState = await depositRepo.malakiPayDepositOrder(
+        amount, paymentId, promotionId, type);
+    setLoading(false);
+    return malakiPayDepositOrderApiState;
+  }
+
+  performDepositOrder(String amount, String? paymentId, String? promotionId,
+      String? type, String? paymentcode) async {
+    setLoading();
+    depositOrderApiState = await depositRepo.performDeposit(
+        amount, paymentId, promotionId, type, paymentcode);
+    setLoading(false);
+    return depositOrderApiState;
   }
 
   uploadDepositImage(File imageFile, String id) async {
