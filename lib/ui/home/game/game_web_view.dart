@@ -221,21 +221,25 @@ class _GameWebState extends BaseState<GameWeb> {
       if (isLoading) {
         isLoading = !isLoading;
       }
+      if (_vm.url == null) _navigateToMaintenance();
       url = _vm.url;
     }, onError: (_) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
-      });
+      _navigateToMaintenance();
     });
     handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
       if (isLoading) {
         isLoading = !isLoading;
       }
+      if (_vm.url == null) _navigateToMaintenance();
       url = _vm.url;
     }, onError: (_) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
-      });
+      _navigateToMaintenance();
+    });
+  }
+
+  _navigateToMaintenance() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
     });
   }
 }
