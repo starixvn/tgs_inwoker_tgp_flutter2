@@ -47,7 +47,7 @@ class GameItemT1State extends BaseState<GameItemT1> {
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),
           controller: widget.controller,
-          children: widget.gameProviderList!
+          children: (widget.gameProviderList ??  [])
               .expand((element) => element)
               .toList()
               .map((item) => Container(

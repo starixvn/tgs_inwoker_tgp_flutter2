@@ -43,14 +43,14 @@ class GameItemT9State extends BaseState<GameItemT9> {
   Widget build(BuildContext context) {
     return Container(
       child: GridView.count(
-        controller: widget.controller,
+          controller: widget.controller,
           padding: EdgeInsets.symmetric(vertical: 10.auto),
           crossAxisCount: 2,
           shrinkWrap: true,
           childAspectRatio: _imageRatio,
           crossAxisSpacing: 5,
           mainAxisSpacing: 5,
-          children: widget.gameProviderList!
+          children: (widget.gameProviderList ?? [])
               /*.expand((element) => element)
           .toList()*/
               .map((item) => Container(child: _buildImageLayout(item)))

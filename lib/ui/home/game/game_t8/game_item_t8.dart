@@ -28,8 +28,8 @@ class GameItemT8State extends BaseState<GameItemT8> {
   double _imageRatio = 355 / 120;
   double _containerPaddingRight = 5.auto;
   double _listViewPaddingRight = 5.auto;
-  double _itemPaddingRight = 0;//5.auto;
-  double _itemPaddingLeft = 0;//(8.5).auto;
+  double _itemPaddingRight = 0; //5.auto;
+  double _itemPaddingLeft = 0; //(8.5).auto;
   double _itemPaddingTop = (12.5).auto;
   double _itemPaddingBottom = (5).auto;
 
@@ -47,7 +47,7 @@ class GameItemT8State extends BaseState<GameItemT8> {
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),
           controller: widget.controller,
-          children: widget.gameProviderList!
+          children: (widget.gameProviderList ?? [])
               /*.expand((element) => element)
               .toList()*/
               .map((item) => Container(
@@ -100,16 +100,15 @@ class GameItemT8State extends BaseState<GameItemT8> {
               aspectRatio: _imageRatio,
               child: gameProvider.status != 0
                   ? ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    Colors.black,
-                    BlendMode.saturation,
-                  ),
-                  child: _buildImage(gameProvider),
-                ),
-              )
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          Colors.black,
+                          BlendMode.saturation,
+                        ),
+                        child: _buildImage(gameProvider),
+                      ),
+                    )
                   : _buildImage(gameProvider),
             ),
             Positioned(

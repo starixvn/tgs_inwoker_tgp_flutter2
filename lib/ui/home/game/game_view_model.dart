@@ -98,7 +98,7 @@ class GameViewModel extends BaseViewModel {
       }
     });
     nonExistGameTypeList.forEach((element) {
-      gameTypeList.remove(element);
+      //gameTypeList.remove(element);
       _gameRowListT3.remove(element);
       _gameListT3.remove(element);
     });
@@ -242,7 +242,7 @@ class GameViewModel extends BaseViewModel {
 
   getPlatformList(GameType gameType) {
     List<GameProvider2> list = gameProviderList!.expand((e) => e).toList();
-    platformList = list.where((element) => element.gameType == gameType && element.status==0).toList();
+    platformList = list.where((element) => element.gameType == gameType && element.status == 0).toList();
     notifyListeners();
   }
 

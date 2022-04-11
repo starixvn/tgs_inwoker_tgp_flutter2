@@ -47,7 +47,7 @@ class GameItemT8DarkState extends BaseState<GameItemT8Dark> {
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),
           controller: widget.controller,
-          children: widget.gameProviderList!
+          children: (widget.gameProviderList ?? [])
               /*.expand((element) => element)
               .toList()*/
               .map((item) => Container(
@@ -129,8 +129,8 @@ class GameItemT8DarkState extends BaseState<GameItemT8Dark> {
                     width: 74.auto,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage("images/game/T8/btn-start-game.jpg"))),
+                    decoration:
+                        BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T8/btn-start-game.jpg"))),
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: AutoSizeText(
