@@ -57,6 +57,22 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         title: _getAppBarTitle(),
         actions: _getActionButton(),
       );
+    } else if (EnvironmentConfig.template_version == 8 && (EnvironmentConfig.dark_mode)) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.transparent.withOpacity(1.0), Color(0xff000129)],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                stops: [0, 0.5]),
+          ),
+        ),
+        centerTitle: false,
+        title: _getAppBarTitle(),
+        actions: _getActionButton(),
+      );
     } else {
       return AppBar(
         automaticallyImplyLeading: false,
@@ -114,7 +130,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           isEnabled: true,
           width: 60,
           height: 17,
-          color: EnvironmentConfig.template_version == 8 ? CustomColor.theme_text_black_color : Colors.white,
+          color: (EnvironmentConfig.template_version == 8 && !EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 9
+              ? CustomColor.theme_text_black_color
+              : Colors.white,
           fontSize: 14,
           radius: 5,
           padding: 4,
@@ -132,8 +150,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: EnvironmentConfig.template_version == 8 ? Colors.white : CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 8
+          textColor: (EnvironmentConfig.template_version == 8 && !EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 9
+              ? Colors.white
+              : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 ||
+              (EnvironmentConfig.template_version == 8 && !EnvironmentConfig.dark_mode)||
+                  EnvironmentConfig.template_version == 9
               ? CustomColor.theme_button_color
               : Colors.white,
         ),
@@ -149,8 +171,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: EnvironmentConfig.template_version == 8 ? Colors.white : CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 8
+          textColor: EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9
+              ? Colors.white
+              : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 ||
+                  EnvironmentConfig.template_version == 8 ||
+                  EnvironmentConfig.template_version == 9
               ? CustomColor.theme_button_color
               : Colors.white,
         ),

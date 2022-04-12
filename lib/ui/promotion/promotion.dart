@@ -139,7 +139,6 @@ class _PromotionState extends BaseState<Promotion> {
                 context,
               );
             },
-            onClick2: () {},
           ),
         );
       });
@@ -159,7 +158,6 @@ class _PromotionState extends BaseState<Promotion> {
                 context,
               );
             },
-            onClick2: () {},
           ),
         );
       });

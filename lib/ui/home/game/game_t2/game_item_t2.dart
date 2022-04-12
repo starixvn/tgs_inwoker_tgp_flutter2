@@ -50,7 +50,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
         //decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
         child: ListView(
       controller: widget.controller,
-      children: widget.gameProviderList!
+      children: (widget.gameProviderList ??  [])
           .map((item) => Container(
               padding: EdgeInsets.only(
                   left: _itemPaddingLeft, right: _itemPaddingRight, top: _itemPaddingTop, bottom: _itemPaddingBottom),
@@ -73,7 +73,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
             child: ListView(
                 padding: EdgeInsets.only(right: _listViewPaddingRight),
                 controller: widget.controller,
-                children: widget.gameProviderList!
+                children: (widget.gameProviderList ??  [])
                     .expand((element) => element)
                     .toList()
                     .map((item) => Container(

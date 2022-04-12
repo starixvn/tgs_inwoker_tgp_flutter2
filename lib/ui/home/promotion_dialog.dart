@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -13,8 +14,12 @@ import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 
 class PromotionDialog extends StatefulWidget {
   final List<Promotion> promotionList;
+  final Function onClick;
 
-  PromotionDialog({required this.promotionList});
+  PromotionDialog({
+    required this.promotionList,
+    required this.onClick
+  });
 
   @override
   _PromotionDialogState createState() => _PromotionDialogState();
@@ -52,8 +57,20 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
           ),
         ],
       ),
-      child: Wrap(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
+          Container(
+            padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
+            alignment: Alignment.topLeft,
+            child: Text(
+              getTranslatedText("promotion_center"),
+              style: TextStyle(
+                fontSize: 18.auto,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           Flexible(
             flex: 19,
             child: ScrollConfiguration(
@@ -119,7 +136,9 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
   }
 
   _buildDoneButton() => ColorButton(
-        onClick: () => Navigator.pop(context),
+        onClick: () {
+          widget.onClick();
+        },
         title: getTranslatedText("confirm"),
         isEnabled: true,
         radius: 45.auto,

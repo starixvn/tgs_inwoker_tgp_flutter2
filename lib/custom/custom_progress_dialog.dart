@@ -39,7 +39,7 @@ class ProgressDialog {
               ),
         //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
         Lottie.asset(
-          "loading/loading_t${EnvironmentConfig.template_version}.json",
+          "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json",
           width: 150,
           height: 150,
         ),

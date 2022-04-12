@@ -28,54 +28,36 @@ class HomeT3 extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final Function initData;
+  final HomeViewModel homeViewModel;
+  final GameViewModel gameViewModel;
 
-  HomeT3({this.isFirstRun = false, this.onResumeBgMusic, this.onPauseBgMusic});
+  HomeT3({
+    this.isFirstRun = false,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+    required this.initData,
+    required this.homeViewModel,
+    required this.gameViewModel,
+  });
 
   @override
   _HomeT3State createState() => _HomeT3State();
 }
 
 class _HomeT3State extends BaseState<HomeT3> {
-  List<String> imgList = [
-    '1',
-    '2',
-    //'images/banner_2.jpg'
-  ];
-
-  //var gameList = ["sport", "live", "slot", "fishing", "lotto", "e-game", "card"];
-  ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
   var itemHeightRatio = 335 / 90;
-  var _vm = HomeViewModel();
   int _current = 0;
-  final CarouselController _controller = CarouselController();
-  String? languageCode, imageLanguageCode = "en-US";
-  var _gameViewModel = GameViewModel();
+  String? imageLanguageCode = "en-US", languageCode;
 
   @override
   void initState() {
-    _initData();
-    super.initState();
-  }
-
-  _initData() async {
-    var task = <Future>[];
-    task.add(_vm.getAnnouncement());
-    task.add(_vm.getPromotionList());
-    task.add(_vm.getBanner());
-    task.add(_vm.getBrandCommunication());
-    task.add(_gameViewModel.getGameProviderList(isRefresh: true));
-    await Future.wait(task);
-    _vm.getUserDetails();
     getLanguage();
-   // randomNumber = _randomGenerator();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if ((_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null) _displayMarqueeDialog();
-      if ((_vm.config?.popupPromotion ?? false) && _vm.promotionList != null) _displayPromotionDialog();
-    });
+    super.initState();
   }
 
   getLanguage() async {
@@ -85,52 +67,25 @@ class _HomeT3State extends BaseState<HomeT3> {
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<HomeViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
-            appBar: CustomLoginAppBar(
-              onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-              onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-              onClickLogoutButton: () => _logout(),
-              isLogin: _vm.userProfile != null,
-              brandLogoUrl: _vm.brandLogoUrl,
-              userProfile: _vm.userProfile,
-              phone: _vm.phone,
-              config: _vm.config,
-              totalBalance: _vm.totalBalance,
-              brandName: EnvironmentConfig.brandName,
-            ),
-            body: /* Stack(
-              children: [*/
-                Container(
-              padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
-              child: Column(
-                children: [
-                  _buildTextMarquee(),
-                  _buildImageSlider(),
-                  Expanded(
-                      child: _gameViewModel.gameRowListT3 == null ||_gameViewModel.gameListT3 == null
-                          ? buildProgressDialog(_vm.brandLogoUrl)
-                          : ListView(
-                    children: [_buildImageRow(), _buildGameImageGridView()],
-                  ))
-                ],
-              ),
-            ),
-            /*_buildOverlay(),
-                _buildMenu(),
-              ],
-            ),*/
-          );
-        });
+    return Container(
+      padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
+      child: Column(
+        children: [
+          _buildTextMarquee(),
+          _buildImageSlider(),
+          Expanded(
+              child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
+                  ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
+                  : ListView(
+                      children: [_buildImageRow(), _buildGameImageGridView()],
+                    ))
+        ],
+      ),
+    );
   }
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(_vm.announcement ?? ""));
+    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
       padding: EdgeInsets.only(bottom: 5.auto),
       child: Row(
@@ -205,7 +160,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
         height: context.screenHeight / 5,
-        child: _vm.bannerList == null || _vm.bannerList!.isEmpty
+        child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
             ? _buildEmptyContainer()
             : ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -213,16 +168,16 @@ class _HomeT3State extends BaseState<HomeT3> {
                   children: [
                     CarouselSlider(
                       items: List.generate(
-                          _vm.bannerList!.length,
+                          widget.homeViewModel.bannerList!.length,
                           (index) => ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: _vm.bannerList![index].mobileUrl == null
+                                child: widget.homeViewModel.bannerList![index].mobileUrl == null
                                     ? _buildEmptyContainer()
                                     : CachedNetworkImage(
                                         height: 400,
                                         width: context.screenWidth,
                                         placeholder: (context, url) => _buildEmptyContainer(),
-                                        imageUrl: _vm.bannerList![index].mobileUrl!,
+                                        imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                                         //handling error
                                         fit: BoxFit.cover,
                                         errorWidget: (context, url, error) => _buildEmptyContainer(),
@@ -251,7 +206,7 @@ class _HomeT3State extends BaseState<HomeT3> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: List.generate(_vm.bannerList!.length, (index) {
+                        children: List.generate(widget.homeViewModel.bannerList!.length, (index) {
                           return Container(
                             width: 8.auto,
                             height: 8.auto,
@@ -277,136 +232,65 @@ class _HomeT3State extends BaseState<HomeT3> {
   _buildImageRow() {
     getLanguage();
     return Container(
-            height: 180.auto,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(_gameViewModel.gameRowListT3!.length, (index) {
-                  return InkWell(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GameT3(
-                                    gamePlatformCode: "",
-                                    gameType: _gameViewModel.gameRowListT3![index],
-                                    index: index,
-                                    config: _vm.config,
-                                    onPauseBgMusic: () =>
-                                        (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                                    onResumeBgMusic: () =>
-                                        (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                                  ))),
-                      child: Container(
-                        width: context.screenWidth / 2 - 15.auto,
-                        child: Image.asset(
-                            "images/game_tab/t3/$imageLanguageCode/${_gameViewModel.gameRowListT3![index].getImagePath()}.gif"),
-                      ));
-                })),
-          );
-  }
-
-  _buildGameImageGridView() {
-    return Container(
-            height: 260.auto,
-            margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
-            child: StaggeredGridView.countBuilder(
-              crossAxisCount: 2,
-              itemCount: _gameViewModel.gameListT3!.length,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) => InkWell(
+      height: 180.auto,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(widget.gameViewModel.gameRowListT3!.length, (index) {
+            return InkWell(
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => GameT3(
                               gamePlatformCode: "",
-                              gameType: _gameViewModel.gameListT3![index],
+                              gameType: widget.gameViewModel.gameRowListT3![index],
                               index: index,
-                              config: _vm.config,
+                              config: widget.homeViewModel.config,
                               onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                               onResumeBgMusic: () =>
                                   (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                             ))),
-                child: Image.asset(
-                    "images/game_tab/t3/$imageLanguageCode/${_gameViewModel.gameListT3![index].getImagePath()}.gif"),
-              ),
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-              mainAxisSpacing: 15.auto,
-              crossAxisSpacing: 15.auto,
-            ),
-          );
+                child: Container(
+                  width: context.screenWidth / 2 - 15.auto,
+                  child: Image.asset(
+                      "images/game_tab/t3/$imageLanguageCode/${widget.gameViewModel.gameRowListT3![index].getImagePath()}.gif"),
+                ));
+          })),
+    );
+  }
+
+  _buildGameImageGridView() {
+    return Container(
+      height: 260.auto,
+      margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
+      child: StaggeredGridView.countBuilder(
+        crossAxisCount: 2,
+        itemCount: widget.gameViewModel.gameListT3!.length,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) => InkWell(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GameT3(
+                        gamePlatformCode: "",
+                        gameType: widget.gameViewModel.gameListT3![index],
+                        index: index,
+                        config: widget.homeViewModel.config,
+                        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                      ))),
+          child: Image.asset(
+              "images/game_tab/t3/$imageLanguageCode/${widget.gameViewModel.gameListT3![index].getImagePath()}.gif"),
+        ),
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+        mainAxisSpacing: 15.auto,
+        crossAxisSpacing: 15.auto,
+      ),
+    );
   }
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
-  }
-
-  _displayLoginDialog() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var loginLater = prefs.getBool("login_later") ?? false;
-    if (_vm.userProfile == null && !loginLater) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_expired"),
-          description: getTranslatedText("login_again"),
-          buttonText1: getTranslatedText("login"),
-          buttonText2: getTranslatedText("no"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            prefs.setBool("login_later", true);
-            Navigator.pop(context);
-          },
-        ),
-      );
-    }
-  }
-
-  _logout() {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.logout();
-  }
-
-  _displayMarqueeDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CustomDialog(
-        title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
-        description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
-        buttonText1: getTranslatedText("confirm"),
-        onClick: () => Navigator.of(context).pop(),
-      ),
-    );
-  }
-
-  _displayPromotionDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => PromotionDialog(
-        promotionList: _vm.promotionList!,
-      ),
-    );
-  }
-
-  _handleApiState() {
-    if (widget.isFirstRun) {
-      if (_vm.isNotLogin) {
-        navigateToLogin();
-        _vm.markIsNotLogin();
-      } else if (_vm.isExpired) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _displayLoginDialog();
-        });
-      }
-    }
-    handleApiState(_vm.logoutApiState, isLogoutApiState: true, onSuccess: () {
-      ProgressDialog.hide();
-    }, onLogout: () {
-      ProgressDialog.hide();
-    });
-    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
