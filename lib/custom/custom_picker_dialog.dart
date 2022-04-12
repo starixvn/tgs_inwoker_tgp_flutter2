@@ -84,12 +84,8 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       String name = status.getName(context);
       return name;
     } else if (widget.list is List<WithdrawalInfo>) {
-      if (widget.list[index].channelName == "PrimePay_BankTransfer_Custom") {
-        return getTranslatedText("custom_bank");
-      } else {
-        var code = widget.list[index].channelName;
-        return code;
-      }
+      var code = widget.list[index].channelName;
+      return code;
     } else if (widget.list is List<Map<String, String>>) {
       String promotionName = widget.list[index]["name"];
       return getTranslatedText(promotionName) ?? promotionName;

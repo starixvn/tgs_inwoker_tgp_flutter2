@@ -86,25 +86,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         });
   }
 
-  _buildAppBar() => /*AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context)
-                .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyHomePage()), (route) => false);
-          },
-        ),
-        title: Text(
-          getTranslatedText("maintenance"),
-          style: TextStyle(fontSize: 16.auto),
-        ),
-      )*/
-      CustomAppBar(
+  _buildAppBar() => CustomAppBar(
         title: getTranslatedText("maintenance"),
         onPop: () {
           AssetsAudioPlayer().pause();

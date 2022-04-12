@@ -39,7 +39,7 @@ class _VipViewState extends BaseState<VipView> {
           _handleApiState();
           return Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.grey[100],
+            backgroundColor: CustomColor.theme_bg_color,
             appBar: _buildAppBar(),
             body: _vm.vipList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
@@ -54,7 +54,7 @@ class _VipViewState extends BaseState<VipView> {
                       children: [
                         Container(
                           height: 120.auto,
-                          padding: EdgeInsets.only(top: 15.auto),
+                          padding: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto),
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: List.generate(

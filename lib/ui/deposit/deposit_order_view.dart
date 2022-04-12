@@ -222,6 +222,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
             onClick2: () {
               Navigator.pop(context);
             },
+            popIndex: 2,
           ),
         );
       });

@@ -195,6 +195,7 @@ class _GameT3State extends BaseState<GameT3> {
           onClick2: () {
             Navigator.pop(context);
           },
+          popIndex: 2,
         ),
       );
     } else
@@ -281,29 +282,31 @@ class _GameT3State extends BaseState<GameT3> {
     handleApiState(_vm.getGameApiState, onSuccess: () {});
 
     handleApiState(_vm.getLobbyGameUrlApiState, onSuccess: () {
-      if (_vm.url != null)
+      if (_vm.url == null)
+        _navigateToMaintenance();
+      else
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           launch(_vm.url!);
         });
-      else
-        _navigateToMaintenance();
     }, onError: (_) {
       _navigateToMaintenance();
     });
 
     handleApiState(_vm.getGameUrlApiState, onSuccess: () {
-      if (_vm.url != null)
+      if (_vm.url == null)
+        _navigateToMaintenance();
+      else
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           launch(_vm.url!);
         });
-      else
-        _navigateToMaintenance();
     }, onError: (_) {
       _navigateToMaintenance();
     });
   }
 
-  _navigateToMaintenance() => WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(RoutePath.maintenance);
-      });
+  _navigateToMaintenance() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
+    });
+  }
 }

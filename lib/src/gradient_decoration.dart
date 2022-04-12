@@ -3,7 +3,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 
 BoxDecoration gradientDecoration = BoxDecoration(
   gradient: LinearGradient(
-    colors: [CustomColor.theme_button_color, CustomColor.theme_button_color],
+    colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   ),
@@ -11,7 +11,7 @@ BoxDecoration gradientDecoration = BoxDecoration(
 
 BoxDecoration roundGradientDecoration = BoxDecoration(
     gradient: LinearGradient(
-      colors: [CustomColor.theme_button_color, CustomColor.theme_button_color],
+      colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
     ),
@@ -19,7 +19,7 @@ BoxDecoration roundGradientDecoration = BoxDecoration(
 
 BoxDecoration roundButtonGradientDecoration = BoxDecoration(
     gradient: LinearGradient(
-      colors: [CustomColor.theme_button_color, CustomColor.theme_button_color],
+      colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
     ),
@@ -27,7 +27,7 @@ BoxDecoration roundButtonGradientDecoration = BoxDecoration(
 
 BoxDecoration gameTabGradientDecoration = BoxDecoration(
     gradient: LinearGradient(
-      colors: [CustomColor.theme_button_color, CustomColor.theme_button_color],
+      colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
     ),

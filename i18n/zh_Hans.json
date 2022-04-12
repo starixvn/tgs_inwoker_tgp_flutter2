@@ -1052,5 +1052,6 @@
   "deposit_bank_account_name": "银行账户/姓名",
   "enter_deposit_bank_account_name_hint": "请填写银行账户/姓名",
   "withdraw_reach_min": "提款金额未达到最低金额",
-  "withdraw_reach_max": "提款金额达到最大金额"
+  "withdraw_reach_max": "提款金额达到最大金额",
+  "bank_transferring_notification_content_GMO": "客户访问款须知\n为防止洗黑\n客户取款必须跟绑定充值查询帐户相同\n有关于取款问题可向客服查询"
 }
