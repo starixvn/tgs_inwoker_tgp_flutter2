@@ -58,7 +58,7 @@ class _SplashState extends BaseState<Splash> {
                   Container(
                     width: context.screenWidth / 2.5,
                     alignment: Alignment.bottomCenter,
-                    child: Lottie.asset("loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json"),
+                    child: Lottie.asset("loading/loading_t${_getLottieLoadingAppendPath()}.json"),
                   ),
                 ],
               ),
@@ -79,5 +79,11 @@ class _SplashState extends BaseState<Splash> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.myHome);
     });
+  }
+
+  _getLottieLoadingAppendPath(){
+    if(EnvironmentConfig.dark_mode)
+      return  "8_dark";
+    else return EnvironmentConfig.template_version;
   }
 }

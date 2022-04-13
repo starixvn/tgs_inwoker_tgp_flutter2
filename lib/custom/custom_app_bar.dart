@@ -9,13 +9,14 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar(
-      {required this.title,
-      this.widget,
-      this.walletBalance,
-      this.isPopTwice = false,
-      this.onPop,
-      this.isPassTrueWhenPop = false});
+  CustomAppBar({
+    required this.title,
+    this.widget,
+    this.walletBalance,
+    this.isPopTwice = false,
+    this.onPop,
+    this.isPassTrueWhenPop = false,
+  });
 
   final String title;
   final Widget? widget;
@@ -81,7 +82,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9
+            color: EnvironmentConfig.template_version == 8 ||
+                    (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode)
                 ? Colors.black
                 : Colors.white,
           ),

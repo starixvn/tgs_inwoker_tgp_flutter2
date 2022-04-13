@@ -15,17 +15,18 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomLoginAppBar(
-      {required this.onClickLoginButton,
-      required this.onClickRegisterButton,
-      required this.onClickLogoutButton,
-      required this.isLogin,
-      this.brandLogoUrl,
-      this.userProfile,
-      this.phone,
-      this.config,
-      this.totalBalance,
-      this.brandName});
+  CustomLoginAppBar({
+    required this.onClickLoginButton,
+    required this.onClickRegisterButton,
+    required this.onClickLogoutButton,
+    required this.isLogin,
+    this.brandLogoUrl,
+    this.userProfile,
+    this.phone,
+    this.config,
+    this.totalBalance,
+    this.brandName,
+  });
 
   final Function onClickLoginButton;
   final Function onClickRegisterButton;
@@ -130,9 +131,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           isEnabled: true,
           width: 60,
           height: 17,
-          color: (EnvironmentConfig.template_version == 8 && !EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 9
-              ? CustomColor.theme_text_black_color
-              : Colors.white,
+          color: _isDarkMode() ? CustomColor.theme_text_black_color : Colors.white,
           fontSize: 14,
           radius: 5,
           padding: 4,
@@ -150,14 +149,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: (EnvironmentConfig.template_version == 8 && !EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 9
-              ? Colors.white
-              : CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 ||
-              (EnvironmentConfig.template_version == 8 && !EnvironmentConfig.dark_mode)||
-                  EnvironmentConfig.template_version == 9
-              ? CustomColor.theme_button_color
-              : Colors.white,
+          textColor: _isDarkMode() ? Colors.white : CustomColor.theme_text_black_color,
+          color:
+              EnvironmentConfig.template_version == 3 || _isDarkMode() ? CustomColor.theme_button_color : Colors.white,
         ),
       );
 
@@ -171,14 +165,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9
-              ? Colors.white
-              : CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 ||
-                  EnvironmentConfig.template_version == 8 ||
-                  EnvironmentConfig.template_version == 9
-              ? CustomColor.theme_button_color
-              : Colors.white,
+          textColor: _isDarkMode() ? Colors.white : CustomColor.theme_text_black_color,
+          color:
+              EnvironmentConfig.template_version == 3 || _isDarkMode() ? CustomColor.theme_button_color : Colors.white,
         ),
       );
 
@@ -297,6 +286,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       return "VIP $level";
     }
   }
+
+  _isDarkMode() =>
+      (EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
+      !EnvironmentConfig.dark_mode;
 
   _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) || (widget.config?.customVIP ?? false));
 }

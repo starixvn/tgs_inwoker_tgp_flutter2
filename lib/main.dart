@@ -310,8 +310,6 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
@@ -335,7 +333,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 ),
                 child: BottomAppBar(color: Colors.transparent, child: _buildBottomAppBarRow()),
               )
-            : BottomAppBar(color: Colors.white, child: _buildBottomAppBarRow()),
+            : BottomAppBar(color: CustomColor.theme_bottom_app_bar_color, child: _buildBottomAppBarRow()),
       ),
     );
   }
@@ -420,13 +418,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) {
-    if (index == 2 && imagePath == "ic_deposit") {
-      return Image.asset(
-        "images/bottom_nav_bar/$imagePath.png",
-        matchTextDirection: true,
-        height: 18.auto,
-      );
-    } else if (index == 2 && imagePath == "ic_menu") {
+    if (index == 2 && imagePath == "ic_menu") {
       return Container(
         height: 35.auto,
         child: CircleAvatar(

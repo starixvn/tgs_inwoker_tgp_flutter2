@@ -226,7 +226,7 @@ class _HomeState extends BaseState<Home> {
           buttonText1: getTranslatedText("confirm"),
           onClick: () {
             if (isShowPromotion()) {
-                _displayPromotionDialog();
+              _displayPromotionDialog();
             } else
               Navigator.of(context2).pop();
           },
@@ -240,8 +240,8 @@ class _HomeState extends BaseState<Home> {
       context: context,
       builder: (BuildContext context) => PromotionDialog(
         promotionList: _vm.promotionList!,
-        onClick: (){
-          if(isShowAnnouncement()){
+        onClick: () {
+          if (isShowAnnouncement()) {
             Navigator.of(context).pop();
           }
           Navigator.of(context).pop();

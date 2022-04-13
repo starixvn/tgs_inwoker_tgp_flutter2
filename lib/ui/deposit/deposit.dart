@@ -143,22 +143,22 @@ class _DepositState extends BaseState<Deposit> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.config?.depositNotification ?? false) {
         if (EnvironmentConfig.brandName == "GMO") {
-          _showDialog( "bank_transferring_notification_content_GMO");
+          _showDialog("bank_transferring_notification_content_GMO");
         } else {
-          _showDialog( "bank_transferring_notification_content");
+          _showDialog("bank_transferring_notification_content");
         }
       }
     });
   }
 
   _showDialog(String content) => showDialog(
-    context: context,
-    builder: (BuildContext context) => DepositDialog(
-      title: getTranslatedText("bank_transferring_notification"),
-      description: getTranslatedText(content),
-      buttonText1: getTranslatedText("confirm"),
-    ),
-  );
+        context: context,
+        builder: (BuildContext context) => DepositDialog(
+          title: getTranslatedText("bank_transferring_notification"),
+          description: getTranslatedText(content),
+          buttonText1: getTranslatedText("confirm"),
+        ),
+      );
 
   _handleApiState() {
     handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {

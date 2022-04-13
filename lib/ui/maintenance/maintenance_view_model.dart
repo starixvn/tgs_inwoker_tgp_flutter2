@@ -30,7 +30,7 @@ class MaintenanceViewModel extends BaseViewModel {
   getLiveChatUrl(String languageCode) async {
     setLoading();
     getLiveChatUrlApiState = await userRepo.getLiveChatUrl();
-    if (getLiveChatUrlApiState.isSuccess ) {
+    if (getLiveChatUrlApiState.isSuccess) {
       List<String> pattern = ["{name}", "{email}", "{lang}"]; //ABV list
       List<String> replace = [
         userProfile?.username ?? " ",

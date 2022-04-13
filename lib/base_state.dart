@@ -105,13 +105,19 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
             //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
             Lottie.asset(
-              "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode ? "_dark" : ""}.json",
+               "loading/loading_t${_getLottieLoadingAppendPath()}.json",
               width: 150,
               height: 150,
             ),
           ],
         ),
       );
+
+  _getLottieLoadingAppendPath(){
+    if(EnvironmentConfig.dark_mode)
+      return  "8_dark";
+    else return EnvironmentConfig.template_version;
+  }
 
   _showErrorMessage(EventResult eventResult) {
     var errorMessage = eventResult.error;

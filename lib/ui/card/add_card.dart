@@ -355,7 +355,7 @@ class _AddCardState extends BaseState<AddCard> {
       if (_vm.pWithdrawalInfo?.channelCode != "CustomBank") {
         _bankNameController.text = _vm.pWithdrawalInfo?.channelCode ?? "";
         isBankNameEnabledEdit = false;
-      }else {
+      } else {
         _bankNameController.text = "";
         isBankNameEnabledEdit = true;
       }

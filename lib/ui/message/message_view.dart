@@ -63,7 +63,7 @@ class _MessageViewState extends BaseState<MessageView> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Lottie.asset(
-                            "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json",
+                            "loading/loading_t${_getLottieLoadingAppendPath()}.json",
                             width: 100,
                             height: 100,
                           ),
@@ -139,6 +139,12 @@ class _MessageViewState extends BaseState<MessageView> {
       });
       _vm.getMessageList(isLoadMore: true);
     }
+  }
+
+  _getLottieLoadingAppendPath(){
+    if(EnvironmentConfig.dark_mode)
+      return  "8_dark";
+    else return EnvironmentConfig.template_version;
   }
 
   _handleApiState() {

@@ -18,9 +18,9 @@ class EnvironmentConfig {
 
   static const bool dark_mode = false;
 
-  static const int primaryColorCode = 4278471587;
+  static const int primaryColorCode = 4291206250;
 
-  static const int primaryGradientColorCode = 4279994055;
+  static const int primaryGradientColorCode = 4291206250;
 
   static const int theme_app_bar_color = 4291206250;
 
@@ -38,9 +38,9 @@ class EnvironmentConfig {
 
   static const int tab_unselected_color = 4285558896;
 
-  static const int bottom_nav_selected_color = 4291206250;
+  static const int bottom_nav_selected_color = 4285558896;
 
-  static const int bottom_nav_unselected_color = 4285558896;
+  static const int bottom_nav_unselected_color = 4294967295;
 
   static const int promotion_bg_color = 4294967295;
 
@@ -56,7 +56,11 @@ class EnvironmentConfig {
 
   static const int theme_app_bar_text_color = 4294967295;
 
+  static const int theme_marquee_text_color = 4285558896;
+
   static const int announcement_icon_color = 4291206250;
+
+  static const int theme_bottom_app_bar_color = 4291206250;
 
   static const String default_lang = 'en-US';
 

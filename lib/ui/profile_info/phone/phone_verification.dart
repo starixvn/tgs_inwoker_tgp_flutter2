@@ -65,8 +65,9 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   }
 
   _buildAppBar() => CustomAppBar(
-      title: getTranslatedText("phone_number"),
-      onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info')));
+        title: getTranslatedText("phone_number"),
+        onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info')),
+      );
 
   _buildTextFormField() => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -130,9 +131,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
             style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
             children: [
               TextSpan(
-                text:  _isNotAllowedEditPhone()
-                    ? getTranslatedText("online_cs")
-                    : getTranslatedText("here"),
+                text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
                 style: TextStyle(
                     decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
               ),

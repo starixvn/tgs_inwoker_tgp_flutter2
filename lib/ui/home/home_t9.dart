@@ -170,7 +170,7 @@ class _HomeT9State extends BaseState<HomeT9> {
             child: SvgPicture.asset(
               "images/home/ic_marquee.svg",
               height: 15.auto,
-              color: CustomColor.theme_button_color,
+              color: CustomColor.announcement_icon_color,
             ),
           ),
           Expanded(
@@ -202,7 +202,7 @@ class _HomeT9State extends BaseState<HomeT9> {
                   child: Marquee(
                       text: announcement,
                       style: TextStyle(
-                        color: CustomColor.theme_text_grey_color,
+                        color: CustomColor.theme_marquee_text_color,
                         fontSize: 10.auto,
                       ),
                       scrollAxis: Axis.horizontal,

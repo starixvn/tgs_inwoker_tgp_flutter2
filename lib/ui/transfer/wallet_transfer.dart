@@ -104,15 +104,17 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           child: RotationTransition(
             turns: _animation!,
             child: IconButton(
-              icon: Image.asset("images/ic_refresh.png",
-              color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white,),
+              icon: Image.asset(
+                "images/ic_refresh.png",
+                color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white,
+              ),
               onPressed: () {
                 _vm.getAllWallet();
               },
             ),
           ),
         ),
-      isPassTrueWhenPop: true,
+        isPassTrueWhenPop: true,
       );
 
   _buildWalletDetails(String title, Widget widget, {bool isLast = false}) => Container(
@@ -273,7 +275,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
       );
 
   _buildAutoTransferToggleButton() => Container(
-        margin: EdgeInsets.all( 10.auto),
+        margin: EdgeInsets.all(10.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -289,7 +291,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                   )),
             ),
             Expanded(
-              flex:1,
+              flex: 1,
               child: FlutterSwitch(
                 value: _vm.autoTransferValue,
                 width: 35,
@@ -377,7 +379,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if (_vm.isFetchingBalance) {
       if (!_controller!.isAnimating) _controller!.forward(from: 0.0);
     }
-    handleApiState(_vm.transferWalletApiState,isMaintenanceDialog : true, onSuccess: () {
+    handleApiState(_vm.transferWalletApiState, isMaintenanceDialog: true, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
 
       WidgetsBinding.instance!.addPostFrameCallback((_) {

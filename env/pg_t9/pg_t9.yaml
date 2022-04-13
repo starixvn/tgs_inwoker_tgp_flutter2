@@ -1,0 +1,102 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path:  "images/pg_logo.png"
+
+environment_config:
+  fields:
+    jwtKey:
+      default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
+    url:
+      default: "https://dev-t1.rpgp.cc/"
+    currency:
+      default: "CNY"
+    appTitleName:
+      default: "PG Gaming"
+    slotGameUrl:
+      default: "https://images.srvptt.com/"
+    imageLogo:
+      default: "pg_login_logo"
+    environmentStage:
+      default: "development"
+    template_version:
+      type: int
+      default: 9
+    dark_mode:
+      type: bool
+      default: true
+    primaryColorCode:
+      type: int
+      default: 0xff044BA3
+    primaryGradientColorCode:
+      type: int
+      default: 0xff1b86c7
+    theme_app_bar_color:
+      type: int
+      default: 0xff1F1F1F
+    theme_button_color:
+      type: int
+      default: 0xffCEA866
+    theme_grey_button_color:
+      type: int
+      default: 0xff828282
+    theme_bg_color:
+      type: int
+      default: 0xff1F1F1F
+    theme_app_bar_icon_color:
+      type: int
+      default: 0xff707070
+    menu_bg_color:
+      type: int
+      default: 0xffffffff
+    tab_selected_color:
+      type: int
+      default: 0xffCEA866
+    tab_unselected_color:
+      type: int
+      default: 0xffFFFFFF
+    bottom_nav_selected_color:
+      type: int
+      default: 0xffCEA866
+    bottom_nav_unselected_color:
+      type: int
+      default: 0xffFFFFFF
+    promotion_bg_color:
+      type: int
+      default: 0xffFFFFFF
+    promotion_text_color:
+      type: int
+      default: 0xff616161
+    theme_text_black_color:
+      type: int
+      default: 0xff4B4B4B
+    theme_text_black_white_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_text_grey_color:
+      type: int
+      default: 0xff707070
+    theme_text_grey_white_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_app_bar_text_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_marquee_text_color:
+      type: int
+      default: 0xffFFFFFF
+    announcement_icon_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_bottom_app_bar_color:
+      type: int
+      default: 0xffF5F5F5
+    default_lang:
+      default: "zh-TW"
+    assetUrl:
+      default: "https://app12.s3.ap-east-1.amazonaws.com/"
+    brandName:
+      default: "GMO"
+    vipPresentType:
+      type: int
+      default: 1
