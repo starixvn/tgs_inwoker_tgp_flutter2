@@ -80,7 +80,9 @@ class _AffiliateState extends BaseState<Affiliate> {
     );
   }
 
-  _buildAppBar() => CustomAppBar(title: getTranslatedText("affiliate"));
+  _buildAppBar() => CustomAppBar(
+        title: getTranslatedText("affiliate"),
+      );
 
   /* AppBar(
         automaticallyImplyLeading: false,

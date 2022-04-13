@@ -82,9 +82,15 @@ environment_config:
     theme_app_bar_text_color:
       type: int
       default: 0xff000000
+    theme_marquee_text_color:
+      type: int
+      default: 0xff707070
     announcement_icon_color:
       type: int
       default: 0xff6589F7
+    theme_bottom_app_bar_color:
+      type: int
+      default: 0xffF5F5F5
     brandName:
       default: "MGM"
     assetUrl:

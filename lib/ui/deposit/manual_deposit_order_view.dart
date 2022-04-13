@@ -72,8 +72,8 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
   }
 
   _buildAppBar() => CustomAppBar(
-          title: getTranslatedText(
-              "deposit")) /* AppBar(
+        title: getTranslatedText("deposit"),
+      ) /* AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,

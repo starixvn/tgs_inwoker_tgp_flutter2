@@ -27,10 +27,10 @@ environment_config:
       default: false
     primaryColorCode:
       type: int
-      default: 0xff044BA3
+      default: 0xffC69C6A
     primaryGradientColorCode:
       type: int
-      default: 0xff1b86c7
+      default: 0xffC69C6A
     theme_app_bar_color:
       type: int
       default: 0xffC69C6A
@@ -57,10 +57,10 @@ environment_config:
       default: 0xff707070
     bottom_nav_selected_color:
       type: int
-      default: 0xffC69C6A
+      default: 0xff707070
     bottom_nav_unselected_color:
       type: int
-      default: 0xff707070
+      default: 0xffFFFFFF
     promotion_bg_color:
       type: int
       default: 0xffFFFFFF
@@ -82,7 +82,13 @@ environment_config:
     theme_app_bar_text_color:
       type: int
       default: 0xffFFFFFF
+    theme_marquee_text_color:
+      type: int
+      default: 0xff707070
     announcement_icon_color:
+      type: int
+      default: 0xffC69C6A
+    theme_bottom_app_bar_color:
       type: int
       default: 0xffC69C6A
     default_lang:

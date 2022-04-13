@@ -227,7 +227,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
   }
 
   _onClick() async {
-    ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
+    ProgressDialog.show(context, _vm.brandLogo.mobileUr);
     _vm.phoneVerify(_otpController.text);
   }
 
@@ -242,11 +242,11 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
     });
 
     handleApiState(_vm.phoneReVerifyApiState, onSuccess: () async {
-     await _vm.login(_vm.username, _vm.password, true);
+      await _vm.login(_vm.username, _vm.password, true);
       if (_vm.config?.navigateToAddCard ?? false)
         _navigateToAddCard();
       else
-       _navigateToHome();
+        _navigateToHome();
     });
   }
 

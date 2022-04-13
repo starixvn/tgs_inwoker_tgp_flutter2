@@ -73,7 +73,9 @@ class _VipViewState extends BaseState<VipView> {
         });
   }
 
-  _buildAppBar() => CustomAppBar(title: "VIP");
+  _buildAppBar() => CustomAppBar(
+        title: "VIP",
+      );
 
   _buildVipIcon(int index) => InkWell(
         onTap: () {
@@ -153,7 +155,7 @@ class _VipViewState extends BaseState<VipView> {
       );
 
   _buildVipDetailsRow(String title, String content, {bool isLast = false}) => Container(
-        margin: EdgeInsets.only(top: 5.auto,bottom: isLast ? 15.auto : 5.auto),
+        margin: EdgeInsets.only(top: 5.auto, bottom: isLast ? 15.auto : 5.auto),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

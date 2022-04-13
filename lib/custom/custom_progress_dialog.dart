@@ -18,7 +18,7 @@ class ProgressDialog {
 
   ProgressDialog.hide() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if(_progressDialog !=null) _progressDialog!.dismiss();
+      if (_progressDialog != null) _progressDialog!.dismiss();
     });
   }
 
@@ -39,11 +39,18 @@ class ProgressDialog {
               ),
         //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
         Lottie.asset(
-          "loading/loading_t${EnvironmentConfig.template_version}${EnvironmentConfig.dark_mode?"_dark":""}.json",
+          "loading/loading_t${_getLottieLoadingAppendPath()}.json",
           width: 150,
           height: 150,
         ),
       ],
     ));
+  }
+
+  _getLottieLoadingAppendPath() {
+    if (EnvironmentConfig.dark_mode)
+      return "8_dark";
+    else
+      return EnvironmentConfig.template_version;
   }
 }

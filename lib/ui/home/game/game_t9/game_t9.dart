@@ -58,17 +58,19 @@ class _GameT9State extends BaseState<GameT9> {
                       children: [
                         Container(
                           //padding: EdgeInsets.only(bottom: 20.auto),
-                          height: 135.auto,
+                          height: 95.auto,
                           margin: EdgeInsets.only(right: 5.auto),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
+                          decoration: (_vm.config?.t9CustomHome ?? false)
+                              ? BoxDecoration()
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                          padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: (_vm.config?.t9CustomHome ?? false)?0:15.auto),
                           child: GridView.count(
                               crossAxisCount: 4,
                               shrinkWrap: true,
-                              childAspectRatio: 1.2,
+                              childAspectRatio: 2.0,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                               physics: NeverScrollableScrollPhysics(),
@@ -108,37 +110,76 @@ class _GameT9State extends BaseState<GameT9> {
       onTap: () {
         _onTabClick(tabIndex, gameType);
       },
-      child: Container(
-          padding: EdgeInsets.only(top: 5.auto),
-          decoration: tabIndex == currentTabIndex
-              ? BoxDecoration(
-                  color: Color(0xff8CA6F1),
-                  borderRadius: BorderRadius.circular(5),
-                )
-              : BoxDecoration(),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  child: SvgPicture.asset(
-                "images/game_tab/t8/ic_${gameType.getImagePath()}.svg",
-                matchTextDirection: true,
-                height: 20.auto,
-                color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2),
-              )), //Image.asset("images/game_tab/ic_$imagePath.png")),
-              AutoSizeText(
-                gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
-                textAlign: TextAlign.center,
-                style: TextStyle(color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2)),
-                minFontSize: 2,
-                maxFontSize: 13,
-                stepGranularity: 1,
-                maxLines: 2,
+      child: (_vm.config?.t9CustomHome ?? false)
+          ? Container(
+              decoration: tabIndex == currentTabIndex
+                  ? BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [ Color(0xffCFB98F),Color(0xffEFE6C7)],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: [0, 0.5]),
+                borderRadius: BorderRadius.circular(10),
+                    )
+                  : BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
               ),
-            ],
-          )),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(right: 5.auto),
+                      child: SvgPicture.asset(
+                    "images/game_tab/t8/ic_${gameType.getImagePath()}.svg",
+                    matchTextDirection: true,
+                    height: 20.auto,
+                    color: tabIndex == currentTabIndex ? Color(0xffC59C6A) : Color(0xff8490B0),
+                  )), //Image.asset("images/game_tab/ic_$imagePath.png")),
+                  AutoSizeText(
+                    gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: tabIndex == currentTabIndex ? Colors.white : Color(0xff8490B0)),
+                    minFontSize: 2,
+                    maxFontSize: 13,
+                    stepGranularity: 1,
+                    maxLines: 2,
+                  ),
+                ],
+              ))
+          : Container(
+              padding: EdgeInsets.only(top: 5.auto),
+              decoration: tabIndex == currentTabIndex
+                  ? BoxDecoration(
+                      color: Color(0xff8CA6F1),
+                      borderRadius: BorderRadius.circular(5),
+                    )
+                  : BoxDecoration(),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      child: SvgPicture.asset(
+                    "images/game_tab/t8/ic_${gameType.getImagePath()}.svg",
+                    matchTextDirection: true,
+                    height: 20.auto,
+                    color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2),
+                  )), //Image.asset("images/game_tab/ic_$imagePath.png")),
+                  AutoSizeText(
+                    gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2)),
+                    minFontSize: 2,
+                    maxFontSize: 13,
+                    stepGranularity: 1,
+                    maxLines: 2,
+                  ),
+                ],
+              )),
     );
   }
 

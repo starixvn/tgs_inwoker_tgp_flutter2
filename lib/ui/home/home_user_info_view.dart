@@ -100,7 +100,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
           ),
           Container(
             padding: EdgeInsets.only(bottom: 5.auto, left: 10.auto, right: 10.auto),
-            color: CustomColor.theme_button_color.withOpacity(0.4),
+            color: CustomColor.theme_bar_gradient_1.withOpacity(0.4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,

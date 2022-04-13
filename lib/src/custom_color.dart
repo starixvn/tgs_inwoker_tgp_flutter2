@@ -38,6 +38,9 @@ class CustomColor {
   static const theme_text_grey_color = Color(EnvironmentConfig.theme_text_grey_color);
   static const theme_text_grey_white_color = Color(EnvironmentConfig.theme_text_grey_white_color);
   static const theme_app_bar_text_color = Color(EnvironmentConfig.theme_app_bar_text_color);
+  static const theme_marquee_text_color = Color(EnvironmentConfig.theme_marquee_text_color);
+  static const announcement_icon_color = Color(EnvironmentConfig.announcement_icon_color);
+  static const theme_bottom_app_bar_color = Color(EnvironmentConfig.theme_bottom_app_bar_color);
 
   static const Color theme_bar_gradient_1 = Color(EnvironmentConfig.primaryColorCode);
   static const Color theme_bar_gradient_2 = Color(EnvironmentConfig.primaryGradientColorCode);
