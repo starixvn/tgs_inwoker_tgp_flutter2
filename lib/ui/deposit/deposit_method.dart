@@ -736,17 +736,12 @@ class _DepositMethodState extends BaseState<DepositMethod>
         _vm.applePayDepositOrder(_amountController.text, _payment!.id,
             promotionId ?? null, _transferNameController.text);
         break;
-
       case "Help2Pay": //need to remain, since need custom html page to handle the payment.
         _vm.help2PayDepositOrder(
             _amountController.text, _payment!.id, promotionId ?? null);
         break;
       case "SkyPay":
         _vm.skyPayDepositOrder(
-            _amountController.text, _payment!.id, promotionId ?? null);
-        break;
-      case "ZeroNineNinePay":
-        _vm.zeroNineNinePayDepositOrder(
             _amountController.text, _payment!.id, promotionId ?? null);
         break;
 
