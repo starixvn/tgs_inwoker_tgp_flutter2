@@ -736,23 +736,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
         _vm.applePayDepositOrder(_amountController.text, _payment!.id,
             promotionId ?? null, _transferNameController.text);
         break;
-      case "PrimePay":
-        _vm.primePayDepositOrder(
-            _amountController.text, _payment!.id, promotionId ?? null);
-        break;
-      case "UmPay":
-        _vm.umPayDepositOrder(_amountController.text, _payment!.id,
-            promotionId ?? null, methodPickerText == "Crypto");
-        break;
-      case "MaticPay":
-        _vm.maticPayDepositOrder(
-            _amountController.text, _payment!.id, promotionId ?? null);
-        break;
-      case "LeePay":
-        _vm.leePayDepositOrder(
-            _amountController.text, _payment!.id, promotionId ?? null);
-        break;
-      case "Help2Pay":
+
+      case "Help2Pay": //need to remain, since need custom html page to handle the payment.
         _vm.help2PayDepositOrder(
             _amountController.text, _payment!.id, promotionId ?? null);
         break;
@@ -764,19 +749,14 @@ class _DepositMethodState extends BaseState<DepositMethod>
         _vm.zeroNineNinePayDepositOrder(
             _amountController.text, _payment!.id, promotionId ?? null);
         break;
-      case "MalakiPay":
-        _vm.malakiPayDepositOrder(_amountController.text, _payment!.id,
-            promotionId ?? null, _assignDepositType(currBankType));
-        break;
+
       default:
-        _vm.getManualDepositId(
-            currBankType,
-            _bankNameController.text,
+        _vm.performDepositOrder(
             _amountController.text,
             _payment!.id,
             promotionId ?? null,
-            uploadImage,
-            _bankAccNameController.text);
+            _assignDepositType(currBankType),
+            widget.paymentCode);
         break;
     }
   }
@@ -976,23 +956,9 @@ class _DepositMethodState extends BaseState<DepositMethod>
     });
 
     handleApiState(_vm.depositOrderApiState, onSuccess: () {
-      String url = _vm.depositOrderApiState.result?.paymentUrl;
-      print("URL: " + url);
-      String suffix = url.split('/')[4];
-
-      switch (suffix) {
-        case "help2pay":
-          return WidgetsBinding.instance!.addPostFrameCallback((_) async {
-            await _vm.getHelp2PayHtmlText(
-                _vm.depositOrderApiState.result.paymentUrl);
-          });
-
-        default:
-          return _navigateToDepositOrder(
-              depositRedirect: _vm.depositOrderApiState.result,
-              exchangeRate: _vm.exchangeRate,
-              expectedAmount: _calculateExpectedAmount());
-      }
+      _navigateToDepositOrder(
+        depositRedirect: _vm.depositOrderApiState.result,
+      );
     });
   }
 
