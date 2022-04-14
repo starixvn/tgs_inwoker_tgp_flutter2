@@ -339,7 +339,7 @@ class _WithdrawState extends BaseState<Withdraw> {
     var result;
     //fetch bank list
 
-    if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? false)) {
+    if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? true)) {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         result = await Navigator.push(
           context,

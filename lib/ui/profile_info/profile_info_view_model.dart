@@ -24,14 +24,14 @@ class ProfileInfoViewModel extends BaseViewModel {
     Map<String, Map<String, dynamic>> map = {
       "qq": {"item": ProfileInfoItem.QQ_NUMBER, "text": userProfile.qq},
       "wechat": {"item": ProfileInfoItem.WECHAT_NUMBER, "text": userProfile.wechat},
-      "messenger": {"item": ProfileInfoItem.MESSENGER, "text": userProfile.facebookMessenger},
+      "fb": {"item": ProfileInfoItem.MESSENGER, "text": userProfile.facebookMessenger},
       "telegram": {"item": ProfileInfoItem.TELEGRAM, "text": userProfile.telegram},
       "line": {"item": ProfileInfoItem.LINE, "text": userProfile.line},
       "viber": {"item": ProfileInfoItem.VIBER, "text": userProfile.viber},
       "whatsapp": {"item": ProfileInfoItem.WHATSAPP, "text": userProfile.whatsapp},
     };
     if(messagingMap.isNotEmpty) messagingMap.clear();
-    if (config?.qqWeChat ?? false) {
+    if (config?.qqWeChat ?? true) {
       messagingMap.add(map["qq"]!);
       messagingMap.add(map["wechat"]!);
     }

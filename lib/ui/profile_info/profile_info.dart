@@ -48,12 +48,21 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                         children: [
                           _buildInfoCard(
                             "basic_info",
-                            [ProfileInfoItem.REALNAME, ProfileInfoItem.PHONE_NUMBER, ProfileInfoItem.EMAIL],
-                            ["real_name_verification", "phone_verification", "email_verification"],
+                            [
+                              if (_vm.config?.icVerification ?? true) ProfileInfoItem.REALNAME,
+                              if (_vm.config?.smsVerification ?? false) ProfileInfoItem.PHONE_NUMBER,
+                              if (_vm.config?.emailVerification ?? true) ProfileInfoItem.EMAIL,
+                            ],
+                            [
+                              if (_vm.config?.icVerification ?? true) "real_name_verification",
+                              if (_vm.config?.smsVerification ?? false) "phone_verification",
+                              if (_vm.config?.emailVerification ?? true) "email_verification",
+                            ],
                             itemDescriptionList: [
-                              _getRealName(),
-                              _getItemText(_vm.userProfile.phone),
-                              _getItemText(_vm.userProfile.email, isShowFirstText: false)
+                              if (_vm.config?.icVerification ?? true) _getRealName(),
+                              if (_vm.config?.smsVerification ?? false) _getItemText(_vm.userProfile.phone),
+                              if (_vm.config?.emailVerification ?? true)
+                                _getItemText(_vm.userProfile.email, isShowFirstText: false)
                             ],
                           ),
                           _buildOtherInfoCard(),
@@ -71,7 +80,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   }
 
   _buildOtherInfoCard() {
-    return (_vm.config?.qqWeChat ?? false) || (_vm.config?.customMessaging?.isNotEmpty ?? false)
+    return (_vm.config?.qqWeChat ?? true) || (_vm.config?.customMessaging?.isNotEmpty ?? false)
         ? Container(
             margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
             child: Card(
@@ -125,6 +134,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
           elevation: 5,
           child: Container(
             margin: EdgeInsets.all(20.auto),
+            width: context.screenWidth,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -158,8 +168,8 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _buildInfoItem(String imagePath, String itemTitle, String routePath,
       {String? itemDescription, bool isMessaging = false}) {
     if ((routePath == "phone_verification" && !(_vm.config?.smsVerification ?? false)) ||
-        (routePath == "real_name_verification" && !(_vm.config?.icVerification ?? false)) ||
-        (routePath == "email_verification" && !(_vm.config?.emailVerification ?? false)))
+        (routePath == "real_name_verification" && !(_vm.config?.icVerification ?? true)) ||
+        (routePath == "email_verification" && !(_vm.config?.emailVerification ?? true)))
       return Container();
     else
       return InkWell(
