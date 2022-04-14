@@ -251,8 +251,33 @@ class _HomeT3State extends BaseState<HomeT3> {
                             ))),
                 child: Container(
                   width: context.screenWidth / 2 - 15.auto,
-                  child: Image.asset(
-                      "images/game_tab/t3/$imageLanguageCode/${widget.gameViewModel.gameRowListT3![index].getImagePath()}.gif"),
+                  child: (widget.homeViewModel.config?.homePageAnimated ?? false)
+                      ? Image.asset(
+                          _getFullGameTabImagePath(widget.gameViewModel.gameRowListT3![index].getImagePath()),
+                        )
+                      : Stack(
+                          children: [
+                            Image.asset("images/home/${widget.gameViewModel.gameRowListT3![index].getImagePath()}.png"),
+                            Positioned(
+                              bottom: 7.auto,
+                              right: 10.auto,
+                              child: Container(
+                                width: 80.auto,
+                                height: 90.auto,
+                                alignment: Alignment.bottomCenter,
+                                child: AutoSizeText(
+                                  // gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
+                                  widget.gameViewModel.gameRowListT3![index]
+                                      .getName(context, widget.homeViewModel.config?.menuItemShootFish ?? false),
+                                  maxFontSize: 23,
+                                  minFontSize: 10,
+                                  stepGranularity: 1,
+                                  style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                 ));
           })),
     );
@@ -278,14 +303,46 @@ class _HomeT3State extends BaseState<HomeT3> {
                         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                         onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                       ))),
-          child: Image.asset(
-              "images/game_tab/t3/$imageLanguageCode/${widget.gameViewModel.gameListT3![index].getImagePath()}.gif"),
+          child: (widget.homeViewModel.config?.homePageAnimated ?? false)
+              ? Image.asset(
+                  _getFullGameTabImagePath(widget.gameViewModel.gameListT3![index].getImagePath()),
+                )
+              : Stack(
+                  children: [
+                    Image.asset(
+                      _getFullGameTabImagePath(widget.gameViewModel.gameListT3![index].getImagePath()),
+                    ),
+                    Positioned(
+                        bottom: 20.auto,
+                        left: 60.auto,
+                        child: Container(
+                          width: 70.auto,
+                          height: 40.auto,
+                          alignment: Alignment.bottomLeft,
+                          child: AutoSizeText(
+                            widget.gameViewModel.gameListT3![index]
+                                .getName(context, widget.homeViewModel.config?.menuItemShootFish ?? false),
+                            maxFontSize: 23,
+                            minFontSize: 10,
+                            stepGranularity: 1,
+                            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
+                          ),
+                        )),
+                  ],
+                ),
         ),
         staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
         mainAxisSpacing: 15.auto,
         crossAxisSpacing: 15.auto,
       ),
     );
+  }
+
+  _getFullGameTabImagePath(String path) {
+    if (widget.homeViewModel.config?.homePageAnimated ?? false)
+      return "images/game_tab/t3/$imageLanguageCode/$path.gif";
+    else
+      return "images/game_tab/t3/$path.png";
   }
 
   navigateToLogin() {
