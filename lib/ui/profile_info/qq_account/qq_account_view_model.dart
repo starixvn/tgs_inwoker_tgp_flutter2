@@ -17,7 +17,7 @@ class QQAccountViewModel extends BaseViewModel {
 
   setQQAccount(String qq) async {
     setLoading();
-    var _status = await userRepo.setQQAccount(qq);
+    var _status = await userRepo.setMessagingAppID("qq", qq);
     if (_status.isSuccess) {
       setQQApiState = await userRepo.getBasicInfo();
     } else

@@ -2,7 +2,6 @@ import 'package:api/entity/identity_status.dart';
 import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
-import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -21,6 +20,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   @override
   void initState() {
     _vm.getUserProfile();
+    _vm.getMessagingList();
     super.initState();
   }
 
@@ -56,17 +56,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                               _getItemText(_vm.userProfile.email, isShowFirstText: false)
                             ],
                           ),
-                          (_vm.config?.qqWeChat ?? false)
-                              ? _buildInfoCard(
-                                  "other_info",
-                                  [ProfileInfoItem.QQ_NUMBER, ProfileInfoItem.WECHAT_NUMBER],
-                                  ["qq_account", "wechat"],
-                                  itemDescriptionList: [
-                                    _getItemText(_vm.userProfile.qq),
-                                    _getItemText(_vm.userProfile.wechat),
-                                  ],
-                                )
-                              : Container(),
+                          _buildOtherInfoCard(),
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.auto),
                             child: _buildInfoCard(
@@ -78,6 +68,48 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     ),
                   )));
         });
+  }
+
+  _buildOtherInfoCard() {
+    return (_vm.config?.qqWeChat ?? false) || (_vm.config?.customMessaging?.isNotEmpty ?? false)
+        ? Container(
+            margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+            child: Card(
+              semanticContainer: true,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              elevation: 5,
+              child: Container(
+                margin: EdgeInsets.all(20.auto),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      getTranslatedText("other_info"),
+                      style: TextStyle(fontSize: 15.auto),
+                    ),
+                    Column(
+                      children: _vm.messagingMap.map((mapItem) {
+                        ProfileInfoItem item = mapItem["item"];
+                        return Container(
+                          child: _buildInfoItem(
+                            item.getImagePath() ?? "",
+                            item.getDisplayName(context) ?? "",
+                            item.getNavigationPath() ?? "",
+                            itemDescription: _getItemText(mapItem["text"] ?? ""),
+                            isMessaging: true,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : Container();
   }
 
   _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
@@ -105,15 +137,15 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   return Container(
                     child: !isSecurity
                         ? _buildInfoItem(
-                            itemList[index].getImagePath!,
+                            itemList[index].getImagePath()!,
                             itemList[index].getDisplayName(context)!,
-                            pathList[index],
+                            itemList[index].getNavigationPath()!,
                             itemDescription: itemDescriptionList != null ? itemDescriptionList[index] : "",
                           )
                         : _buildInfoItemWithoutText(
-                            itemList[index].getImagePath!,
+                            itemList[index].getImagePath()!,
                             itemList[index].getDisplayName(context)!,
-                            pathList[index],
+                            itemList[index].getNavigationPath()!,
                           ),
                   );
                 }))
@@ -123,18 +155,21 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription}) {
+  _buildInfoItem(String imagePath, String itemTitle, String routePath,
+      {String? itemDescription, bool isMessaging = false}) {
     if ((routePath == "phone_verification" && !(_vm.config?.smsVerification ?? false)) ||
         (routePath == "real_name_verification" && !(_vm.config?.icVerification ?? false)) ||
         (routePath == "email_verification" && !(_vm.config?.emailVerification ?? false)))
       return Container();
     else
       return InkWell(
-        onTap: () {
+        onTap: () async {
           if (_isDisableEditPhone(routePath))
             return;
-          else
-            Navigator.of(context).pushNamed("/$routePath");
+          else {
+            var result = await Navigator.of(context).pushNamed("/$routePath");
+            if (result != null && isMessaging) _vm.getMessagingList();
+          }
         },
         highlightColor: Colors.transparent,
         child: Container(
@@ -222,14 +257,14 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
     var realName = _vm.userProfile.realname;
     if (realName != null && realName.isNotEmpty) {
       //if (_isShowIcVerificationUpload()) {
-        if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
-          return realName + " (${getTranslatedText("verified")})";
-        else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
-          return realName + " (${getTranslatedText("waiting_verify")})";
-        else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject)
-          return realName + " (${getTranslatedText("rejected")})";
-     // } else
-        //return realName;
+      if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
+        return realName + " (${getTranslatedText("verified")})";
+      else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
+        return realName + " (${getTranslatedText("waiting_verify")})";
+      else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject)
+        return realName + " (${getTranslatedText("rejected")})";
+      // } else
+      //return realName;
     } else
       return getTranslatedText("not_configured");
   }

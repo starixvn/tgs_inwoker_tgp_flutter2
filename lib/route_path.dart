@@ -57,4 +57,9 @@ class RoutePath{
   static final customerServiceWebView = '/customer_service_web_view';
   static final affiliate = '/affiliate';
   static final menuT2 = '/menuT2';
+  static final messenger = '/messenger';
+  static final telegram = '/telegram';
+  static final line = '/line';
+  static final viber = '/viber';
+  static final whatsapp = '/whatsapp';
 }
