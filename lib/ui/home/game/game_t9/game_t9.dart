@@ -58,7 +58,7 @@ class _GameT9State extends BaseState<GameT9> {
                       children: [
                         Container(
                           //padding: EdgeInsets.only(bottom: 20.auto),
-                          height: 95.auto,
+                          height: (_vm.config?.t9CustomHome ?? false) ? 95.auto : 135.auto,
                           margin: EdgeInsets.only(right: 5.auto),
                           decoration: (_vm.config?.t9CustomHome ?? false)
                               ? BoxDecoration()
@@ -66,11 +66,12 @@ class _GameT9State extends BaseState<GameT9> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                          padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: (_vm.config?.t9CustomHome ?? false)?0:15.auto),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5.auto, horizontal: (_vm.config?.t9CustomHome ?? false) ? 0 : 15.auto),
                           child: GridView.count(
                               crossAxisCount: 4,
                               shrinkWrap: true,
-                              childAspectRatio: 2.0,
+                              childAspectRatio: (_vm.config?.t9CustomHome ?? false) ? 2 : 1.2,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                               physics: NeverScrollableScrollPhysics(),
@@ -114,30 +115,30 @@ class _GameT9State extends BaseState<GameT9> {
           ? Container(
               decoration: tabIndex == currentTabIndex
                   ? BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [ Color(0xffCFB98F),Color(0xffEFE6C7)],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    stops: [0, 0.5]),
-                borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                          colors: [Color(0xffCFB98F), Color(0xffEFE6C7)],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          stops: [0, 0.5]),
+                      borderRadius: BorderRadius.circular(10),
                     )
                   : BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
               alignment: Alignment.center,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(right: 5.auto),
+                      padding: EdgeInsets.only(right: 5.auto),
                       child: SvgPicture.asset(
-                    "images/game_tab/t8/ic_${gameType.getImagePath()}.svg",
-                    matchTextDirection: true,
-                    height: 20.auto,
-                    color: tabIndex == currentTabIndex ? Color(0xffC59C6A) : Color(0xff8490B0),
-                  )), //Image.asset("images/game_tab/ic_$imagePath.png")),
+                        "images/game_tab/t8/ic_${gameType.getImagePath()}.svg",
+                        matchTextDirection: true,
+                        height: 20.auto,
+                        color: tabIndex == currentTabIndex ? Color(0xffC59C6A) : Color(0xff8490B0),
+                      )), //Image.asset("images/game_tab/ic_$imagePath.png")),
                   AutoSizeText(
                     gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
                     textAlign: TextAlign.center,
