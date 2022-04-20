@@ -20,7 +20,7 @@ class ProfileInfoViewModel extends BaseViewModel {
   }
 
   getMessagingList() {
-    List list = config?.customMessaging;
+    List list = config?.customMessaging ?? [];
     Map<String, Map<String, dynamic>> map = {
       "qq": {"item": ProfileInfoItem.QQ_NUMBER, "text": userProfile.qq},
       "wechat": {"item": ProfileInfoItem.WECHAT_NUMBER, "text": userProfile.wechat},
@@ -30,7 +30,7 @@ class ProfileInfoViewModel extends BaseViewModel {
       "viber": {"item": ProfileInfoItem.VIBER, "text": userProfile.viber},
       "whatsapp": {"item": ProfileInfoItem.WHATSAPP, "text": userProfile.whatsapp},
     };
-    if(messagingMap.isNotEmpty) messagingMap.clear();
+    if (messagingMap.isNotEmpty) messagingMap.clear();
     if (config?.qqWeChat ?? true) {
       messagingMap.add(map["qq"]!);
       messagingMap.add(map["wechat"]!);
