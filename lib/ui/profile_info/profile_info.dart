@@ -1,6 +1,7 @@
 import 'package:api/entity/identity_status.dart';
 import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -188,10 +189,16 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
             children: [
               Container(
                   margin: EdgeInsets.only(right: 10.auto),
-                  child: ImageIcon(
-                    AssetImage(imagePath),
-                    size: 20.auto,
-                  )),
+                  child: imagePath.contains("svg")
+                      ? SvgPicture.asset(
+                          imagePath,
+                          matchTextDirection: true,
+                          height: 28.auto,
+                        )
+                      : ImageIcon(
+                          AssetImage(imagePath),
+                          size: 20.auto,
+                        )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
