@@ -1,7 +1,7 @@
 flutter_icons:
   android: true
   ios: true
-  image_path:  "images/m9th_logo.png"
+  image_path:  "images/webet_logo.png"
 
 environment_config:
   fields:
