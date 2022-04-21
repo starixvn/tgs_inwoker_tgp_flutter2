@@ -1054,6 +1054,25 @@
   "enter_deposit_bank_account_name_hint": "請填寫銀行賬戶/姓名",
   "withdraw_reach_min": "提款金額未達到最低金額",
   "withdraw_reach_max": "提款金額達到最大金額",
-  "bank_transferring_notification_content_GMO": "客戶存取款須知\n為防止洗黑錢\n客戶取款必須跟綁定充值帳戶相同\n有關於取款問題可向客服查詢"
-
+  "bank_transferring_notification_content_GMO": "客戶存取款須知\n為防止洗黑錢\n客戶取款必須跟綁定充值帳戶相同\n有關於取款問題可向客服查詢",
+  "line": "Line 賬號",
+  "line_hint": "請輸入Line 賬號",
+  "edit_line_cs": "如需修改Line 賬號，請點擊",
+  "enter_line_error_message": "Line 賬號格式不正確",
+  "messenger": "Facebook Messenger 賬號",
+  "messenger_hint": "請輸入Facebook Messenger 賬號",
+  "edit_messenger_cs": "如需修改 Facebook Messenger 賬號，請點擊",
+  "enter_messenger_error_message": "Facebook Messenger 賬號格式不正確",
+  "telegram": "Telegram 賬號",
+  "telegram_hint": "請輸入Telegram 賬號",
+  "edit_telegram_cs": "如需修改Telegram 賬號，請點擊",
+  "enter_telegram_error_message": "Telegram 賬號格式不正確",
+  "viber": "Viber 賬號",
+  "viber_hint": "請輸入Viber 賬號",
+  "edit_viber_cs": "如需修改Viber 賬號，請點擊",
+  "enter_viber_error_message": "Viber 賬號 格式不正確",
+  "whatsapp": "Whatsapp 賬號",
+  "whatsapp_hint": "請輸入Whatsapp 賬號",
+  "edit_whatsapp_cs": "如需修改Whatsapp 賬號，請點擊",
+  "enter_whatsapp_error_message": " Whatsapp 賬號格式不正確"
 }

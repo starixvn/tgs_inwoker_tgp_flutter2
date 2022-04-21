@@ -116,9 +116,8 @@ class _ProfileT2State extends BaseState<ProfileT2> {
                   _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 4),
                   _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
                   _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
-                  (_vm.config?.haveAffiliateFeature ?? false)
-                      ? _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0)
-                      : Container(),
+                  if(_vm.config?.haveAffiliateFeature ?? false)
+                       _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
                   _buildProfileBottomItem("ic_lang", "language", "language", 0),
                 ],
               ),

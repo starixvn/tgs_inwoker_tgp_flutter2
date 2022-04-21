@@ -44,6 +44,7 @@ class _WechatState extends BaseState<Wechat> {
               backgroundColor: CustomColor.theme_bg_color,
               appBar: CustomAppBar(
                 title: getTranslatedText("wechat_no"),
+                onPop: () => Navigator.pop(context, true),
               ),
               body: Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
@@ -84,30 +85,33 @@ class _WechatState extends BaseState<Wechat> {
         radius: 9.6,
       ));
 
-  _buildFooterText() => InkWell(
-        onTap: () {
-          (_vm.config?.changesNotAllowed ?? false)
-              ? Navigator.of(context).pushNamed("/customer_service")
-              : setState(() {
-                  isTextFieldEnabled = true;
-                  isButtonEnabled = true;
-                  buttonText = getTranslatedText("edit");
-                  _focusNode.requestFocus();
-                });
-        },
-        child: RichText(
-          text: TextSpan(
-            text: getTranslatedText("edit_wechat_cs"),
-            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
-            children: [
-              TextSpan(
-                text: (_vm.config?.changesNotAllowed ?? false)
-                    ? getTranslatedText("online_cs")
-                    : getTranslatedText("here"),
-                style: TextStyle(
-                    decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
-              ),
-            ],
+  _buildFooterText() => Visibility(
+        visible: _vm.userProfile.wechat != null,
+        child: InkWell(
+          onTap: () {
+            (_vm.config?.changesNotAllowed ?? false)
+                ? Navigator.of(context).pushNamed("/customer_service")
+                : setState(() {
+                    isTextFieldEnabled = true;
+                    isButtonEnabled = true;
+                    buttonText = getTranslatedText("edit");
+                    _focusNode.requestFocus();
+                  });
+          },
+          child: RichText(
+            text: TextSpan(
+              text: getTranslatedText("edit_wechat_cs"),
+              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+              children: [
+                TextSpan(
+                  text: (_vm.config?.changesNotAllowed ?? false)
+                      ? getTranslatedText("online_cs")
+                      : getTranslatedText("here"),
+                  style: TextStyle(
+                      decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                ),
+              ],
+            ),
           ),
         ),
       );

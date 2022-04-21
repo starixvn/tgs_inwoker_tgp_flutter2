@@ -27,7 +27,9 @@ class DepositMethodViewModel extends BaseViewModel {
       getHelp2PayHtmlTextApiState,
       skyPayDepositOrderApiState,
       uploadDepositImageApiState,
-      zeroNineNinePayDepositOrderApiState;
+      zeroNineNinePayDepositOrderApiState,
+      malakiPayDepositOrderApiState,
+      depositOrderApiState;
   List<Payment>? paymentList;
   var depositOrder, orderNo, exchangeRate;
 
@@ -54,12 +56,8 @@ class DepositMethodViewModel extends BaseViewModel {
     String? name,
   ) async {
     setLoading();
-    if (bankType == BankType.BANK)
-      getManualDepositIdApiState =
-          await depositRepo.getManualBankDepositId(account, amount, paymentId, promotionId, name, bankType.getJson);
-    else
-      getManualDepositIdApiState =
-          await depositRepo.getManualThirdPartyDepositId(account, amount, paymentId, promotionId);
+    getManualDepositIdApiState = await depositRepo.getManualDepositId(
+        account, amount, paymentId, promotionId, name, bankType.getJson);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
       if (config.deposit_DualPage)
@@ -81,33 +79,42 @@ class DepositMethodViewModel extends BaseViewModel {
     return getDepositOrderApiState;
   }
 
-  leePayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+  leePayDepositOrder(
+      String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    getLeepayOrderApiState = await depositRepo.leePayDepositOrder(amount, paymentId, promotionId);
+    getLeepayOrderApiState =
+        await depositRepo.leePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return getLeepayOrderApiState;
   }
 
-  primePayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+  primePayDepositOrder(
+      String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    primePayDepositOrderApiState = await depositRepo.primePayDepositOrder(amount, paymentId, promotionId);
+    primePayDepositOrderApiState =
+        await depositRepo.primePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return primePayDepositOrderApiState;
   }
 
-  applePayDepositOrder(String amount, String? paymentId, String? promotionId, String transName) async {
+  applePayDepositOrder(String amount, String? paymentId, String? promotionId,
+      String transName) async {
     setLoading();
-    applePayDepositOrderApiState = await depositRepo.applePayDepositOrder(amount, paymentId, promotionId, transName);
+    applePayDepositOrderApiState = await depositRepo.applePayDepositOrder(
+        amount, paymentId, promotionId, transName);
     setLoading(false);
     return applePayDepositOrderApiState;
   }
 
-  umPayDepositOrder(String amount, String? paymentId, String? promotionId, bool isCrypto) async {
+  umPayDepositOrder(String amount, String? paymentId, String? promotionId,
+      bool isCrypto) async {
     setLoading();
     if (isCrypto)
-      getUmPayDepositOrderApiState = await depositRepo.umPayCryptoDepositOrder(amount, paymentId, promotionId);
+      getUmPayDepositOrderApiState = await depositRepo.umPayCryptoDepositOrder(
+          amount, paymentId, promotionId);
     else
-      getUmPayDepositOrderApiState = await depositRepo.umPayBankDepositOrder(amount, paymentId, promotionId);
+      getUmPayDepositOrderApiState = await depositRepo.umPayBankDepositOrder(
+          amount, paymentId, promotionId);
     setLoading(false);
     return getUmPayDepositOrderApiState;
   }
@@ -115,12 +122,15 @@ class DepositMethodViewModel extends BaseViewModel {
   getExchangeRate(String? paymentId, bool isUmPay) async {
     setLoading();
     if (!isUmPay)
-      getExchangeRateApiState = await depositRepo.getLeePayExchangeRate(paymentId);
+      getExchangeRateApiState =
+          await depositRepo.getLeePayExchangeRate(paymentId);
     else
-      getExchangeRateApiState = await depositRepo.getUmPayExchangeRate(paymentId);
+      getExchangeRateApiState =
+          await depositRepo.getUmPayExchangeRate(paymentId);
     if (getExchangeRateApiState.isSuccess) {
       if (!isUmPay)
-        exchangeRate = getExchangeRateApiState.result.buyPrice.replaceAll(',', '.');
+        exchangeRate =
+            getExchangeRateApiState.result.buyPrice.replaceAll(',', '.');
       else
         exchangeRate = getExchangeRateApiState.result.rate.toString();
     }
@@ -128,44 +138,72 @@ class DepositMethodViewModel extends BaseViewModel {
     return getExchangeRateApiState;
   }
 
-  maticPayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+  maticPayDepositOrder(
+      String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    maticPayDepositOrderApiState = await depositRepo.maticPayDepositOrder(amount, paymentId, promotionId);
+    maticPayDepositOrderApiState =
+        await depositRepo.maticPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return maticPayDepositOrderApiState;
   }
 
-  help2PayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+  help2PayDepositOrder(
+      String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    help2PayDepositOrderApiState = await depositRepo.help2PayDepositOrder(amount, paymentId, promotionId);
+    help2PayDepositOrderApiState =
+        await depositRepo.help2PayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return help2PayDepositOrderApiState;
   }
 
   getHelp2PayHtmlText(String url) async {
     setLoading();
-    getHelp2PayHtmlTextApiState = await depositRepo.getHelp2PayHtmlText(url.substring(1));
+    getHelp2PayHtmlTextApiState =
+        await depositRepo.getHelp2PayHtmlText(url.substring(1));
     setLoading(false);
     return getHelp2PayHtmlTextApiState;
   }
 
-  skyPayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+  skyPayDepositOrder(
+      String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    skyPayDepositOrderApiState = await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
+    skyPayDepositOrderApiState =
+        await depositRepo.skyPayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return skyPayDepositOrderApiState;
   }
 
-  zeroNineNinePayDepositOrder(String amount, String? paymentId, String? promotionId) async {
+  zeroNineNinePayDepositOrder(
+      String amount, String? paymentId, String? promotionId) async {
     setLoading();
-    zeroNineNinePayDepositOrderApiState = await depositRepo.zeroNineNinePayDepositOrder(amount, paymentId, promotionId);
+    zeroNineNinePayDepositOrderApiState = await depositRepo
+        .zeroNineNinePayDepositOrder(amount, paymentId, promotionId);
     setLoading(false);
     return zeroNineNinePayDepositOrderApiState;
   }
 
+  malakiPayDepositOrder(String amount, String? paymentId, String? promotionId,
+      String? type) async {
+    setLoading();
+    malakiPayDepositOrderApiState = await depositRepo.malakiPayDepositOrder(
+        amount, paymentId, promotionId, type);
+    setLoading(false);
+    return malakiPayDepositOrderApiState;
+  }
+
+  performDepositOrder(String amount, String? paymentId, String? promotionId,
+      String? type, String? paymentcode) async {
+    setLoading();
+    depositOrderApiState = await depositRepo.performDeposit(
+        amount, paymentId, promotionId, type, paymentcode);
+    setLoading(false);
+    return depositOrderApiState;
+  }
+
   uploadDepositImage(File imageFile, String id) async {
     setLoading();
-    uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
+    uploadDepositImageApiState =
+        await depositRepo.uploadDepositImage(imageFile, id);
     if (uploadDepositImageApiState.isSuccess) {}
     setLoading(false);
     return uploadDepositImageApiState;

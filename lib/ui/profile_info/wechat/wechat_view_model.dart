@@ -15,9 +15,9 @@ class WechatViewModel extends BaseViewModel {
 
   get config => contentRepo.featuresConfig;
 
-  setWechatAccount(String qq) async {
+  setWechatAccount(String wechat) async {
     setLoading();
-    var _status = await userRepo.setWechatAccount(qq);
+    var _status = await userRepo.setMessagingAppID("wechat", wechat);
     if (_status.isSuccess) {
       setWechatApiState = await userRepo.getBasicInfo();
     } else

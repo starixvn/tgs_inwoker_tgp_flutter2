@@ -134,7 +134,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
             isEnabled: true,
             width: context.screenWidth / 3.5,
             height: context.screenHeight / 18,
-            fontSize: 13.auto,
+            fontSize: 13,
             color: Colors.white,
           ),
           ColorButton(
@@ -152,7 +152,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
             height: 44.5,
             width: context.screenWidth / 3.5,
             padding: 5.auto,
-            fontSize: 10.auto,
+            fontSize: 10,
             color: CustomColor.theme_button_color,
           ),
         ],

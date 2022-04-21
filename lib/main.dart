@@ -36,6 +36,8 @@ import 'package:tgp_flutter2/ui/message/message_view.dart';
 import 'package:tgp_flutter2/ui/profile/profile.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/edit_email.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
+import 'package:tgp_flutter2/ui/profile_info/line/line.dart';
+import 'package:tgp_flutter2/ui/profile_info/messenger/messenger.dart';
 import 'package:tgp_flutter2/ui/profile_info/password/edit_password.dart';
 import 'package:tgp_flutter2/ui/profile_info/pay_password/pay_password.dart';
 import 'package:tgp_flutter2/ui/profile_info/pay_password/reset_pay_password.dart';
@@ -44,7 +46,10 @@ import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/profile_info.dart';
 import 'package:tgp_flutter2/ui/profile_info/qq_account/qq_account.dart';
 import 'package:tgp_flutter2/ui/profile_info/real_name/real_name_verification.dart';
+import 'package:tgp_flutter2/ui/profile_info/telegram/telegram.dart';
+import 'package:tgp_flutter2/ui/profile_info/viber/viber.dart';
 import 'package:tgp_flutter2/ui/profile_info/wechat/wechat.dart';
+import 'package:tgp_flutter2/ui/profile_info/whatsapp/whatsapp.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion.dart';
 import 'package:tgp_flutter2/ui/report/report_view.dart';
 import 'package:tgp_flutter2/ui/splash/splash.dart';
@@ -235,7 +240,12 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.affiliate: (context) => Affiliate(),
                   RoutePath.vip: (context) => VipView(),
-                  RoutePath.menuT2: (context) => MenuT2()
+                  RoutePath.menuT2: (context) => MenuT2(),
+                  RoutePath.messenger: (context) => Messenger(),
+                  RoutePath.telegram: (context) => Telegram(),
+                  RoutePath.line: (context) => Line(),
+                  RoutePath.viber: (context) => Viber(),
+                  RoutePath.whatsapp: (context) => Whatsapp(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

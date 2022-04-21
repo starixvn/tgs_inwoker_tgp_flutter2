@@ -27,10 +27,10 @@ environment_config:
       default: false
     primaryColorCode:
       type: int
-      default: 0xff044BA3
+      default: 0xffC69C6A
     primaryGradientColorCode:
       type: int
-      default: 0xff1b86c7
+      default: 0xffC69C6A
     theme_app_bar_color:
       type: int
       default: 0xffC69C6A

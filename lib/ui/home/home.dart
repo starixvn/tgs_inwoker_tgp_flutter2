@@ -107,24 +107,29 @@ class _HomeState extends BaseState<Home> {
             //key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
             backgroundColor: CustomColor.theme_bg_color,
-            appBar: CustomLoginAppBar(
-              onClickLoginButton: () {
-                Navigator.of(context).pushNamed(RoutePath.login);
-              },
-              onClickRegisterButton: () {
-                Navigator.of(context).pushNamed(RoutePath.register);
-              },
-              onClickLogoutButton: () {
-                _logout();
-              },
-              isLogin: _vm.userProfile != null,
-              brandLogoUrl: _vm.brandLogoUrl,
-              userProfile: _vm.userProfile,
-              phone: _vm.phone,
-              config: _vm.config,
-              totalBalance: _vm.totalBalance,
-              brandName: EnvironmentConfig.brandName,
-            ),
+            appBar: EnvironmentConfig.template_version == 2
+                ? PreferredSize(
+                    child: Container(),
+                    preferredSize: Size.fromHeight(0),
+                  )
+                : CustomLoginAppBar(
+                    onClickLoginButton: () {
+                      Navigator.of(context).pushNamed(RoutePath.login);
+                    },
+                    onClickRegisterButton: () {
+                      Navigator.of(context).pushNamed(RoutePath.register);
+                    },
+                    onClickLogoutButton: () {
+                      _logout();
+                    },
+                    isLogin: _vm.userProfile != null,
+                    brandLogoUrl: _vm.brandLogoUrl,
+                    userProfile: _vm.userProfile,
+                    phone: _vm.phone,
+                    config: _vm.config,
+                    totalBalance: _vm.totalBalance,
+                    brandName: EnvironmentConfig.brandName,
+                  ),
             body: _getHomeTemplateView(),
           );
         });
