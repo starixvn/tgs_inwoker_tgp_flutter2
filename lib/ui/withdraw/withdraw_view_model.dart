@@ -1,8 +1,5 @@
 import 'dart:math';
-
 import 'package:api/api.dart';
-import 'package:api/entity/bank_card.dart';
-import 'package:api/entity/payment.dart';
 import 'package:api/entity/withdrawal_info.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
@@ -13,7 +10,10 @@ class WithdrawViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getWithdrawalInfoListApiState;
+  var getBankCardListApiState,
+      withdrawApiState,
+      getTurnoverAmountApiState,
+      getWithdrawalInfoListApiState;
   var bankCardList, turnover;
   List<WithdrawalInfo>? withdrawList;
   var maxTransferLimit, minTransferLimit;
@@ -59,6 +59,7 @@ class WithdrawViewModel extends BaseViewModel {
 
   getWithdrawalInfoList() async {
     setLoading();
+
     getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
     if (getWithdrawalInfoListApiState.isSuccess) {
       List<double> minTransferLimitList = [], maxTransferLimitList = [];
