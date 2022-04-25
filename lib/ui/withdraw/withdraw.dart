@@ -181,7 +181,9 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: getTranslatedText("bank_card"),
         displayText: selectedBankCardText ?? "",
         list: _vm.bankCardList ?? [],
-        isHintText: selectedBankCard != null || _vm.bankCardList != null || _vm.bankCardList.isNotEmpty ? false : true,
+        isHintText: selectedBankCard != null || _vm.bankCardList != null || (_vm.bankCardList?.isNotEmpty ?? false)
+            ? false
+            : true,
         width: context.screenWidth,
         onClick: () {
           _buildPickerDialog("bank_card", _vm.bankCardList ?? []);
@@ -207,11 +209,11 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   _getBankText() {
-    if (_vm.bankCardList == null || _vm.bankCardList.isEmpty) {
+    if (_vm.bankCardList == null || (_vm.bankCardList?.isEmpty ?? true)) {
       selectedBankCardText = getTranslatedText("select_bank_card");
     } else {
       if (selectedBankCard == null) {
-        selectedBankCard = _vm.bankCardList.first;
+        selectedBankCard = _vm.bankCardList?.first;
       }
       selectedBankCardText = _getDisplayBankAccountText(selectedBankCard);
     }
@@ -305,11 +307,11 @@ class _WithdrawState extends BaseState<Withdraw> {
       setState(() {
         CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
       });
-    } else if (amount > (_vm.maxTransferLimit ?? 0)) {
+    } else if (amount < (selectedBankCard?.transferLimit?.from ?? 0)) {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-            description: getTranslatedText("withdraw_reach_max"),
+            description: getTranslatedText("withdraw_reach_min"),
             buttonText1: getTranslatedText("confirm"),
             onClick: () {
               Navigator.pop(
@@ -317,11 +319,11 @@ class _WithdrawState extends BaseState<Withdraw> {
               );
             }),
       );
-    } else if (amount < (_vm.minTransferLimit ?? 0)) {
+    } else if (amount > (selectedBankCard?.transferLimit?.to ?? 0)) {
       showDialog(
         context: context,
         builder: (BuildContext context) => CustomDialog(
-            description: getTranslatedText("withdraw_reach_min"),
+            description: getTranslatedText("withdraw_reach_max"),
             buttonText1: getTranslatedText("confirm"),
             onClick: () {
               Navigator.pop(
