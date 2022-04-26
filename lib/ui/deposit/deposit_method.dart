@@ -308,7 +308,9 @@ class _DepositMethodState extends BaseState<DepositMethod>
         return _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!,
             paymentQrCode.bankAccount!);
       else
-        return [];
+        return [
+          Container()
+        ];
     })());
 
     if (content.isNotEmpty) {
