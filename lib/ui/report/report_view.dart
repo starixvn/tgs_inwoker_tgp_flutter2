@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/tab_button.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
-import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/report/account_report_view.dart';
 import 'package:tgp_flutter2/ui/report/deposit_report_view.dart';
@@ -23,7 +21,8 @@ class ReportView extends StatefulWidget {
   _ReportViewState createState() => _ReportViewState();
 }
 
-class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderStateMixin {
+class _ReportViewState extends BaseState<ReportView>
+    with SingleTickerProviderStateMixin {
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
@@ -39,7 +38,8 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
   @override
   void initState() {
     currentTabIndex = widget.tabIndex ?? 0;
-    _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
+    _tabController = TabController(
+        length: tabList.length, vsync: this, initialIndex: currentTabIndex);
     super.initState();
   }
 
@@ -71,11 +71,13 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
                         currentTabIndex = index;
                       });
                     },
-                    labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
+                    labelPadding: EdgeInsets.symmetric(
+                        horizontal: 10.auto, vertical: 5.auto),
                     unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                     tabs: List.generate(tabList.length, (index) {
                       return TabButton(
-                        text: getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
+                        text: getTranslatedText((tabList[index]["text"])!) ??
+                            tabList[currentTabIndex]["text"],
                         index: index,
                         currentTabIndex: currentTabIndex,
                         width: 90.auto,

@@ -5,7 +5,6 @@ import 'package:api/extension/format.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/base_report.dart';
 import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';

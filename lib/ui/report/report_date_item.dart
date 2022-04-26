@@ -4,17 +4,13 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
-class ReportDateItem extends StatefulWidget{
+class ReportDateItem extends StatefulWidget {
   final DateTime date;
   final String title;
   final ValueChanged<DateTime> onDateChanged;
 
-  const ReportDateItem({
-    required this.date,
-    required this.title,
-    required this.onDateChanged
-  }) ;
-
+  const ReportDateItem(
+      {required this.date, required this.title, required this.onDateChanged});
 
   @override
   _ReportDateItemState createState() => _ReportDateItemState();
@@ -28,23 +24,20 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-            children: [
-              Container(
-                width: 2,
-                height: 20.auto,
-                color: CustomColor.theme_button_color,
-                margin: EdgeInsets.symmetric(horizontal: 10.auto),
-              ),
-              Text(
-                widget.title,
-                style: TextStyle(
-                    fontSize: 10.auto,
-                  color: CustomColor.theme_text_black_white_color
-                ),
-              )
-            ]
-        ),
+        Row(children: [
+          Container(
+            width: 2,
+            height: 20.auto,
+            color: CustomColor.theme_button_color,
+            margin: EdgeInsets.symmetric(horizontal: 10.auto),
+          ),
+          Text(
+            widget.title,
+            style: TextStyle(
+                fontSize: 10.auto,
+                color: CustomColor.theme_text_black_white_color),
+          )
+        ]),
         InkWell(
           onTap: () => _showDatePicker(context),
           child: Card(
@@ -65,33 +58,29 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-              )
-          ),
+              )),
         )
       ],
     );
   }
-  _showDatePicker(BuildContext context) async{
+
+  _showDatePicker(BuildContext context) async {
     var currentDate = DateTime.now();
     final DateTime? dateTime = await showDatePicker(
-      context: context,
-      initialDate: date,
-      firstDate: DateTime(2020),
-      lastDate: currentDate
-    );
+        context: context,
+        initialDate: date,
+        firstDate: DateTime(2020),
+        lastDate: currentDate);
 
-    if(dateTime == null){
+    if (dateTime == null) {
       setState(() {
         widget.onDateChanged(date);
       });
-    }else{
+    } else {
       widget.onDateChanged(dateTime);
       setState(() {
         date = dateTime;
       });
-
     }
   }
 }
-
-

@@ -1,7 +1,6 @@
 import 'package:api/entity/report_cell_item_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:api/entity/status.dart';
 import 'package:api/extension/format.dart';
@@ -9,12 +8,10 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/deposit_picker.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/base_report.dart';
 import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:api/extension/screen_apis.dart';
 
 class WithdrawReportView extends StatefulWidget {
   final ReportViewModel vm;

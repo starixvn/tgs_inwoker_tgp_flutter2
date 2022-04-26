@@ -36,7 +36,8 @@ class _ReportHeaderItemState extends BaseState<ReportHeaderItem> {
                   stepGranularity: 1,
                   maxLines: 1,
                   textAlign: index == 0 ? TextAlign.start : TextAlign.center,
-                  style: TextStyle(color: CustomColor.theme_text_black_white_color),
+                  style: TextStyle(
+                      color: CustomColor.theme_text_black_white_color),
                 ),
         );
       }).toList()),
