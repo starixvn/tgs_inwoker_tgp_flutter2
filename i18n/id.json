@@ -1053,7 +1053,7 @@
   "deposit_bank_account_name": "Rekening/Nama Bank",
   "enter_deposit_bank_account_name_hint": "Silakan masukkan rekening/nama bank",
   "withdraw_reach_min": "Jumlah penarikan tidak mencapai jumlah minimum.",
-  "withdraw_reach_max": "Jumlah penarikan tidak mencapai jumlah maksimum.",
+  "withdraw_reach_max": "Jumlah penarikan mencapai jumlah maksimum.",
   "bank_transferring_notification_content_GMO": "Penting!\n\nPastikan rekening bank penarikan Anda SAMA dengan rekening deposit Anda untuk mencegah pencucian uang.\n\nHubungi CS jika Anda memiliki pertanyaan penarikan, terima kasih.",
   "baris": "Akun Line",
   "line_hint": "Silakan masukkan nomor rekening Line",

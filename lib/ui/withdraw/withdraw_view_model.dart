@@ -14,9 +14,9 @@ class WithdrawViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [];
   var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getWithdrawalInfoListApiState;
-  var bankCardList, turnover;
+  var turnover;
   List<WithdrawalInfo>? withdrawList;
-  var maxTransferLimit, minTransferLimit;
+  List<BankCard>? bankCardList;
 
   get wallet => userRepo.wallet;
 
@@ -31,6 +31,7 @@ class WithdrawViewModel extends BaseViewModel {
     getBankCardListApiState = await bankRepo.getBankCardList();
     if (getBankCardListApiState.isSuccess) {
       bankCardList = getBankCardListApiState.result;
+      _getTransferLimit();
     }
     setLoading(false);
     return getBankCardListApiState;
@@ -61,16 +62,25 @@ class WithdrawViewModel extends BaseViewModel {
     setLoading();
     getWithdrawalInfoListApiState = await bankRepo.getWithdrawalInfoList();
     if (getWithdrawalInfoListApiState.isSuccess) {
-      List<double> minTransferLimitList = [], maxTransferLimitList = [];
       withdrawList = getWithdrawalInfoListApiState.result;
-      withdrawList!.forEach((withdraw) {
-        minTransferLimitList.add(withdraw.transferLimit?.from ?? 0);
-        maxTransferLimitList.add(withdraw.transferLimit?.to ?? 0);
-      });
-      minTransferLimit = minTransferLimitList.reduce(min);
-      maxTransferLimit = maxTransferLimitList.reduce(max);
     }
     setLoading(false);
     return getWithdrawalInfoListApiState;
+  }
+
+  _getTransferLimit() async {
+    await getWithdrawalInfoList();
+    bankCardList!.forEach((bankCard) {
+      List<double> minList = [], maxList = [];
+      withdrawList!.forEach((withdraw) {
+        if (withdraw.channelId == bankCard.paymentChannelId) {
+          bankCard.transferLimit = withdraw.transferLimit;
+          minList.add(withdraw.transferLimit?.from ?? 0);
+          maxList.add(withdraw.transferLimit?.to ?? 0);
+          bankCard.transferLimit?.from = minList.reduce(min);
+          bankCard.transferLimit?.to = maxList.reduce(max);
+        }
+      });
+    });
   }
 }
