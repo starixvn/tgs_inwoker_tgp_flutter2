@@ -93,7 +93,8 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(bottom: 3.auto),
               child: AutoSizeText(
-                getTranslatedText("gms_order_number") + (_vm.withdrawReportList![index].orderNo ?? ""),
+                getTranslatedText("gms_order_number") +
+                    (_vm.withdrawReportList![index].orderNo ?? ""),
                 style: TextStyle(color: Colors.grey[700]),
                 minFontSize: 10,
                 maxFontSize: 12,
@@ -106,7 +107,8 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
                 Expanded(
                   flex: 1,
                   child: AutoSizeText(
-                    Format().dateTimezoneFormat(_vm.withdrawReportList![index].createdOn),
+                    Format().dateTimezoneFormat(
+                        _vm.withdrawReportList![index].createdOn),
                     style: TextStyle(color: Colors.grey[700]),
                     minFontSize: 10,
                     maxFontSize: 12,
@@ -149,7 +151,8 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
         children: [
           DepositPicker(
               title: "status",
-              displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
+              displayText:
+                  pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.withdrawalStatusList,
               isHintText: false,
               width: context.screenWidth - 70.auto,
@@ -197,7 +200,8 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -210,6 +214,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getWithdrawReportApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getWithdrawReportApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

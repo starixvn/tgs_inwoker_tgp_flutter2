@@ -91,7 +91,8 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(bottom: 3.auto),
                     child: AutoSizeText(
-                      getTranslatedText("order_number") + (_vm.accountReportList![index].id ?? ""),
+                      getTranslatedText("order_number") +
+                          (_vm.accountReportList![index].id ?? ""),
                       style: TextStyle(color: Colors.grey[700]),
                       minFontSize: 10,
                       maxFontSize: 12,
@@ -107,14 +108,16 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                       AutoSizeText(
                         (_vm.accountReportList![index].gameName ?? "") +
                             " - " +
-                            (_vm.accountReportList![index].gameProviderName ?? ""),
+                            (_vm.accountReportList![index].gameProviderName ??
+                                ""),
                         style: TextStyle(color: Colors.grey[700]),
                         minFontSize: 10,
                         maxFontSize: 12,
                         stepGranularity: 1,
                       ),
                       AutoSizeText(
-                        Format().dateTimezoneFormat(_vm.accountReportList![index].createdOn),
+                        Format().dateTimezoneFormat(
+                            _vm.accountReportList![index].createdOn),
                         style: TextStyle(color: Colors.grey[700]),
                         minFontSize: 10,
                         maxFontSize: 12,
@@ -126,8 +129,12 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildReportSubItem("bet_amount", _vm.accountReportList![index].betAmount.toString()),
-                    _buildReportSubItem("valid_bet_amount", _vm.accountReportList![index].validBetAmount.toString()),
+                    _buildReportSubItem("bet_amount",
+                        _vm.accountReportList![index].betAmount.toString()),
+                    _buildReportSubItem(
+                        "valid_bet_amount",
+                        _vm.accountReportList![index].validBetAmount
+                            .toString()),
                     _buildWinLossText(index),
                   ],
                 ),
@@ -135,7 +142,8 @@ class AccountReportViewState extends BaseState<AccountReportView> {
             )),
       ]);
 
-  _buildReportSubItem(String title, String text, {bool isWinLoss = false}) => Expanded(
+  _buildReportSubItem(String title, String text, {bool isWinLoss = false}) =>
+      Expanded(
         flex: 1,
         child: AutoSizeText(
           getTranslatedText(title) + " : " + text,
@@ -161,7 +169,9 @@ class AccountReportViewState extends BaseState<AccountReportView> {
               textAlign: TextAlign.left,
             ),
             AutoSizeText(_vm.accountReportList![index].winLoss.toString(),
-                style: TextStyle(color: _getTextColor(_vm.accountReportList![index].winLoss.toString())),
+                style: TextStyle(
+                    color: _getTextColor(
+                        _vm.accountReportList![index].winLoss.toString())),
                 minFontSize: 5,
                 maxFontSize: 12,
                 stepGranularity: 1,
@@ -192,7 +202,8 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent) {
       setState(() {
         isLoading = true;
       });
@@ -201,10 +212,11 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   }
 
   _getReport({bool isLoadMore = false}) async {
-    await _vm. getAccountReport(isLoadMore: isLoadMore);
+    await _vm.getAccountReport(isLoadMore: isLoadMore);
   }
 
   _handleApiState() {
-    handleApiState(_vm.getReportApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getReportApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

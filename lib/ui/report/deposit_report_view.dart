@@ -81,8 +81,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             child: ReportCellItem(
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              buildReportCellItemLayout:
-                  _buildReportCellItemLayout(index, _vm.reportList![index].canUploadCerts ?? false),
+              buildReportCellItemLayout: _buildReportCellItemLayout(
+                  index, _vm.reportList![index].canUploadCerts ?? false),
             ),
           );
         }).toList();
@@ -96,7 +96,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(bottom: 3.auto),
               child: AutoSizeText(
-                getTranslatedText("gms_order_number") + (_vm.reportList![index].orderNo ?? ""),
+                getTranslatedText("gms_order_number") +
+                    (_vm.reportList![index].orderNo ?? ""),
                 style: TextStyle(color: Colors.grey[700]),
                 minFontSize: 10,
                 maxFontSize: 12,
@@ -134,7 +135,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
                           height: 20,
                           child: ColorButton(
                             title: getTranslatedText("upload_prof"),
-                            onClick: () => _vm.getManualDepositOrder(_vm.reportList![index].id),
+                            onClick: () => _vm.getManualDepositOrder(
+                                _vm.reportList![index].id),
                             isEnabled: true,
                             radius: 4.8,
                             height: 20,
@@ -183,7 +185,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
         children: [
           DepositPicker(
               title: "status",
-              displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
+              displayText:
+                  pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.depositStatusList,
               isHintText: false,
               width: context.screenWidth - 70.auto,
@@ -217,7 +220,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -230,7 +234,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getAccountReportApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAccountReportApiState,
+        isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) async {
         await Navigator.push(

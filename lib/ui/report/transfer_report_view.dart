@@ -85,14 +85,18 @@ class TransferReportViewState extends BaseState<TransferReportView> {
             child: Flex(
               direction: Axis.vertical,
               children: [
-                _buildReportSubItem("from", (_vm.transferReportList![index].from ?? "")),
-                _buildReportSubItem("to", (_vm.transferReportList![index].to ?? "")),
-                _buildReportSubItem("amount", (_vm.transferReportList![index].amount ?? 0).toString()),
+                _buildReportSubItem(
+                    "from", (_vm.transferReportList![index].from ?? "")),
+                _buildReportSubItem(
+                    "to", (_vm.transferReportList![index].to ?? "")),
+                _buildReportSubItem("amount",
+                    (_vm.transferReportList![index].amount ?? 0).toString()),
                 Container(
                     margin: EdgeInsets.only(top: 3.auto),
                     alignment: Alignment.centerLeft,
                     child: AutoSizeText(
-                      Format().dateTimezoneFormat(_vm.transferReportList![index].balanceTime),
+                      Format().dateTimezoneFormat(
+                          _vm.transferReportList![index].balanceTime),
                       style: TextStyle(color: Colors.grey[700]),
                       minFontSize: 10,
                       maxFontSize: 12,
@@ -130,7 +134,8 @@ class TransferReportViewState extends BaseState<TransferReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -143,6 +148,7 @@ class TransferReportViewState extends BaseState<TransferReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getTransferReportApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getTransferReportApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

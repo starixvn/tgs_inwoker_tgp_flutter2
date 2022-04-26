@@ -78,7 +78,8 @@ class BaseReportState extends BaseState<BaseReport> {
                                 _getCalendarItem(),
                                 ReportFilterButtonItem(
                                   index: widget.filterIndex,
-                                  onTextChanged: (value) => _onDateFilter(value),
+                                  onTextChanged: (value) =>
+                                      _onDateFilter(value),
                                 ),
                                 widget.getPickerBox
                               ],
@@ -95,7 +96,9 @@ class BaseReportState extends BaseState<BaseReport> {
                                   )
                                 : Container(),
                           ),
-                          toolbarHeight: widget.transactionHeaderList.isNotEmpty ? 40.auto : 0,
+                          toolbarHeight: widget.transactionHeaderList.isNotEmpty
+                              ? 40.auto
+                              : 0,
                           elevation: 0,
                         ),
                         _buildReportItem()
@@ -113,10 +116,13 @@ class BaseReportState extends BaseState<BaseReport> {
                     1,
                     (index) => Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+                          margin:
+                              EdgeInsets.only(left: 10.auto, right: 10.auto),
                           height: 150.auto,
-                          decoration:
-                              BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.white),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              color: Colors.white),
                           padding: EdgeInsets.symmetric(vertical: 10.auto),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +130,8 @@ class BaseReportState extends BaseState<BaseReport> {
                               Container(
                                   width: 75.auto,
                                   height: 75.auto,
-                                  child: Image.asset("images/transaction/ic_no_record.png")),
+                                  child: Image.asset(
+                                      "images/transaction/ic_no_record.png")),
                               Text(getTranslatedText("no_record"))
                             ],
                           ),
@@ -182,16 +189,21 @@ class BaseReportState extends BaseState<BaseReport> {
     switch (index) {
       case 0: //today
         widget.vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0, 0, 0),
+            startDate: DateTime(currentDate.year, currentDate.month,
+                currentDate.day, 0, 0, 0, 0, 0),
             endDate: currentDate);
         break;
       case 1: //week
         widget.vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month, currentDate.day - 7), endDate: currentDate);
+            startDate: DateTime(
+                currentDate.year, currentDate.month, currentDate.day - 7),
+            endDate: currentDate);
         break;
       case 2: //month
         widget.vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day), endDate: currentDate);
+            startDate: DateTime(
+                currentDate.year, currentDate.month - 1, currentDate.day),
+            endDate: currentDate);
         break;
       case -1: //click from calendar
         break;

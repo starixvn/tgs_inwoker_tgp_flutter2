@@ -87,8 +87,12 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
             child: Flex(
               direction: Axis.vertical,
               children: [
-                _buildReportSubItem("time", Format().dateTimezoneFormat(_vm.promotionReportList![index].joinedOn)),
-                _buildReportSubItem("promotion_name", (_vm.promotionReportList![index].promotionName ?? "")),
+                _buildReportSubItem(
+                    "time",
+                    Format().dateTimezoneFormat(
+                        _vm.promotionReportList![index].joinedOn)),
+                _buildReportSubItem("promotion_name",
+                    (_vm.promotionReportList![index].promotionName ?? "")),
               ],
             )),
       ]);
@@ -120,7 +124,8 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -133,6 +138,7 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getPromotionReportApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionReportApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }
