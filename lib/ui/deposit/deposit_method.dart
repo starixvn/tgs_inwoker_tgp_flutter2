@@ -702,6 +702,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
         return "thirdparty";
       case BankType.CRYPTO:
         return "crypto";
+      case BankType.USDT:
+        return "usdt";
       default:
         return type.toString();
     }
