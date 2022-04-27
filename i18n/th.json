@@ -1074,5 +1074,6 @@
   "whatsapp": "บัญชี Whatsapp",
   "whatsapp_hint": "โปรดป้อนหมายเลข Whatsapp",
   "edit_whatsapp_cs": "หากมีข้อสงสัยกรุณาติดต่อ ",
-  "enter_whatsapp_error_message": "รูปแบบโค้ด Whatsapp ไม่ถูกต้อง"
+  "enter_whatsapp_error_message": "รูปแบบโค้ด Whatsapp ไม่ถูกต้อง",
+  "cryto_address": "ที่อยู่"
 }

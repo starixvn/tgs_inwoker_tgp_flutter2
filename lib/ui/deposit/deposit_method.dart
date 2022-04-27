@@ -304,13 +304,16 @@ class _DepositMethodState extends BaseState<DepositMethod>
       else if (methodCode?.toUpperCase() == "FPS")
         return _buildTransferToFps(paymentQrCode.qrCodeFileUrl,
             paymentQrCode.phone, paymentQrCode.email, paymentQrCode.fpsId);
+      else if (methodCode?.toUpperCase() == "USDT")
+        return _buildTransferToUsdt(
+          paymentQrCode.qrCode,
+          paymentQrCode.address,
+        );
       else if (paymentQrCode.name != null && paymentQrCode.bankAccount != null)
         return _buildTransferToBank(paymentQrCode.logo, paymentQrCode.name!,
             paymentQrCode.bankAccount!);
       else
-        return [
-          Container()
-        ];
+        return [Container()];
     })());
 
     if (content.isNotEmpty) {
@@ -505,6 +508,47 @@ class _DepositMethodState extends BaseState<DepositMethod>
                       color: CustomColor.theme_text_grey_white_color),
                 ),
                 _getClipboardIcon(fpsId),
+              ],
+            )
+          : Container(),
+    ];
+  }
+
+  _buildTransferToUsdt(
+    String? qrcode,
+    String? address,
+  ) {
+    return [
+      qrcode != null
+          ? CachedNetworkImage(
+              width: 100,
+              height: 100,
+              placeholder: (context, url) => Container(
+                    color: CustomColor.very_light_pink_four,
+                  ),
+              imageUrl: qrcode,
+              //handling error
+              fit: BoxFit.fill)
+          : Container(),
+      SizedBox(height: 3.auto),
+      (address?.isNotEmpty ?? false)
+          ? Wrap(
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                Text(
+                  getTranslatedText("cryto_address") + ": ",
+                  style: TextStyle(
+                      fontSize: 11.auto,
+                      fontWeight: FontWeight.bold,
+                      color: CustomColor.theme_text_grey_white_color),
+                ),
+                Text(
+                  address!,
+                  style: TextStyle(
+                      fontSize: 11.auto,
+                      color: CustomColor.theme_text_grey_white_color),
+                ),
+                _getClipboardIcon(address),
               ],
             )
           : Container(),

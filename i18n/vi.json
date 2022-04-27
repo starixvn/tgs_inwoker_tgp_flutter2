@@ -1073,5 +1073,6 @@
   "whatsapp": "Tài khoản Whatsapp",
   "whatsapp_hint": "Vui lòng nhập số tài khoản Whatsapp của bạn",
   "edit_whatsapp_cs": "Để chỉnh sửa tài khoản Whatsapp, vui lòng nhấp vào",
-  "enter_whatsapp_error_message": "Định dạng tài khoản Whatsapp không chính xác"
+  "enter_whatsapp_error_message": "Định dạng tài khoản Whatsapp không chính xác",
+  "cryto_address": "Địa chỉs"
 }

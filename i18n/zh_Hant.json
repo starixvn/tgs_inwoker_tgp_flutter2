@@ -1074,5 +1074,6 @@
   "whatsapp": "Whatsapp 賬號",
   "whatsapp_hint": "請輸入Whatsapp 賬號",
   "edit_whatsapp_cs": "如需修改Whatsapp 賬號，請點擊",
-  "enter_whatsapp_error_message": " Whatsapp 賬號格式不正確"
+  "enter_whatsapp_error_message": " Whatsapp 賬號格式不正確",
+  "cryto_address": "地址"
 }

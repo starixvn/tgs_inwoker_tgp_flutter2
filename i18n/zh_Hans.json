@@ -1073,5 +1073,6 @@
   "whatsapp": "Whatsapp 账号",
   "whatsapp_hint": "请输入Whatsapp 账号",
   "edit_whatsapp_cs": "如需修改Whatsapp 账号，请点击",
-  "enter_whatsapp_error_message": " Whatsapp 账号格式不正确"
+  "enter_whatsapp_error_message": " Whatsapp 账号格式不正确",
+  "cryto_address": "地址"
 }

@@ -1074,5 +1074,6 @@
   "whatsapp": "Akun Whatsapp",
   "whatsapp_hint": "Silakan masukkan nomor akun Whatsapp Anda",
   "edit_whatsapp_cs": "Untuk mengedit akun Whatsapp silahkan klik",
-  "enter_whatsapp_error_message": "Format akun WhatsApp salah"
+  "enter_whatsapp_error_message": "Format akun WhatsApp salah",
+  "cryto_address": "Alamat"
 }
