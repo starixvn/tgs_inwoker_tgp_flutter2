@@ -17,9 +17,12 @@ class WalletTransferViewModel extends BaseViewModel {
       ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
   }
 
-  get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
+  get userMainWalletBalance =>
+      walletList.singleWhere((element) => element.isMainWallet).balance;
 
-  get gameWalletList => walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
+  get gameWalletList => walletList
+      .where((element) => !element.isMainWallet && element.balance != null)
+      .toList();
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -31,12 +34,14 @@ class WalletTransferViewModel extends BaseViewModel {
       transferWalletApiState,
       getWalletApiState,
       getAutoTransferApiState,
-      setAutoTransferApiState;
+      setAutoTransferApiState,
+      withdrawFromAllBrandState;
   bool isFetchingBalance = false, autoTransferValue = false;
 
   transferWallet(String? gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
-    transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
+    transferWalletApiState =
+        await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
     if (transferWalletApiState.isSuccess) {
       getAllWallet();
     }
@@ -90,5 +95,16 @@ class WalletTransferViewModel extends BaseViewModel {
     }
     setLoading(false);
     return setAutoTransferApiState;
+  }
+
+  performWithdrawFromAllBrand() async {
+    setLoading();
+    withdrawFromAllBrandState = await walletRepo.withdrawAllFund();
+    if (withdrawFromAllBrandState.isSuccess) {
+      getAllWallet();
+    }
+    setLoading(false);
+
+    return withdrawFromAllBrandState;
   }
 }

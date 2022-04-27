@@ -96,7 +96,8 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         children: [
           Container(
             decoration: BoxDecoration(color: Colors.white),
-            padding: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
+            padding: EdgeInsets.only(
+                left: 15.auto, right: 15.auto, top: 15.auto, bottom: 15.auto),
             child: Column(
               children: [
                 Row(
@@ -110,15 +111,18 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               getTranslatedText("amount"),
-                              style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
+                              style: TextStyle(
+                                  fontSize: 13.auto, color: CustomColor.grey),
                               textAlign: TextAlign.left,
                             ),
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
                             child: AutoSizeText(
-                              Format().currencyWithDecimalFormat(widget.manualDepositOrder!.amount),
-                              style: TextStyle(fontSize: 38, fontWeight: FontWeight.w400),
+                              Format().currencyWithDecimalFormat(
+                                  widget.manualDepositOrder!.amount),
+                              style: TextStyle(
+                                  fontSize: 38, fontWeight: FontWeight.w400),
                               minFontSize: 10,
                               maxLines: 1,
                             ),
@@ -133,8 +137,10 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                   color: CustomColor.very_light_pink_four,
                 ),
                 _buildOrderText("order_no", widget.orderNo ?? widget.id!),
-                _buildText("payment_type", widget.manualDepositOrder!.methodName),
-                _buildText("payment_channel", widget.manualDepositOrder!.channelName),
+                _buildText(
+                    "payment_type", widget.manualDepositOrder!.methodName),
+                _buildText(
+                    "payment_channel", widget.manualDepositOrder!.channelName),
                 _buildText(
                     "receiver_bank",
                     widget.manualDepositOrder!.qrCode == null
@@ -142,28 +148,34 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
                         : widget.manualDepositOrder!.bankName),
                 Visibility(
                   visible: widget.manualDepositOrder!.qrCode == null,
-                  child: _buildText("receiver_bank_account", widget.manualDepositOrder!.bankAccount),
+                  child: _buildText("receiver_bank_account",
+                      widget.manualDepositOrder!.bankAccount),
                 ),
                 Visibility(
                   visible: widget.promotionName != null,
-                  child: _buildText("promotion_picker", widget.promotionName ?? ""),
+                  child: _buildText(
+                      "promotion_picker", widget.promotionName ?? ""),
                 ),
                 _buildUploadTextRow(),
                 uploadImage == null
                     ? Container()
                     : Container(
-                        alignment: Alignment.centerRight, child: SizedBox(height: 80, child: Image.file(uploadImage!)))
+                        alignment: Alignment.centerRight,
+                        child: SizedBox(
+                            height: 80, child: Image.file(uploadImage!)))
               ],
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: 15.auto, right: 15.auto, top: 10.auto),
+            margin:
+                EdgeInsets.only(left: 15.auto, right: 15.auto, top: 10.auto),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ColorButton(
                   title: getTranslatedText("upload_prof"),
-                  onClick: () => _vm.uploadDepositImage(uploadImage!, widget.id!),
+                  onClick: () =>
+                      _vm.uploadDepositImage(uploadImage!, widget.id!),
                   isEnabled: uploadImage == null ? false : true,
                   radius: 4.8,
                   height: 44.5,
