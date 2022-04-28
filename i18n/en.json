@@ -1088,5 +1088,9 @@
   "whatsapp_hint": "Enter Whatsapp Account",
   "edit_whatsapp_cs": "If required to edit Whatsapp Account, please click ",
   "enter_whatsapp_error_message": "Invalid Whatsapp Account",
-  "cryto_address": "Address"
+  "cryto_address": "Address",
+  "birthdate": "Birthdate",
+  "birthdate_hint": "Enter Birthdate",
+  "edit_birthdate_cs": "If required to edit Birthdate, please click ",
+  "enter_birthdate_error_message": "Invalid Birthdate"
 }

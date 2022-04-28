@@ -29,6 +29,7 @@ import 'package:tgp_flutter2/ui/menu/menu.dart';
 import 'package:tgp_flutter2/ui/menu/menu_t2.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
 import 'package:tgp_flutter2/ui/profile/profile.dart';
+import 'package:tgp_flutter2/ui/profile_info/birthdate/birthdate.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/edit_email.dart';
 import 'package:tgp_flutter2/ui/profile_info/email/email_verification.dart';
 import 'package:tgp_flutter2/ui/profile_info/line/line.dart';
@@ -251,6 +252,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.line: (context) => Line(),
                   RoutePath.viber: (context) => Viber(),
                   RoutePath.whatsapp: (context) => Whatsapp(),
+                  RoutePath.birthdate: (context) => Birthdate(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

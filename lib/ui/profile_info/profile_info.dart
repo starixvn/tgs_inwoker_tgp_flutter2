@@ -53,25 +53,21 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                               if (_vm.config?.icVerification ?? true) ProfileInfoItem.REALNAME,
                               if (_vm.config?.smsVerification ?? false) ProfileInfoItem.PHONE_NUMBER,
                               if (_vm.config?.emailVerification ?? true) ProfileInfoItem.EMAIL,
-                            ],
-                            [
-                              if (_vm.config?.icVerification ?? true) "real_name_verification",
-                              if (_vm.config?.smsVerification ?? false) "phone_verification",
-                              if (_vm.config?.emailVerification ?? true) "email_verification",
+                              ProfileInfoItem.BIRTHDATE,
                             ],
                             itemDescriptionList: [
                               if (_vm.config?.icVerification ?? true) _getRealName(),
                               if (_vm.config?.smsVerification ?? false) _getItemText(_vm.userProfile.phone),
                               if (_vm.config?.emailVerification ?? true)
-                                _getItemText(_vm.userProfile.email, isShowFirstText: false)
+                                _getItemText(_vm.userProfile.email, isShowFirstText: false),
+                              _getItemText(_vm.userProfile.birthdate, isShowFirstText: false)
                             ],
                           ),
                           _buildOtherInfoCard(),
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.auto),
-                            child: _buildInfoCard(
-                                "security_center", [ProfileInfoItem.LOGIN_PASSWORD], ["edit_password"],
-                                isSecurity: true),
+                            child:
+                                _buildInfoCard("security_center", [ProfileInfoItem.LOGIN_PASSWORD], isSecurity: true),
                           )
                         ],
                       ),
@@ -122,7 +118,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         : Container();
   }
 
-  _buildInfoCard(String title, List<ProfileInfoItem> itemList, List<String> pathList,
+  _buildInfoCard(String title, List<ProfileInfoItem> itemList,
           {List<String>? itemDescriptionList, bool isSecurity = false}) =>
       Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),

@@ -1075,5 +1075,9 @@
   "whatsapp_hint": "โปรดป้อนหมายเลข Whatsapp",
   "edit_whatsapp_cs": "หากมีข้อสงสัยกรุณาติดต่อ ",
   "enter_whatsapp_error_message": "รูปแบบโค้ด Whatsapp ไม่ถูกต้อง",
-  "cryto_address": "ที่อยู่"
+  "cryto_address": "ที่อยู่",
+  "birthdate": "วันเกิด",
+  "birthdate_hint": "ป้อนวันเกิด",
+  "edit_birthdate_cs": "หากต้องการแก้ไขวันเกิด โปรดคลิก",
+  "enter_birthdate_error_message": "วันเกิดไม่ถูกต้อง"
 }
