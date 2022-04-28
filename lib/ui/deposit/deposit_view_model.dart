@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:api/api.dart';
 import 'package:api/entity/bank_type.dart';
+import 'package:api/entity/deposit_dialog_content.dart';
 import 'package:api/entity/payment.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:collection/collection.dart';
@@ -23,6 +24,7 @@ class DepositViewModel extends BaseViewModel {
     /*{"name": "promotion_picker_hint", "id": "-1"}*/
   ];
   var rows = 20;
+  String? depositDialogContent;
 
   get wallet => userRepo.wallet;
 
@@ -31,6 +33,8 @@ class DepositViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get config => contentRepo.featuresConfig;
+
+  get announcement => contentRepo.announcement;
 
   getPayment() async {
     setLoading();
@@ -70,5 +74,20 @@ class DepositViewModel extends BaseViewModel {
       setLoading(false);
       return getPlayerPromotionListApiState;
     }
+  }
+
+  getDepositDialog() {
+    depositDialogContent = _getDepositDialogContent((announcement.deposit as List<DepositDialogContent>).firstOrNull);
+  }
+
+  _getDepositDialogContent(DepositDialogContent? depositDialog) {
+    if (depositDialog == null)
+      return "";
+    else if (depositDialog.localization?.content?.isNotEmpty ?? false)
+      return depositDialog.localization!.content;
+    else if (depositDialog.content?.isNotEmpty ?? false)
+      return depositDialog.content;
+    else
+      return "";
   }
 }

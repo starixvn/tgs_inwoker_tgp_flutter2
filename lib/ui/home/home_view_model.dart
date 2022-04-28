@@ -1,13 +1,11 @@
 import 'package:api/entity/home_banner.dart';
+import 'package:api/entity/main_dialog_content.dart';
+import 'package:api/entity/marquees.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
-import 'package:api/entity/announcement.dart';
-import 'package:api/entity/game.dart';
 import 'package:api/entity/game_provider.dart';
-import 'package:api/entity/game_type.dart';
-import 'package:api/network/event_result.dart';
 import 'package:api/api.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:api/extension/list_extension.dart';
 
 class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
@@ -41,7 +39,7 @@ class HomeViewModel extends BaseViewModel {
   double? gameBalance;
   double? totalBalance;
   List<HomeBanner>? bannerList;
-  Announcement? firstAnnouncement;
+  MainDialogContent? marqueeDialog;
   String? phone;
   int? page;
   int rows = 10;
@@ -56,24 +54,23 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
-      List<Announcement> _list = getAnnouncementApiState.result;
+      List<Marquees> _list = getAnnouncementApiState.result.marquees;
+      marqueeDialog = ((getAnnouncementApiState.result.main) as List<MainDialogContent>).firstOrNull;
       if (_list.isEmpty)
         announcement = "";
       else {
-        firstAnnouncement = _list.first;
-        announcement = _getAnnouncementContent(_list.first);
-        if (_list.length != 1) {
-          for (var i = 1; i < _list.length; i++) {
+        for (var i = 1; i < _list.length; i++)
+          if (i == 1)
+            announcement = _getAnnouncementContent(_list.first);
+          else
             announcement = announcement! + " " + _getAnnouncementContent(_list[i]);
-          }
-        }
       }
     }
     setLoading(false);
     return getAnnouncementApiState;
   }
 
-  _getAnnouncementContent(Announcement text) {
+  _getAnnouncementContent(Marquees text) {
     if (text.localization?.content?.isNotEmpty ?? false)
       return text.localization!.content;
     else if (text.content?.isNotEmpty ?? false)
@@ -89,7 +86,6 @@ class HomeViewModel extends BaseViewModel {
   _computeTotalBalance() async {
     if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
-
     var task = <Future>[];
     gameList.forEach((game) {
       task.add(_getGameWalletBalance(game));

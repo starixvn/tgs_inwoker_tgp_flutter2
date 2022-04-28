@@ -112,41 +112,16 @@ class _DepositState extends BaseState<Deposit> {
         isPassTrueWhenPop: true,
       );
 
-  /*AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: gradientDecoration,
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          Container(
-              margin: EdgeInsets.only(right: 15.auto),
-              alignment: Alignment.center,
-              child: Text(
-                "${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}",
-                style: TextStyle(color: CustomColor.theme_label_text_highlight_color),
-              )),
-        ],
-        title: Text(
-          getTranslatedText("deposit"),
-          style: TextStyle(fontSize: 20.auto),
-        ),
-      );*/
-
   _displayDepositDialog() {
+    _vm.getDepositDialog();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (_vm.config?.depositNotification ?? false) {
-        if (EnvironmentConfig.brandName == "GMO") {
+        /*if (EnvironmentConfig.brandName == "GMO") {
           _showDialog("bank_transferring_notification_content_GMO");
         } else {
           _showDialog("bank_transferring_notification_content");
-        }
+        }*/
+        if (_vm.depositDialogContent?.isNotEmpty ?? false) _showDialog(_vm.depositDialogContent ?? "");
       }
     });
   }

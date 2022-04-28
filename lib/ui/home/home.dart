@@ -226,8 +226,8 @@ class _HomeState extends BaseState<Home> {
       showDialog(
         context: context,
         builder: (BuildContext context2) => CustomDialog(
-          title: (_vm.firstAnnouncement?.localization?.subject ?? _vm.firstAnnouncement?.subject),
-          description: (_vm.firstAnnouncement?.localization?.content ?? _vm.firstAnnouncement?.content),
+          title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+          description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
           buttonText1: getTranslatedText("confirm"),
           onClick: () {
             if (isShowPromotion()) {
@@ -255,7 +255,7 @@ class _HomeState extends BaseState<Home> {
     );
   }
 
-  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.firstAnnouncement != null;
+  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
 
   isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
 
