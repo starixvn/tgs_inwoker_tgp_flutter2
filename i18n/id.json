@@ -1079,5 +1079,8 @@
   "birthdate": "Tanggal lahir",
   "birthdate_hint": "Masukkan Tanggal Lahir",
   "edit_birthdate_cs": "Jika perlu mengedit Tanggal Lahir, silakan klik ",
-  "enter_birthdate_error_message": "Tanggal Lahir Tidak Valid"
+  "enter_birthdate_error_message": "Tanggal Lahir Tidak Valid",
+  "total_bet_amount": "Total taruhan",
+  "total_valid_bet_amount": "Total Perputaran Yang Sah",
+  "total_win_loss": "Total Menang Kalah"
 }

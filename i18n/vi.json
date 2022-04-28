@@ -1078,5 +1078,8 @@
   "birthdate": "Ngày sinh",
   "birthdate_hint": "Nhập Ngày sinh",
   "edit_birthdate_cs": "Nếu cần chỉnh sửa Ngày sinh, vui lòng nhấp vào ",
-  "enter_birthdate_error_message": "Ngày sinh không hợp lệ"
+  "enter_birthdate_error_message": "Ngày sinh không hợp lệ",
+  "total_bet_amount": "Tổng tiền cược",
+  "total_valid_bet_amount": "Tổng Doanh thu Hợp lệ",
+  "total_win_loss": "Tổng số tiền thắng thua"
 }

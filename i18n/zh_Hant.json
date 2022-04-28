@@ -1079,5 +1079,8 @@
   "birthdate": "生日",
   "birthdate_hint": "請輸入生日",
   "edit_birthdate_cs": "如需修改生日請點擊",
-  "enter_birthdate_error_message": "生日格式不正確"
+  "enter_birthdate_error_message": "生日格式不正確",
+  "total_bet_amount": "總投注",
+  "total_valid_bet_amount": "總有效投注",
+  "total_win_loss": "總輸贏"
 }

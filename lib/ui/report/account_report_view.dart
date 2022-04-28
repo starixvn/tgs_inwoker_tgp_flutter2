@@ -70,16 +70,47 @@ class AccountReportViewState extends BaseState<AccountReportView> {
 
   List<Widget> _getList() => _vm.accountReportList == null
       ? []
-      : List.generate(_vm.accountReportList!.length, (index) {
-          return Container(
-            color: CustomColor.theme_bg_color,
-            child: ReportCellItem(
-              type: _getReportItemType(index),
-              isEndRecord: _vm.endRecord,
-              buildReportCellItemLayout: _buildReportCellItemLayout(index),
+      : [
+          if (_vm.config?.reportShowRoundsTotal ?? false)
+            Container(
+              padding: EdgeInsets.only(top: 5.auto),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20.auto,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildReportSubItem("total_bet_amount", (_vm.accountReportTotal?.betAmount ?? 0).toString()),
+                        _buildReportSubItem(
+                            "total_valid_bet_amount", (_vm.accountReportTotal?.validBetAmount ?? 0).toString()),
+                        _buildWinLossText("total_win_loss", (_vm.accountReportTotal?.winLoss ?? 0).toString()),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    thickness: (1.0).auto,
+                    color: CustomColor.very_light_pink_four,
+                  )
+                ],
+              ),
             ),
-          );
-        }).toList();
+          for (int index = 0; index < _vm.accountReportList!.length; index++)
+            Container(
+              color: CustomColor.theme_bg_color,
+              child: ReportCellItem(
+                type: _getReportItemType(index),
+                isEndRecord: _vm.endRecord,
+                buildReportCellItemLayout: _buildReportCellItemLayout(index),
+              ),
+            ),
+        ];
 
   _buildReportCellItemLayout(int index) => Column(children: [
         Container(
@@ -91,8 +122,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(bottom: 3.auto),
                     child: AutoSizeText(
-                      getTranslatedText("order_number") +
-                          (_vm.accountReportList![index].id ?? ""),
+                      getTranslatedText("order_number") + (_vm.accountReportList![index].id ?? ""),
                       style: TextStyle(color: Colors.grey[700]),
                       minFontSize: 10,
                       maxFontSize: 12,
@@ -108,16 +138,14 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                       AutoSizeText(
                         (_vm.accountReportList![index].gameName ?? "") +
                             " - " +
-                            (_vm.accountReportList![index].gameProviderName ??
-                                ""),
+                            (_vm.accountReportList![index].gameProviderName ?? ""),
                         style: TextStyle(color: Colors.grey[700]),
                         minFontSize: 10,
                         maxFontSize: 12,
                         stepGranularity: 1,
                       ),
                       AutoSizeText(
-                        Format().dateTimezoneFormat(
-                            _vm.accountReportList![index].createdOn),
+                        Format().dateTimezoneFormat(_vm.accountReportList![index].createdOn),
                         style: TextStyle(color: Colors.grey[700]),
                         minFontSize: 10,
                         maxFontSize: 12,
@@ -129,21 +157,16 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildReportSubItem("bet_amount",
-                        _vm.accountReportList![index].betAmount.toString()),
-                    _buildReportSubItem(
-                        "valid_bet_amount",
-                        _vm.accountReportList![index].validBetAmount
-                            .toString()),
-                    _buildWinLossText(index),
+                    _buildReportSubItem("bet_amount", _vm.accountReportList![index].betAmount.toString()),
+                    _buildReportSubItem("valid_bet_amount", _vm.accountReportList![index].validBetAmount.toString()),
+                    _buildWinLossText("win_loss", _vm.accountReportList![index].winLoss.toString()),
                   ],
                 ),
               ],
             )),
       ]);
 
-  _buildReportSubItem(String title, String text, {bool isWinLoss = false}) =>
-      Expanded(
+  _buildReportSubItem(String title, String text) => Expanded(
         flex: 1,
         child: AutoSizeText(
           getTranslatedText(title) + " : " + text,
@@ -155,23 +178,21 @@ class AccountReportViewState extends BaseState<AccountReportView> {
         ),
       );
 
-  _buildWinLossText(int index) => Expanded(
+  _buildWinLossText(String title, String text) => Expanded(
         flex: 1,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             AutoSizeText(
-              getTranslatedText("win_loss") + " : ",
+              getTranslatedText(title) + " : ",
               style: TextStyle(color: Colors.grey[700]),
               minFontSize: 5,
               maxFontSize: 12,
               stepGranularity: 1,
               textAlign: TextAlign.left,
             ),
-            AutoSizeText(_vm.accountReportList![index].winLoss.toString(),
-                style: TextStyle(
-                    color: _getTextColor(
-                        _vm.accountReportList![index].winLoss.toString())),
+            AutoSizeText(text,
+                style: TextStyle(color: _getTextColor(text)),
                 minFontSize: 5,
                 maxFontSize: 12,
                 stepGranularity: 1,
@@ -191,9 +212,9 @@ class AccountReportViewState extends BaseState<AccountReportView> {
     if (_vm.accountReportList!.length == 1) {
       return ReportCellItemType.SINGLE;
     } else {
-      if (index == 0) {
+      if (index == 0 && !(_vm.config?.reportShowRoundsTotal ?? false)) {
         return ReportCellItemType.TOP;
-      } else if (index == _vm.accountReportList!.length - 1) {
+      } else if (index == (_vm.accountReportList!.length - 1)) {
         return ReportCellItemType.BOTTOM;
       } else {
         return ReportCellItemType.CENTER;
@@ -202,8 +223,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
       setState(() {
         isLoading = true;
       });
@@ -216,7 +236,6 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getReportApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getReportApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
