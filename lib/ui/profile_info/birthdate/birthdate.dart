@@ -17,7 +17,7 @@ class Birthdate extends StatefulWidget {
 
 class _BirthdateState extends BaseState<Birthdate> {
   var _vm = BirthdateViewModel();
-  var isButtonEnabled = false, isTextFieldEnabled = false;
+  var isButtonEnabled = false, isDatePickerEnabled = false;
   var buttonText;
   String? date;
 
@@ -48,7 +48,7 @@ class _BirthdateState extends BaseState<Birthdate> {
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
                 child: Column(
                   children: [
-                    _buildTextFormField(),
+                    _buildDatePicker(),
                     _buildButton(),
                     _buildFooterText(),
                   ],
@@ -57,7 +57,7 @@ class _BirthdateState extends BaseState<Birthdate> {
         });
   }
 
-  _buildTextFormField() => Container(
+  _buildDatePicker() => Container(
         child: Column(
           children: [
             Container(
@@ -70,7 +70,7 @@ class _BirthdateState extends BaseState<Birthdate> {
               ),
             ),
             InkWell(
-              onTap: () => _showDatePicker(context),
+              onTap: isDatePickerEnabled?() => _showDatePicker(context):null,
               child: Card(
                   semanticContainer: true,
                   clipBehavior: Clip.antiAlias,
@@ -151,10 +151,10 @@ class _BirthdateState extends BaseState<Birthdate> {
           date = _birthdate;
           buttonText = getTranslatedText("verified");
           isButtonEnabled = false;
-          isTextFieldEnabled = false;
+          isDatePickerEnabled = false;
         } else {
           buttonText = getTranslatedText("done");
-          isTextFieldEnabled = true;
+          isDatePickerEnabled = true;
         }
       });
     });
