@@ -71,7 +71,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
   List<Widget> _getList() => _vm.accountReportList == null
       ? []
       : [
-          if (_vm.config?.reportShowRoundsTotal ?? false)
+          //if (_vm.config?.reportShowRoundsTotal ?? false)
             Container(
               padding: EdgeInsets.only(top: 5.auto),
               decoration: BoxDecoration(
