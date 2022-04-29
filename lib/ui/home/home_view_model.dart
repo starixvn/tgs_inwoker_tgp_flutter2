@@ -59,11 +59,12 @@ class HomeViewModel extends BaseViewModel {
       if (_list.isEmpty)
         announcement = "";
       else {
-        for (var i = 1; i < _list.length; i++)
-          if (i == 1)
-            announcement = _getAnnouncementContent(_list.first);
+        _list.asMap().forEach((index, element) {
+          if (index == 0)
+            announcement = _getAnnouncementContent(element);
           else
-            announcement = announcement! + " " + _getAnnouncementContent(_list[i]);
+            announcement = announcement! + " " + _getAnnouncementContent(element);
+        });
       }
     }
     setLoading(false);
