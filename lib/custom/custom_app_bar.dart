@@ -69,6 +69,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: [_getAppBarWidget()],
       );
+    } else if (EnvironmentConfig.template_version == 9 && (EnvironmentConfig.dark_mode)) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withOpacity(1.0),
+                Color.fromRGBO(0, 1, 41, 1),
+                Color.fromRGBO(0, 1, 41, 1),
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+          ),
+        ),
+        centerTitle: true,
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 16.auto),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => _onPress(context),
+        ),
+        actions: [_getAppBarWidget()],
+      );
     } else
       return AppBar(
         automaticallyImplyLeading: false,

@@ -64,10 +64,30 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Colors.transparent.withOpacity(1.0), Color(0xff000129)],
+                colors: [Colors.transparent.withOpacity(1.0), CustomColor.theme_bar_gradient_2],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 stops: [0, 0.5]),
+          ),
+        ),
+        centerTitle: false,
+        title: _getAppBarTitle(),
+        actions: _getActionButton(),
+      );
+    } else if (EnvironmentConfig.template_version == 9 && (EnvironmentConfig.dark_mode)) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withOpacity(1.0),
+                CustomColor.theme_bar_gradient_2,
+                CustomColor.theme_bar_gradient_2
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
           ),
         ),
         centerTitle: false,

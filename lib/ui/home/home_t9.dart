@@ -118,19 +118,25 @@ class _HomeT9State extends BaseState<HomeT9> {
                     widget.homeViewModel.bannerList!.length,
                     (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
                         ? _buildEmptyContainer()
-                        : CachedNetworkImage(
-                            placeholder: (context, url) => _buildEmptyContainer(),
-                            imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
-                            //handling error
-                            fit: BoxFit.fill,
-                            errorWidget: (context, url, error) => _buildEmptyContainer(),
+                        : ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) => _buildEmptyContainer(),
+                              imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
+                              //handling error
+                              fit: BoxFit.fill,
+                              errorWidget: (context, url, error) => _buildEmptyContainer(),
+                            ),
                           )),
                 isLoop: true,
                 autoPlayInterval: 3000),
       );
 
   _buildEmptyContainer() => Container(
-        color: CustomColor.very_light_pink_four,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: CustomColor.very_light_pink_four,
+        ),
       );
 
   _buildTextMarquee() {
@@ -231,11 +237,11 @@ class _HomeT9State extends BaseState<HomeT9> {
   }
 
   _buildGameView() => GameT9(
-          vm: widget.gameViewModel,
-          onRefreshHomePage: () => widget.initData(),
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        );
+        vm: widget.gameViewModel,
+        onRefreshHomePage: () => widget.initData(),
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+      );
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

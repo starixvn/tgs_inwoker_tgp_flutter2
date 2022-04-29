@@ -106,7 +106,9 @@ class _HomeState extends BaseState<Home> {
           return Scaffold(
             //key: _scaffoldKey,
             resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
+            backgroundColor: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+                ? Colors.transparent
+                : CustomColor.theme_bg_color,
             appBar: EnvironmentConfig.template_version == 2
                 ? PreferredSize(
                     child: Container(),
@@ -130,7 +132,21 @@ class _HomeState extends BaseState<Home> {
                     totalBalance: _vm.totalBalance,
                     brandName: EnvironmentConfig.brandName,
                   ),
-            body: _getHomeTemplateView(),
+            body: Container(
+              decoration: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+                  ? BoxDecoration(
+                      gradient: RadialGradient(
+                        center: Alignment(0, 0),
+                        colors: [
+                          Color.fromRGBO(78, 110, 164, 1.0),
+                          Color.fromRGBO(199, 219, 231, 0.2),
+                        ],
+                        radius: 1.5,
+                      ),
+                    )
+                  : BoxDecoration(),
+              child: _getHomeTemplateView(),
+            ),
           );
         });
   }

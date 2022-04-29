@@ -30,7 +30,7 @@ environment_config:
       default: 0xff044BA3
     primaryGradientColorCode:
       type: int
-      default: 0xff1b86c7
+      default: 0xff000129
     theme_app_bar_color:
       type: int
       default: 0xff1F1F1F
