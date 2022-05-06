@@ -341,29 +341,29 @@ class _WithdrawState extends BaseState<Withdraw> {
     var result;
     //fetch bank list
 
-    if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? true)) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        result = await Navigator.push(
-          context,
-          new MaterialPageRoute(
-            builder: (context) => EmailVerification(1),
-          ),
-        );
-      });
-      //Navigator.of(context).pushNamed("/email_verification");
-    }
+    // if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? true)) {
+    //   WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    //     result = await Navigator.push(
+    //       context,
+    //       new MaterialPageRoute(
+    //         builder: (context) => EmailVerification(1),
+    //       ),
+    //     );
+    //   });
+    // Navigator.of(context).pushNamed("/email_verification");
+    //}
     // else if (_vm.userProfile.isSetPayPassword == false) {
     //   result = await Navigator.of(context).pushNamed("/pay_password");
     // }
-    else {
+    //else {
       await _vm.getBankCardList();
       return;
-    }
+    //}
 
-    if (result == null) //no result mean not set email or pay password
-      Navigator.pop(context);
-    else
-      _checkUserProfile();
+    // if (result == null) //no result mean not set email or pay password
+    //   Navigator.pop(context);
+    // else
+    //   _checkUserProfile();
   }
 
   _handleApiState() {
