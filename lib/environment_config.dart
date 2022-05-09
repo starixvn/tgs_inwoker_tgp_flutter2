@@ -18,6 +18,8 @@ class EnvironmentConfig {
 
   static const bool dark_mode = false;
 
+  static const bool light_mode = false;
+
   static const int primaryColorCode = 4291206250;
 
   static const int primaryGradientColorCode = 4291206250;

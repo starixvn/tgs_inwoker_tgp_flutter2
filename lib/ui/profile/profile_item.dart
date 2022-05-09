@@ -26,15 +26,14 @@ class _ProfileItemState extends BaseState<ProfileItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 30.auto),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(5),
-            topLeft: Radius.circular(5),
-            bottomRight: Radius.circular(5),
-            bottomLeft: Radius.circular(5),
+      child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          color: Colors.white),
-      child: /*EnvironmentConfig.template_version == 1 ?*/ _buildT1ProfileItem() /* : _buildOthersTemplateProfileItem()*/,
+          elevation: 5,
+          child: _buildT1ProfileItem()),
     );
   }
 

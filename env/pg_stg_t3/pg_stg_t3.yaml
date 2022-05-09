@@ -29,6 +29,9 @@ environment_config:
     dark_mode:
       type: bool
       default: false
+    light_mode:
+      type: bool
+      default: false
     primaryColorCode:
       type: int
       default: 0xff044BA3

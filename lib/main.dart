@@ -357,7 +357,10 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                   child: _buildBottomAppBarRow(),
                 )),
               )
-            : BottomAppBar(color: CustomColor.theme_bottom_app_bar_color, child: _buildBottomAppBarRow()),
+            : BottomAppBar(
+                color: CustomColor.theme_bottom_app_bar_color,
+                child: _buildBottomAppBarRow(),
+              ),
       ),
     );
   }

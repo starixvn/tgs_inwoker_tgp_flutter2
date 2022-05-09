@@ -151,7 +151,15 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           isEnabled: true,
           width: 60,
           height: 17,
-          color: _isDarkMode() ? CustomColor.theme_text_black_color : Colors.white,
+          color: (((){
+            if(_isDarkMode())
+              return CustomColor.theme_text_black_color;
+            else if(EnvironmentConfig.light_mode)
+              return CustomColor.theme_button_color;
+            else
+              return Colors.white;
+
+          })()),
           fontSize: 14,
           radius: 5,
           padding: 4,
@@ -169,9 +177,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: _isDarkMode() ? Colors.white : CustomColor.theme_text_black_color,
-          color:
-              EnvironmentConfig.template_version == 3 || _isDarkMode() ? CustomColor.theme_button_color : Colors.white,
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+              ? CustomColor.theme_button_color
+              : Colors.white,
         ),
       );
 
@@ -185,9 +194,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: _isDarkMode() ? Colors.white : CustomColor.theme_text_black_color,
+          textColor: _isDarkMode()|| EnvironmentConfig.light_mode  ? Colors.white : CustomColor.theme_text_black_color,
           color:
-              EnvironmentConfig.template_version == 3 || _isDarkMode() ? CustomColor.theme_button_color : Colors.white,
+              EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Colors.white,
         ),
       );
 
@@ -307,9 +316,8 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
     }
   }
 
-  _isDarkMode() =>
-      (EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
-      !EnvironmentConfig.dark_mode;
+  _isDarkMode() => ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
+      !EnvironmentConfig.dark_mode);
 
   _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) || (widget.config?.customVIP ?? false));
 }

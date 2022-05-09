@@ -38,10 +38,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         centerTitle: true,
         title: Text(
           title,
-          style: TextStyle(fontSize: 16.auto),
+          style: TextStyle(fontSize: 16.auto, color: CustomColor.theme_app_bar_text_color),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: EnvironmentConfig.light_mode ? Colors.black : Colors.white,
+          ),
           onPressed: () => _onPress(context),
         ),
         actions: [_getAppBarWidget()],
@@ -110,7 +113,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(
             Icons.arrow_back,
             color: EnvironmentConfig.template_version == 8 ||
-                    (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode)
+                    (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode) ||
+                    EnvironmentConfig.light_mode
                 ? Colors.black
                 : Colors.white,
           ),
