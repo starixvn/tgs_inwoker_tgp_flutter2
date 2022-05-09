@@ -1095,5 +1095,6 @@
   "enter_birthdate_error_message": "Invalid Birthdate",
   "total_bet_amount": "Total Bet Amount",
   "total_valid_bet_amount": "Total Valid Turnover",
-  "total_win_loss": "Total Win Loss"
+  "total_win_loss": "Total Win Loss",
+  "available": "Available at"
 }

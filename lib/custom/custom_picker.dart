@@ -11,15 +11,16 @@ class CustomPicker extends StatefulWidget {
   final Function onClick;
   final bool isHintText;
   final double width;
+  final String? tipsText;
 
-  CustomPicker({
-    required this.title,
-    required this.displayText,
-    this.list,
-    required this.onClick,
-    required this.isHintText,
-    required this.width,
-  });
+  CustomPicker(
+      {required this.title,
+      required this.displayText,
+      this.list,
+      required this.onClick,
+      required this.isHintText,
+      required this.width,
+      this.tipsText});
 
   @override
   _CustomPickerState createState() => _CustomPickerState();
@@ -34,12 +35,21 @@ class _CustomPickerState extends BaseState<CustomPicker> {
           Container(
             margin: EdgeInsets.only(bottom: 5.auto, left: 5.auto),
             alignment: Alignment.topLeft,
-            child: Text(
-              getTranslatedText(widget.title) ?? widget.title,
-              style: TextStyle(
-                fontSize: 12.auto,
-                color: CustomColor.theme_text_black_white_color
-              ),
+            child: Row(
+              children: [
+                Text(
+                  getTranslatedText(widget.title) ?? widget.title,
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
+                ),
+                if (widget.tipsText != null)
+                  Container(
+                    margin: EdgeInsets.only(left: 10.auto),
+                    child: Text(
+                      widget.tipsText!,
+                      style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_button_color),
+                    ),
+                  ),
+              ],
             ),
           ),
           Card(
