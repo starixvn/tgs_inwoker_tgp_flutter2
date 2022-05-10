@@ -145,7 +145,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 : () {
                     _buildBottomSheet(title, list ?? []);
                   },
-            tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay" ? "(${getTranslatedText("available")} (9:00-23:30)" : null,
+            tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay" ? "(${getTranslatedText("available")} 9:00-23:30)" : null,
           ),
         ));
   }
