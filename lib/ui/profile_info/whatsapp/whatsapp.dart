@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -38,10 +39,7 @@ class _WhatsappState extends BaseState<Whatsapp> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
-              appBar: CustomAppBar(
+          return CustomScaffold(appBar: CustomAppBar(
                   title: getTranslatedText("whatsapp"),
                   onPop: () => Navigator.pop(context, true),
               ),

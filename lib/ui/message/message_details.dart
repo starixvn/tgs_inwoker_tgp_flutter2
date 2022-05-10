@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/round_check_box.dart';
 import 'package:api/entity/message.dart';
 import 'package:api/extension/format.dart';
@@ -30,9 +31,7 @@ class _MessageDetailsState extends BaseState<MessageDetails> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[100],
+    return CustomScaffold(
       appBar: CustomAppBar(
         title: getTranslatedText("message_center"),
       ) /*AppBar(

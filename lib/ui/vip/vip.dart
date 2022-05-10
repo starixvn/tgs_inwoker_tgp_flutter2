@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -37,10 +38,7 @@ class _VipViewState extends BaseState<VipView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
-            appBar: _buildAppBar(),
+          return CustomScaffold(appBar: _buildAppBar(),
             body: _vm.vipList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(

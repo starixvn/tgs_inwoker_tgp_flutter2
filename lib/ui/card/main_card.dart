@@ -4,6 +4,7 @@ import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
@@ -43,9 +44,7 @@ class _MainCardState extends BaseState<MainCard> {
           _handleApiState();
           return ScrollConfiguration(
             behavior: MyBehavior(),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
+            child: CustomScaffold(
               appBar: _buildAppBar(),
               body: _vm.bankCardList == null || _vm.bankCardList!.length == 0
                   ? buildProgressDialog(_vm.brandLogoUrl)

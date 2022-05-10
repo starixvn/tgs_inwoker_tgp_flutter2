@@ -12,6 +12,7 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -103,12 +104,7 @@ class _HomeState extends BaseState<Home> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-            //key: _scaffoldKey,
-            resizeToAvoidBottomInset: false,
-            backgroundColor: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
-                ? Colors.transparent
-                : CustomColor.theme_bg_color,
+          return CustomScaffold(
             appBar: EnvironmentConfig.template_version == 2
                 ? PreferredSize(
                     child: Container(),
@@ -133,18 +129,6 @@ class _HomeState extends BaseState<Home> {
                     brandName: EnvironmentConfig.brandName,
                   ),
             body: Container(
-              decoration: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
-                  ? BoxDecoration(
-                      gradient: RadialGradient(
-                        center: Alignment(0, 0),
-                        colors: [
-                          Color.fromRGBO(78, 110, 164, 1.0),
-                          Color.fromRGBO(199, 219, 231, 0.2),
-                        ],
-                        radius: 1.5,
-                      ),
-                    )
-                  : BoxDecoration(),
               child: _getHomeTemplateView(),
             ),
           );

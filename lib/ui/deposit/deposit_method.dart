@@ -18,6 +18,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/payment.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -145,7 +146,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
                 : () {
                     _buildBottomSheet(title, list ?? []);
                   },
-            tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay" ? "(${getTranslatedText("available")} 9:00-23:30)" : null,
+            tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay"
+                ? "(${getTranslatedText("available")} 9:00-23:30)"
+                : null,
           ),
         ));
   }
@@ -347,11 +350,21 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           Text(
             getTranslatedText("deposit_to_bank_account_name") + ": ",
             style: TextStyle(
-                fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+              fontSize: 11.auto,
+              fontWeight: FontWeight.bold,
+              color: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+                  ? CustomColor.theme_button_color
+                  : CustomColor.theme_text_grey_white_color,
+            ),
           ),
           Text(
             name,
-            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+            style: TextStyle(
+              fontSize: 11.auto,
+              color: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+                  ? CustomColor.theme_button_color
+                  : CustomColor.theme_text_grey_white_color,
+            ),
           ),
           _getClipboardIcon(name),
         ],
@@ -363,11 +376,21 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           Text(
             getTranslatedText("card_number") + ": ",
             style: TextStyle(
-                fontSize: 11.auto, fontWeight: FontWeight.bold, color: CustomColor.theme_text_grey_white_color),
+              fontSize: 11.auto,
+              fontWeight: FontWeight.bold,
+              color: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+                  ? CustomColor.theme_button_color
+                  : CustomColor.theme_text_grey_white_color,
+            ),
           ),
           Text(
             bankAccount,
-            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+            style: TextStyle(
+              fontSize: 11.auto,
+              color: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+                  ? CustomColor.theme_button_color
+                  : CustomColor.theme_text_grey_white_color,
+            ),
           ),
           _getClipboardIcon(bankAccount),
         ],

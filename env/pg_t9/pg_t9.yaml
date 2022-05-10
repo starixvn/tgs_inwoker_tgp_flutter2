@@ -33,13 +33,13 @@ environment_config:
       default: 0xff044BA3
     primaryGradientColorCode:
       type: int
-      default: 0xff1b86c7
+      default: 0xff000129
     theme_app_bar_color:
       type: int
       default: 0xff1F1F1F
     theme_button_color:
       type: int
-      default: 0xffCEA866
+      default: 0xffE9A60B
     theme_grey_button_color:
       type: int
       default: 0xff828282
@@ -54,13 +54,13 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xffCEA866
+      default: 0xffE9A60B
     tab_unselected_color:
       type: int
       default: 0xffFFFFFF
     bottom_nav_selected_color:
       type: int
-      default: 0xffCEA866
+      default: 0xffE9A60B
     bottom_nav_unselected_color:
       type: int
       default: 0xffFFFFFF
@@ -93,13 +93,13 @@ environment_config:
       default: 0xffFFFFFF
     theme_bottom_app_bar_color:
       type: int
-      default: 0xffF5F5F5
+      default: 0xff1F1F1F
     default_lang:
-      default: "zh-TW"
+      default: "en-US"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     brandName:
-      default: "GMO"
+      default: "GPI"
     vipPresentType:
       type: int
       default: 1

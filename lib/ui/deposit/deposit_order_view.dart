@@ -10,6 +10,7 @@ import 'package:api/entity/deposit_redirect.dart';
 import 'package:api/entity/deposit_redirect_applepay.dart';
 import 'package:api/entity/manual_deposit_order.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -84,9 +85,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
+          return CustomScaffold(
               appBar: CustomAppBar(
                 title: getTranslatedText("deposit"),
               ),

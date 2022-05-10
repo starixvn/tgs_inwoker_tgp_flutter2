@@ -14,6 +14,7 @@ import 'package:api/entity/manual_deposit_order.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -63,9 +64,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.grey[100],
+          return CustomScaffold(
               appBar: _buildAppBar(),
               body: _buildManualBankDepositOrder());
         });

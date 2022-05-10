@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
@@ -42,10 +43,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
-              appBar: _buildAppBar(),
+          return CustomScaffold(appBar: _buildAppBar(),
               body: Container(
                   child: /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/

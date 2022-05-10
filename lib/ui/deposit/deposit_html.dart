@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -56,9 +57,7 @@ class _DepositHtmlState extends BaseState<DepositHtml> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
+    return CustomScaffold(
         appBar: CustomAppBar(
           title: getTranslatedText("deposit"),
         ),

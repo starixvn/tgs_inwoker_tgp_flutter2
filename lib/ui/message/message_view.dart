@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -39,9 +40,7 @@ class _MessageViewState extends BaseState<MessageView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
+          return CustomScaffold(
             appBar: CustomAppBar(
               title: getTranslatedText("message_center"),
             ),

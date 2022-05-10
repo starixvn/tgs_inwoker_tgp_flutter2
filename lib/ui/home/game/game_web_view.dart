@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 
 //import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tgp_flutter2/custom/leave_game_dialog.dart';
@@ -75,9 +76,7 @@ class _GameWebState extends BaseState<GameWeb> {
           model: _vm,
           builder: (ctx, vm, _) {
             _handleApiState();
-            return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
+            return CustomScaffold(
               appBar: _buildAppBar(),
               body: isLoading || url == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildWebView(),
             );

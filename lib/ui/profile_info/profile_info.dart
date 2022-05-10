@@ -3,6 +3,7 @@ import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -29,50 +30,42 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
     return ProviderWidget<ProfileInfoViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
-              appBar: CustomAppBar(
-                title: getTranslatedText("profile_detail"),
-              ),
-              body: ScrollConfiguration(
-                  behavior: MyBehavior(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: CustomColor.theme_bg_color,
-                        borderRadius: new BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                        )),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          _buildInfoCard(
-                            "basic_info",
-                            [
-                              if (_vm.config?.icVerification ?? true) ProfileInfoItem.REALNAME,
-                              if (_vm.config?.smsVerification ?? false) ProfileInfoItem.PHONE_NUMBER,
-                              if (_vm.config?.emailVerification ?? true) ProfileInfoItem.EMAIL,
-                              ProfileInfoItem.BIRTHDATE,
-                            ],
-                            itemDescriptionList: [
-                              if (_vm.config?.icVerification ?? true) _getRealName(),
-                              if (_vm.config?.smsVerification ?? false) _getItemText(_vm.userProfile.phone),
-                              if (_vm.config?.emailVerification ?? true)
-                                _getItemText(_vm.userProfile.email, isShowFirstText: false),
-                              _getItemText(_vm.userProfile.birthdate, isShowFirstText: false)
-                            ],
-                          ),
-                          _buildOtherInfoCard(),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 10.auto),
-                            child:
-                                _buildInfoCard("security_center", [ProfileInfoItem.LOGIN_PASSWORD], isSecurity: true),
-                          )
-                        ],
-                      ),
+          return CustomScaffold(
+            appBar: CustomAppBar(
+              title: getTranslatedText("profile_detail"),
+            ),
+            body: Container(
+              height: context.screenHeight,
+              color: Colors.transparent,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildInfoCard(
+                      "basic_info",
+                      [
+                        if (_vm.config?.icVerification ?? true) ProfileInfoItem.REALNAME,
+                        if (_vm.config?.smsVerification ?? false) ProfileInfoItem.PHONE_NUMBER,
+                        if (_vm.config?.emailVerification ?? true) ProfileInfoItem.EMAIL,
+                        ProfileInfoItem.BIRTHDATE,
+                      ],
+                      itemDescriptionList: [
+                        if (_vm.config?.icVerification ?? true) _getRealName(),
+                        if (_vm.config?.smsVerification ?? false) _getItemText(_vm.userProfile.phone),
+                        if (_vm.config?.emailVerification ?? true)
+                          _getItemText(_vm.userProfile.email, isShowFirstText: false),
+                        _getItemText(_vm.userProfile.birthdate, isShowFirstText: false)
+                      ],
                     ),
-                  )));
+                    _buildOtherInfoCard(),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10.auto),
+                      child: _buildInfoCard("security_center", [ProfileInfoItem.LOGIN_PASSWORD], isSecurity: true),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
         });
   }
 

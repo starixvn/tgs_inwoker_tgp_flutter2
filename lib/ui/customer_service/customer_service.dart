@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/brand_communication.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -39,9 +40,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
+          return CustomScaffold(
               appBar: CustomAppBar(
                 title: getTranslatedText("customer_service") == "customer_service"
                     ? "Customer Service"

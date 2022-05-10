@@ -67,6 +67,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
             },
             labelPadding: EdgeInsets.symmetric(horizontal: 5.auto),
             indicatorColor: Colors.transparent,
+            indicator: BoxDecoration(),
             tabs: tab.map((item) {
               return Container(
                   child: TabButton(

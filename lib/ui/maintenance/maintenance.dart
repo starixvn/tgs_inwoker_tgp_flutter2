@@ -2,6 +2,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
@@ -45,9 +46,7 @@ class _MaintenanceState extends BaseState<Maintenance> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.grey[100],
+          return CustomScaffold(
             appBar: widget.isShowsAppBar
                 ? _buildAppBar()
                 : PreferredSize(

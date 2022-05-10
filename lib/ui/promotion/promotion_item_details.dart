@@ -7,6 +7,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -31,7 +32,7 @@ class PromotionItemDetails extends StatefulWidget {
 
 class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomScaffold(
       appBar: _buildAppBar(),
       body: ListView(
         children: [

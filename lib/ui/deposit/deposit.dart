@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/extension/format.dart';
 import 'package:tgp_flutter2/custom/deposit_dialog.dart';
@@ -47,9 +48,7 @@ class _DepositState extends BaseState<Deposit> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
+          return CustomScaffold(
               appBar: _buildAppBar(),
               body: (() {
                 if (_vm.paymentCodeList == null)
@@ -68,7 +67,7 @@ class _DepositState extends BaseState<Deposit> {
                                 unselectedLabelColor: CustomColor.theme_text_grey_color,
                                 labelColor: CustomColor.theme_label_text_highlight_color,
                                 indicatorColor: Colors.transparent,
-                                indicatorWeight: 3,
+                                indicator: BoxDecoration(),
                                 onTap: (index) {
                                   setState(() {
                                     currentTabIndex = index;

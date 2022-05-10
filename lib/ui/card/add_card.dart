@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/withdrawal_info.dart';
@@ -52,9 +53,7 @@ class _AddCardState extends BaseState<AddCard> {
           _handleApiState();
           return ScrollConfiguration(
             behavior: MyBehavior(),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
+            child: CustomScaffold(
               appBar: _buildAppBar(),
               body: _vm.bankTypeList == null
                   ? buildProgressDialog(_vm.brandLogoUrl)

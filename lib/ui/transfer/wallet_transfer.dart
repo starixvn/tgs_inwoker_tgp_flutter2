@@ -5,6 +5,7 @@ import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:api/extension/format.dart';
@@ -70,10 +71,7 @@ class _WalletTransferState extends BaseState<WalletTransfer>
         builder: (ctx, vm, _) {
           _handleApiState();
           //updateData();
-          return Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: CustomColor.theme_bg_color,
-              appBar: _buildAppBar(),
+          return CustomScaffold(appBar: _buildAppBar(),
               body: Container(
                 child: Column(
                   children: [

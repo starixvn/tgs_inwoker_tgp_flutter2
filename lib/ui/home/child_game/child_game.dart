@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -65,9 +66,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           model: _vm,
           builder: (ctx, vm, _) {
             _handleApiState();
-            return Scaffold(
-                resizeToAvoidBottomInset: false,
-                backgroundColor: CustomColor.theme_bg_color,
+            return CustomScaffold(
                 appBar: _buildAppBar(),
                 body: _buildWidget());
           }),

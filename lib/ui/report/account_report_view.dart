@@ -72,38 +72,38 @@ class AccountReportViewState extends BaseState<AccountReportView> {
       ? []
       : [
           //if (_vm.config?.reportShowRoundsTotal ?? false)
-            Container(
-              padding: EdgeInsets.only(top: 5.auto),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.auto,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildReportSubItem("total_bet_amount", (_vm.accountReportTotal?.betAmount ?? 0).toString()),
-                        _buildReportSubItem(
-                            "total_valid_bet_amount", (_vm.accountReportTotal?.validBetAmount ?? 0).toString()),
-                        _buildWinLossText("total_win_loss", (_vm.accountReportTotal?.winLoss ?? 0).toString()),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: (1.0).auto,
-                    color: CustomColor.very_light_pink_four,
-                  )
-                ],
-              ),
+          Container(
+            padding: EdgeInsets.only(top: 5.auto),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
             ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.auto,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildReportSubItem("total_bet_amount", (_vm.accountReportTotal?.betAmount ?? 0).toString()),
+                      _buildReportSubItem(
+                          "total_valid_bet_amount", (_vm.accountReportTotal?.validBetAmount ?? 0).toString()),
+                      _buildWinLossText("total_win_loss", (_vm.accountReportTotal?.winLoss ?? 0).toString()),
+                    ],
+                  ),
+                ),
+                Divider(
+                  thickness: (1.0).auto,
+                  color: CustomColor.very_light_pink_four,
+                )
+              ],
+            ),
+          ),
           for (int index = 0; index < _vm.accountReportList!.length; index++)
             Container(
-              color: CustomColor.theme_bg_color,
+              color: Colors.transparent,
               child: ReportCellItem(
                 type: _getReportItemType(index),
                 isEndRecord: _vm.endRecord,
@@ -212,7 +212,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
     if (_vm.accountReportList!.length == 1) {
       return ReportCellItemType.SINGLE;
     } else {
-      if (index == 0 && !(_vm.config?.reportShowRoundsTotal ?? false)) {
+      if (index == 0 && !(_vm.config?.reportShowRoundsTotal ?? true)) {
         return ReportCellItemType.TOP;
       } else if (index == (_vm.accountReportList!.length - 1)) {
         return ReportCellItemType.BOTTOM;

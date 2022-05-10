@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -44,9 +45,7 @@ class _AffiliateState extends BaseState<Affiliate> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[100],
+    return CustomScaffold(
       appBar: _buildAppBar(),
       body: Container(
         padding: EdgeInsets.only(top: 15.auto, left: 10.auto, right: 10.auto),
@@ -123,7 +122,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                 child: Text(
                   getTranslatedText("my_refer_id"),
                   style: TextStyle(
-                      color: CustomColor.theme_text_black_white_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
+                      color: CustomColor.theme_text_black_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -131,7 +130,7 @@ class _AffiliateState extends BaseState<Affiliate> {
               flex: 10,
               child: Text(
                 _vm.userProfile.playerCode ?? "",
-                style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 14.auto),
+                style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 14.auto),
               ),
             )
           ],
@@ -159,7 +158,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                 child: Text(
                   getTranslatedText("affiliate_link"),
                   style: TextStyle(
-                      color: CustomColor.theme_text_black_white_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
+                      color: CustomColor.theme_text_black_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -169,7 +168,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                 child: Text(
                   affiliateUrl ?? "",
                   style: TextStyle(
-                    color: CustomColor.theme_text_black_white_color,
+                    color: CustomColor.theme_text_black_color,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

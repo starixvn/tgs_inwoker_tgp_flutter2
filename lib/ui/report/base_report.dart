@@ -50,7 +50,7 @@ class BaseReportState extends BaseState<BaseReport> {
   Widget build(BuildContext context) {
     return Container(
       height: context.screenHeight,
-      color: CustomColor.theme_bg_color,
+      color: Colors.transparent,
       child: ScrollConfiguration(
           behavior: MyBehavior(),
           child: SmartRefresher(
@@ -70,7 +70,7 @@ class BaseReportState extends BaseState<BaseReport> {
                           pinned: true,
                           floating: false,
                           expandedHeight: widget.expandedHeight.auto,
-                          backgroundColor: CustomColor.theme_bg_color,
+                          backgroundColor: Colors.transparent,
                           flexibleSpace: FlexibleSpaceBar(
                             collapseMode: CollapseMode.pin,
                             background: Column(

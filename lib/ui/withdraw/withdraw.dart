@@ -7,6 +7,7 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
@@ -60,10 +61,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColor.theme_bg_color,
-            appBar: _buildAppBar(),
+          return CustomScaffold(appBar: _buildAppBar(),
             body: _vm.bankCardList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(

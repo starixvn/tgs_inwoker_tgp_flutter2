@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -29,9 +30,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+    return CustomScaffold(
       appBar: CustomAppBar(
         title: getTranslatedText("customer_service") == "customer_service"
             ? "Customer Service"

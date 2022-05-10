@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:package_info/package_info.dart';
 import 'package:api/extension/screen_util.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_util.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -32,8 +33,7 @@ class _LoginState extends BaseState<Login> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return CustomScaffold(
       body: version == null
           ? buildProgressDialog(_vm.brandLogo.mobileUrl)
           : Container(

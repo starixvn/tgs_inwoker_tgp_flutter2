@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 
 class BlacklistedUser extends StatefulWidget {
   @override
@@ -9,9 +10,7 @@ class BlacklistedUser extends StatefulWidget {
 
 class _BlacklistedUserState extends BaseState<BlacklistedUser> {
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[100],
+    return CustomScaffold(
       body: Container(
         padding: EdgeInsets.only(top: 100.auto),
         width: context.screenWidth,

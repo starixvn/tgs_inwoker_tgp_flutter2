@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
+import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -60,9 +61,7 @@ class _GameT3State extends BaseState<GameT3> {
           _handleApiState();
           return ScrollConfiguration(
               behavior: MyBehavior(),
-              child: Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  backgroundColor: CustomColor.theme_bg_color,
+              child: CustomScaffold(
                   appBar: CustomAppBar(
                     title: getTranslatedText(widget.gameType!.getName(context, false)),
                     isPassTrueWhenPop: true,
