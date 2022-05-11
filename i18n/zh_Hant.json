@@ -1083,5 +1083,6 @@
   "total_bet_amount": "總投注",
   "total_valid_bet_amount": "總有效投注",
   "total_win_loss": "總輸贏",
-  "available": "可用在"
+  "available": "可用在",
+  "amount_limit": "限額"
 }

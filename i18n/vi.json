@@ -1082,5 +1082,6 @@
   "total_bet_amount": "Tổng tiền cược",
   "total_valid_bet_amount": "Tổng Doanh thu Hợp lệ",
   "total_win_loss": "Tổng số tiền thắng thua",
-  "available": "Có sẵn trong"
+  "available": "Có sẵn trong",
+  "amount_limit": "giới hạn số lượng"
 }

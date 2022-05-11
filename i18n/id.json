@@ -1083,5 +1083,6 @@
   "total_bet_amount": "Total taruhan",
   "total_valid_bet_amount": "Total Perputaran Yang Sah",
   "total_win_loss": "Total Menang Kalah",
-  "available": "Tersedia di"
+  "available": "Tersedia di",
+  "amount_limit": "Jumlah Batas"
 }
