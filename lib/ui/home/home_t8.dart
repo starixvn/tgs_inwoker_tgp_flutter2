@@ -138,7 +138,7 @@ class _HomeT8State extends BaseState<HomeT8> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (widget.homeViewModel.config?.onlineUser ?? false)
+         // if (widget.homeViewModel.config?.onlineUser ?? false)
             Expanded(
               flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
               child: Column(
