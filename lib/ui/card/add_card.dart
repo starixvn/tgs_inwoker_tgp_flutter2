@@ -66,7 +66,7 @@ class _AddCardState extends BaseState<AddCard> {
                       ),
                       children: [
                         _buildAddCardTitle(),
-                        _buildBankTypePicker(),
+                        if (!_isAddCardHideCertainField()) _buildBankTypePicker(),
                         _buildChannelPicker(),
                         ListView(
                           shrinkWrap: true,
@@ -201,19 +201,21 @@ class _AddCardState extends BaseState<AddCard> {
     switch (_vm.pBankType) {
       case BankType.BANK:
         return [
-          ((_vm.config?.addCardBankDropDown ?? false))
-              ? CustomPicker(
-                  title: "bank_name",
-                  displayText: bankNamePickerText == null ? getTranslatedText("select_bank_name") : bankNamePickerText,
-                  list: _vm.bankNameList,
-                  isHintText: false,
-                  width: context.screenWidth,
-                  onClick: () {
-                    _buildBottomSheet("bank_name", _vm.bankNameList);
-                  })
-              : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true),
+          if (!_isAddCardHideCertainField())
+            ((_vm.config?.addCardBankDropDown ?? false))
+                ? CustomPicker(
+                    title: "bank_name",
+                    displayText:
+                        bankNamePickerText == null ? getTranslatedText("select_bank_name") : bankNamePickerText,
+                    list: _vm.bankNameList,
+                    isHintText: false,
+                    width: context.screenWidth,
+                    onClick: () {
+                      _buildBottomSheet("bank_name", _vm.bankNameList);
+                    })
+                : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true),
           Visibility(
-            visible: (_vm.config?.addCardBankBranch ?? true),
+            visible: !_isAddCardHideCertainField() && (_vm.config?.addCardBankBranch ?? true),
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField("bank_acc_name", "enter_bank_acc_name", _nameController, false),
@@ -312,7 +314,7 @@ class _AddCardState extends BaseState<AddCard> {
                 (_bankBranchController.text.isNotEmpty)*/
                 )
               isButtonEnabled = true;
-            else if ((_vm.config?.addCardBankDropDown ?? false) &&
+            else if (((_vm.config?.addCardBankDropDown ?? false) || _isAddCardHideCertainField()) &&
                     (_bankNumController.text.isNotEmpty) &&
                     (_nameController.text.isNotEmpty) /*&&
                 (_bankBranchController.text.isNotEmpty)*/
@@ -386,6 +388,8 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   _isAddCardDisplayGCash() => (_vm.config?.addCardDisplayGCash ?? false) && getCurrentLanguage().apiCode == "en-US";
+
+  _isAddCardHideCertainField() => _vm.config?.addCardHideCertainField ?? false;
 
   _handleApiState() {
     handleApiState(_vm.addBankCardApiState, onSuccess: () {
