@@ -19,6 +19,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t3/game_item_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
@@ -74,11 +75,15 @@ class _HomeT3State extends BaseState<HomeT3> {
           _buildTextMarquee(),
           _buildImageSlider(),
           Expanded(
-              child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
-                  ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
-                  : ListView(
-                      children: [_buildImageRow(), _buildGameImageGridView()],
-                    ))
+            child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
+                ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
+                : GameT3(
+                    vm: widget.gameViewModel,
+                    onRefreshHomePage: () => widget.initData(),
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                  ),
+          )
         ],
       ),
     );
@@ -228,122 +233,6 @@ class _HomeT3State extends BaseState<HomeT3> {
           color: CustomColor.very_light_pink_four,
         ),
       );
-
-  _buildImageRow() {
-    getLanguage();
-    return Container(
-      height: 180.auto,
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(widget.gameViewModel.gameRowListT3!.length, (index) {
-            return InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GameT3(
-                              gamePlatformCode: "",
-                              gameType: widget.gameViewModel.gameRowListT3![index],
-                              index: index,
-                              config: widget.homeViewModel.config,
-                              onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                              onResumeBgMusic: () =>
-                                  (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                            ))),
-                child: Container(
-                  width: context.screenWidth / 2 - 15.auto,
-                  child: (widget.homeViewModel.config?.homePageAnimated ?? false)
-                      ? Image.asset(
-                          _getFullGameTabImagePath(widget.gameViewModel.gameRowListT3![index].getImagePath()),
-                        )
-                      : Stack(
-                          children: [
-                            Image.asset("images/home/${widget.gameViewModel.gameRowListT3![index].getImagePath()}.png"),
-                            Positioned(
-                              bottom: 7.auto,
-                              right: 10.auto,
-                              child: Container(
-                                width: 80.auto,
-                                height: 90.auto,
-                                alignment: Alignment.bottomCenter,
-                                child: AutoSizeText(
-                                  // gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
-                                  widget.gameViewModel.gameRowListT3![index]
-                                      .getName(context, widget.homeViewModel.config?.menuItemShootFish ?? false),
-                                  maxFontSize: 23,
-                                  minFontSize: 10,
-                                  stepGranularity: 1,
-                                  style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                ));
-          })),
-    );
-  }
-
-  _buildGameImageGridView() {
-    return Container(
-      height: 260.auto,
-      margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
-      child: StaggeredGridView.countBuilder(
-        crossAxisCount: 2,
-        itemCount: widget.gameViewModel.gameListT3!.length,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) => InkWell(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GameT3(
-                        gamePlatformCode: "",
-                        gameType: widget.gameViewModel.gameListT3![index],
-                        index: index,
-                        config: widget.homeViewModel.config,
-                        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                      ))),
-          child: (widget.homeViewModel.config?.homePageAnimated ?? false)
-              ? Image.asset(
-                  _getFullGameTabImagePath(widget.gameViewModel.gameListT3![index].getImagePath()),
-                )
-              : Stack(
-                  children: [
-                    Image.asset(
-                      _getFullGameTabImagePath(widget.gameViewModel.gameListT3![index].getImagePath()),
-                    ),
-                    Positioned(
-                        bottom: 20.auto,
-                        left: 60.auto,
-                        child: Container(
-                          width: 70.auto,
-                          height: 40.auto,
-                          alignment: Alignment.bottomLeft,
-                          child: AutoSizeText(
-                            widget.gameViewModel.gameListT3![index]
-                                .getName(context, widget.homeViewModel.config?.menuItemShootFish ?? false),
-                            maxFontSize: 23,
-                            minFontSize: 10,
-                            stepGranularity: 1,
-                            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
-                          ),
-                        )),
-                  ],
-                ),
-        ),
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-        mainAxisSpacing: 15.auto,
-        crossAxisSpacing: 15.auto,
-      ),
-    );
-  }
-
-  _getFullGameTabImagePath(String path) {
-    if (widget.homeViewModel.config?.homePageAnimated ?? false)
-      return "images/game_tab/t3/$imageLanguageCode/$path.gif";
-    else
-      return "images/game_tab/t3/$path.png";
-  }
 
   navigateToLogin() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

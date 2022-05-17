@@ -42,10 +42,16 @@ class _PromotionState extends BaseState<Promotion> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return CustomScaffold(
-              appBar: CustomAppBar(
-                title: getTranslatedText("promotion_center"),
-              ),
-              body: _buildPromotion());
+            appBar: CustomAppBar(
+              title: getTranslatedText("promotion_center"),
+            ),
+            body:Column(
+              children: [
+
+                _buildPromotion(),
+              ],
+            )
+          );
         });
   }
 
