@@ -32,6 +32,7 @@ class HomeT3 extends StatefulWidget {
   final Function initData;
   final HomeViewModel homeViewModel;
   final GameViewModel gameViewModel;
+  final int? randomNumber;
 
   HomeT3({
     this.isFirstRun = false,
@@ -40,6 +41,7 @@ class HomeT3 extends StatefulWidget {
     required this.initData,
     required this.homeViewModel,
     required this.gameViewModel,
+    this.randomNumber
   });
 
   @override
@@ -95,6 +97,30 @@ class _HomeT3State extends BaseState<HomeT3> {
       padding: EdgeInsets.only(bottom: 5.auto),
       child: Row(
         children: [
+          Expanded(
+            flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getTranslatedText("online_user") + " :",
+                  style: TextStyle(
+                    fontSize: 10.auto,
+                    color: CustomColor.theme_text_black_white_color,
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    (widget.randomNumber ?? 26500).toString(),
+                    style: TextStyle(
+                      fontSize: 10.auto,
+                      color: CustomColor.theme_text_black_white_color,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             flex: 1,
             child: SvgPicture.asset(
@@ -154,7 +180,7 @@ class _HomeT3State extends BaseState<HomeT3> {
     else if (languageCode == "th-TH" || languageCode == "vi-VN")
       return 2;
     else
-      return 3;
+      return 4;
   }
 
   _removeMultiLine(String text) {
