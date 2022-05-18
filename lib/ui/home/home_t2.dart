@@ -85,6 +85,7 @@ class _HomeT2State extends BaseState<HomeT2> {
 
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Column(
         children: [
           Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
@@ -94,6 +95,7 @@ class _HomeT2State extends BaseState<HomeT2> {
             wallet: widget.homeViewModel.totalBalance,
             onLoginTap: () => navigateToLogin(),
             onRefreshHomePage: () => widget.initData(),
+            randomNumber: widget.randomNumber,
           ),
           //GameT2()
           _buildGameView(),
@@ -122,30 +124,6 @@ class _HomeT2State extends BaseState<HomeT2> {
         child: Row(
           children: [
             Expanded(
-              flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    getTranslatedText("online_user") + " :",
-                    style: TextStyle(
-                      fontSize: 10.auto,
-                      color: CustomColor.theme_text_black_white_color,
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      (widget.randomNumber ?? 26500).toString(),
-                      style: TextStyle(
-                        fontSize: 10.auto,
-                        color: CustomColor.theme_text_black_white_color,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
               flex: _getNoticeFlex(),
               child: Container(
                 width: (widget.language?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
@@ -160,7 +138,7 @@ class _HomeT2State extends BaseState<HomeT2> {
               ),
             ),
             Expanded(
-              flex: 7,
+              flex: 13,
               child: _buildTextMarquee(),
             )
           ],

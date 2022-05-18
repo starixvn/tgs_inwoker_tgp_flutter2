@@ -144,6 +144,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
         );
       case 2:
         return HomeT2(
@@ -152,6 +153,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
         );
       case 3:
         return HomeT3(
@@ -160,6 +162,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
         );
       case 8:
         return HomeT8(
@@ -168,6 +171,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
         );
       case 9:
         return HomeT9(
@@ -176,6 +180,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
         );
       default:
         return HomeT1(
