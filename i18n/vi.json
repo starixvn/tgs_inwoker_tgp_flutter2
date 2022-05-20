@@ -95,6 +95,7 @@
   "single_amount": "Số lượng duy nhất",
   "deposit_channel": "Kênh gửi tiền",
   "deposit_amount": "Số tiền ký gửi",
+  "deposit_usdt_amount": "Số tiền USDT",
   "deposit_hint": "Lời nhắc ấm áp: \n 1. Việc gửi tiền đã hoàn tất, vui lòng không đóng trang hoạt động này để đảm bảo tài khoản hoạt động trơn tru. \n 2. Vui lòng hoàn tất việc gửi tiền trực tiếp trên trang ngân hàng bật lên. \n 3. Do CCB Để bảo trì giao diện ngân hàng trực tuyến, vui lòng sử dụng tiền gửi ngân hàng khác để thay thế. ",
   "retry": "Thử lại",
   "no_promotion_available": "Không có sự kiện nào thuộc loại này",
@@ -1083,5 +1084,6 @@
   "total_valid_bet_amount": "Tổng Doanh thu Hợp lệ",
   "total_win_loss": "Tổng số tiền thắng thua",
   "available": "Có sẵn trong",
-  "amount_limit": "giới hạn số lượng"
+  "amount_limit": "giới hạn số lượng",
+  "deposit_usdt_point": "Số tiền cộng dồn"
 }

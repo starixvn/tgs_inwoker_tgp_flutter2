@@ -96,6 +96,7 @@
   "single_amount": "Jumlah Tunggal",
   "deposit_channel": "Saluran Setoran",
   "deposit_amount": "Jumlah Deposit",
+  "deposit_usdt_amount": "Jumlah USDT",
   "deposit_hint": "Pengingat hangat:n 1. Deposit selesai, jangan tutup halaman operasi ini untuk memastikan kelancaran akun.n 2. Selesaikan deposit langsung di halaman bank pop-up. n 3. Karena CCB Untuk pemeliharaan antarmuka perbankan online, harap gunakan setoran bank lain sebagai gantinya.",
   "retry lagi": "Coba lagi",
   "no_promotion_available": "Tidak ada acara seperti ini",
@@ -1084,5 +1085,6 @@
   "total_valid_bet_amount": "Total Perputaran Yang Sah",
   "total_win_loss": "Total Menang Kalah",
   "available": "Tersedia di",
-  "amount_limit": "Jumlah Batas"
+  "amount_limit": "Jumlah Batas",
+  "deposit_usdt_point":"Jumlah Poin"
 }

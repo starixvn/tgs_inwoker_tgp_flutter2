@@ -97,6 +97,7 @@
   "single_amount": "Single Amount",
   "deposit_channel": "Deposit Channel",
   "deposit_amount": "Deposit Amount",
+  "deposit_usdt_amount": "USDT Amount",
   "deposit_hint": "Hint:\n 1.Bla Bla。\n 2.Bla Bla。\n 3.Bla bla。",
   "retry": "Retry",
   "no_promotion_available": "No Promotion Available",
@@ -1097,5 +1098,6 @@
   "total_valid_bet_amount": "Total Valid Turnover",
   "total_win_loss": "Total Win Loss",
   "available": "Available at",
-  "amount_limit": "Amount Limit"
+  "amount_limit": "Amount Limit",
+  "deposit_usdt_point":"The amount of points"
 }

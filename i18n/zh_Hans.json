@@ -95,6 +95,7 @@
   "single_amount": "单笔限额",
   "deposit_channel": "存款通道",
   "deposit_amount": "存款金额",
+  "deposit_usdt_amount": "USDT金额",
   "deposit_hint": "温馨提醒:\n 1.存款完成,请勿关闭本操作页面,以确保账作业顺利。\n 2.请您直接在弹出的银行页面上完成存款。\n 3.因建行网银接口维护，请改用其他银行存款。",
   "retry": "重试",
   "no_promotion_available": "暂无此类型活动",
@@ -1083,5 +1084,6 @@
   "total_valid_bet_amount": "总有效投注",
   "total_win_loss": "总输赢",
   "available": "可用在",
-  "amount_limit": "限额"
+  "amount_limit": "限额",
+  "deposit_usdt_point":"上分金额"
 }

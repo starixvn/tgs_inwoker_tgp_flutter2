@@ -36,7 +36,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   //UserProfile user;
   var isDetailsButtonEnabled = false, isNextButtonEnabled = false;
   var selectedBankCard;
-  TextEditingController _amountController = TextEditingController(), _payPasswordController = TextEditingController();
+  TextEditingController _amountController = TextEditingController(), _usdtController = TextEditingController();
   var amount;
   InputValidationProvider validate = new InputValidationProvider();
   String? selectedBankCardText;
@@ -77,7 +77,10 @@ class _WithdrawState extends BaseState<Withdraw> {
                           _buildBankPicker(),
                           _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
                           //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
+                          if (_isUSDT()) _buildUSDTExchangeRateText(),
+                          if (_isUSDT()) _buildUSDTAmount(),
                           _buildHintText(),
+
                           _buildButton(),
                           //_buildCustomerServiceText()
                         ],
@@ -222,12 +225,10 @@ class _WithdrawState extends BaseState<Withdraw> {
     switch (bankCard.bankType) {
       case BankType.CRYPTO:
         return bankCard.bankDetail?.address;
-      case BankType.THIRD_PARTY:
-        return bankCard.bankDetail?.phone;
-      case BankType.FPS:
-        return bankCard.bankDetail?.phone;
-      default:
+      case BankType.BANK:
         return bankCard.bankDetail?.bankAccount;
+      default:
+        return bankCard.bankDetail?.phone;
     }
   }
 
@@ -242,13 +243,33 @@ class _WithdrawState extends BaseState<Withdraw> {
           focusNode: null,
           width: context.screenWidth - 70.auto,
           textInputType: isNum ? TextInputType.number : TextInputType.visiblePassword,
-          textInputAction: TextInputAction.done,
+          textInputAction: _isUSDT() ? TextInputAction.next : TextInputAction.done,
           bottomMargin: 0,
           tipsText: "${getTranslatedText("amount_limit")}: " +
               "${Format().amountFormat(selectedBankCard?.transferLimit?.from ?? 0)} - " +
               "${Format().amountFormat(selectedBankCard?.transferLimit?.to ?? 0)}",
         ),
       );
+
+  _buildUSDTAmount() {
+    _usdtController.text = _calculateUSDTExchangeRate();
+    return Container(
+      margin: EdgeInsets.only(top: 15.auto),
+      child: CustomTextFormField(
+        title: getTranslatedText("deposit_usdt_amount"),
+        hintText: "",
+        onChanged: (value) {},
+        onFieldSubmitted: (value) {},
+        controller: _usdtController,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.number,
+        textInputAction: TextInputAction.done,
+        bottomMargin: 0,
+        enabled: false,
+      ),
+    );
+  }
 
   _buildHintText() => Container(
         margin: EdgeInsets.only(left: 15.auto, bottom: 15.auto),
@@ -268,6 +289,47 @@ class _WithdrawState extends BaseState<Withdraw> {
           title: getTranslatedText("submit"),
         ),
       );
+
+  _buildUSDTExchangeRateText() => Container(
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: getTranslatedText("exchange_rate") + ": ",
+                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                children: [
+                  TextSpan(
+                    text: "1",
+                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                  ),
+                ],
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: "USDT: ",
+                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                children: [
+                  TextSpan(
+                    text: _vm.config.withdrawalUSDTExchangeRate?.toString() ?? "0.00",
+                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+
+  _calculateUSDTExchangeRate() {
+    if (_vm.config.withdrawalUSDTExchangeRate != null) {
+      double expectedAmount = (amount ?? 0) * (_vm.config.withdrawalUSDTExchangeRate ?? 0);
+      return Format().doubleToString(expectedAmount);
+    } else
+      return "0.00";
+  }
 
   _showDialog() {
     showDialog(
@@ -335,7 +397,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       );
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.withdraw(amount, selectedBankCard.id, _payPasswordController.text);
+      _vm.withdraw(amount, selectedBankCard.id, "");
     }
   }
 
@@ -368,12 +430,14 @@ class _WithdrawState extends BaseState<Withdraw> {
     //   _checkUserProfile();
   }
 
+  _isUSDT() => (selectedBankCard?.bankType ?? BankType.BANK) == BankType.USDT;
+
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         _showDialog();
         _amountController.clear();
-        _payPasswordController.clear();
+        // _payPasswordController.clear();
         isNextButtonEnabled = false;
       });
     });

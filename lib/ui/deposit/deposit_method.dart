@@ -87,7 +87,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
               children: [
                 _buildCard("deposit_method", _vm.depositMethodList!.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
-                if (_isManualDeposit()) _buildTransferToAccount(_payment?.methodCode, _payment?.qrCode),
+                if (_isManualDeposit()) _buildTransferToAccount(),
                 if (isShowBankAcc() && !(_vm.config?.depositCustomBankNameTranslation ?? false))
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (isShowBankAcc() && (_vm.config?.depositCustomBankNameTranslation ?? false))
@@ -187,7 +187,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   _buildAmountTextField() => Container(
         //margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
-          title: getTranslatedText("deposit_amount") ?? "",
+          title: getTranslatedText(_isUSDT() ? "deposit_usdt_amount" : "deposit_amount") ?? "",
           hintText: getTranslatedText("enter") +
               " " +
               (Format().amountFormat(paymentMin)) +
@@ -255,41 +255,114 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         isEnabled: isButtonEnabled,
       ));
 
-  _buildExchangeRateText() => Container(
+  _buildExchangeRateText() => _isUSDT()
+      ? _buildUSDTExchangeRateText()
+      : Container(
+          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: getTranslatedText("exchange_rate") + ": ",
+                  style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                  children: [
+                    TextSpan(
+                      text: _vm.exchangeRate ?? "0.00",
+                      style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                    ),
+                  ],
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  text: getTranslatedText("expected_amount") + ": ",
+                  style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                  children: [
+                    TextSpan(
+                      text: _calculateExpectedAmount(),
+                      style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+
+  _buildUSDTExchangeRateText() => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              getTranslatedText("exchange_rate") + ": ",
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_grey_white_color),
+            Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: getTranslatedText("exchange_rate") + ": ",
+                    style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                    children: [
+                      TextSpan(
+                        text: "1",
+                        style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                      ),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: "USDT: ",
+                    style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                    children: [
+                      TextSpan(
+                        text: _payment?.qrCode?.rate.toString() ?? "0.00",
+                        style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Text(
-              _vm.exchangeRate ?? "0.00",
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_button_color),
-            ),
-            Spacer(),
-            Text(
-              getTranslatedText("expected_amount") + ": ",
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_text_grey_white_color),
-            ),
-            Text(
-              _calculateExpectedAmount(),
-              style: TextStyle(fontSize: 13.auto, color: CustomColor.theme_button_color),
+            Padding(
+              padding: EdgeInsets.only(top: 10.auto),
+              child: RichText(
+                text: TextSpan(
+                  text: getTranslatedText("deposit_usdt_point") + ": ",
+                  style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                  children: [
+                    TextSpan(
+                      text: _calculateUSDTExchangeRate(),
+                      style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       );
 
-  _buildTransferToAccount(String? methodCode, PaymentExtended? paymentQrCode) {
+  _calculateUSDTExchangeRate() {
+    if (_payment!.qrCode!.rate != null) {
+      double expectedAmount = (amount ?? 0) * (_payment?.qrCode?.rate ?? 0);
+      return Format().doubleToString(expectedAmount);
+    } else
+      return "0.00";
+  }
+
+  _buildTransferToAccount() {
+    var paymentQrCode = _payment?.qrCode;
     if (paymentQrCode == null || (_vm.config?.deposit_DualPage ?? false)) return Container();
 
     List<Widget> content = ((() {
-      if (methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null)
+      if (_payment?.methodCode?.toUpperCase() == "THIRDPARTY" && paymentQrCode.qrCodeFileUrl != null)
         return _buildTransferToQr(paymentQrCode.qrCodeFileUrl!);
-      else if (methodCode?.toUpperCase() == "FPS")
+      else if (_payment?.methodCode?.toUpperCase() == "FPS")
         return _buildTransferToFps(
             paymentQrCode.qrCodeFileUrl, paymentQrCode.phone, paymentQrCode.email, paymentQrCode.fpsId);
-      else if (methodCode?.toUpperCase() == "USDT")
+      else if (_payment?.methodCode?.toUpperCase() == "USDT")
         return _buildTransferToUsdt(
           paymentQrCode.qrCode,
           paymentQrCode.address,
@@ -736,7 +809,9 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   _isUmPayDeposit() => widget.paymentCode == "UmPay";
 
   _isShowExchangeRateText() =>
-      _isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto"));
+      _isLeePayDeposit() || (_isUmPayDeposit() && methodPickerText == getTranslatedText("crypto")) || _isUSDT();
+
+  _isUSDT() => currBankType == BankType.USDT;
 
   onSelectedMethod(BankType bankType) async {
     _vm.filterMethod(bankType);

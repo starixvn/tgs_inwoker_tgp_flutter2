@@ -287,12 +287,10 @@ class _MainCardState extends BaseState<MainCard> {
     switch (bankCard.bankType) {
       case BankType.CRYPTO:
         return bankCard.bankDetail?.address;
-      case BankType.THIRD_PARTY:
-        return bankCard.bankDetail?.phone;
-      case BankType.FPS:
-        return bankCard.bankDetail?.phone;
-      default:
+      case BankType.BANK:
         return bankCard.bankDetail?.bankAccount;
+      default:
+        return bankCard.bankDetail?.phone;
     }
   }
 
