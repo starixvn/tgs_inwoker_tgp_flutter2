@@ -17,21 +17,23 @@ class CustomTextFormField extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool enabled;
   final double bottomMargin;
+  final String? tipsText;
 
-  CustomTextFormField(
-      {required this.title,
-      required this.hintText,
-      required this.onChanged,
-      required this.onFieldSubmitted,
-      required this.controller,
-      this.focusNode,
-      required this.width,
-      this.button,
-      required this.textInputType,
-      required this.textInputAction,
-      this.enabled = true,
-      this.bottomMargin = 15,
-      });
+  CustomTextFormField({
+    required this.title,
+    required this.hintText,
+    required this.onChanged,
+    required this.onFieldSubmitted,
+    required this.controller,
+    this.focusNode,
+    required this.width,
+    this.button,
+    required this.textInputType,
+    required this.textInputAction,
+    this.enabled = true,
+    this.bottomMargin = 15,
+    this.tipsText,
+  });
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
@@ -46,10 +48,23 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10.auto),
             alignment: Alignment.topLeft,
-            child: Text(
-              widget.title,
-              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
-              textAlign: TextAlign.start,
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                Text(
+                  widget.title,
+                  style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
+                  textAlign: TextAlign.start,
+                ),
+                if (widget.tipsText != null)
+                  Container(
+                    margin: EdgeInsets.only(left: 10.auto),
+                    child: Text(
+                      widget.tipsText!,
+                      style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_button_color),
+                    ),
+                  ),
+              ],
             ),
           ),
           Card(

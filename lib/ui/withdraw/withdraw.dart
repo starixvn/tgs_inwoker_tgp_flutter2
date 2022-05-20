@@ -61,7 +61,8 @@ class _WithdrawState extends BaseState<Withdraw> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(appBar: _buildAppBar(),
+          return CustomScaffold(
+            appBar: _buildAppBar(),
             body: _vm.bankCardList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(
@@ -243,6 +244,9 @@ class _WithdrawState extends BaseState<Withdraw> {
           textInputType: isNum ? TextInputType.number : TextInputType.visiblePassword,
           textInputAction: TextInputAction.done,
           bottomMargin: 0,
+          tipsText: "${getTranslatedText("amount_limit")}: " +
+              "${Format().amountFormat(selectedBankCard?.transferLimit?.from ?? 0)} - " +
+              "${Format().amountFormat(selectedBankCard?.transferLimit?.to ?? 0)}",
         ),
       );
 
@@ -354,8 +358,8 @@ class _WithdrawState extends BaseState<Withdraw> {
     //   result = await Navigator.of(context).pushNamed("/pay_password");
     // }
     //else {
-      await _vm.getBankCardList();
-      return;
+    await _vm.getBankCardList();
+    return;
     //}
 
     // if (result == null) //no result mean not set email or pay password

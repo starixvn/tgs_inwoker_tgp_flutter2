@@ -1096,5 +1096,6 @@
   "total_bet_amount": "Total Bet Amount",
   "total_valid_bet_amount": "Total Valid Turnover",
   "total_win_loss": "Total Win Loss",
-  "available": "Available at"
+  "available": "Available at",
+  "amount_limit": "Amount Limit"
 }
