@@ -67,9 +67,12 @@ class CardViewModel extends BaseViewModel {
 
   onSelectedBankType(BankType? bankType) async {
     if (bankTypeList.isEmpty) await getWithdrawalInfoList();
-    if (bankType == null && pBankType == null)
-      pBankType = bankTypeList.keys.first;
-    else
+    if (bankType == null && pBankType == null) {
+      if (config.addCardHideCertainField ?? false)
+        pBankType = BankType.BANK;
+      else
+        pBankType = bankTypeList.keys.first;
+    } else
       pBankType = bankType;
     withdrawalInfoList = (bankTypeList[pBankType])!;
     notifyListeners();

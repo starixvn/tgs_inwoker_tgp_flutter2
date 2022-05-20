@@ -34,16 +34,17 @@ class HomeT2 extends StatefulWidget {
   final HomeViewModel homeViewModel;
   final GameViewModel gameViewModel;
   final String? language;
+  final int? randomNumber;
 
-  HomeT2({
-    this.isFirstRun = false,
-    this.onPauseBgMusic,
-    this.onResumeBgMusic,
-    required this.initData,
-    required this.homeViewModel,
-    required this.gameViewModel,
-    this.language,
-  });
+  HomeT2(
+      {this.isFirstRun = false,
+      this.onPauseBgMusic,
+      this.onResumeBgMusic,
+      required this.initData,
+      required this.homeViewModel,
+      required this.gameViewModel,
+      this.language,
+      this.randomNumber});
 
   @override
   _HomeT2State createState() => _HomeT2State();
@@ -84,6 +85,7 @@ class _HomeT2State extends BaseState<HomeT2> {
 
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Column(
         children: [
           Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
@@ -93,6 +95,7 @@ class _HomeT2State extends BaseState<HomeT2> {
             wallet: widget.homeViewModel.totalBalance,
             onLoginTap: () => navigateToLogin(),
             onRefreshHomePage: () => widget.initData(),
+            randomNumber: widget.randomNumber,
           ),
           //GameT2()
           _buildGameView(),
@@ -115,46 +118,62 @@ class _HomeT2State extends BaseState<HomeT2> {
         ),
       );
 
-  _buildMarqueeRow() => Row(
-        children: [
-          Container(
-            width: (widget.language?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
-            padding: EdgeInsets.only(left: 10.auto),
-            child: AutoSizeText(
-              getTranslatedText("notice"),
-              style: TextStyle(fontWeight: FontWeight.w600),
-              maxFontSize: 13,
-              minFontSize: 5,
-              maxLines: 1,
-              stepGranularity: 1,
+  _buildMarqueeRow() => Container(
+        width: context.screenWidth,
+        padding: EdgeInsets.only(left: 10.auto),
+        child: Row(
+          children: [
+            Expanded(
+              flex: _getNoticeFlex(),
+              child: Container(
+                width: (widget.language?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
+                child: AutoSizeText(
+                  getTranslatedText("notice"),
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                  maxFontSize: 13,
+                  minFontSize: 5,
+                  maxLines: 1,
+                  stepGranularity: 1,
+                ),
+              ),
             ),
-          ),
-          _buildTextMarquee()
-        ],
+            Expanded(
+              flex: 13,
+              child: _buildTextMarquee(),
+            )
+          ],
+        ),
       );
 
   _buildTextMarquee() {
     var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
-        height: 18.auto,
-        child: announcement.isEmpty
-            ? Container()
-            : Marquee(
-                text: announcement,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10.auto,
-                ),
-                scrollAxis: Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                blankSpace: 300.auto,
-                pauseAfterRound: Duration(seconds: 1),
-                showFadingOnlyWhenScrolling: false),
-      ),
+    return Container(
+      decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
+      margin: EdgeInsets.only(right: 10.auto),
+      height: 18.auto,
+      child: announcement.isEmpty
+          ? Container()
+          : Marquee(
+              text: announcement,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10.auto,
+              ),
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              blankSpace: 300.auto,
+              pauseAfterRound: Duration(seconds: 1),
+              showFadingOnlyWhenScrolling: false),
     );
+  }
+
+  _getNoticeFlex() {
+    if ((languageCode?.contains("zh") ?? false))
+      return 1;
+    else if (languageCode == "th-TH" || languageCode == "vi-VN")
+      return 2;
+    else
+      return 4;
   }
 
   _buildImageSlider() {

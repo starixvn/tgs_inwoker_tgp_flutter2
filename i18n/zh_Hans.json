@@ -156,7 +156,7 @@
   "order_no": "订单编号",
   "upload_prof": "上传凭证",
   "pick_prof": "选择凭证",
-  "upload_prof_hint": "请完成转账后立即上传凭证以便后台核实",
+  "upload_prof_hint": "请上传相关银行凭证",
   "upload_ic_prof_hint": "请上传身份证以便后台核实",
   "trade_order_no": "订单号",
   "bet_amount": "投注金额",

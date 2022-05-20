@@ -40,7 +40,7 @@ environment_config:
       default: 0xff1b86c7
     theme_button_color:
       type: int
-      default: 0xff0080FF
+      default: 0xff0F79B7
     theme_grey_button_color:
       type: int
       default: 0xff828282
@@ -55,13 +55,13 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xff0080FF
+      default: 0xff0F79B7
     tab_unselected_color:
       type: int
       default: 0xff707070
     bottom_nav_selected_color:
       type: int
-      default: 0xff0080FF
+      default: 0xff0F79B7
     bottom_nav_unselected_color:
       type: int
       default: 0xff707070

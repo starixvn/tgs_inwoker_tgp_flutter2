@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:api/entity/vip.dart';
+import 'package:api/extension/format.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -176,7 +177,7 @@ class _VipViewState extends BaseState<VipView> {
         ),
       );
 
-  _getAmount(double? amount) => (amount ?? 0).toInt().toString();
+  _getAmount(double? amount) => Format().currencyFormat((amount ?? 0).toInt());
 
   _getRebateAmount(double? amount) => "${((amount ?? 0).toInt().toString())}%";
 

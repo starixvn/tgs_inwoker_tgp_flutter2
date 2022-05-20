@@ -10,6 +10,7 @@ import 'package:api/localizations/language_provider.dart';
 import 'package:api/network/event_result.dart';
 import 'package:api/api.dart';
 import 'package:collection/collection.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 
 class GameViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
@@ -98,7 +99,8 @@ class GameViewModel extends BaseViewModel {
       }
     });
     nonExistGameTypeList.forEach((element) {
-      //gameTypeList.remove(element);
+      //handle some showing empty game list, some will hide it
+      if (EnvironmentConfig.template_version == 1) gameTypeList.remove(element);
       _gameRowListT3.remove(element);
       _gameListT3.remove(element);
     });
