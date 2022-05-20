@@ -60,7 +60,7 @@ class DepositMethodViewModel extends BaseViewModel {
         account, amount, paymentId, promotionId, name, bankType.getJson);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
-      if (config.deposit_DualPage)
+      if (config.deposit_DualPage ?? false)
         getManualDepositOrder(orderNo);
       else
         uploadDepositImage(imageFile!, orderNo);

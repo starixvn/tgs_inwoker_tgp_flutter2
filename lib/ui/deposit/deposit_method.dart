@@ -59,6 +59,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   var paymentChannelId;
   var currBankType;
   File? uploadImage;
+  Map<String, bool> textIsNotEmptyList = {};
 
   void initState() {
     _vm = DepositMethodViewModel(widget.depositMethodList!);
@@ -206,7 +207,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         child: CustomTextFormField(
           title: getTranslatedText(title),
           hintText: getTranslatedText(hint),
-          onChanged: (value) => onTextChange(),
+          onChanged: (value) {
+            if (value.isNotEmpty)
+              textIsNotEmptyList[title] = true;
+            else
+              textIsNotEmptyList[title] = false;
+            onTextChange();
+          },
           onFieldSubmitted: (value) => onTextChange(),
           controller: controller,
           width: context.screenWidth - 70.auto,
@@ -219,7 +226,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         child: CustomTextFormField(
           title: getTranslatedText(title) + " " + getTranslatedText("deposit_bank_tips"),
           hintText: getTranslatedText(hint),
-          onChanged: (value) => onTextChange(),
+          onChanged: (value) {
+            if (value.isNotEmpty)
+              textIsNotEmptyList[title] = true;
+            else
+              textIsNotEmptyList[title] = false;
+            onTextChange();
+          },
           onFieldSubmitted: (value) => onTextChange(),
           controller: controller,
           width: context.screenWidth - 70.auto,
@@ -647,46 +660,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     } else {
       amount = 0;
     }
-    if (isShowBankAcc() &&
-        (_vm.config?.depositCustomBankNameTranslation ?? false) &&
-        _bankNameController.text.isNotEmpty &&
-        _bankAccNameController.text.isNotEmpty &&
-        uploadImage?.path != null &&
+
+    if (textIsNotEmptyList.values.every((element) => element) &&
         amount! >= paymentMin &&
-        amount! <= paymentMax) {
-      //is manual deposit or apple deposit, and showing bank name and bank acc name
-      setState(() {
-        isButtonEnabled = true;
-      });
-    } else if (isShowBankAcc() &&
-        !(_vm.config?.depositCustomBankNameTranslation ?? false) &&
-        _bankNameController.text.isNotEmpty &&
-        uploadImage?.path != null &&
-        amount! >= paymentMin &&
-        amount! <= paymentMax) {
-      //is manual deposit or apple deposit, and showing bank name but not showing bank acc name
-      setState(() {
-        isButtonEnabled = true;
-      });
-    } else if ((_isManualDeposit() || _isApplePayDeposit()) &&
-        (_vm.config?.depositManualApplePayHideBankAcc ?? false) &&
-        uploadImage?.path != null &&
-        amount! >= paymentMin &&
-        amount! <= paymentMax) {
-      //is manual deposit or apple deposit, but not showing bank account
-      setState(() {
-        isButtonEnabled = true;
-      });
-    } else if ((_isManualDeposit() || _isApplePayDeposit()) &&
-        !(_vm.config?.depositManualApplePayHideBankAcc ?? false) &&
-        uploadImage?.path != null &&
-        amount! >= paymentMin &&
-        amount! <= paymentMax) {
-      //is manual deposit or apple deposit, but showing bank account
-      setState(() {
-        isButtonEnabled = true;
-      });
-    } else if (!_isManualDeposit() && !_isApplePayDeposit() && amount! >= paymentMin && amount! <= paymentMax) {
+        amount! <= paymentMax &&
+        ((_vm.config.deposit_DualPage ?? false) || //not showing upload image proof column
+            (!(_vm.config.deposit_DualPage ?? false)) && uploadImage?.path != null)) {
       setState(() {
         isButtonEnabled = true;
       });
@@ -851,6 +830,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         _clearTextField();
       });
     });
+
     handleApiState(_vm.applePayDepositOrderApiState, onSuccess: () {
       if (_vm.applePayDepositOrderApiState.result.errorMsg.isEmpty) {
         _navigateToDepositOrder(
