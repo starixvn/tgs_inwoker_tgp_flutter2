@@ -31,6 +31,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
   File? uploadImage;
+  bool isEdit = false;
 
   @override
   void initState() {
@@ -59,17 +60,18 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
           _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
             visible: _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
-                _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify ||
-                _vm.userProfile.identityFormId == null,
+                _vm.userProfile.identityFormId == null ||
+                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && isEdit),
             child: _buildICNumberTextFormField(),
           ),
           Visibility(
             visible: _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
-                _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify ||
-                _vm.userProfile.identityFormId == null,
+                _vm.userProfile.identityFormId == null ||
+                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && isEdit),
             child: _buildUploadImageButton(),
           ),
-          _buildButton(),
+          _buildDoneButton(),
+          _buildFooterText()
         ],
       );
 
@@ -133,7 +135,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
             visible: _vm.userProfile.realname == null,
             child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
           ),
-          _buildButton(),
+          _buildDoneButton(),
           _buildFooterText()
         ],
       );
@@ -166,38 +168,50 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         enabled: isTextFieldEnabled,
       );
 
-  _buildButton() => Container(
-      width: context.screenWidth,
-      margin: EdgeInsets.all(10.auto),
-      child: ColorButton(
-        title: buttonText ?? "Done",
-        onClick: () {
-          _onClick();
-        },
-        isEnabled: isButtonEnabled,
-        color: CustomColor.theme_button_color,
-        radius: 9.6,
-      ));
+  //hide when is _isShowIcVerificationUpload()&& wv && edit
 
-  _buildFooterText() => Container(
-        alignment: Alignment.center,
+  _buildDoneButton() => Container(
+    width: context.screenWidth,
+    margin: EdgeInsets.all(10.auto),
+    child: ColorButton(
+      title: buttonText ?? "Done",
+      onClick: () {
+        _onClick();
+      },
+      isEnabled: isButtonEnabled,
+      color: CustomColor.theme_button_color,
+      radius: 9.6,
+    ),
+  );
+
+  _buildFooterText() => Visibility(
+        visible: (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && !isEdit) &&!_isShowIcVerificationUpload(),
         child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/customer_service"),
-          child: Wrap(
-            children: [
-              Text(
-                getTranslatedText("edit_ic_no_cs"),
-                style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
+            onTap: () {
+              if((_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && !isEdit))
+                setState(() {
+                  isEdit = true;
+                });
+              else Navigator.of(context).pushNamed("/customer_service");
+            },
+            child: Container(
+              height: 30.auto,
+              alignment: Alignment.center,
+              child: RichText(
+              text: TextSpan(
+                text: getTranslatedText("edit_ic_no_cs"),
+                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+                children: [
+                  TextSpan(
+                    text: (_vm.config?.changesNotAllowed ?? false)
+                        ? getTranslatedText("online_cs")
+                        : getTranslatedText("here"),
+                    style: TextStyle(
+                        decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                  ),
+                ],
               ),
-              Text(
-                getTranslatedText("online_cs"),
-                style: TextStyle(
-                  fontSize: 12.auto,
-                  color: CustomColor.theme_button_color,
-                  decoration: TextDecoration.underline,
-                ),
-              )
-            ],
+            ),
           ),
         ),
       );
@@ -216,14 +230,6 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
             isTextFieldEnabled = false;
           }
         }
-        /*else if (_isShowIcVerificationUpload() &&
-            _vm.userProfile.identityFormId != null &&
-            _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
-          _realNameController.text = _realname;
-          buttonText = getTranslatedText("waiting_verify");
-          isTextFieldEnabled = true;
-          isButtonEnabled = true;
-        }*/
         else {
           if (_isShowIcVerificationUpload() &&
               _vm.userProfile.identityFormId != null &&
@@ -232,6 +238,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
           }
           buttonText = getTranslatedText("done");
           isTextFieldEnabled = true;
+          isButtonEnabled = isEdit;
         }
       });
     });
@@ -297,6 +304,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
+      isEdit = false;
       _getUserProfile();
     });
   }
