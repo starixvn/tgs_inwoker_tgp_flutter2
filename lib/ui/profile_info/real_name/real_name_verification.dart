@@ -31,6 +31,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
   File? uploadImage;
+  bool isEdit = false;
 
   @override
   void initState() {
@@ -43,37 +44,34 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(appBar: CustomAppBar(
+          return CustomScaffold(
+              appBar: CustomAppBar(
                 title: getTranslatedText("ic_no"),
               ),
               body: Container(
-                margin: EdgeInsets.only(
-                    left: 10.auto, right: 10.auto, top: 20.auto),
-                child: _isShowIcVerificationUpload()
-                    ? _buildUploadDocColumn()
-                    : _buildRealNameColumn(),
+                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
+                child: _isShowIcVerificationUpload() ? _buildUploadDocColumn() : _buildRealNameColumn(),
               ));
         });
   }
 
   _buildUploadDocColumn() => Column(
         children: [
-          _buildTextFormField(
-              "realname", "enter_realname_hint", _realNameController, false,
-              isRealname: true),
+          _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
-            visible:
-                _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
-                    _vm.userProfile.identityFormId == null,
+            visible: _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
+                _vm.userProfile.identityFormId == null ||
+                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && isEdit),
             child: _buildICNumberTextFormField(),
           ),
           Visibility(
-            visible:
-                _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
-                    _vm.userProfile.identityFormId == null,
+            visible: _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
+                _vm.userProfile.identityFormId == null ||
+                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && isEdit),
             child: _buildUploadImageButton(),
           ),
-          _buildButton(),
+          _buildDoneButton(),
+          _buildFooterText()
         ],
       );
 
@@ -100,8 +98,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                       flex: 7,
                       child: Text(
                         getTranslatedText("upload_ic_prof_hint"),
-                        style: TextStyle(
-                            fontSize: 10.auto, color: CustomColor.grey),
+                        style: TextStyle(fontSize: 10.auto, color: CustomColor.grey),
                       ),
                     ),
                     Expanded(
@@ -125,8 +122,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                   : Container(
                       padding: EdgeInsets.all(10.auto),
                       alignment: Alignment.centerRight,
-                      child: SizedBox(
-                          height: 80, child: Image.file(uploadImage!))),
+                      child: SizedBox(height: 80, child: Image.file(uploadImage!))),
             ],
           ),
         ),
@@ -134,15 +130,12 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
   _buildRealNameColumn() => Column(
         children: [
-          _buildTextFormField(
-              "realname", "enter_realname_hint", _realNameController, false,
-              isRealname: true),
+          _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
             visible: _vm.userProfile.realname == null,
-            child: _buildTextFormField(
-                "ic_no", "enter_ic_no_hint", _icNoController, true),
+            child: _buildTextFormField("ic_no", "enter_ic_no_hint", _icNoController, true),
           ),
-          _buildButton(),
+          _buildDoneButton(),
           _buildFooterText()
         ],
       );
@@ -160,8 +153,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         enabled: isTextFieldEnabled,
       );
 
-  _buildTextFormField(String title, String hint,
-          TextEditingController controller, bool isLast,
+  _buildTextFormField(String title, String hint, TextEditingController controller, bool isLast,
           {bool isRealname = false}) =>
       CustomTextFormField(
         title: getTranslatedText(title),
@@ -176,40 +168,50 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
         enabled: isTextFieldEnabled,
       );
 
-  _buildButton() => Container(
-      width: context.screenWidth,
-      margin: EdgeInsets.all(10.auto),
-      child: ColorButton(
-        title: buttonText ?? "Done",
-        onClick: () {
-          _onClick();
-        },
-        isEnabled: isButtonEnabled,
-        color: CustomColor.theme_button_color,
-        radius: 9.6,
-      ));
+  //hide when is _isShowIcVerificationUpload()&& wv && edit
 
-  _buildFooterText() => Container(
-        alignment: Alignment.center,
+  _buildDoneButton() => Container(
+    width: context.screenWidth,
+    margin: EdgeInsets.all(10.auto),
+    child: ColorButton(
+      title: buttonText ?? "Done",
+      onClick: () {
+        _onClick();
+      },
+      isEnabled: isButtonEnabled,
+      color: CustomColor.theme_button_color,
+      radius: 9.6,
+    ),
+  );
+
+  _buildFooterText() => Visibility(
+        visible: (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && !isEdit) &&!_isShowIcVerificationUpload(),
         child: InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/customer_service"),
-          child: Wrap(
-            children: [
-              Text(
-                getTranslatedText("edit_ic_no_cs"),
-                style: TextStyle(
-                    fontSize: 12.auto,
-                    color: CustomColor.theme_text_black_white_color),
+            onTap: () {
+              if((_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && !isEdit))
+                setState(() {
+                  isEdit = true;
+                });
+              else Navigator.of(context).pushNamed("/customer_service");
+            },
+            child: Container(
+              height: 30.auto,
+              alignment: Alignment.center,
+              child: RichText(
+              text: TextSpan(
+                text: getTranslatedText("edit_ic_no_cs"),
+                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+                children: [
+                  TextSpan(
+                    text: (_vm.config?.changesNotAllowed ?? false)
+                        ? getTranslatedText("online_cs")
+                        : getTranslatedText("here"),
+                    style: TextStyle(
+                        decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                  ),
+                ],
               ),
-              Text(
-                getTranslatedText("online_cs"),
-                style: TextStyle(
-                  fontSize: 12.auto,
-                  color: CustomColor.theme_button_color,
-                  decoration: TextDecoration.underline,
-                ),
-              )
-            ],
+            ),
           ),
         ),
       );
@@ -220,25 +222,23 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       setState(() {
         //_isShowIcVerificationUpload
         if (!_isShowIcVerificationUpload() && _realname != null ||
-            _isShowIcVerificationUpload() &&
-                _vm.userProfile.identityFormStatus == IdentityStatus.Approve) {
+            _isShowIcVerificationUpload() && _vm.userProfile.identityFormStatus == IdentityStatus.Approve) {
           if (_realname.isNotEmpty) {
             _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
-        } else if (_isShowIcVerificationUpload() &&
-            _vm.userProfile.identityFormId != null &&
-            _vm.userProfile.identityFormStatus ==
-                IdentityStatus.WaitingVerify) {
-          _realNameController.text = _realname;
-          buttonText = getTranslatedText("waiting_verify");
-          isButtonEnabled = false;
-          isTextFieldEnabled = false;
-        } else {
+        }
+        else {
+          if (_isShowIcVerificationUpload() &&
+              _vm.userProfile.identityFormId != null &&
+              _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
+            _realNameController.text = _realname;
+          }
           buttonText = getTranslatedText("done");
           isTextFieldEnabled = true;
+          isButtonEnabled = isEdit;
         }
       });
     });
@@ -250,9 +250,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
               _realNameController.text.isNotEmpty &&
               _icNumberController.text.isNotEmpty &&
               uploadImage?.path != null) ||
-          (!_isShowIcVerificationUpload() &&
-              _realNameController.text.isNotEmpty &&
-              _icNoController.text.isNotEmpty)) {
+          (!_isShowIcVerificationUpload() && _realNameController.text.isNotEmpty && _icNoController.text.isNotEmpty)) {
         isButtonEnabled = true;
       } else {
         isButtonEnabled = false;
@@ -271,9 +269,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.idVerify(
         _realNameController.text,
-        _isShowIcVerificationUpload()
-            ? _icNumberController.text
-            : _icNoController.text,
+        _isShowIcVerificationUpload() ? _icNumberController.text : _icNoController.text,
         imageFile: uploadImage,
       );
     }
@@ -308,6 +304,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   _handleApiState() {
     handleApiState(_vm.idVerifyApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
+      isEdit = false;
       _getUserProfile();
     });
   }
