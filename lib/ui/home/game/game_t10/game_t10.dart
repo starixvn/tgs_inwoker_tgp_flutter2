@@ -111,7 +111,7 @@ class _GameT10State extends BaseState<GameT10> {
       },
       child: Container(
           padding:
-              const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+              const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
           decoration: tabIndex == currentTabIndex
               ? BoxDecoration(
                   image: DecorationImage(
