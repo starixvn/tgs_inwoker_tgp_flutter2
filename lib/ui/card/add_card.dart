@@ -230,6 +230,10 @@ class _AddCardState extends BaseState<AddCard> {
         return [
           _buildCryptoAddressTextField(),
         ];
+      case BankType.USDT:
+        return [
+          _buildCryptoAddressTextField(),
+        ];
       default:
         return [
           _buildRealNameTextField(),
@@ -296,7 +300,15 @@ class _AddCardState extends BaseState<AddCard> {
   _onTextChange(String value) {
     setState(() {
       switch (_vm.pBankType) {
-        case BankType.CRYPTO:
+        case (BankType.CRYPTO):
+          {
+            if (_addressController.text.isNotEmpty)
+              isButtonEnabled = true;
+            else
+              isButtonEnabled = false;
+            break;
+          }
+        case BankType.USDT:
           {
             if (_addressController.text.isNotEmpty)
               isButtonEnabled = true;
@@ -373,7 +385,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _onClick() {
     ProgressDialog.show(context, _vm.brandLogoUrl);
-    if (isCrypto)
+    if (isCrypto || _vm.pBankType == BankType.USDT)
       _vm.addBankCard(address: _addressController.text);
     else
       _vm.addBankCard(

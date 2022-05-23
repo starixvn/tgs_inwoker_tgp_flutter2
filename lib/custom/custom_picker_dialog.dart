@@ -168,6 +168,8 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     switch (bankCard.bankType) {
       case BankType.CRYPTO:
         return bankCard.bankDetail?.address;
+      case BankType.USDT:
+        return bankCard.bankDetail?.address;
       case BankType.BANK:
         return bankCard.bankDetail?.bankAccount;
       default:
