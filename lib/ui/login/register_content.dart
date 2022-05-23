@@ -14,6 +14,8 @@ import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/login/phone_re_verification/login_otp_text_form_field.dart';
+import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_form_field.dart';
 
 class RegisterContent extends StatefulWidget {
   final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
@@ -33,13 +35,17 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       pay = TextEditingController(),
       confirmPay = TextEditingController(),
       invitationCode = TextEditingController(),
-      phone = TextEditingController();
+      phone = TextEditingController(),
+      otp = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   var _vm;
+  bool isOtpEnabled = false, isOtpCountdown = false;
 
   bool _isTermsChecked = true;
   String? agentPlayer = 'player';
   List agentPlayerList = ['agent', 'player'];
+
+  String? display;
 
   @override
   bool get wantKeepAlive => true;
@@ -47,6 +53,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   @override
   void initState() {
     _vm = widget.vm;
+    display = _vm.config?.phonePrefix ?? "+852";
     super.initState();
   }
 
@@ -64,6 +71,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                 _buildPasswordTextFormField(),
                 _buildConfirmPasswordTextFormField(),
                 //_buildPayPasswordTextFormField(),
+                if (_registerShowPhone()) _buildPhoneTextFormField(),
+                if (_registerShowPhone()) _buildOtpTextFormField(),
                 _buildPromotionCodeTextFormField(),
                 _buildRegisterTermsText(),
                 _buildRegisterButton()
@@ -143,6 +152,50 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           width: context.screenWidth,
           textInputType: TextInputType.name,
           textInputAction: TextInputAction.next,
+        ),
+      );
+
+  _buildPhoneTextFormField() => Container(
+        margin: EdgeInsets.only(top: 15.auto),
+        child: LoginPhoneTextFormField(
+          onChanged: (value) => _onTextChange(),
+          onFieldSubmitted: (value) {},
+          controller: phone,
+          width: context.screenWidth - 70.auto,
+          textInputAction: TextInputAction.next,
+          enabled: true,
+          onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
+          displayedAreaCode: display,
+        ),
+      );
+
+  _onAreaCodeClicked(String area) {
+    setState(() {
+      display = area;
+      Navigator.of(context).pop();
+    });
+  }
+
+  _buildOtpTextFormField() => Visibility(
+        visible: true,
+        child: Opacity(
+          opacity: isOtpEnabled ? 1 : 0.4,
+          child: Container(
+            margin: EdgeInsets.only(top: 15.auto),
+            child: LoginOtpTextFormField(
+                hintText: getTranslatedText("enter_phone_otp_hint"),
+                onChanged: (value) => _onTextChange(),
+                controller: otp,
+                textInputAction: TextInputAction.done,
+                getOtpCode: () => _register(),
+                isCountdown: isOtpCountdown,
+                isEnabled: isOtpEnabled,
+                onCountDownEnd: () => {
+                      setState(() {
+                        isOtpCountdown = false;
+                      })
+                    }),
+          ),
         ),
       );
 
@@ -260,20 +313,45 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
+    } else if (_registerShowPhone() && !validate.validatePhoneLength(phone.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("phone_format_error_msg"));
+      });
     } else {
       ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-      _checkUsername();
+      if (_registerShowPhone() && isOtpCountdown)
+        _vm.phoneVerify(otp.text);
+      else
+        _checkUsername();
     }
+  }
+
+  _getSmsCode() {
+    _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
+  }
+
+  _onTextChange() {
+    setState(() {
+      if (username.text.isNotEmpty && password.text.isNotEmpty && phone.text.isNotEmpty) {
+        isOtpEnabled = true;
+      } else {
+        isOtpEnabled = false;
+      }
+    });
   }
 
   _checkUsername() async {
     _vm.checkUsername(username.text);
   }
 
+  _registerShowPhone() => _vm.config.registerShowPhone ?? false;
+
   _handleApiState() {
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
+      else if (_registerShowPhone())
+        _getSmsCode();
       else {
         _vm.login(username.text, password.text, true);
         _navigateToHome();
@@ -288,6 +366,20 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
         });
       }
+    });
+
+    handleApiState(_vm.getReVerifyCodeApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        CustomToast.show(getTranslatedText("verification_code_success"));
+        setState(() {
+          isOtpCountdown = true;
+        });
+      });
+    });
+
+    handleApiState(_vm.phoneReVerifyApiState, onSuccess: () async {
+      await _vm.login(_vm.username, _vm.password, true);
+      _navigateToHome();
     });
   }
 

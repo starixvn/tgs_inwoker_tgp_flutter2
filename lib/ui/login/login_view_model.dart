@@ -51,7 +51,7 @@ class LoginViewModel extends BaseViewModel {
   register(String _username, String _password, String rpassword, String? invitationCode, bool isAgent) async {
     setLoading();
     registerApiState = await userRepo.register(_username, _password, rpassword, invitationCode, isAgent);
-    if (registerApiState.isSuccess && config?.smsVerification) {
+    if (registerApiState.isSuccess && (config?.smsVerification ?? false)) {
       username = _username;
       password = _password;
       isPhoneReVerificationReset = true;
@@ -141,7 +141,7 @@ class LoginViewModel extends BaseViewModel {
     return getBankCardListApiState;
   }
 
-  setIsNavigateFromSmsVerificationToTrue(){
+  setIsNavigateFromSmsVerificationToTrue() {
     isNavigateFromSmsVerification = true;
   }
 }
