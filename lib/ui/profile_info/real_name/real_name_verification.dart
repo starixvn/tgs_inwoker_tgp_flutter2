@@ -60,14 +60,14 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
           _buildTextFormField("realname", "enter_realname_hint", _realNameController, false, isRealname: true),
           Visibility(
             visible: _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
-                _vm.userProfile.identityFormId == null ||
-                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && isEdit),
+                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify &&
+                    (isEdit || _vm.userProfile.identityFormId == null)),
             child: _buildICNumberTextFormField(),
           ),
           Visibility(
             visible: _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
-                _vm.userProfile.identityFormId == null ||
-                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && isEdit),
+                (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify &&
+                    (isEdit || _vm.userProfile.identityFormId == null)),
             child: _buildUploadImageButton(),
           ),
           _buildDoneButton(),
@@ -171,41 +171,51 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
   //hide when is _isShowIcVerificationUpload()&& wv && edit
 
   _buildDoneButton() => Container(
-    width: context.screenWidth,
-    margin: EdgeInsets.all(10.auto),
-    child: ColorButton(
-      title: buttonText ?? "Done",
-      onClick: () {
-        _onClick();
-      },
-      isEnabled: isButtonEnabled,
-      color: CustomColor.theme_button_color,
-      radius: 9.6,
-    ),
-  );
+        width: context.screenWidth,
+        margin: EdgeInsets.all(10.auto),
+        child: ColorButton(
+          title: buttonText ?? "Done",
+          onClick: () {
+            _onClick();
+          },
+          isEnabled: isButtonEnabled,
+          color: CustomColor.theme_button_color,
+          radius: 9.6,
+        ),
+      );
 
   _buildFooterText() => Visibility(
-        visible: (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && !isEdit) &&!_isShowIcVerificationUpload(),
+        //isEdit
+        // show when _isShowIcVerificationUpload is true, status is WaitingVerify, identityformid !=null (not a new user)
+        // or when _isShowIcVerificationUpload is false and changesNotAllowed is false
+        visible: !isEdit &&
+            ((_isShowIcVerificationUpload() &&
+                    _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify &&
+                    _vm.userProfile.identityFormId != null) ||
+                (!_isShowIcVerificationUpload() && !(_vm.config?.changesNotAllowed ?? false))),
         child: InkWell(
-            onTap: () {
-              if((_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify && !isEdit))
-                setState(() {
-                  isEdit = true;
-                });
-              else Navigator.of(context).pushNamed("/customer_service");
-            },
-            child: Container(
-              height: 30.auto,
-              alignment: Alignment.center,
-              child: RichText(
+          onTap: () {
+            if (!(_vm.config?.changesNotAllowed ?? false) || !_isShowIcVerificationUpload())
+              // changesNotAllowed is false or IcVerificationUpload is false
+              setState(() {
+                isEdit = true;
+                isTextFieldEnabled = true;
+              });
+            else
+              Navigator.of(context).pushNamed("/customer_service");
+          },
+          child: Container(
+            height: 30.auto,
+            alignment: Alignment.center,
+            child: RichText(
               text: TextSpan(
                 text: getTranslatedText("edit_ic_no_cs"),
                 style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
                 children: [
                   TextSpan(
-                    text: (_vm.config?.changesNotAllowed ?? false)
-                        ? getTranslatedText("online_cs")
-                        : getTranslatedText("here"),
+                    text: !(_vm.config?.changesNotAllowed ?? false) || !_isShowIcVerificationUpload()
+                        ? getTranslatedText("here")
+                        : getTranslatedText("online_cs"),
                     style: TextStyle(
                         decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
                   ),
@@ -221,23 +231,29 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       var _realname = _vm.userProfile.realname;
       setState(() {
         //_isShowIcVerificationUpload
-        if (!_isShowIcVerificationUpload() && _realname != null ||
-            _isShowIcVerificationUpload() && _vm.userProfile.identityFormStatus == IdentityStatus.Approve) {
+        if (!isEdit &&
+            (!_isShowIcVerificationUpload() && _realname != null ||
+                _isShowIcVerificationUpload() && _vm.userProfile.identityFormStatus == IdentityStatus.Approve)) {
           if (_realname.isNotEmpty) {
             _realNameController.text = _realname;
             buttonText = getTranslatedText("verified");
             isButtonEnabled = false;
             isTextFieldEnabled = false;
           }
-        }
-        else {
+        } else if (_vm.userProfile.identityFormId == null &&
+            _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
+          //assume is a new user
+          buttonText = getTranslatedText("done");
+          isTextFieldEnabled = true;
+          isEdit = false;
+        } else {
           if (_isShowIcVerificationUpload() &&
               _vm.userProfile.identityFormId != null &&
               _vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify) {
             _realNameController.text = _realname;
           }
           buttonText = getTranslatedText("done");
-          isTextFieldEnabled = true;
+          isTextFieldEnabled = isEdit;
           isButtonEnabled = isEdit;
         }
       });
