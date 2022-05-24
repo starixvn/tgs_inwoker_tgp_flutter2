@@ -42,16 +42,14 @@ class _PromotionState extends BaseState<Promotion> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return CustomScaffold(
-            appBar: CustomAppBar(
-              title: getTranslatedText("promotion_center"),
-            ),
-            body:Column(
-              children: [
-
-                _buildPromotion(),
-              ],
-            )
-          );
+              appBar: CustomAppBar(
+                title: getTranslatedText("promotion_center"),
+              ),
+              body: Column(
+                children: [
+                  _buildPromotion(),
+                ],
+              ));
         });
   }
 
@@ -100,10 +98,13 @@ class _PromotionState extends BaseState<Promotion> {
       );
     } else {
       return ListView(
+        shrinkWrap: true,
         padding: EdgeInsets.only(bottom: 10.auto),
         children: List.generate(_vm.promotionList.length, (index) {
           return PromotionItem(
-              imagePath: "promotion_BN_${(index % 3 + 1).toString()}", promotion: _vm.promotionList[index], vm: _vm);
+              imagePath: "promotion_BN_${(index % 3 + 1).toString()}",
+              promotion: _vm.promotionList[index],
+              vm: _vm);
         }),
       );
     }
@@ -123,8 +124,10 @@ class _PromotionState extends BaseState<Promotion> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style:
-              TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+          style: TextStyle(
+                  fontSize: context.screenWidth / 25,
+                  fontWeight: FontWeight.bold)
+              .copyWith(color: Colors.white),
         ),
       );
 
@@ -168,6 +171,7 @@ class _PromotionState extends BaseState<Promotion> {
         );
       });
     });
-    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }
