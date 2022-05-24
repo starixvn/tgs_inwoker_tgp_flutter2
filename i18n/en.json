@@ -977,7 +977,7 @@
   "email_duplicate": "Email is duplicated",
   "maintenance": "Maintenance",
   "play_pay_hint_text": "Remarks: TWO random decimal places will be added to the total amount (it is required for the order verification purpose)",
-  "phone_re-verify": "SMS Re-verify",
+  "phone_re-verify": "SMS Verification",
   "username": "Username",
   "password": "Password",
   "area_code": "Area Code",

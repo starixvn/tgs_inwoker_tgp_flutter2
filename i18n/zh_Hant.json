@@ -964,7 +964,7 @@
   "email_duplicate": "郵箱地址重複",
   "maintenance": "維護中",
   "play_pay_hint_text": "系統稍後會在您輸入的金額後方隨機的小數，以便識別訂單",
-  "phone_re-verify": "SMS重新認證",
+  "phone_re-verify": "SMS短信認證",
   "username": "用戶名",
   "password": "密碼",
   "area_code": "區域代碼",

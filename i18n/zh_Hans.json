@@ -963,7 +963,7 @@
   "email_duplicate": "邮箱地址重复",
   "maintenance": "维护中",
   "play_pay_hint_text": "系统稍后会在您输入的金额智能随机的小数，以便识别订单",
-  "phone_re-verify": "SMS重新认证",
+  "phone_re-verify": "SMS短信认证",
   "username": "用户名",
   "password": "密码",
   "area_code": "区域代码",
