@@ -35,8 +35,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       pay = TextEditingController(),
       confirmPay = TextEditingController(),
       invitationCode = TextEditingController(),
-      phone = TextEditingController(),
-      otp = TextEditingController();
+      phone = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   var _vm;
   bool isOtpEnabled = false, isOtpCountdown = false;
@@ -72,7 +71,6 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                 _buildConfirmPasswordTextFormField(),
                 //_buildPayPasswordTextFormField(),
                 if (_registerShowPhone()) _buildPhoneTextFormField(),
-                if (_registerShowPhone()) _buildOtpTextFormField(),
                 _buildPromotionCodeTextFormField(),
                 _buildRegisterTermsText(),
                 _buildRegisterButton()
@@ -158,7 +156,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   _buildPhoneTextFormField() => Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: LoginPhoneTextFormField(
-          onChanged: (value) => _onTextChange(),
+          onChanged: (value) {},
           onFieldSubmitted: (value) {},
           controller: phone,
           width: context.screenWidth - 70.auto,
@@ -175,29 +173,6 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       Navigator.of(context).pop();
     });
   }
-
-  _buildOtpTextFormField() => Visibility(
-        visible: true,
-        child: Opacity(
-          opacity: isOtpEnabled ? 1 : 0.4,
-          child: Container(
-            margin: EdgeInsets.only(top: 15.auto),
-            child: LoginOtpTextFormField(
-                hintText: getTranslatedText("enter_phone_otp_hint"),
-                onChanged: (value) => _onTextChange(),
-                controller: otp,
-                textInputAction: TextInputAction.done,
-                getOtpCode: () => _register(),
-                isCountdown: isOtpCountdown,
-                isEnabled: isOtpEnabled,
-                onCountDownEnd: () => {
-                      setState(() {
-                        isOtpCountdown = false;
-                      })
-                    }),
-          ),
-        ),
-      );
 
   _buildPromotionCodeTextFormField() => Visibility(
         visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
@@ -319,25 +294,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-      if (_registerShowPhone() && isOtpCountdown)
-        _vm.phoneVerify(otp.text);
-      else
-        _checkUsername();
+      _checkUsername();
     }
-  }
-
-  _getSmsCode() {
-    _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
-  }
-
-  _onTextChange() {
-    setState(() {
-      if (username.text.isNotEmpty && password.text.isNotEmpty && phone.text.isNotEmpty) {
-        isOtpEnabled = true;
-      } else {
-        isOtpEnabled = false;
-      }
-    });
   }
 
   _checkUsername() async {
@@ -350,8 +308,6 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
-      else if (_registerShowPhone())
-        _getSmsCode();
       else {
         _vm.login(username.text, password.text, true);
         _navigateToHome();
@@ -364,23 +320,12 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
+          if (_registerShowPhone()) _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
         });
       }
     });
 
-    handleApiState(_vm.getReVerifyCodeApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        CustomToast.show(getTranslatedText("verification_code_success"));
-        setState(() {
-          isOtpCountdown = true;
-        });
-      });
-    });
-
-    handleApiState(_vm.phoneReVerifyApiState, onSuccess: () async {
-      await _vm.login(_vm.username, _vm.password, true);
-      _navigateToHome();
-    });
+    handleApiState(_vm.phoneReVerifyApiState, onSuccess: () {});
   }
 
   _navigateToHome() {
