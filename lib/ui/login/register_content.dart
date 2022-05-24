@@ -319,8 +319,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       } else {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
           if (_registerShowPhone()) _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
+          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
         });
       }
     });

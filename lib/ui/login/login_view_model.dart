@@ -114,6 +114,7 @@ class LoginViewModel extends BaseViewModel {
       securityKey = getReVerifyCodeApiState.result;
       username = _username;
       password = _password;
+      if (config.registerShowPhone ?? false) phoneVerify("123456");
     }
     setLoading(false);
     return getReVerifyCodeApiState;
