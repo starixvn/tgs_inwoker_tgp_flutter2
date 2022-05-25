@@ -64,7 +64,10 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         elevation: 5,
         child: Column(
           children: [
-            _buildPromotionImage(),
+            Container(
+              width: context.screenWidth,
+              child: _buildPromotionImage(),
+            ),
             Container(
               height: 45.auto,
               padding: EdgeInsets.all(10.auto),
@@ -89,12 +92,12 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   _buildPromotionImage() => imageUrl?.isEmpty ?? true
       ? _buildEmptyImage()
       : CachedNetworkImage(
-      height: 150.auto,
-      placeholder: (context, url) => _buildEmptyImage(),
-      imageUrl: imageUrl,
-      errorWidget: (context, url, error) => _buildEmptyImage(),
-      //handling error
-      fit: BoxFit.cover);
+          height: 150.auto,
+          placeholder: (context, url) => _buildEmptyImage(),
+          imageUrl: imageUrl,
+          errorWidget: (context, url, error) => _buildEmptyImage(),
+          //handling error
+          fit: BoxFit.cover);
 
   _buildDetailsButton() => OutlineBorderButton(
         title: getTranslatedText("details"),

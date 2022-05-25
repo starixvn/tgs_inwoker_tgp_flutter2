@@ -125,18 +125,21 @@ class _GameT10State extends BaseState<GameT10> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AutoSizeText(
-                gameType.getName(
-                    context, _vm.config?.menuItemShootFish ?? false),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: tabIndex == currentTabIndex
-                        ? Colors.white
-                        : Color(0xffA0A3B2)),
-                minFontSize: 2,
-                maxFontSize: 13,
-                stepGranularity: 1,
-                maxLines: 2,
+              Container(
+                padding: EdgeInsets.only(bottom: 5.auto),
+                child: AutoSizeText(
+                  gameType.getName(
+                      context, _vm.config?.menuItemShootFish ?? false),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: tabIndex == currentTabIndex
+                          ? Colors.white
+                          : Color(0xffA0A3B2)),
+                  minFontSize: 2,
+                  maxFontSize: 13,
+                  stepGranularity: 1,
+                  maxLines: 2,
+                ),
               ),
             ],
           )),
