@@ -1085,5 +1085,6 @@
   "total_win_loss": "Tổng số tiền thắng thua",
   "available": "Có sẵn trong",
   "amount_limit": "giới hạn số lượng",
-  "deposit_usdt_point": "Số tiền cộng dồn"
+  "deposit_usdt_point": "Số tiền cộng dồn",
+  "details": "thông tin chi tiết"
 }

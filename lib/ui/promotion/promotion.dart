@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
-import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -42,14 +39,11 @@ class _PromotionState extends BaseState<Promotion> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return CustomScaffold(
-              appBar: CustomAppBar(
-                title: getTranslatedText("promotion_center"),
-              ),
-              body: Column(
-                children: [
-                  _buildPromotion(),
-                ],
-              ));
+            appBar: CustomAppBar(
+              title: getTranslatedText("promotion_center"),
+            ),
+            body: _buildPromotion(),
+          );
         });
   }
 
@@ -101,10 +95,7 @@ class _PromotionState extends BaseState<Promotion> {
         shrinkWrap: true,
         padding: EdgeInsets.only(bottom: 10.auto),
         children: List.generate(_vm.promotionList.length, (index) {
-          return PromotionItem(
-              imagePath: "promotion_BN_${(index % 3 + 1).toString()}",
-              promotion: _vm.promotionList[index],
-              vm: _vm);
+          return PromotionItem(promotion: _vm.promotionList[index], vm: _vm);
         }),
       );
     }
@@ -124,10 +115,8 @@ class _PromotionState extends BaseState<Promotion> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: TextStyle(
-                  fontSize: context.screenWidth / 25,
-                  fontWeight: FontWeight.bold)
-              .copyWith(color: Colors.white),
+          style:
+              TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
         ),
       );
 
@@ -171,7 +160,6 @@ class _PromotionState extends BaseState<Promotion> {
         );
       });
     });
-    handleApiState(_vm.getPromotionListApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

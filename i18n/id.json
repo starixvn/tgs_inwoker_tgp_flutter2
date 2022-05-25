@@ -1086,5 +1086,6 @@
   "total_win_loss": "Total Menang Kalah",
   "available": "Tersedia di",
   "amount_limit": "Jumlah Batas",
-  "deposit_usdt_point":"Jumlah Poin"
+  "deposit_usdt_point":"Jumlah Poin",
+  "details": "Perincian"
 }

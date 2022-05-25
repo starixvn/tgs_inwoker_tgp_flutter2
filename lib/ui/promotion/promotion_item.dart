@@ -1,6 +1,8 @@
 import 'package:api/entity/promotion.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item_details.dart';
@@ -9,12 +11,10 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
 
 class PromotionItem extends StatefulWidget {
-  final String imagePath;
   final Promotion promotion;
   final PromotionViewModel vm;
 
   PromotionItem({
-    required this.imagePath,
     required this.promotion,
     required this.vm,
   });
@@ -24,50 +24,101 @@ class PromotionItem extends StatefulWidget {
 }
 
 class _PromotionItemState extends BaseState<PromotionItem> {
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    PromotionItemDetails(imagePath: widget.imagePath, promotion: widget.promotion, vm: widget.vm)));
-      },
-      child: Container(
-          margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto), child: _buildPromotionImage()),
-    );
-  }
+  var imageUrl;
 
-  _buildPromotionImage() {
-    var imageUrl;
-    if (widget.promotion.localization?.mobileBanner?.isNotEmpty?? false ) {
+  @override
+  void initState() {
+    if (widget.promotion.localization?.mobileBanner?.isNotEmpty ?? false) {
       imageUrl = widget.promotion.localization!.mobileBanner;
     } else if (widget.promotion.mobileBanner?.isNotEmpty ?? false) {
       imageUrl = widget.promotion.mobileBanner;
     } else
       imageUrl = "";
-    print(imageUrl);
-    return imageUrl?.isEmpty ?? true
-        ? Container(
-            color: CustomColor.very_light_pink_four,
-          )
-        : Container(
-            margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: CachedNetworkImage(
-                    height: 150.auto,
-                    placeholder: (context, url) => Container(
-                          width: 375,
-                          height: 150.auto,
-                          color: CustomColor.very_light_pink_four,
-                        ),
-                    imageUrl: imageUrl,
-                    errorWidget: (context, url, error) => Container(
-                          color: CustomColor.very_light_pink_four,
-                        ),
-                    //handling error
-                    fit: BoxFit.fill)),
-          );
+    super.initState();
   }
+
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
+      child: EnvironmentConfig.template_version == 10 ? _buildPromotionT10() : _buildPromotion(),
+    );
+  }
+
+  _buildPromotion() => InkWell(
+        onTap: () => _navigateToDetails(),
+        child: Container(
+          margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: _buildPromotionImage(),
+          ),
+        ),
+      );
+
+  _buildPromotionT10() => Card(
+        semanticContainer: true,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        elevation: 5,
+        child: Column(
+          children: [
+            _buildPromotionImage(),
+            Container(
+              height: 45.auto,
+              padding: EdgeInsets.all(10.auto),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 3.auto),
+                    child: Text(
+                      widget.promotion.name ?? "",
+                      style: TextStyle(color: CustomColor.theme_text_black_color),
+                    ),
+                  ),
+                  _buildDetailsButton(),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+
+  _buildPromotionImage() => imageUrl?.isEmpty ?? true
+      ? _buildEmptyImage()
+      : CachedNetworkImage(
+      height: 150.auto,
+      placeholder: (context, url) => _buildEmptyImage(),
+      imageUrl: imageUrl,
+      errorWidget: (context, url, error) => _buildEmptyImage(),
+      //handling error
+      fit: BoxFit.cover);
+
+  _buildDetailsButton() => OutlineBorderButton(
+        title: getTranslatedText("details"),
+        onClick: () => _navigateToDetails(),
+        isEnabled: true,
+        width: 60,
+        height: 17,
+        color: CustomColor.theme_button_color,
+        fontSize: 14,
+        radius: 10,
+        padding: 4,
+      );
+
+  _buildEmptyImage() => Container(
+        height: 150.auto,
+        color: CustomColor.very_light_pink_four,
+      );
+
+  _navigateToDetails() => Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PromotionItemDetails(
+                imagePath: imageUrl,
+                promotion: widget.promotion,
+                vm: widget.vm,
+              )));
 }

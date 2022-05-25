@@ -1086,5 +1086,6 @@
   "total_win_loss": "การแพ้ทั้งหมด",
   "available": "มีใน",
   "amount_limit": "จำกัดจำนวนเงิน",
-  "deposit_usdt_point":"จำนวนเงินที่เพิ่มขึ้น"
+  "deposit_usdt_point":"จำนวนเงินที่เพิ่มขึ้น",
+  "details": "รายละเอียด"
 }

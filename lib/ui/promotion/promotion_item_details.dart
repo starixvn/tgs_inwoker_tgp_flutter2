@@ -2,15 +2,12 @@ import 'package:api/entity/promotion.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:simple_html_css/simple_html_css.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
-import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
-import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
@@ -79,39 +76,21 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _buildPromotionImage() {
-    var imageUrl;
-    if (widget.promotion.localization?.mobileBanner?.isNotEmpty ?? false) {
-      imageUrl = widget.promotion.localization!.mobileBanner;
-    } else if (widget.promotion.mobileBanner?.isNotEmpty ?? false) {
-      imageUrl = widget.promotion.mobileBanner;
-    } else
-      imageUrl = "";
-    /*return imageUrl.isEmpty
-        ? Container()
+    return widget.imagePath.isEmpty
+        ? Container(
+            height: 150.auto,
+          )
         : CachedNetworkImage(
             height: 150.auto,
             placeholder: (context, url) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
-            imageUrl: imageUrl,
+            imageUrl: widget.imagePath,
             //handling error
             errorWidget: (context, url, error) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
-            fit: BoxFit.fill);*/
-    return handleNullWidget(
-        imageUrl.isEmpty,
-        CachedNetworkImage(
-            height: 150.auto,
-            placeholder: (context, url) => Container(
-                  color: CustomColor.very_light_pink_four,
-                ),
-            imageUrl: imageUrl,
-            //handling error
-            errorWidget: (context, url, error) => Container(
-                  color: CustomColor.very_light_pink_four,
-                ),
-            fit: BoxFit.fill));
+            fit: BoxFit.cover);
   }
 
   _onClick() {

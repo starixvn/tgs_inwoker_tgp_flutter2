@@ -1085,5 +1085,6 @@
   "total_win_loss": "总输赢",
   "available": "可用在",
   "amount_limit": "限额",
-  "deposit_usdt_point":"上分金额"
+  "deposit_usdt_point":"上分金额",
+  "details": "详情"
 }
