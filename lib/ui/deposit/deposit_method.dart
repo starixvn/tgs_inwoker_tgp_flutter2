@@ -297,7 +297,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RichText(
                   text: TextSpan(
@@ -734,11 +734,20 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
       amount = 0;
     }
 
-    if (textIsNotEmptyList.values.every((element) => element) &&
+    if (_isManualDeposit() &&
+        textIsNotEmptyList.values.every((element) => element) &&
         amount! >= paymentMin &&
         amount! <= paymentMax &&
         ((_vm.config.deposit_DualPage ?? false) || //not showing upload image proof column
             (!(_vm.config.deposit_DualPage ?? false)) && uploadImage?.path != null)) {
+      //isManual => check uploadImage
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else if (!_isManualDeposit() &&
+        textIsNotEmptyList.values.every((element) => element) &&
+        amount! >= paymentMin &&
+        amount! <= paymentMax) {
       setState(() {
         isButtonEnabled = true;
       });
