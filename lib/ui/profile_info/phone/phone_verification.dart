@@ -43,7 +43,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(appBar: _buildAppBar(),
+          return CustomScaffold(
+              appBar: _buildAppBar(),
               body: Container(
                   child: /*userProfile == null?
                   Center(child: CircularProgressIndicator(),):*/
@@ -200,7 +201,10 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   }
 
   _isNotAllowedEditPhone() =>
-      (_vm.config?.changesNotAllowed ?? false) || (_vm.config?.profileNotAllowChangePhone ?? false);
+      (_vm.config?.changesNotAllowed ?? false) ||
+      (_vm.config?.profileNotAllowChangePhone ?? false) ||
+      (_vm.config?.profileDisableEditPhone ?? false) ||
+      (_vm.config?.registerShowPhone ?? false);
 
   _handleApiState() {
     handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {

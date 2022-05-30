@@ -293,7 +293,5 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _isDisableEditPhone(String routePath) =>
       routePath == "phone_verification" &&
       (_vm.userProfile.phone != null) &&
-      ((_vm.config?.profileNotAllowChangePhone ?? false) ||
-          (_vm.config?.profileDisableEditPhone ?? false) ||
-          (_vm.config?.registerShowPhone ?? false));
+      ((_vm.config?.profileNotAllowChangePhone ?? false));
 }
