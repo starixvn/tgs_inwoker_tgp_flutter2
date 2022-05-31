@@ -125,7 +125,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => CustomerServiceWebView(
-                          url: _vm.liveChatUrl!,
+                      //to remove whitespace in url
+                          url: _vm.liveChatUrl!.replaceAll(" ", ""),
                           brandLogoUrl: _vm.brandLogoUrl,
                         )));
           },
