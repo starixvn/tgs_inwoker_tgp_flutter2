@@ -149,6 +149,7 @@ flutter:
     - audio/
     - images/maintenance/
     - images/contact/
+    - images/login_app_bar/
 
     - loading/
     - i18n/

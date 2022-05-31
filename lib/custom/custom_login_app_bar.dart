@@ -7,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -139,26 +140,26 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           _getLogoutButton(),
         ]
       : [
+          _getVipButton(),
           _getLoginButton(),
           _getRegisterButton(),
         ];
 
   _getLoginButton() => Container(
-        padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
+        padding: EdgeInsets.all(10.auto),
         child: OutlineBorderButton(
           title: getTranslatedText("login"),
           onClick: () => widget.onClickLoginButton(),
           isEnabled: true,
-          width: 60,
+          width: 60.auto,
           height: 17,
-          color: (((){
-            if(_isDarkMode())
+          color: ((() {
+            if (_isDarkMode())
               return CustomColor.theme_text_black_color;
-            else if(EnvironmentConfig.light_mode)
+            else if (EnvironmentConfig.light_mode)
               return CustomColor.theme_button_color;
             else
               return Colors.white;
-
           })()),
           fontSize: 14,
           radius: 5,
@@ -167,12 +168,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getRegisterButton() => Container(
-        padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
+        padding: EdgeInsets.all(10.auto),
         child: ColorButton(
           title: getTranslatedText("register"),
           onClick: () => widget.onClickRegisterButton(),
           isEnabled: true,
-          width: 80,
+          width: _getButtonWidth(),
           height: 17,
           fontSize: 14,
           radius: 5,
@@ -184,21 +185,62 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
+  _getVipButton() => (widget.config?.homePageDisplayVIP ?? false)
+      ? Container(
+          padding: EdgeInsets.all(10.auto),
+          child: ColorButton(
+            title: "VIP",
+            onClick: () => Navigator.of(context).pushNamed("/vip"),
+            isEnabled: true,
+            width: 60.auto,
+            height: 17,
+            fontSize: 14,
+            radius: 5,
+            padding: 4,
+            textColor:
+                _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+            color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+                ? CustomColor.theme_button_color
+                : Colors.white,
+            icon: Container(
+              margin: EdgeInsets.only(right: 3.auto),
+              child: Image.asset(
+                "images/login_app_bar/vip.png",
+                matchTextDirection: true,
+                height: 18.auto,
+              ),
+            ),
+          ),
+        )
+      : Container();
+
   _getLogoutButton() => Container(
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         child: ColorButton(
           title: getTranslatedText("exit"),
           onClick: () => widget.onClickLogoutButton(),
           isEnabled: true,
-          width: getCurrentLanguage().apiCode == "th-TH" ? 80 : 60,
+          width: _getButtonWidth(),
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: _isDarkMode()|| EnvironmentConfig.light_mode  ? Colors.white : CustomColor.theme_text_black_color,
-          color:
-              EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Colors.white,
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+              ? CustomColor.theme_button_color
+              : Colors.white,
         ),
       );
+
+  _getButtonWidth() {
+    switch (getCurrentLanguage().apiCode) {
+      case "th-TH":
+        return 70.auto;
+      case "zh-CN":
+        return 60.auto;
+      default:
+        return 60.auto;
+    }
+  }
 
   _getUsernameText() => Container(
         height: 60,
