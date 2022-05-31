@@ -90,7 +90,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
             errorWidget: (context, url, error) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
-            fit: BoxFit.cover);
+            fit: BoxFit.fill);
   }
 
   _onClick() {
