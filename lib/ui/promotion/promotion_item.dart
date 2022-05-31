@@ -97,7 +97,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
           imageUrl: imageUrl,
           errorWidget: (context, url, error) => _buildEmptyImage(),
           //handling error
-          fit: BoxFit.cover);
+          fit: BoxFit.fill);
 
   _buildDetailsButton() => OutlineBorderButton(
         title: getTranslatedText("details"),

@@ -15,6 +15,7 @@ class ColorButton extends StatelessWidget {
   final double? fontSize;
   final Color? color;
   final Color? textColor;
+  final Widget? icon;
 
   ColorButton({
     required this.title,
@@ -28,6 +29,7 @@ class ColorButton extends StatelessWidget {
     this.fontSize,
     this.color,
     this.textColor,
+    this.icon,
   });
 
   @override
@@ -49,14 +51,20 @@ class ColorButton extends StatelessWidget {
           height: 25.auto,*/
         child: SizedBox(
           width: (width ?? context.screenWidth) - 20,
-          child: AutoSizeText(
-            title,
-            style: TextStyle(color: textColor ?? Colors.white),
-            minFontSize: 5,
-            maxFontSize: fontSize ?? 12,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-            stepGranularity: 1,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? Container(),
+              AutoSizeText(
+                title,
+                style: TextStyle(color: textColor ?? Colors.white),
+                minFontSize: 5,
+                maxFontSize: fontSize ?? 12,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                stepGranularity: 1,
+              ),
+            ],
           ),
         ),
       ),
