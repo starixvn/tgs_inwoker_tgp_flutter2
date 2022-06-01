@@ -53,16 +53,20 @@ class ColorButton extends StatelessWidget {
           width: (width ?? context.screenWidth) - 20,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              icon ?? Container(),
-              AutoSizeText(
-                title,
-                style: TextStyle(color: textColor ?? Colors.white),
-                minFontSize: 5,
-                maxFontSize: fontSize ?? 12,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                stepGranularity: 1,
+              icon == null ? Container() : Expanded(flex: 1, child: icon!),
+              Expanded(
+                flex: 1,
+                child: AutoSizeText(
+                  title,
+                  style: TextStyle(color: textColor ?? Colors.white),
+                  minFontSize: 5,
+                  maxFontSize: fontSize ?? 12,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  stepGranularity: 1,
+                ),
               ),
             ],
           ),

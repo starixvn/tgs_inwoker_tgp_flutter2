@@ -173,7 +173,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           title: getTranslatedText("register"),
           onClick: () => widget.onClickRegisterButton(),
           isEnabled: true,
-          width: _getButtonWidth(),
+          width: 60.auto,
           height: 17,
           fontSize: 14,
           radius: 5,
@@ -220,7 +220,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           title: getTranslatedText("exit"),
           onClick: () => widget.onClickLogoutButton(),
           isEnabled: true,
-          width: _getButtonWidth(),
+          width: 60.auto,
           height: 17,
           radius: 5,
           padding: 2,
@@ -230,17 +230,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               : Colors.white,
         ),
       );
-
-  _getButtonWidth() {
-    switch (getCurrentLanguage().apiCode) {
-      case "th-TH":
-        return 70.auto;
-      case "zh-CN":
-        return 60.auto;
-      default:
-        return 60.auto;
-    }
-  }
 
   _getUsernameText() => Container(
         height: 60,
