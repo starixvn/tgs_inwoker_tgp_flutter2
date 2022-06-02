@@ -83,7 +83,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       );
 
   _buildOtpTextFormField() => Visibility(
-      visible: _vm.userProfile.phone == null,
+      visible: _vm.userProfile.phone == null && !(_vm.config?.profileDisableEditPhone ?? false),
       child: OtpTextFormField(
         hintText: getTranslatedText("enter_email_otp_hint"),
         onChanged: (value) => _onTextChange(),
@@ -102,17 +102,20 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         isVisible: true,
       ));
 
-  _buildButton() => Container(
-      width: context.screenWidth,
-      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
-      child: ColorButton(
-        title: buttonText ?? "",
-        onClick: () {
-          _onClick();
-        },
-        isEnabled: isButtonEnabled,
-        radius: 9.6,
-      ));
+  _buildButton() => Visibility(
+        visible: !(_vm.config?.profileDisableEditPhone ?? false),
+        child: Container(
+            width: context.screenWidth,
+            margin: EdgeInsets.only(top: 30.auto),
+            child: ColorButton(
+              title: buttonText ?? "",
+              onClick: () {
+                _onClick();
+              },
+              isEnabled: isButtonEnabled,
+              radius: 9.6,
+            )),
+      );
 
   _buildEditPhoneText() => InkWell(
         onTap: () {
@@ -124,17 +127,20 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
                         _getUserProfile();
                       }));
         },
-        child: RichText(
-          text: TextSpan(
-            text: getTranslatedText("edit_phone_cs"),
-            style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
-            children: [
-              TextSpan(
-                text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
-                style: TextStyle(
-                    decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
-              ),
-            ],
+        child: Container(
+          margin: EdgeInsets.only(top: 20.auto),
+          child: RichText(
+            text: TextSpan(
+              text: getTranslatedText("edit_phone_cs"),
+              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+              children: [
+                TextSpan(
+                  text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
+                  style: TextStyle(
+                      decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -163,14 +169,15 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _getUserProfile() {
     setState(() {
-      var phone = _vm.userProfile.phone;
-      if (phone != null) {
-        if (phone.isNotEmpty) {
-          _phoneController.text = phone;
-          buttonText = getTranslatedText("verified");
-          isButtonEnabled = false;
-          isTextFieldEnabled = false;
-        }
+      String? phone = _vm.userProfile.phone;
+      if (phone?.isNotEmpty ?? false) {
+        _phoneController.text = phone!;
+        buttonText = getTranslatedText("verified");
+        isButtonEnabled = false;
+        isTextFieldEnabled = false;
+      } else if (_vm.config?.profileDisableEditPhone ?? false) {
+        isButtonEnabled = false;
+        isTextFieldEnabled = false;
       } else {
         buttonText = getTranslatedText("done");
         isTextFieldEnabled = true;
