@@ -53,12 +53,6 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
                 _webViewController = controller;
                 _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(widget.url!)));
               },
-              onLoadStart: (controller, url) {
-                ProgressDialog.show(context, widget.brandLogoUrl);
-              },
-              onLoadStop: (controller, url) async {
-                ProgressDialog.hide();
-              },
             ),
     );
   }
