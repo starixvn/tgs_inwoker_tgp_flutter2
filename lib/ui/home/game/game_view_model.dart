@@ -34,7 +34,8 @@ class GameViewModel extends BaseViewModel {
   String? url, lobbyUrl;
   List<GameProvider2>? platformList;
   List<List<GameProvider2>>? gameProviderList;
-  List<GameType> gameTypeList = [
+  List<GameType> gameTypeList = [];
+  List<GameType> _gameTypeList = [
     GameType.Sportsbook,
     GameType.ESports,
     GameType.LiveDealerLobby,
@@ -56,6 +57,17 @@ class GameViewModel extends BaseViewModel {
     GameType.LotteryLobby,
     GameType.EGame,
     GameType.CardGameLobby,
+  ];
+  var _pbGamelist = [
+    GameType.Slot,
+    GameType.LiveDealerLobby,
+    GameType.Sportsbook,
+    GameType.ESports,
+    GameType.EGame,
+    GameType.Fishing,
+    GameType.CardGameLobby,
+    GameType.LotteryLobby,
+
   ];
   List<GameType>? gameRowListT3, gameListT3;
 
@@ -88,6 +100,7 @@ class GameViewModel extends BaseViewModel {
         });
       }
     });
+    gameTypeList = EnvironmentConfig.brandName == "PB" ? _pbGamelist : _gameTypeList;
     gameProviderList = gameTypeList.map((type) => list.where((element) => element.gameType == type).toList()).toList();
 
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
@@ -100,7 +113,9 @@ class GameViewModel extends BaseViewModel {
     });
     nonExistGameTypeList.forEach((element) {
       //handle some showing empty game list, some will hide it
-      if (EnvironmentConfig.template_version == 1) gameTypeList.remove(element);
+      if (EnvironmentConfig.template_version == 1) {
+        gameTypeList.remove(element);
+      }
       _gameRowListT3.remove(element);
       _gameListT3.remove(element);
     });

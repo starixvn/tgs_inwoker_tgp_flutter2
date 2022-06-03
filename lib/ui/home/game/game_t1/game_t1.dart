@@ -199,7 +199,7 @@ class _GameT1State extends BaseState<GameT1> {
         des += scrollTab * _vm.gameProviderList![i].length;
         index = i;
       } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = _vm.gameProviderList!.length - 1;
+        index = _vm.gameProviderList!.where((i) => i.length > 0).toList().length - 1;
       }
     });
     setState(() {
