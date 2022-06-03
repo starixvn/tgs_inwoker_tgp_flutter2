@@ -35,7 +35,7 @@ class GameItemT1State extends BaseState<GameItemT1> {
 
   double get _itemWidth => context.size!.width - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
 
-  double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom + 6.auto;
+  double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom + 6.5;
 
   //ScrollController? controller;
 
