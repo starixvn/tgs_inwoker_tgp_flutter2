@@ -83,7 +83,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       );
 
   _buildOtpTextFormField() => Visibility(
-      visible: _vm.userProfile.phone == null && !(_vm.config?.profileDisableEditPhone ?? false),
+      visible: _vm.userProfile.phone == null && !(_vm.config?.profileDisableVerifyPhone ?? false),
       child: OtpTextFormField(
         hintText: getTranslatedText("enter_email_otp_hint"),
         onChanged: (value) => _onTextChange(),
@@ -102,20 +102,17 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         isVisible: true,
       ));
 
-  _buildButton() => Visibility(
-        visible: !(_vm.config?.profileDisableEditPhone ?? false),
-        child: Container(
-            width: context.screenWidth,
-            margin: EdgeInsets.only(top: 30.auto),
-            child: ColorButton(
-              title: buttonText ?? "",
-              onClick: () {
-                _onClick();
-              },
-              isEnabled: isButtonEnabled,
-              radius: 9.6,
-            )),
-      );
+  _buildButton() =>  Container(
+      width: context.screenWidth,
+      margin: EdgeInsets.only(top: 30.auto),
+      child: ColorButton(
+        title: buttonText ?? "",
+        onClick: () {
+          _onClick();
+        },
+        isEnabled: isButtonEnabled,
+        radius: 9.6,
+      ));
 
   _buildEditPhoneText() => InkWell(
         onTap: () {
@@ -175,7 +172,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         buttonText = getTranslatedText("verified");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
-      } else if (_vm.config?.profileDisableEditPhone ?? false) {
+      } else if (_vm.config?.profileDisableVerifyPhone ?? false) {
+        buttonText = getTranslatedText("done");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
       } else {
