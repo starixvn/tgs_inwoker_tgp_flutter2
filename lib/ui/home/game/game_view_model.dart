@@ -63,10 +63,10 @@ class GameViewModel extends BaseViewModel {
     GameType.LiveDealerLobby,
     GameType.Sportsbook,
     GameType.ESports,
+    GameType.EGame,
     GameType.Fishing,
     GameType.CardGameLobby,
     GameType.LotteryLobby,
-    GameType.EGame,
   ];
   List<GameType>? gameRowListT3, gameListT3;
 

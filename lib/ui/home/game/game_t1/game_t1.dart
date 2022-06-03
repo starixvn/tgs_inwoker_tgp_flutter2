@@ -180,7 +180,7 @@ class _GameT1State extends BaseState<GameT1> {
 
     _vm.gameProviderList!.asMap().forEach((i, element) {
       if (tabIndex > i) {
-        des += itemHeight * _vm.gameProviderList![i].length;
+        des += (itemHeight * (_vm.gameProviderList![i].length)) + ((_vm.gameProviderList![i].length) * 6.5);
       }
     });
     setState(() {
@@ -196,10 +196,12 @@ class _GameT1State extends BaseState<GameT1> {
 
     _vm.gameProviderList!.asMap().forEach((i, element) {
       if (_controller.offset >= des) {
-        des += scrollTab * _vm.gameProviderList![i].length;
+        des += scrollTab * (_vm.gameProviderList![i].length);
         index = i;
       } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = _vm.gameProviderList!.length - 1;
+        index = _vm.gameProviderList!.where((i) => i.length > 0).toList().length - 1;
+
+        // _vm.gameProviderList!.length - 1;
       }
     });
     setState(() {
