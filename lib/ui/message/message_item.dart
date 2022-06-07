@@ -104,10 +104,7 @@ class _MessageItemState extends BaseState<MessageItem> {
             width: context.screenWidth,
             child: Text(
               parseHtmlString(_getMessageContent()),
-              //overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              //softWrap: false,
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.justify,
               style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
             ),
           ),
