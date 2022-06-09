@@ -34,7 +34,7 @@
   "bet_history": "投注記錄",
   "refer_friend": "推薦好友",
   "notice": "公告",
-  "collect_all": "一鍵回收",
+  "collect_all": "一鍵轉入",
   "transfer_from": "轉出賬戶",
   "transfer_to": "轉入賬戶",
   "amount": "金額",
@@ -1086,6 +1086,6 @@
   "total_win_loss": "總輸贏",
   "available": "可用在",
   "amount_limit": "限額",
-  "deposit_usdt_point":"上分金額",
+  "deposit_usdt_point": "上分金額",
   "details": "詳情"
 }
