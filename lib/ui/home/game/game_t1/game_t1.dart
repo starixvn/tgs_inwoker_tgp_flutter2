@@ -149,7 +149,11 @@ class _GameT1State extends BaseState<GameT1> {
                 matchTextDirection: true,
                 width: 28.auto,
                 height: 28.auto,
-                color: tabIndex == currentTabIndex ? CustomColor.theme_button_color : CustomColor.theme_text_grey_color,
+                color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
+                        tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
+                //only PB, selected game tab color is grey, not selected game tab is button color
+                    ? CustomColor.theme_text_grey_color
+                    : CustomColor.theme_button_color,
               ) /* ImageIcon(
                   AssetImage("images/game_tab/t1/ic_${gameType.getImagePath()}.png"),
                   size: 28.auto,
@@ -161,9 +165,11 @@ class _GameT1State extends BaseState<GameT1> {
                 gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: tabIndex == currentTabIndex
-                        ? CustomColor.theme_button_color
-                        : CustomColor.theme_text_grey_color),
+                  color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
+                          tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
+                      ? CustomColor.theme_text_grey_color
+                      : CustomColor.theme_button_color,
+                ),
                 minFontSize: 2,
                 maxFontSize: 13,
                 stepGranularity: 1,
