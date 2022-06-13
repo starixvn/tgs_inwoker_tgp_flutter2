@@ -30,6 +30,7 @@ class PromotionItemDetails extends StatefulWidget {
 class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   Widget build(BuildContext context) {
     return CustomScaffold(
+      color: Colors.white,
       appBar: _buildAppBar(),
       body: ListView(
         children: [
@@ -128,8 +129,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   }
 
   _buildPromotionTermsText(String? displayText) => Container(
-      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-      child: Html(
-        data: """<style>tr{ border: 1px solid;}td {padding: 5px;} </style>""" + (displayText ?? ""),
-      ));
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+        child: Html(
+          data: """<style>tr{ border: 1px solid; } </style>""" + (displayText ?? ""),
+        ),
+      );
 }
