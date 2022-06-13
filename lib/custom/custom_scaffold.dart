@@ -7,10 +7,12 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 class CustomScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget body;
+  final Color? color;
 
   CustomScaffold({
     this.appBar,
     required this.body,
+    this.color,
   });
 
   @override
@@ -19,18 +21,14 @@ class CustomScaffold extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
           ? Colors.transparent
-          : CustomColor.theme_bg_color,
-      appBar: appBar ,//?? PreferredSizeWidget(),
+          : (color ?? CustomColor.theme_bg_color),
+      appBar: appBar, //?? PreferredSizeWidget(),
       body: Container(
         decoration: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
             ? BoxDecoration(
                 gradient: RadialGradient(
                   center: Alignment(0, 0),
-                  colors: [
-                    Color.fromRGBO(78, 110, 164, 1.0),
-                    Color.fromRGBO(199, 219, 231, 1.0),
-                    Colors.white
-                  ],
+                  colors: [Color.fromRGBO(78, 110, 164, 1.0), Color.fromRGBO(199, 219, 231, 1.0), Colors.white],
                   radius: 1.5,
                 ),
               )
