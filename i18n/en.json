@@ -954,7 +954,7 @@
   "promotion_empty2": "COMING SOON!",
   "request_failed": "Request failed, please contact Customer Service for further information.",
   "transaction_after_start_date": "End date must be after the start date",
-  "waiting_payment": "Withdrawal Pending",
+  "waiting_payment": "Deposit Pending",
   "review": "Processing",
   "approved": "Approved",
   "rejected": "Rejected",

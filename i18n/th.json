@@ -941,7 +941,7 @@
   "promotion_empty2": "โปรดคอยติดตาม",
   "request_failed": "คำขอล้มเหลว โปรดติดต่อฝ่ายบริการลูกค้า",
   "transaction_after_start_date": "วันที่สิ้นสุดต้องอยู่หลังวันที่เริ่มต้น",
-  "waiting_payment": "กำลังรอการชำระเงิน",
+  "waiting_payment": "เงินฝากที่รอดำเนินการ",
   "review": "อยู่ระหว่างตรวจสอบ",
   "approved": "อนุมัติ",
   "rejected": "ถูกปฏิเสธ",
