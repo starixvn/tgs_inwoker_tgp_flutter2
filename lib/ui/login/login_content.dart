@@ -219,7 +219,7 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         CustomToast.show(getTranslatedText("enter_password_hint"));
       });
     } else {
-      ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
+      ProgressDialog.show(context, _vm.brandLogo?.mobileUrl??"");
       _vm.login(username.text, password.text, _isRememberMe);
     }
   }

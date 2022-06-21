@@ -61,12 +61,11 @@ class DepositViewModel extends BaseViewModel {
     return uploadDepositImageApiState;
   }
 
-  getPlayerPromotionList(int page) async {
+  getPlayerPromotionList()async {
     setLoading();
-    getPlayerPromotionListApiState = await contentRepo.getPromotionList(
-        page, rows, false, false, userProfile == null);
+    getPlayerPromotionListApiState = await contentRepo.getPromotionList();
     if (getPlayerPromotionListApiState.isSuccess) {
-      List<Promotion> list = getPlayerPromotionListApiState.result.items;
+      List<Promotion> list = getPlayerPromotionListApiState.result;
       list.forEach((value) {
         if (value.promotionType == "FirstDeposit" ||
             value.promotionType == "DailySecondDeposit" ||

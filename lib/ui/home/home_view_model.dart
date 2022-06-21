@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/game_provider.dart';
 import 'package:api/api.dart';
 import 'package:api/extension/list_extension.dart';
+import 'package:api/entity/campaign_details.dart';
 
 class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
@@ -34,7 +35,9 @@ class HomeViewModel extends BaseViewModel {
       logoutApiState,
       getBrandCommunicationApiState,
       getBankCardListApiState,
-      getPromotionListApiState;
+      getPromotionListApiState,
+      getTodayRouletteResultApiState,
+      getRouletteApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -45,6 +48,9 @@ class HomeViewModel extends BaseViewModel {
   int rows = 10;
   bool endRecord = false;
   List<Promotion>? promotionList;
+  bool isRoulettePlayed = false;
+  List<CampaignDetails>? campaign;
+  Promotion? _roulettePromo;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -118,6 +124,7 @@ class HomeViewModel extends BaseViewModel {
   getUserInfo() async {
     setLoading();
     getBasicInfoApiState = await userRepo.getBasicInfo();
+
     setLoading(false);
     return getBasicInfoApiState;
   }
@@ -161,30 +168,50 @@ class HomeViewModel extends BaseViewModel {
     _getBankCardList();
   }
 
-  getPromotionList({isLoadMore = false}) async {
+  getPromotionList() async {
     setLoading();
 
-    if (isLoadMore) {
-      if (page! * rows < getPromotionListApiState.result.totalCount)
-        page = page! + 1;
-      else
-        return;
-    } else
-      page = 1;
+    // if (isLoadMore) {
+    //   if (page! * rows < getPromotionListApiState.result.totalCount)
+    //     page = page! + 1;
+    //   else
+    //     return;
+    // } else
+    //   page = 1;
 
-    //if (userProfile == null)
-    getPromotionListApiState = await contentRepo.getPromotionList(page!, rows, true, true, userProfile == null);
-    // else
-    //   getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
-    List<Promotion> list = [];
+    getPromotionListApiState = await contentRepo.getPromotionList();
     if (getPromotionListApiState.isSuccess) {
-      list = getPromotionListApiState.result.items;
-      if (promotionList == null) promotionList = [];
-      if (list.isNotEmpty) promotionList!.addAll(list);
-      endRecord = promotionList!.length >= getPromotionListApiState.result.totalCount ? true : false;
+      promotionList = getPromotionListApiState.result;
+
+      // if (promotionList == null) promotionList = [];
+      // if (list.isNotEmpty) promotionList!.addAll(list);
+      // endRecord = promotionList!.length >= getPromotionListApiState.result.totalCount ? true : false;
+
+      _roulettePromo = promotionList?.singleWhere((element) => element.promotionType == "Roulette");
+      campaign = _roulettePromo?.campaignDetails?.items ?? [];
     } else
       promotionList = [];
     setLoading(false);
     return getPromotionListApiState;
+  }
+
+  getRouletteTodayResult() async {
+    setLoading();
+    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(_roulettePromo?.id ?? "");
+    if (getTodayRouletteResultApiState.isSuccess) {
+      isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
+    }
+    setLoading(false);
+    return getTodayRouletteResultApiState;
+  }
+
+  getRouletteResult() async {
+    setLoading();
+    getRouletteApiState = await contentRepo.getRouletteResult(_roulettePromo?.id ?? "");
+    if (getRouletteApiState.isSuccess) {
+      getRouletteTodayResult();
+    }
+    setLoading(false);
+    return getRouletteApiState;
   }
 }

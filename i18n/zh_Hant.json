@@ -1087,5 +1087,10 @@
   "available": "可用在",
   "amount_limit": "限額",
   "deposit_usdt_point": "上分金額",
-  "details": "詳情"
+  "details": "詳情",
+  "roulette_prize_win": "赢",
+  "roulette_prize_lose": "输",
+  "roulette_is_played_text_1": "每日限玩1次",
+  "roulette_is_played_text_2": "明天再來唷",
+  "roulette_is_played_text_3": "點我看更多好康優惠"
 }

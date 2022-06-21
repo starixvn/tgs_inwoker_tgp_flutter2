@@ -1,6 +1,8 @@
 import 'package:api/api.dart';
 import 'package:api/entity/promotion.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
+import 'package:api/entity/campaign_details.dart';
 
 class PromotionViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
@@ -20,27 +22,27 @@ class PromotionViewModel extends BaseViewModel {
   int rows = 10;
   bool endRecord = false;
 
-  getPromotionList({isLoadMore = false}) async {
+  getPromotionList() async {
     setLoading();
 
-    if (isLoadMore) {
-      if (page! * rows < getPromotionListApiState.result.totalCount)
-        page = page!+1;
-      else
-        return;
-    } else
-      page = 1;
-
+    // if (isLoadMore) {
+    //   if (page! * rows < getPromotionListApiState.result.totalCount)
+    //     page = page!+1;
+    //   else
+    //     return;
+    // } else
+    //   page = 1;
     //if (userProfile == null)
-    getPromotionListApiState = await contentRepo.getPromotionList(page!, rows, true, true, userProfile == null);
+    getPromotionListApiState = await contentRepo.getPromotionList();
     // else
     //   getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
-    List<Promotion> list = [];
+    // List<Promotion> list = [];
     if (getPromotionListApiState.isSuccess) {
-      list = getPromotionListApiState.result.items;
-      if (promotionList == null) promotionList = [];
-      if (list.isNotEmpty) promotionList.addAll(list);
-      endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
+      // list = getPromotionListApiState.result;
+      // if (promotionList == null) promotionList = [];
+      // if (list.isNotEmpty) promotionList.addAll(list);
+      // endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
+      promotionList = getPromotionListApiState.result;
     } else
       promotionList = [];
     setLoading(false);

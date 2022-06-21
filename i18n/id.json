@@ -1087,5 +1087,10 @@
   "available": "Tersedia di",
   "amount_limit": "Jumlah Batas",
   "deposit_usdt_point":"Jumlah Poin",
-  "details": "Perincian"
+  "details": "Perincian",
+  "roulette_prize_win": "Menang",
+  "roulette_prize_lose": "Kehilangan",
+  "roulette_is_played_text_1": "Batasi 1 permainan per hari",
+  "roulette_is_played_text_2": "Silakan datang lagi besok",
+  "roulette_is_played_text_3": "Klik untuk melihat detail promosi lainnya"
 }

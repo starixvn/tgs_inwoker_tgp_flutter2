@@ -1086,5 +1086,10 @@
   "available": "Có sẵn trong",
   "amount_limit": "giới hạn số lượng",
   "deposit_usdt_point": "Số tiền cộng dồn",
-  "details": "thông tin chi tiết"
+  "details": "thông tin chi tiết",
+  "roulette_prize_win": "thắng lợi",
+  "roulette_prize_lose": "mất",
+  "roulette_is_played_text_1": "Giới hạn 1 lần chơi mỗi ngày",
+  "roulette_is_played_text_2": "Vui lòng quay lại vào ngày mai",
+  "roulette_is_played_text_3": "Nhấp để xem thêm chi tiết khuyến mại"
 }

@@ -1087,5 +1087,10 @@
   "available": "มีใน",
   "amount_limit": "จำกัดจำนวนเงิน",
   "deposit_usdt_point":"จำนวนเงินที่เพิ่มขึ้น",
-  "details": "รายละเอียด"
+  "details": "รายละเอียด",
+  "roulette_prize_win": "ชนะ",
+  "roulette_prize_lose": "แพ้",
+  "roulette_is_played_text_1": "จำกัด 1 การเล่นต่อวัน",
+  "roulette_is_played_text_2": "พรุ่งนี้โปรดกลับมาใหม่",
+  "roulette_is_played_text_3": "คลิกเพื่อดูรายละเอียดโปรโมชั่นเพิ่มเติม"
 }
