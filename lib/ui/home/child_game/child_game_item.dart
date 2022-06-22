@@ -167,13 +167,10 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   }
 
   String returnGameName(gameCode) {
-    String theName = "";
-    for (var data in platformList) {
-      if (data.code == gameCode) {
-        theName = data.name;
-      }
-    }
-    return theName;
+    return platformList
+            ?.singleWhere((element) => element.code == gameCode)
+            .name ??
+        gameCode;
   }
 
   _buildPlatformText() => Positioned(
