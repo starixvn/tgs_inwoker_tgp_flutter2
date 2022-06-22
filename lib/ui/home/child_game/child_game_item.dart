@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:api/entity/game_provider2.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class ChildGameItem extends StatefulWidget {
 
 class _ChildGameItemState extends BaseState<ChildGameItem> {
   var languageCode;
+  var platformList;
 
   @override
   void initState() {
@@ -45,6 +47,8 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   _initData() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
+    platformList = widget.vm?.platformList ?? [];
+
     var code = _prefs.getString("LANGUAGE_CODE");
     setState(() {
       if (code == "zh-TW" || code == "zh-CN")
@@ -56,7 +60,8 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (widget.isDisabled) ? () {} : () => _navigateToGameWeb(widget.game!),
+      onTap:
+          (widget.isDisabled) ? () {} : () => _navigateToGameWeb(widget.game!),
       child: Container(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
@@ -161,14 +166,26 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
     );
   }
 
+  String returnGameName(gameCode) {
+    String theName = "";
+    for (var data in platformList) {
+      if (data.code == gameCode) {
+        theName = data.name;
+      }
+    }
+    return theName;
+  }
+
   _buildPlatformText() => Positioned(
         top: context.screenWidth / 2.45,
         child: Container(
           margin: EdgeInsets.only(left: 10.auto, top: 5.auto),
           padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
-          decoration: BoxDecoration(color: CustomColor.black, borderRadius: BorderRadius.circular(15.0)),
+          decoration: BoxDecoration(
+              color: CustomColor.black,
+              borderRadius: BorderRadius.circular(15.0)),
           child: Text(
-            widget.game!.gamePlatformName(),
+            returnGameName(widget.game!.gamePlatformCode),
             style: TextStyle(color: Colors.white, fontSize: 9.auto),
           ),
         ),
@@ -183,8 +200,12 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
               builder: (context) => GameWeb(
                     gamePlatformCode: game.gamePlatformCode,
                     gameId: game.id,
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null)
+                        ? widget.onPauseBgMusic!()
+                        : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+                        ? widget.onResumeBgMusic!()
+                        : null,
                   )));
     });
   }
