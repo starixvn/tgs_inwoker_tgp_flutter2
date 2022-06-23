@@ -168,6 +168,9 @@ class GameItemT1State extends BaseState<GameItemT1> {
           borderRadius: BorderRadius.circular(5),
           child: Image.asset(
             _getImagePath(gameProvider),
+            errorBuilder: (_, __, ___) => Container(
+              color: CustomColor.very_light_pink_four,
+            ),
           ),
         ),
       );

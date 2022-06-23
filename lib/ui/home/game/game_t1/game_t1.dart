@@ -151,7 +151,7 @@ class _GameT1State extends BaseState<GameT1> {
                 height: 28.auto,
                 color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
                         tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
-                //only PB, selected game tab color is grey, not selected game tab is button color
+                    //only PB, selected game tab color is grey, not selected game tab is button color
                     ? CustomColor.theme_text_grey_color
                     : CustomColor.theme_button_color,
               ) /* ImageIcon(
@@ -286,8 +286,10 @@ class _GameT1State extends BaseState<GameT1> {
 
   _isSGGame() => currentGamePlatformCode == "SG";
 
-  _isChildGame() =>
-      (currentGameType == GameType.Slot || currentGameType == GameType.EGame || currentGameType == GameType.Fishing);
+  _isChildGame() => (currentGameType == GameType.Slot ||
+      currentGameType == GameType.EGame ||
+      currentGameType == GameType.Fishing ||
+      currentGameType == GameType.VirtualSports);
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});

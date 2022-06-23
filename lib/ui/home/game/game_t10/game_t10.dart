@@ -21,11 +21,7 @@ class GameT10 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
 
-  GameT10(
-      {this.vm,
-      this.onRefreshHomePage,
-      this.onPauseBgMusic,
-      this.onResumeBgMusic});
+  GameT10({this.vm, this.onRefreshHomePage, this.onPauseBgMusic, this.onResumeBgMusic});
 
   @override
   _GameT10State createState() => _GameT10State();
@@ -33,9 +29,7 @@ class GameT10 extends StatefulWidget {
 
 class _GameT10State extends BaseState<GameT10> {
   var _controller = ScrollController();
-  var currentTabIndex = 0,
-      currentGameType = GameType.Sportsbook,
-      currentGamePlatformCode;
+  var currentTabIndex = 0, currentGameType = GameType.Sportsbook, currentGamePlatformCode;
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
   late GameViewModel _vm;
@@ -73,16 +67,14 @@ class _GameT10State extends BaseState<GameT10> {
                                   _vm.gameTypeList.length,
                                   (index) => Container(
                                         padding: const EdgeInsets.all(5),
-                                        child: _buildGameTab(
-                                            index, _vm.gameTypeList[index]),
+                                        child: _buildGameTab(index, _vm.gameTypeList[index]),
                                       ))),
                         ),
                         Flexible(
                           flex: 1,
                           child: Container(
                             height: context.screenHeight,
-                            margin:
-                                EdgeInsets.only(left: 10.auto, right: 10.auto),
+                            margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
                             child: GameItemT10(
                               gameViewItem,
                               controller: _controller,
@@ -110,8 +102,7 @@ class _GameT10State extends BaseState<GameT10> {
         _onTabClick(tabIndex, gameType);
       },
       child: Container(
-          padding:
-              const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
           decoration: tabIndex == currentTabIndex
               ? BoxDecoration(
                   image: DecorationImage(
@@ -128,13 +119,9 @@ class _GameT10State extends BaseState<GameT10> {
               Container(
                 padding: EdgeInsets.only(bottom: 5.auto),
                 child: AutoSizeText(
-                  gameType.getName(
-                      context, _vm.config?.menuItemShootFish ?? false),
+                  gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: tabIndex == currentTabIndex
-                          ? Colors.white
-                          : Color(0xffA0A3B2)),
+                  style: TextStyle(color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2)),
                   minFontSize: 2,
                   maxFontSize: 13,
                   stepGranularity: 1,
@@ -158,8 +145,7 @@ class _GameT10State extends BaseState<GameT10> {
     setState(() {
       currentGameType = gameType;
       currentTabIndex = tabIndex;
-      _controller.animateTo(0,
-          duration: Duration(milliseconds: 250), curve: Curves.linear);
+      _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
     });
   }
 
@@ -195,14 +181,11 @@ class _GameT10State extends BaseState<GameT10> {
 
   _navigate() async {
     if (_isSWGame() || _isSGGame())
-      await _vm.getLobbyGameUrl(
-          currentGamePlatformCode!, currentGameType, EnvironmentConfig.url);
+      await _vm.getLobbyGameUrl(currentGamePlatformCode!, currentGameType, EnvironmentConfig.url);
     else if (_isTcgGame()) {
       await _vm.getGameList(currentGamePlatformCode, currentGameType);
       await _vm.getGameUrl(
-          currentGamePlatformCode,
-          _vm.gameListMap[currentGamePlatformCode]!.first.id!,
-          EnvironmentConfig.url);
+          currentGamePlatformCode, _vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
     } else if (_isChildGame()) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -212,15 +195,10 @@ class _GameT10State extends BaseState<GameT10> {
                 builder: (context) => ChildGame(
                     gamePlatformCode: currentGamePlatformCode,
                     gameType: currentGameType,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-                        ? widget.onResumeBgMusic!()
-                        : null,
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null)
-                        ? widget.onPauseBgMusic!()
-                        : null)));
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null)));
       });
-    } else if (currentGameType == GameType.Lottery ||
-        currentGameType == GameType.LotteryLobby) {
+    } else if (currentGameType == GameType.Lottery || currentGameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await _vm.getGameList(currentGamePlatformCode, currentGameType);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -231,14 +209,9 @@ class _GameT10State extends BaseState<GameT10> {
                 builder: (context) => GameWeb(
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
-                      gameId:
-                          _vm.gameListMap[currentGamePlatformCode]!.first.id,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null)
-                          ? widget.onPauseBgMusic!()
-                          : null,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-                          ? widget.onResumeBgMusic!()
-                          : null,
+                      gameId: _vm.gameListMap[currentGamePlatformCode]!.first.id,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                     )));
       });
     } else {
@@ -251,12 +224,8 @@ class _GameT10State extends BaseState<GameT10> {
                 builder: (context) => GameWeb(
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null)
-                          ? widget.onPauseBgMusic!()
-                          : null,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-                          ? widget.onResumeBgMusic!()
-                          : null,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                     )));
       });
     }
@@ -267,18 +236,17 @@ class _GameT10State extends BaseState<GameT10> {
       currentGamePlatformCode == "TCG_LOTTO" ||
       currentGamePlatformCode == "TCG_LOTTO_VN";
 
-  _isSWGame() => (currentGamePlatformCode == "SW" &&
-      currentGameType == GameType.LiveDealerLobby);
+  _isSWGame() => (currentGamePlatformCode == "SW" && currentGameType == GameType.LiveDealerLobby);
 
   _isSGGame() => currentGamePlatformCode == "SG";
 
   _isChildGame() => (currentGameType == GameType.Slot ||
       currentGameType == GameType.EGame ||
-      currentGameType == GameType.Fishing);
+      currentGameType == GameType.Fishing ||
+      currentGameType == GameType.VirtualSports);
 
   _handleApiState() {
-    handleApiState(_vm.getGameProviderListApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getGameApiState, onSuccess: () {});
 
     handleApiState(_vm.getLobbyGameUrlApiState, onSuccess: () {

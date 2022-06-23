@@ -213,7 +213,7 @@ class _GameItemT3State extends BaseState<GameItemT3> {
       /*WidgetsBinding.instance!.addPostFrameCallback((_) {
         launch(_vm.url!);
       });*/
-    } else if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing) {
+    } else if (_isChildGame(gameType!)) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
@@ -273,6 +273,11 @@ class _GameItemT3State extends BaseState<GameItemT3> {
       (gamePlatformCode == "SW" && gameType == GameType.LiveDealerLobby);
 
   _isSGGame(String? gamePlatformCode) => gamePlatformCode == "SG";
+
+  _isChildGame(GameType gameType) => (gameType == GameType.Slot ||
+      gameType == GameType.EGame ||
+      gameType == GameType.Fishing ||
+      gameType == GameType.VirtualSports);
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});

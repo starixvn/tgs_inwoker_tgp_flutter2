@@ -67,7 +67,6 @@ class GameViewModel extends BaseViewModel {
     GameType.Fishing,
     GameType.CardGameLobby,
     GameType.LotteryLobby,
-
   ];
   List<GameType>? gameRowListT3, gameListT3;
 
@@ -94,17 +93,37 @@ class GameViewModel extends BaseViewModel {
     contentRepo.gameProviderList!.forEach((e) {
       if (e.gameTypes != null) {
         e.gameTypes!.forEach((element) {
-          if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
+          if (element != GameType.VirtualSportsLobby) {
             list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
+
+            //sort list with gameType for displaying VirtualSports after Sportsbook
+            list.sort(((a, b) => (a.gameType.toString()).compareTo(b.gameType.toString())));
           }
         });
       }
     });
     gameTypeList = EnvironmentConfig.brandName == "PB" ? _pbGamelist : _gameTypeList;
-    gameProviderList = gameTypeList.map((type) => list.where((element) => element.gameType == type).toList()).toList();
+    //.sorted(((a,b) => a.gameType.compareTo(b.gameType)
+    gameProviderList = gameTypeList
+        .map((type) => list
+            .where((element) => (type == GameType.Sportsbook) //combine VirtualSports to VirtualSports
+                ? (element.gameType == type || element.gameType == GameType.VirtualSports)
+                : element.gameType == type)
+            .toList())
+        .toList();
+    //gameProviderList = gameTypeList.map((type) => list.where((element) => element.gameType == type).toList()).toList();
 
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
 
+    removeNonExistGameType();
+    gameRowListT3 = _gameRowListT3;
+    gameListT3 = _gameListT3;
+
+    setLoading(false);
+    return getGameProviderListApiState;
+  }
+
+  removeNonExistGameType() {
     //check which game type not exist in gameProviderList and remove it
     gameTypeList.forEach((element) {
       if (gameTypeMap?[element]?.isEmpty ?? true) {
@@ -119,11 +138,6 @@ class GameViewModel extends BaseViewModel {
       _gameRowListT3.remove(element);
       _gameListT3.remove(element);
     });
-    gameRowListT3 = _gameRowListT3;
-    gameListT3 = _gameListT3;
-
-    setLoading(false);
-    return getGameProviderListApiState;
   }
 
   getGameList(String? gamePlatformCode, GameType? gameType) async {
@@ -138,7 +152,10 @@ class GameViewModel extends BaseViewModel {
         await filter(gamePlatformCode: mPlatform!);
       } else {
         gameListMap[gamePlatformCode] = apiState.result!;
-        if (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing)
+        if (gameType == GameType.Slot ||
+            gameType == GameType.EGame ||
+            gameType == GameType.Fishing ||
+            gameType == GameType.VirtualSports)
           await _getFavoriteGame(gameType).then((_apiState) {
             if (_apiState.result.isNotEmpty) {
               getGameApiState = _apiState;
@@ -226,7 +243,7 @@ class GameViewModel extends BaseViewModel {
     } else {
       //if (gameListMap[mPlatform] == null) {
       return await getGameList(mPlatform!, mGameType!).then((apiState) {
-        if (apiState.result.isEmpty) {
+        if (apiState.result?.isEmpty ?? true) {
           List<Game> list = [];
           return list;
         } else

@@ -88,11 +88,12 @@ class _HomeState extends BaseState<Home> {
     _vm.getUserDetails();
     getLanguage();
     randomNumber = _randomGenerator();
-    //if (_vm.config?.homePagePromoRoulette ?? false) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _displayRouletteDialog();
+      if (_vm.config?.homePagePromoRoulette ?? false)
+        _displayRouletteDialog();
+      else
+        _displayDialog();
     });
-    //}
   }
 
   getLanguage() async {
@@ -248,11 +249,8 @@ class _HomeState extends BaseState<Home> {
         barrierDismissible: false,
         builder: (BuildContext context) => RouletteDialog(
           onTapCloseIcon: () {
-            print("22");
-            if (onClickFromSmallRoulette) {
-              Navigator.pop(context);
-            } else
-              _displayDialog();
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
           },
           userProfile: _vm.userProfile,
           isPlayed: _vm.isRoulettePlayed,
@@ -265,26 +263,28 @@ class _HomeState extends BaseState<Home> {
     });
   }
 
-  _getSmallRouletteIcon() => Positioned(
-        top: context.screenHeight / 5 - 50.auto,
-        left: 0,
-        child: FloatingActionButton(
-          backgroundColor: Colors.transparent,
-          onPressed: () {
-            //prevent click more than once
-            if (!onClickFromSmallRoulette) {
-              _displayRouletteDialog();
-              setState(() {
-                onClickFromSmallRoulette = true;
-              });
-            }
-          },
-          child: Image.asset("images/roulette/small_roulette.png"),
+  _getSmallRouletteIcon() => Visibility(
+        visible: (_vm.config?.homePagePromoRoulette ?? false),
+        child: Positioned(
+          top: context.screenHeight / 5 - 50.auto,
+          left: 0,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            onPressed: () {
+              //prevent click more than once
+              if (!onClickFromSmallRoulette) {
+                _displayRouletteDialog();
+                setState(() {
+                  onClickFromSmallRoulette = true;
+                });
+              }
+            },
+            child: Image.asset("images/roulette/small_roulette.png"),
+          ),
         ),
       );
 
   _displayDialog() {
-    Navigator.pop(context);
     if (isShowAnnouncement()) {
       _displayMarqueeDialog();
     } else if (isShowPromotion()) _displayPromotionDialog();
