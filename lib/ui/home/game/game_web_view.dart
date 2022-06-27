@@ -47,10 +47,14 @@ class _GameWebState extends BaseState<GameWeb> {
   void initState() {
     lobbyUrl = EnvironmentConfig.url;
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
+      if (widget.gameType == null ||
+          widget.gameId == 1800001 ||
+          widget.gameId == 1800002 ||
+          widget.gameId == 1800003)
         _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
       else
-        _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
+        _vm.getLobbyGameUrl(
+            widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
     });
     /*if (isHabaPPGamePlatform()) {
       webviewPlugin.onUrlChanged.listen((String url) {
@@ -78,7 +82,9 @@ class _GameWebState extends BaseState<GameWeb> {
             _handleApiState();
             return CustomScaffold(
               appBar: _buildAppBar(),
-              body: isLoading || url == null ? buildProgressDialog(_vm.brandLogoUrl) : _buildWebView(),
+              body: isLoading || url == null
+                  ? buildProgressDialog(_vm.brandLogoUrl)
+                  : _buildWebView(),
             );
           }),
     );
@@ -145,11 +151,13 @@ class _GameWebState extends BaseState<GameWeb> {
         : */
         InAppWebView(
       initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
+          crossPlatform: InAppWebViewOptions(
+              javaScriptEnabled: true, useShouldOverrideUrlLoading: true),
           android: AndroidInAppWebViewOptions(
             useWideViewPort: true,
             domStorageEnabled: true,
-            mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+            mixedContentMode:
+                AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
           ),
           ios: IOSInAppWebViewOptions(allowsInlineMediaPlayback: true)),
       onWebViewCreated: (InAppWebViewController controller) {
@@ -158,7 +166,8 @@ class _GameWebState extends BaseState<GameWeb> {
             urlRequest: widget.gamePlatformCode == "BC"
                 ? //bet construct only
                 URLRequest(url: Uri.parse(apiUrl), headers: {
-                    "Authentication": "bearer " + prefs.getString("auth_token")!,
+                    "Authentication":
+                        "bearer " + prefs.getString("auth_token")!,
                     "token": prefs.getString("token")!
                   })
                 : URLRequest(url: Uri.parse(_getValidUrl(_vm.url!))));
@@ -205,10 +214,14 @@ class _GameWebState extends BaseState<GameWeb> {
 
   _loadWebView() {
     isLoading = true;
-    if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
+    if (widget.gameType == null ||
+        widget.gameId == 1800001 ||
+        widget.gameId == 1800002 ||
+        widget.gameId == 1800003)
       _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
     else
-      _vm.getLobbyGameUrl(widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
+      _vm.getLobbyGameUrl(
+          widget.gamePlatformCode!, widget.gameType!, lobbyUrl!);
   }
 
   isHabaPPGamePlatform() {
@@ -216,7 +229,8 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
+    handleApiState(_vm.getGameUrlApiState, isAutoHideLoading: false,
+        onSuccess: () {
       if (isLoading) {
         isLoading = !isLoading;
       }
@@ -225,7 +239,8 @@ class _GameWebState extends BaseState<GameWeb> {
     }, onError: (_) {
       _navigateToMaintenance();
     });
-    handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false, onSuccess: () {
+    handleApiState(_vm.getLobbyGameUrlApiState, isAutoHideLoading: false,
+        onSuccess: () {
       if (isLoading) {
         isLoading = !isLoading;
       }

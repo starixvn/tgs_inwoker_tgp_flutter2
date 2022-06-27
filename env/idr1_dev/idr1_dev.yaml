@@ -1,7 +1,7 @@
 flutter_icons:
   android: true
   ios: true
-  image_path:  "images/pg_logo.png"
+  image_path: "images/pg_logo.png"
 
 environment_config:
   fields:
@@ -21,7 +21,7 @@ environment_config:
       default: "development"
     template_version:
       type: int
-      default: 3
+      default: 4
     dark_mode:
       type: bool
       default: false
@@ -95,7 +95,7 @@ environment_config:
       type: int
       default: 0xffF5F5F5
     default_lang:
-      default:  "en-US"
+      default: "en-US"
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     brandName:
