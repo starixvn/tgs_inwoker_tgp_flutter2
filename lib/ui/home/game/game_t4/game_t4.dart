@@ -58,7 +58,7 @@ class _GameT3State extends BaseState<GameT4> {
     return ScrollConfiguration(
       behavior: MyBehavior(),
       child: ListView(
-        children: [_buildImageRow(), _buildGameImageGridView()],
+        children: [_buildGameImageGridView()],
       ),
     );
   }
@@ -70,76 +70,12 @@ class _GameT3State extends BaseState<GameT4> {
     imageLanguageCode = (languageCode.contains("th")) ? languageCode : "en-US";
   }
 
-  _buildImageRow() {
-    getLanguage();
-    return Container(
-      height: 180.auto,
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(_vm.gameRowListT3!.length, (index) {
-            return InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GameItemT3(
-                              gamePlatformCode: "",
-                              gameType: _vm.gameRowListT3![index],
-                              index: index,
-                              config: _vm.config,
-                              onPauseBgMusic: () =>
-                                  (widget.onPauseBgMusic != null)
-                                      ? widget.onPauseBgMusic!()
-                                      : null,
-                              onResumeBgMusic: () =>
-                                  (widget.onResumeBgMusic != null)
-                                      ? widget.onResumeBgMusic!()
-                                      : null,
-                            ))),
-                child: Container(
-                  width: context.screenWidth / 2 - 15.auto,
-                  child: (_vm.config?.homePageAnimated ?? false)
-                      ? Image.asset(
-                          _getFullGameTabImagePath(
-                              _vm.gameRowListT3![index].getImagePath()),
-                        )
-                      : Stack(
-                          children: [
-                            Image.asset(
-                                "images/home/T4/${_vm.gameRowListT3![index].getImagePath()}.png"),
-                            Positioned(
-                              bottom: 7.auto,
-                              right: 10.auto,
-                              child: Container(
-                                width: 80.auto,
-                                height: 90.auto,
-                                alignment: Alignment.bottomCenter,
-                                child: AutoSizeText(
-                                  // gameType.getName(context, _vm.config?.menuItemShootFish ?? false),
-                                  _vm.gameRowListT3![index].getName(context,
-                                      _vm.config?.menuItemShootFish ?? false),
-                                  maxFontSize: 23,
-                                  minFontSize: 10,
-                                  stepGranularity: 1,
-                                  style: TextStyle(
-                                      color: CustomColor
-                                          .theme_text_black_white_color,
-                                      fontSize: 23),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                ));
-          })),
-    );
-  }
-
   _buildGameImageGridView() {
     return Container(
-      height: 260.auto,
+      height: 400.auto,
       margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
       child: StaggeredGridView.countBuilder(
-        crossAxisCount: 2,
+        crossAxisCount: 3,
         itemCount: _vm.gameListT3!.length,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) => InkWell(
@@ -163,30 +99,28 @@ class _GameT3State extends BaseState<GameT4> {
                   _getFullGameTabImagePath(
                       _vm.gameListT3![index].getImagePath()),
                 )
-              : Stack(
+              : Column(
                   children: [
                     Image.asset(
                       _getFullGameTabImagePath(
                           _vm.gameListT3![index].getImagePath()),
                     ),
-                    Positioned(
-                        bottom: 20.auto,
-                        left: 60.auto,
-                        child: Container(
-                          width: 70.auto,
-                          height: 40.auto,
-                          alignment: Alignment.bottomLeft,
-                          child: AutoSizeText(
-                            _vm.gameListT3![index].getName(context,
-                                _vm.config?.menuItemShootFish ?? false),
-                            maxFontSize: 23,
-                            minFontSize: 10,
-                            stepGranularity: 1,
-                            style: TextStyle(
-                                color: CustomColor.theme_text_black_white_color,
-                                fontSize: 23.auto),
-                          ),
-                        )),
+                    Container(
+                      width: 70.auto,
+                      height: 40.auto,
+                      alignment: Alignment.center,
+                      child: AutoSizeText(
+                        _vm.gameListT3![index].getName(
+                            context, _vm.config?.menuItemShootFish ?? false),
+                        maxFontSize: 23,
+                        minFontSize: 10,
+                        stepGranularity: 1,
+                        style: TextStyle(
+                            color: CustomColor.theme_text_black_white_color,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 23.auto),
+                      ),
+                    )
                   ],
                 ),
         ),

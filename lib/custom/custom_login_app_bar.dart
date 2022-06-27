@@ -59,13 +59,17 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         title: _getAppBarTitle(),
         actions: _getActionButton(),
       );
-    } else if (EnvironmentConfig.template_version == 8 && (EnvironmentConfig.dark_mode)) {
+    } else if (EnvironmentConfig.template_version == 8 &&
+        (EnvironmentConfig.dark_mode)) {
       return AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Colors.transparent.withOpacity(1.0), CustomColor.theme_bar_gradient_2],
+                colors: [
+                  Colors.transparent.withOpacity(1.0),
+                  CustomColor.theme_bar_gradient_2
+                ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 stops: [0, 0.5]),
@@ -75,7 +79,8 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         title: _getAppBarTitle(),
         actions: _getActionButton(),
       );
-    } else if (EnvironmentConfig.template_version == 9 && (EnvironmentConfig.dark_mode)) {
+    } else if (EnvironmentConfig.template_version == 9 &&
+        (EnvironmentConfig.dark_mode)) {
       return AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
@@ -178,8 +183,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode
+              ? Colors.white
+              : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 ||
+                  EnvironmentConfig.template_version == 4 ||
+                  _isDarkMode() ||
+                  EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,
         ),
@@ -197,9 +207,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             fontSize: 14,
             radius: 5,
             padding: 4,
-            textColor:
-                _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
-            color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+            textColor: _isDarkMode() || EnvironmentConfig.light_mode
+                ? Colors.white
+                : CustomColor.theme_text_black_color,
+            color: EnvironmentConfig.template_version == 3 ||
+                    _isDarkMode() ||
+                    EnvironmentConfig.light_mode
                 ? CustomColor.theme_button_color
                 : Colors.white,
             icon: Container(
@@ -224,8 +237,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
-          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode
+              ? Colors.white
+              : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 ||
+                  _isDarkMode() ||
+                  EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,
         ),
@@ -242,7 +259,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               alignment: Alignment.center,
               child: AutoSizeText(
                 widget.userProfile?.username ?? "",
-                style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: CustomColor.theme_app_bar_text_color,
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
                 minFontSize: 10,
                 stepGranularity: 1,
@@ -253,7 +272,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 alignment: Alignment.center,
                 child: AutoSizeText(
                   Format().amountFormat(widget.totalBalance ?? 0),
-                  style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: CustomColor.theme_app_bar_text_color,
+                      fontWeight: FontWeight.bold),
                   textAlign: TextAlign.left,
                   minFontSize: 10,
                   stepGranularity: 1,
@@ -291,7 +312,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             margin: EdgeInsets.only(right: 5.auto),
             child: AutoSizeText(
               widget.phone ?? "",
-              style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: CustomColor.theme_app_bar_text_color,
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
               minFontSize: 10,
               stepGranularity: 1,
@@ -317,7 +340,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             visible: widget.isLogin,
             child: AutoSizeText(
               _getVipPresentText(widget.userProfile?.vipLevel ?? 0),
-              style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: CustomColor.theme_app_bar_text_color,
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
               minFontSize: 10,
               stepGranularity: 1,
@@ -347,8 +372,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
     }
   }
 
-  _isDarkMode() => ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
+  _isDarkMode() => ((EnvironmentConfig.template_version == 8 ||
+          EnvironmentConfig.template_version == 9) &&
       !EnvironmentConfig.dark_mode);
 
-  _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) || (widget.config?.customVIP ?? false));
+  _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) ||
+      (widget.config?.customVIP ?? false));
 }
