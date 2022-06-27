@@ -76,14 +76,10 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
       ..addListener(() {
         var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
         var b = double.parse((currentSelectValue).toStringAsFixed(2));
-        if (a == b) {
+        if (a == b && isClick) {
           _controller.stop();
         }
       });
-    // _controller2 = AnimationController(
-    //   duration: const Duration(seconds: 8),
-    //   vsync: this,
-    // )..animateTo(20);
     _animation = new CurvedAnimation(
       parent: _controller,
       curve: Curves.linear,
@@ -91,7 +87,6 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
         print("whatisstatus now?? : ${status}");
         if (status == AnimationStatus.completed) print('completed');
       });
-    // pieValue = _controller.value * 2.0 * pi;
     super.initState();
   }
 
@@ -322,18 +317,10 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                       // int number = Fortune.randomInt(0, items.length);
                       // double probability = items[number];
                       selectedValue = 2;
-                      var value = _controller.value * 2.0 * pi;
                       currentSelectValue = ((1 / 6) * selectedValue) * 2.0 * pi;
-                      if (value > currentSelectValue) {
-                      } else {}
                       isClick = true;
-                      print("currentpiValue1: ${(_controller.value)}");
-                      print("currentpiValue2: ${(_controller.value * 2.0 * pi)}");
-                      print("currentpiValue3: ${(currentSelectValue)}");
-                      WidgetsBinding.instance?.addPostFrameCallback((_) {
-                        // _controller.animateTo(currentSelectValue, duration: const Duration(seconds: 1));
-                        // _controller.addListener(() {});
-                      });
+                      print("currentpiValue2: ${double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2))}");
+                      print("currentpiValue3: ${(double.parse((currentSelectValue).toStringAsFixed(2)))}");
                       // selected.add(Fortune.randomInt(0, widget.campaign?.length ?? 0));
                     });
                   }
