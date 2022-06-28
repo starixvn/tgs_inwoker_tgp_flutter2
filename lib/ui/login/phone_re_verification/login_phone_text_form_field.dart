@@ -28,7 +28,8 @@ class LoginPhoneTextFormField extends StatefulWidget {
       this.displayedAreaCode});
 
   @override
-  _LoginPhoneTextFormFieldState createState() => _LoginPhoneTextFormFieldState();
+  _LoginPhoneTextFormFieldState createState() =>
+      _LoginPhoneTextFormFieldState();
 }
 
 class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
@@ -41,8 +42,10 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
         child: Container(
           height: 40.auto,
           padding: EdgeInsets.symmetric(horizontal: 10.auto),
-          decoration:
-              BoxDecoration(color: Colors.white, border: Border.all(color: CustomColor.very_light_pink_two, width: 2)),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(2),
+          ),
           child: InkWell(
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -81,8 +84,8 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
           height: 40.auto,
           margin: EdgeInsets.only(left: 5.auto),
           padding: EdgeInsets.symmetric(horizontal: 10.auto),
-          decoration:
-              BoxDecoration(color: Colors.white, border: Border.all(color: CustomColor.very_light_pink_two, width: 2)),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(2)),
           child: TextFormField(
             autofocus: false,
             onChanged: (value) => widget.onChanged(value),
@@ -90,12 +93,13 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
             onFieldSubmitted: (value) => widget.onChanged(value),
             keyboardType: TextInputType.phone,
             textInputAction: widget.textInputAction,
-            style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
+            style: TextStyle(fontSize: 13.auto),
             decoration: InputDecoration(
               isDense: true,
               border: InputBorder.none,
               hintText: getTranslatedText("enter_phone_hint"),
-              hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+              hintStyle: TextStyle(
+                  color: CustomColor.very_light_pink_two, fontSize: 13.auto),
             ),
           ),
         ),
@@ -109,7 +113,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: getTranslatedText("area_code"),
-              list: [widget.displayedAreaCode],//areaCodeList,
+              list: [widget.displayedAreaCode], //areaCodeList,
               onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }

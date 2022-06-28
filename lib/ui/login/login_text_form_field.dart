@@ -30,7 +30,8 @@ class LoginTextFormField extends StatelessWidget {
     return Container(
       height: 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.8)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(2)),
       child: Row(
         children: [
           icon == null
@@ -56,7 +57,8 @@ class LoginTextFormField extends StatelessWidget {
                 isDense: true,
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                hintStyle: TextStyle(
+                    color: CustomColor.very_light_pink_two, fontSize: 13.auto),
               ),
             ),
           ),
