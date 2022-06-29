@@ -18,8 +18,7 @@ class GameItemT10 extends StatefulWidget {
   final Key key;
   final EnvFeaturesConfig? config;
 
-  GameItemT10(this.key,
-      {this.gameProviderList, this.onGameClick, this.controller, this.config});
+  GameItemT10(this.key, {this.gameProviderList, this.onGameClick, this.controller, this.config});
 
   @override
   GameItemT10State createState() => GameItemT10State();
@@ -34,14 +33,9 @@ class GameItemT10State extends BaseState<GameItemT10> {
   double _itemPaddingTop = 0;
   double _itemPaddingBottom = 0;
 
-  double get _itemWidth =>
-      context.size!.width -
-      _listViewPaddingRight -
-      _itemPaddingRight -
-      _itemPaddingLeft;
+  double get _itemWidth => context.size!.width - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
 
-  double get itemHeight =>
-      _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;
+  double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;
 
   //ScrollController? controller;
 
@@ -69,7 +63,7 @@ class GameItemT10State extends BaseState<GameItemT10> {
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
     var fullPath = "${gameType}_${gamePlatformCode}";
-    imagePath = "images/game/T10/${gameType}-$gamePlatformCode.png";
+    imagePath = "images/game/T10/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.png";
     return imagePath;
   }
 
@@ -159,10 +153,7 @@ class GameItemT10State extends BaseState<GameItemT10> {
                   ),
                   child: Center(
                     child: Text(getTranslatedText("maintenance"),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.auto)),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
                   ),
                 ),
               ),
@@ -185,6 +176,5 @@ class GameItemT10State extends BaseState<GameItemT10> {
       );
 
   _isSportsHideLogo(String? gamePlatformCode) =>
-      (widget.config?.sportsHideLogo ?? false) &&
-      (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+      (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 }

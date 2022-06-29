@@ -67,7 +67,6 @@ class GameViewModel extends BaseViewModel {
     GameType.Fishing,
     GameType.CardGameLobby,
     GameType.LotteryLobby,
-
   ];
   List<GameType>? gameRowListT3, gameListT3;
 
@@ -94,14 +93,21 @@ class GameViewModel extends BaseViewModel {
     contentRepo.gameProviderList!.forEach((e) {
       if (e.gameTypes != null) {
         e.gameTypes!.forEach((element) {
-          if (!(element == GameType.VirtualSports || element == GameType.VirtualSportsLobby)) {
+          if ((!(element == GameType.VirtualSportsLobby || element == GameType.VirtualSports) ||
+              (element == GameType.VirtualSports && e.code == "PPTF"))) {
             list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
           }
         });
       }
     });
     gameTypeList = EnvironmentConfig.brandName == "PB" ? _pbGamelist : _gameTypeList;
-    gameProviderList = gameTypeList.map((type) => list.where((element) => element.gameType == type).toList()).toList();
+    var mixedList = list
+        .where((element) => (element.gameType == GameType.Sportsbook || element.gameType == GameType.VirtualSports))
+        .toList();
+    gameProviderList = gameTypeList
+        .map((type) =>
+            (type == GameType.Sportsbook) ? mixedList : list.where((element) => (element.gameType == type)).toList())
+        .toList();
 
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
 

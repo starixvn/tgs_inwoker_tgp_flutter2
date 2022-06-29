@@ -151,7 +151,7 @@ class _GameT1State extends BaseState<GameT1> {
                 height: 28.auto,
                 color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
                         tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
-                //only PB, selected game tab color is grey, not selected game tab is button color
+                    //only PB, selected game tab color is grey, not selected game tab is button color
                     ? CustomColor.theme_text_grey_color
                     : CustomColor.theme_button_color,
               ) /* ImageIcon(
@@ -232,7 +232,7 @@ class _GameT1State extends BaseState<GameT1> {
       await _vm.getGameList(currentGamePlatformCode, currentGameType);
       await _vm.getGameUrl(
           currentGamePlatformCode, _vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
-    } else if (_isChildGame()) {
+    } else if (_isChildGame() || _isPPTF()) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
@@ -285,6 +285,8 @@ class _GameT1State extends BaseState<GameT1> {
   _isSWGame() => (currentGamePlatformCode == "SW" && currentGameType == GameType.LiveDealerLobby);
 
   _isSGGame() => currentGamePlatformCode == "SG";
+
+  _isPPTF() => (currentGamePlatformCode == "PPTF" && currentGameType == GameType.VirtualSports);
 
   _isChildGame() =>
       (currentGameType == GameType.Slot || currentGameType == GameType.EGame || currentGameType == GameType.Fishing);

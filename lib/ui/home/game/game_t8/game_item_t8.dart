@@ -66,7 +66,7 @@ class GameItemT8State extends BaseState<GameItemT8> {
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
     var fullPath = "${gameType}_${gamePlatformCode}";
-    imagePath = "images/game/T8/${gameType}-$gamePlatformCode.jpg";
+    imagePath = "images/game/T8/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
     return imagePath;
   }
 

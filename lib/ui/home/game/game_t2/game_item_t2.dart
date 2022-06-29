@@ -16,7 +16,8 @@ class GameItemT2 extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final Key key;
 
-  GameItemT2(this.key,{
+  GameItemT2(
+    this.key, {
     this.gameProviderList,
     this.onGameClick,
     this.currGameType,
@@ -73,7 +74,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
             child: ListView(
                 padding: EdgeInsets.only(right: _listViewPaddingRight),
                 controller: widget.controller,
-                children: (widget.gameProviderList ??  [])
+                children: (widget.gameProviderList ?? [])
                     .expand((element) => element)
                     .toList()
                     .map((item) => Container(
@@ -95,7 +96,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
     if (_isSportsHideLogo(gamePlatformCode))
       imagePath = "images/game/T2/${gameType}-${gamePlatformCode}-hkjp.jpg";
     else
-      imagePath = "images/game/T2/${gameType}-$gamePlatformCode.jpg";
+      imagePath = "images/game/T2/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
     return imagePath;
   }
 

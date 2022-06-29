@@ -87,7 +87,7 @@ class _GameItemT3State extends BaseState<GameItemT3> {
     if (_isSportsHideLogo(gamePlatformCode))
       imagePath = "images/game/T3/$gameType-$gamePlatformCode-hkjp.jpg";
     else
-      imagePath = "images/game/T3/$gameType-$gamePlatformCode.jpg";
+      imagePath = "images/game/T3/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
     return imagePath;
   }
 
