@@ -248,10 +248,8 @@ class _HomeState extends BaseState<Home> {
         barrierDismissible: false,
         builder: (BuildContext context) => RouletteDialog(
           onTapCloseIcon: () {
-            if (onClickFromSmallRoulette) {
-              Navigator.pop(context);
-            } else
-              _displayDialog();
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
             setState(() {
               onClickFromSmallRoulette = false;
             });
@@ -303,7 +301,7 @@ class _HomeState extends BaseState<Home> {
           if (isShowPromotion()) {
             _displayPromotionDialog();
           } else
-            Navigator.of(context2).pop();
+            Navigator.of(context).pop();
         },
       ),
     );
