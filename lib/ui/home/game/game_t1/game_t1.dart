@@ -232,7 +232,7 @@ class _GameT1State extends BaseState<GameT1> {
       await _vm.getGameList(currentGamePlatformCode, currentGameType);
       await _vm.getGameUrl(
           currentGamePlatformCode, _vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
-    } else if (_isChildGame() || _isPPTF()) {
+    } else if (_isChildGame()) {
       //navigate to child game
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.push(
