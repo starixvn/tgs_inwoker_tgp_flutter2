@@ -286,10 +286,10 @@ class _GameT1State extends BaseState<GameT1> {
 
   _isSGGame() => currentGamePlatformCode == "SG";
 
-  _isPPTF() => (currentGamePlatformCode == "PPTF" && currentGameType == GameType.VirtualSports);
-
-  _isChildGame() =>
-      (currentGameType == GameType.Slot || currentGameType == GameType.EGame || currentGameType == GameType.Fishing);
+  _isChildGame() => (currentGameType == GameType.Slot ||
+      currentGameType == GameType.EGame ||
+      currentGameType == GameType.Fishing ||
+      currentGameType == GameType.VirtualSports);
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});

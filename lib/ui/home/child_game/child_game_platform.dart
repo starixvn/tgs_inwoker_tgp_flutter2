@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:api/entity/game_type.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game.dart';
 import 'package:api/entity/game_provider2.dart';
@@ -63,7 +64,7 @@ class _ChildGamePlatformState extends BaseState<ChildGamePlatform> with SingleTi
 
   Widget build(BuildContext context) {
     return Column(children: [
-      _buildPlatformTabBar(),
+      if (widget.platformList?.first.gameType != GameType.VirtualSports) _buildPlatformTabBar(),
       Expanded(
           child: ChildGamePlatformTabBarView(
         gameList: widget.gameList,

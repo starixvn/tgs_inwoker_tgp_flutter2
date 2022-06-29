@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tgp_flutter2/ui/Wheel/painters/triangle_painter.dart';
 
 class WheelResultIndicator extends StatelessWidget {
   WheelResultIndicator({required this.wheelSize, required this.animationController, required this.childCount});
@@ -32,11 +31,11 @@ class WheelResultIndicator extends StatelessWidget {
           return Transform.rotate(
             origin: Offset(0, indicatorSize / 2),
             angle: (animationController.value * pi * 2) - (pi / (childCount)),
-            child: CustomPaint(
+            child: Container()/*CustomPaint(
                 painter: TrianglePainter(
                   fillColor: indicatorColor,
                 ),
-                size: Size(indicatorSize, indicatorSize)),
+                size: Size(indicatorSize, indicatorSize)),*/
           );
         },
         animation: animationController,

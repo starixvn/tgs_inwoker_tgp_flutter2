@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/ui/Wheel/fortune_wheel_child.dart';
-import 'package:tgp_flutter2/ui/Wheel/painters/wheel_slice_painter.dart';
 
 class WheelSlice extends StatelessWidget {
   WheelSlice({required this.index, required this.size, required this.fortuneWheelChildren});
@@ -19,7 +18,7 @@ class WheelSlice extends StatelessWidget {
     double pieceHeight = size / 2;
 
     return Stack(
-      children: [_getSliceBackground(pieceAngle, childCount), _getSliceForeground(pieceAngle, pieceWidth, pieceHeight)],
+      children: [ _getSliceForeground(pieceAngle, pieceWidth, pieceHeight)],
     );
   }
 
@@ -33,36 +32,26 @@ class WheelSlice extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-              top: size / 2,
-              left: size / 2 - pieceWidth / 2,
-              child: Container(
-                padding: EdgeInsets.all(size / fortuneWheelChildren.length / 4),
-                height: pieceHeight,
-                width: pieceWidth,
-                child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center,
-                    child: Transform.rotate(
-                        angle: -pieceAngle - leftRotationOffset * 2, child: fortuneWheelChildren[index].foreground)),
-              )),
-        ],
-      ),
-    );
-  }
-
-  Transform _getSliceBackground(double pieceAngle, int childCount) {
-    return Transform.rotate(
-      angle: pieceAngle,
-      alignment: Alignment.center,
-      child: Stack(
-        children: [
-          Container(
-            width: size,
-            height: size,
-            child: CustomPaint(
-              painter:
-                  WheelSlicePainter(divider: childCount, number: index, color: fortuneWheelChildren[index].background),
-              size: Size(size, size),
+            top: size / 2,
+            left: size / 2 - pieceWidth / 2,
+            child: Container(
+              padding: EdgeInsets.all(size / fortuneWheelChildren.length / 4),
+              height: pieceHeight,
+              width: pieceWidth,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.center,
+                child: Transform.rotate(
+                    angle: (() {
+                      var angle = -pieceAngle - leftRotationOffset * 2;
+                      //rotating text angle
+                      if (index == 0)
+                        return angle -1.58;
+                      else
+                        return angle + (index - 1.45);
+                    }()), //,
+                    child: fortuneWheelChildren[index].foreground),
+              ),
             ),
           ),
         ],

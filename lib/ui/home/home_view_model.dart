@@ -50,7 +50,8 @@ class HomeViewModel extends BaseViewModel {
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
   List<CampaignDetails>? campaign;
-  Promotion? _roulettePromo;
+  Promotion? roulettePromo;
+  int? rotatedResultId;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -140,6 +141,7 @@ class HomeViewModel extends BaseViewModel {
   logout() async {
     setLoading();
     logoutApiState = await userRepo.logout();
+    isRoulettePlayed = false;
     setLoading(false);
     return logoutApiState;
   }
@@ -170,25 +172,11 @@ class HomeViewModel extends BaseViewModel {
 
   getPromotionList() async {
     setLoading();
-
-    // if (isLoadMore) {
-    //   if (page! * rows < getPromotionListApiState.result.totalCount)
-    //     page = page! + 1;
-    //   else
-    //     return;
-    // } else
-    //   page = 1;
-
     getPromotionListApiState = await contentRepo.getPromotionList();
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
-
-      // if (promotionList == null) promotionList = [];
-      // if (list.isNotEmpty) promotionList!.addAll(list);
-      // endRecord = promotionList!.length >= getPromotionListApiState.result.totalCount ? true : false;
-
-      _roulettePromo = promotionList?.singleWhere((element) => element.promotionType == "Roulette");
-      campaign = _roulettePromo?.campaignDetails?.items ?? [];
+      roulettePromo = promotionList?.singleWhere((element) => element.promotionType == "Roulette");
+      campaign = roulettePromo?.campaignDetails?.items ?? [];
     } else
       promotionList = [];
     setLoading(false);
@@ -197,9 +185,10 @@ class HomeViewModel extends BaseViewModel {
 
   getRouletteTodayResult() async {
     setLoading();
-    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(_roulettePromo?.id ?? "");
+    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
     if (getTodayRouletteResultApiState.isSuccess) {
       isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
+
     }
     setLoading(false);
     return getTodayRouletteResultApiState;
@@ -207,9 +196,10 @@ class HomeViewModel extends BaseViewModel {
 
   getRouletteResult() async {
     setLoading();
-    getRouletteApiState = await contentRepo.getRouletteResult(_roulettePromo?.id ?? "");
+    getRouletteApiState = await contentRepo.getRouletteResult(roulettePromo?.id ?? "");
     if (getRouletteApiState.isSuccess) {
       getRouletteTodayResult();
+      rotatedResultId = getRouletteApiState.result.itemIndex;
     }
     setLoading(false);
     return getRouletteApiState;

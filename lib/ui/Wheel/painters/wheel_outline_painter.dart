@@ -7,7 +7,7 @@ class WheelOutlinePainter extends CustomPainter {
 
     double strokeWidth = size.width / 25;
 
-    strokePaint.color = Colors.white.withOpacity(0.33);
+    strokePaint.color = Colors.transparent;
     strokePaint.strokeWidth = strokeWidth;
     strokePaint.style = PaintingStyle.stroke;
 

@@ -110,15 +110,15 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
   }
 
   Widget _buildPromotionImage(String imageUrl) {
-    return imageUrl.isEmpty
-        ? Container(
-            color: CustomColor.very_light_pink_four,
-          )
-        : Container(
+    return Container(
             margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: CachedNetworkImage(
+              child: imageUrl.isEmpty
+                  ? Container(
+                color: CustomColor.very_light_pink_four,
+              )
+                  :  CachedNetworkImage(
                   height: 150.auto,
                   placeholder: (context, url) => Container(
                         width: 375,

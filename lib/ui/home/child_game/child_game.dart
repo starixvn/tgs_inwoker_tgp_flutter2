@@ -55,8 +55,11 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _initData() async {
     await _vm.getGameProviderList();
-    _vm.getPlatformList(widget.gameType!);
-    _vm.filter(context: context, gamePlatformCode: widget.gamePlatformCode!, gameType: widget.gameType!);
+    _vm.getPlatformList(widget.gameType! == GameType.Sportsbook ? GameType.VirtualSports : widget.gameType!);
+    _vm.filter(
+        context: context,
+        gamePlatformCode: widget.gamePlatformCode!,
+        gameType: widget.gameType! == GameType.Sportsbook ? GameType.VirtualSports : widget.gameType!);
   }
 
   Widget build(BuildContext context) {
@@ -66,9 +69,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
           model: _vm,
           builder: (ctx, vm, _) {
             _handleApiState();
-            return CustomScaffold(
-                appBar: _buildAppBar(),
-                body: _buildWidget());
+            return CustomScaffold(appBar: _buildAppBar(), body: _buildWidget());
           }),
     );
   }
@@ -120,34 +121,35 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   _buildChildGame() => Column(
         children: [
-          Container(
-            constraints: BoxConstraints(maxHeight: 35.auto),
-            width: context.screenWidth,
-            child: TabBar(
-              controller: _groupTabController,
-              isScrollable: true,
-              unselectedLabelColor: CustomColor.theme_text_grey_white_color,
-              labelColor: CustomColor.theme_button_color,
-              indicatorColor: CustomColor.theme_button_color,
-              indicatorWeight: 3,
-              onTap: (index) {
-                setState(() {
-                  _groupTabIndex = index;
-                });
-                _vm.filter(category: index);
-              },
-              unselectedLabelStyle: TextStyle(color: CustomColor.grey),
-              tabs: _groupTabList.map((item) {
-                return Tab(
-                  child: Text(getTranslatedText(item),
-                      style: TextStyle(
-                        fontFamily: 'PingFang',
-                        fontSize: 14.auto,
-                      )),
-                );
-              }).toList(),
+          if (widget.gameType != GameType.VirtualSports)
+            Container(
+              constraints: BoxConstraints(maxHeight: 35.auto),
+              width: context.screenWidth,
+              child: TabBar(
+                controller: _groupTabController,
+                isScrollable: true,
+                unselectedLabelColor: CustomColor.theme_text_grey_white_color,
+                labelColor: CustomColor.theme_button_color,
+                indicatorColor: CustomColor.theme_button_color,
+                indicatorWeight: 3,
+                onTap: (index) {
+                  setState(() {
+                    _groupTabIndex = index;
+                  });
+                  _vm.filter(category: index);
+                },
+                unselectedLabelStyle: TextStyle(color: CustomColor.grey),
+                tabs: _groupTabList.map((item) {
+                  return Tab(
+                    child: Text(getTranslatedText(item),
+                        style: TextStyle(
+                          fontFamily: 'PingFang',
+                          fontSize: 14.auto,
+                        )),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
           Expanded(
             child: ChildGamePlatform(
               platformList: _vm.platformList,

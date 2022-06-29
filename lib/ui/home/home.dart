@@ -67,7 +67,6 @@ class _HomeState extends BaseState<Home> {
   var _gameViewModel = GameViewModel();
   var randomNumber;
   var _assetsAudioPlayer;
-  var isDisplayingRouletteDialog = true;
   var onClickFromSmallRoulette = false;
 
   @override
@@ -83,16 +82,17 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
-    task.add(_vm.getRouletteTodayResult());
+    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
     await Future.wait(task);
     _vm.getUserDetails();
     getLanguage();
     randomNumber = _randomGenerator();
-    //if (_vm.config?.homePagePromoRoulette ?? false) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _displayRouletteDialog();
+      if (_vm.config?.homePagePromoRoulette ?? false)
+        _displayRouletteDialog();
+      else
+        _displayDialog();
     });
-    //}
   }
 
   getLanguage() async {
@@ -241,72 +241,70 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayRouletteDialog() async {
-    await _vm.getRouletteTodayResult();
+    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
     if ((_vm.campaign?.length ?? 0) > 0)
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) => RouletteDialog(
           onTapCloseIcon: () {
-            print("22");
-            if (onClickFromSmallRoulette) {
-              Navigator.pop(context);
-            } else
-              _displayDialog();
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
+            setState(() {
+              onClickFromSmallRoulette = false;
+            });
           },
           userProfile: _vm.userProfile,
           isPlayed: _vm.isRoulettePlayed,
-          getRouletteResult: () => _vm.getRouletteResult(),
+          vm: _vm,
+          // getRouletteResult: () => _vm.getRouletteResult(),
           campaign: _vm.campaign,
         ),
       );
-    setState(() {
-      isDisplayingRouletteDialog = false;
-    });
   }
 
-  _getSmallRouletteIcon() => Positioned(
-        top: context.screenHeight / 5 - 50.auto,
-        left: 0,
-        child: FloatingActionButton(
-          backgroundColor: Colors.transparent,
-          onPressed: () {
-            //prevent click more than once
-            if (!onClickFromSmallRoulette) {
-              _displayRouletteDialog();
-              setState(() {
-                onClickFromSmallRoulette = true;
-              });
-            }
-          },
-          child: Image.asset("images/roulette/small_roulette.png"),
+  _getSmallRouletteIcon() => Visibility(
+        visible: (_vm.config?.homePagePromoRoulette ?? false) || _vm.roulettePromo != null,
+        child: Positioned(
+          top: context.screenHeight / 5 - 50.auto,
+          left: 0,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            onPressed: () {
+              //prevent click more than once
+              if (!onClickFromSmallRoulette) {
+                _displayRouletteDialog();
+                setState(() {
+                  onClickFromSmallRoulette = true;
+                });
+              }
+            },
+            child: Image.asset("images/roulette/small_roulette.png"),
+          ),
         ),
       );
 
   _displayDialog() {
-    Navigator.pop(context);
     if (isShowAnnouncement()) {
       _displayMarqueeDialog();
     } else if (isShowPromotion()) _displayPromotionDialog();
   }
 
   _displayMarqueeDialog() {
-    if (isShowAnnouncement()) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context2) => CustomDialog(
-          title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-          description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-          buttonText1: getTranslatedText("confirm"),
-          onClick: () {
-            if (isShowPromotion()) {
-              _displayPromotionDialog();
-            } else
-              Navigator.of(context2).pop();
-          },
-        ),
-      );
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context2) => CustomDialog(
+        title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+        description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+        buttonText1: getTranslatedText("confirm"),
+        onClick: () {
+          if (isShowPromotion()) {
+            _displayPromotionDialog();
+          } else
+            Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 
   _displayPromotionDialog() {

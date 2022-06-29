@@ -283,8 +283,10 @@ class _GameT8DarkState extends BaseState<GameT8Dark> {
 
   _isSGGame() => currentGamePlatformCode == "SG";
 
-  _isChildGame() =>
-      (currentGameType == GameType.Slot || currentGameType == GameType.EGame || currentGameType == GameType.Fishing);
+  _isChildGame() => (currentGameType == GameType.Slot ||
+      currentGameType == GameType.EGame ||
+      currentGameType == GameType.Fishing ||
+      currentGameType == GameType.VirtualSports);
 
   _handleApiState() {
     handleApiState(_vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
