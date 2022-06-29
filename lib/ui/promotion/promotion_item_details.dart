@@ -8,6 +8,8 @@ import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/promotion/promotion_main_details.dart';
+import 'package:tgp_flutter2/ui/promotion/promotion_terms_content.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
@@ -33,26 +35,16 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       color: Colors.white,
       appBar: _buildAppBar(),
       body: ListView(
+        shrinkWrap: true,
         children: [
           _buildPromotionImage(),
-          Container(
-              margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-              child: Text(
-                "【${getTranslatedText("promotion_condition")}】",
-                style: TextStyle(color: CustomColor.theme_button_color, fontSize: 14.auto),
-              )),
-          _buildPromotionText(
-              "${getTranslatedText("promotion_person")}：\n VIP" + (widget.promotion.vipLevels ?? []).join(", VIP")),
-          _buildPromotionText("${getTranslatedText("promotion_time")}：\n " +
-              Format().dateTimeFormat(widget.promotion.from) +
-              " - " +
-              Format().dateTimeFormat(widget.promotion.to)),
-          _buildPromotionTermsText(
-              /*parseHtmlString(*/
-              (widget.promotion.localization?.content?.isNotEmpty ?? false)
-                  ? widget.promotion.localization?.content
-                  : widget.promotion.content ?? ""),
-          _buildPromotionTermsText(/*parseHtmlString(*/ widget.promotion.terms ?? ""),
+          PromotionMainDetails(promotion: widget.promotion),
+          PromotionTermsContent(
+              termsContent: ((widget.promotion.localization?.content?.isNotEmpty ?? false)
+                      ? widget.promotion.localization?.content
+                      : widget.promotion.content ?? "") ??
+                  ""),
+          PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
           _buildJoinButton()
         ],
       ),
@@ -106,32 +98,4 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       });
     }
   }
-
-  _buildPromotionText(String displayText) => Container(
-        margin: EdgeInsets.only(
-          left: 10.auto,
-          right: 10.auto,
-          top: 15.auto,
-        ),
-        child: Text(displayText),
-      );
-
-  _buildPromotionContentText(String displayText) {
-    return Container(
-      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
-      child: RichText(
-        text: TextSpan(
-          text: displayText,
-          style: TextStyle(color: CustomColor.theme_text_black_color, height: 2),
-        ),
-      ),
-    );
-  }
-
-  _buildPromotionTermsText(String? displayText) => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
-        child: Html(
-          data: """<style>tr{ border: 1px solid; } </style>""" + (displayText ?? ""),
-        ),
-      );
 }

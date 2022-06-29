@@ -31,18 +31,6 @@ class _CustomDialogState extends BaseState<CustomDialog> {
   var isButtonClicked = false, isButton2Clicked = false;
 
   @override
-  void deactivate() {
-    if (!isButton2Clicked && !isButtonClicked) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (widget.popIndex == 1)
-          widget.onClick();
-        else if (widget.popIndex == 2) widget.onClick2!();
-      });
-    }
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
     if (!isButton2Clicked && !isButtonClicked) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {

@@ -67,7 +67,6 @@ class _HomeState extends BaseState<Home> {
   var _gameViewModel = GameViewModel();
   var randomNumber;
   var _assetsAudioPlayer;
-  var isDisplayingRouletteDialog = true;
   var onClickFromSmallRoulette = false;
 
   @override
@@ -83,7 +82,7 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
-    task.add(_vm.getRouletteTodayResult());
+    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
     await Future.wait(task);
     _vm.getUserDetails();
     getLanguage();
@@ -242,29 +241,32 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayRouletteDialog() async {
-    await _vm.getRouletteTodayResult();
+    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
     if ((_vm.campaign?.length ?? 0) > 0)
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) => RouletteDialog(
           onTapCloseIcon: () {
-            Navigator.pop(context);
-            if (!onClickFromSmallRoulette) _displayDialog();
+            if (onClickFromSmallRoulette) {
+              Navigator.pop(context);
+            } else
+              _displayDialog();
+            setState(() {
+              onClickFromSmallRoulette = false;
+            });
           },
           userProfile: _vm.userProfile,
           isPlayed: _vm.isRoulettePlayed,
-          getRouletteResult: () => _vm.getRouletteResult(),
+          vm: _vm,
+          // getRouletteResult: () => _vm.getRouletteResult(),
           campaign: _vm.campaign,
         ),
       );
-    setState(() {
-      isDisplayingRouletteDialog = false;
-    });
   }
 
   _getSmallRouletteIcon() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false),
+        visible: (_vm.config?.homePagePromoRoulette ?? false) || _vm.roulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 50.auto,
           left: 0,
@@ -291,22 +293,20 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayMarqueeDialog() {
-    if (isShowAnnouncement()) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context2) => CustomDialog(
-          title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-          description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-          buttonText1: getTranslatedText("confirm"),
-          onClick: () {
-            if (isShowPromotion()) {
-              _displayPromotionDialog();
-            } else
-              Navigator.of(context2).pop();
-          },
-        ),
-      );
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context2) => CustomDialog(
+        title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+        description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+        buttonText1: getTranslatedText("confirm"),
+        onClick: () {
+          if (isShowPromotion()) {
+            _displayPromotionDialog();
+          } else
+            Navigator.of(context2).pop();
+        },
+      ),
+    );
   }
 
   _displayPromotionDialog() {
