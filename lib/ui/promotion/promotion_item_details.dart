@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
+import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -92,10 +93,15 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         Navigator.of(context).pushNamed("/login");
       });
       return;
-    } else {
+    } else if (widget.promotion.promotionType == "FirstDeposit" ||
+        widget.promotion.promotionType == "DailySecondDeposit" ||
+        widget.promotion.promotionType == "DailyFirstDeposit") {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed(RoutePath.deposit);
       });
+    } else {
+      ProgressDialog.show(context, widget.vm.brandLogoUrl);
+      widget.vm.joinPromotion(widget.promotion.id ?? "");
     }
   }
 }
