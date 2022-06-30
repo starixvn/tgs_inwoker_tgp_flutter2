@@ -339,12 +339,20 @@ class _RegisterContentState extends BaseState<RegisterContent>
   _customFlowForIDR() => _vm.config.idrRegisterCustomFlow ?? false;
 
   _handleApiState() {
+    handleApiState(_vm.loginApiState, onSuccess: () {
+      _navigateToHome();
+    });
+
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       else {
-        _vm.login(username.text, password.text, true);
-        _navigateToHome();
+        if (_registerShowPhone() && _registerShowEmail()) {
+          _vm.loginWithPhoneAndEmail(
+              username.text, password.text, phone.text, display!, email.text);
+        } else {
+          _vm.login(username.text, password.text, true);
+        }
       }
     });
     handleApiState(_vm.checkUsernameApiState, isRequireResult: true,
@@ -354,9 +362,12 @@ class _RegisterContentState extends BaseState<RegisterContent>
       } else {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-          if (_registerShowPhone())
+          if (_registerShowPhone() && _registerShowEmail()) {
+          } else if (_registerShowPhone()) {
             _vm.getReVerifyCode(
                 username.text, password.text, display!, phone.text);
+          }
+
           _vm.register(username.text, password.text, confirmPassword.text,
               invitationCode.text, agentPlayer == "agent");
         });
