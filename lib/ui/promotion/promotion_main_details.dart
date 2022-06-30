@@ -28,6 +28,7 @@ class _PromotionMainDetailsState extends BaseState<PromotionMainDetails> {
     return widget.promotion != null
         ? ListView(
             shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Container(
                   margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),

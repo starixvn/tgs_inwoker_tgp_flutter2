@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:api/entity/user_profile.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -92,7 +93,6 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
       list = [FortuneWheelChild(foreground: Text(""), value: 1), FortuneWheelChild(foreground: Text(""), value: 1)];
     } else {
       for (var i = 0; i < widget.campaign!.length; i++) {
-
         list.add(FortuneWheelChild(
           foreground: Text(
             widget.campaign?[i].title ?? "",
@@ -107,130 +107,131 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
     return list;
   }
 
-  _buildRoulette() => Container(
-
-      width: context.screenWidth,
-      height: isExpandedColumn ? context.screenWidth / 1.2 + 200.auto : context.screenWidth / 1.2,
-      decoration: BoxDecoration(
-        // color: Colors.white,
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(15),
-
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            offset: const Offset(0.0, 10.0),
+  _buildRoulette() {
+    var height = context.screenHeight / 3;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+          width: context.screenWidth,
+          height: isExpandedColumn ? height + 200.auto : height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+              bottomLeft: isExpandedColumn ? Radius.zero : Radius.circular(15),
+              bottomRight: isExpandedColumn ? Radius.zero : Radius.circular(15),
+            ),
+            color: Colors.white,
           ),
-        ],
-      ),
-      child: Stack(
-        children: [
-
-          ListView(
-            // mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              Container(
-                width: context.screenWidth,
-                height: context.screenWidth / 1.2,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/roulette/roulette_bg.png"),
-                    fit: BoxFit.cover,
-                  ),
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                    bottomLeft: isExpandedColumn ? Radius.zero : Radius.circular(15),
-                    bottomRight: isExpandedColumn ? Radius.zero : Radius.circular(15),
-                  ),
-                ),
-                padding: EdgeInsets.only(
-                  top: context.screenWidth / 30,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 300,
-                      height: 300,
-                      child: Stack(
-                        children: [
-                          AnimatedBuilder(
-                            animation: _animation,
-                            builder: (BuildContext _, child) {
-                              return Transform.rotate(
-                                angle: _controller.value * 2.0 * pi,
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Image.asset(
-                                        'images/roulette/roulette.png',
+              ListView(
+                shrinkWrap: true,
+                primary: false,
+                physics: AlwaysScrollableScrollPhysics(),
+                children: [
+                  Container(
+                    width: context.screenWidth,
+                    height: height,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/roulette/roulette_bg.png"),
+                        fit: BoxFit.cover,
+                      ),
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.only(
+                      top: height / 30,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 9,
+                          child: Container(
+                            child: Stack(
+                              children: [
+                                AnimatedBuilder(
+                                  animation: _animation,
+                                  builder: (BuildContext _, child) {
+                                    return Transform.rotate(
+                                      angle: _controller.value * 2.0 * pi,
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: Image.asset(
+                                              'images/roulette/roulette.png',
+                                            ),
+                                          ),
+                                          Center(
+                                            child: FortuneWheel<int>(
+                                              children: totalList(),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Center(
-                                      child: FortuneWheel<int>(
-                                        children: totalList(),
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
-                          Center(
-                            child: InkWell(
-                              onTap: () async {
-                                if (widget.userProfile == null) {
-                                  navigateToLogin();
-                                } else if (widget.userProfile?.phone?.isEmpty ?? false) {
-                                  navigateToPhoneVerification();
-                                } else {
-                                  animate();
-                                  await widget.vm.getRouletteResult().then((_apiState) {
-                                    if (_apiState.isSuccess) {
-                                      setState(() {
-                                        selectedValue = widget.vm.rotatedResultId ?? 0;
-                                        currentSelectValue = ((1 / 6) * selectedValue) * 2.0 * pi;
-                                        isClick = true;
-                                      });
-                                    } else {
-                                      // for handling api return error
-                                      _controller.reset();
-                                    }
-                                  });
-                                }
-                              },
-                              child: Image.asset(
-                                'images/roulette/roulette_start.png',
-                                width: 80,
-                                height: 80,
-                              ),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (widget.userProfile == null) {
+                                        navigateToLogin();
+                                      } else if (widget.userProfile?.phone?.isEmpty ?? false) {
+                                        navigateToPhoneVerification();
+                                      } else {
+                                        animate();
+                                        await widget.vm.getRouletteResult().then((_apiState) {
+                                          if (_apiState.isSuccess) {
+                                            setState(() {
+                                              selectedValue = widget.vm.rotatedResultId ?? 0;
+                                              currentSelectValue = ((1 / 6) * selectedValue) * 2.0 * pi;
+                                              isClick = true;
+                                            });
+                                          } else {
+                                            // for handling api return error
+                                            _controller.reset();
+                                          }
+                                        });
+                                      }
+                                    },
+                                    child: Image.asset(
+                                      'images/roulette/roulette_start.png',
+                                      width: height / 3.5,
+                                      height: height / 3.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildRoulettePromoButton(0, "roulette_promo_home"),
-                        _buildRoulettePromoButton(1, "roulette_promo_content"),
-                        _buildRoulettePromoButton(2, "roulette_promo_terms"),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildRoulettePromoButton(0, "roulette_promo_home"),
+                              _buildRoulettePromoButton(1, "roulette_promo_content"),
+                              _buildRoulettePromoButton(2, "roulette_promo_terms"),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  ],
-                ),
-
+                  ),
+                  isExpandedColumn ? _buildExpandedPromoContent() : Container(),
+                ],
               ),
-              _buildExpandedPromoContent(),
+              _buildCloseDialogButton(10.auto),
             ],
-          ),
-          _buildCloseDialogButton(10.auto),
-        ],
-      ));
+          )),
+    );
+  }
 
   _buildRoulettePromoButton(int index, String title) => InkWell(
         onTap: () {
@@ -241,8 +242,9 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
         },
         child: Container(
           width: 70.auto,
-          height: 30.auto,
+          height: context.screenHeight / 10,
           alignment: Alignment.center,
+          padding: EdgeInsets.all(3.auto),
           decoration: BoxDecoration(
             color: buttonIndex == index ? Color(0xffc79f58) : Color(0xffece6d1).withOpacity(0.4),
             borderRadius: BorderRadius.only(
@@ -250,9 +252,13 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
               topRight: Radius.circular(10),
             ),
           ),
-          child: Text(
+          child: AutoSizeText(
             getTranslatedText(title),
             textAlign: TextAlign.center,
+            minFontSize: 5,
+            maxFontSize: 14,
+            stepGranularity: 1,
+            maxLines: 1,
           ),
         ),
       );
@@ -408,27 +414,5 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.phoneVerification);
     });
-  }
-}
-
-class RouletteScore extends StatelessWidget {
-  final int selected;
-
-  final Map<int, String> labels = {
-    1: '1000\$',
-    2: '400\$',
-    3: '800\$',
-    4: '7000\$',
-    5: '5000\$',
-    6: '300\$',
-    // 7: '2000\$',
-    // 8: '100\$',
-  };
-
-  RouletteScore(this.selected);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('${labels[selected]}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 24.0));
   }
 }

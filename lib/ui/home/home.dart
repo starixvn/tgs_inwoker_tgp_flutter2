@@ -264,7 +264,7 @@ class _HomeState extends BaseState<Home> {
   }
 
   _getSmallRouletteIcon() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false) || _vm.roulettePromo != null,
+        visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 50.auto,
           left: 0,
