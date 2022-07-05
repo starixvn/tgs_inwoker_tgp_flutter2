@@ -70,6 +70,9 @@ class LoginViewModel extends BaseViewModel {
     setLoading();
     loginApiState = await userRepo.login(username, password);
     if (loginApiState.isSuccess) {
+      token = loginApiState.result.token;
+      print(token);
+      savePreferences(username, password, true);
       verifyPhoneState =
           await authRepo.getReVerifyCode(username, password, areacode, phone);
       if (verifyPhoneState.isSuccess) {
@@ -80,10 +83,6 @@ class LoginViewModel extends BaseViewModel {
       if (verifyEmailState.isSuccess) {
         authRepo.emailVerification(verifyEmailState.result, "123456");
       }
-
-      token = loginApiState.result.token;
-      print(token);
-      savePreferences(username, password, true);
       await getUserInfo();
       await getWalletBalance();
       await getBankCardList();
