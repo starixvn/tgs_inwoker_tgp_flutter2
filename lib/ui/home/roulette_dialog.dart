@@ -39,7 +39,7 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
   @override
   void initState() {
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
     _animation = new CurvedAnimation(
