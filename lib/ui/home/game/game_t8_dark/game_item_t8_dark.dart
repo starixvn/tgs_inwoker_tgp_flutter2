@@ -62,18 +62,26 @@ class GameItemT8DarkState extends BaseState<GameItemT8Dark> {
   }
 
   _getImagePath(GameProvider2 gameProvider) {
+    var frontImagePath = "images/game/T3/";
     var imagePath;
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var fullPath = "${gameType}_${gamePlatformCode}";
-    imagePath = "images/game/T3/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
+    var fullPath = "${gameType}_$gamePlatformCode";
+    if (_isSportsHideLogo(gamePlatformCode))
+      imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.jpg";
+    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
+      imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.jpg";
+    } else if (gamePlatformCode == "wmtf") {
+      imagePath = "$frontImagePath${gameType}-wm.jpg";
+    } else
+      imagePath = "$frontImagePath${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
     return imagePath;
   }
 
   _isNeedHandleLanguage(String path) {
     switch (path) {
       case "sports-saba":
-      case "sports-imes":
+      case "esports-imes":
       case "fish-jdb":
       case "slot-jdb":
         return true;

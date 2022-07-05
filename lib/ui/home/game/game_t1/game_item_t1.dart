@@ -67,6 +67,8 @@ class GameItemT1State extends BaseState<GameItemT1> {
       imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.jpg";
     else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
       imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.jpg";
+    } else if (gamePlatformCode == "wmtf") {
+      imagePath = "$frontImagePath${gameType}-wm.jpg";
     } else
       imagePath = "$frontImagePath${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
     return imagePath;

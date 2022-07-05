@@ -59,18 +59,26 @@ class GameItemT10State extends BaseState<GameItemT10> {
   }
 
   _getImagePath(GameProvider2 gameProvider) {
+    var frontImagePath = "images/game/T10/";
     var imagePath;
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var fullPath = "${gameType}_${gamePlatformCode}";
-    imagePath = "images/game/T10/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.png";
+    var fullPath = "${gameType}_$gamePlatformCode";
+    if (_isSportsHideLogo(gamePlatformCode))
+      imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.png";
+    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
+      imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.png";
+    } else if (gamePlatformCode == "wmtf") {
+      imagePath = "$frontImagePath${gameType}-wm.png";
+    } else
+      imagePath = "$frontImagePath${gameType == "" ? "sports" : gameType}-$gamePlatformCode.png";
     return imagePath;
   }
 
   _isNeedHandleLanguage(String path) {
     switch (path) {
       case "sports-saba":
-      case "sports-imes":
+      case "esports-imes":
       case "fish-jdb":
       case "slot-jdb":
         return true;

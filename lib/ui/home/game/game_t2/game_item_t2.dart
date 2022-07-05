@@ -1,4 +1,5 @@
 import 'package:api/entity/env_features_config.dart';
+import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
@@ -89,15 +90,34 @@ class GameItemT2State extends BaseState<GameItemT2> {
     );
   }
 
+
   _getImagePath(GameProvider2 gameProvider) {
+    var frontImagePath ="images/game/T2/";
+    var imagePath;
     var gameType = gameProvider.gameType?.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var imagePath;
+    var fullPath = "${gameType}_$gamePlatformCode";
     if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "images/game/T2/${gameType}-${gamePlatformCode}-hkjp.jpg";
-    else
-      imagePath = "images/game/T2/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
+      imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.jpg";
+    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
+      imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.jpg";
+    } else if (gamePlatformCode == "wmtf") {
+      imagePath = "$frontImagePath${gameType}-wm.jpg";
+    } else
+      imagePath = "$frontImagePath${gameType == "" ? "sports" : gameType}-$gamePlatformCode.jpg";
     return imagePath;
+  }
+
+  _isNeedHandleLanguage(String path) {
+    switch (path) {
+      case "sports-saba":
+      case "esports-imes":
+      case "fish-jdb":
+      case "slot-jdb":
+        return true;
+      default:
+        return false;
+    }
   }
 
   _buildImageLayout(GameProvider2 gameProvider) {
