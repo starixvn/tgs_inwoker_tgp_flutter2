@@ -67,25 +67,29 @@ class LoginViewModel extends BaseViewModel {
 
   loginWithPhoneAndEmail(String username, String password, String phone,
       String areacode, String email) async {
+    setLoading();
     loginApiState = await userRepo.login(username, password);
-    login(username, password, true);
+    if (loginApiState.isSuccess) {
+      verifyPhoneState =
+          await authRepo.getReVerifyCode(username, password, areacode, phone);
+      if (verifyPhoneState.isSuccess) {
+        authRepo.phoneReVerify(verifyPhoneState.result, "123456");
+      }
 
-    verifyPhoneState =
-        await authRepo.getReVerifyCode(username, password, areacode, phone);
-    if (verifyPhoneState.isSuccess) {
-      authRepo.phoneReVerify(verifyPhoneState.result.data, "123456");
+      verifyEmailState = await authRepo.getEmailVerifyCode(email);
+      if (verifyEmailState.isSuccess) {
+        authRepo.emailVerification(verifyEmailState.result, "123456");
+      }
+
+      token = loginApiState.result.token;
+      print(token);
+      savePreferences(username, password, true);
+      await getUserInfo();
+      await getWalletBalance();
+      await getBankCardList();
     }
-
-    verifyEmailState = await authRepo.getEmailVerifyCode(email);
-
-    if (verifyPhoneState.isSuccess) {
-      authRepo.emailVerification(verifyPhoneState.result.data, "123456");
-    }
-
-    if (verifyEmailState.isSuccess && verifyPhoneState.isSuccess) {
-      setLoading(false);
-      return loginApiState;
-    }
+    setLoading(false);
+    return loginApiState;
   }
 
   getUserInfo() async {
