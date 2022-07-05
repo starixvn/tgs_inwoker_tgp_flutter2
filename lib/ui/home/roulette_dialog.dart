@@ -53,8 +53,8 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
     _controller
       ..repeat()
       ..addListener(() async {
-        var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
-        var b = double.parse((currentSelectValue).toStringAsFixed(2));
+        var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(1));
+        var b = double.parse((currentSelectValue).toStringAsFixed(1));
         if (a == b && isClick) {
           _controller.stop();
           setState(() {
