@@ -67,7 +67,7 @@ class _HomeState extends BaseState<Home> {
   var _gameViewModel = GameViewModel();
   var randomNumber;
   var _assetsAudioPlayer;
-  var onClickFromSmallRoulette = false;
+  var onClickFromSmallRoulette = false, isShowTransferUI = false;
 
   @override
   void initState() {
@@ -105,38 +105,96 @@ class _HomeState extends BaseState<Home> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            appBar: EnvironmentConfig.template_version == 2
-                ? PreferredSize(
-                    child: Container(),
-                    preferredSize: Size.fromHeight(0),
-                  )
-                : CustomLoginAppBar(
-                    onClickLoginButton: () {
-                      Navigator.of(context).pushNamed(RoutePath.login);
-                    },
-                    onClickRegisterButton: () {
-                      Navigator.of(context).pushNamed(RoutePath.register);
-                    },
-                    onClickLogoutButton: () {
-                      _logout();
-                    },
-                    isLogin: _vm.userProfile != null,
-                    brandLogoUrl: _vm.brandLogoUrl,
-                    userProfile: _vm.userProfile,
-                    phone: _vm.phone,
-                    config: _vm.config,
-                    totalBalance: _vm.totalBalance,
-                    brandName: EnvironmentConfig.brandName,
+          return Stack(
+            children: [
+              CustomScaffold(
+                appBar: EnvironmentConfig.template_version == 2
+                    ? PreferredSize(
+                        child: Container(),
+                        preferredSize: Size.fromHeight(0),
+                      )
+                    : CustomLoginAppBar(
+                        onClickLoginButton: () {
+                          Navigator.of(context).pushNamed(RoutePath.login);
+                        },
+                        onClickRegisterButton: () {
+                          Navigator.of(context).pushNamed(RoutePath.register);
+                        },
+                        onClickLogoutButton: () {
+                          _logout();
+                        },
+                        isLogin: _vm.userProfile != null,
+                        brandLogoUrl: _vm.brandLogoUrl,
+                        userProfile: _vm.userProfile,
+                        phone: _vm.phone,
+                        config: _vm.config,
+                        totalBalance: _vm.totalBalance,
+                        brandName: EnvironmentConfig.brandName,
+                        onClickBalance: () {
+                          setState(() {
+                            isShowTransferUI = true;
+                          });
+                        },
+                      ),
+                body: Container(
+                  child: Stack(
+                    children: [
+                      _getHomeTemplateView(),
+                      _getSmallRouletteIcon(),
+                    ],
                   ),
-            body: Container(
-              child: Stack(
-                children: [
-                  _getHomeTemplateView(),
-                  _getSmallRouletteIcon(),
-                ],
+                ),
               ),
-            ),
+
+              Visibility(
+                visible: isShowTransferUI,
+                child: Positioned(
+                  top: 100.auto,
+                  right: 20.auto,
+                  child: Column(
+                    children: [
+                      CustomPaint(painter: CustomShape(Colors.blue.withOpacity(0.9))),
+                      Container(
+                        height: context.screenHeight - 200.auto,
+                        width: context.screenWidth - 100.auto,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: CustomColor.grey_five.withOpacity(0.9),
+                        ),
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                            Text("bla bla bla"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           );
         });
   }
@@ -356,5 +414,27 @@ class _HomeState extends BaseState<Home> {
     handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getTodayRouletteResultApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getRouletteApiState, isAutoHideLoading: false, onSuccess: () {});
+  }
+}
+
+class CustomShape extends CustomPainter {
+  final Color bgColor;
+
+  CustomShape(this.bgColor);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()..color = bgColor;
+
+    var path = Path();
+    path.lineTo(-5, 0);
+    path.lineTo(0, 10);
+    path.lineTo(5, 0);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
