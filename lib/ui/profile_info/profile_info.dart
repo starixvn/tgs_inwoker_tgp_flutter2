@@ -44,15 +44,13 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                       "basic_info",
                       [
                         if (_vm.config?.icVerification ?? true) ProfileInfoItem.REALNAME,
-                        if ((_vm.config?.smsVerification ?? false) || (_vm.config?.registerShowPhone ?? false))
-                          ProfileInfoItem.PHONE_NUMBER,
+                        if (_isShowPhone()) ProfileInfoItem.PHONE_NUMBER,
                         if (_vm.config?.emailVerification ?? true) ProfileInfoItem.EMAIL,
                         ProfileInfoItem.BIRTHDATE,
                       ],
                       itemDescriptionList: [
                         if (_vm.config?.icVerification ?? true) _getRealName(),
-                        if ((_vm.config?.smsVerification ?? false) || (_vm.config?.registerShowPhone ?? false))
-                          _getItemText(_vm.userProfile.phone),
+                        if (_isShowPhone()) _getItemText(_vm.userProfile.phone),
                         if (_vm.config?.emailVerification ?? true)
                           _getItemText(_vm.userProfile.email, isShowFirstText: false),
                         _getItemText(_vm.userProfile.birthdate, isShowFirstText: false)
@@ -159,8 +157,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
 
   _buildInfoItem(String imagePath, String itemTitle, String routePath,
       {String? itemDescription, bool isMessaging = false}) {
-    if ((routePath == "phone_verification" &&
-            !((_vm.config?.smsVerification ?? false) || (_vm.config?.registerShowPhone ?? false))) ||
+    if ((routePath == "phone_verification" && !_isShowPhone()) ||
         (routePath == "real_name_verification" && !(_vm.config?.icVerification ?? true)) ||
         (routePath == "email_verification" && !(_vm.config?.emailVerification ?? true)))
       return Container();
@@ -294,4 +291,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       routePath == "phone_verification" &&
       (_vm.userProfile.phone != null) &&
       ((_vm.config?.profileNotAllowChangePhone ?? false));
+
+  _isShowPhone() =>
+      (_vm.config?.smsVerification ?? false) ||
+      (_vm.config?.registerShowPhone ?? false) ||
+      (_vm.config?.promoRouletteSMSVerification ?? false);
 }

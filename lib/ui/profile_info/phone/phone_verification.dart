@@ -17,6 +17,12 @@ import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification_view_model
 import 'package:api/extension/screen_apis.dart';
 
 class PhoneVerification extends StatefulWidget {
+  final bool isFromRouletteRoute;
+
+  PhoneVerification({
+    this.isFromRouletteRoute = false,
+  });
+
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
 }
@@ -64,9 +70,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   }
 
   _buildAppBar() => CustomAppBar(
-        title: getTranslatedText("phone_number"),
-        onPop: () => Navigator.popUntil(context, ModalRoute.withName('/profile_info')),
-      );
+      title: getTranslatedText("phone_number"),
+      onPop: () {
+        if (widget.isFromRouletteRoute)
+          Navigator.pop(context);
+        else
+          Navigator.popUntil(context, ModalRoute.withName('/profile_info'));
+      });
 
   _buildTextFormField() => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -102,7 +112,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         isVisible: true,
       ));
 
-  _buildButton() =>  Container(
+  _buildButton() => Container(
       width: context.screenWidth,
       margin: EdgeInsets.only(top: 30.auto),
       child: ColorButton(
@@ -114,33 +124,36 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         radius: 9.6,
       ));
 
-  _buildEditPhoneText() => InkWell(
-        onTap: () {
-          _isNotAllowedEditPhone()
-              ? Navigator.of(context).pushNamed("/customer_service")
-              : Navigator.of(context)
-                  .pushNamed(RoutePath.editPhone)
-                  .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
-                        _getUserProfile();
-                      }));
-        },
-        child: Container(
-          margin: EdgeInsets.only(top: 20.auto),
-          child: RichText(
-            text: TextSpan(
-              text: getTranslatedText("edit_phone_cs"),
-              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
-              children: [
-                TextSpan(
-                  text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
-                  style: TextStyle(
-                      decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
-                ),
-              ],
+  _buildEditPhoneText() => Visibility(
+    visible: _vm.userProfile.phone != null,
+    child: InkWell(
+          onTap: () {
+            _isNotAllowedEditPhone()
+                ? Navigator.of(context).pushNamed("/customer_service")
+                : Navigator.of(context)
+                    .pushNamed(RoutePath.editPhone)
+                    .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          _getUserProfile();
+                        }));
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 20.auto),
+            child: RichText(
+              text: TextSpan(
+                text: getTranslatedText("edit_phone_cs"),
+                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+                children: [
+                  TextSpan(
+                    text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
+                    style: TextStyle(
+                        decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      );
+  );
 
   _onTextChange() {
     setState(() {

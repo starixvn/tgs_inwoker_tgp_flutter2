@@ -9,6 +9,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:api/entity/campaign_details.dart';
 import 'package:tgp_flutter2/ui/Wheel/fortune_wheel.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_main_details.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_terms_content.dart';
 
@@ -180,7 +181,8 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                                     onTap: () async {
                                       if (widget.userProfile == null) {
                                         navigateToLogin();
-                                      } else if (widget.userProfile?.phone?.isEmpty ?? false) {
+                                      } else if ((widget.vm.config?.promoRouletteSMSVerification ?? false) &&
+                                          (widget.userProfile?.phone?.isEmpty ?? true)) {
                                         navigateToPhoneVerification();
                                       } else {
                                         animate();
@@ -236,7 +238,10 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
   _buildRoulettePromoButton(int index, String title) => InkWell(
         onTap: () {
           setState(() {
-            isExpandedColumn = true;
+            if (index == buttonIndex)
+              isExpandedColumn = !isExpandedColumn;
+            else
+              isExpandedColumn = true;
             buttonIndex = index;
           });
         },
@@ -313,6 +318,7 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
   _buildIsPlayedRouletteText() => Container(
         height: context.screenWidth / 2,
         width: context.screenWidth,
+        padding: EdgeInsets.symmetric(horizontal: 10.auto),
         decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.rectangle,
@@ -336,16 +342,30 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                 children: [
                   Text(
                     getTranslatedText("roulette_is_played_text_1"),
-                    style: TextStyle(color: Colors.black, fontSize: 25.auto),
+                    style: TextStyle(color: Colors.black, fontSize: 23.auto),
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     getTranslatedText("roulette_is_played_text_2"),
                     style: TextStyle(color: Colors.black, fontSize: 20.auto),
+                    textAlign: TextAlign.center,
+                  ),
+                  InkWell(
+                    onTap: () => navigateToPromo(),
+                    child: Container(
+                      height: 25.auto,
+                      padding: EdgeInsets.only(top: 5.auto),
+                      child: Text(
+                        getTranslatedText("roulette_is_played_text_3"),
+                        style: TextStyle(color: Colors.red, fontSize: 13.auto),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            _buildCloseDialogButton(13.auto),
+            _buildCloseDialogButton(0),
           ],
         ),
       );
@@ -412,7 +432,14 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
 
   navigateToPhoneVerification() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.phoneVerification);
+      // Navigator.of(context).pushNamed(RoutePath.phoneVerification);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PhoneVerification(
+                  isFromRouletteRoute: true,
+                )),
+      );
     });
   }
 }
