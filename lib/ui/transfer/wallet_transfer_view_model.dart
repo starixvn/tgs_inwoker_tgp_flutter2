@@ -10,11 +10,11 @@ class WalletTransferViewModel extends BaseViewModel {
   List<Wallet> walletList = List.empty();
 
   WalletTransferViewModel() {
-    walletList = contentRepo.gameProviderList!
+    walletList = contentRepo.gameProvider2List!
         .where((element) => element.transferWallet == true)
-        .map((e) => Wallet(e.code, e.name))
+        .map((e) => Wallet(e.code, e.name, e.gameType))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", isMainWallet: true));
+      ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
   }
 
   get userMainWalletBalance =>

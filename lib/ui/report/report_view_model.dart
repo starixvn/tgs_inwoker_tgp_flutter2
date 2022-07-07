@@ -34,8 +34,6 @@ class ReportViewModel extends BaseViewModel {
   var paymentId;
   var accountReportTotal;
 
-  get gameProviderList => contentRepo.gameProviderList;
-
   get wallet => userRepo.wallet;
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;

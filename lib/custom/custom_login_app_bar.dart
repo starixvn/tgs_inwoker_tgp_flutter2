@@ -27,6 +27,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.config,
     this.totalBalance,
     this.brandName,
+    this.onClickBalance,
   });
 
   final Function onClickLoginButton;
@@ -39,12 +40,13 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final EnvFeaturesConfig? config;
   final double? totalBalance;
   final String? brandName;
+  final Function? onClickBalance;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => const Size.fromHeight(90);
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
@@ -54,10 +56,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
+          child: _getAppBarWidget(),
         ),
         centerTitle: false,
-        title: _getAppBarTitle(),
-        actions: _getActionButton(),
       );
     } else if (EnvironmentConfig.template_version == 8 && (EnvironmentConfig.dark_mode)) {
       return AppBar(
@@ -70,10 +71,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 end: Alignment.topCenter,
                 stops: [0, 0.5]),
           ),
+          child: _getAppBarWidget(),
         ),
         centerTitle: false,
-        title: _getAppBarTitle(),
-        actions: _getActionButton(),
       );
     } else if (EnvironmentConfig.template_version == 9 && (EnvironmentConfig.dark_mode)) {
       return AppBar(
@@ -90,29 +90,42 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               end: Alignment.topCenter,
             ),
           ),
+          child: _getAppBarWidget(),
         ),
         centerTitle: false,
-        title: _getAppBarTitle(),
-        actions: _getActionButton(),
       );
     } else {
       return AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: false,
-        title: _getAppBarTitle(),
-        actions: _getActionButton(),
+        flexibleSpace: Container(
+          child: _getAppBarWidget(),
+        ),
       );
     }
   }
 
+  _getAppBarWidget() => SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _getAppBarTitle(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _getActionButton(),
+            ),
+          ],
+        ),
+      );
+
   _getAppBarTitle() => (widget.brandLogoUrl?.isEmpty ?? true)
       ? Container()
       : Container(
-          height: 60,
           alignment: Alignment.center,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -147,6 +160,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _getLoginButton() => Container(
         padding: EdgeInsets.all(10.auto),
+        height: 50.auto,
         child: OutlineBorderButton(
           title: getTranslatedText("login"),
           onClick: () => widget.onClickLoginButton(),
@@ -169,6 +183,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _getRegisterButton() => Container(
         padding: EdgeInsets.all(10.auto),
+        height: 50.auto,
         child: ColorButton(
           title: getTranslatedText("register"),
           onClick: () => widget.onClickRegisterButton(),
@@ -187,6 +202,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _getVipButton() => (widget.config?.homePageDisplayVIP ?? false)
       ? Container(
+          height: 50.auto,
           padding: EdgeInsets.all(10.auto),
           child: ColorButton(
             title: "VIP",
@@ -215,6 +231,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       : Container();
 
   _getLogoutButton() => Container(
+        height: 50.auto,
         padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 10.auto),
         child: ColorButton(
           title: getTranslatedText("exit"),
@@ -232,41 +249,63 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getUsernameText() => Container(
-        height: 60,
-        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: 8.auto),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              alignment: Alignment.center,
-              child: AutoSizeText(
-                widget.userProfile?.username ?? "",
-                style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left,
-                minFontSize: 10,
-                stepGranularity: 1,
+            Text(
+              widget.userProfile?.username ?? "",
+              style: TextStyle(
+                color: CustomColor.theme_app_bar_text_color,
+                fontWeight: FontWeight.bold,
+                fontSize: ((widget.config?.homePageDisplayBalance ?? false) || (widget.config?.newTransferUI ?? false))
+                    ? 10.auto
+                    : 14.auto,
               ),
             ),
-            if (widget.config?.homePageDisplayBalance ?? false)
-              Container(
-                alignment: Alignment.center,
-                child: AutoSizeText(
-                  Format().amountFormat(widget.totalBalance ?? 0),
-                  style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                  minFontSize: 10,
-                  stepGranularity: 1,
+            if (widget.config?.homePageDisplayBalance ?? false) _getBalanceText(),
+            if (widget.config?.newTransferUI ?? false)
+            InkWell(
+              onTap: () => widget.onClickBalance != null ? widget.onClickBalance!() : null,
+              child: Container(
+                height: 20.auto,
+                //  color: CustomColor.black,
+                child: Row(
+                  children: [
+                    Text(
+                      getTranslatedText("balance") + ": ",
+                      style: TextStyle(
+                        color: CustomColor.theme_app_bar_text_color,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.auto,
+                      ),
+                    ),
+                    _getBalanceText()
+                  ],
                 ),
               ),
+            )
           ],
         ),
+      );
+
+  _getBalanceText() => Text(
+        Format().amountFormat(widget.totalBalance ?? 0),
+        style: TextStyle(
+          color: (widget.config?.newTransferUI ?? false) && EnvironmentConfig.template_version == 3
+              ? CustomColor.theme_button_color
+              : CustomColor.theme_app_bar_text_color,
+          fontWeight: FontWeight.bold,
+          fontSize: (widget.config?.newTransferUI ?? false) ? 16.auto : 14.auto,
+        ),
+        textAlign: TextAlign.left,
       );
 
   _getUserDetailsRow() => _isDisplayUserDetailsRow()
       ? Container(
           height: 12.auto,
-          margin: EdgeInsets.only(top: 2.auto, right: 10.auto),
+          margin: EdgeInsets.only(top: 5.auto, right: 10.auto),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

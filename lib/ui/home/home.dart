@@ -1,12 +1,6 @@
-import 'package:api/entity/game_type.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
@@ -14,14 +8,12 @@ import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
+import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
@@ -30,10 +22,10 @@ import 'package:tgp_flutter2/ui/home/home_t3.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
-import 'dart:math';
-
 import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/home/roulette_dialog.dart';
+
+import 'dart:math';
 
 class Home extends StatefulWidget {
   final bool isFirstRun;
@@ -67,7 +59,7 @@ class _HomeState extends BaseState<Home> {
   var _gameViewModel = GameViewModel();
   var randomNumber;
   var _assetsAudioPlayer;
-  var onClickFromSmallRoulette = false;
+  var onClickFromSmallRoulette = false, isShowTransferUI = false;
 
   @override
   void initState() {
@@ -83,8 +75,9 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
+    task.add( _vm.getUserDetails());
     await Future.wait(task);
-    _vm.getUserDetails();
+
     getLanguage();
     randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -105,38 +98,54 @@ class _HomeState extends BaseState<Home> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            appBar: EnvironmentConfig.template_version == 2
-                ? PreferredSize(
-              child: Container(),
-              preferredSize: Size.fromHeight(0),
-            )
-                : CustomLoginAppBar(
-              onClickLoginButton: () {
-                Navigator.of(context).pushNamed(RoutePath.login);
-              },
-              onClickRegisterButton: () {
-                Navigator.of(context).pushNamed(RoutePath.register);
-              },
-              onClickLogoutButton: () {
-                _logout();
-              },
-              isLogin: _vm.userProfile != null,
-              brandLogoUrl: _vm.brandLogoUrl,
-              userProfile: _vm.userProfile,
-              phone: _vm.phone,
-              config: _vm.config,
-              totalBalance: _vm.totalBalance,
-              brandName: EnvironmentConfig.brandName,
-            ),
-            body: Container(
-              child: Stack(
-                children: [
-                  _getHomeTemplateView(),
-                  _getSmallRouletteIcon(),
-                ],
+          return Stack(
+            children: [
+              CustomScaffold(
+                appBar: EnvironmentConfig.template_version == 2
+                    ? PreferredSize(
+                        child: Container(),
+                        preferredSize: Size.fromHeight(0),
+                      )
+                    : CustomLoginAppBar(
+                        onClickLoginButton: () {
+                          Navigator.of(context).pushNamed(RoutePath.login);
+                        },
+                        onClickRegisterButton: () {
+                          Navigator.of(context).pushNamed(RoutePath.register);
+                        },
+                        onClickLogoutButton: () {
+                          _logout();
+                        },
+                        isLogin: _vm.userProfile != null,
+                        brandLogoUrl: _vm.brandLogoUrl,
+                        userProfile: _vm.userProfile,
+                        phone: _vm.phone,
+                        config: _vm.config,
+                        totalBalance: _vm.totalBalance,
+                        //_vm.totalBalance,
+                        brandName: EnvironmentConfig.brandName,
+                        onClickBalance: () {
+                          setState(() {
+                            isShowTransferUI = !isShowTransferUI;
+                          });
+                        },
+                      ),
+                body: Container(
+                  child: Stack(
+                    children: [
+                      _getHomeTemplateView(),
+                      _getSmallRouletteIcon(),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              BalancePicker(
+                isShow: isShowTransferUI,
+                mainWalletBalance: _vm.totalBalance,
+                walletList: _vm.walletList,
+                  gameTypeList:_gameViewModel.balanceGameTypeList,
+              )
+            ],
           );
         });
   }

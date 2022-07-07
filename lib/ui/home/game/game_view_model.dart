@@ -68,6 +68,17 @@ class GameViewModel extends BaseViewModel {
     GameType.CardGameLobby,
     GameType.LotteryLobby,
   ];
+  var balanceGameTypeList = [
+    GameType.ESports,
+    GameType.Sportsbook,
+    GameType.LiveDealerLobby,
+    GameType.CardGameLobby,
+    GameType.LotteryLobby,
+    GameType.Slot,
+    GameType.EGame,
+    GameType.Fishing
+  ];
+
   List<GameType>? gameRowListT3, gameListT3;
 
   var _context;
@@ -88,21 +99,20 @@ class GameViewModel extends BaseViewModel {
       getGameProviderListApiState = await contentRepo.getGameProviderList();
     }
     if (contentRepo.gameProviderList == null) return;
-
-    List<GameProvider2> list = [];
-    contentRepo.gameProviderList!.forEach((e) {
-      if (e.gameTypes != null) {
-        e.gameTypes!.forEach((element) {
-          if ((!(element == GameType.VirtualSportsLobby || element == GameType.VirtualSports) ||
-              (element == GameType.VirtualSports && e.code == "PPTF"))) {
-            list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
-
-            //sort list with gameType for displaying VirtualSports after Sportsbook
-            list.sort(((a, b) => (a.gameType.toString()).compareTo(b.gameType.toString())));
-          }
-        });
-      }
-    });
+    List<GameProvider2> list = contentRepo.gameProvider2List!;
+    // contentRepo.gameProviderList!.forEach((e) {
+    //   if (e.gameTypes != null) {
+    //     e.gameTypes!.forEach((element) {
+    //       if ((!(element == GameType.VirtualSportsLobby || element == GameType.VirtualSports) ||
+    //           (element == GameType.VirtualSports && e.code == "PPTF"))) {
+    //         list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
+    //
+    //         //sort list with gameType for displaying VirtualSports after Sportsbook
+    //         list.sort(((a, b) => (a.gameType.toString()).compareTo(b.gameType.toString())));
+    //       }
+    //     });
+    //   }
+    // });
     gameTypeList = EnvironmentConfig.brandName == "PB" ? _pbGamelist : _gameTypeList;
     // var mixedLis = list
     //     .where((element) => (element.gameType == GameType.Sportsbook || element.gameType == GameType.VirtualSports))
