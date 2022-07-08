@@ -14,6 +14,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
+import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
@@ -32,7 +33,11 @@ class Home extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
 
-  Home({this.isFirstRun = false, this.onPauseBgMusic, this.onResumeBgMusic});
+  Home({
+    this.isFirstRun = false,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+  });
 
   @override
   _HomeState createState() => _HomeState();
@@ -75,7 +80,7 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
-    task.add( _vm.getUserDetails());
+    task.add(_vm.getUserDetails());
     await Future.wait(task);
 
     getLanguage();
@@ -143,7 +148,7 @@ class _HomeState extends BaseState<Home> {
                 isShow: isShowTransferUI,
                 mainWalletBalance: _vm.totalBalance,
                 walletList: _vm.walletList,
-                  gameTypeList:_gameViewModel.balanceGameTypeList,
+                gameTypeList: _gameViewModel.balanceGameTypeList,
               )
             ],
           );
@@ -160,6 +165,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 2:
         return HomeT2(
@@ -169,6 +175,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 3:
         return HomeT3(
@@ -178,6 +185,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 8:
         return HomeT8(
@@ -187,6 +195,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 9:
         return HomeT9(
@@ -195,6 +204,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          gameView: _buildGameView(),
         );
       case 10:
         return HomeT10(
@@ -204,6 +214,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       default:
         return HomeT1(
@@ -212,14 +223,9 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          gameView: _buildGameView(),
         );
     }
-  }
-
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
-    });
   }
 
   _displayLoginDialog() async {
@@ -342,6 +348,13 @@ class _HomeState extends BaseState<Home> {
     int result = min + _random.nextInt(max - min);
     return result;
   }
+
+  _buildGameView() => BaseGame(
+        vm: _gameViewModel,
+        onRefreshHomePage: () => _initData(),
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+      );
 
   _handleApiState() {
     if (widget.isFirstRun) {

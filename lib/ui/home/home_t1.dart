@@ -1,26 +1,15 @@
-import 'package:api/entity/game_type.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
-import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
-import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/main.dart';
-import 'package:tgp_flutter2/provider/provider_widget.dart';
-import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
@@ -28,23 +17,22 @@ import 'dart:math';
 import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 
 class HomeT1 extends StatefulWidget {
-  final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
   final Function initData;
   final HomeViewModel homeViewModel;
   final GameViewModel gameViewModel;
   final int? randomNumber;
+  final Widget gameView;
 
-  HomeT1({
-    this.isFirstRun = false,
-    this.onPauseBgMusic,
-    this.onResumeBgMusic,
-    required this.initData,
-    required this.homeViewModel,
-    required this.gameViewModel,
-    this.randomNumber,
-  });
+  HomeT1(
+      {this.onPauseBgMusic,
+      this.onResumeBgMusic,
+      required this.initData,
+      required this.homeViewModel,
+      required this.gameViewModel,
+      this.randomNumber,
+      required this.gameView});
 
   @override
   _HomeT1State createState() => _HomeT1State();
@@ -81,11 +69,7 @@ class _HomeT1State extends BaseState<HomeT1> {
     return Container(
       margin: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto),
       child: Column(
-        children: [
-          _buildImageSlider(),
-          _buildTextMarquee(),
-          _buildGameView(),
-        ],
+        children: [_buildImageSlider(), _buildTextMarquee(), widget.gameView],
       ),
     );
   }
@@ -95,7 +79,7 @@ class _HomeT1State extends BaseState<HomeT1> {
     return Container(
       height: context.screenHeight / 5,
       child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
-          ? _buildEmptyContainer()
+          ? buildEmptyContainer()
           : Stack(
               children: [
                 CarouselSlider(
@@ -105,15 +89,15 @@ class _HomeT1State extends BaseState<HomeT1> {
                       (index) => ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: widget.homeViewModel.bannerList![index].mobileUrl == null
-                                ? _buildEmptyContainer()
+                                ? buildEmptyContainer()
                                 : CachedNetworkImage(
                                     height: 400,
                                     width: context.screenWidth,
-                                    placeholder: (context, url) => _buildEmptyContainer(),
+                                    placeholder: (context, url) => buildEmptyContainer(),
                                     imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                                     //handling error
                                     fit: BoxFit.fill,
-                                    errorWidget: (context, url, error) => _buildEmptyContainer(),
+                                    errorWidget: (context, url, error) => buildEmptyContainer(),
                                   ),
                           )),
                   options: CarouselOptions(
@@ -164,10 +148,6 @@ class _HomeT1State extends BaseState<HomeT1> {
     );
   }
 
-  _buildEmptyContainer() => Container(
-        color: CustomColor.very_light_pink_four,
-      );
-
   _buildTextMarquee() {
     var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
@@ -175,25 +155,25 @@ class _HomeT1State extends BaseState<HomeT1> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-         // if (widget.homeViewModel.config?.onlineUser ?? false)
-            Expanded(
-              flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    getTranslatedText("online_user") + " :",
+          // if (widget.homeViewModel.config?.onlineUser ?? false)
+          Expanded(
+            flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getTranslatedText("online_user") + " :",
+                  style: TextStyle(fontSize: 10.auto),
+                ),
+                Container(
+                  child: Text(
+                    (widget.randomNumber ?? 26500).toString(),
                     style: TextStyle(fontSize: 10.auto),
                   ),
-                  Container(
-                    child: Text(
-                      (widget.randomNumber ?? 26500).toString(),
-                      style: TextStyle(fontSize: 10.auto),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           Expanded(
             flex: 1,
             child: SvgPicture.asset(
@@ -257,18 +237,5 @@ class _HomeT1State extends BaseState<HomeT1> {
 
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
-  }
-
-  _buildGameView() => GameT1(
-        vm: widget.gameViewModel,
-        onRefreshHomePage: () => widget.initData(),
-        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
-
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
-    });
   }
 }

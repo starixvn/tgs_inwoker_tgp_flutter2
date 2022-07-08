@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:api/entity/game_provider2.dart';
+import 'package:api/entity/game_type.dart';
 import 'package:api/entity/language.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +16,15 @@ import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
+
+  get config => contentRepo.featuresConfig;
 
   get apiError => userRepo.apiError;
 
@@ -105,7 +111,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
             //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
             //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
             Lottie.asset(
-               "loading/loading_t${_getLottieLoadingAppendPath()}.json",
+              "loading/loading_t${_getLottieLoadingAppendPath()}.json",
               width: 150,
               height: 150,
             ),
@@ -113,10 +119,11 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         ),
       );
 
-  _getLottieLoadingAppendPath(){
-    if(EnvironmentConfig.dark_mode)
-      return  "8_dark";
-    else return EnvironmentConfig.template_version;
+  _getLottieLoadingAppendPath() {
+    if (EnvironmentConfig.dark_mode)
+      return "8_dark";
+    else
+      return EnvironmentConfig.template_version;
   }
 
   _showErrorMessage(EventResult eventResult) {
@@ -278,4 +285,61 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
               popIndex: 2,
             ));
   }
+
+  buildEmptyContainer({double borderRadius = 0}) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
+          color: CustomColor.very_light_pink_four,
+        ),
+      );
+
+  getImagePath(GameProvider2 gameProvider) {
+    var frontImagePath = "images/game/T${_getFrontImagePathVersion()}/";
+    var imagePath;
+    var gameType = gameProvider.gameType!.getImagePath();
+    var gamePlatformCode = gameProvider.code?.toLowerCase();
+    var fullPath = "${gameType}_$gamePlatformCode";
+    var imageFileFormat = _getFrontImagePathVersion() == 10 ? "png" : "jpg";
+    if (_isSportsHideLogo(gamePlatformCode))
+      imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.$imageFileFormat";
+    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
+      imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.$imageFileFormat";
+    } else if (gamePlatformCode == "wmtf") {
+      imagePath = "$frontImagePath${gameType}-wm.$imageFileFormat";
+    } else
+      imagePath = "$frontImagePath${gameType == "" ? "sports" : gameType}-$gamePlatformCode.$imageFileFormat";
+    return imagePath;
+  }
+
+  _getFrontImagePathVersion() {
+    switch (EnvironmentConfig.template_version) {
+      case 1:
+        if (EnvironmentConfig.light_mode)
+          return 5;
+        else
+          return 2;
+      case 8:
+        if (EnvironmentConfig.dark_mode)
+          return 3;
+        else
+          return EnvironmentConfig.template_version;
+      default:
+        return EnvironmentConfig.template_version;
+    }
+  }
+
+  _isNeedHandleLanguage(String path) {
+    switch (path) {
+      case "sports-saba":
+      case "esports-imes":
+      case "fish-jdb":
+      case "slot-jdb":
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  _isSportsHideLogo(String? gamePlatformCode) =>
+      (config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 }

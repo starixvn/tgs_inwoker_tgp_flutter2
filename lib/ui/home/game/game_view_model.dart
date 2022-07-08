@@ -98,31 +98,9 @@ class GameViewModel extends BaseViewModel {
       setLoading();
       getGameProviderListApiState = await contentRepo.getGameProviderList();
     }
-    if (contentRepo.gameProviderList == null) return;
+    if (contentRepo.gameProvider2List == null) return;
     List<GameProvider2> list = contentRepo.gameProvider2List!;
-    // contentRepo.gameProviderList!.forEach((e) {
-    //   if (e.gameTypes != null) {
-    //     e.gameTypes!.forEach((element) {
-    //       if ((!(element == GameType.VirtualSportsLobby || element == GameType.VirtualSports) ||
-    //           (element == GameType.VirtualSports && e.code == "PPTF"))) {
-    //         list.add(GameProvider2(element, e.code, e.name, e.description, e.status));
-    //
-    //         //sort list with gameType for displaying VirtualSports after Sportsbook
-    //         list.sort(((a, b) => (a.gameType.toString()).compareTo(b.gameType.toString())));
-    //       }
-    //     });
-    //   }
-    // });
     gameTypeList = EnvironmentConfig.brandName == "PB" ? _pbGamelist : _gameTypeList;
-    // var mixedLis = list
-    //     .where((element) => (element.gameType == GameType.Sportsbook || element.gameType == GameType.VirtualSports))
-    //     .toList();
-    // gameProviderList = gameTypeList
-    //     .map((type) =>
-    //         (type == GameType.Sportsbook) ? mixedList : list.where((element) => (element.gameType == type)).toList())
-    //     .toList();
-
-    //.sorted(((a,b) => a.gameType.compareTo(b.gameType)
     gameProviderList = gameTypeList
         .map((type) => list
             .where((element) => (type == GameType.Sportsbook) //combine VirtualSports to VirtualSports
@@ -130,10 +108,13 @@ class GameViewModel extends BaseViewModel {
                 : element.gameType == type)
             .toList())
         .toList();
-    //gameProviderList = gameTypeList.map((type) => list.where((element) => element.gameType == type).toList()).toList();
-
-    gameTypeMap = (groupBy(list, (obj) => obj.gameType!));
-
+    gameTypeMap = (groupBy(list, (obj) => obj.gameType!))
+      ..forEach((key, value) {
+        if (key == GameType.Sportsbook) {
+          //combine VirtualSports to VirtualSports
+          value.addAll(list.where((element) => (element.gameType == GameType.VirtualSports && element.code == "PPTF")));
+        }
+      });
     removeNonExistGameType();
     gameRowListT3 = _gameRowListT3;
     gameListT3 = _gameListT3;
