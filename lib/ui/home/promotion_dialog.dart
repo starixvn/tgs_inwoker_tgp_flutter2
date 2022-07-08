@@ -87,8 +87,8 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
                 children: List.generate(widget.promotionList.length, (index) {
                   String imageUrl;
                   Promotion promo = widget.promotionList[index];
-                  if (promo.localization?.mobileBanner?.isNotEmpty ?? false) {
-                    imageUrl = promo.localization!.mobileBanner!;
+                  if (promo.localization?[getCurrentLanguage().apiCode]?.mobileBanner?.isNotEmpty ?? false) {
+                    imageUrl = promo.localization![getCurrentLanguage().apiCode]!.mobileBanner!;
                   } else if (promo.mobileBanner?.isNotEmpty ?? false) {
                     imageUrl = promo.mobileBanner!;
                   } else

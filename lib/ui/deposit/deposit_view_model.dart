@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:api/api.dart';
 import 'package:api/entity/bank_type.dart';
 import 'package:api/entity/deposit_dialog_content.dart';
+import 'package:api/entity/language.dart';
 import 'package:api/entity/payment.dart';
 import 'package:api/entity/promotion.dart';
+import 'package:api/localizations/language_provider.dart';
 import 'package:collection/collection.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 
@@ -61,7 +63,7 @@ class DepositViewModel extends BaseViewModel {
     return uploadDepositImageApiState;
   }
 
-  getPlayerPromotionList()async {
+  getPlayerPromotionList(String languageCode)async {
     setLoading();
     getPlayerPromotionListApiState = await contentRepo.getPromotionList();
     if (getPlayerPromotionListApiState.isSuccess) {
@@ -71,8 +73,8 @@ class DepositViewModel extends BaseViewModel {
             value.promotionType == "DailySecondDeposit" ||
             value.promotionType == "DailyFirstDeposit")
           displayPromotionList.add({
-            "name": ((value.localization?.name?.isNotEmpty ?? false)
-                    ? value.localization?.name
+            "name": ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
+                    ? value.localization![languageCode]!.name
                     : value.name) ??
                 "",
             "id": value.id ?? ""

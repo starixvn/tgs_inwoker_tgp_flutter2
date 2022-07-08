@@ -406,8 +406,8 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
               return PromotionMainDetails(promotion: widget.vm.roulettePromo);
             case 1:
               return PromotionTermsContent(
-                  termsContent: ((widget.vm.roulettePromo?.localization?.content?.isNotEmpty ?? false)
-                          ? widget.vm.roulettePromo?.localization?.content
+                  termsContent: ((widget.vm.roulettePromo?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
+                          ? widget.vm.roulettePromo?.localization![getCurrentLanguage().apiCode]!.content!
                           : widget.vm.roulettePromo?.content ?? "") ??
                       "");
             case 2:
@@ -421,12 +421,6 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
   navigateToPromo() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.promotion);
-    });
-  }
-
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
     });
   }
 

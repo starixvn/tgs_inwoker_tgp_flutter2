@@ -28,12 +28,6 @@ class _PromotionItemState extends BaseState<PromotionItem> {
 
   @override
   void initState() {
-    if (widget.promotion.localization?.mobileBanner?.isNotEmpty ?? false) {
-      imageUrl = widget.promotion.localization!.mobileBanner;
-    } else if (widget.promotion.mobileBanner?.isNotEmpty ?? false) {
-      imageUrl = widget.promotion.mobileBanner;
-    } else
-      imageUrl = "";
     super.initState();
   }
 
@@ -89,15 +83,18 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         ),
       );
 
-  _buildPromotionImage() => imageUrl?.isEmpty ?? true
-      ? _buildEmptyImage()
-      : CachedNetworkImage(
-          height: 150.auto,
-          placeholder: (context, url) => _buildEmptyImage(),
-          imageUrl: imageUrl,
-          errorWidget: (context, url, error) => _buildEmptyImage(),
-          //handling error
-          fit: BoxFit.fill);
+  _buildPromotionImage() {
+    _getImageUrl();
+    return imageUrl?.isEmpty ?? true
+        ? _buildEmptyImage()
+        : CachedNetworkImage(
+            height: 150.auto,
+            placeholder: (context, url) => _buildEmptyImage(),
+            imageUrl: imageUrl,
+            errorWidget: (context, url, error) => _buildEmptyImage(),
+            //handling error
+            fit: BoxFit.fill);
+  }
 
   _buildDetailsButton() => OutlineBorderButton(
         title: getTranslatedText("details"),
@@ -124,4 +121,14 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                 promotion: widget.promotion,
                 vm: widget.vm,
               )));
+
+  _getImageUrl() {
+    var language = getCurrentLanguage().apiCode ?? "en-US";
+    if (widget.promotion.localization?[language]?.mobileBanner?.isNotEmpty ?? false) {
+      imageUrl = widget.promotion.localization![language]?.mobileBanner;
+    } else if (widget.promotion.mobileBanner?.isNotEmpty ?? false) {
+      imageUrl = widget.promotion.mobileBanner;
+    } else
+      imageUrl = "";
+  }
 }

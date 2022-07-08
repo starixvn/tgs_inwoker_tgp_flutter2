@@ -41,10 +41,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
           _buildPromotionImage(),
           PromotionMainDetails(promotion: widget.promotion),
           PromotionTermsContent(
-              termsContent: ((widget.promotion.localization?.content?.isNotEmpty ?? false)
-                      ? widget.promotion.localization?.content
-                      : widget.promotion.content ?? "") ??
-                  ""),
+              termsContent: (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
+                      ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
+                      : widget.promotion.content ?? "") ),
           PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
           _buildJoinButton()
         ],
