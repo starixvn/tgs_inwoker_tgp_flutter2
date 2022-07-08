@@ -41,9 +41,10 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
           _buildPromotionImage(),
           PromotionMainDetails(promotion: widget.promotion),
           PromotionTermsContent(
-              termsContent: (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
+              termsContent:
+                  (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
                       ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
-                      : widget.promotion.content ?? "") ),
+                      : widget.promotion.content ?? "")),
           PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
           _buildJoinButton()
         ],
@@ -55,16 +56,19 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         title: getTranslatedText("promotion_center"),
       );
 
-  _buildJoinButton() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
-        child: ColorButton(
-          title: getTranslatedText("join"),
-          onClick: () {
-            _onClick();
-          },
-          isEnabled: true,
-          color: CustomColor.theme_button_color,
-          radius: 9.6,
+  _buildJoinButton() => Visibility(
+        visible: widget.promotion.promotionType != "Dummy",
+        child: Container(
+          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
+          child: ColorButton(
+            title: getTranslatedText("join"),
+            onClick: () {
+              _onClick();
+            },
+            isEnabled: true,
+            color: CustomColor.theme_button_color,
+            radius: 9.6,
+          ),
         ),
       );
 
