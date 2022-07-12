@@ -24,6 +24,7 @@ import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/home/roulette_dialog.dart';
+import 'dart:io' show Platform;
 
 import 'dart:math';
 
@@ -308,7 +309,7 @@ class _HomeState extends BaseState<Home> {
         onClick: () {
           if (isShowPromotion()) {
             _displayPromotionDialog();
-          } else
+          } else if(Platform.isAndroid)
             Navigator.of(context).pop();
         },
       ),
