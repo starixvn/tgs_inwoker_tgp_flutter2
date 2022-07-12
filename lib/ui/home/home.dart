@@ -75,9 +75,8 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
-    task.add( _vm.getUserDetails());
     await Future.wait(task);
-
+    _vm.getUserDetails();
     getLanguage();
     randomNumber = _randomGenerator();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
