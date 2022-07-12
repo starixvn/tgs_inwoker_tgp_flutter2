@@ -266,32 +266,32 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             ),
             if (widget.config?.homePageDisplayBalance ?? false) _getBalanceText(),
             if (widget.config?.newTransferUI ?? false)
-            InkWell(
-              onTap: () => widget.onClickBalance != null ? widget.onClickBalance!() : null,
-              child: Container(
-                height: 20.auto,
-                //  color: CustomColor.black,
-                child: Row(
-                  children: [
-                    Text(
-                      getTranslatedText("balance") + ": ",
-                      style: TextStyle(
-                        color: CustomColor.theme_app_bar_text_color,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.auto,
+              InkWell(
+                onTap: () => widget.onClickBalance != null ? widget.onClickBalance!() : null,
+                child: Container(
+                  height: 20.auto,
+                  //  color: CustomColor.black,
+                  child: Row(
+                    children: [
+                      Text(
+                        getTranslatedText("balance") + ": ",
+                        style: TextStyle(
+                          color: CustomColor.theme_app_bar_text_color,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.auto,
+                        ),
                       ),
-                    ),
-                    _getBalanceText()
-                  ],
+                      _getBalanceText()
+                    ],
+                  ),
                 ),
-              ),
-            )
+              )
           ],
         ),
       );
 
   _getBalanceText() => Text(
-        Format().amountFormat(widget.totalBalance ?? 0),
+        widget.totalBalance != null ? Format().amountFormat(widget.totalBalance ?? 0) : "-",
         style: TextStyle(
           color: (widget.config?.newTransferUI ?? false) && EnvironmentConfig.template_version == 3
               ? CustomColor.theme_button_color
