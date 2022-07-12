@@ -13,6 +13,8 @@ class MaintenanceViewModel extends BaseViewModel {
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
+  get config => contentRepo.featuresConfig;
+
   var getBrandCommunicationApiState, getLiveChatUrlApiState;
   List<BrandCommunication>? communicationList;
   String? liveChatUrl;
