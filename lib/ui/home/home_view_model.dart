@@ -183,10 +183,10 @@ class HomeViewModel extends BaseViewModel {
     return getBankCardListApiState;
   }
 
-  getUserDetails() {
+  getUserDetails() async{
     //if (userProfile != null) {
-    _getTotalBalance();
-    _getBankCardList();
+    await _getTotalBalance();
+    await _getBankCardList();
   }
 
   getPromotionList() async {
