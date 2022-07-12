@@ -9,17 +9,17 @@ export 'fortune_wheel_child.dart';
 class FortuneWheel<T> extends StatefulWidget {
   FortuneWheel({
     required this.children,
+    required this.size,
   }) : assert(children.length > 1, 'List with at least two elements must be given');
 
   final List<FortuneWheelChild<T>> children;
+  final double size;
 
   @override
   _FortuneWheelState createState() => _FortuneWheelState();
 }
 
 class _FortuneWheelState extends State<FortuneWheel> with SingleTickerProviderStateMixin {
-  late double size;
-
   @override
   void dispose() {
     super.dispose();
@@ -27,57 +27,18 @@ class _FortuneWheelState extends State<FortuneWheel> with SingleTickerProviderSt
 
   @override
   void initState() {
-    // _initiateAnimation();
-    // _initiateControllerSubscription();
     super.initState();
   }
-
-  // void _initiateAnimation() {
-  //   _animationController = new AnimationController(vsync: this, lowerBound: 0, upperBound: double.infinity);
-  //
-  //   _animationController.value = (0.5 / (widget.children.length));
-  //
-  //   _animationController.addListener(() {
-  //     widget.controller
-  //         .setValue(widget.children[((widget.children.length) * (_animationController.value % 1)).floor()]);
-  //
-  //     if (_animationController.isCompleted) {
-  //       widget.controller.animationFinished();
-  //     }
-  //   });
-  // }
-  //
-  // void _initiateControllerSubscription() {
-  //   widget.controller.addListener(() {
-  //     if (!widget.controller.shouldStartAnimation || widget.controller.isAnimating) return;
-  //
-  //     _startAnimation();
-  //   });
-  // }
-  //
-  // void _startAnimation() {
-  //   widget.controller.animationStarted();
-  //
-  //   int milliseconds = Random().nextInt(widget.rotationTimeLowerBound) +
-  //       (widget.rotationTimeUpperBound - widget.rotationTimeLowerBound);
-  //   double rotateDistance = milliseconds / 1000 * widget.turnsPerSecond;
-  //
-  //   _animationController.value = _animationController.value % 1;
-  //
-  //   _animationController.duration = Duration(milliseconds: milliseconds.toInt());
-  //
-  //   _animationController.animateTo(_animationController.value + rotateDistance, curve: Curves.easeInOut);
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-        size = min(constraints.maxHeight, constraints.maxWidth);
+       // widget.size = min(constraints.maxHeight, constraints.maxWidth);
         return SizedBox(
-          width: size,
-          height: size,
+          width: widget.size,
+          height: widget.size,
           child: _getWheelContent(),
         );
       }),
@@ -97,7 +58,7 @@ class _FortuneWheelState extends State<FortuneWheel> with SingleTickerProviderSt
         for (int index = 0; index < widget.children.length; index++)
           Transform.rotate(
             angle: (-fourthCircleAngle) - (pieceAngle / 2),
-            child: WheelSlice(index: index, size: size, fortuneWheelChildren: widget.children),
+            child: WheelSlice(index: index, size: widget.size, fortuneWheelChildren: widget.children),
           ),
       ],
     );

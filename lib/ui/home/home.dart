@@ -280,20 +280,25 @@ class _HomeState extends BaseState<Home> {
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
         child: Positioned(
-          top: context.screenHeight / 5 - 50.auto,
-          left: 0,
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            onPressed: () {
-              //prevent click more than once
-              if (!onClickFromSmallRoulette) {
-                _displayRouletteDialog();
-                setState(() {
-                  onClickFromSmallRoulette = true;
-                });
-              }
-            },
-            child: Image.asset("images/roulette/small_roulette.png"),
+          top: context.screenHeight / 5 - 60.auto,
+          left: -5,
+          child: Container(
+            width: context.screenHeight / 10,
+            height: context.screenHeight / 10,
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              onPressed: () {
+                //prevent click more than once
+                if (!onClickFromSmallRoulette) {
+                  _displayRouletteDialog();
+                  setState(() {
+                    onClickFromSmallRoulette = true;
+                  });
+                }
+              },
+              child: Image.asset("images/roulette/small_roulette.png"),
+            ),
           ),
         ),
       );
