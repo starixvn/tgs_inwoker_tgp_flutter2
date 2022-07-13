@@ -27,7 +27,7 @@ class Maintenance extends StatefulWidget {
   _MaintenanceState createState() => _MaintenanceState();
 }
 
-class _MaintenanceState extends BaseState<Maintenance> {
+class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserver {
   var _vm = MaintenanceViewModel();
 
   @override
@@ -39,7 +39,21 @@ class _MaintenanceState extends BaseState<Maintenance> {
       });
     }
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _vm.config == null) {
+      _vm.getEnvFeatures();
+    }
   }
 
   Widget build(BuildContext context) {

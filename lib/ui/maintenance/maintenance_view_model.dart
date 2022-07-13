@@ -1,6 +1,7 @@
 import 'package:api/api.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/brand_communication.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 
 class MaintenanceViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
@@ -46,5 +47,15 @@ class MaintenanceViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getLiveChatUrlApiState;
+  }
+
+  getEnvFeatures() async {
+    var brand = EnvironmentConfig.environmentStage == "staging" &&
+        !(EnvironmentConfig.brandName == "PGG" || EnvironmentConfig.brandName == "MGM")
+        ? "stg_${EnvironmentConfig.brandName}"
+        : EnvironmentConfig.brandName;
+    setLoading();
+    await contentRepo.getEnvFeaturesJson(brand);
+    setLoading(false);
   }
 }
