@@ -84,13 +84,17 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
                   _buildText("我们正在维护中，请稍后再试。"),
                   _buildText("如您有任何问题，请联系客服。"),
                   _buildText(
-                      "维护时间：${Format().timezoneFormat(_vm.config?.maintenanceDetail["startTime"])} ~ ${Format().timezoneFormat(_vm.config?.maintenanceDetail["endTime"])} (GMT+8)"),
+                      "维护时间：${Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z")}" +
+                          "~ " +
+                          "${Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z")} (GMT+8)"),
                   _buildText("We are currently under maintenance,\n"
                       "please try again later."),
                   _buildText("If have any questions,", isNeedMargin: false),
                   _buildText("please contact our customer service,"),
                   _buildText(
-                      "Maintenance time: ${Format().timezoneFormat(_vm.config?.maintenanceDetail["startTime"])} ~ ${Format().timezoneFormat(_vm.config?.maintenanceDetail["endTime"])} (GMT+8)"),
+                      "Maintenance time: ${Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z")}" +
+                          "~ " +
+                          "${Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z")} (GMT+8)"),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 40.auto),
                     child: _buildText(
