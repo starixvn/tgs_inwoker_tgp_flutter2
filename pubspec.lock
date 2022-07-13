@@ -283,13 +283,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  expandable:
-    dependency: "direct main"
-    description:
-      name: expandable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.1"
   fading_edge_scrollview:
     dependency: transitive
     description:
@@ -379,13 +372,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  flutter_lints:
-    dependency: transitive
-    description:
-      name: flutter_lints
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -562,13 +548,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.1"
-  lints:
-    dependency: transitive
-    description:
-      name: lints
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   logging:
     dependency: transitive
     description:
@@ -576,13 +555,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  lottie:
-    dependency: "direct main"
-    description:
-      name: lottie
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.1"
   marquee:
     dependency: "direct main"
     description:
@@ -898,20 +870,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  simple_animations:
-    dependency: "direct main"
-    description:
-      name: simple_animations
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
-  simple_gradient_text:
-    dependency: "direct main"
-    description:
-      name: simple_gradient_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.2"
   simple_html_css:
     dependency: "direct main"
     description:
@@ -987,20 +945,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  supercharged:
-    dependency: transitive
-    description:
-      name: supercharged
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
-  supercharged_dart:
-    dependency: transitive
-    description:
-      name: supercharged_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   synchronized:
     dependency: transitive
     description:
@@ -1134,13 +1078,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
-  vs_scrollbar:
-    dependency: "direct main"
-    description:
-      name: vs_scrollbar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1"
   wakelock:
     dependency: transitive
     description:

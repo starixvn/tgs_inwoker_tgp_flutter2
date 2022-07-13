@@ -35,23 +35,17 @@ dependencies:
   auto_size_text: ^3.0.0
   fluttertoast: ^8.0.0
   marquee: ^2.2.0
-  #flutter_swiper: ^1.1.6
   outline_gradient_button: ^1.0.0+2
-  #gradient_text: ^1.0.2
-  vs_scrollbar: ^0.2.0
   flutter_svg: ^0.23.0+1
   pull_to_refresh: ^2.0.0
   flutter_inappwebview: ^5.3.2
   ndialog: ^4.0.1
   cached_network_image: ^3.1.0+1
   flutter_html: ^2.1.5
-  lottie: ^1.2.1
   animated_widgets: ^1.0.6
-  simple_animations: ^3.1.1
   image_picker: ^0.8.2
   flutter_launcher_icons: ^0.9.2
   environment_config: ^3.0.0
-  # flutter_webview_plugin: ^0.4.0
   package_info: ^2.0.2
 
   qr_flutter: ^4.0.0
@@ -72,11 +66,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_staggered_grid_view: ^0.4.0
-  expandable: ^5.0.1
   flutter_image_slideshow: ^0.1.1
   dotted_border: ^2.0.0+1
   carousel_slider: ^4.0.0
-  simple_gradient_text: ^1.2.2
   url_launcher: ^6.0.17
   assets_audio_player: ^3.0.4
 
@@ -105,12 +97,9 @@ flutter:
     - images/
     - images/bottom_nav_bar/
     - images/home/
-    - images/home_banner/
     - images/game/T2/
     - images/game/T3/
     - images/game/T8/
-    - images/game/T9/
-    - images/game/T5/
     - images/game/T10/
     - images/profile/
     - images/profile/t1/
@@ -121,18 +110,6 @@ flutter:
     - images/transaction/
     - images/promotion/
     - images/menu/
-    - images/home_banner/en-US/BIN/
-    - images/home_banner/en-US/PGG/
-    - images/home_banner/en-US/WLG/
-    - images/home_banner/en-US/HKJP/
-    - images/home_banner/zh-CN/BIN/
-    - images/home_banner/zh-CN/PGG/
-    - images/home_banner/zh-CN/WLG/
-    - images/home_banner/zh-CN/HKJP/
-    - images/home_banner/zh-TW/BIN/
-    - images/home_banner/zh-TW/PGG/
-    - images/home_banner/zh-TW/WLG/
-    - images/home_banner/zh-TW/HKJP/
     - images/game_tab/t1/
     - images/game_tab/t2/
     - images/game_tab/t8/
@@ -153,7 +130,6 @@ flutter:
     - images/login_app_bar/
     - images/roulette/
 
-    - loading/
     - i18n/
     - features/
 

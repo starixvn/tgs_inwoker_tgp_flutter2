@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:api/entity/env_features_config.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 
 class GameItemT10 extends StatefulWidget {
   final ScrollController? controller;
@@ -80,42 +82,6 @@ class GameItemT10State extends BaseState<GameItemT10> {
                     )
                   : _buildImage(gameProvider),
             ),
-            /*Positioned(
-              bottom: context.screenWidth / 50,
-              left: context.screenWidth / 13,
-              child: Column(
-                children: [
-                  _isSportsHideLogo(gamePlatformCode)
-                      ? Container(
-                          width: 74.auto,
-                          margin: EdgeInsets.only(bottom: 15.auto),
-                          child: Text(
-                            getTranslatedText("sports_$gamePlatformCode"),
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      : Container(),
-                  Container(
-                    width: 74.auto,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    decoration:
-                        BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn-start-game.jpg"))),
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: AutoSizeText(
-                        getTranslatedText("start_game"),
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                        minFontSize: 5,
-                        maxFontSize: 8,
-                        stepGranularity: 1,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),*/
             Visibility(
               visible: gameProvider.status != 0,
               child: AspectRatio(
@@ -138,14 +104,34 @@ class GameItemT10State extends BaseState<GameItemT10> {
     );
   }
 
-  _buildImage(GameProvider2 gameProvider) => ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Container(
-          alignment: Alignment.center,
-          child: Image.asset(
-            getImagePath(gameProvider),
-            fit: BoxFit.cover,
-          ),
+  _buildImage(GameProvider2 gameProvider) => Container(
+        alignment: Alignment.center,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: CachedNetworkImage(
+              placeholder: (context, url) => Container(
+                width: context.screenWidth,
+                height: context.screenHeight,
+                color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                child: Center(
+                  child: SizedBox(
+                    height: 50.0,
+                    width: 50.0,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                    ),
+                  ),
+                ),
+              ),
+              imageUrl: getImagePath(gameProvider),
+              errorWidget: (context, url, error) {
+                print(url);
+                return Container(
+                  color: CustomColor.very_light_pink_four,
+                );
+              },
+              //handling error
+              fit: BoxFit.fill),
         ),
       );
 

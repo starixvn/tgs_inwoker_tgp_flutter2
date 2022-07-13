@@ -1,5 +1,6 @@
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -7,6 +8,7 @@ import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 
 class GameItemT3 extends StatefulWidget {
@@ -155,14 +157,36 @@ class _GameItemT3State extends BaseState<GameItemT3> {
         ),
       );
 
-  _buildImage(GameProvider2 gameProvider) => ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: Container(
-          alignment: Alignment.center,
-          child: Image.asset(
-            getImagePath(gameProvider),
-            fit: BoxFit.cover,
-          )));
+  _buildImage(GameProvider2 gameProvider) => Container(
+        alignment: Alignment.center,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: CachedNetworkImage(
+              placeholder: (context, url) => Container(
+                    width: context.screenWidth,
+                    height: context.screenHeight,
+                    color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                    child: Center(
+                      child: SizedBox(
+                        height: 50.0,
+                        width: 50.0,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                        ),
+                      ),
+                    ),
+                  ),
+              imageUrl: getImagePath(gameProvider),
+              errorWidget: (context, url, error) {
+                print(url);
+                return Container(
+                  color: CustomColor.very_light_pink_four,
+                );
+              },
+              //handling error
+              fit: BoxFit.fill),
+        ),
+      );
 
   _isSportsHideLogo(String? gamePlatformCode) =>
       (widget.vm.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");

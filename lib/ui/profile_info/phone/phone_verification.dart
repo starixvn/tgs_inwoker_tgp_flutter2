@@ -52,8 +52,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           return CustomScaffold(
               appBar: _buildAppBar(),
               body: Container(
-                  child: /*userProfile == null?
-                  Center(child: CircularProgressIndicator(),):*/
+                  child:
                       Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
                 child: Column(

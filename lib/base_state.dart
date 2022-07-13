@@ -5,7 +5,6 @@ import 'package:api/entity/game_type.dart';
 import 'package:api/entity/language.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:api/api.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/network/event_result.dart';
@@ -107,24 +106,13 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) => Container(),
                   ),
-            //: Container(),
-            //Container(width: 100, height: 100, child: Image.asset("images/login/${EnvironmentConfig.imageLogo}.png")),
-            //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
-            Lottie.asset(
-              "loading/loading_t${_getLottieLoadingAppendPath()}.json",
-              width: 150,
-              height: 150,
+            SizedBox(
+              height: 20.auto,
             ),
+            buildLottie(size: 80.0),
           ],
         ),
       );
-
-  _getLottieLoadingAppendPath() {
-    if (EnvironmentConfig.dark_mode)
-      return "8_dark";
-    else
-      return EnvironmentConfig.template_version;
-  }
 
   _showErrorMessage(EventResult eventResult) {
     var errorMessage = eventResult.error;
@@ -294,52 +282,45 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       );
 
   getImagePath(GameProvider2 gameProvider) {
-    var frontImagePath = "images/game/T${_getFrontImagePathVersion()}/";
-    var imagePath;
+    var url = EnvironmentConfig.environmentStage == "development"
+        ? 'https://dev-t${EnvironmentConfig.light_mode ? "5" : EnvironmentConfig.template_version}.rpgp.cc/'
+        : EnvironmentConfig.url;
+    var frontImagePath =
+        "${url}assets/images/wapGame${_getFrontImagePathVersion()}"; //"images/game/T${_getFrontImagePathVersion()}/";
     var gameType = gameProvider.gameType!.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var fullPath = "${gameType}_$gamePlatformCode";
-    var imageFileFormat = _getFrontImagePathVersion() == 10 ? "png" : "jpg";
-    if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.$imageFileFormat";
-    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
-      imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.$imageFileFormat";
-    } else if (gamePlatformCode == "wmtf") {
-      imagePath = "$frontImagePath${gameType}-wm.$imageFileFormat";
-    } else
-      imagePath = "$frontImagePath${gameType == "" ? "sports" : gameType}-$gamePlatformCode.$imageFileFormat";
-    return imagePath;
+    var imageFileFormat = EnvironmentConfig.template_version == 10 ? "png" : "jpg";
+    return "$frontImagePath/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.$imageFileFormat";
   }
 
-  _getFrontImagePathVersion() {
+  String _getFrontImagePathVersion() {
     switch (EnvironmentConfig.template_version) {
       case 1:
         if (EnvironmentConfig.light_mode)
-          return 5;
+          return "/T5";
         else
-          return 2;
-      case 8:
-        if (EnvironmentConfig.dark_mode)
-          return 3;
-        else
-          return EnvironmentConfig.template_version;
+          return "/T1T2";
+      case 2:
+        return "";
+      case 3:
+        return "/T3T4";
+      case 4:
+        return "/T3T4";
       default:
-        return EnvironmentConfig.template_version;
-    }
-  }
-
-  _isNeedHandleLanguage(String path) {
-    switch (path) {
-      case "sports-saba":
-      case "esports-imes":
-      case "fish-jdb":
-      case "slot-jdb":
-        return true;
-      default:
-        return false;
+        return "/T${EnvironmentConfig.template_version}";
     }
   }
 
   _isSportsHideLogo(String? gamePlatformCode) =>
       (config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+
+  buildLottie({double size = 50.0}) => Center(
+        child: SizedBox(
+          height: size,
+          width: size,
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+          ),
+        ),
+      );
 }
