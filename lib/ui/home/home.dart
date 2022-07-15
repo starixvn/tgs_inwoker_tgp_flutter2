@@ -149,7 +149,7 @@ class _HomeState extends BaseState<Home> {
                 mainWalletBalance: _vm.totalBalance,
                 walletList: _vm.walletList,
                 gameTypeList: _gameViewModel.balanceGameTypeList,
-              )
+              ),
             ],
           );
         });
@@ -314,16 +314,15 @@ class _HomeState extends BaseState<Home> {
     showDialog(
       context: context,
       builder: (BuildContext context2) => CustomDialog(
-        title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-        description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-        buttonText1: getTranslatedText("confirm"),
-        onClick: () {
-          if (isShowPromotion()) {
-            _displayPromotionDialog();
-          } else if(Platform.isAndroid)
-            Navigator.of(context).pop();
-        },
-      ),
+          title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+          description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+          buttonText1: getTranslatedText("confirm"),
+          onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
+          onClick: () {
+            if (isShowPromotion()) {
+              _displayPromotionDialog();
+            }
+          }),
     );
   }
 
@@ -333,9 +332,6 @@ class _HomeState extends BaseState<Home> {
       builder: (BuildContext context) => PromotionDialog(
         promotionList: _vm.promotionList!,
         onClick: () {
-          if (isShowAnnouncement()) {
-            Navigator.of(context).pop();
-          }
           Navigator.of(context).pop();
         },
       ),

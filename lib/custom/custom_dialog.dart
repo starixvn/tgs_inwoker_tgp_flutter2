@@ -12,6 +12,7 @@ class CustomDialog extends StatefulWidget {
   final Function onClick;
   final Function? onClick2;
   final int popIndex;
+  final bool onPopBeforeTriggerOnClick;
 
   CustomDialog({
     this.title,
@@ -21,6 +22,7 @@ class CustomDialog extends StatefulWidget {
     required this.onClick,
     this.onClick2,
     this.popIndex = 1,
+    this.onPopBeforeTriggerOnClick = false,
   });
 
   @override
@@ -126,6 +128,7 @@ class _CustomDialogState extends BaseState<CustomDialog> {
           setState(() {
             isButtonClicked = true;
           });
+          if (widget.onPopBeforeTriggerOnClick) Navigator.of(context).pop();
           widget.onClick();
         },
         title: widget.buttonText1!,

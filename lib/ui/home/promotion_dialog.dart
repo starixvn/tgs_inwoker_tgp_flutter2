@@ -18,10 +18,7 @@ class PromotionDialog extends StatefulWidget {
   final List<Promotion> promotionList;
   final Function onClick;
 
-  PromotionDialog({
-    required this.promotionList,
-    required this.onClick
-  });
+  PromotionDialog({required this.promotionList, required this.onClick});
 
   @override
   _PromotionDialogState createState() => _PromotionDialogState();
@@ -29,6 +26,14 @@ class PromotionDialog extends StatefulWidget {
 
 class _PromotionDialogState extends BaseState<PromotionDialog> {
   PromotionViewModel _vm = PromotionViewModel();
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      widget.onClick();
+    });
+    super.dispose();
+  }
 
   Widget build(BuildContext context) {
     return ProviderWidget<PromotionViewModel>(
@@ -123,29 +128,26 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         borderRadius: BorderRadius.circular(8),
         child: imageUrl.isEmpty
             ? Container(
-          color: CustomColor.very_light_pink_four,
-        )
+                color: CustomColor.very_light_pink_four,
+              )
             : CachedNetworkImage(
-            height: 150.auto,
-            placeholder: (context, url) =>
-                Container(
-                  width: 375,
-                  height: 150.auto,
-                  color: CustomColor.very_light_pink_four,
-                ),
-            imageUrl: imageUrl,
-            errorWidget: (context, url, error) =>
-                Container(
-                  color: CustomColor.very_light_pink_four,
-                ),
-            //handling error
-            fit: BoxFit.fill),
+                height: 150.auto,
+                placeholder: (context, url) => Container(
+                      width: 375,
+                      height: 150.auto,
+                      color: CustomColor.very_light_pink_four,
+                    ),
+                imageUrl: imageUrl,
+                errorWidget: (context, url, error) => Container(
+                      color: CustomColor.very_light_pink_four,
+                    ),
+                //handling error
+                fit: BoxFit.fill),
       ),
     );
   }
 
-  _buildDoneButton() =>
-      ColorButton(
+  _buildDoneButton() => ColorButton(
         onClick: () {
           widget.onClick();
         },
@@ -156,40 +158,37 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         height: context.screenHeight / 18,
       );
 
-
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
-          builder: (BuildContext context) =>
-              CustomDialog(
-                title: null,
-                description: getTranslatedText("join_success"),
-                buttonText1: getTranslatedText("confirm"),
-                onClick: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-              ),
+          builder: (BuildContext context) => CustomDialog(
+            title: null,
+            description: getTranslatedText("join_success"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+            },
+          ),
         );
       });
     }, onError: (errorMsg) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         showDialog(
           context: context,
-          builder: (BuildContext context) =>
-              CustomDialog(
-                title: null,
-                description: getTranslatedText("promotion_joined"),
-                buttonText1: getTranslatedText("confirm"),
-                onClick: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-              ),
+          builder: (BuildContext context) => CustomDialog(
+            title: null,
+            description: getTranslatedText("promotion_joined"),
+            buttonText1: getTranslatedText("confirm"),
+            onClick: () {
+              Navigator.pop(
+                context,
+              );
+            },
+          ),
         );
       });
     });
