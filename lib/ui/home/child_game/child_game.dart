@@ -296,7 +296,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     if (!_focusNode.hasFocus) {
       isSearching = false;
       isVisibleSuggestionList = false;
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         searchController.text = "";
       });
     }

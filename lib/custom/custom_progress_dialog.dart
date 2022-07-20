@@ -15,7 +15,7 @@ class ProgressDialog {
   }
 
   ProgressDialog.hide() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_progressDialog != null) _progressDialog!.dismiss();
     });
   }

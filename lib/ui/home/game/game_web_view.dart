@@ -46,7 +46,7 @@ class _GameWebState extends BaseState<GameWeb> {
   @override
   void initState() {
     lobbyUrl = EnvironmentConfig.url;
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.gameType == null || widget.gameId == 1800001 || widget.gameId == 1800002 || widget.gameId == 1800003)
         _vm.getGameUrl(widget.gamePlatformCode!, widget.gameId!, lobbyUrl!);
       else
@@ -237,7 +237,7 @@ class _GameWebState extends BaseState<GameWeb> {
   }
 
   _navigateToMaintenance() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
     });
   }

@@ -58,7 +58,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.htmlText?.isNotEmpty ?? false)
         Navigator.push(
             context,
@@ -204,7 +204,7 @@ class _DepositOrderViewState extends BaseState<DepositOrderView> {
 
   _handleApiState() {
     handleApiState(_vm.uploadDepositImageApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

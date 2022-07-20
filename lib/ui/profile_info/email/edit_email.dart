@@ -31,7 +31,7 @@ class _EditEmailState extends BaseState<EditEmail> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -159,7 +159,7 @@ class _EditEmailState extends BaseState<EditEmail> {
 
   _handleApiState() {
     handleApiState(_vm.getEmailCodeApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
@@ -167,7 +167,7 @@ class _EditEmailState extends BaseState<EditEmail> {
       });
     });
     handleApiState(_vm.emailVerifyApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (currIndex == 0) {
           setState(() {
             _clearTextField();

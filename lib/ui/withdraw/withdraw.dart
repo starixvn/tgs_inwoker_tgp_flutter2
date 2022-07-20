@@ -51,7 +51,7 @@ class _WithdrawState extends BaseState<Withdraw> {
     await _checkUserProfile();
     _vm.getTurnoverAmount();
     _vm.getWithdrawalInfoList();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getBankText();
     });
   }
@@ -408,7 +408,7 @@ class _WithdrawState extends BaseState<Withdraw> {
     //fetch bank list
 
     // if (_vm.userProfile.email == null && (_vm.config?.emailVerification ?? true)) {
-    //   WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) async {
     //     result = await Navigator.push(
     //       context,
     //       new MaterialPageRoute(
@@ -436,7 +436,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _showDialog();
         _amountController.clear();
         // _payPasswordController.clear();

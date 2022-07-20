@@ -29,7 +29,7 @@ class _WechatState extends BaseState<Wechat> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -115,7 +115,7 @@ class _WechatState extends BaseState<Wechat> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var wechat = _vm.userProfile.wechat;
       setState(() {
         if (wechat != null) {

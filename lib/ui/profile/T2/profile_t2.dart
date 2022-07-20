@@ -200,7 +200,7 @@ class _ProfileT2State extends BaseState<ProfileT2> {
   }
 
   _navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
       Navigator.of(context)
           .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);

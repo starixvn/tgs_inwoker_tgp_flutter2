@@ -104,7 +104,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
   }
 
   _navigateToPhoneReVerification(List<String> list) {
-     WidgetsBinding.instance!.addPostFrameCallback((_) {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
     setState(() {
       currentTabIndex = 2;
     });

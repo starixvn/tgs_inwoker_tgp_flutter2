@@ -27,7 +27,7 @@ class _TelegramState extends BaseState<Telegram> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -115,7 +115,7 @@ class _TelegramState extends BaseState<Telegram> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var _telegram = _vm.userProfile.telegram;
       setState(() {
         if (_telegram != null) {

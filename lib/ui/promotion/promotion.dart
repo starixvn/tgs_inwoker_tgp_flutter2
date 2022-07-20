@@ -122,7 +122,7 @@ class _PromotionState extends BaseState<Promotion> {
 
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
@@ -138,7 +138,7 @@ class _PromotionState extends BaseState<Promotion> {
         );
       });
     }, onError: (errorMsg) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

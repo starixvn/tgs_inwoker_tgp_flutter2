@@ -88,7 +88,7 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
         ),
       );
 
-  _navigate() => WidgetsBinding.instance!.addPostFrameCallback((_) {
+  _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.navigationID == 0) {
           Navigator.of(context).pushNamed("/${widget.routePath}");
         } else {

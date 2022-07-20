@@ -27,7 +27,7 @@ class _ViberState extends BaseState<Viber> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -115,7 +115,7 @@ class _ViberState extends BaseState<Viber> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var _viber = _vm.userProfile.viber;
       setState(() {
         if (_viber != null) {

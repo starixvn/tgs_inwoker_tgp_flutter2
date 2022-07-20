@@ -233,7 +233,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   _handleApiState() {
     handleApiState(_vm.getReVerifyCodeApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
@@ -251,13 +251,13 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
     });
   }
 
   _navigateToAddCard() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
           context,
           MaterialPageRoute(

@@ -30,7 +30,7 @@ class _AffiliateState extends BaseState<Affiliate> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getAffiliateUrl();
     });
     super.initState();

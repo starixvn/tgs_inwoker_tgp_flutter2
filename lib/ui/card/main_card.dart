@@ -326,7 +326,7 @@ class _MainCardState extends BaseState<MainCard> {
       if (!isInitLoading) {
         isInitLoading = true;
       }
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _checkBankCardListLength(); //check card list every time fetched
       });
     });

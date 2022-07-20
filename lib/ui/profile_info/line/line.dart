@@ -27,7 +27,7 @@ class _LineState extends BaseState<Line> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -116,7 +116,7 @@ class _LineState extends BaseState<Line> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var _line = _vm.userProfile.line;
       setState(() {
         if (_line != null) {

@@ -37,7 +37,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getReport();
     });
     super.initState();
@@ -235,7 +235,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
     handleApiState(_vm.getAccountReportApiState,
         isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(

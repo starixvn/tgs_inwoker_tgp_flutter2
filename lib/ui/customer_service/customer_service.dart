@@ -28,7 +28,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.getBrandCommunication();
       _vm.getLiveChatUrl(getCurrentLanguage().apiCode ?? "en-US");
     });

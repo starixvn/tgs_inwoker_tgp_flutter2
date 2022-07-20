@@ -28,7 +28,7 @@ class _WhatsappState extends BaseState<Whatsapp> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -119,7 +119,7 @@ class _WhatsappState extends BaseState<Whatsapp> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var _whatsapp = _vm.userProfile.whatsapp;
       setState(() {
         if (_whatsapp != null) {

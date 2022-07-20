@@ -30,7 +30,7 @@ class _ProfileState extends BaseState<Profile> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
         _vm.computeTotalBalance();
       } else  {
@@ -150,7 +150,7 @@ class _ProfileState extends BaseState<Profile> {
   }
 
   _navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
       Navigator.of(context)
           .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);

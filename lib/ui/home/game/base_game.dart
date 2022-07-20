@@ -138,7 +138,7 @@ class _BaseGameState extends BaseState<BaseGame> {
           currentGamePlatformCode, widget.vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
     } else if (_isChildGame()) {
       //navigate to child game
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -152,7 +152,7 @@ class _BaseGameState extends BaseState<BaseGame> {
     } else if (currentGameType == GameType.Lottery || currentGameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await widget.vm.getGameList(currentGamePlatformCode, currentGameType);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
         Navigator.push(
             context,
@@ -167,7 +167,7 @@ class _BaseGameState extends BaseState<BaseGame> {
       });
     } else {
       //navigate to game web
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
         Navigator.push(
             context,
@@ -204,7 +204,7 @@ class _BaseGameState extends BaseState<BaseGame> {
       if (widget.vm.url == null)
         _navigateToMaintenance();
       else if (_isSWGame() || _isSGGame() || _isTcgGame())
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           launch(widget.vm.url!);
         });
     }, onError: (_) {
@@ -215,7 +215,7 @@ class _BaseGameState extends BaseState<BaseGame> {
       if (widget.vm.url == null)
         _navigateToMaintenance();
       else if (_isSWGame() || _isSGGame() || _isTcgGame())
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           launch(widget.vm.url!);
         });
     }, onError: (_) {
@@ -224,7 +224,7 @@ class _BaseGameState extends BaseState<BaseGame> {
   }
 
   _navigateToMaintenance() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_isSWGame() || _isSGGame() || _isTcgGame())
         Navigator.of(context).pushNamed(RoutePath.maintenance);
       else

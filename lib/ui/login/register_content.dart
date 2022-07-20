@@ -317,7 +317,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       if (result.isExist) {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
           if (_registerShowPhone()) _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
           _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
@@ -329,7 +329,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.myHome);
     });
   }

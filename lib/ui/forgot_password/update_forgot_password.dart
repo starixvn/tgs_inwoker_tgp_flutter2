@@ -151,7 +151,7 @@ class _UpdateForgotPasswordState extends BaseState<UpdateForgotPassword> {
   _handleApiState() {
     handleApiState(_vm.resetPasswordApiState, onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         var count = 0;
         Navigator.popUntil(context, (route) {
           return count++ == 2;

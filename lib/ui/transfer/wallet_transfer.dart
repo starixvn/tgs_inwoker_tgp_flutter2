@@ -422,7 +422,7 @@ class _WalletTransferState extends BaseState<WalletTransfer>
         onSuccess: () {
       CustomToast.show(getTranslatedText("success"));
 
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         clearData();
       });
     });

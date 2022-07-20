@@ -405,7 +405,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _handleApiState() {
     handleApiState(_vm.addBankCardApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pop(true);
       });
     });

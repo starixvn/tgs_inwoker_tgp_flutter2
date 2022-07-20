@@ -113,7 +113,7 @@ class _DepositState extends BaseState<Deposit> {
 
   _displayDepositDialog() {
     _vm.getDepositDialog();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.config?.depositNotification ?? false) {
         /*if (EnvironmentConfig.brandName == "GMO") {
           _showDialog("bank_transferring_notification_content_GMO");

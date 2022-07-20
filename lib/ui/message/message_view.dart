@@ -26,7 +26,7 @@ class _MessageViewState extends BaseState<MessageView> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getMessageList();
     });
@@ -137,7 +137,7 @@ class _MessageViewState extends BaseState<MessageView> {
 
   _handleApiState() {
     handleApiState(_vm.getMessageListApiState, isAutoHideLoading: false, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (isLoading) {
           setState(() {
             isLoading = false;

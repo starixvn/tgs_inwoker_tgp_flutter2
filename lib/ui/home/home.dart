@@ -85,7 +85,7 @@ class _HomeState extends BaseState<Home> {
     _vm.getUserDetails();
     getLanguage();
     randomNumber = _randomGenerator();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.config?.homePagePromoRoulette ?? false)
         _displayRouletteDialog();
       else
@@ -363,7 +363,7 @@ class _HomeState extends BaseState<Home> {
         navigateToLogin();
         _vm.markIsNotLogin();
       } else if (_vm.isExpired) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           _displayLoginDialog();
         });
       }

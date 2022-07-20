@@ -192,7 +192,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
       );
 
   _navigateToGameWeb(Game game) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
       Navigator.push(
           context,

@@ -24,7 +24,7 @@ class _BirthdateState extends BaseState<Birthdate> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -142,7 +142,7 @@ class _BirthdateState extends BaseState<Birthdate> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var _birthdate = _vm.userProfile.birthdate;
       setState(() {
         if (_birthdate != null && _birthdate.isNotEmpty) {

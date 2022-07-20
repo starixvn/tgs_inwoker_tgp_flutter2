@@ -1,9 +1,7 @@
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -12,6 +10,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_item_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class GameT3 extends StatefulWidget {
   final Function? onPauseBgMusic;
@@ -78,7 +77,7 @@ class _GameT3State extends BaseState<GameT3> {
                               onResumeBgMusic: () =>
                                   (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                               onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
-                          vm: widget.vm,
+                              vm: widget.vm,
                             ))),
                 child: Container(
                   width: context.screenWidth / 2 - 15.auto,
@@ -118,33 +117,35 @@ class _GameT3State extends BaseState<GameT3> {
     return Container(
       height: 260.auto,
       margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
-      child: StaggeredGridView.countBuilder(
+      child: StaggeredGrid.count(
         crossAxisCount: 2,
-        itemCount: widget.vm.gameListT3!.length,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) => InkWell(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GameItemT3(
-                        gamePlatformCode: "",
-                        gameType: widget.vm.gameListT3![index],
-                        index: index,
-                        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                        onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
-                    vm: widget.vm,
-                      ))),
-          child: (widget.vm.config?.homePageAnimated ?? false)
-              ? Image.asset(
-                  _getFullGameTabImagePath(widget.vm.gameListT3![index].getImagePath()),
-                )
-              : Stack(
-                  children: [
-                    Image.asset(
-                      _getFullGameTabImagePath(widget.vm.gameListT3![index].getImagePath()),
-                    ),
-                    Positioned(
+        mainAxisSpacing: 15.auto,
+        crossAxisSpacing: 15.auto,
+        children: List.generate(
+          widget.vm.gameListT3!.length,
+          (index) => InkWell(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GameItemT3(
+                          gamePlatformCode: "",
+                          gameType: widget.vm.gameListT3![index],
+                          index: index,
+                          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                          onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
+                          vm: widget.vm,
+                        ))),
+            child: (widget.vm.config?.homePageAnimated ?? false)
+                ? Image.asset(
+                    _getFullGameTabImagePath(widget.vm.gameListT3![index].getImagePath()),
+                  )
+                : Stack(
+                    children: [
+                      Image.asset(
+                        _getFullGameTabImagePath(widget.vm.gameListT3![index].getImagePath()),
+                      ),
+                      Positioned(
                         bottom: 20.auto,
                         left: 60.auto,
                         child: Container(
@@ -158,13 +159,12 @@ class _GameT3State extends BaseState<GameT3> {
                             stepGranularity: 1,
                             style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
                           ),
-                        )),
-                  ],
-                ),
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
         ),
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-        mainAxisSpacing: 15.auto,
-        crossAxisSpacing: 15.auto,
       ),
     );
   }

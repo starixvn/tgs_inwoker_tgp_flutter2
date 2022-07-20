@@ -34,7 +34,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
   @override
   void initState() {
     display = _vm.config?.phonePrefix ?? "+852";
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -198,7 +198,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
 
   _handleApiState() {
     handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;
@@ -208,7 +208,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () {
       if (currIndex == 0) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             _clearTextField();
             currIndex = 1;

@@ -33,7 +33,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
   @override
   void initState() {
     if (widget.isShowCS) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _vm.getBrandCommunication();
         _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
       });
@@ -41,12 +41,12 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
 
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

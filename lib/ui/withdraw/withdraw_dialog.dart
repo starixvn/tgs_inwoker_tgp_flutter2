@@ -47,12 +47,14 @@ class WithdrawDialog extends StatelessWidget {
                 ),
               ),
               _dialogText(),
-              FlatButton(
-                minWidth: context.screenWidth / 3.5,
-                height: context.screenHeight / 15,
+              TextButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(45.auto),
+                    )),
+                    minimumSize: MaterialStateProperty.all(Size(context.screenWidth / 3.5, context.screenHeight / 15))),
                 onPressed: () => {Navigator.of(context).pop()},
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-                padding: EdgeInsets.all(0.0),
                 child: Ink(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(

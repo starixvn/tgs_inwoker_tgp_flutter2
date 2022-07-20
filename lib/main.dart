@@ -167,7 +167,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       );
       _assetsAudioPlayer.pause();
     }
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -324,13 +324,15 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     return ScrollConfiguration(
       behavior: MyBehavior(),
       child: Scaffold(
-        body: Stack(children: [
-          Center(
-            child: _page[currentBottomIndex],
-          ),
-          _buildOverlay(),
-          _buildMenu()
-        ]),
+        body: Stack(
+          children: [
+            Center(
+              child: _page[currentBottomIndex],
+            ),
+            _buildOverlay(),
+            _buildMenu()
+          ],
+        ),
         bottomNavigationBar: ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
                 EnvironmentConfig.dark_mode)
             ? Container(

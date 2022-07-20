@@ -445,13 +445,13 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
       );
 
   navigateToPromo() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.promotion);
     });
   }
 
   navigateToPhoneVerification() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // Navigator.of(context).pushNamed(RoutePath.phoneVerification);
       Navigator.push(
         context,

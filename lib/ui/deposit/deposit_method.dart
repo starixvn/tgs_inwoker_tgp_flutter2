@@ -64,7 +64,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
   void initState() {
     _vm = DepositMethodViewModel(widget.depositMethodList!);
     if (_vm.depositMethodList!.isNotEmpty) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         onSelectedMethod(_vm.depositMethodList!.keys.first);
       });
     }
@@ -892,12 +892,12 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
 
     handleApiState(_vm.getManualDepositIdApiState, isRequireResult: true, onSuccess: (result) {
       paymentChannelId = result;
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         ProgressDialog.show(context, _vm.brandLogoUrl);
       });
     });
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(
@@ -939,7 +939,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           depositRedirect: _vm.help2PayDepositOrderApiState.result,
           exchangeRate: _vm.exchangeRate,
           expectedAmount: _calculateExpectedAmount());*/
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         await _vm.getHelp2PayHtmlText(_vm.help2PayDepositOrderApiState.result.paymentUrl);
       });
     });
@@ -949,7 +949,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
           depositRedirect: _vm.help2PayDepositOrderApiState.result,
           exchangeRate: _vm.exchangeRate,
           expectedAmount: _calculateExpectedAmount());*/
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(
@@ -966,7 +966,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     });
 
     handleApiState(_vm.uploadDepositImageApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
@@ -1010,7 +1010,7 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
     String? transferName,
     String? htmlText,
   }) =>
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Navigator.push(
             context,
             MaterialPageRoute(

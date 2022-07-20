@@ -45,7 +45,7 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
     );
   }
 
-  _navigate() => WidgetsBinding.instance!.addPostFrameCallback((_) {
+  _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/${widget.routePath}");
       });
 }

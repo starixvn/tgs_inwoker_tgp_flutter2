@@ -38,7 +38,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   @override
   void initState() {
     display = _vm.config?.phonePrefix ?? "+852";
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -131,7 +131,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
                 ? Navigator.of(context).pushNamed("/customer_service")
                 : Navigator.of(context)
                     .pushNamed(RoutePath.editPhone)
-                    .then((value) => WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    .then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {
                           _getUserProfile();
                         }));
           },
@@ -225,7 +225,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _handleApiState() {
     handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;

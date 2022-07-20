@@ -166,7 +166,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
 
   _handleApiState() {
     handleApiState(_vm.getForgotPasswordCodeApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         CustomToast.show(getTranslatedText("verification_code_success"));
         setState(() {
           isOtpCountdown = true;

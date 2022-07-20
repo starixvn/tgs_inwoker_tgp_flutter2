@@ -92,14 +92,14 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
 
   _onClick() {
     if (widget.vm.userProfile == null) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/login");
       });
       return;
     } else if (widget.promotion.promotionType == "FirstDeposit" ||
         widget.promotion.promotionType == "DailySecondDeposit" ||
         widget.promotion.promotionType == "DailyFirstDeposit") {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed(RoutePath.deposit);
       });
     } else {

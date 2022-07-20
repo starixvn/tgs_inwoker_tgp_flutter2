@@ -25,7 +25,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0
+
   build_runner: ^2.1.5
   json_serializable: ^6.0.1
   http: ^0.13.4
@@ -35,13 +35,13 @@ dependencies:
   auto_size_text: ^3.0.0
   fluttertoast: ^8.0.0
   marquee: ^2.2.0
-  outline_gradient_button: ^1.0.0+2
-  flutter_svg: ^0.23.0+1
+  outline_gradient_button: ^2.0.0+1
+  flutter_svg: ^1.1.1+1
   pull_to_refresh: ^2.0.0
   flutter_inappwebview: ^5.3.2
   ndialog: ^4.0.1
   cached_network_image: ^3.1.0+1
-  flutter_html: ^2.1.5
+  flutter_html: ^3.0.0-alpha.5
   animated_widgets: ^1.0.6
   image_picker: ^0.8.2
   flutter_launcher_icons: ^0.9.2
@@ -50,7 +50,7 @@ dependencies:
 
   qr_flutter: ^4.0.0
   flutter_switch: ^0.3.2
-  simple_html_css: ^3.0.1+1
+  simple_html_css: ^4.0.0
 
   #api:
   # path: ../api
@@ -65,19 +65,24 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_staggered_grid_view: ^0.4.0
   flutter_image_slideshow: ^0.1.1
   dotted_border: ^2.0.0+1
   carousel_slider: ^4.0.0
   url_launcher: ^6.0.17
-  assets_audio_player: ^3.0.4
+  assets_audio_player: ^3.0.5
+  archive: ^3.3.1
+  async: ^2.8.2
+  intl: ^0.17.0
+  flutter_staggered_grid_view: ^0.6.2
+  webview_flutter: ^3.0.4
+
 
   #easy_gradient_text: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  analyzer: ^2.8.0
+  analyzer: ^4.2.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -129,6 +134,7 @@ flutter:
     - images/contact/
     - images/login_app_bar/
     - images/roulette/
+    - images/T10/
 
     - i18n/
     - features/

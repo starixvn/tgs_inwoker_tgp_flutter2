@@ -27,7 +27,7 @@ class _MessengerState extends BaseState<Messenger> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
     super.initState();
@@ -116,7 +116,7 @@ class _MessengerState extends BaseState<Messenger> {
       );
 
   _getUserProfile() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var _messenger = _vm.userProfile.facebookMessenger;
       setState(() {
         if (_messenger != null) {

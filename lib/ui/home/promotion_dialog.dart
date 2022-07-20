@@ -29,7 +29,7 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onClick();
     });
     super.dispose();
@@ -160,7 +160,7 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
 
   _handleApiState() {
     handleApiState(_vm.joinPromotionApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(
@@ -176,7 +176,7 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         );
       });
     }, onError: (errorMsg) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

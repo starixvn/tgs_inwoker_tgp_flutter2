@@ -140,7 +140,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
         ),
       );
 
-  _navigate(String routePath, int navigationID) => WidgetsBinding.instance!.addPostFrameCallback((_) {
+  _navigate(String routePath, int navigationID) => WidgetsBinding.instance.addPostFrameCallback((_) {
         if (routePath == "main_card" &&
             (widget.config?.addCardNotAllowedEditDelete ?? false) &&
             (widget.bankCardList?.isEmpty ?? false))

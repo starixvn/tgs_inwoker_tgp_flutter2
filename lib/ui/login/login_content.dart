@@ -227,7 +227,7 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
   _navigateToHome() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("login_later", true);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => MyHomePage(

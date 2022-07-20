@@ -35,7 +35,7 @@ class _CustomDialogState extends BaseState<CustomDialog> {
   @override
   void dispose() {
     if (!isButton2Clicked && !isButtonClicked) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.popIndex == 1)
           widget.onClick();
         else if (widget.popIndex == 2) widget.onClick2!();

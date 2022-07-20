@@ -51,13 +51,13 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         if (isAutoHideLoading) ProgressDialog.hide();
         if (eventResult.errorCode == 210) {
           UserRepository.getSingleton().clearSession();
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
             Navigator.of(context).pushNamed(RoutePath.blacklistedUser);
           });
         } else if (eventResult.errorMsgId != null) {
           if (eventResult.errorMsgId == 'UnderMaintenance') {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
               if (isMaintenanceDialog) {
                 showApiErrorMessageInDialog(eventResult);
               } else {
@@ -72,7 +72,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           _showErrorMessage(eventResult);
         }
       } else if (eventResult.isMaintenance && !isLogoutApiState) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => Maintenance(
@@ -253,7 +253,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
   }
 
   navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }

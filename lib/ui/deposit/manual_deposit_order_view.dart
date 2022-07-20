@@ -326,7 +326,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
 
   _handleApiState() {
     handleApiState(_vm.uploadDepositImageApiState, onSuccess: () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
           builder: (BuildContext context) => CustomDialog(

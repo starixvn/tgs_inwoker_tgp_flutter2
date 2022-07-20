@@ -65,7 +65,7 @@ class _ChildGameSuggestionState extends BaseState<ChildGameSuggestion> {
       );
 
   _navigateToGameWeb(Game game) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => GameWeb(gamePlatformCode: game.gamePlatformCode, gameId: game.id,)));
     });
   }

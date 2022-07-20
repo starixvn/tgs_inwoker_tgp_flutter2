@@ -31,7 +31,7 @@ class TransferReportViewState extends BaseState<TransferReportView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getReport();
     });
     super.initState();

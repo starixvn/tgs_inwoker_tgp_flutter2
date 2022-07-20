@@ -32,7 +32,7 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
 
   void initState() {
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getReport();
     });
     super.initState();

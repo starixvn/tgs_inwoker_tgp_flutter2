@@ -21,7 +21,7 @@ class _SplashState extends BaseState<Splash> {
 
   @override
   void initState() {
-   /* WidgetsBinding.instance!.addPostFrameCallback((_) {
+   /* WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.getAuthToken();
       _vm.getApiError();
       _vm.getBrandLogo();
@@ -82,7 +82,7 @@ class _SplashState extends BaseState<Splash> {
   }
 
   _navigateToHome() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.myHome);
     });
   }
