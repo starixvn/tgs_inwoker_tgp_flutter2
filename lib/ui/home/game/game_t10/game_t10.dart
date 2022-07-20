@@ -4,6 +4,7 @@ import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_item_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t10/game_item_t10.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
@@ -50,9 +51,9 @@ class _GameT10State extends BaseState<GameT10> {
                 children: [
                   Container(
                     height: 40.auto,
-                    margin: EdgeInsets.only(right: 5.auto),
+                    margin: EdgeInsets.symmetric(horizontal: 5.auto),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: CustomColor.theme_button_color,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListView(
@@ -94,34 +95,25 @@ class _GameT10State extends BaseState<GameT10> {
         _onTabClick(tabIndex, gameType);
       },
       child: Container(
-          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
-          decoration: tabIndex == currentTabIndex
-              ? BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('images/game/T10/button.png'),
-                    fit: BoxFit.fill,
-                  ),
-                )
-              : BoxDecoration(),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.only(bottom: 5.auto),
-                child: AutoSizeText(
-                  gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: tabIndex == currentTabIndex ? Colors.white : Color(0xffA0A3B2)),
-                  minFontSize: 2,
-                  maxFontSize: 13,
-                  stepGranularity: 1,
-                  maxLines: 2,
-                ),
-              ),
-            ],
-          )),
+        height: 27.auto,
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                  color: tabIndex == currentTabIndex ? Color(0xffebde1d) : Colors.transparent,
+                  width: 3,
+                ))),
+        alignment: Alignment.center,
+        child: AutoSizeText(
+          gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: tabIndex == currentTabIndex ? Color(0xffebde1d) : Colors.white),
+          minFontSize: 2,
+          maxFontSize: 13,
+          stepGranularity: 1,
+          maxLines: 2,
+        ),
+      ),
     );
   }
 
