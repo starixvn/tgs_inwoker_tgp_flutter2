@@ -27,7 +27,8 @@ class RegisterContent extends StatefulWidget {
   _RegisterContentState createState() => _RegisterContentState();
 }
 
-class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKeepAliveClientMixin {
+class _RegisterContentState extends BaseState<RegisterContent>
+    with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
   var username = TextEditingController(),
       password = TextEditingController(),
@@ -35,7 +36,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       pay = TextEditingController(),
       confirmPay = TextEditingController(),
       invitationCode = TextEditingController(),
-      phone = TextEditingController();
+      phone = TextEditingController(),
+      email = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   var _vm;
   bool isOtpEnabled = false, isOtpCountdown = false;
@@ -71,6 +73,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                 _buildConfirmPasswordTextFormField(),
                 //_buildPayPasswordTextFormField(),
                 if (_registerShowPhone()) _buildPhoneTextFormField(),
+                if (_registerShowEmail()) _buildEmailTextFormField(),
                 _buildPromotionCodeTextFormField(),
                 _buildRegisterTermsText(),
                 _buildRegisterButton()
@@ -130,7 +133,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           textInputType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.next,
           onShowPassword: () {
-            setState(() => this._obscureConfirmPassword = !this._obscureConfirmPassword);
+            setState(() =>
+                this._obscureConfirmPassword = !this._obscureConfirmPassword);
           },
           obscurePassword: _obscureConfirmPassword,
         ),
@@ -154,7 +158,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       );
 
   _buildPhoneTextFormField() => Container(
-        margin: EdgeInsets.only(top: 15.auto),
+        margin: EdgeInsets.only(top: 10.auto),
         child: LoginPhoneTextFormField(
           onChanged: (value) {},
           onFieldSubmitted: (value) {},
@@ -164,6 +168,23 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           enabled: true,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
+        ),
+      );
+
+  _buildEmailTextFormField() => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: LoginTextFormField(
+          icon: SvgPicture.asset(
+            "images/login/login_email.svg",
+            height: 20.auto,
+          ),
+          hintText: getTranslatedText("email_hint"),
+          //onChanged: (value) => null,
+          //onFieldSubmitted: (value) => null,
+          controller: email,
+          width: context.screenWidth,
+          textInputType: TextInputType.name,
+          textInputAction: TextInputAction.next,
         ),
       );
 
@@ -213,7 +234,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                           value: value,
                           child: Text(
                             getTranslatedText(value),
-                            style: TextStyle(color: CustomColor.theme_title_text_color),
+                            style: TextStyle(
+                                color: CustomColor.theme_title_text_color),
                           ),
                         );
                       }).toList(),
@@ -235,7 +257,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   _buildRegisterButton() => Container(
         margin: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
         child: ColorButton(
-          title: getTranslatedText("register"),
+          title: getTranslatedText(_customFlowForIDR() ? "next" : "register"),
           onClick: () {
             _register();
           },
@@ -254,7 +276,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                 value: this._isTermsChecked,
                 checkColor: Colors.white,
                 activeColor: Colors.black,
-                fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
+                fillColor:
+                    MaterialStateProperty.all(CustomColor.theme_button_color),
                 onChanged: (val) => this.setState(() {
                   this._isTermsChecked = !this._isTermsChecked;
                 }),
@@ -264,7 +287,9 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
               flex: 9,
               child: Text(
                 getTranslatedText("register_terms"),
-                style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
+                style: TextStyle(
+                    color: CustomColor.theme_text_black_white_color,
+                    fontSize: 12.auto),
               ),
             ),
           ],
@@ -272,7 +297,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       );
 
   _register() {
-    if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
+    if (!validate.validateUsernameLength(username.text) ||
+        !validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
@@ -288,9 +314,14 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    } else if (_registerShowPhone() && !validate.validatePhoneLength(phone.text)) {
+    } else if (_registerShowPhone() &&
+        !validate.validatePhoneLength(phone.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
+      });
+    } else if (_registerShowEmail() && !validate.validateEmail(email.text)) {
+      setState(() {
+        CustomToast.show(getTranslatedText("email_format_error_msg"));
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
@@ -303,24 +334,42 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   }
 
   _registerShowPhone() => _vm.config.registerShowPhone ?? false;
+  _registerShowEmail() => _vm.config.registerShowEmail ?? false;
+
+  _customFlowForIDR() => _vm.config.idrRegisterCustomFlow ?? false;
 
   _handleApiState() {
+    handleApiState(_vm.loginApiState, onSuccess: () {
+      _navigateToHome();
+    });
+
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       else {
-        _vm.login(username.text, password.text, true);
-        _navigateToHome();
+        if (_registerShowPhone() && _registerShowEmail()) {
+          _vm.loginWithPhoneAndEmail(
+              username.text, password.text, phone.text, display!, email.text);
+        } else {
+          _vm.login(username.text, password.text, true);
+        }
       }
     });
-    handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
+    handleApiState(_vm.checkUsernameApiState, isRequireResult: true,
+        onSuccess: (result) {
       if (result.isExist) {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-          if (_registerShowPhone()) _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
-          _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
+          if (_registerShowPhone() && _registerShowEmail()) {
+          } else if (_registerShowPhone()) {
+            _vm.getReVerifyCode(
+                username.text, password.text, display!, phone.text);
+          }
+
+          _vm.register(username.text, password.text, confirmPassword.text,
+              invitationCode.text, agentPlayer == "agent");
         });
       }
     });

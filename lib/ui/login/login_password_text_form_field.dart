@@ -29,15 +29,18 @@ class LoginPasswordTextFormField extends StatefulWidget {
   });
 
   @override
-  _LoginPasswordTextFormFieldState createState() => _LoginPasswordTextFormFieldState();
+  _LoginPasswordTextFormFieldState createState() =>
+      _LoginPasswordTextFormFieldState();
 }
 
-class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormField> {
+class _LoginPasswordTextFormFieldState
+    extends BaseState<LoginPasswordTextFormField> {
   Widget build(BuildContext context) {
     return Container(
       height: 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5.8)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(2)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -62,13 +65,17 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
                 isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
-                hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                hintStyle: TextStyle(
+                    color: CustomColor.very_light_pink_two, fontSize: 13.auto),
                 suffixIcon: IconButton(
                   iconSize: 18.auto,
                   padding: EdgeInsets.only(bottom: 0),
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  icon: Icon(widget.obscurePassword ? Icons.visibility_off : Icons.visibility,
+                  icon: Icon(
+                      widget.obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: CustomColor.very_light_pink_two),
                   onPressed: () => widget.onShowPassword(),
                 ),

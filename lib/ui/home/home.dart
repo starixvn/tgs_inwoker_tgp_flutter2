@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
@@ -20,6 +19,7 @@ import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
+import 'package:tgp_flutter2/ui/home/home_t4.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
@@ -50,7 +50,8 @@ class _HomeState extends BaseState<Home> {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee =
+      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -95,7 +96,8 @@ class _HomeState extends BaseState<Home> {
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    languageCode =
+        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -159,8 +161,11 @@ class _HomeState extends BaseState<Home> {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return HomeT1(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -169,8 +174,11 @@ class _HomeState extends BaseState<Home> {
         );
       case 2:
         return HomeT2(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -179,8 +187,24 @@ class _HomeState extends BaseState<Home> {
         );
       case 3:
         return HomeT3(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          initData: () => _initData(),
+          homeViewModel: _vm,
+          gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
+          gameView: _buildGameView(),
+        );
+      case 4:
+        return HomeT4(
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -189,8 +213,11 @@ class _HomeState extends BaseState<Home> {
         );
       case 8:
         return HomeT8(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -199,8 +226,11 @@ class _HomeState extends BaseState<Home> {
         );
       case 9:
         return HomeT9(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -208,8 +238,11 @@ class _HomeState extends BaseState<Home> {
         );
       case 10:
         return HomeT10(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -218,8 +251,11 @@ class _HomeState extends BaseState<Home> {
         );
       default:
         return HomeT1(
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -338,9 +374,12 @@ class _HomeState extends BaseState<Home> {
     );
   }
 
-  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
+  isShowAnnouncement() =>
+      (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
 
-  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
+  isShowPromotion() =>
+      (_vm.config?.popupPromotion ?? false) &&
+      (_vm.promotionList?.isNotEmpty ?? false);
 
   _randomGenerator() {
     Random _random = new Random();
@@ -373,11 +412,17 @@ class _HomeState extends BaseState<Home> {
     }, onLogout: () {
       ProgressDialog.hide();
     });
-    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getTodayRouletteResultApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getRouletteApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBasicInfoApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAnnouncementApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBannerApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getTodayRouletteResultApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getRouletteApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }
