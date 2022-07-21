@@ -1,15 +1,13 @@
 import 'dart:ui';
 
 import 'package:api/entity/env_features_config.dart';
-import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
-import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 
 class GameItemT8 extends StatefulWidget {
   final ScrollController? controller;
@@ -37,13 +35,9 @@ class GameItemT8State extends BaseState<GameItemT8> {
 
   double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom;
 
-  //ScrollController? controller;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      //padding: EdgeInsets.only(),
-      //decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),
           controller: widget.controller,
@@ -59,27 +53,6 @@ class GameItemT8State extends BaseState<GameItemT8> {
                   child: _buildImageLayout(item)))
               .toList()),
     );
-  }
-
-  _getImagePath(GameProvider2 gameProvider) {
-    var imagePath;
-    var gameType = gameProvider.gameType?.getImagePath();
-    var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var fullPath = "${gameType}_${gamePlatformCode}";
-    imagePath = "images/game/T8/${gameType}-$gamePlatformCode.jpg";
-    return imagePath;
-  }
-
-  _isNeedHandleLanguage(String path) {
-    switch (path) {
-      case "sports-saba":
-      case "sports-imes":
-      case "fish-jdb":
-      case "slot-jdb":
-        return true;
-      default:
-        return false;
-    }
   }
 
   _buildImageLayout(GameProvider2 gameProvider) {
@@ -169,14 +142,34 @@ class GameItemT8State extends BaseState<GameItemT8> {
     );
   }
 
-  _buildImage(GameProvider2 gameProvider) => ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Container(
-          alignment: Alignment.center,
-          child: Image.asset(
-            _getImagePath(gameProvider),
-            fit: BoxFit.cover,
-          ),
+  _buildImage(GameProvider2 gameProvider) => Container(
+        alignment: Alignment.center,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: CachedNetworkImage(
+              placeholder: (context, url) => Container(
+                width: context.screenWidth,
+                height: context.screenHeight,
+                color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                child: Center(
+                  child: SizedBox(
+                    height: 50.0,
+                    width: 50.0,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                    ),
+                  ),
+                ),
+              ),
+              imageUrl: getImagePath(gameProvider),
+              errorWidget: (context, url, error) {
+                print(url);
+                return Container(
+                  color: CustomColor.very_light_pink_four,
+                );
+              },
+              //handling error
+              fit: BoxFit.fill),
         ),
       );
 

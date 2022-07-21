@@ -6,19 +6,19 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/report_view.dart';
 
-class MenuItem extends StatefulWidget {
+class MenuItemT2 extends StatefulWidget {
   final String? image;
   final String? text;
   final String? navigationPath;
   final int? navigationID;
 
-  MenuItem({this.image, this.text, this.navigationPath, this.navigationID});
+  MenuItemT2({this.image, this.text, this.navigationPath, this.navigationID});
 
   @override
-  _MenuItemState createState() => _MenuItemState();
+  _MenuItemT2State createState() => _MenuItemT2State();
 }
 
-class _MenuItemState extends BaseState<MenuItem> {
+class _MenuItemT2State extends BaseState<MenuItemT2> {
   var tabIndex;
 
   @override

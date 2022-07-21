@@ -1,10 +1,10 @@
 import 'package:api/entity/env_features_config.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -16,7 +16,8 @@ class GameItemT2 extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final Key key;
 
-  GameItemT2(this.key,{
+  GameItemT2(
+    this.key, {
     this.gameProviderList,
     this.onGameClick,
     this.currGameType,
@@ -73,7 +74,7 @@ class GameItemT2State extends BaseState<GameItemT2> {
             child: ListView(
                 padding: EdgeInsets.only(right: _listViewPaddingRight),
                 controller: widget.controller,
-                children: (widget.gameProviderList ??  [])
+                children: (widget.gameProviderList ?? [])
                     .expand((element) => element)
                     .toList()
                     .map((item) => Container(
@@ -86,17 +87,6 @@ class GameItemT2State extends BaseState<GameItemT2> {
                     .toList()),
           )),
     );
-  }
-
-  _getImagePath(GameProvider2 gameProvider) {
-    var gameType = gameProvider.gameType?.getImagePath();
-    var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var imagePath;
-    if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "images/game/T2/${gameType}-${gamePlatformCode}-hkjp.jpg";
-    else
-      imagePath = "images/game/T2/${gameType}-$gamePlatformCode.jpg";
-    return imagePath;
   }
 
   _buildImageLayout(GameProvider2 gameProvider) {
@@ -112,12 +102,15 @@ class GameItemT2State extends BaseState<GameItemT2> {
           AspectRatio(
             aspectRatio: _imageRatio,
             child: gameProvider.status != 0
-                ? ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      Colors.black,
-                      BlendMode.saturation,
-                    ),
-                    child: _buildImage(gameProvider))
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          Colors.black,
+                          BlendMode.saturation,
+                        ),
+                        child: _buildImage(gameProvider)),
+                  )
                 : _buildImage(gameProvider),
           ),
           Positioned(
@@ -175,11 +168,33 @@ class GameItemT2State extends BaseState<GameItemT2> {
   }
 
   _buildImage(GameProvider2 gameProvider) => Container(
-      alignment: Alignment.center,
-      child: Image.asset(
-        _getImagePath(gameProvider),
-        fit: BoxFit.cover,
-      ));
+        alignment: Alignment.center,
+        child: CachedNetworkImage(
+            placeholder: (context, url) => Container(
+              width: context.screenWidth,
+              height: context.screenHeight,
+              color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+              child: Center(
+                child: SizedBox(
+                  height: 50.0,
+                  width: 50.0,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                  ),
+                ),
+              ),
+            ),
+            imageUrl: getImagePath(gameProvider),
+            errorWidget: (context, url, error) {
+              print(url);
+              return Container(
+                color: CustomColor.very_light_pink_four,
+              );
+            },
+            //handling error
+            fit: BoxFit.fill,
+        ),
+      );
 
   _isSportsHideLogo(String? gamePlatformCode) =>
       (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");

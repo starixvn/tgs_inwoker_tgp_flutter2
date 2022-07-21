@@ -1088,9 +1088,11 @@
   "amount_limit": "Jumlah Batas",
   "deposit_usdt_point":"Jumlah Poin",
   "details": "Perincian",
-  "roulette_prize_win": "Menang",
-  "roulette_prize_lose": "Kehilangan",
+  "roulette_reward": "Selamat atas kemenangan",
   "roulette_is_played_text_1": "Batasi 1 permainan per hari",
   "roulette_is_played_text_2": "Silakan datang lagi besok",
-  "roulette_is_played_text_3": "Klik untuk melihat detail promosi lainnya"
+  "roulette_is_played_text_3": "Klik untuk melihat detail promosi lainnya",
+  "roulette_promo_home": "Beranda Promosi",
+  "roulette_promo_content": "Konten Promosi",
+  "roulette_promo_terms": "S&K Promosi"
 }

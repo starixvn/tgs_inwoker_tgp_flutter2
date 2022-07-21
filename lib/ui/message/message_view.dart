@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -61,11 +60,7 @@ class _MessageViewState extends BaseState<MessageView> {
                         visible: _vm.endRecord ? false : isLoading,
                         child: Container(
                           alignment: Alignment.center,
-                          child: Lottie.asset(
-                            "loading/loading_t${_getLottieLoadingAppendPath()}.json",
-                            width: 100,
-                            height: 100,
-                          ),
+                          child: buildLottie(size: 100.0)
                         )),
                     Visibility(
                         visible: _vm.endRecord && _vm.messageList!.isNotEmpty,
@@ -138,12 +133,6 @@ class _MessageViewState extends BaseState<MessageView> {
       });
       _vm.getMessageList(isLoadMore: true);
     }
-  }
-
-  _getLottieLoadingAppendPath(){
-    if(EnvironmentConfig.dark_mode)
-      return  "8_dark";
-    else return EnvironmentConfig.template_version;
   }
 
   _handleApiState() {

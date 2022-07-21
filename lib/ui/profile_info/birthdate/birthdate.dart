@@ -41,8 +41,7 @@ class _BirthdateState extends BaseState<Birthdate> {
                 onPop: () => Navigator.pop(context, true),
               ),
               body: Container(
-                  child: /*userProfile == null?
-                  Center(child: CircularProgressIndicator(),):*/
+                  child:
                       Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
                 child: Column(

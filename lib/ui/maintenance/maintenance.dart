@@ -1,3 +1,4 @@
+import 'package:api/extension/format.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -26,7 +27,7 @@ class Maintenance extends StatefulWidget {
   _MaintenanceState createState() => _MaintenanceState();
 }
 
-class _MaintenanceState extends BaseState<Maintenance> {
+class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserver {
   var _vm = MaintenanceViewModel();
 
   @override
@@ -38,7 +39,21 @@ class _MaintenanceState extends BaseState<Maintenance> {
       });
     }
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _vm.config == null) {
+      _vm.getEnvFeatures();
+    }
   }
 
   Widget build(BuildContext context) {
@@ -68,10 +83,18 @@ class _MaintenanceState extends BaseState<Maintenance> {
                 children: [
                   _buildText("我们正在维护中，请稍后再试。"),
                   _buildText("如您有任何问题，请联系客服。"),
+                  _buildText(
+                      "维护时间：${Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z")}" +
+                          "~ " +
+                          "${Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z")} (GMT+8)"),
                   _buildText("We are currently under maintenance,\n"
                       "please try again later."),
                   _buildText("If have any questions,", isNeedMargin: false),
                   _buildText("please contact our customer service,"),
+                  _buildText(
+                      "Maintenance time: ${Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z")}" +
+                          "~ " +
+                          "${Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z")} (GMT+8)"),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 40.auto),
                     child: _buildText(

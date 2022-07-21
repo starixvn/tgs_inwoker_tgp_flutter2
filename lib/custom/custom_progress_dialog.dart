@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:lottie/lottie.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
-//import 'package:progress_dialog/progress_dialog.dart';
 
 CustomProgressDialog? _progressDialog;
 
@@ -37,20 +35,11 @@ class ProgressDialog {
                 fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Container(),
               ),
-        //CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_bar_gradient_2))
-        Lottie.asset(
-          "loading/loading_t${_getLottieLoadingAppendPath()}.json",
-          width: 150,
-          height: 150,
+
+        CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
         ),
       ],
     ));
-  }
-
-  _getLottieLoadingAppendPath() {
-    if (EnvironmentConfig.dark_mode)
-      return "8_dark";
-    else
-      return EnvironmentConfig.template_version;
   }
 }

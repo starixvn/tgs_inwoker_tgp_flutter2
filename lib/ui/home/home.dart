@@ -1,12 +1,5 @@
-import 'package:api/entity/game_type.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
@@ -14,14 +7,13 @@ import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
+import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
+import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
@@ -31,17 +23,22 @@ import 'package:tgp_flutter2/ui/home/home_t4.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
-import 'dart:math';
-
 import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/home/roulette_dialog.dart';
+import 'dart:io' show Platform;
+
+import 'dart:math';
 
 class Home extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
 
-  Home({this.isFirstRun = false, this.onPauseBgMusic, this.onResumeBgMusic});
+  Home({
+    this.isFirstRun = false,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+  });
 
   @override
   _HomeState createState() => _HomeState();
@@ -69,8 +66,7 @@ class _HomeState extends BaseState<Home> {
   var _gameViewModel = GameViewModel();
   var randomNumber;
   var _assetsAudioPlayer;
-  var isDisplayingRouletteDialog = true;
-  var onClickFromSmallRoulette = false;
+  var onClickFromSmallRoulette = false, isShowTransferUI = false;
 
   @override
   void initState() {
@@ -85,16 +81,17 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
-    task.add(_vm.getRouletteTodayResult());
+    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
     await Future.wait(task);
     _vm.getUserDetails();
     getLanguage();
     randomNumber = _randomGenerator();
-    //if (_vm.config?.homePagePromoRoulette ?? false) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _displayRouletteDialog();
+      if (_vm.config?.homePagePromoRoulette ?? false)
+        _displayRouletteDialog();
+      else
+        _displayDialog();
     });
-    //}
   }
 
   getLanguage() async {
@@ -108,38 +105,54 @@ class _HomeState extends BaseState<Home> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            appBar: EnvironmentConfig.template_version == 2
-                ? PreferredSize(
-                    child: Container(),
-                    preferredSize: Size.fromHeight(0),
-                  )
-                : CustomLoginAppBar(
-                    onClickLoginButton: () {
-                      Navigator.of(context).pushNamed(RoutePath.login);
-                    },
-                    onClickRegisterButton: () {
-                      Navigator.of(context).pushNamed(RoutePath.register);
-                    },
-                    onClickLogoutButton: () {
-                      _logout();
-                    },
-                    isLogin: _vm.userProfile != null,
-                    brandLogoUrl: _vm.brandLogoUrl,
-                    userProfile: _vm.userProfile,
-                    phone: _vm.phone,
-                    config: _vm.config,
-                    totalBalance: _vm.totalBalance,
-                    brandName: EnvironmentConfig.brandName,
+          return Stack(
+            children: [
+              CustomScaffold(
+                appBar: EnvironmentConfig.template_version == 2
+                    ? PreferredSize(
+                        child: Container(),
+                        preferredSize: Size.fromHeight(0),
+                      )
+                    : CustomLoginAppBar(
+                        onClickLoginButton: () {
+                          Navigator.of(context).pushNamed(RoutePath.login);
+                        },
+                        onClickRegisterButton: () {
+                          Navigator.of(context).pushNamed(RoutePath.register);
+                        },
+                        onClickLogoutButton: () {
+                          _logout();
+                        },
+                        isLogin: _vm.userProfile != null,
+                        brandLogoUrl: _vm.brandLogoUrl,
+                        userProfile: _vm.userProfile,
+                        phone: _vm.phone,
+                        config: _vm.config,
+                        totalBalance: _vm.totalBalance,
+                        //_vm.totalBalance,
+                        brandName: EnvironmentConfig.brandName,
+                        onClickBalance: () {
+                          setState(() {
+                            isShowTransferUI = !isShowTransferUI;
+                          });
+                        },
+                      ),
+                body: Container(
+                  child: Stack(
+                    children: [
+                      _getHomeTemplateView(),
+                      _getSmallRouletteIcon(),
+                    ],
                   ),
-            body: Container(
-              child: Stack(
-                children: [
-                  _getHomeTemplateView(),
-                  _getSmallRouletteIcon(),
-                ],
+                ),
               ),
-            ),
+              BalancePicker(
+                isShow: isShowTransferUI,
+                mainWalletBalance: _vm.totalBalance,
+                walletList: _vm.walletList,
+                gameTypeList: _gameViewModel.balanceGameTypeList,
+              )
+            ],
           );
         });
   }
@@ -157,6 +170,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 2:
         return HomeT2(
@@ -169,6 +183,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 3:
         return HomeT3(
@@ -181,6 +196,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 4:
         return HomeT4(
@@ -193,6 +209,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 8:
         return HomeT8(
@@ -205,6 +222,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       case 9:
         return HomeT9(
@@ -216,6 +234,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          gameView: _buildGameView(),
         );
       case 10:
         return HomeT10(
@@ -228,6 +247,7 @@ class _HomeState extends BaseState<Home> {
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
+          gameView: _buildGameView(),
         );
       default:
         return HomeT1(
@@ -239,14 +259,9 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          gameView: _buildGameView(),
         );
     }
-  }
-
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
-    });
   }
 
   _displayLoginDialog() async {
@@ -277,74 +292,75 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayRouletteDialog() async {
-    await _vm.getRouletteTodayResult();
+    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
     if ((_vm.campaign?.length ?? 0) > 0)
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) => RouletteDialog(
           onTapCloseIcon: () {
-            print("22");
-            if (onClickFromSmallRoulette) {
-              Navigator.pop(context);
-            } else
-              _displayDialog();
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
+            setState(() {
+              onClickFromSmallRoulette = false;
+            });
           },
           userProfile: _vm.userProfile,
           isPlayed: _vm.isRoulettePlayed,
-          getRouletteResult: () => _vm.getRouletteResult(),
+          vm: _vm,
+          // getRouletteResult: () => _vm.getRouletteResult(),
           campaign: _vm.campaign,
         ),
       );
-    setState(() {
-      isDisplayingRouletteDialog = false;
-    });
   }
 
-  _getSmallRouletteIcon() => Positioned(
-        top: context.screenHeight / 5 - 50.auto,
-        left: 0,
-        child: FloatingActionButton(
-          backgroundColor: Colors.transparent,
-          onPressed: () {
-            //prevent click more than once
-            if (!onClickFromSmallRoulette) {
-              _displayRouletteDialog();
-              setState(() {
-                onClickFromSmallRoulette = true;
-              });
-            }
-          },
-          child: Image.asset("images/roulette/small_roulette.png"),
+  _getSmallRouletteIcon() => Visibility(
+        visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
+        child: Positioned(
+          top: context.screenHeight / 5 - 60.auto,
+          left: -5,
+          child: Container(
+            width: context.screenHeight / 10,
+            height: context.screenHeight / 10,
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              onPressed: () {
+                //prevent click more than once
+                if (!onClickFromSmallRoulette) {
+                  _displayRouletteDialog();
+                  setState(() {
+                    onClickFromSmallRoulette = true;
+                  });
+                }
+              },
+              child: Image.asset("images/roulette/small_roulette.png"),
+            ),
+          ),
         ),
       );
 
   _displayDialog() {
-    Navigator.pop(context);
     if (isShowAnnouncement()) {
       _displayMarqueeDialog();
     } else if (isShowPromotion()) _displayPromotionDialog();
   }
 
   _displayMarqueeDialog() {
-    if (isShowAnnouncement()) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context2) => CustomDialog(
-          title: (_vm.marqueeDialog?.localization?.subject ??
-              _vm.marqueeDialog?.subject),
-          description: (_vm.marqueeDialog?.localization?.content ??
-              _vm.marqueeDialog?.content),
-          buttonText1: getTranslatedText("confirm"),
-          onClick: () {
-            if (isShowPromotion()) {
-              _displayPromotionDialog();
-            } else
-              Navigator.of(context2).pop();
-          },
-        ),
-      );
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context2) => CustomDialog(
+        title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+        description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+        buttonText1: getTranslatedText("confirm"),
+        onClick: () {
+          if (isShowPromotion()) {
+            _displayPromotionDialog();
+          } else if(Platform.isAndroid)
+            Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 
   _displayPromotionDialog() {
@@ -376,6 +392,13 @@ class _HomeState extends BaseState<Home> {
     int result = min + _random.nextInt(max - min);
     return result;
   }
+
+  _buildGameView() => BaseGame(
+        vm: _gameViewModel,
+        onRefreshHomePage: () => _initData(),
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+      );
 
   _handleApiState() {
     if (widget.isFirstRun) {

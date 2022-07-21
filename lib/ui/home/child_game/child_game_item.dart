@@ -88,10 +88,13 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
       aspectRatio: 1,
       child: CachedNetworkImage(
           placeholder: (context, url) => Container(
-                color: CustomColor.very_light_pink_four,
+                color: CustomColor.very_light_pink_two,
               ),
           imageUrl: _getImageUrl(),
           //handling error
+          errorWidget: (_, __, ___) => Container(
+            color: CustomColor.very_light_pink_two,
+          ),
           fit: BoxFit.fill),
     );
   }

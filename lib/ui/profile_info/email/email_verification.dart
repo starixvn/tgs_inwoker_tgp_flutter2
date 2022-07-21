@@ -50,9 +50,7 @@ class _EmailVerificationState extends BaseState<EmailVerification> {
                 title: getTranslatedText("email"),
               ),
               body: _vm.userProfile == null
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? buildProgressDialog(_vm.brandLogoUrl)
                   : Container(
                       margin: EdgeInsets.only(
                         left: 10.auto,

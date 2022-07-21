@@ -133,9 +133,6 @@ class _PromotionState extends BaseState<Promotion> {
               Navigator.pop(
                 context,
               );
-              Navigator.pop(
-                context,
-              );
             },
           ),
         );
@@ -149,9 +146,6 @@ class _PromotionState extends BaseState<Promotion> {
             description: getTranslatedText("promotion_joined"),
             buttonText1: getTranslatedText("confirm"),
             onClick: () {
-              Navigator.pop(
-                context,
-              );
               Navigator.pop(
                 context,
               );

@@ -1101,10 +1101,11 @@
   "amount_limit": "Amount Limit",
   "deposit_usdt_point":"Amount",
   "details": "Details",
-  "roulette_prize_win": "Win ",
-  "roulette_prize_lose": "Lose ",
+  "roulette_reward": "Congratulations on winning",
   "roulette_is_played_text_1": "Limit 1 play per day",
   "roulette_is_played_text_2": "Please come again tomorrow",
-  "roulette_is_played_text_3": "Click to see more promotion details"
-
+  "roulette_is_played_text_3": "Click to see more promotion details",
+  "roulette_promo_home": "Promotion Home",
+  "roulette_promo_content": "Promotion Content",
+  "roulette_promo_terms": "Promotion T&C"
 }

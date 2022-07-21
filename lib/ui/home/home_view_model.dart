@@ -2,6 +2,7 @@ import 'package:api/entity/home_banner.dart';
 import 'package:api/entity/main_dialog_content.dart';
 import 'package:api/entity/marquees.dart';
 import 'package:api/entity/promotion.dart';
+import 'package:api/entity/wallet.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/game_provider.dart';
 import 'package:api/api.dart';
@@ -50,7 +51,10 @@ class HomeViewModel extends BaseViewModel {
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
   List<CampaignDetails>? campaign;
-  Promotion? _roulettePromo;
+  Promotion? roulettePromo;
+  int? rotatedResultId;
+  List<Wallet> walletList = List.empty();
+  var userMainWalletBalance, gameWalletList;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -91,22 +95,38 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
-    var gameList = contentRepo.gameProviderList!.where((element) => element.transferWallet == true);
+    if (contentRepo.gameProviderList == null) await contentRepo.getGameProviderList();
+    walletList = contentRepo.gameProvider2List!
+        .where((element) => element.transferWallet == true)
+        .map((e) => Wallet(e.code, e.name, e.gameType))
+        .toList()
+      ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
     var task = <Future>[];
-    gameList.forEach((game) {
-      task.add(_getGameWalletBalance(game));
+    print(walletList);
+    walletList.forEach((wallet) {
+      task.add(_getGameWalletBalance(wallet));
     });
     await Future.wait(task);
+    gameWalletList = walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
     totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
     wallet?.totalBalance = totalBalance;
     notifyListeners();
   }
 
-  _getGameWalletBalance(GameProvider game) async {
-    var state = await walletRepo.getGameWallet(game.code);
-    if (state.isSuccess) {
-      gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
+  _getGameWalletBalance(Wallet wallet) async {
+    wallet.balance = null;
+    if (wallet.isMainWallet) {
+      await userRepo.getWalletBalance();
+      wallet.balance = userRepo.wallet!.main;
+    } else {
+      var state = await walletRepo.getGameWallet(wallet.gpCode);
+      if (state.isSuccess) {
+        wallet.balance = state.result?.balance ?? 0.0;
+        gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
+      } else {
+        wallet.balance = null;
+        walletList.removeWhere((element) => element.gpCode == wallet.gpCode);
+      }
     }
     notifyListeners();
   }
@@ -131,7 +151,7 @@ class HomeViewModel extends BaseViewModel {
 
   _getTotalBalance() async {
     setLoading();
-    await userRepo.getWalletBalance();
+    // await userRepo.getWalletBalance();
     await _computeTotalBalance();
     setLoading(false);
     notifyListeners();
@@ -140,6 +160,7 @@ class HomeViewModel extends BaseViewModel {
   logout() async {
     setLoading();
     logoutApiState = await userRepo.logout();
+    isRoulettePlayed = false;
     setLoading(false);
     return logoutApiState;
   }
@@ -162,33 +183,19 @@ class HomeViewModel extends BaseViewModel {
     return getBankCardListApiState;
   }
 
-  getUserDetails() {
+  getUserDetails() async{
     //if (userProfile != null) {
-    _getTotalBalance();
-    _getBankCardList();
+    await _getTotalBalance();
+    await _getBankCardList();
   }
 
   getPromotionList() async {
     setLoading();
-
-    // if (isLoadMore) {
-    //   if (page! * rows < getPromotionListApiState.result.totalCount)
-    //     page = page! + 1;
-    //   else
-    //     return;
-    // } else
-    //   page = 1;
-
     getPromotionListApiState = await contentRepo.getPromotionList();
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
-
-      // if (promotionList == null) promotionList = [];
-      // if (list.isNotEmpty) promotionList!.addAll(list);
-      // endRecord = promotionList!.length >= getPromotionListApiState.result.totalCount ? true : false;
-
-      _roulettePromo = promotionList?.singleWhere((element) => element.promotionType == "Roulette");
-      campaign = _roulettePromo?.campaignDetails?.items ?? [];
+      roulettePromo = promotionList?.singleWhereOrNull((element) => element.promotionType == "Roulette");
+      campaign = roulettePromo?.campaignDetails?.items ?? [];
     } else
       promotionList = [];
     setLoading(false);
@@ -197,7 +204,7 @@ class HomeViewModel extends BaseViewModel {
 
   getRouletteTodayResult() async {
     setLoading();
-    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(_roulettePromo?.id ?? "");
+    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
     if (getTodayRouletteResultApiState.isSuccess) {
       isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
     }
@@ -207,9 +214,10 @@ class HomeViewModel extends BaseViewModel {
 
   getRouletteResult() async {
     setLoading();
-    getRouletteApiState = await contentRepo.getRouletteResult(_roulettePromo?.id ?? "");
+    getRouletteApiState = await contentRepo.getRouletteResult(roulettePromo?.id ?? "");
     if (getRouletteApiState.isSuccess) {
       getRouletteTodayResult();
+      rotatedResultId = getRouletteApiState.result.itemIndex;
     }
     setLoading(false);
     return getRouletteApiState;

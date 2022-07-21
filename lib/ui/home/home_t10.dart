@@ -7,31 +7,30 @@ import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t10/game_t10.dart';
 
 class HomeT10 extends StatefulWidget {
-  final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
   final Function initData;
   final HomeViewModel homeViewModel;
   final GameViewModel gameViewModel;
   final int? randomNumber;
+  final Widget gameView;
 
-  HomeT10(
-      {this.isFirstRun = false,
-      this.onPauseBgMusic,
-      this.onResumeBgMusic,
-      required this.initData,
-      required this.homeViewModel,
-      required this.gameViewModel,
-      this.randomNumber});
+  HomeT10({
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+    required this.initData,
+    required this.homeViewModel,
+    required this.gameViewModel,
+    this.randomNumber,
+    required this.gameView,
+  });
 
   @override
   _HomeT10State createState() => _HomeT10State();
@@ -43,8 +42,7 @@ class _HomeT10State extends BaseState<HomeT10> {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -64,8 +62,7 @@ class _HomeT10State extends BaseState<HomeT10> {
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -81,7 +78,7 @@ class _HomeT10State extends BaseState<HomeT10> {
             child: Column(
               children: [
                 _buildTextMarquee(),
-                _buildGameView(),
+                widget.gameView,
               ],
             ),
           ),
@@ -92,46 +89,32 @@ class _HomeT10State extends BaseState<HomeT10> {
 
   _buildImageSlider() => Container(
         height: context.screenHeight / 5,
-        child: widget.homeViewModel.bannerList == null ||
-                widget.homeViewModel.bannerList!.isEmpty
-            ? _buildEmptyContainer()
+        child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
+            ? buildEmptyContainer(borderRadius: 20)
             : ImageSlideshow(
                 initialPage: 0,
                 indicatorColor: Colors.transparent,
                 indicatorBackgroundColor: Colors.transparent,
                 children: List.generate(
                     widget.homeViewModel.bannerList!.length,
-                    (index) => widget
-                                .homeViewModel.bannerList![index].mobileUrl ==
-                            null
-                        ? _buildEmptyContainer()
+                    (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
+                        ? buildEmptyContainer(borderRadius: 20)
                         : ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             child: CachedNetworkImage(
-                              placeholder: (context, url) =>
-                                  _buildEmptyContainer(),
-                              imageUrl: widget
-                                  .homeViewModel.bannerList![index].mobileUrl!,
+                              placeholder: (context, url) => buildEmptyContainer(borderRadius: 20),
+                              imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                               //handling error
                               fit: BoxFit.fill,
-                              errorWidget: (context, url, error) =>
-                                  _buildEmptyContainer(),
+                              errorWidget: (context, url, error) => buildEmptyContainer(borderRadius: 20),
                             ),
                           )),
                 isLoop: true,
                 autoPlayInterval: 3000),
       );
 
-  _buildEmptyContainer() => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: CustomColor.very_light_pink_four,
-        ),
-      );
-
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(
-        parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
@@ -225,20 +208,5 @@ class _HomeT10State extends BaseState<HomeT10> {
 
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
-  }
-
-  _buildGameView() => GameT10(
-        vm: widget.gameViewModel,
-        onRefreshHomePage: () => widget.initData(),
-        onPauseBgMusic: () =>
-            (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () =>
-            (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
-
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
-    });
   }
 }

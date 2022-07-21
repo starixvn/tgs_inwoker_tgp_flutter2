@@ -1,33 +1,21 @@
-import 'package:api/entity/game_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
-import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
-import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/main.dart';
-import 'package:tgp_flutter2/provider/provider_widget.dart';
-import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
-import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 
 class HomeT2 extends StatefulWidget {
-  final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
   final Function initData;
@@ -35,16 +23,18 @@ class HomeT2 extends StatefulWidget {
   final GameViewModel gameViewModel;
   final String? language;
   final int? randomNumber;
+  final Widget gameView;
 
-  HomeT2(
-      {this.isFirstRun = false,
-      this.onPauseBgMusic,
-      this.onResumeBgMusic,
-      required this.initData,
-      required this.homeViewModel,
-      required this.gameViewModel,
-      this.language,
-      this.randomNumber});
+  HomeT2({
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+    required this.initData,
+    required this.homeViewModel,
+    required this.gameViewModel,
+    this.language,
+    this.randomNumber,
+    required this.gameView,
+  });
 
   @override
   _HomeT2State createState() => _HomeT2State();
@@ -97,8 +87,7 @@ class _HomeT2State extends BaseState<HomeT2> {
             onRefreshHomePage: () => widget.initData(),
             randomNumber: widget.randomNumber,
           ),
-          //GameT2()
-          _buildGameView(),
+          widget.gameView
         ],
       ),
     );
@@ -181,7 +170,7 @@ class _HomeT2State extends BaseState<HomeT2> {
     return Container(
       height: context.screenHeight / 5,
       child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
-          ? _buildEmptyContainer()
+          ? buildEmptyContainer()
           : ImageSlideshow(
               initialPage: 0,
               indicatorColor: CustomColor.theme_bar_gradient_2,
@@ -189,37 +178,20 @@ class _HomeT2State extends BaseState<HomeT2> {
               children: List.generate(
                   widget.homeViewModel.bannerList!.length,
                   (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
-                      ? _buildEmptyContainer()
+                      ? buildEmptyContainer()
                       : CachedNetworkImage(
-                          placeholder: (context, url) => _buildEmptyContainer(),
+                          placeholder: (context, url) => buildEmptyContainer(),
                           imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                           //handling error
                           fit: BoxFit.fill,
-                          errorWidget: (context, url, error) => _buildEmptyContainer(),
+                          errorWidget: (context, url, error) => buildEmptyContainer(),
                         )),
               isLoop: true,
               autoPlayInterval: 3000),
     );
   }
 
-  _buildEmptyContainer() => Container(
-        color: CustomColor.very_light_pink_four,
-      );
-
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
-  }
-
-  _buildGameView() => GameT2(
-        vm: widget.gameViewModel,
-        onRefreshHomePage: () => widget.initData(),
-        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
-
-  navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamed(RoutePath.login);
-    });
   }
 }

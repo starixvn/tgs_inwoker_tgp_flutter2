@@ -1,13 +1,11 @@
 import 'dart:ui';
 
 import 'package:api/entity/env_features_config.dart';
-import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
-import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -18,7 +16,13 @@ class GameItemT1 extends StatefulWidget {
   final Key key;
   final EnvFeaturesConfig? config;
 
-  GameItemT1(this.key, {this.gameProviderList, this.onGameClick, this.controller, this.config});
+  GameItemT1(
+    this.key, {
+    this.gameProviderList,
+    this.onGameClick,
+    this.controller,
+    this.config,
+  });
 
   @override
   GameItemT1State createState() => GameItemT1State();
@@ -57,33 +61,6 @@ class GameItemT1State extends BaseState<GameItemT1> {
     );
   }
 
-  _getImagePath(GameProvider2 gameProvider) {
-    var frontImagePath = EnvironmentConfig.light_mode ? "images/game/T5/" : "images/game/T2/";
-    var imagePath;
-    var gameType = gameProvider.gameType?.getImagePath();
-    var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var fullPath = "${gameType}_$gamePlatformCode";
-    if (_isSportsHideLogo(gamePlatformCode))
-      imagePath = "$frontImagePath$gameType-$gamePlatformCode-hkjp.jpg";
-    else if (!LanguageProvider.getSingleton().isMandarin() && _isNeedHandleLanguage(fullPath)) {
-      imagePath = "$frontImagePath${gameType}_$gamePlatformCode-en.jpg";
-    } else
-      imagePath = "$frontImagePath$gameType-$gamePlatformCode.jpg";
-    return imagePath;
-  }
-
-  _isNeedHandleLanguage(String path) {
-    switch (path) {
-      case "sports-saba":
-      case "esports-imes":
-      case "fish-jdb":
-      case "slot-jdb":
-        return true;
-      default:
-        return false;
-    }
-  }
-
   _buildImageLayout(GameProvider2 gameProvider) {
     var gamePlatformCode = gameProvider.code?.toLowerCase();
     return GestureDetector(
@@ -97,12 +74,15 @@ class GameItemT1State extends BaseState<GameItemT1> {
           AspectRatio(
             aspectRatio: _imageRatio,
             child: gameProvider.status != 0
-                ? ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      Colors.black,
-                      BlendMode.saturation,
-                    ),
-                    child: _buildImage(gameProvider))
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          Colors.black,
+                          BlendMode.saturation,
+                        ),
+                        child: _buildImage(gameProvider)),
+                  )
                 : _buildImage(gameProvider),
           ),
           Positioned(
@@ -148,7 +128,7 @@ class GameItemT1State extends BaseState<GameItemT1> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(
                   child: Text(getTranslatedText("maintenance"),
@@ -166,9 +146,30 @@ class GameItemT1State extends BaseState<GameItemT1> {
         alignment: Alignment.center,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
-          child: Image.asset(
-            _getImagePath(gameProvider),
-          ),
+          child: CachedNetworkImage(
+              placeholder: (context, url) => Container(
+                    width: context.screenWidth,
+                    height: context.screenHeight,
+                    color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                    child: Center(
+                      child: SizedBox(
+                        height: 50.0,
+                        width: 50.0,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                        ),
+                      ),
+                    ),
+                  ),
+              imageUrl: getImagePath(gameProvider),
+              errorWidget: (context, url, error) {
+                print(url);
+                return Container(
+                  color: CustomColor.very_light_pink_four,
+                );
+              },
+              //handling error
+              fit: BoxFit.fill),
         ),
       );
 

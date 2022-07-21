@@ -6,7 +6,9 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
+import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item_details.dart';
@@ -26,17 +28,22 @@ class PromotionDialog extends StatefulWidget {
 }
 
 class _PromotionDialogState extends BaseState<PromotionDialog> {
-  PromotionViewModel vm = PromotionViewModel();
+  PromotionViewModel _vm = PromotionViewModel();
 
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 5,
-      backgroundColor: Colors.transparent,
-      child: dialogContent(context),
-    );
+    return ProviderWidget<PromotionViewModel>(
+        model: _vm,
+        builder: (ctx, vm, _) {
+          _handleApiState();
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            elevation: 5,
+            backgroundColor: Colors.transparent,
+            child: dialogContent(context),
+          );
+        });
   }
 
   dialogContent(BuildContext context) {
@@ -80,8 +87,8 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
                 children: List.generate(widget.promotionList.length, (index) {
                   String imageUrl;
                   Promotion promo = widget.promotionList[index];
-                  if (promo.localization?.mobileBanner?.isNotEmpty ?? false) {
-                    imageUrl = promo.localization!.mobileBanner!;
+                  if (promo.localization?[getCurrentLanguage().apiCode]?.mobileBanner?.isNotEmpty ?? false) {
+                    imageUrl = promo.localization![getCurrentLanguage().apiCode]!.mobileBanner!;
                   } else if (promo.mobileBanner?.isNotEmpty ?? false) {
                     imageUrl = promo.mobileBanner!;
                   } else
@@ -92,7 +99,7 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    PromotionItemDetails(imagePath: imageUrl, promotion: promo, vm: vm)));
+                                    PromotionItemDetails(imagePath: imageUrl, promotion: promo, vm: _vm)));
                       },
                       child: Container(height: 150.auto, child: _buildPromotionImage(imageUrl)));
                 }).toList(),
@@ -110,32 +117,35 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
   }
 
   Widget _buildPromotionImage(String imageUrl) {
-    return imageUrl.isEmpty
-        ? Container(
-            color: CustomColor.very_light_pink_four,
-          )
-        : Container(
-            margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: CachedNetworkImage(
+    return Container(
+      margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: imageUrl.isEmpty
+            ? Container(
+          color: CustomColor.very_light_pink_four,
+        )
+            : CachedNetworkImage(
+            height: 150.auto,
+            placeholder: (context, url) =>
+                Container(
+                  width: 375,
                   height: 150.auto,
-                  placeholder: (context, url) => Container(
-                        width: 375,
-                        height: 150.auto,
-                        color: CustomColor.very_light_pink_four,
-                      ),
-                  imageUrl: imageUrl,
-                  errorWidget: (context, url, error) => Container(
-                        color: CustomColor.very_light_pink_four,
-                      ),
-                  //handling error
-                  fit: BoxFit.fill),
-            ),
-          );
+                  color: CustomColor.very_light_pink_four,
+                ),
+            imageUrl: imageUrl,
+            errorWidget: (context, url, error) =>
+                Container(
+                  color: CustomColor.very_light_pink_four,
+                ),
+            //handling error
+            fit: BoxFit.fill),
+      ),
+    );
   }
 
-  _buildDoneButton() => ColorButton(
+  _buildDoneButton() =>
+      ColorButton(
         onClick: () {
           widget.onClick();
         },
@@ -145,4 +155,43 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
       );
+
+
+  _handleApiState() {
+    handleApiState(_vm.joinPromotionApiState, onSuccess: () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              CustomDialog(
+                title: null,
+                description: getTranslatedText("join_success"),
+                buttonText1: getTranslatedText("confirm"),
+                onClick: () {
+                  Navigator.pop(
+                    context,
+                  );
+                },
+              ),
+        );
+      });
+    }, onError: (errorMsg) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              CustomDialog(
+                title: null,
+                description: getTranslatedText("promotion_joined"),
+                buttonText1: getTranslatedText("confirm"),
+                onClick: () {
+                  Navigator.pop(
+                    context,
+                  );
+                },
+              ),
+        );
+      });
+    });
+  }
 }

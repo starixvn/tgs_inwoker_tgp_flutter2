@@ -29,8 +29,8 @@
   "forgot_password": "忘记密码",
   "logout": "退出登录",
   "total_balance": "总资金",
-  "transfer_history": "转换记录",
-  "tab_transfer_history": "转换记录",
+  "transfer_history": "转账记录",
+  "tab_transfer_history": "转账记录",
   "bet_history": "投注记录",
   "refer_friend": "推荐好友",
   "notice": "公告",
@@ -1087,9 +1087,11 @@
   "amount_limit": "限额",
   "deposit_usdt_point": "上分金额",
   "details": "详情",
-  "roulette_prize_win": "赢",
-  "roulette_prize_lose": "输",
+  "roulette_reward": "恭喜您赢得",
   "roulette_is_played_text_1": "每日限玩1次",
   "roulette_is_played_text_2": "明天再来唷",
-  "roulette_is_played_text_3": "点我看更多好康优惠"
+  "roulette_is_played_text_3": "点我看更多好康优惠",
+  "roulette_promo_home": "优惠主页",
+  "roulette_promo_content": "优惠内容",
+  "roulette_promo_terms": "优惠条款"
 }

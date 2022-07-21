@@ -22,15 +22,18 @@ class HomeT4 extends StatefulWidget {
   final HomeViewModel homeViewModel;
   final GameViewModel gameViewModel;
   final int? randomNumber;
+  final Widget gameView;
 
-  HomeT4(
-      {this.isFirstRun = false,
-      this.onPauseBgMusic,
-      this.onResumeBgMusic,
-      required this.initData,
-      required this.homeViewModel,
-      required this.gameViewModel,
-      this.randomNumber});
+  HomeT4({
+    this.isFirstRun = false,
+    this.onPauseBgMusic,
+    this.onResumeBgMusic,
+    required this.initData,
+    required this.homeViewModel,
+    required this.gameViewModel,
+    this.randomNumber,
+    required this.gameView,
+  });
 
   @override
   _HomeT4State createState() => _HomeT4State();
@@ -53,10 +56,8 @@ class _HomeT4State extends BaseState<HomeT4> {
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
-    imageLanguageCode =
-        ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    imageLanguageCode = ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
   }
 
   Widget build(BuildContext context) {
@@ -67,18 +68,13 @@ class _HomeT4State extends BaseState<HomeT4> {
           _buildTextMarquee(),
           _buildImageSlider(),
           Expanded(
-            child: widget.gameViewModel.gameRowListT3 == null ||
-                    widget.gameViewModel.gameListT3 == null
+            child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
                 ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
                 : GameT4(
                     vm: widget.gameViewModel,
                     onRefreshHomePage: () => widget.initData(),
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null)
-                        ? widget.onPauseBgMusic!()
-                        : null,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-                        ? widget.onResumeBgMusic!()
-                        : null,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                   ),
           )
         ],
@@ -87,8 +83,7 @@ class _HomeT4State extends BaseState<HomeT4> {
   }
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(
-        parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
       padding: EdgeInsets.only(bottom: 5.auto),
       child: Row(
@@ -186,8 +181,7 @@ class _HomeT4State extends BaseState<HomeT4> {
   _buildImageSlider() {
     return Container(
         height: context.screenHeight / 5,
-        child: widget.homeViewModel.bannerList == null ||
-                widget.homeViewModel.bannerList!.isEmpty
+        child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
             ? _buildEmptyContainer()
             : ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -198,21 +192,16 @@ class _HomeT4State extends BaseState<HomeT4> {
                           widget.homeViewModel.bannerList!.length,
                           (index) => ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: widget.homeViewModel.bannerList![index]
-                                            .mobileUrl ==
-                                        null
+                                child: widget.homeViewModel.bannerList![index].mobileUrl == null
                                     ? _buildEmptyContainer()
                                     : CachedNetworkImage(
                                         height: 400,
                                         width: context.screenWidth,
-                                        placeholder: (context, url) =>
-                                            _buildEmptyContainer(),
-                                        imageUrl: widget.homeViewModel
-                                            .bannerList![index].mobileUrl!,
+                                        placeholder: (context, url) => _buildEmptyContainer(),
+                                        imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
                                         //handling error
                                         fit: BoxFit.cover,
-                                        errorWidget: (context, url, error) =>
-                                            _buildEmptyContainer(),
+                                        errorWidget: (context, url, error) => _buildEmptyContainer(),
                                       ),
                               )),
                       options: CarouselOptions(
@@ -238,18 +227,13 @@ class _HomeT4State extends BaseState<HomeT4> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: List.generate(
-                            widget.homeViewModel.bannerList!.length, (index) {
+                        children: List.generate(widget.homeViewModel.bannerList!.length, (index) {
                           return Container(
                             width: 8.auto,
                             height: 8.auto,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 4.0),
+                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _current == index
-                                    ? Colors.redAccent
-                                    : Colors.grey),
+                                shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
                           );
                         }).toList(),
                       ),

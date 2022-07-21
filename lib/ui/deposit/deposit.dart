@@ -38,7 +38,7 @@ class _DepositState extends BaseState<Deposit> {
   }
 
   _initData() async {
-    await _vm.getPlayerPromotionList();
+    await _vm.getPlayerPromotionList(getCurrentLanguage().apiCode);
     _vm.getPayment();
     _displayDepositDialog();
   }

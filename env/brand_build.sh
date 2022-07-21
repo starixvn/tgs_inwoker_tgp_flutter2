@@ -11,7 +11,7 @@ flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env/$1
 flutter pub run --no-sound-null-safety environment_config:generate --config=env/$1
 
 #adjust path to outer layer first where rename will find for android and ios folder
-cd ../../
+cd ../../../../
 
 #App PackageId
 dart pub global run rename --bundleId $2

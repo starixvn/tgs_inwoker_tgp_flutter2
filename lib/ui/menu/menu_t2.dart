@@ -38,67 +38,67 @@ class _MenuT2State extends BaseState<MenuT2> {
               crossAxisCount: 3,
               shrinkWrap: true,
               children: [
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_deposit",
                   text: getTranslatedText("deposit"),
                   navigationPath: "deposit",
                   navigationID: 0,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_transfer",
                   text: getTranslatedText("transfer"),
                   navigationPath: "wallet_transfer",
                   navigationID: 0,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_withdraw",
                   text: getTranslatedText("withdrawal"),
                   navigationPath: "withdraw",
                   navigationID: 0,
                 ),
-                /*MenuItem(
+                /*MenuItemT2(
                   image: "ic_menu_transfer_history",
                   text: getTranslatedText("transfer_history"),
                   navigationPath: "transaction",
                   navigationID: 0,
                 ),*/
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_bet_history",
                   text: getTranslatedText("bet_history"),
                   navigationPath: "transaction",
                   navigationID: 0,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_deposit_history",
                   text: getTranslatedText("deposit_history"),
                   navigationPath: "transaction",
                   navigationID: 1,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_withdraw_history",
                   text: getTranslatedText("withdrawal_history"),
                   navigationPath: "transaction",
                   navigationID: 2,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_withdraw_history",
                   text: getTranslatedText("transfer_history"),
                   navigationPath: "transaction",
                   navigationID: 3,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_withdraw_history",
                   text: getTranslatedText("promotion_history"),
                   navigationPath: "transaction",
                   navigationID: 4,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_card",
                   text: getTranslatedText("manage_card"),
                   navigationPath: "main_card",
                   navigationID: 0,
                 ),
-                MenuItem(
+                MenuItemT2(
                   image: "ic_menu_message_center",
                   text: getTranslatedText("message_center"),
                   navigationPath: "message",

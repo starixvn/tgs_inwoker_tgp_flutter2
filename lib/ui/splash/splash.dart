@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/main.dart';
-import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/route_path.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/splash/splash_view_model.dart';
 
 class Splash extends StatefulWidget {
@@ -58,7 +56,15 @@ class _SplashState extends BaseState<Splash> {
                   Container(
                     width: context.screenWidth / 2.5,
                     alignment: Alignment.bottomCenter,
-                    child: Lottie.asset("loading/loading_t${_getLottieLoadingAppendPath()}.json"),
+                    child: Center(
+                      child: SizedBox(
+                        height:80,
+                        width: 80,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                        ),
+                      ),
+                    )
                   ),
                 ],
               ),
@@ -79,11 +85,5 @@ class _SplashState extends BaseState<Splash> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.myHome);
     });
-  }
-
-  _getLottieLoadingAppendPath(){
-    if(EnvironmentConfig.dark_mode)
-      return  "8_dark";
-    else return EnvironmentConfig.template_version;
   }
 }

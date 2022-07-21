@@ -26,14 +26,16 @@ import 'package:url_launcher/url_launcher.dart';
 class GameT4 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
-  final GameViewModel? vm;
+  final GameViewModel vm;
   final Function? onRefreshHomePage;
+  final ValueChanged<GameProvider2> onGameClick;
 
   GameT4({
     this.onResumeBgMusic,
     this.onPauseBgMusic,
-    this.vm,
+    required this.vm,
     this.onRefreshHomePage,
+    required this.onGameClick,
   });
 
   @override
@@ -82,18 +84,15 @@ class _GameT3State extends BaseState<GameT4> {
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => GameItemT3(
-                        gamePlatformCode: "",
-                        gameType: _vm.gameListT3![index],
-                        index: index,
-                        config: _vm.config,
-                        onPauseBgMusic: () => (widget.onPauseBgMusic != null)
-                            ? widget.onPauseBgMusic!()
-                            : null,
-                        onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-                            ? widget.onResumeBgMusic!()
-                            : null,
-                      ))),
+                  builder: (context) =>GameItemT3(
+                    gamePlatformCode: "",
+                    gameType: _vm.gameListT3![index],
+                    index: index,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                    onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
+                    vm: _vm,
+                  ) )),
           child: (_vm.config?.homePageAnimated ?? false)
               ? Image.asset(
                   _getFullGameTabImagePath(
