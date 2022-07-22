@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
+import 'package:tgp_flutter2/ui/home/game/game_T4/game_T4.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_item_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t10/game_t10.dart';
@@ -76,6 +77,14 @@ class _BaseGameState extends BaseState<BaseGame> {
         );
       case 3:
         return GameT3(
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          vm: widget.vm,
+          onRefreshHomePage: () => widget.onRefreshHomePage,
+          onGameClick: (gameProvider) => _onGameClick(gameProvider),
+        );
+      case 4:
+        return GameT4(
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
