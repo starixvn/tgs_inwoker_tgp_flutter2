@@ -6,9 +6,9 @@ flutter_icons:
 environment_config:
   fields:
     jwtKey:
-      default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
+      default: "D0pttkExTgstx5bPH2qPsubVq6BQpWUpJufjgKew6Tz0cV5BISEWeX"
     url:
-      default: "https://dev-t1.rpgp.cc/"
+      default: "https://dev-t4-idr.rpgp.cc/"
     currency:
       default: "IDR"
     appTitleName:
@@ -99,7 +99,7 @@ environment_config:
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     brandName:
-      default: "IDR1"
+      default: "IDR"
     vipPresentType:
       type: int
       default: 1

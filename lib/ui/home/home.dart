@@ -12,6 +12,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
@@ -87,7 +88,10 @@ class _HomeState extends BaseState<Home> {
     getLanguage();
     randomNumber = _randomGenerator();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_vm.config?.homePagePromoRoulette ?? false)
+      if(!(_vm.userProfile?.registerCompleted ?? false)){
+        _navigateToAddCard();
+      }
+      else if (_vm.config?.homePagePromoRoulette ?? false)
         _displayRouletteDialog();
       else
         _displayDialog();
@@ -395,6 +399,18 @@ class _HomeState extends BaseState<Home> {
         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
         onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
       );
+
+  _navigateToAddCard() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AddCard(
+                  isNavigateFromRegister: true
+              )));
+      //Navigator.pushNamed(context, RoutePath.addCard);
+    });
+  }
 
   _handleApiState() {
     if (widget.isFirstRun) {

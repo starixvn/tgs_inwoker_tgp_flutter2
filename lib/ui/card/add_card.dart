@@ -21,6 +21,12 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'card_view_model.dart';
 
 class AddCard extends StatefulWidget {
+  final bool isNavigateFromRegister;
+
+  AddCard({
+    this.isNavigateFromRegister = false,
+  });
+
   @override
   _AddCardState createState() => _AddCardState();
 }
@@ -85,6 +91,11 @@ class _AddCardState extends BaseState<AddCard> {
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("add_card"),
         walletBalance: _vm.wallet?.totalBalance,
+        onPop: () {
+          if (!(_vm.userProfile?.registerCompleted ?? false) && widget.isNavigateFromRegister) {
+          } else
+            Navigator.of(context).pop();
+        },
       );
 
   _buildAddCardTitle() => Container(
@@ -389,14 +400,14 @@ class _AddCardState extends BaseState<AddCard> {
       _vm.addBankCard(address: _addressController.text);
     else
       _vm.addBankCard(
-        bankName:
-            (_vm.config?.addCardBankDropDown ?? false) ? getTranslatedText(_vm.pBankName) : _bankNameController.text,
-        bankAccount: _bankNumController.text,
-        bankBranch: _bankBranchController.text,
-        name: _nameController.text,
-        phone: _phoneController.text,
-        realName: _realNameController.text,
-      );
+          bankName:
+              (_vm.config?.addCardBankDropDown ?? false) ? getTranslatedText(_vm.pBankName) : _bankNameController.text,
+          bankAccount: _bankNumController.text,
+          bankBranch: _bankBranchController.text,
+          name: _nameController.text,
+          phone: _phoneController.text,
+          realName: _realNameController.text,
+          isIdrRegister: widget.isNavigateFromRegister);
   }
 
   _isAddCardDisplayGCash() => (_vm.config?.addCardDisplayGCash ?? false) && getCurrentLanguage().apiCode == "en-US";

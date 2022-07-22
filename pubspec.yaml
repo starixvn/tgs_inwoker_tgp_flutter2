@@ -59,6 +59,7 @@ dependencies:
       url: https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git
       ref: develop
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
@@ -135,7 +136,6 @@ flutter:
     - images/contact/
     - images/login_app_bar/
     - images/roulette/
-    - images/T10/
 
     - i18n/
     - features/

@@ -6,10 +6,12 @@ import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter2/environment_config.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
@@ -27,8 +29,7 @@ class RegisterContent extends StatefulWidget {
   _RegisterContentState createState() => _RegisterContentState();
 }
 
-class _RegisterContentState extends BaseState<RegisterContent>
-    with AutomaticKeepAliveClientMixin {
+class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
   var username = TextEditingController(),
       password = TextEditingController(),
@@ -133,8 +134,7 @@ class _RegisterContentState extends BaseState<RegisterContent>
           textInputType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.next,
           onShowPassword: () {
-            setState(() =>
-                this._obscureConfirmPassword = !this._obscureConfirmPassword);
+            setState(() => this._obscureConfirmPassword = !this._obscureConfirmPassword);
           },
           obscurePassword: _obscureConfirmPassword,
         ),
@@ -234,8 +234,7 @@ class _RegisterContentState extends BaseState<RegisterContent>
                           value: value,
                           child: Text(
                             getTranslatedText(value),
-                            style: TextStyle(
-                                color: CustomColor.theme_title_text_color),
+                            style: TextStyle(color: CustomColor.theme_title_text_color),
                           ),
                         );
                       }).toList(),
@@ -276,8 +275,7 @@ class _RegisterContentState extends BaseState<RegisterContent>
                 value: this._isTermsChecked,
                 checkColor: Colors.white,
                 activeColor: Colors.black,
-                fillColor:
-                    MaterialStateProperty.all(CustomColor.theme_button_color),
+                fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
                 onChanged: (val) => this.setState(() {
                   this._isTermsChecked = !this._isTermsChecked;
                 }),
@@ -287,9 +285,7 @@ class _RegisterContentState extends BaseState<RegisterContent>
               flex: 9,
               child: Text(
                 getTranslatedText("register_terms"),
-                style: TextStyle(
-                    color: CustomColor.theme_text_black_white_color,
-                    fontSize: 12.auto),
+                style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
               ),
             ),
           ],
@@ -297,8 +293,7 @@ class _RegisterContentState extends BaseState<RegisterContent>
       );
 
   _register() {
-    if (!validate.validateUsernameLength(username.text) ||
-        !validate.validateUsernamePassword(username.text)) {
+    if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
@@ -314,8 +309,7 @@ class _RegisterContentState extends BaseState<RegisterContent>
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    } else if (_registerShowPhone() &&
-        !validate.validatePhoneLength(phone.text)) {
+    } else if (_registerShowPhone() && !validate.validatePhoneLength(phone.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
@@ -334,29 +328,33 @@ class _RegisterContentState extends BaseState<RegisterContent>
   }
 
   _registerShowPhone() => _vm.config.registerShowPhone ?? false;
+
   _registerShowEmail() => _vm.config.registerShowEmail ?? false;
 
   _customFlowForIDR() => _vm.config.idrRegisterCustomFlow ?? false;
 
   _handleApiState() {
     handleApiState(_vm.loginApiState, onSuccess: () {
-      _navigateToHome();
+      if ((_vm.config?.idrRegisterCustomFlow ?? false) && (_vm.config?.navigateToAddCard ?? false))
+        _navigateToAddCard();
+      else
+        _navigateToHome();
     });
 
     handleApiState(_vm.registerApiState, onSuccess: () {
       if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       else {
-        if (_registerShowPhone() && _registerShowEmail()) {
-          _vm.loginWithPhoneAndEmail(
-              username.text, password.text, phone.text, display!, email.text);
+        if (_vm.config?.idrRegisterCustomFlow ?? false) {
+          _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
+        } else if (_registerShowPhone() && _registerShowEmail()) {
+          _vm.loginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
         } else {
           _vm.login(username.text, password.text, true);
         }
       }
     });
-    handleApiState(_vm.checkUsernameApiState, isRequireResult: true,
-        onSuccess: (result) {
+    handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
@@ -364,12 +362,16 @@ class _RegisterContentState extends BaseState<RegisterContent>
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
           if (_registerShowPhone() && _registerShowEmail()) {
           } else if (_registerShowPhone()) {
-            _vm.getReVerifyCode(
-                username.text, password.text, display!, phone.text);
+            _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
           }
-
-          _vm.register(username.text, password.text, confirmPassword.text,
-              invitationCode.text, agentPlayer == "agent");
+          if (_vm.config.idrRegisterCustomFlow ?? false)
+            _vm.idrRegister(
+              username.text,
+              password.text,
+            );
+          else
+            _vm.register(
+                username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
         });
       }
     });
@@ -380,6 +382,24 @@ class _RegisterContentState extends BaseState<RegisterContent>
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.myHome);
+    });
+  }
+
+  _navigateToAddCard() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(
+                    index: 4,
+                  )));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AddCard(
+                  isNavigateFromRegister: true
+              )));
+      //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }
 }

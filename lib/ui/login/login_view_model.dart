@@ -49,11 +49,9 @@ class LoginViewModel extends BaseViewModel {
     return loginApiState;
   }
 
-  register(String _username, String _password, String rpassword,
-      String? invitationCode, bool isAgent) async {
+  register(String _username, String _password, String rpassword, String? invitationCode, bool isAgent) async {
     setLoading();
-    registerApiState = await userRepo.register(
-        _username, _password, rpassword, invitationCode, isAgent);
+    registerApiState = await userRepo.register(_username, _password, rpassword, invitationCode, isAgent);
     if (registerApiState.isSuccess && (config?.smsVerification ?? false)) {
       username = _username;
       password = _password;
@@ -65,8 +63,7 @@ class LoginViewModel extends BaseViewModel {
 
   var verifyEmailState, verifyPhoneState;
 
-  loginWithPhoneAndEmail(String username, String password, String phone,
-      String areacode, String email) async {
+  loginWithPhoneAndEmail(String username, String password, String phone, String areacode, String email) async {
     setLoading();
     loginApiState = await userRepo.login(username, password);
     if (loginApiState.isSuccess) {
@@ -74,12 +71,13 @@ class LoginViewModel extends BaseViewModel {
       print(token);
       savePreferences(username, password, true);
       verifyPhoneState =
-          await authRepo.getReVerifyCode(username, password, areacode, phone);
+          await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: false);
+      print(verifyPhoneState);
       if (verifyPhoneState.isSuccess) {
         authRepo.phoneReVerify(verifyPhoneState.result, "123456");
       }
 
-      verifyEmailState = await authRepo.getEmailVerifyCode(email);
+      verifyEmailState = await authRepo.getEmailVerifyCode(email, isIdrRegister: false);
       if (verifyEmailState.isSuccess) {
         authRepo.emailVerification(verifyEmailState.result, "123456");
       }
@@ -120,10 +118,8 @@ class LoginViewModel extends BaseViewModel {
 
   removePrefs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("username")?.isNotEmpty ?? false)
-      await prefs.remove("username");
-    if (prefs.getString("password")?.isNotEmpty ?? false)
-      await prefs.remove("password");
+    if (prefs.getString("username")?.isNotEmpty ?? false) await prefs.remove("username");
+    if (prefs.getString("password")?.isNotEmpty ?? false) await prefs.remove("password");
   }
 
   getUsername() async {
@@ -140,11 +136,9 @@ class LoginViewModel extends BaseViewModel {
     await userRepo.getApiErrorLocalization();
   }
 
-  getReVerifyCode(
-      String _username, String _password, String areaCode, String phone) async {
+  getReVerifyCode(String _username, String _password, String areaCode, String phone) async {
     setLoading();
-    getReVerifyCodeApiState =
-        await authRepo.getReVerifyCode(_username, _password, areaCode, phone);
+    getReVerifyCodeApiState = await authRepo.getReVerifyCode(_username, _password, areaCode, phone);
     if (getReVerifyCodeApiState.isSuccess) {
       securityKey = getReVerifyCodeApiState.result;
       username = _username;
@@ -179,5 +173,49 @@ class LoginViewModel extends BaseViewModel {
 
   setIsNavigateFromSmsVerificationToTrue() {
     isNavigateFromSmsVerification = true;
+  }
+
+  idrRegister(String _username, String _password) async {
+    setLoading();
+    registerApiState = await userRepo.idrRegister(_username, _password);
+    if (registerApiState.isSuccess && (config?.smsVerification ?? false)) {
+      username = _username;
+      password = _password;
+      isPhoneReVerificationReset = true;
+    }
+    setLoading(false);
+    return registerApiState;
+  }
+
+  idrLoginWithPhoneAndEmail(String username, String password, String phone, String areacode, String email) async {
+    setLoading();
+    loginApiState = await userRepo.login(username, password);
+    if (loginApiState.isSuccess) {
+      token = loginApiState.result.token;
+      print(token);
+      savePreferences(username, password, true);
+      verifyPhoneState =
+          await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: true);
+      print(verifyPhoneState);
+      if (verifyPhoneState.isSuccess) {
+        var phoneReVerify = await authRepo.phoneReVerify(
+            verifyPhoneState.result["stepResponse"], "123456",
+            isIdrRegister: true);
+        print(phoneReVerify);
+        verifyEmailState = await authRepo.getEmailVerifyCode(email, isIdrRegister: true);
+        print(verifyEmailState);
+        if (verifyEmailState.isSuccess) {
+          var emailVerification = await authRepo.emailVerification(
+              verifyEmailState.result["stepResponse"], "123456",
+              isIdrRegister: true);
+          print(emailVerification);
+        }
+      }
+      await getUserInfo();
+      await getWalletBalance();
+      await getBankCardList();
+    }
+    setLoading(false);
+    return loginApiState;
   }
 }

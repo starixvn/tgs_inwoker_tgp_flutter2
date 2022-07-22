@@ -76,56 +76,60 @@ class _GameT3State extends BaseState<GameT4> {
     return Container(
       height: 400.auto,
       margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
-      child: StaggeredGridView.countBuilder(
+      child: StaggeredGrid.count(
         crossAxisCount: 3,
-        itemCount: _vm.gameListT3!.length,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) => InkWell(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>GameItemT3(
-                    gamePlatformCode: "",
-                    gameType: _vm.gameListT3![index],
-                    index: index,
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                    onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
-                    vm: _vm,
-                  ) )),
-          child: (_vm.config?.homePageAnimated ?? false)
-              ? Image.asset(
-                  _getFullGameTabImagePath(
-                      _vm.gameListT3![index].getImagePath()),
-                )
-              : Column(
-                  children: [
-                    Image.asset(
-                      _getFullGameTabImagePath(
-                          _vm.gameListT3![index].getImagePath()),
-                    ),
-                    Container(
-                      width: 70.auto,
-                      height: 40.auto,
-                      alignment: Alignment.center,
-                      child: AutoSizeText(
-                        _vm.gameListT3![index].getName(
-                            context, _vm.config?.menuItemShootFish ?? false),
-                        maxFontSize: 23,
-                        minFontSize: 10,
-                        stepGranularity: 1,
-                        style: TextStyle(
-                            color: CustomColor.theme_text_black_white_color,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 23.auto),
-                      ),
-                    )
-                  ],
-                ),
-        ),
-        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
         mainAxisSpacing: 15.auto,
         crossAxisSpacing: 15.auto,
+        children: List.generate(_vm.gameListT3!.length, (index) {
+          return InkWell(
+            onTap: () =>
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GameItemT3(
+                              gamePlatformCode: "",
+                              gameType: _vm.gameListT3![index],
+                              index: index,
+                              onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                              onResumeBgMusic: () =>
+                              (widget.onResumeBgMusic != null)
+                                  ? widget.onResumeBgMusic!()
+                                  : null,
+                              onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
+                              vm: _vm,
+                            ))),
+            child: (_vm.config?.homePageAnimated ?? false)
+                ? Image.asset(
+              _getFullGameTabImagePath(
+                  _vm.gameListT3![index].getImagePath()),
+            )
+                : Column(
+              children: [
+                Image.asset(
+                  _getFullGameTabImagePath(
+                      _vm.gameListT3![index].getImagePath()),
+                ),
+                Container(
+                  width: 70.auto,
+                  height: 40.auto,
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
+                    _vm.gameListT3![index].getName(
+                        context, _vm.config?.menuItemShootFish ?? false),
+                    maxFontSize: 23,
+                    minFontSize: 10,
+                    stepGranularity: 1,
+                    style: TextStyle(
+                        color: CustomColor.theme_text_black_white_color,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 23.auto),
+                  ),
+                )
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

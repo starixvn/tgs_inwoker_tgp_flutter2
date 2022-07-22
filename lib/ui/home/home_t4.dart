@@ -70,12 +70,7 @@ class _HomeT4State extends BaseState<HomeT4> {
           Expanded(
             child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
                 ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
-                : GameT4(
-                    vm: widget.gameViewModel,
-                    onRefreshHomePage: () => widget.initData(),
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                  ),
+                : widget.gameView
           )
         ],
       ),
