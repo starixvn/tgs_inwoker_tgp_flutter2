@@ -57,32 +57,42 @@ class _AddCardState extends BaseState<AddCard> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: CustomScaffold(
-              appBar: _buildAppBar(),
-              body: _vm.bankTypeList == null
-                  ? buildProgressDialog(_vm.brandLogoUrl)
-                  : ListView(
-                      padding: EdgeInsets.only(
-                        left: 10.auto,
-                        right: 10.auto,
-                        top: 5.auto,
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      children: [
-                        _buildAddCardTitle(),
-                        if (!_isAddCardHideCertainField()) _buildBankTypePicker(),
-                        _buildChannelPicker(),
-                        ListView(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: _getWidgetList(),
+          return WillPopScope(
+            onWillPop: () async {
+              if (!(_vm.userProfile?.registerCompleted ?? false) && widget.isNavigateFromRegister) {
+                return false;
+              } else {
+                Navigator.of(context).pop();
+                return true;
+              }
+            },
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: CustomScaffold(
+                appBar: _buildAppBar(),
+                body: _vm.bankTypeList == null
+                    ? buildProgressDialog(_vm.brandLogoUrl)
+                    : ListView(
+                        padding: EdgeInsets.only(
+                          left: 10.auto,
+                          right: 10.auto,
+                          top: 5.auto,
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
                         ),
-                        _getHintText(),
-                        _buildConfirmButton()
-                      ],
-                    ),
+                        children: [
+                          _buildAddCardTitle(),
+                          if (!_isAddCardHideCertainField()) _buildBankTypePicker(),
+                          _buildChannelPicker(),
+                          ListView(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            children: _getWidgetList(),
+                          ),
+                          _getHintText(),
+                          _buildConfirmButton()
+                        ],
+                      ),
+              ),
             ),
           );
         });
