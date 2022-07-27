@@ -335,7 +335,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
 
   _handleApiState() {
     handleApiState(_vm.loginApiState, onSuccess: () {
-      if ((_vm.config?.idrRegisterCustomFlow ?? false) && (_vm.config?.navigateToAddCard ?? false))
+      if ((_vm.config?.navigateToAddCard ?? false))
         _navigateToAddCard();
       else
         _navigateToHome();
@@ -345,11 +345,13 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       if (_vm.config?.smsVerification ?? false)
         widget.onSubmitUsernameAndPassword!([username.text, password.text]);
       else {
-        if (_vm.config?.idrRegisterCustomFlow ?? false) {
+        if (_registerShowPhone() || _registerShowEmail()) {
           _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
-        } else if (_registerShowPhone() && _registerShowEmail()) {
+        }
+        /* else if (_registerShowPhone() && _registerShowEmail()) {
           _vm.loginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
-        } else {
+        }*/
+        else {
           _vm.login(username.text, password.text, true);
         }
       }
@@ -360,15 +362,16 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-          if (_registerShowPhone() && _registerShowEmail()) {
-          } else if (_registerShowPhone()) {
-            _vm.getReVerifyCode(username.text, password.text, display!, phone.text);
-          }
-          if (_vm.config.idrRegisterCustomFlow ?? false)
+          if (_registerShowPhone() || _registerShowEmail()) {
             _vm.idrRegister(
               username.text,
               password.text,
             );
+          }
+          /* else if (_registerShowPhone()) {
+            //_vm.getReVerifyCode(username.text, password.text, display!, phone.text);
+            _vm.getReVerifyCode(username, password, display!, phone, isIdrRegister: true);
+          }*/
           else
             _vm.register(
                 username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
@@ -393,12 +396,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
               builder: (context) => MyHomePage(
                     index: 4,
                   )));
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AddCard(
-                  isNavigateFromRegister: true
-              )));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }

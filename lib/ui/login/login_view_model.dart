@@ -70,8 +70,7 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, true);
-      verifyPhoneState =
-          await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: false);
+      verifyPhoneState = await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: false);
       print(verifyPhoneState);
       if (verifyPhoneState.isSuccess) {
         authRepo.phoneReVerify(verifyPhoneState.result, "123456");
@@ -194,21 +193,15 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, true);
-      verifyPhoneState =
-          await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: true);
-      print(verifyPhoneState);
+      verifyPhoneState = await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: true);
       if (verifyPhoneState.isSuccess) {
-        var phoneReVerify = await authRepo.phoneReVerify(
-            verifyPhoneState.result["stepResponse"], "123456",
-            isIdrRegister: true);
-        print(phoneReVerify);
-        verifyEmailState = await authRepo.getEmailVerifyCode(email, isIdrRegister: true);
-        print(verifyEmailState);
-        if (verifyEmailState.isSuccess) {
-          var emailVerification = await authRepo.emailVerification(
-              verifyEmailState.result["stepResponse"], "123456",
-              isIdrRegister: true);
-          print(emailVerification);
+        await authRepo.phoneReVerify(verifyPhoneState.result?["stepResponse"] ?? "", "123456", isIdrRegister: true);
+        if (config.registerShowEmail ?? false) {
+          verifyEmailState = await authRepo.getEmailVerifyCode(email, isIdrRegister: true);
+          if (verifyEmailState.isSuccess) {
+            await authRepo.emailVerification(verifyEmailState.result["stepResponse"] ?? "", "123456",
+                isIdrRegister: true);
+          }
         }
       }
       await getUserInfo();
