@@ -64,7 +64,7 @@ class _HomeT3State extends BaseState<HomeT3> {
           _buildTextMarquee(),
           _buildImageSlider(),
           Expanded(
-            child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
+            child:  widget.gameViewModel.gameListT3 == null
                 ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
                 : widget.gameView,
           )

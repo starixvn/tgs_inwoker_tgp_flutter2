@@ -68,7 +68,7 @@ class _HomeT4State extends BaseState<HomeT4> {
           _buildTextMarquee(),
           _buildImageSlider(),
           Expanded(
-            child: widget.gameViewModel.gameRowListT3 == null || widget.gameViewModel.gameListT3 == null
+            child:  widget.gameViewModel.gameListT3 == null
                 ? buildProgressDialog(widget.homeViewModel.brandLogoUrl)
                 : widget.gameView
           )
@@ -246,7 +246,7 @@ class _HomeT4State extends BaseState<HomeT4> {
       );
 
   navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }

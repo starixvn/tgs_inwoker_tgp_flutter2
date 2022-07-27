@@ -46,10 +46,6 @@ class GameViewModel extends BaseViewModel {
     GameType.EGame,
   ];
   List<GameType> nonExistGameTypeList = [];
-  var _gameRowListT3 = [
-    GameType.Sportsbook,
-    GameType.LiveDealerLobby,
-  ];
   var _gameListT3 = [
     GameType.Sportsbook,
     GameType.LiveDealerLobby,
@@ -81,7 +77,7 @@ class GameViewModel extends BaseViewModel {
     GameType.Fishing
   ];
 
-  List<GameType>? gameRowListT3, gameListT3;
+  List<GameType>? gameListT3;
 
   var _context;
   Map<GameType, List<GameProvider2>>? gameTypeMap = new Map<GameType, List<GameProvider2>>();
@@ -118,7 +114,6 @@ class GameViewModel extends BaseViewModel {
         }
       });
     removeNonExistGameType();
-    gameRowListT3 = _gameRowListT3;
     gameListT3 = _gameListT3;
 
     setLoading(false);
@@ -137,7 +132,6 @@ class GameViewModel extends BaseViewModel {
       if (EnvironmentConfig.template_version == 1) {
         gameTypeList.remove(element);
       }
-      _gameRowListT3.remove(element);
       _gameListT3.remove(element);
     });
   }

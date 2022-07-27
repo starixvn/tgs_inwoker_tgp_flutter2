@@ -47,7 +47,7 @@ class _GameT3State extends BaseState<GameT3> {
     return ScrollConfiguration(
       behavior: MyBehavior(),
       child: ListView(
-        children: [_buildImageRow(), _buildGameImageGridView()],
+        children: [_buildGameImageGridView()],
       ),
     );
   }
@@ -58,64 +58,9 @@ class _GameT3State extends BaseState<GameT3> {
     imageLanguageCode = (languageCode.contains("th")) ? languageCode : "en-US";
   }
 
-  _buildImageRow() {
-    getLanguage();
-    return Container(
-      height: 180.auto,
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(widget.vm.gameRowListT3!.length, (index) {
-            return InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GameItemT3(
-                              gamePlatformCode: "",
-                              gameType: widget.vm.gameRowListT3![index],
-                              index: index,
-                              onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                              onResumeBgMusic: () =>
-                                  (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                              onGameClick: (gameProvider) => widget.onGameClick(gameProvider),
-                              vm: widget.vm,
-                            ))),
-                child: Container(
-                  width: context.screenWidth / 2 - 15.auto,
-                  child: (widget.vm.config?.homePageAnimated ?? false)
-                      ? Image.asset(
-                          _getFullGameTabImagePath(widget.vm.gameRowListT3![index].getImagePath()),
-                        )
-                      : Stack(
-                          children: [
-                            Image.asset("images/home/${widget.vm.gameRowListT3![index].getImagePath()}.png"),
-                            Positioned(
-                              bottom: 7.auto,
-                              right: 10.auto,
-                              child: Container(
-                                width: 80.auto,
-                                height: 90.auto,
-                                alignment: Alignment.bottomCenter,
-                                child: AutoSizeText(
-                                  // gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
-                                  widget.vm.gameRowListT3![index]
-                                      .getName(context, widget.vm.config?.menuItemShootFish ?? false),
-                                  maxFontSize: 23,
-                                  minFontSize: 10,
-                                  stepGranularity: 1,
-                                  style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                ));
-          })),
-    );
-  }
-
   _buildGameImageGridView() {
     return Container(
-      height: 260.auto,
+      // height: 260.auto,
       margin: EdgeInsets.only(top: 8.auto, bottom: 10.auto),
       child: StaggeredGrid.count(
         crossAxisCount: 2,
@@ -146,8 +91,14 @@ class _GameT3State extends BaseState<GameT3> {
                         _getFullGameTabImagePath(widget.vm.gameListT3![index].getImagePath()),
                       ),
                       Positioned(
-                        bottom: 20.auto,
-                        left: 60.auto,
+                        bottom: (widget.vm.gameListT3![index] == GameType.Sportsbook ||
+                                widget.vm.gameListT3![index] == GameType.LiveDealerLobby)
+                            ? 7.auto
+                            : 20.auto,
+                        left: (widget.vm.gameListT3![index] == GameType.Sportsbook ||
+                                widget.vm.gameListT3![index] == GameType.LiveDealerLobby)
+                            ? context.screenWidth / 3.8
+                            : 70.auto,
                         child: Container(
                           width: 70.auto,
                           height: 40.auto,
