@@ -88,7 +88,7 @@ class _HomeState extends BaseState<Home> {
     getLanguage();
     randomNumber = _randomGenerator();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(!(_vm.userProfile?.registerCompleted ?? false)){
+      if(!(_vm.userProfile?.registerCompleted ?? false) && (_vm.config?.idrRegisterCustomFlow ?? false)){
         _navigateToAddCard();
       }
       else if (_vm.config?.homePagePromoRoulette ?? false)
