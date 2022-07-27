@@ -230,7 +230,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
         gameType == GameType.EGame ||
         gameType == GameType.Fishing) {
       //navigate to child game
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -266,7 +266,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
                   )));
     } else {
       //navigate to game web
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
         Navigator.push(
             context,
@@ -286,7 +286,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
   }
 
   navigateToLogin() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.login);
     });
   }
@@ -314,7 +314,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
       if (_vm.url == null)
         _navigateToMaintenance();
       else
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           launch(_vm.url!);
         });
     }, onError: (_) {
@@ -325,7 +325,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
       if (_vm.url == null)
         _navigateToMaintenance();
       else
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           launch(_vm.url!);
         });
     }, onError: (_) {
@@ -334,7 +334,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
   }
 
   _navigateToMaintenance() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushReplacementNamed(RoutePath.maintenance);
     });
   }

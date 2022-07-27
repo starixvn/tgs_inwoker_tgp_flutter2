@@ -50,7 +50,7 @@ class _GameT3State extends BaseState<GameT4> {
 
   @override
   void initState() {
-    _vm = widget.vm!;
+    _vm = widget.vm;
     _vm.getGameProviderList(isRefresh: true);
     super.initState();
   }
