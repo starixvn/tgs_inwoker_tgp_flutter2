@@ -92,6 +92,7 @@
   "signup_pay_password_hint": "提现密码(6位数字)",
   "signup_promotion_code_hint": "请输入邀请码(选填)",
   "register": "注册",
+  "registernow": "立即注册",
   "single_amount": "单笔限额",
   "deposit_channel": "存款通道",
   "deposit_amount": "存款金额",
