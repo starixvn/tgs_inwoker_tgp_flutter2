@@ -1095,5 +1095,8 @@
   "roulette_is_played_text_3": "Klik untuk melihat detail promosi lainnya",
   "roulette_promo_home": "Beranda Promosi",
   "roulette_promo_content": "Konten Promosi",
-  "roulette_promo_terms": "S&K Promosi"
+  "roulette_promo_terms": "S&K Promosi",
+  "idr_withdrawalNumber": "NOMOR REKENING",
+  "idr_msgEnterWithdrawalNumber": "Silahkan Masukkan Nomor Rekening",
+  "withdrawalBankType": "Jenis"
 }

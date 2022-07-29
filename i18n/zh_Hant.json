@@ -1095,5 +1095,8 @@
   "roulette_is_played_text_3": "點我看更多好康優惠",
   "roulette_promo_home": "优惠主页",
   "roulette_promo_content": "优惠内容",
-  "roulette_promo_terms": "优惠条款"
+  "roulette_promo_terms": "优惠条款",
+  "idr_withdrawalNumber": "銀行卡號碼",
+  "idr_msgEnterWithdrawalNumber": "請輸入銀行卡號碼",
+  "withdrawalBankType": "類別"
 }

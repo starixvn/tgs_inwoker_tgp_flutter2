@@ -6,9 +6,9 @@ flutter_icons:
 environment_config:
   fields:
     jwtKey:
-      default: "D0pttkExTgstx5bPH2qPsubVq6BQpWUpJufjgKew6Tz0cV5BISEWeX"
+      default: "3zgOhlT7WBzSsOIb5f1qZsPmwlLTupZQMPeVgcwznMTlrKQYRXeCT3"
     url:
-      default: "https://dev-t4-idr.rpgp.cc/"
+      default: "https://stg.cabangslot.com/"
     currency:
       default: "IDR"
     appTitleName:

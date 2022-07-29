@@ -1095,5 +1095,9 @@
   "roulette_is_played_text_3": "คลิกเพื่อดูรายละเอียดโปรโมชั่นเพิ่มเติม",
   "roulette_promo_home": "เสนอหน้าแรก",
   "roulette_promo_content": "ข้อเสนอ",
-  "roulette_promo_terms": "เงื่อนไขพิเศษ"
+  "roulette_promo_terms": "เงื่อนไขพิเศษ",
+
+  "idr_withdrawalNumber": "หมายเลขบัตรธนาคาร",
+  "idr_msgEnterWithdrawalNumber": "โปรดป้อนหมายเลขบัตรธนาคาร",
+  "withdrawalBankType": "หมวดหมู่"
 }

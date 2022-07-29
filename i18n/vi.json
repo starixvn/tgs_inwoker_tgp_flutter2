@@ -1094,5 +1094,8 @@
   "roulette_is_played_text_3": "Nhấp để xem thêm chi tiết khuyến mại",
   "roulette_promo_home": "Trang chủ ưu đãi",
   "roulette_promo_content": "Nội dung khuyến mãi",
-  "roulette_promo_terms": "điều khoản ưu đãi"
+  "roulette_promo_terms": "điều khoản ưu đãi",
+  "idr_withdrawalNumber": "Số thẻ ngân hàng",
+  "idr_msgEnterWithdrawalNumber": "Vui lòng nhập số thẻ ngân hàng",
+  "withdrawalBankType": "Loại"
 }

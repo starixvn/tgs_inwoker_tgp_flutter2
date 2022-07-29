@@ -106,6 +106,7 @@ class _AddCardState extends BaseState<AddCard> {
         onPop: () {
           if (!(_vm.userProfile?.registerCompleted ?? false) &&
               widget.isNavigateFromRegister) {
+            Navigator.of(context).pop();
           } else
             Navigator.of(context).pop();
         },
@@ -122,7 +123,8 @@ class _AddCardState extends BaseState<AddCard> {
       ));
 
   _buildBankTypePicker() => CustomPicker(
-      title: "bank_type",
+      title:
+          _vm.config?.addCardBankCustomIdr ? "withdrawalBankType" : "bank_type",
       displayText: bankTypePickerText == null
           ? getTranslatedText("select_bank_type")
           : bankTypePickerText,
@@ -136,7 +138,7 @@ class _AddCardState extends BaseState<AddCard> {
   _buildChannelPicker() => Visibility(
         visible: !(_vm.config?.addCardHideChannel ?? false),
         child: CustomPicker(
-            title: "channel",
+            title: _vm.config?.addCardBankCustomIdr ? "bank_name" : "channel",
             displayText: channelPickerText == null
                 ? getTranslatedText("select_channel")
                 : channelPickerText,
@@ -235,7 +237,8 @@ class _AddCardState extends BaseState<AddCard> {
     switch (_vm.pBankType) {
       case BankType.BANK:
         return [
-          if (!_isAddCardHideCertainField())
+          if (!(_isAddCardHideCertainField() ||
+              _vm.config?.addCardBankCustomIdr))
             ((_vm.config?.addCardBankDropDown ?? false))
                 ? CustomPicker(
                     title: "bank_name",
@@ -258,12 +261,23 @@ class _AddCardState extends BaseState<AddCard> {
                 _bankBranchController, false),
           ),
           _buildBankTextField(
-              "bank_acc_name", "enter_bank_acc_name", _nameController, false),
+              _vm.config?.addCardBankCustomIdr
+                  ? "card_holder_name"
+                  : "bank_acc_name",
+              "enter_bank_acc_name",
+              _nameController,
+              false),
           _buildBankTextField(
-            _isAddCardDisplayGCash() ? "gcash_bank_name" : "crypto_address",
+            _isAddCardDisplayGCash()
+                ? "gcash_bank_name"
+                : _vm.config?.addCardBankCustomIdr
+                    ? "idr_withdrawalNumber"
+                    : "crypto_address",
             _isAddCardDisplayGCash()
                 ? "enter_gcash_bank_name"
-                : "enter_crypto_address",
+                : _vm.config?.addCardBankCustomIdr
+                    ? "idr_msgEnterWithdrawalNumber"
+                    : "enter_crypto_address",
             _bankNumController,
             true,
           ),
@@ -378,7 +392,9 @@ class _AddCardState extends BaseState<AddCard> {
                 (_bankBranchController.text.isNotEmpty)*/
                 )
               isButtonEnabled = true;
-            else
+            else if (_vm.config?.addCardBankCustomIdr ?? false) {
+              isButtonEnabled = true;
+            } else
               isButtonEnabled = false;
             break;
           }
@@ -438,7 +454,9 @@ class _AddCardState extends BaseState<AddCard> {
       _vm.addBankCard(
           bankName: (_vm.config?.addCardBankDropDown ?? false)
               ? getTranslatedText(_vm.pBankName)
-              : _bankNameController.text,
+              : _vm.config?.addCardBankCustomIdr
+                  ? channelPickerText
+                  : _bankNameController.text,
           bankAccount: _bankNumController.text,
           bankBranch: _bankBranchController.text,
           name: _nameController.text,
@@ -451,7 +469,7 @@ class _AddCardState extends BaseState<AddCard> {
       (_vm.config?.addCardDisplayGCash ?? false) &&
       getCurrentLanguage().apiCode == "en-US";
 
-  _isAddCardHideCertainField() => _vm.config?.addCardHideCertainField ?? false;
+  _isAddCardHideCertainField() => _vm.config.addCardHideCertainField ?? false;
 
   _handleApiState() {
     handleApiState(_vm.addBankCardApiState, onSuccess: () {
