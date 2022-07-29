@@ -24,10 +24,10 @@ import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class PhoneReVerification extends StatefulWidget {
-  final LoginViewModel vm;
+  final LoginViewModel? vm;
 
   PhoneReVerification({
-    required this.vm,
+    this.vm,
   });
 
   @override
@@ -52,7 +52,10 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   @override
   void initState() {
-    _vm = widget.vm;
+    if (widget.vm == null)
+      _vm = LoginViewModel();
+    else
+      _vm = widget.vm;
     display = _vm.config?.phonePrefix ?? "+852";
     _initData();
     super.initState();
@@ -78,8 +81,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
             child: Column(
               children: [
                 //CustomTabBar(index:1),
-                _buildUsernameTextFormField(),
-                _buildPasswordTextFormField(),
                 _buildPhoneTextFormField(),
                 _buildOtpTextFormField(),
                 _buildButton()
@@ -88,41 +89,6 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
           );
         });
   }
-
-  _buildUsernameTextFormField() => LoginTextFormField(
-        icon: SvgPicture.asset(
-          "images/login/ic_login_username.svg",
-          height: 20.auto,
-        ),
-        hintText: getTranslatedText("signup_username_hint"),
-        onChanged: (value) => _onTextChange(),
-        //onFieldSubmitted: (value) => null,
-        controller: _usernameController,
-        width: context.screenWidth,
-        textInputType: TextInputType.name,
-        textInputAction: TextInputAction.next,
-      );
-
-  _buildPasswordTextFormField() => Container(
-        margin: EdgeInsets.only(top: 10.auto),
-        child: LoginPasswordTextFormField(
-          icon: SvgPicture.asset(
-            "images/login/ic_login_password.svg",
-            height: 20.auto,
-          ),
-          hintText: getTranslatedText("signup_password_hint"),
-          onChanged: (value) => _onTextChange(),
-          onFieldSubmitted: (value) => null,
-          controller: _passwordController,
-          width: context.screenWidth,
-          textInputType: TextInputType.visiblePassword,
-          textInputAction: TextInputAction.next,
-          onShowPassword: () {
-            setState(() => this._obscurePassword = !this._obscurePassword);
-          },
-          obscurePassword: _obscurePassword,
-        ),
-      );
 
   _buildPhoneTextFormField() => Container(
         margin: EdgeInsets.only(top: 15.auto),
@@ -147,26 +113,23 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   _buildOtpTextFormField() => Visibility(
         visible: true,
-        child: Opacity(
-          opacity: isOtpEnabled ? 1 : 0.4,
-          child: Container(
-            margin: EdgeInsets.only(top: 15.auto),
-            child: LoginOtpTextFormField(
-                hintText: getTranslatedText("enter_phone_otp_hint"),
-                onChanged: (value) => _onTextChange(),
-                controller: _otpController,
-                textInputAction: TextInputAction.done,
-                getOtpCode: () {
-                  _getSmsCode();
-                },
-                isCountdown: isOtpCountdown,
-                isEnabled: isOtpEnabled,
-                onCountDownEnd: () => {
-                      setState(() {
-                        isOtpCountdown = false;
-                      })
-                    }),
-          ),
+        child: Container(
+          margin: EdgeInsets.only(top: 15.auto),
+          child: LoginOtpTextFormField(
+              hintText: getTranslatedText("enter_phone_otp_hint"),
+              onChanged: (value) => _onTextChange(),
+              controller: _otpController,
+              textInputAction: TextInputAction.done,
+              getOtpCode: () {
+                _getSmsCode();
+              },
+              isCountdown: isOtpCountdown,
+              isEnabled: true,
+              onCountDownEnd: () => {
+                    setState(() {
+                      isOtpCountdown = false;
+                    })
+                  }),
         ),
       );
 
@@ -184,35 +147,21 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   _onTextChange() {
     setState(() {
-      if (_usernameController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty &&
-          _phoneController.text.isNotEmpty &&
-          _otpController.text.isNotEmpty) {
-        isOtpEnabled = true;
+      if (_phoneController.text.isNotEmpty && _otpController.text.isNotEmpty) {
+        // isOtpEnabled = true;
         isButtonEnabled = true;
-      } else if (_usernameController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty &&
-          _phoneController.text.isNotEmpty) {
-        isOtpEnabled = true;
+      } else if (_phoneController.text.isNotEmpty) {
+        // isOtpEnabled = true;
         isButtonEnabled = false;
       } else {
-        isOtpEnabled = false;
+        //isOtpEnabled = false;
         isButtonEnabled = false;
       }
     });
   }
 
   _getSmsCode() {
-    if (!validate.validateUsernameLength(_usernameController.text) ||
-        !validate.validateUsernamePassword(_usernameController.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("enter_username_error_message"));
-      });
-    } else if (!validate.validatePasswordLength(_passwordController.text)) {
-      setState(() {
-        CustomToast.show(getTranslatedText("enter_password_error_msg"));
-      });
-    } else if (!validate.validatePhoneLength(_phoneController.text)) {
+    if (!validate.validatePhoneLength(_phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
@@ -222,12 +171,12 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
       });
     } else {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getReVerifyCode(_usernameController.text, _passwordController.text, display!, _phoneController.text);
+      _vm.getReVerifyCode(display!, _phoneController.text);
     }
   }
 
   _onClick() async {
-    ProgressDialog.show(context, _vm.brandLogo.mobileUr);
+    ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
     _vm.phoneVerify(_otpController.text);
   }
 

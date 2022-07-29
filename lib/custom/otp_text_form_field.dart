@@ -39,7 +39,7 @@ class OtpTextFormField extends StatefulWidget {
 class _OtpTextFormFieldState extends BaseState<OtpTextFormField> {
   Timer? _timer;
   int _start = 0;
-  static const int _duration = 5;
+  static const int _duration = 60;
 
   Widget build(BuildContext context) {
     return Visibility(

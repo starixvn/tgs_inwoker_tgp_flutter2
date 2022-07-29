@@ -17,11 +17,10 @@ import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification_view_model
 import 'package:api/extension/screen_apis.dart';
 
 class PhoneVerification extends StatefulWidget {
+  final bool isPopBackToHome;
   final bool isFromRouletteRoute;
 
-  PhoneVerification({
-    this.isFromRouletteRoute = false,
-  });
+  PhoneVerification({this.isPopBackToHome = false, this.isFromRouletteRoute = false});
 
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
@@ -52,8 +51,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           return CustomScaffold(
               appBar: _buildAppBar(),
               body: Container(
-                  child:
-                      Container(
+                  child: Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
                 child: Column(
                   children: [
@@ -71,7 +69,11 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("phone_number"),
       onPop: () {
-        if (widget.isFromRouletteRoute)
+        if (_vm.userProfile.phone == null &&
+            !(_vm.userProfile?.registerCompleted ?? true) &&
+            (_vm.config?.forcedVerification ?? false)) {
+          // dont pop
+        } else if (widget.isFromRouletteRoute || (_vm.userProfile.phone != null && widget.isPopBackToHome))
           Navigator.pop(context);
         else
           Navigator.popUntil(context, ModalRoute.withName('/profile_info'));
@@ -91,25 +93,29 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         ),
       );
 
-  _buildOtpTextFormField() => Visibility(
-      visible: _vm.userProfile.phone == null && !(_vm.config?.profileDisableVerifyPhone ?? false),
-      child: OtpTextFormField(
-        hintText: getTranslatedText("enter_email_otp_hint"),
-        onChanged: (value) => _onTextChange(),
-        controller: _otpController,
-        textInputAction: TextInputAction.done,
-        getOtpCode: () {
-          _getSmsCode();
-        },
-        isEnabled: isOtpEnabled,
-        isCountdown: isOtpCountdown,
-        onCountDownEnd: () => {
-          setState(() {
-            isOtpCountdown = false;
-          })
-        },
-        isVisible: true,
-      ));
+  _buildOtpTextFormField() {
+    print("1");
+    return Visibility(
+        visible: _vm.userProfile.phone == null && !(_vm.config?.profileDisableVerifyPhone ?? true) ||
+            !(_vm.userProfile?.registerCompleted ?? true),
+        child: OtpTextFormField(
+          hintText: getTranslatedText("enter_email_otp_hint"),
+          onChanged: (value) => _onTextChange(),
+          controller: _otpController,
+          textInputAction: TextInputAction.done,
+          getOtpCode: () {
+            _getSmsCode();
+          },
+          isEnabled: isOtpEnabled,
+          isCountdown: isOtpCountdown,
+          onCountDownEnd: () => {
+            setState(() {
+              isOtpCountdown = false;
+            })
+          },
+          isVisible: true,
+        ));
+  }
 
   _buildButton() => Container(
       width: context.screenWidth,
@@ -124,8 +130,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       ));
 
   _buildEditPhoneText() => Visibility(
-    visible: _vm.userProfile.phone != null,
-    child: InkWell(
+        visible: _vm.userProfile.phone != null,
+        child: InkWell(
           onTap: () {
             _isNotAllowedEditPhone()
                 ? Navigator.of(context).pushNamed("/customer_service")
@@ -152,7 +158,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
             ),
           ),
         ),
-  );
+      );
 
   _onTextChange() {
     setState(() {
@@ -184,7 +190,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         buttonText = getTranslatedText("verified");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
-      } else if (_vm.config?.profileDisableVerifyPhone ?? false) {
+      } else if ((_vm.config?.profileDisableVerifyPhone ?? false) && (_vm.userProfile?.registerCompleted ?? true)) {
         buttonText = getTranslatedText("done");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
@@ -233,8 +239,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       });
     });
 
-    handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () {
-      // await _getUserProfile();
+    handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () async {
+      await _getUserProfile();
       CustomToast.show(getTranslatedText("success"));
     });
   }

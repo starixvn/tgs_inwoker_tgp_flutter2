@@ -18,12 +18,13 @@ import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_otp_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_form_field.dart';
+import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 
 class RegisterContent extends StatefulWidget {
-  final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
+ // final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
   final LoginViewModel vm;
 
-  RegisterContent({this.onSubmitUsernameAndPassword, required this.vm});
+  RegisterContent({required this.vm});
 
   @override
   _RegisterContentState createState() => _RegisterContentState();
@@ -41,7 +42,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       email = TextEditingController();
   InputValidationProvider validate = new InputValidationProvider();
   var _vm;
-  bool isOtpEnabled = false, isOtpCountdown = false;
+  bool isOtpEnabled = false, isOtpCountdown = false, _isRegisterSuccess = false;
 
   bool _isTermsChecked = true;
   String? agentPlayer = 'player';
@@ -66,21 +67,23 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Container(
-            child: Column(
-              children: [
-                _buildUsernameTextFormField(),
-                _buildPasswordTextFormField(),
-                _buildConfirmPasswordTextFormField(),
-                //_buildPayPasswordTextFormField(),
-                if (_registerShowPhone()) _buildPhoneTextFormField(),
-                if (_registerShowEmail()) _buildEmailTextFormField(),
-                _buildPromotionCodeTextFormField(),
-                _buildRegisterTermsText(),
-                _buildRegisterButton()
-              ],
-            ),
-          );
+          return _isShowSmsVerification() && _isRegisterSuccess
+              ? PhoneReVerification(vm: vm)
+              : Container(
+                  child: Column(
+                    children: [
+                      _buildUsernameTextFormField(),
+                      _buildPasswordTextFormField(),
+                      _buildConfirmPasswordTextFormField(),
+                      //_buildPayPasswordTextFormField(),
+                      if (_registerShowPhone()) _buildPhoneTextFormField(),
+                      if (_registerShowEmail()) _buildEmailTextFormField(),
+                      _buildPromotionCodeTextFormField(),
+                      _buildRegisterTermsText(),
+                      _buildRegisterButton()
+                    ],
+                  ),
+                );
         });
   }
 
@@ -342,8 +345,11 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
     });
 
     handleApiState(_vm.registerApiState, onSuccess: () {
-      if (_vm.config?.smsVerification ?? false)
-        widget.onSubmitUsernameAndPassword!([username.text, password.text]);
+      if (_vm.config?.smsVerification ?? false){
+        setState(() {
+          _isRegisterSuccess = true;
+        });
+      }
       else {
         if (_registerShowPhone() || _registerShowEmail()) {
           _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
@@ -400,4 +406,6 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
       //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }
+
+  _isShowSmsVerification() => (_vm.config?.smsVerification ?? false);
 }

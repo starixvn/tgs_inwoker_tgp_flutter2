@@ -204,7 +204,7 @@
   "new_game": "最新游戏",
   "hot_game": "热门游戏",
   "edit": "修改",
-  "phone_format_error_msg": "手机号码格式不正确",
+  "phone_format_error_msg": "手机号码设置为8到10位",
   "email_format_error_msg": "邮箱地址格式不正确",
   "bank_type": "银行账号类别",
   "bank_acc_name": "银行账号名称",

@@ -20,9 +20,11 @@ class PhoneVerificationViewModel extends BaseViewModel {
 
   getPhoneVerifyCode(String area, String phone) async {
     setLoading();
-    getPhoneVerifyCodeApiState = await authRepo.getPhoneVerify(area, phone);
+    getPhoneVerifyCodeApiState = await authRepo.getReVerifyCode("", "", area, phone, isIdrRegister: true);
+    // getPhoneVerifyCodeApiState = await authRepo.getPhoneVerify(area, phone);
     if (getPhoneVerifyCodeApiState.isSuccess) {
-      securityKey = getPhoneVerifyCodeApiState.result;
+      //securityKey = getPhoneVerifyCodeApiState.result;
+      securityKey = getPhoneVerifyCodeApiState.result?["stepResponse"] ?? "";
     }
     setLoading(false);
     return getPhoneVerifyCodeApiState;
@@ -30,7 +32,11 @@ class PhoneVerificationViewModel extends BaseViewModel {
 
   submitVerifyCode(int index, String verificationCode) async {
     setLoading();
-    var _status = await authRepo.submitVerifyCode(securityKey, verificationCode, isPhone: true);
+    //var _status = await authRepo.submitVerifyCode(securityKey, verificationCode, isPhone: true);
+    var _status = await authRepo.phoneReVerify(
+      securityKey ?? "",
+      verificationCode,
+    );
     if (_status.isSuccess && index == 1) {
       submitVerifyCodeApiState = await userRepo.getBasicInfo();
     } else

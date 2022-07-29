@@ -206,7 +206,7 @@
   "new_game": "New Game",
   "hot_game": "Hot Game",
   "edit": "Edit",
-  "phone_format_error_msg": "Format of the phone number is incorrect",
+  "phone_format_error_msg": "The mobile number is set to 8 to 10 digits",
   "email_format_error_msg": "Format of the email is incorrect",
   "bank_type": "Bank Type",
   "bank_name": "Bank Name",

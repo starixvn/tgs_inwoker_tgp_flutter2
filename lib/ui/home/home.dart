@@ -24,11 +24,14 @@ import 'package:tgp_flutter2/ui/home/home_t4.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'package:tgp_flutter2/ui/home/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/home/roulette_dialog.dart';
 import 'dart:io' show Platform;
 
 import 'dart:math';
+
+import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
 
 class Home extends StatefulWidget {
   final bool isFirstRun;
@@ -51,8 +54,7 @@ class _HomeState extends BaseState<Home> {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -82,26 +84,18 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
+    task.add(_vm.getBankCardList());
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
     await Future.wait(task);
-    _vm.getUserDetails();
     getLanguage();
     randomNumber = _randomGenerator();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(!(_vm.userProfile?.registerCompleted ?? false) && (_vm.config?.idrRegisterCustomFlow ?? false)){
-        _navigateToAddCard();
-      }
-      else if (_vm.config?.homePagePromoRoulette ?? false)
-        _displayRouletteDialog();
-      else
-        _displayDialog();
-    });
+    _handleNavigationAndPopUpDialog();
+    await _vm.getUserDetails();
   }
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -165,11 +159,8 @@ class _HomeState extends BaseState<Home> {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return HomeT1(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -178,11 +169,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 2:
         return HomeT2(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -191,11 +179,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 3:
         return HomeT3(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -204,11 +189,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 4:
         return HomeT4(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -217,11 +199,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 8:
         return HomeT8(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -230,11 +209,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 9:
         return HomeT9(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -242,11 +218,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 10:
         return HomeT10(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -255,11 +228,8 @@ class _HomeState extends BaseState<Home> {
         );
       default:
         return HomeT1(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -350,6 +320,14 @@ class _HomeState extends BaseState<Home> {
     } else if (isShowPromotion()) _displayPromotionDialog();
   }
 
+  _displayPhoneVerificationDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: !(_vm.config?.forcedVerification ?? true),
+      builder: (BuildContext context2) => PhoneVerificationDialog(),
+    );
+  }
+
   _displayMarqueeDialog() {
     showDialog(
       context: context,
@@ -378,12 +356,9 @@ class _HomeState extends BaseState<Home> {
     );
   }
 
-  isShowAnnouncement() =>
-      (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
+  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
 
-  isShowPromotion() =>
-      (_vm.config?.popupPromotion ?? false) &&
-      (_vm.promotionList?.isNotEmpty ?? false);
+  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
 
   _randomGenerator() {
     Random _random = new Random();
@@ -400,15 +375,39 @@ class _HomeState extends BaseState<Home> {
         onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
       );
 
+  _handleNavigationAndPopUpDialog() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if ((_vm.userProfile?.registerCompleted ?? false) && (_vm.bankCardList?.isEmpty ?? false)) {
+        _navigateToAddCard();
+      } else if ((_vm.config?.smsVerification ?? false) &&
+          !(_vm.userProfile?.registerCompleted ?? true) &&
+          (_vm.config?.forcedVerification ?? false)) {
+        _displayPhoneVerificationDialog();
+      } else if ((_vm.config.registerShowPhone ?? false) &&
+          !(_vm.userProfile?.registerCompleted ?? true) &&
+          (_vm.config?.forcedVerification ?? false)) {
+        _navigateToPhoneVerification();
+      } else if (_vm.config?.homePagePromoRoulette ?? false)
+        _displayRouletteDialog();
+      else
+        _displayDialog();
+    });
+  }
+
   _navigateToAddCard() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AddCard(
-                  isNavigateFromRegister: true
-              )));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);
+    });
+  }
+
+  _navigateToPhoneVerification() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Navigator.of(context).pushNamed(RoutePath.phoneVerification);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PhoneVerification(isPopBackToHome: true)),
+      );
     });
   }
 
@@ -428,17 +427,11 @@ class _HomeState extends BaseState<Home> {
     }, onLogout: () {
       ProgressDialog.hide();
     });
-    handleApiState(_vm.getBasicInfoApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getTodayRouletteResultApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getRouletteApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getTodayRouletteResultApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getRouletteApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

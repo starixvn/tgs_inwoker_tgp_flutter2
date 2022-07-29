@@ -135,14 +135,14 @@ class LoginViewModel extends BaseViewModel {
     await userRepo.getApiErrorLocalization();
   }
 
-  getReVerifyCode(String _username, String _password, String areaCode, String phone) async {
+  getReVerifyCode(String areaCode, String phone) async {
     setLoading();
-    getReVerifyCodeApiState = await authRepo.getReVerifyCode(_username, _password, areaCode, phone);
+    getReVerifyCodeApiState = await authRepo.getReVerifyCode("", "", areaCode, phone, isIdrRegister: true);
     if (getReVerifyCodeApiState.isSuccess) {
-      securityKey = getReVerifyCodeApiState.result;
-      username = _username;
-      password = _password;
-      if (config.registerShowPhone ?? false) phoneVerify("123456");
+      securityKey = getReVerifyCodeApiState.result?["stepResponse"] ?? "";
+      username = await getUsername();
+      password = await getPassword();
+      //if (config.registerShowPhone ?? false) phoneVerify("123456");
     }
     setLoading(false);
     return getReVerifyCodeApiState;

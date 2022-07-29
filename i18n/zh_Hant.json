@@ -204,7 +204,7 @@
   "new_game": "熱門遊戲",
   "hot_game": "最新遊戲",
   "edit": "修改",
-  "phone_format_error_msg": "手機號碼格式不正確",
+  "phone_format_error_msg": "手機號碼設置為8到10位",
   "email_format_error_msg": "郵箱地址格式不正確",
   "bank_type": "銀行賬號類別",
   "bank_name": "銀行名稱",

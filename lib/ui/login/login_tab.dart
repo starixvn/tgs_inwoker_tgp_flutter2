@@ -35,19 +35,13 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
 
     tabController = TabController(
       initialIndex: currentTabIndex,
-      length: _isShowSmsVerification() ? 3 : 2,
+      length: 2,
       vsync: this,
     );
-    tab = _isShowSmsVerification()
-        ? [
-            {"id": "0", "text": "login"},
-            {"id": "1", "text": "register"},
-            {"id": "2", "text": "phone_re-verify"}
-          ]
-        : [
-            {"id": "0", "text": "login"},
-            {"id": "1", "text": "register"}
-          ];
+    tab = [
+      {"id": "0", "text": "login"},
+      {"id": "1", "text": "register"}
+    ];
   }
 
   @override
@@ -86,31 +80,21 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
             child: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           controller: tabController,
-          children: _isShowSmsVerification()
-              ? [
-                  LoginContent(vm: _vm),
-                  RegisterContent(
-                      onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value), vm: _vm),
-                  PhoneReVerification(vm: _vm)
-                ]
-              : [
-                  LoginContent(vm: _vm),
-                  RegisterContent(
-                      onSubmitUsernameAndPassword: (value) => _navigateToPhoneReVerification(value), vm: _vm),
-                ],
+          children: [
+            LoginContent(vm: _vm),
+            RegisterContent( vm: _vm),
+          ],
         ))
       ],
     );
   }
 
   _navigateToPhoneReVerification(List<String> list) {
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-    setState(() {
-      currentTabIndex = 2;
-    });
-    tabController!.animateTo(2);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        currentTabIndex = 2;
       });
+      tabController!.animateTo(2);
+    });
   }
-
-  _isShowSmsVerification() => (widget.config?.smsVerification ?? false);
 }

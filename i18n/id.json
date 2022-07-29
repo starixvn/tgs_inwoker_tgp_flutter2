@@ -205,7 +205,7 @@
   "new_game": "Game Terbaru",
   "hot_game": "Game Panas",
   "edit": "Sunting",
-  "phone_format_error_msg": "Format nomor ponsel salah",
+  "phone_format_error_msg": "Nomor ponsel diatur ke 8 hingga 10 digit",
   "email_format_error_msg": "Format alamat email salah",
   "bank_type": "Jenis Rekening Bank",
   "bank_acc_name": "Nama rekening bank",

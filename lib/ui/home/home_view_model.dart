@@ -28,6 +28,8 @@ class HomeViewModel extends BaseViewModel {
 
   get wallet => userRepo.wallet;
 
+  get bankCardList => bankRepo.bankCardList;
+
   bool isNotLogin = false, isExpired = false;
   var getBasicInfoApiState,
       getAnnouncementApiState,
@@ -176,17 +178,17 @@ class HomeViewModel extends BaseViewModel {
     return getBrandCommunicationApiState;
   }
 
-  _getBankCardList() async {
+  getBankCardList() async {
     setLoading();
     getBankCardListApiState = await bankRepo.getBankCardList();
     setLoading(false);
     return getBankCardListApiState;
   }
 
-  getUserDetails() async{
+  getUserDetails() async {
     //if (userProfile != null) {
     await _getTotalBalance();
-    await _getBankCardList();
+
   }
 
   getPromotionList() async {

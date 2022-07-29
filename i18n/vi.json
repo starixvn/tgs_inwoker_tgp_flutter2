@@ -204,7 +204,7 @@
   "new_game": "Trò chơi mới nhất",
   "hot_game": "Trò chơi hấp dẫn",
   "edit": "Chỉnh sửa",
-  "phone_format_error_msg": "Định dạng số điện thoại di động không chính xác",
+  "phone_format_error_msg": "Số điện thoại di động được đặt thành 8 đến 10 chữ số",
   "email_format_error_msg": "Định dạng địa chỉ email không chính xác",
   "bank_type": "Loại tài khoản ngân hàng",
   "bank_acc_name": "Tên tài khoản ngân hàng",
