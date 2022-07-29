@@ -1097,5 +1097,7 @@
   "roulette_promo_terms": "điều khoản ưu đãi",
   "idr_withdrawalNumber": "Số thẻ ngân hàng",
   "idr_msgEnterWithdrawalNumber": "Vui lòng nhập số thẻ ngân hàng",
-  "withdrawalBankType": "Loại"
+  "withdrawalBankType": "Loại",
+  "eWalletAccount": "Tên tiền điện tử",
+  "msgEnterEwalletAccount": "Vui lòng nhập tên tiền điện tử"
 }

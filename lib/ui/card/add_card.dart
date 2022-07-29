@@ -136,7 +136,8 @@ class _AddCardState extends BaseState<AddCard> {
       });
 
   _buildChannelPicker() => Visibility(
-        visible: !(_vm.config?.addCardHideChannel ?? false),
+        visible: !(((_vm.config?.addCardHideChannel ?? false) ||
+            _vm.pBankType == BankType.EWALLET)),
         child: CustomPicker(
             title: _vm.config?.addCardBankCustomIdr ? "bank_name" : "channel",
             displayText: channelPickerText == null
@@ -282,6 +283,13 @@ class _AddCardState extends BaseState<AddCard> {
             true,
           ),
         ];
+      case BankType.EWALLET:
+        return [
+          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount",
+              _nameController, false,
+              isBankName: false),
+          _buildPhoneTextField(),
+        ];
       case BankType.CRYPTO:
         return [
           _buildCryptoAddressTextField(),
@@ -371,6 +379,17 @@ class _AddCardState extends BaseState<AddCard> {
               isButtonEnabled = true;
             else
               isButtonEnabled = false;
+            break;
+          }
+
+        case BankType.EWALLET:
+          {
+            if (_nameController.text.isNotEmpty &&
+                _phoneController.text.isNotEmpty) {
+              isButtonEnabled = true;
+            } else {
+              isButtonEnabled = false;
+            }
             break;
           }
         case BankType.BANK:

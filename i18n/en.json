@@ -1112,5 +1112,7 @@
 
   "idr_withdrawalNumber": "Bank card number",
   "idr_msgEnterWithdrawalNumber": "Please enter bank card number",
-  "withdrawalBankType": "Type"
+  "withdrawalBankType": "Type",
+  "eWalletAccount": "E-money Name",
+  "msgEnterEwalletAccount": "Please enter e-money name"
 }

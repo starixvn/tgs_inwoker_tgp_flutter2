@@ -1099,5 +1099,7 @@
 
   "idr_withdrawalNumber": "หมายเลขบัตรธนาคาร",
   "idr_msgEnterWithdrawalNumber": "โปรดป้อนหมายเลขบัตรธนาคาร",
-  "withdrawalBankType": "หมวดหมู่"
+  "withdrawalBankType": "หมวดหมู่",
+  "eWalletAccount": "ชื่อเงินอิเล็กทรอนิกส์",
+  "msgEnterEwalletAccount": "โปรดป้อนชื่อเงินอิเล็กทรอนิกส์"
 }

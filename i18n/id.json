@@ -1098,5 +1098,7 @@
   "roulette_promo_terms": "S&K Promosi",
   "idr_withdrawalNumber": "NOMOR REKENING",
   "idr_msgEnterWithdrawalNumber": "Silahkan Masukkan Nomor Rekening",
-  "withdrawalBankType": "Jenis"
+  "withdrawalBankType": "Jenis",
+  "eWalletAccount": "Nama uang elektronik",
+  "msgEnterEwalletAccount": "Silakan masukkan nama uang elektronik"
 }

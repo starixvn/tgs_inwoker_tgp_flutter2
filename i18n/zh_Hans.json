@@ -1097,5 +1097,7 @@
   "roulette_promo_terms": "优惠条款",
   "idr_withdrawalNumber": "银行卡号码",
   "idr_msgEnterWithdrawalNumber": "请输入银行卡号码",
-  "withdrawalBankType": "类别"
+  "withdrawalBankType": "类别",
+  "eWalletAccount": "电子货币名称",
+  "msgEnterEwalletAccount": "请输入电子货币名称"
 }
