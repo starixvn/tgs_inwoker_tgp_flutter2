@@ -16,16 +16,19 @@ class LoginPhoneTextFormField extends StatefulWidget {
   final bool enabled;
   final ValueChanged<String> onAreaCodeClicked;
   final String? displayedAreaCode;
+  final int maxLength;
 
-  LoginPhoneTextFormField(
-      {required this.onChanged,
-      required this.onFieldSubmitted,
-      required this.controller,
-      required this.width,
-      required this.textInputAction,
-      required this.enabled,
-      required this.onAreaCodeClicked,
-      this.displayedAreaCode});
+  LoginPhoneTextFormField({
+    required this.onChanged,
+    required this.onFieldSubmitted,
+    required this.controller,
+    required this.width,
+    required this.textInputAction,
+    required this.enabled,
+    required this.onAreaCodeClicked,
+    this.displayedAreaCode,
+    required this.maxLength,
+  });
 
   @override
   _LoginPhoneTextFormFieldState createState() => _LoginPhoneTextFormFieldState();
@@ -85,7 +88,10 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
               border: InputBorder.none,
               hintText: getTranslatedText("enter_phone_hint"),
               hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+              counterText: '',
+              counterStyle: TextStyle(fontSize: 0),
             ),
+            maxLength: widget.maxLength,
           ),
         ),
       )

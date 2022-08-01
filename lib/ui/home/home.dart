@@ -377,9 +377,7 @@ class _HomeState extends BaseState<Home> {
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if ((_vm.userProfile?.registerCompleted ?? false) && (_vm.bankCardList?.isEmpty ?? false)) {
-        _navigateToAddCard();
-      } else if ((_vm.config?.smsVerification ?? false) &&
+      if ((_vm.config?.smsVerification ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
         _displayPhoneVerificationDialog();
@@ -387,6 +385,9 @@ class _HomeState extends BaseState<Home> {
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
         _navigateToPhoneVerification();
+      } else if (!(_vm.userProfile?.registerCompleted ?? true) &&
+          (_vm.bankCardList == null || _vm.bankCardList.length == 0)) {
+        _navigateToAddCard();
       } else if (_vm.config?.homePagePromoRoulette ?? false)
         _displayRouletteDialog();
       else
@@ -402,12 +403,13 @@ class _HomeState extends BaseState<Home> {
   }
 
   _navigateToPhoneVerification() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Navigator.of(context).pushNamed(RoutePath.phoneVerification);
-      Navigator.push(
+      var result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PhoneVerification(isPopBackToHome: true)),
+        MaterialPageRoute(builder: (context) => PhoneVerification(isFromRegister: true)),
       );
+      if (result) _handleNavigationAndPopUpDialog();
     });
   }
 

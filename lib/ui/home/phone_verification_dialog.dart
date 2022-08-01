@@ -11,6 +11,7 @@ import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item_details.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
@@ -23,8 +24,6 @@ class PhoneVerificationDialog extends StatefulWidget {
 }
 
 class _PhoneVerificationDialogState extends BaseState<PhoneVerificationDialog> {
-  PromotionViewModel _vm = PromotionViewModel();
-
   @override
   void dispose() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -34,19 +33,14 @@ class _PhoneVerificationDialogState extends BaseState<PhoneVerificationDialog> {
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<PromotionViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          //_handleApiState();
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            elevation: 5,
-            backgroundColor: Colors.transparent,
-            child: dialogContent(context),
-          );
-        });
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 5,
+      backgroundColor: Colors.transparent,
+      child: dialogContent(context),
+    );
   }
 
   dialogContent(BuildContext context) {

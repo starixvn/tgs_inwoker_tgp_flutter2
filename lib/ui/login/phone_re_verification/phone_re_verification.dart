@@ -101,6 +101,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
           enabled: isTextFieldEnabled,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
+          maxLength:  _vm.config?.maxPhoneLength??10,
         ),
       );
 

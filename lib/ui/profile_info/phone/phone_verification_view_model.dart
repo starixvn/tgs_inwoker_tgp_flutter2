@@ -18,10 +18,12 @@ class PhoneVerificationViewModel extends BaseViewModel {
 
   var securityKey;
 
-  getPhoneVerifyCode(String area, String phone) async {
+  getPhoneVerifyCode(String area, String phone, {bool isFromRegister = false}) async {
     setLoading();
-    getPhoneVerifyCodeApiState = await authRepo.getReVerifyCode("", "", area, phone, isIdrRegister: true);
-    // getPhoneVerifyCodeApiState = await authRepo.getPhoneVerify(area, phone);
+    getPhoneVerifyCodeApiState = isFromRegister
+        //isFromRegister calling api/player/register
+        ? await authRepo.getReVerifyCode("", "", area, phone, isIdrRegister: true)
+        : await authRepo.getPhoneVerify(area, phone);
     if (getPhoneVerifyCodeApiState.isSuccess) {
       //securityKey = getPhoneVerifyCodeApiState.result;
       securityKey = getPhoneVerifyCodeApiState.result?["stepResponse"] ?? "";
@@ -30,13 +32,15 @@ class PhoneVerificationViewModel extends BaseViewModel {
     return getPhoneVerifyCodeApiState;
   }
 
-  submitVerifyCode(int index, String verificationCode) async {
+  submitVerifyCode(int index, String verificationCode, {bool isFromRegister = false}) async {
     setLoading();
-    //var _status = await authRepo.submitVerifyCode(securityKey, verificationCode, isPhone: true);
-    var _status = await authRepo.phoneReVerify(
-      securityKey ?? "",
-      verificationCode,
-    );
+    var _status = isFromRegister
+        //isFromRegister calling api/player/register
+        ? await authRepo.phoneReVerify(
+            securityKey ?? "",
+            verificationCode,
+          )
+        : await authRepo.submitVerifyCode(securityKey, verificationCode, isPhone: true);
     if (_status.isSuccess && index == 1) {
       submitVerifyCodeApiState = await userRepo.getBasicInfo();
     } else

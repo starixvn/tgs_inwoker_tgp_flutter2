@@ -21,7 +21,7 @@ import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_for
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 
 class RegisterContent extends StatefulWidget {
- // final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
+  // final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
   final LoginViewModel vm;
 
   RegisterContent({required this.vm});
@@ -171,6 +171,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           enabled: true,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
+          maxLength: _vm.config?.maxPhoneLength ?? 10,
         ),
       );
 
@@ -345,12 +346,11 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
     });
 
     handleApiState(_vm.registerApiState, onSuccess: () {
-      if (_vm.config?.smsVerification ?? false){
+      if (_vm.config?.smsVerification ?? false) {
         setState(() {
           _isRegisterSuccess = true;
         });
-      }
-      else {
+      } else {
         if (_registerShowPhone() || _registerShowEmail()) {
           _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
         }

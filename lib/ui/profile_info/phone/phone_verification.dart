@@ -17,10 +17,10 @@ import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification_view_model
 import 'package:api/extension/screen_apis.dart';
 
 class PhoneVerification extends StatefulWidget {
-  final bool isPopBackToHome;
+  final bool isFromRegister;
   final bool isFromRouletteRoute;
 
-  PhoneVerification({this.isPopBackToHome = false, this.isFromRouletteRoute = false});
+  PhoneVerification({this.isFromRegister = false, this.isFromRouletteRoute = false});
 
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
@@ -73,8 +73,9 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
             !(_vm.userProfile?.registerCompleted ?? true) &&
             (_vm.config?.forcedVerification ?? false)) {
           // dont pop
-        } else if (widget.isFromRouletteRoute || (_vm.userProfile.phone != null && widget.isPopBackToHome))
-          Navigator.pop(context);
+        } else if (widget.isFromRouletteRoute || (_vm.userProfile.phone != null && widget.isFromRegister))
+          //pop back to home page
+          Navigator.pop(context, true);
         else
           Navigator.popUntil(context, ModalRoute.withName('/profile_info'));
       });
@@ -90,6 +91,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           enabled: isTextFieldEnabled,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
+          maxLength:  _vm.config?.maxPhoneLength??10,
         ),
       );
 
@@ -214,13 +216,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     }*/
     else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getPhoneVerifyCode(display!, _phoneController.text);
+      _vm.getPhoneVerifyCode(display!, _phoneController.text, isFromRegister: widget.isFromRegister);
     }
   }
 
   _onClick() async {
     ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.submitVerifyCode(1, _otpController.text);
+    _vm.submitVerifyCode(1, _otpController.text, isFromRegister: widget.isFromRegister);
   }
 
   _isNotAllowedEditPhone() =>

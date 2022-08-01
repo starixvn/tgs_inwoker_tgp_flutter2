@@ -100,6 +100,7 @@ class _EditPhoneState extends BaseState<EditPhone> {
               enabled: isTextFieldEnabled,
               onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
               displayedAreaCode: display,
+              maxLength:  _vm.config?.maxPhoneLength??10,
             ),
           ),
         ],

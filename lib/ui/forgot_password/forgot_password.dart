@@ -84,6 +84,7 @@ class _ForgotPasswordState extends BaseState<ForgotPassword> {
           enabled: true,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
+          maxLength:  _vm.config?.maxPhoneLength??10,
         ),
       );
 

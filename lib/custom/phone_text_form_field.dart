@@ -17,23 +17,26 @@ class PhoneTextFormField extends StatefulWidget {
   final bool enabled;
   final ValueChanged<String> onAreaCodeClicked;
   final String? displayedAreaCode;
+  final int maxLength;
 
-  PhoneTextFormField(
-      {required this.onChanged,
-      required this.onFieldSubmitted,
-      required this.controller,
-      required this.width,
-      required this.textInputAction,
-      required this.enabled,
-      required this.onAreaCodeClicked,
-      required this.displayedAreaCode});
+  PhoneTextFormField({
+    required this.onChanged,
+    required this.onFieldSubmitted,
+    required this.controller,
+    required this.width,
+    required this.textInputAction,
+    required this.enabled,
+    required this.onAreaCodeClicked,
+    required this.displayedAreaCode,
+    required this.maxLength,
+  });
 
   @override
   _PhoneTextFormFieldState createState() => _PhoneTextFormFieldState();
 }
 
 class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
- // List areaCodeList = ["+852", "+86", "+60", "+66"];
+  // List areaCodeList = ["+852", "+86", "+60", "+66"];
 
   Widget build(BuildContext context) {
     return Column(
@@ -79,7 +82,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                           Expanded(
                             flex: 5,
                             child: AutoSizeText(
-                              widget.displayedAreaCode??"",
+                              widget.displayedAreaCode ?? "",
                               style: TextStyle(
                                 color: CustomColor.theme_text_black_color,
                               ),
@@ -125,7 +128,10 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                       border: InputBorder.none,
                       hintText: getTranslatedText("enter_phone_hint"),
                       hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                      counterText: '',
+                      counterStyle: TextStyle(fontSize: 0),
                     ),
+                    maxLength: widget.maxLength,
                   ),
                 ),
               ],
@@ -141,7 +147,9 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
         context: context,
         builder: (BuildContext bc) {
           return CustomPickerDialog(
-              title: "area_code", list: [widget.displayedAreaCode], onChanged: (value) => widget.onAreaCodeClicked(value));
+              title: "area_code",
+              list: [widget.displayedAreaCode],
+              onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }
 }
