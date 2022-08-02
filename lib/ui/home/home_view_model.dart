@@ -119,7 +119,7 @@ class HomeViewModel extends BaseViewModel {
     wallet.balance = null;
     if (wallet.isMainWallet) {
       await userRepo.getWalletBalance();
-      wallet.balance = userRepo.wallet!.main;
+      wallet.balance = userRepo.wallet?.main;
     } else {
       var state = await walletRepo.getGameWallet(wallet.gpCode);
       if (state.isSuccess) {

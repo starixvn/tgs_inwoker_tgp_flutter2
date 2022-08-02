@@ -2,6 +2,7 @@ import 'package:api/network/event_result.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_livechat_plugin/flutter_livechat_plugin.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
@@ -323,48 +324,71 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: MyBehavior(),
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Center(
-              child: _page[currentBottomIndex],
+      child: Stack(
+        children: [
+          Scaffold(
+            body: Stack(
+              children: [
+                Center(
+                  child: _page[currentBottomIndex],
+                ),
+                _buildOverlay(),
+                _buildMenu()
+              ],
             ),
-            _buildOverlay(),
-            _buildMenu()
-          ],
-        ),
-        bottomNavigationBar: ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
-                EnvironmentConfig.dark_mode)
-            ? Container(
-                child: BottomAppBar(
-                    child: Container(
-                  decoration: EnvironmentConfig.template_version == 8
-                      ? BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xff011F60), Colors.transparent.withOpacity(1.0)],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        )
-                      : BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              //Color.fromRGBO(0, 1, 41, -0.1),
-                              CustomColor.theme_bar_gradient_2,
-                              Color.fromRGBO(199, 219, 231, 0.9),
-                              // Colors.white.withOpacity(1.0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                  child: _buildBottomAppBarRow(),
-                )),
-              )
-            : BottomAppBar(
-                color: CustomColor.theme_bottom_app_bar_color,
-                child: _buildBottomAppBarRow(),
+            bottomNavigationBar:
+                ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
+                        EnvironmentConfig.dark_mode)
+                    ? Container(
+                        child: BottomAppBar(
+                            child: Container(
+                          decoration: EnvironmentConfig.template_version == 8
+                              ? BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xff011F60), Colors.transparent.withOpacity(1.0)],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                )
+                              : BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      //Color.fromRGBO(0, 1, 41, -0.1),
+                                      CustomColor.theme_bar_gradient_2,
+                                      Color.fromRGBO(199, 219, 231, 0.9),
+                                      // Colors.white.withOpacity(1.0)
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                ),
+                          child: _buildBottomAppBarRow(),
+                        )),
+                      )
+                    : BottomAppBar(
+                        color: CustomColor.theme_bottom_app_bar_color,
+                        child: _buildBottomAppBarRow(),
+                      ),
+          ),
+          Positioned(
+            bottom: 50,
+            right: -10,
+            child: RawMaterialButton(
+              onPressed: () {
+                FlutterLivechatPlugin.beginChat("14246631");
+              },
+              elevation: 2.0,
+              fillColor: Color(0xff6819d2),
+              child: ImageIcon(
+                AssetImage("images/livechat.png"),
+                color: Colors.white,
+                size: 20,
               ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+            ),
+          ),
+        ],
       ),
     );
   }

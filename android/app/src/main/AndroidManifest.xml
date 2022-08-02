@@ -12,6 +12,7 @@
         android:label="PG"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
+        <activity android:name="com.livechatinc.inappchat.ChatWindowActivity" android:configChanges="orientation|screenSize" />
         <activity
             android:exported="true"
             android:name=".MainActivity"
