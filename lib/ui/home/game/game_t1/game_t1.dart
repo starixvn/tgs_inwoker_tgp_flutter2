@@ -31,12 +31,13 @@ class GameT1 extends StatefulWidget {
 
 class _GameT1State extends BaseState<GameT1> {
   var _controller = ScrollController();
-  var currentTabIndex = 0, currentGameType = GameType.Sportsbook, currentGamePlatformCode;
+  var currentTabIndex = 0, currentGameType, currentGamePlatformCode;
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
 
   @override
   void initState() {
+    currentGameType = widget.vm.gameTypeList.first;
     _controller.addListener(_scrollListener);
     super.initState();
   }

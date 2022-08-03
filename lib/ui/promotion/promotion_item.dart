@@ -68,14 +68,21 @@ class _PromotionItemState extends BaseState<PromotionItem> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 3.auto),
-                    child: Text(
-                      widget.promotion.name ?? "",
-                      style: TextStyle(color: CustomColor.theme_text_black_color),
+                  Expanded(
+                    flex: 17,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 3.auto),
+                      child: Text(
+                        widget.promotion.name ?? "",
+                        style: TextStyle(color: CustomColor.theme_text_black_color),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
-                  _buildDetailsButton(),
+                  Expanded(
+                    flex: 3,
+                    child: _buildDetailsButton(),
+                  )
                 ],
               ),
             )

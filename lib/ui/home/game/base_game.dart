@@ -36,7 +36,7 @@ class BaseGame extends StatefulWidget {
 }
 
 class _BaseGameState extends BaseState<BaseGame> {
-  var currentTabIndex = 0, currentGameType = GameType.Sportsbook, currentGamePlatformCode;
+  var currentTabIndex = 0, currentGameType, currentGamePlatformCode;
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
 

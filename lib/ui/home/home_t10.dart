@@ -66,24 +66,27 @@ class _HomeT10State extends BaseState<HomeT10> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          flex: 1,
-          child: _buildImageSlider(),
-        ),
-        Expanded(
-          flex: 3,
-          child: Container(
-            child: Column(
-              children: [
-                _buildTextMarquee(),
-                widget.gameView,
-              ],
+    return Container(
+      margin: EdgeInsets.only(top: 3.auto, left: 5.auto, right: 5.auto),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: _buildImageSlider(),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(
+              child: Column(
+                children: [
+                  _buildTextMarquee(),
+                  widget.gameView,
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -120,31 +123,31 @@ class _HomeT10State extends BaseState<HomeT10> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (widget.homeViewModel.config?.onlineUser ?? false)
-            Expanded(
-              flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    getTranslatedText("online_user") + " :",
+          //if (widget.homeViewModel.config?.onlineUser ?? false)
+          Expanded(
+            flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getTranslatedText("online_user") + " :",
+                  style: TextStyle(
+                    fontSize: 10.auto,
+                    color: CustomColor.theme_text_black_white_color,
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    (widget.randomNumber ?? 26500).toString(),
                     style: TextStyle(
                       fontSize: 10.auto,
                       color: CustomColor.theme_text_black_white_color,
                     ),
                   ),
-                  Container(
-                    child: Text(
-                      (widget.randomNumber ?? 26500).toString(),
-                      style: TextStyle(
-                        fontSize: 10.auto,
-                        color: CustomColor.theme_text_black_white_color,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           Expanded(
             flex: 1,
             child: SvgPicture.asset(

@@ -51,8 +51,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
     );
   }
 
-  _buildTopRowContainer() =>
-      Container(
+  _buildTopRowContainer() => Container(
         width: context.screenWidth,
         padding: EdgeInsets.only(
           top: 5.auto,
@@ -94,12 +93,18 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
               children: [
                 Text(
                   getTranslatedText("online_user") + " :",
-                  style: TextStyle(fontSize: 10.auto, color: Colors.white,),
+                  style: TextStyle(
+                    fontSize: 10.auto,
+                    color: Colors.white,
+                  ),
                 ),
                 Container(
                   child: Text(
                     (widget.randomNumber ?? 26500).toString(),
-                    style: TextStyle(fontSize: 10.auto, color: Colors.white,),
+                    style: TextStyle(
+                      fontSize: 10.auto,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -108,8 +113,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         ),
       );
 
-  _buildBottomRowContainer() =>
-      Column(
+  _buildBottomRowContainer() => Column(
         children: [
           Divider(
             color: Colors.white,
@@ -123,11 +127,12 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
               children: [
                 widget.userProfile != null ? _buildWalletText() : _buildLoginRegisterButton(),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.deposit),
+                      _buildHomeIcon("vip", "VIP", RoutePath.deposit),
+                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.vip),
                       _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), RoutePath.walletTransfer),
                       _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), RoutePath.withdraw)
                     ],
@@ -139,8 +144,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         ],
       );
 
-  _buildWelcomeText() =>
-      AutoSizeText(
+  _buildWelcomeText() => AutoSizeText(
         (widget.userProfile != null ? getTranslatedText("welcome_back") : getTranslatedText("home_login_hint")) ?? "",
         style: TextStyle(color: Colors.white, fontSize: 10.auto),
         minFontSize: 5,
@@ -148,8 +152,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         stepGranularity: 1,
       );
 
-  _buildProfileInfoText() =>
-      AutoSizeText(
+  _buildProfileInfoText() => AutoSizeText(
         getTranslatedText("profile_detail"),
         style: TextStyle(color: Colors.white, fontSize: 10.auto),
         textAlign: TextAlign.right,
@@ -158,27 +161,26 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         stepGranularity: 1,
       );
 
-  _buildWalletText() =>
-      Expanded(
-          flex: 2,
-          child: Container(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              children: [
-                AutoSizeText(
-                  widget.wallet == null ? "-" : "${Format().currencyWithDecimalFormat(widget.wallet!)}",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-                  minFontSize: 10,
-                  stepGranularity: 1,
-                ),
-                Text(
-                  getTranslatedText("balance"),
-                  style: TextStyle(color: Colors.white, fontSize: 10.auto),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+  _buildWalletText() => Expanded(
+      flex: 2,
+      child: Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          children: [
+            AutoSizeText(
+              widget.wallet == null ? "-" : "${Format().currencyWithDecimalFormat(widget.wallet!)}",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+              minFontSize: 10,
+              stepGranularity: 1,
             ),
-          ));
+            Text(
+              getTranslatedText("balance"),
+              style: TextStyle(color: Colors.white, fontSize: 10.auto),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ));
 
   _buildLoginRegisterButton() {
     var string = getTranslatedText("login_or_signup").split("/");
@@ -206,41 +208,46 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
     );
   }
 
-  _buildHomeIcon(String imagePath, String title, String routePath) =>
-      Expanded(
-          flex: 1,
-          child: InkWell(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onTap: () async {
-              if (widget.userProfile == null) {
-                var res = await Navigator.of(context).pushNamed(RoutePath.login);
-                if (res != null) widget.onRefreshHomePage!();
-              } else {
-                var res = await Navigator.of(context).pushNamed(routePath);
-                if (res != null) widget.onRefreshHomePage!();
-              }
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: 20.auto),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: CustomColor.theme_title_text_color,
-                    child: Center(child: Image.asset("images/home/$imagePath.png")),
+  _buildHomeIcon(String imagePath, String title, String routePath) => Expanded(
+      flex: 1,
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: () async {
+          if (widget.userProfile == null) {
+            var res = await Navigator.of(context).pushNamed(RoutePath.login);
+            if (res != null) widget.onRefreshHomePage!();
+          } else {
+            var res = await Navigator.of(context).pushNamed(routePath);
+            if (res != null) widget.onRefreshHomePage!();
+          }
+        },
+        child: Container(
+          //  margin: EdgeInsets.only(left: 20.auto),
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundColor: CustomColor.theme_title_text_color,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(imagePath == "vip" ? 5.auto : 0),
+                  child: Image.asset(
+                    imagePath == "vip" ? "images/login_app_bar/vip.png" : "images/home/$imagePath.png",
                   ),
-                  AutoSizeText(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: (13.5).auto,
-                    ),
-                    minFontSize: 5,
-                    stepGranularity: 1,
-                    maxLines: 1,
-                  )
-                ],
+                ),
               ),
-            ),
-          ));
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.auto,
+                ),
+                // minFontSize: 5,
+                // stepGranularity: 1,
+                maxLines: 1,
+              )
+            ],
+          ),
+        ),
+      ));
 }

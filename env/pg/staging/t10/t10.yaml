@@ -27,7 +27,7 @@ environment_config:
       default: false
     light_mode:
       type: bool
-      default: true
+      default: false
     primaryColorCode:
       type: int
       default: 0xff044BA3
@@ -36,10 +36,10 @@ environment_config:
       default: 0xff1b86c7
     theme_app_bar_color:
       type: int
-      default: 0xffFFFFFF
+      default: 0xff5F67EA
     theme_button_color:
       type: int
-      default: 0xff48BDC6
+      default: 0xff5F67EA
     theme_grey_button_color:
       type: int
       default: 0xff828282
@@ -60,7 +60,7 @@ environment_config:
       default: 0xff707070
     bottom_nav_selected_color:
       type: int
-      default: 0xff48BDC6
+      default: 0xff5F67EA
     bottom_nav_unselected_color:
       type: int
       default: 0xff707070
@@ -84,13 +84,13 @@ environment_config:
       default: 0xff707070
     theme_app_bar_text_color:
       type: int
-      default: 0xff000000
+      default: 0xffffffff
     theme_marquee_text_color:
       type: int
       default: 0xff707070
     announcement_icon_color:
       type: int
-      default: 0xff48BDC6
+      default: 0xff5F67EA
     theme_bottom_app_bar_color:
       type: int
       default: 0xffF5F5F5

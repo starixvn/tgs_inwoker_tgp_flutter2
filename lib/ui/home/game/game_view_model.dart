@@ -76,6 +76,16 @@ class GameViewModel extends BaseViewModel {
     GameType.EGame,
     GameType.Fishing
   ];
+  var _pb3Gamelist = [
+    GameType.ESports,
+    GameType.Slot,
+    GameType.LiveDealerLobby,
+    GameType.Sportsbook,
+    GameType.EGame,
+    GameType.Fishing,
+    GameType.CardGameLobby,
+    GameType.LotteryLobby,
+  ];
 
   List<GameType>? gameListT3;
 
@@ -98,7 +108,20 @@ class GameViewModel extends BaseViewModel {
     }
     if (contentRepo.gameProvider2List == null) return;
     List<GameProvider2> list = contentRepo.gameProvider2List!;
-    gameTypeList = EnvironmentConfig.brandName == "PB" ? _pbGamelist : _gameTypeList;
+    gameTypeList = (() {
+      if (EnvironmentConfig.brandName == "PB")
+        return _pbGamelist;
+      else if (EnvironmentConfig.brandName == "PB2")
+        //to remove card game and lottery
+        return _pbGamelist
+          ..removeLast()
+          ..removeLast();
+      else if (EnvironmentConfig.brandName == "PB3")
+        return _pb3Gamelist;
+      else
+        return _gameTypeList;
+    }());
+    //(EnvironmentConfig.brandName == "PB" || EnvironmentConfig.brandName == "PB2") ? _pbGamelist : _gameTypeList;
     gameProviderList = gameTypeList
         .map((type) => list
             .where((element) => (type == GameType.Sportsbook) //combine VirtualSports to VirtualSports

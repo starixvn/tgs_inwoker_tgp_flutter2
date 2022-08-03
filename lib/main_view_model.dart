@@ -59,7 +59,7 @@ class MainViewModel extends BaseViewModel {
 
   getEnvFeatures() async {
     var brand = EnvironmentConfig.environmentStage == "staging" &&
-        !(EnvironmentConfig.brandName == "PGG" || EnvironmentConfig.brandName == "MGM"||  EnvironmentConfig.brandName == "PB")
+        !(EnvironmentConfig.brandName == "PGG" || EnvironmentConfig.brandName == "MGM"||  EnvironmentConfig.brandName.contains("PB"))
         ? "stg_${EnvironmentConfig.brandName}"
         : EnvironmentConfig.brandName;
     setLoading();
