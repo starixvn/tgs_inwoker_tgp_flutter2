@@ -27,7 +27,7 @@ packages:
     description:
       path: "."
       ref: develop
-      resolved-ref: "73a768c1eb3642b03aed539cb283a75453d9a24f"
+      resolved-ref: "11616902e4b38a4f4b4fd566254c8b6f52e37b3a"
       url: "https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git"
     source: git
     version: "0.0.0"
@@ -472,7 +472,7 @@ packages:
     source: hosted
     version: "0.8.5+3"
   image_picker_android:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: image_picker_android
       url: "https://pub.dartlang.org"

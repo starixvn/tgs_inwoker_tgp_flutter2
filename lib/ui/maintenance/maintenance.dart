@@ -32,16 +32,18 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
 
   @override
   void initState() {
-    if (widget.isShowCS) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _vm.getBrandCommunication();
-        _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
-      });
-    }
+    _initData();
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
-
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  _initData() async {
+    await _vm.getMaintenanceDetails();
+    if (widget.isShowCS) {
+      _vm.getBrandCommunication();
+      _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
+    }
   }
 
   @override
@@ -62,13 +64,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
         builder: (ctx, vm, _) {
           _handleApiState();
           return CustomScaffold(
-            appBar: widget.isShowsAppBar
-                ? _buildAppBar()
-                : PreferredSize(
-                    child: Container(
-                      color: Colors.black,
-                    ),
-                    preferredSize: Size.zero),
+            appBar: widget.isShowsAppBar ? _buildAppBar() : PreferredSize(child: Container(), preferredSize: Size.zero),
             body: Container(
               padding: EdgeInsets.only(top: 100.auto),
               width: context.screenWidth,
@@ -81,31 +77,48 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
               ),
               child: Column(
                 children: [
-                  _buildText("我们正在维护中，请稍后再试。"),
-                  _buildText("如您有任何问题，请联系客服。"),
-                  _buildText(
-                      "维护时间：${Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z")}" +
-                          "~ " +
-                          "${Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z")} (GMT+8)"),
-                  _buildText("We are currently under maintenance,\n"
-                      "please try again later."),
-                  _buildText("If have any questions,", isNeedMargin: false),
-                  _buildText("please contact our customer service,"),
-                  _buildText(
-                      "Maintenance time: ${Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z")}" +
-                          "~ " +
-                          "${Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z")} (GMT+8)"),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40.auto),
-                    child: _buildText(
-                        "Hiện chúng tôi đang được bảo trì, bạn có thẻ liên hệ với bộ phận hồ trở khách hàng 24/7 của chúng tôi đễ biểt thêm thống tin"),
-                  ),
+                  _buildText("Maintenance time: \n" + _getTime(), font: 15),
+                  SizedBox(height: 20),
+                  _getContent(),
+                  SizedBox(height: 20),
                   Visibility(visible: widget.isShowCS, child: _buildButton())
                 ],
               ),
             ),
           );
         });
+  }
+
+  _getContent() {
+    if (_vm.content != null) {
+      return _buildText(_vm.content!);
+    } else
+      return Column(
+        children: [
+          _buildText("我们正在维护中，请稍后再试。"),
+          _buildText("如您有任何问题，请联系客服。"),
+          _buildText("We are currently under maintenance,\n"
+              "please try again later."),
+          _buildText("If have any questions,", isNeedMargin: false),
+          _buildText("please contact our customer service,"),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 40.auto),
+            child: _buildText(
+                "Hiện chúng tôi đang được bảo trì, bạn có thẻ liên hệ với bộ phận hồ trở khách hàng 24/7 của chúng tôi đễ biểt thêm thống tin"),
+          ),
+        ],
+      );
+  }
+
+  _getTime() {
+    var start = _vm.beginTime != null
+        ? _vm.beginTime
+        : Format().timezoneFormat(_vm.config?.maintenanceDetail?["startTime"] ?? "2022-07-12T01:35:00.000Z");
+    var end = _vm.endTime != null
+        ? _vm.endTime
+        : Format().timezoneFormat(_vm.config?.maintenanceDetail?["endTime"] ?? "2022-07-12T04:30:00.000Z");
+
+    return "$start" + " ~ " + "$end (GMT+8)";
   }
 
   _buildAppBar() => CustomAppBar(
@@ -116,13 +129,13 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
         },
       );
 
-  _buildText(String text, {bool isNeedMargin = true}) => Container(
+  _buildText(String text, {bool isNeedMargin = true, int font = 12}) => Container(
         margin: EdgeInsets.only(bottom: isNeedMargin ? 20.auto : 0),
         child: Text(
           text,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 12.auto,
+            fontSize: font.auto,
           ),
           textAlign: TextAlign.center,
         ),

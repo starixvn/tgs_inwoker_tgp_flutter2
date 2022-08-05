@@ -16,9 +16,10 @@ class MaintenanceViewModel extends BaseViewModel {
 
   get config => contentRepo.featuresConfig;
 
-  var getBrandCommunicationApiState, getLiveChatUrlApiState;
+  var getBrandCommunicationApiState, getLiveChatUrlApiState, getMaintenanceTimeApiState;
   List<BrandCommunication>? communicationList;
   String? liveChatUrl;
+  String? beginTime, endTime, content;
 
   getBrandCommunication() async {
     setLoading();
@@ -51,11 +52,24 @@ class MaintenanceViewModel extends BaseViewModel {
 
   getEnvFeatures() async {
     var brand = EnvironmentConfig.environmentStage == "staging" &&
-        !(EnvironmentConfig.brandName == "PGG" || EnvironmentConfig.brandName == "MGM")
+            !(EnvironmentConfig.brandName == "PGG" || EnvironmentConfig.brandName == "MGM")
         ? "stg_${EnvironmentConfig.brandName}"
         : EnvironmentConfig.brandName;
     setLoading();
     await contentRepo.getEnvFeaturesJson(brand);
     setLoading(false);
+  }
+
+  //getMaintenanceTime
+  getMaintenanceDetails() async {
+    setLoading();
+    getMaintenanceTimeApiState = await contentRepo.getMaintenanceDetails();
+    if (getMaintenanceTimeApiState.isSuccess) {
+      beginTime = getMaintenanceTimeApiState.result["beginTime"];
+      endTime = getMaintenanceTimeApiState.result["endTime"];
+      content = getMaintenanceTimeApiState.result["content"];
+    }
+    setLoading(false);
+    return getMaintenanceTimeApiState;
   }
 }
