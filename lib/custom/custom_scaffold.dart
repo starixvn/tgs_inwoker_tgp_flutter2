@@ -19,20 +19,29 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+      backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode )|| EnvironmentConfig.template_version==11)
           ? Colors.transparent
           : (color ?? CustomColor.theme_bg_color),
       appBar: appBar, //?? PreferredSizeWidget(),
       body: Container(
-        decoration: (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
-            ? BoxDecoration(
-                gradient: RadialGradient(
-                  center: Alignment(0, 0),
-                  colors: [Color.fromRGBO(78, 110, 164, 1.0), Color.fromRGBO(199, 219, 231, 1.0), Colors.white],
-                  radius: 1.5,
-                ),
-              )
-            : BoxDecoration(),
+        decoration: (((){
+          if(EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
+            return BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment(0, 0),
+                colors: [Color.fromRGBO(78, 110, 164, 1.0), Color.fromRGBO(199, 219, 231, 1.0), Colors.white],
+                radius: 1.5,
+              ),
+            );
+          else if(EnvironmentConfig.template_version==11)
+            return BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/t11_bg/game_bg.png"),
+                fit: BoxFit.fill,
+              ),
+            );
+          else return BoxDecoration();
+        }())),
         child: body,
       ),
     );

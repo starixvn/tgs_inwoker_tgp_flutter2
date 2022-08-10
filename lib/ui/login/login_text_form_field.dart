@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
 class LoginTextFormField extends StatelessWidget {
@@ -31,7 +32,11 @@ class LoginTextFormField extends StatelessWidget {
       height: 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(2)),
+        color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+        borderRadius: BorderRadius.circular(
+          EnvironmentConfig.template_version == 11 ? 25 : 2,
+        ),
+      ),
       child: Row(
         children: [
           icon == null
@@ -58,7 +63,9 @@ class LoginTextFormField extends StatelessWidget {
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: TextStyle(
-                    color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two,
+                  fontSize: 13.auto,
+                ),
               ),
             ),
           ),

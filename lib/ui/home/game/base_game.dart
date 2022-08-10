@@ -10,6 +10,7 @@ import 'package:tgp_flutter2/ui/home/game/game_T4/game_T4.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_item_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t10/game_t10.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t11/game_t11.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
@@ -115,6 +116,14 @@ class _BaseGameState extends BaseState<BaseGame> {
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
+      case 11:
+        return GameT11(
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          vm: widget.vm,
+          onRefreshHomePage: () => widget.onRefreshHomePage,
+          onGameClick: (gameProvider) => _onGameClick(gameProvider),
+        );
       default:
         return GameT1(
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
@@ -152,6 +161,7 @@ class _BaseGameState extends BaseState<BaseGame> {
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
+                  vm:widget.vm,
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,

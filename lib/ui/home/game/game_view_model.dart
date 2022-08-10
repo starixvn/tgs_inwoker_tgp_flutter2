@@ -111,11 +111,11 @@ class GameViewModel extends BaseViewModel {
     gameTypeList = (() {
       if (EnvironmentConfig.brandName == "PB")
         return _pbGamelist;
-      else if (EnvironmentConfig.brandName == "PB2")
+      else if (EnvironmentConfig.brandName == "PB2" || EnvironmentConfig.brandName == "BUNNY")
         //to remove card game and lottery
         return _pbGamelist
-          ..removeLast()
-          ..removeLast();
+          ..remove(GameType.CardGameLobby)
+          ..remove(GameType.LotteryLobby);
       else if (EnvironmentConfig.brandName == "PB3")
         return _pb3Gamelist;
       else

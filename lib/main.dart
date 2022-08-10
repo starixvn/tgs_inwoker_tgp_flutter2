@@ -230,7 +230,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.menu: (context) => Menu(),
                   RoutePath.deposit: (context) => Deposit(),
                   RoutePath.withdraw: (context) => Withdraw(),
-                  RoutePath.childGame: (context) => ChildGame(),
+                  //RoutePath.childGame: (context) => ChildGame(),
                   RoutePath.blacklistedUser: (context) => BlacklistedUser(),
                   //RoutePath.phoneReVerification: (context) => PhoneReVerification(),
                   RoutePath.phoneVerification: (context) => PhoneVerification(),

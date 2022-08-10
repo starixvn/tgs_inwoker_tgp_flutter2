@@ -18,6 +18,7 @@ import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
+import 'package:tgp_flutter2/ui/home/home_t11.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
 import 'package:tgp_flutter2/ui/home/home_t4.dart';
@@ -134,6 +135,7 @@ class _HomeState extends BaseState<Home> {
                             isShowTransferUI = !isShowTransferUI;
                           });
                         },
+                    randomNumber:randomNumber??0,
                       ),
                 body: Container(
                   child: Stack(
@@ -218,6 +220,16 @@ class _HomeState extends BaseState<Home> {
         );
       case 10:
         return HomeT10(
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          initData: () => _initData(),
+          homeViewModel: _vm,
+          gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
+          gameView: _buildGameView(),
+        );
+      case 11:
+        return HomeT11(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),

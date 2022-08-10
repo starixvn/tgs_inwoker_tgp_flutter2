@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
 class ColorButton extends StatelessWidget {
@@ -39,7 +40,14 @@ class ColorButton extends StatelessWidget {
       style: ButtonStyle(
           padding: MaterialStateProperty.all(EdgeInsets.all(padding ?? 8)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular((radius ?? 5.8).auto),
+            borderRadius: BorderRadius.circular(((() {
+              if (radius != null)
+                return radius!;
+              else if(EnvironmentConfig.template_version==11)
+                return 25.auto;
+              else
+                return (5.8).auto;
+            })())),
             side: border ?? BorderSide(color: Colors.transparent),
           )),
           backgroundColor: MaterialStateProperty.all(
