@@ -17,16 +17,15 @@ class WalletTransferViewModel extends BaseViewModel {
       ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
   }
 
-  get userMainWalletBalance =>
-      walletList.singleWhere((element) => element.isMainWallet).balance;
+  get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
 
-  get gameWalletList => walletList
-      .where((element) => !element.isMainWallet && element.balance != null)
-      .toList();
+  get gameWalletList => walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get mainWallet => userRepo.wallet;
+
+  get config => contentRepo.featuresConfig;
 
   @override
   List<BaseRepository> get repoList => [contentRepo];
@@ -40,8 +39,7 @@ class WalletTransferViewModel extends BaseViewModel {
 
   transferWallet(String? gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
-    transferWalletApiState =
-        await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
+    transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
     if (transferWalletApiState.isSuccess) {
       getAllWallet();
     }
@@ -72,6 +70,8 @@ class WalletTransferViewModel extends BaseViewModel {
     walletList.forEach((wallet) {
       task.add(_getGameWalletBalance(wallet));
     });
+    if (config.mergeEVORTNT ?? true)
+      walletList.removeWhere((wallet) => (wallet.gpCode == "RTTF" || wallet.gpCode == "NTTF"));
     await Future.wait(task);
     isFetchingBalance = false;
     if (hasListeners) notifyListeners();
