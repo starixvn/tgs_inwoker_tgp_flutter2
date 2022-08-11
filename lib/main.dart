@@ -2,7 +2,6 @@ import 'package:api/network/event_result.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_livechat_plugin/flutter_livechat_plugin.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
@@ -370,7 +369,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         child: _buildBottomAppBarRow(),
                       ),
           ),
-          Positioned(
+          /*Positioned(
             bottom: 50,
             right: -10,
             child: RawMaterialButton(
@@ -387,7 +386,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(),
             ),
-          ),
+          ),*/
         ],
       ),
     );
