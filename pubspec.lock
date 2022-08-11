@@ -344,13 +344,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.3"
-  flutter_livechat_plugin:
-    dependency: "direct main"
-    description:
-      path: flutter_livechat_plugin
-      relative: true
-    source: path
-    version: "0.0.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -1107,5 +1100,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.17.6 <3.0.0"
+  dart: ">=2.17.0 <3.0.0"
   flutter: ">=3.0.0"

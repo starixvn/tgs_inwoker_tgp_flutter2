@@ -4,6 +4,14 @@
 #$3 = App Name
 echo "Configurating"
 
+# to solve pub finished with exit code 65
+flutter pub get
+flutter pub get
+flutter pub run build_runner build --delete-conflicting-outputs
+flutter pub get
+flutter pub get
+flutter pub run build_runner build --delete-conflicting-outputs
+
 #Launcher Icon
 flutter pub run --no-sound-null-safety flutter_launcher_icons:main -f env/$1
 
