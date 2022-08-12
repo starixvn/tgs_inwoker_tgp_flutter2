@@ -16,6 +16,7 @@ class ColorButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final Widget? icon;
+  final double minFontSize ;
 
   ColorButton({
     required this.title,
@@ -30,6 +31,7 @@ class ColorButton extends StatelessWidget {
     this.color,
     this.textColor,
     this.icon,
+    this.minFontSize = 5,
   });
 
   @override
@@ -61,7 +63,7 @@ class ColorButton extends StatelessWidget {
                 child: AutoSizeText(
                   title,
                   style: TextStyle(color: textColor ?? Colors.white),
-                  minFontSize: 5,
+                  minFontSize: minFontSize,
                   maxFontSize: fontSize ?? 12,
                   maxLines: 1,
                   textAlign: TextAlign.center,

@@ -170,8 +170,10 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
             isEnabled: true,
             width: context.screenWidth / 3.5,
             height: context.screenHeight / 18,
-            fontSize: 13,
+            fontSize: 20,
             color: Colors.white,
+            padding: 0,
+            minFontSize: 5,
           ),
           ColorButton(
             title: getTranslatedText("instant_messaging"),
@@ -185,17 +187,16 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
             },
             isEnabled: true,
             radius: 5,
-            height: 44.5,
+            height: context.screenHeight / 18,
             width: context.screenWidth / 3.5,
-            padding: 5.auto,
-            fontSize: 10,
+            minFontSize: 5,
             color: CustomColor.theme_button_color,
+            fontSize: 20,
           ),
         ],
       );
 
   _handleApiState() {
-    handleApiState(_vm.getMaintenanceTimeApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
   }
