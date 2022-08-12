@@ -159,15 +159,20 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                       maxLines: 1,
                       minFontSize: 5,
                       stepGranularity: 1,
+                      maxFontSize: 12,
                     ),
                   ),
                 ),
                 Expanded(
                   flex: 2,
-                  child: Text(
+                  child: AutoSizeText(
                     getTranslatedText("contact"),
                     style: TextStyle(color: CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
+                    maxFontSize: 10,
+                    minFontSize: 5,
+                    maxLines: 1,
+                    stepGranularity: 1,
                   ),
                 )
               ],

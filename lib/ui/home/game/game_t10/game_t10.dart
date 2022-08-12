@@ -97,7 +97,7 @@ class _GameT10State extends BaseState<GameT10> {
       },
       child: Container(
         height: 27.auto,
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 15, right: 15),
+        padding: EdgeInsets.only(top: (context.screenHeight/100), bottom: (context.screenHeight/100), left: 15, right: 15),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
@@ -109,7 +109,7 @@ class _GameT10State extends BaseState<GameT10> {
           gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
           textAlign: TextAlign.center,
           style: TextStyle(color: tabIndex == currentTabIndex ? Color(0xffebde1d) : Colors.white),
-          minFontSize: 2,
+          minFontSize: 8,
           maxFontSize: 13,
           stepGranularity: 1,
           maxLines: 2,
