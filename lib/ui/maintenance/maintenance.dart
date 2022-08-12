@@ -75,7 +75,8 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
                         "images/maintenance/maintenance${EnvironmentConfig.template_version == 8 ? "_t8" : ""}.png"),
                     fit: BoxFit.fill),
               ),
-              child: Column(
+              child: ListView(
+                shrinkWrap: true,
                 children: [
                   _buildText("Maintenance time: \n" + _getTime(), font: 15),
                   SizedBox(height: 20),
