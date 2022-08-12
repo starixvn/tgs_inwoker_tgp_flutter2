@@ -194,6 +194,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
       );
 
   _handleApiState() {
+    handleApiState(_vm.getMaintenanceTimeApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
   }

@@ -193,7 +193,8 @@ class GameViewModel extends BaseViewModel {
     getGameUrlApiState = await contentRepo.getGameUrl(gamePlatformCode, gameId, _lobbyUrl);
     if (getGameUrlApiState.isSuccess) {
       url = getGameUrlApiState.result.url;
-    }
+    } else
+      getGameUrlApiState = EventResult.maintenance();
     setLoading(false);
     return getGameUrlApiState;
   }
@@ -203,7 +204,8 @@ class GameViewModel extends BaseViewModel {
     getLobbyGameUrlApiState = await contentRepo.getLobbyGameUrl(gamePlatformCode, gameType, _lobbyUrl);
     if (getLobbyGameUrlApiState.isSuccess) {
       url = getLobbyGameUrlApiState.result.url;
-    }
+    } else
+      getLobbyGameUrlApiState = EventResult.maintenance();
     setLoading(false);
     return getLobbyGameUrlApiState;
   }

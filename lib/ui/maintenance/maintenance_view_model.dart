@@ -15,11 +15,14 @@ class MaintenanceViewModel extends BaseViewModel {
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
   get config => contentRepo.featuresConfig;
+  get beginTime => contentRepo.maintenanceBeginTime;
+  get endTime => contentRepo.maintenanceEndTime;
+  get content => contentRepo.maintenanceContent;
 
   var getBrandCommunicationApiState, getLiveChatUrlApiState, getMaintenanceTimeApiState;
   List<BrandCommunication>? communicationList;
   String? liveChatUrl;
-  String? beginTime, endTime, content;
+  //String? beginTime, endTime, content;
 
   getBrandCommunication() async {
     setLoading();
@@ -64,11 +67,7 @@ class MaintenanceViewModel extends BaseViewModel {
   getMaintenanceDetails() async {
     setLoading();
     getMaintenanceTimeApiState = await contentRepo.getMaintenanceDetails();
-    if (getMaintenanceTimeApiState.isSuccess) {
-      beginTime = getMaintenanceTimeApiState.result["beginTime"];
-      endTime = getMaintenanceTimeApiState.result["endTime"];
-      content = getMaintenanceTimeApiState.result["content"];
-    }
+    if (getMaintenanceTimeApiState.isSuccess) {}
     setLoading(false);
     return getMaintenanceTimeApiState;
   }
