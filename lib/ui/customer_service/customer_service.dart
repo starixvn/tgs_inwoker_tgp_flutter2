@@ -131,7 +131,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                         )));
           },
           child: Container(
-            padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
+            padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
             margin: EdgeInsets.only(top: 15.auto),
             height: 40.auto,
             decoration: BoxDecoration(
@@ -150,24 +150,30 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   ),
                 ),
                 Expanded(
-                  flex: 7,
+                  flex: 10,
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto),
+                    alignment: Alignment.centerLeft,
                     child: AutoSizeText(
                       getTranslatedText("online_cs"),
                       style: TextStyle(color: CustomColor.theme_text_black_color),
                       maxLines: 1,
                       minFontSize: 5,
                       stepGranularity: 1,
+                      maxFontSize: 15,
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 2,
-                  child: Text(
+                  flex: 3,
+                  child: AutoSizeText(
                     getTranslatedText("contact"),
                     style: TextStyle(color: CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
+                    maxFontSize: 15,
+                    minFontSize: 5,
+                    maxLines: 1,
+                    stepGranularity: 1,
                   ),
                 )
               ],
