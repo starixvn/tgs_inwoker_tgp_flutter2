@@ -55,9 +55,11 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           height: context.screenHeight,
                           padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(image: _getCsBgImage()),
-                          child: Column(children: [
+                          child: ListView(shrinkWrap: true, children: [
                             buildLiveChatRow(),
-                            Column(
+                            ListView(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               children: List.generate(_vm.communicationList!.length, (index) {
                                 return Container(
                                   child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
@@ -125,13 +127,13 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => CustomerServiceWebView(
-                      //to remove whitespace in url
+                          //to remove whitespace in url
                           url: _vm.liveChatUrl!.replaceAll(" ", ""),
                           brandLogoUrl: _vm.brandLogoUrl,
                         )));
           },
           child: Container(
-            padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
+            padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
             margin: EdgeInsets.only(top: 15.auto),
             height: 40.auto,
             decoration: BoxDecoration(
@@ -150,24 +152,36 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   ),
                 ),
                 Expanded(
-                  flex: 7,
+                  flex: 10,
                   child: Container(
-                    margin: EdgeInsets.only(left: 10.auto),
-                    child: AutoSizeText(
-                      getTranslatedText("online_cs"),
-                      style: TextStyle(color: CustomColor.theme_text_black_color),
-                      maxLines: 1,
-                      minFontSize: 5,
-                      stepGranularity: 1,
+                    margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
+                    child: SizedBox.expand(
+                      // to fix not showing full text in thai language
+                      child: Container(
+                        padding: EdgeInsets.only(top: 16),
+                        child: AutoSizeText(
+                          getTranslatedText("online_cs"),
+                          style: TextStyle(color: CustomColor.theme_text_black_color),
+                          maxLines: 1,
+                          minFontSize: 13,
+                          stepGranularity: 1,
+                          maxFontSize: 15,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 2,
-                  child: Text(
+                  flex: 3,
+                  child: AutoSizeText(
                     getTranslatedText("contact"),
                     style: TextStyle(color: CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
+                    maxFontSize: 15,
+                    minFontSize: 5,
+                    maxLines: 1,
+                    stepGranularity: 1,
                   ),
                 )
               ],
@@ -179,7 +193,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => InkWell(
         onTap: () {},
         child: Container(
-          padding: EdgeInsets.only(left: 20.auto, right: 20.auto),
+          padding: EdgeInsets.only(left: 15.auto, right: 20.auto),
           margin: EdgeInsets.only(top: 15.auto),
           height: 40.auto,
           decoration: BoxDecoration(
@@ -198,7 +212,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 10,
                 child: Container(
                   margin: EdgeInsets.only(left: 10.auto),
                   child: Text(
@@ -209,15 +223,6 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               ),
               Expanded(
                 flex: 3,
-                child: Text(
-                  /*((qrCode!.appId) ?? qrCode.phone) ?? */
-                  "",
-                  // getTranslatedText(text),
-                  style: TextStyle(color: CustomColor.theme_button_color),
-                ),
-              ),
-              Expanded(
-                flex: 1,
                 child: InkWell(
                   onTap: () {
                     var contact = qrCode?.appId ?? qrCode?.phone;
@@ -234,8 +239,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                     color: CustomColor.theme_text_black_color,
                   ),*/
                       Text(
-                    ("Join"),
+                    getTranslatedText("cs_join"),
                     style: TextStyle(color: CustomColor.theme_button_color),
+                    textAlign: TextAlign.end,
                   ),
                 ),
               ),

@@ -75,9 +75,10 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
                         "images/maintenance/maintenance${EnvironmentConfig.template_version == 8 ? "_t8" : ""}.png"),
                     fit: BoxFit.fill),
               ),
-              child: Column(
+              child: ListView(
+                shrinkWrap: true,
                 children: [
-                  _buildText("Maintenance time: \n" + _getTime(), font: 15),
+                  _buildText("${getTranslatedText("maintenance_time")}: \n" + _getTime(), font: 15),
                   SizedBox(height: 20),
                   _getContent(),
                   SizedBox(height: 20),
@@ -90,7 +91,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
   }
 
   _getContent() {
-    if (_vm.content != null) {
+    if (_vm.content?.isNotEmpty ?? false) {
       return _buildText(_vm.content!);
     } else
       return Column(
@@ -169,8 +170,10 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
             isEnabled: true,
             width: context.screenWidth / 3.5,
             height: context.screenHeight / 18,
-            fontSize: 13,
+            fontSize: 20,
             color: Colors.white,
+            padding: 0,
+            minFontSize: 5,
           ),
           ColorButton(
             title: getTranslatedText("instant_messaging"),
@@ -184,11 +187,11 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
             },
             isEnabled: true,
             radius: 5,
-            height: 44.5,
+            height: context.screenHeight / 18,
             width: context.screenWidth / 3.5,
-            padding: 5.auto,
-            fontSize: 10,
+            minFontSize: 5,
             color: CustomColor.theme_button_color,
+            fontSize: 20,
           ),
         ],
       );

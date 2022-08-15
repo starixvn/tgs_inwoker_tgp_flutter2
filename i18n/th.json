@@ -143,7 +143,7 @@
   "confirm_edit": "ยืนยันการแก้ไข",
   "bet_game_type": "ประเภทการเดิมพัน",
   "bet_platform": "แพลตฟอร์ม",
-  "contact_cs": "ติดต่อฝ่ายบริการลูกค้า",
+  "contact_cs": "บริการออนไลน์",
   "any_question_please_contact": "หากคุณมีคำถามใดๆ โปรดติดต่อ",
   "online_cs": "บริการลูกค้าออนไลน์",
   "here": "ที่นี่",
@@ -969,7 +969,7 @@
   "username": "ชื่อผู้ใช้",
   "password": "รหัสผ่าน",
   "area_code": "รหัสพื้นที่",
-  "instant_messaging": "ข้อความโต้ตอบแบบทันที",
+  "instant_messaging": "IM",
   "login_time_out": "การเข้าสู่ระบบหมดเวลา",
   "withdrawal_amount_warning": "จำนวนเงินฝากต้องเป็นหน่วยร้อยหยวน",
   "game_platform_inactive": "แพลตฟอร์มเกมปิดอยู่",
@@ -1101,5 +1101,6 @@
   "idr_msgEnterWithdrawalNumber": "โปรดป้อนหมายเลขบัตรธนาคาร",
   "withdrawalBankType": "หมวดหมู่",
   "eWalletAccount": "ชื่อเงินอิเล็กทรอนิกส์",
-  "msgEnterEwalletAccount": "โปรดป้อนชื่อเงินอิเล็กทรอนิกส์"
+  "msgEnterEwalletAccount": "โปรดป้อนชื่อเงินอิเล็กทรอนิกส์",
+  "maintenance_time": "เวลาบำรุงรักษา"
 }

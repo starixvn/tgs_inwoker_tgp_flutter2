@@ -14,6 +14,7 @@ class OutlineBorderButton extends StatelessWidget {
   final double radius;
   final double padding;
   final bool isBold;
+  final double minFontSize;
 
   OutlineBorderButton({
     required this.title,
@@ -26,6 +27,7 @@ class OutlineBorderButton extends StatelessWidget {
     this.radius = 5,
     this.padding = 0.0,
     this.isBold = false,
+    this.minFontSize = 5,
   });
 
   @override
@@ -39,7 +41,7 @@ class OutlineBorderButton extends StatelessWidget {
           )),
           padding: MaterialStateProperty.all(EdgeInsets.all(padding.auto)),
           backgroundColor: MaterialStateProperty.all(Colors.transparent),
-          minimumSize: MaterialStateProperty.all<Size>(Size(width ?? context.screenWidth, height ?? 29.auto))),
+          minimumSize: MaterialStateProperty.all<Size>(Size(width ?? context.screenWidth, height ?? 45.auto))),
       child: Container(
         alignment: Alignment.center,
         /*width: width??context.screenWidth,
@@ -48,8 +50,8 @@ class OutlineBorderButton extends StatelessWidget {
           width: (width ?? context.screenWidth) - 20,
           child: AutoSizeText(
             title,
-            style: TextStyle(color: color ?? Colors.white, fontWeight: isBold?FontWeight.bold:FontWeight.normal),
-            minFontSize: 7,
+            style: TextStyle(color: color ?? Colors.white, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+            minFontSize: minFontSize,
             maxLines: 1,
             textAlign: TextAlign.center,
           ),
