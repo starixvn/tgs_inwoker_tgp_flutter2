@@ -1099,5 +1099,6 @@
   "idr_msgEnterWithdrawalNumber": "Vui lòng nhập số thẻ ngân hàng",
   "withdrawalBankType": "Loại",
   "eWalletAccount": "Tên tiền điện tử",
-  "msgEnterEwalletAccount": "Vui lòng nhập tên tiền điện tử"
+  "msgEnterEwalletAccount": "Vui lòng nhập tên tiền điện tử",
+  "maintenance_time": "Thời gian bảo trì"
 }

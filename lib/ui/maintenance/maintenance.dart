@@ -78,7 +78,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  _buildText("Maintenance time: \n" + _getTime(), font: 15),
+                  _buildText("${getTranslatedText("maintenance_time")}: \n" + _getTime(), font: 15),
                   SizedBox(height: 20),
                   _getContent(),
                   SizedBox(height: 20),
@@ -91,7 +91,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
   }
 
   _getContent() {
-    if (_vm.content != null) {
+    if (_vm.content?.isNotEmpty ?? false) {
       return _buildText(_vm.content!);
     } else
       return Column(
