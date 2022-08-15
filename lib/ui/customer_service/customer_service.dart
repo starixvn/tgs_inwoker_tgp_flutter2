@@ -154,15 +154,21 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 Expanded(
                   flex: 10,
                   child: Container(
-                    margin: EdgeInsets.only(left: 10.auto),
-                    alignment: Alignment.centerLeft,
-                    child: AutoSizeText(
-                      getTranslatedText("online_cs"),
-                      style: TextStyle(color: CustomColor.theme_text_black_color),
-                      maxLines: 1,
-                      minFontSize: 13,
-                      stepGranularity: 1,
-                      maxFontSize: 15,
+                    margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
+                    child: SizedBox.expand(
+                      // to fix not showing full text in thai language
+                      child: Container(
+                        padding: EdgeInsets.only(top: 16),
+                        child: AutoSizeText(
+                          getTranslatedText("online_cs"),
+                          style: TextStyle(color: CustomColor.theme_text_black_color),
+                          maxLines: 1,
+                          minFontSize: 13,
+                          stepGranularity: 1,
+                          maxFontSize: 15,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
                     ),
                   ),
                 ),
