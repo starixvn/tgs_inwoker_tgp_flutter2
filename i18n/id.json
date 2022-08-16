@@ -1101,5 +1101,6 @@
   "withdrawalBankType": "Jenis",
   "eWalletAccount": "Nama uang elektronik",
   "msgEnterEwalletAccount": "Silakan masukkan nama uang elektronik",
-  "maintenance_time": "Waktu Pemeliharaan"
+  "maintenance_time": "Waktu Pemeliharaan",
+  "marquee_welcome": "Selamat Datang"
 }

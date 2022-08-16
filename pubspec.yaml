@@ -143,6 +143,7 @@ flutter:
     - images/roulette/
     - images/t11_bg/
     - images/login/t11/
+    - images/marquee_dialog/
 
     - i18n/
     - features/

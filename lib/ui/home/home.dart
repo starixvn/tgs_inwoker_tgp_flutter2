@@ -25,6 +25,7 @@ import 'package:tgp_flutter2/ui/home/home_t4.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'package:tgp_flutter2/ui/home/marquee_dialog.dart';
 import 'package:tgp_flutter2/ui/home/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/home/roulette_dialog.dart';
@@ -135,7 +136,7 @@ class _HomeState extends BaseState<Home> {
                             isShowTransferUI = !isShowTransferUI;
                           });
                         },
-                    randomNumber:randomNumber??0,
+                        randomNumber: randomNumber ?? 0,
                       ),
                 body: Container(
                   child: Stack(
@@ -341,19 +342,31 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayMarqueeDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context2) => CustomDialog(
-          title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-          description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-          buttonText1: getTranslatedText("confirm"),
-          onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
-          onClick: () {
-            if (isShowPromotion()) {
-              _displayPromotionDialog();
-            }
-          }),
-    );
+    EnvironmentConfig.template_version == 11
+        ? showDialog(
+            context: context,
+            builder: (BuildContext context2) => MarqueeDialog(
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+               onClick: () {
+                  if (isShowPromotion()) {
+                    _displayPromotionDialog();
+                  }
+                }),
+          )
+        : showDialog(
+            context: context,
+            builder: (BuildContext context2) => CustomDialog(
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+                buttonText1: getTranslatedText("confirm"),
+                onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
+                onClick: () {
+                  if (isShowPromotion()) {
+                    _displayPromotionDialog();
+                  }
+                }),
+          );
   }
 
   _displayPromotionDialog() {

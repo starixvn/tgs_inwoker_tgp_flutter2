@@ -1100,5 +1100,6 @@
   "withdrawalBankType": "类别",
   "eWalletAccount": "电子货币名称",
   "msgEnterEwalletAccount": "请输入电子货币名称",
-  "maintenance_time": "维护时间"
+  "maintenance_time": "维护时间",
+  "marquee_welcome": "欢迎"
 }
