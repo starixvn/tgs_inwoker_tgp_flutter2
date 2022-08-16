@@ -42,21 +42,48 @@ class OutlineBorderButton extends StatelessWidget {
           padding: MaterialStateProperty.all(EdgeInsets.all(padding.auto)),
           backgroundColor: MaterialStateProperty.all(Colors.transparent),
           minimumSize: MaterialStateProperty.all<Size>(Size(width ?? context.screenWidth, height ?? 45.auto))),
-      child: Container(
+      child:
+      Container(
         alignment: Alignment.center,
         /*width: width??context.screenWidth,
           height: 25.auto,*/
         child: SizedBox(
-          width: (width ?? context.screenWidth) - 20,
-          child: AutoSizeText(
-            title,
-            style: TextStyle(color: color ?? Colors.white, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
-            minFontSize: minFontSize,
-            maxLines: 1,
-            textAlign: TextAlign.center,
+          width: (width ?? context.screenWidth) - 10,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                flex: 1,
+                child: AutoSizeText(
+                  title,
+                  style: TextStyle(color: Colors.white),
+                  minFontSize: minFontSize,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
         ),
-      ),
+      ),/*Container(
+        alignment: Alignment.center,
+        *//*width: width??context.screenWidth,
+          height: 25.auto,*//*
+        child: SizedBox(
+          width: (width ?? context.screenWidth) - 10,
+          child: Expanded(
+            flex: 1,
+            child: AutoSizeText(
+              title,
+              style: TextStyle(color: color ?? Colors.white, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+              minFontSize: minFontSize,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),*/
     );
   }
 }

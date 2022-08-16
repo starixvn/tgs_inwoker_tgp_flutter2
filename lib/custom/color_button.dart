@@ -52,7 +52,7 @@ class ColorButton extends StatelessWidget {
         /*width: width??context.screenWidth,
           height: 25.auto,*/
         child: SizedBox(
-          width: (width ?? context.screenWidth) - 20,
+          width: (width ?? context.screenWidth) - 10,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -64,7 +64,6 @@ class ColorButton extends StatelessWidget {
                   title,
                   style: TextStyle(color: textColor ?? Colors.white),
                   minFontSize: minFontSize,
-                  maxFontSize: fontSize ?? 12,
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   stepGranularity: 1,

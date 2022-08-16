@@ -1,6 +1,7 @@
 import 'package:api/extension/format.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
@@ -29,6 +30,7 @@ class Maintenance extends StatefulWidget {
 
 class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserver {
   var _vm = MaintenanceViewModel();
+  var languageCode;
 
   @override
   void initState() {
@@ -44,6 +46,13 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
       _vm.getBrandCommunication();
       _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
     }
+    getLanguage();
+  }
+
+  getLanguage() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    print(languageCode);
   }
 
   @override
@@ -77,13 +86,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
               ),
               child: ListView(
                 shrinkWrap: true,
-                children: [
-                  _buildText("${getTranslatedText("maintenance_time")}: \n" + _getTime(), font: 15),
-                  SizedBox(height: 20),
-                  _getContent(),
-                  SizedBox(height: 20),
-                  Visibility(visible: widget.isShowCS, child: _buildButton())
-                ],
+                children: [_getContent(), Visibility(visible: widget.isShowCS, child: _buildButton())],
               ),
             ),
           );
@@ -91,24 +94,28 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
   }
 
   _getContent() {
-    if (_vm.content?.isNotEmpty ?? false) {
-      return _buildText(_vm.content!);
-    } else
+      if (_vm.content?.isNotEmpty ?? false) {
       return Column(
         children: [
-          _buildText("我们正在维护中，请稍后再试。"),
-          _buildText("如您有任何问题，请联系客服。"),
-          _buildText("We are currently under maintenance,\n"
-              "please try again later."),
-          _buildText("If have any questions,", isNeedMargin: false),
-          _buildText("please contact our customer service,"),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 40.auto),
-            child: _buildText(
-                "Hiện chúng tôi đang được bảo trì, bạn có thẻ liên hệ với bộ phận hồ trở khách hàng 24/7 của chúng tôi đễ biểt thêm thống tin"),
-          ),
+          _buildText("${getTranslatedText("maintenance_time")}: \n" + _getTime()),
+          SizedBox(height: 20),
+          _buildText(_vm.content!),
+          SizedBox(height: 20),
         ],
       );
+    } else
+    return Column(
+      children: [
+        _buildText("我们正在维护中，请稍后再试。"),
+        _buildText("如您有任何问题，请联系客服。"),
+        _buildText("维护时间: " + _getTime()),
+        _buildText("We are currently under maintenance,\n"
+            "please try again later."),
+        _buildText("If have any questions,", isNeedMargin: false),
+        _buildText("please contact our customer service,"),
+        _buildText("Maintenance time: " + _getTime()),
+      ],
+    );
   }
 
   _getTime() {
@@ -130,7 +137,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
         },
       );
 
-  _buildText(String text, {bool isNeedMargin = true, int font = 12}) => Container(
+  _buildText(String text, {bool isNeedMargin = true, int font = 15}) => Container(
         margin: EdgeInsets.only(bottom: isNeedMargin ? 20.auto : 0),
         child: Text(
           text,
@@ -173,7 +180,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
             fontSize: 20,
             color: Colors.white,
             padding: 0,
-            minFontSize: 5,
+            minFontSize: languageCode == "th-TH" ? 15 : 5,
           ),
           ColorButton(
             title: getTranslatedText("instant_messaging"),
