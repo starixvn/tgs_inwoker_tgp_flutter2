@@ -25,19 +25,29 @@ class PromotionMainDetails extends StatefulWidget {
 
 class _PromotionMainDetailsState extends BaseState<PromotionMainDetails> {
   Widget build(BuildContext context) {
+    var lists = widget.promotion?.vipLevels ?? [];
+
+    List sortVip(List array) {
+      return array..sort((a, b) => a.compareTo(b));
+    }
+
     return widget.promotion != null
         ? ListView(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children: [
               Container(
-                  margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+                  margin: EdgeInsets.only(
+                      left: 10.auto, right: 10.auto, top: 15.auto),
                   child: Text(
                     "【${getTranslatedText("promotion_condition")}】",
-                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 14.auto),
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: 14.auto),
                   )),
-              _buildPromotionText("${getTranslatedText("promotion_person")}：\n VIP" +
-                  (widget.promotion?.vipLevels ?? []).join(", VIP")),
+              _buildPromotionText(
+                  "${getTranslatedText("promotion_person")}：\n VIP" +
+                      (sortVip(lists)).join(", VIP")),
               _buildPromotionText("${getTranslatedText("promotion_time")}：\n " +
                   Format().dateTimeFormat(widget.promotion?.from) +
                   " - " +
