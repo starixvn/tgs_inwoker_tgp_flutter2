@@ -6,11 +6,11 @@ flutter_icons:
 environment_config:
   fields:
     jwtKey:
-      default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
+      default: "BkL6wSH33QONCtgHd3sF0MQnQbHR7KdhOcAdfSnLoSOWV74C3NF8Ua"
     url:
       default: "https://pisobet.com/"
     currency:
-      default: "CNY"
+      default: "PHP"
     appTitleName:
       default: "Pisobet"
     slotGameUrl:
