@@ -95,6 +95,30 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
               child: Image.asset("images/marquee_dialog/marquee_girl.png"),
             ),
           ),
+          Positioned(
+            top: -70,
+            right: 0,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                height: 25,
+                width: 25,
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(width: 2, color: Colors.white),
+                  color: Colors.black,
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ),
+          )
         ],
       );
 

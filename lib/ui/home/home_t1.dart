@@ -14,7 +14,7 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'dart:math';
 
-import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
 
 class HomeT1 extends StatefulWidget {
   final Function? onPauseBgMusic;
