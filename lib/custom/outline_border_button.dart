@@ -57,7 +57,7 @@ class OutlineBorderButton extends StatelessWidget {
                 flex: 1,
                 child: AutoSizeText(
                   title,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: color ?? Colors.white, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
                   minFontSize: minFontSize,
                   maxLines: 1,
                   textAlign: TextAlign.center,
@@ -66,24 +66,7 @@ class OutlineBorderButton extends StatelessWidget {
             ],
           ),
         ),
-      ),/*Container(
-        alignment: Alignment.center,
-        *//*width: width??context.screenWidth,
-          height: 25.auto,*//*
-        child: SizedBox(
-          width: (width ?? context.screenWidth) - 10,
-          child: Expanded(
-            flex: 1,
-            child: AutoSizeText(
-              title,
-              style: TextStyle(color: color ?? Colors.white, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
-              minFontSize: minFontSize,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ),*/
+      ),
     );
   }
 }
