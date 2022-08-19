@@ -1109,11 +1109,14 @@
   "roulette_promo_home": "Promotion Home",
   "roulette_promo_content": "Promotion Content",
   "roulette_promo_terms": "Promotion T&C",
-
   "idr_withdrawalNumber": "Bank card number",
   "idr_msgEnterWithdrawalNumber": "Please enter bank card number",
   "withdrawalBankType": "Type",
   "eWalletAccount": "E-money Name",
   "msgEnterEwalletAccount": "Please enter e-money name",
-  "maintenance_time": "Maintenance Time"
+  "maintenance_time": "Maintenance Time",
+  "marquee_welcome": "Welcome",
+  "at": " at",
+  "won": " won",
+  "win_list": "WIN LIST"
 }

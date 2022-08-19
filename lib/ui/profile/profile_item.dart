@@ -133,7 +133,11 @@ class _ProfileItemState extends BaseState<ProfileItem> {
                   color: Colors.white,
                   child: Text(
                     getTranslatedText(title) ?? title,
-                    style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
+                    style: TextStyle(
+                        fontSize: 12.auto,
+                        color: EnvironmentConfig.template_version == 11
+                            ? Color(0xff707070)
+                            : CustomColor.theme_text_grey_color),
                   ),
                 ))
           ],

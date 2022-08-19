@@ -104,7 +104,7 @@ class _AffiliateState extends BaseState<Affiliate> {
   _buildReferIdText() => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: EnvironmentConfig.template_version==11?CustomColor.theme_button_color:Colors.white,
         ),
         padding: EdgeInsets.only(
           left: 10.auto,
@@ -140,7 +140,7 @@ class _AffiliateState extends BaseState<Affiliate> {
   _buildIdLink() => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: EnvironmentConfig.template_version==11?CustomColor.theme_button_color:Colors.white,
         ),
         padding: EdgeInsets.only(
           left: 10.auto,

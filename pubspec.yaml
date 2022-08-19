@@ -110,6 +110,7 @@ flutter:
     - images/game/T3/
     - images/game/T8/
     - images/game/T10/
+    - images/game/T11/
     - images/profile/
     - images/profile/t1/
     - images/profile/t2/
@@ -124,6 +125,7 @@ flutter:
     - images/game_tab/t8/
     - images/game_tab/t3/
     - images/game_tab/t4/
+    - images/game_tab/t11/
     - images/child_game/
     - images/card/
     - images/language/
@@ -139,6 +141,11 @@ flutter:
     - images/contact/
     - images/login_app_bar/
     - images/roulette/
+    - images/t11_bg/
+    - images/login/t11/
+    - images/marquee_dialog/
+    - images/home/T11/
+    - images/bottom_nav_bar/T11/
 
     - i18n/
     - features/

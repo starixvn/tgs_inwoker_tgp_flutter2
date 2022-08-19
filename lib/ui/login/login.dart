@@ -39,7 +39,11 @@ class _LoginState extends BaseState<Login> {
           : Container(
               height: context.screenHeight,
               width: context.screenWidth,
-              color: CustomColor.theme_bg_color,
+              decoration: BoxDecoration(
+                  color: EnvironmentConfig.template_version != 11 ? CustomColor.theme_bg_color : Colors.transparent,
+                  image: EnvironmentConfig.template_version != 11
+                      ? DecorationImage(image: AssetImage(""))
+                      : DecorationImage(image: AssetImage("images/t11_bg/login_bg.png"), fit: BoxFit.fill)),
               child: Column(
                 children: [
                   Expanded(
@@ -79,8 +83,7 @@ class _LoginState extends BaseState<Login> {
           alignment: Alignment.centerRight,
           child: Text(
             "Version $version (${EnvironmentConfig.environmentStage})",
-            style: TextStyle(
-                fontSize: 8.auto, color: CustomColor.theme_text_grey_color),
+            style: TextStyle(fontSize: 8.auto, color: CustomColor.theme_text_grey_color),
           ),
         )
       ],
@@ -88,10 +91,7 @@ class _LoginState extends BaseState<Login> {
   }
 
   _buildLogoImage() => Container(
-      margin: EdgeInsets.only(
-          top: ScreenUtil.getInstance().statusBarHeight,
-          left: 27.auto,
-          right: 27.auto),
+      margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
       child: (_vm.brandLogo?.mobileUrl?.isEmpty ?? true)
           ? Container(
               height: 100.auto,

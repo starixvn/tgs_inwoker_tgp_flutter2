@@ -6,6 +6,7 @@ import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/language.dart';
 import 'package:api/localizations/language_provider.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -78,11 +79,17 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         margin: EdgeInsets.only(bottom: 10.auto),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.8)),
         child: LoginTextFormField(
-          icon: SvgPicture.asset(
-            "images/login/ic_login_username.svg",
-            matchTextDirection: true,
-            height: 20.auto,
-          ),
+          icon: EnvironmentConfig.template_version == 11
+              ? Image.asset(
+                  "images/login/t11/ic_login_username.png",
+                  width: 20.auto,
+                  height: 20.auto,
+                )
+              : SvgPicture.asset(
+                  "images/login/ic_login_username.svg",
+                  matchTextDirection: true,
+                  height: 20.auto,
+                ),
           hintText: getTranslatedText("enter_username_hint"),
           //onChanged: (value) => null,
           //onFieldSubmitted: (value) => null,
@@ -94,10 +101,16 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
       );
 
   _buildPasswordTextFormField() => LoginPasswordTextFormField(
-        icon: SvgPicture.asset(
-          "images/login/ic_login_password.svg",
-          height: 20.auto,
-        ),
+        icon: EnvironmentConfig.template_version == 11
+            ? Image.asset(
+                "images/login/t11/ic_login_password.png",
+                width: 20.auto,
+                height: 20.auto,
+              )
+            : SvgPicture.asset(
+                "images/login/ic_login_password.svg",
+                height: 20.auto,
+              ),
         hintText: getTranslatedText("enter_password_hint"),
         onChanged: (value) => null,
         onFieldSubmitted: (value) => _login(),
@@ -142,6 +155,8 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
             checkColor: Colors.white,
             activeColor: Colors.black,
             fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(EnvironmentConfig.template_version == 11 ? 20.auto : 0)),
             onChanged: (val) => this.setState(() {
               this._isRememberMe = !this._isRememberMe;
               if (!_isRememberMe) _vm.removePrefs();
@@ -219,7 +234,7 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         CustomToast.show(getTranslatedText("enter_password_hint"));
       });
     } else {
-      ProgressDialog.show(context, _vm.brandLogo?.mobileUrl??"");
+      ProgressDialog.show(context, _vm.brandLogo?.mobileUrl ?? "");
       _vm.login(username.text, password.text, _isRememberMe);
     }
   }
@@ -239,8 +254,10 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
 
   _handleApiState() {
     handleApiState(_vm.loginApiState, isCheckSessionExpired: false, onSuccess: () {
-      if(!_vm.isNavigateFromSmsVerification) _navigateToHome();
-      else _vm.setIsNavigateFromSmsVerificationToTrue();
+      if (!_vm.isNavigateFromSmsVerification)
+        _navigateToHome();
+      else
+        _vm.setIsNavigateFromSmsVerificationToTrue();
     });
   }
 }
