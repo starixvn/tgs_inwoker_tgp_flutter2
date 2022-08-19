@@ -112,10 +112,17 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _getAppBarTitle(),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: _getActionButton(),
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: _getActionButton(),
+                ),
+                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
+              ],
             ),
           ],
         ),
@@ -154,20 +161,20 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           _getLogoutButton(),
         ]
       : [
-          if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-          /*if (widget.config?.homePageDisplayVIP ?? false)*/ _getVipButton(),
+          if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
           _getLoginButton(),
           _getRegisterButton(),
         ];
 
   _getOnlineUsersText() => Padding(
-        padding: EdgeInsets.only(right: 5.auto),
+        padding: EdgeInsets.only(right: 10),
         child: Text(
-          "${getTranslatedText("online_user")} \n ${widget.randomNumber}",
+          "${getTranslatedText("online_user")} : ${widget.randomNumber}",
           textAlign: TextAlign.right,
           style: TextStyle(
             color: Colors.white,
             fontSize: 10.auto,
+            fontWeight: FontWeight.bold,
           ),
         ),
       );
@@ -279,7 +286,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
           color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,

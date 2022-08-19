@@ -84,7 +84,9 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                             child: AutoSizeText(
                               widget.displayedAreaCode ?? "",
                               style: TextStyle(
-                                color: CustomColor.theme_text_black_color,
+                                color: EnvironmentConfig.template_version != 11
+                                    ? CustomColor.theme_text_black_color
+                                    : Color(0xff4B4B4B),
                               ),
                               maxFontSize: 12,
                               minFontSize: 8,
@@ -122,7 +124,11 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                     onFieldSubmitted: (value) => widget.onChanged(value),
                     keyboardType: TextInputType.phone,
                     textInputAction: widget.textInputAction,
-                    style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
+                    style: TextStyle(
+                        color: EnvironmentConfig.template_version != 11
+                            ? CustomColor.theme_text_black_color
+                            : Color(0xff4B4B4B),
+                        fontSize: 13.auto),
                     decoration: InputDecoration(
                       isCollapsed: true,
                       border: InputBorder.none,

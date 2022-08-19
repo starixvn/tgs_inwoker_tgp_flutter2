@@ -249,7 +249,8 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 localizationsDelegates: [
                   MyLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate
                 ],
                 // MyHomePage(title: appTitle),
                 supportedLocales: LanguageProvider.getSingleton().list.map((e) => e.locale).toList(),
@@ -308,13 +309,21 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     }
 
     if (widget.index != null) currentBottomIndex = widget.index!;
-    _page = [
-      Home(),
-      Promotion(),
-      EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
-      CustomerService(),
-      Profile(),
-    ];
+    _page = EnvironmentConfig.template_version != 11
+        ? [
+            Home(),
+            Promotion(),
+            EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
+            CustomerService(),
+            Profile(),
+          ]
+        : [
+            Home(),
+            Promotion(),
+            Deposit(),
+            Withdraw(),
+            Profile(),
+          ];
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
   }
@@ -369,24 +378,6 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         child: _buildBottomAppBarRow(),
                       ),
           ),
-          /*Positioned(
-            bottom: 50,
-            right: -10,
-            child: RawMaterialButton(
-              onPressed: () {
-                FlutterLivechatPlugin.beginChat("14246631");
-              },
-              elevation: 2.0,
-              fillColor: Color(0xff6819d2),
-              child: ImageIcon(
-                AssetImage("images/livechat.png"),
-                color: Colors.white,
-                size: 20,
-              ),
-              padding: EdgeInsets.all(15.0),
-              shape: CircleBorder(),
-            ),
-          ),*/
         ],
       ),
     );
@@ -400,8 +391,10 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           _buildBottomBarItem(1, "ic_promotion", "promotion"),
           EnvironmentConfig.template_version == 2
               ? _buildBottomBarItem(2, "ic_menu", "")
-              : _buildBottomBarItem(2, "ic_deposit", "wallet", isNeedLogin: true),
-          _buildBottomBarItem(3, "ic_cs", "customer_service"),
+              : _buildBottomBarItem(2, "ic_deposit", "deposit", isNeedLogin: true),
+          EnvironmentConfig.template_version != 11
+              ? _buildBottomBarItem(3, "ic_cs", "customer_service")
+              : _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true),
           _buildBottomBarItem(4, "ic_profile", "my_profile", isNeedLogin: true),
         ],
       );
@@ -424,7 +417,14 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         return;
                       }
                     }
-                    if (index == 1) {
+                    if (EnvironmentConfig.template_version == 11) {
+                      //will refresh page for t11
+                      if (index == 0)
+                        Navigator.of(context).pushNamed(RoutePath.myHome);
+                      else if (index == 2)
+                        Navigator.of(context).pushNamed(RoutePath.deposit);
+                      else if (index == 3) Navigator.of(context).pushNamed(RoutePath.withdraw);
+                    } else if (index == 1) {
                       Navigator.of(context).pushNamed("/promotion");
                     } else if (index == 3) {
                       Navigator.of(context).pushNamed("/customer_service");
@@ -472,9 +472,19 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) {
-    if (index == 2 && imagePath == "ic_menu") {
+    if (EnvironmentConfig.template_version == 11 && imagePath != "ic_home" && imagePath != "ic_profile") {
+      return Container(
+        height: 30,
+        alignment: Alignment.topCenter,
+        child: Image.asset(
+          "images/bottom_nav_bar/T11/$imagePath.gif",
+          fit: BoxFit.fitHeight,
+        ),
+      );
+    } else if (index == 2 && imagePath == "ic_menu") {
       return Container(
         height: 35.auto,
+        padding: EdgeInsets.symmetric(vertical: 5),
         child: CircleAvatar(
           backgroundColor: CustomColor.theme_title_text_color,
           child: ImageIcon(
@@ -487,13 +497,16 @@ class _MyHomePageState extends BaseState<MyHomePage> {
         ),
       );
     } else {
-      return SvgPicture.asset(
-        "images/bottom_nav_bar/$imagePath.svg",
-        matchTextDirection: true,
-        height: 18.auto,
-        color: currentBottomIndex == index && !isMenu
-            ? CustomColor.bottom_nav_selected_color
-            : CustomColor.bottom_nav_unselected_color,
+      return Container(
+        padding: EdgeInsets.only(top: 5),
+        child: SvgPicture.asset(
+          "images/bottom_nav_bar/$imagePath.svg",
+          matchTextDirection: true,
+          height: 22.auto,
+          color: currentBottomIndex == index && !isMenu
+              ? CustomColor.bottom_nav_selected_color
+              : CustomColor.bottom_nav_unselected_color,
+        ),
       );
     }
   }

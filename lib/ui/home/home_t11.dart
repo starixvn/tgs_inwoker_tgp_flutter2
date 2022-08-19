@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
@@ -12,6 +13,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'package:tgp_flutter2/ui/home/jackpot/jackpot.dart';
 
 class HomeT11 extends StatefulWidget {
   final Function? onPauseBgMusic;
@@ -50,13 +52,7 @@ class _HomeT11State extends BaseState<HomeT11> {
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
-
   var itemHeightRatio = 335 / 90;
-
-  //var widget.homeViewModel = HomeViewModel();
-  int _current = 0;
-
-  //var widget.gameViewModel = GameViewModel();
   var languageCode;
 
   @override
@@ -80,73 +76,71 @@ class _HomeT11State extends BaseState<HomeT11> {
       ),
       child: Column(
         children: [
-          Stack(children: [_buildImageSlider(), _buildBorderCorner()]),
-          widget.gameView
+          _buildImageSlider(),
+          _buildTextMarquee(),
+          widget.gameView,
         ],
       ),
     );
   }
 
-  _buildBorderCorner() => Positioned(
-        top: context.screenHeight / 5.2,
-        child: Container(
-          width: context.screenWidth,
-          height: context.screenHeight,
-          decoration: BoxDecoration(
-              color: Color(0xff11171d),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-              )),
-        ),
-      );
-
-  _buildMarqueeRow() => Container(
-        width: context.screenWidth,
-        padding: EdgeInsets.only(left: 10.auto),
-        child: Row(
-          children: [
-            Expanded(
-              flex: _getNoticeFlex(),
-              child: Container(
-                width: (widget.language?.contains("zh") ?? false) ? context.screenWidth / 10 : context.screenWidth / 5,
-                child: AutoSizeText(
-                  getTranslatedText("notice"),
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                  maxFontSize: 13,
-                  minFontSize: 5,
-                  maxLines: 1,
-                  stepGranularity: 1,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 13,
-              child: _buildTextMarquee(),
-            )
-          ],
-        ),
-      );
-
   _buildTextMarquee() {
     var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
-      decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
-      margin: EdgeInsets.only(right: 10.auto),
-      height: 18.auto,
-      child: announcement.isEmpty
-          ? Container()
-          : Marquee(
-              text: announcement,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 10.auto,
+      padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+      margin: EdgeInsets.only(top: 5.auto),
+      alignment: Alignment.center,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: SvgPicture.asset(
+              "images/home/ic_marquee.svg",
+              height: 15.auto,
+              color: CustomColor.announcement_icon_color,
+            ),
+          ),
+          Expanded(
+            flex: _getNoticeFlex(),
+            child: Container(
+              child: Text(
+                getTranslatedText("notice"),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: CustomColor.theme_text_black_white_color,
+                  fontSize: 11.auto,
+                ),
+                /* maxFontSize: 12,
+                minFontSize: 5,*/
+                maxLines: 1,
+                //stepGranularity: 1,
               ),
-              scrollAxis: Axis.horizontal,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              blankSpace: 300.auto,
-              pauseAfterRound: Duration(seconds: 1),
-              showFadingOnlyWhenScrolling: false),
+            ),
+          ),
+          Expanded(
+              flex: 7,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: CustomColor.theme_button_color.withOpacity(0.5), borderRadius: BorderRadius.circular(10.0)),
+                margin: EdgeInsets.symmetric(horizontal: 8.auto),
+                height: 18.auto,
+                child: announcement.isEmpty
+                    ? Container()
+                    : Marquee(
+                        text: announcement,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10.auto,
+                        ),
+                        scrollAxis: Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        blankSpace: 300.auto,
+                        pauseAfterRound: Duration(seconds: 1),
+                        showFadingOnlyWhenScrolling: false),
+              ))
+        ],
+      ),
     );
   }
 
@@ -156,8 +150,22 @@ class _HomeT11State extends BaseState<HomeT11> {
     else if (languageCode == "th-TH" || languageCode == "vi-VN")
       return 2;
     else
-      return 4;
+      return 2;
   }
+
+  _buildBorderCorner() => Positioned(
+        top: context.screenHeight / 5.2,
+        child: Container(
+          width: context.screenWidth,
+          height: context.screenHeight,
+          decoration: BoxDecoration(
+              color: Color(0xff181f24),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+              )),
+        ),
+      );
 
   _buildImageSlider() {
     String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;

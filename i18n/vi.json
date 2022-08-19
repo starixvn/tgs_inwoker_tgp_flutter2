@@ -1101,5 +1101,8 @@
   "eWalletAccount": "Tên tiền điện tử",
   "msgEnterEwalletAccount": "Vui lòng nhập tên tiền điện tử",
   "maintenance_time": "Thời gian bảo trì",
-  "marquee_welcome": "hoan nghênh"
+  "marquee_welcome": "hoan nghênh",
+  "at": " tại",
+  "won": " thắng",
+  "win_list": "DANH SÁCH CHIẾN THẮNG"
 }

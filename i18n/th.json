@@ -1103,5 +1103,8 @@
   "eWalletAccount": "ชื่อเงินอิเล็กทรอนิกส์",
   "msgEnterEwalletAccount": "โปรดป้อนชื่อเงินอิเล็กทรอนิกส์",
   "maintenance_time": "เวลาบำรุงรักษา",
-  "marquee_welcome": "ยินดีต้อนรับ"
+  "marquee_welcome": "ยินดีต้อนรับ",
+  "at": " ที่",
+  "won": " วอน",
+  "win_list": "รายชื่อผู้ชนะ"
 }

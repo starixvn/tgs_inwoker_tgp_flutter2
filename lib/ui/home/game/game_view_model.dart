@@ -89,6 +89,68 @@ class GameViewModel extends BaseViewModel {
 
   List<GameType>? gameListT3;
 
+  var JILITF_slot = [
+    "Super_Ace",
+    "Golden_Empire",
+    "Fortune_Gems",
+    "Money_Coming",
+    "Boxing_King",
+    "Crazy777",
+    "Mega_Ace",
+    "Charge_Buffalo",
+    "Ali_Baba",
+    "Bonus_Bingo",
+  ];
+
+  var RTTF_slot = [
+    "Masquerade",
+    "10001_Nights",
+    "Aztec_Spins",
+    "777_Strike",
+    "Jewel_Scarabs",
+    "Zeus_Lightning_Power_Reels",
+    "Cash_Ultimate",
+    "Thor's_Vengeance",
+    "Golden_Leprechaun_Megaways",
+    "Dragon's_Luck_Deluxe",
+  ];
+
+  var JDB_slot = [
+    "TrumpCard",
+    "MayaGoldCrazy",
+    "TreasureBowl",
+    "Blossom_of_Wealth",
+    "Kong",
+    "SuperNiubiDeluxe",
+    "Mjolnir",
+    "Moneybags_Man_2",
+    "OpenSesameII",
+    "Fortune_Treasure",
+  ];
+
+  var JILITF_fish = [
+    "Mega_Fishing",
+    "Jackpot_Fishing",
+    "Dinosaur_Tycoon",
+    "Happy_Fishing",
+    "Bombing_Fishing",
+    "All-star_Fishing",
+    "Boom_Legend",
+    "Royal_Fishing",
+    "Dragon_Fortune",
+  ];
+
+  var JDB_fish = [
+    "Cai Shen_Fishing",
+    "Fishing_YiLuFa",
+    "Dragon_Fishing II",
+    "Dragon_Master",
+    "Dragon_Fishing",
+    "Five_Dragons_Fishing",
+    "Fishing_Disco",
+  ];
+  List<Game>? expandRecommendList;
+
   var _context;
   Map<GameType, List<GameProvider2>>? gameTypeMap = new Map<GameType, List<GameProvider2>>();
   bool isGamePlatformInactive = false;
@@ -100,6 +162,8 @@ class GameViewModel extends BaseViewModel {
   get recommendGameList => _getRecommendGameList();
 
   get config => contentRepo.featuresConfig;
+
+  Map<String, List<Game>> jackpotRecommendGameList = new Map<String, List<Game>>();
 
   getGameProviderList({bool isRefresh = false}) async {
     if (contentRepo.gameProviderList == null || isRefresh) {
@@ -159,22 +223,25 @@ class GameViewModel extends BaseViewModel {
     });
   }
 
-  getGameList(String? gamePlatformCode, GameType? gameType) async {
+  getGameList(String? gamePlatformCode, GameType? gameType, {bool isGettingRecommendList = false}) async {
     setLoading();
     var apiState = await contentRepo.getGameList(gamePlatformCode!, gameType!);
     if (apiState.isSuccess) {
       if (apiState.result!.isEmpty) {
         getGameApiState = apiState;
-        await getPlatformList(gameType);
-        isGamePlatformInactive = true;
-        mPlatform = "ALL";
-        await filter(gamePlatformCode: mPlatform!);
+        if (!isGettingRecommendList) {
+          await getPlatformList(gameType);
+          isGamePlatformInactive = true;
+          mPlatform = "ALL";
+          await filter(gamePlatformCode: mPlatform!);
+        }
       } else {
         gameListMap[gamePlatformCode] = apiState.result!;
-        if (gameType == GameType.Slot ||
-            gameType == GameType.EGame ||
-            gameType == GameType.Fishing ||
-            gameType == GameType.VirtualSports)
+        if (!isGettingRecommendList &&
+            (gameType == GameType.Slot ||
+                gameType == GameType.EGame ||
+                gameType == GameType.Fishing ||
+                gameType == GameType.VirtualSports))
           await _getFavoriteGame(gameType).then((_apiState) {
             if (_apiState.result.isNotEmpty) {
               getGameApiState = _apiState;
@@ -228,9 +295,11 @@ class GameViewModel extends BaseViewModel {
     if (category != null) mCategory = category;
     if (gamePlatformCode != null) mPlatform = gamePlatformCode;
     if (searchQuery != null) mSearchQuery = searchQuery;
+    if (gameType != null) mGameType = gameType;
 
     var platformGameList = await _filterPlatform();
     filteredGameList = _filterSearch(_filterCategory(platformGameList));
+    print(filteredGameList);
     notifyListeners();
   }
 
@@ -277,7 +346,7 @@ class GameViewModel extends BaseViewModel {
     var task = <Future>[];
     platformList!.forEach((platform) {
       if (gameListMap[platform.code] == null) {
-        task.add(getGameList(platform.code, mGameType!));
+        task.add(getGameList(platform.code, mGameType));
       }
     });
     await Future.wait(task);
@@ -351,5 +420,96 @@ class GameViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getBetConstructHtmlApiState;
+  }
+
+  getJackpotRecommendList() async {
+    var recommendList = [
+      "JILITF",
+      "RTTF",
+      "JDB",
+    ];
+    var gameTypeList = [GameType.Slot, GameType.Fishing];
+    expandRecommendList = [];
+    gameTypeList.forEach((gametype) {
+      recommendList.forEach((gpCode) async {
+        jackpotRecommendGameList["${gpCode}_$gametype"] = await _addRecommendGameList(gpCode, gametype);
+        (expandRecommendList ?? []).addAll(jackpotRecommendGameList["${gpCode}_$gametype"] ?? []);
+        print(expandRecommendList);
+      });
+    });
+    notifyListeners();
+  }
+
+  _addRecommendGameList(String gpCode, GameType type) async {
+    List<Game> list = [];
+    print("");
+    await getGameList(gpCode, type, isGettingRecommendList: true);
+    print(gameListMap[gpCode]);
+    switch (gpCode) {
+      case "JILITF":
+        if (type == GameType.Slot) {
+          JILITF_slot.forEach((name) {
+            (gameListMap[gpCode] ?? []).forEach((element) {
+              if (element.code == name) {
+                list.add(element);
+                print("got data");
+              }
+            });
+          });
+        } else {
+          JILITF_fish.forEach((name) {
+            (gameListMap[gpCode] ?? []).forEach((element) {
+              if (element.code == name) {
+                list.add(element);
+                print("got data");
+              }
+            });
+          });
+        }
+        break;
+      case "RTTF":
+        {
+          RTTF_slot.forEach((name) {
+            (gameListMap[gpCode] ?? []).forEach((element) {
+              if (element.code == name) {
+                list.add(element);
+                print("got data");
+              }
+            });
+          });
+          break;
+        }
+      case "JDB":
+        if (type == GameType.Slot) {
+          JDB_slot.forEach((name) {
+            (gameListMap[gpCode] ?? []).forEach((element) {
+              if (element.code == name) {
+                list.add(element);
+                print("got data");
+              }
+            });
+          });
+        } else {
+          JDB_fish.forEach((name) {
+            (gameListMap[gpCode] ?? []).forEach((element) {
+              if (element.code == name) {
+                list.add(element);
+                print("got data");
+              }
+            });
+          });
+        }
+        break;
+    }
+    return list;
+  }
+
+  Game? randomGameData() {
+    if ((expandRecommendList ?? []).isNotEmpty) {
+      int result = Random().nextInt(expandRecommendList!.length);
+      return expandRecommendList![result];
+    } else {
+      return null;
+    }
   }
 }

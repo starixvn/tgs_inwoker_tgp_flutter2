@@ -131,8 +131,8 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildHomeIcon("vip", "VIP", RoutePath.deposit),
-                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.vip),
+                      _buildHomeIcon("vip", "VIP", RoutePath.vip),
+                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.deposit),
                       _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), RoutePath.walletTransfer),
                       _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), RoutePath.withdraw)
                     ],

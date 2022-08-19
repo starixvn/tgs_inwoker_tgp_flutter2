@@ -94,6 +94,7 @@ class _HomeState extends BaseState<Home> {
     randomNumber = _randomGenerator();
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
+    await _gameViewModel.getJackpotRecommendList();
   }
 
   getLanguage() async {
@@ -230,7 +231,6 @@ class _HomeState extends BaseState<Home> {
           gameViewModel: _gameViewModel,
           randomNumber: randomNumber,
           gameView: _buildGameView(),
-          isDisplayGameView: false,
         );
       default:
         return HomeT1(
@@ -245,15 +245,17 @@ class _HomeState extends BaseState<Home> {
   }
 
   _buildGameView() => BaseGame(
-      vm: _gameViewModel,
-      onRefreshHomePage: () => _initData(),
-      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      onClickGameTab: () => {
-            setState(() {
-              isDisplayGameView = true;
-            })
-          });
+        vm: _gameViewModel,
+        onRefreshHomePage: () => _initData(),
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        onClickGameTab: () => {
+          setState(() {
+            isDisplayGameView = true;
+          })
+        },
+        isDisplayGameView: false,
+      );
 
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,

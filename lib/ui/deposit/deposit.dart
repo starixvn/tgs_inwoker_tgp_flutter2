@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -38,7 +39,9 @@ class _DepositState extends BaseState<Deposit> {
   }
 
   _initData() async {
-    await _vm.getPlayerPromotionList(getCurrentLanguage().apiCode);
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var code = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    await _vm.getPlayerPromotionList(code);
     _vm.getPayment();
     _displayDepositDialog();
   }

@@ -1,6 +1,7 @@
 import 'package:api/extension/format.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
@@ -39,10 +40,12 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
   }
 
   _initData() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var code = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
     await _vm.getMaintenanceDetails();
     if (widget.isShowCS) {
       _vm.getBrandCommunication();
-      _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
+      _vm.getLiveChatUrl(code);
     }
   }
 

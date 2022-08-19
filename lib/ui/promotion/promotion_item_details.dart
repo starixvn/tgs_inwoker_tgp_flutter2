@@ -35,19 +35,22 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
     return CustomScaffold(
       color: Colors.white,
       appBar: _buildAppBar(),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          _buildPromotionImage(),
-          PromotionMainDetails(promotion: widget.promotion),
-          PromotionTermsContent(
-              termsContent:
-                  (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
-                      ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
-                      : widget.promotion.content ?? "")),
-          PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
-          _buildJoinButton()
-        ],
+      body: Container(
+        color: Colors.white,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            _buildPromotionImage(),
+            PromotionMainDetails(promotion: widget.promotion),
+            PromotionTermsContent(
+                termsContent:
+                    (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
+                        ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
+                        : widget.promotion.content ?? "")),
+            PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
+            _buildJoinButton()
+          ],
+        ),
       ),
     );
   }

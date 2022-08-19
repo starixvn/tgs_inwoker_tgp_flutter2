@@ -1115,5 +1115,8 @@
   "eWalletAccount": "E-money Name",
   "msgEnterEwalletAccount": "Please enter e-money name",
   "maintenance_time": "Maintenance Time",
-  "marquee_welcome": "Welcome"
+  "marquee_welcome": "Welcome",
+  "at": " at",
+  "won": " won",
+  "win_list": "WIN LIST"
 }

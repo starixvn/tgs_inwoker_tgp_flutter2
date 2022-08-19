@@ -1,3 +1,4 @@
+import 'package:api/entity/game.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
@@ -24,12 +25,16 @@ class BaseGame extends StatefulWidget {
   final Function onRefreshHomePage;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final Function? onClickGameTab;
+  final bool isDisplayGameView;
 
   BaseGame({
     required this.vm,
     required this.onRefreshHomePage,
     this.onPauseBgMusic,
     this.onResumeBgMusic,
+    this.onClickGameTab,
+    required this.isDisplayGameView,
   });
 
   @override
@@ -123,6 +128,8 @@ class _BaseGameState extends BaseState<BaseGame> {
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
+          onClickGameTab: () => widget.onClickGameTab,
+          onClickChildGame: (game) => _navigateToChildGameWeb(game),
         );
       default:
         return GameT1(
@@ -161,7 +168,7 @@ class _BaseGameState extends BaseState<BaseGame> {
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
-                  vm:widget.vm,
+                      vm: widget.vm,
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
@@ -199,6 +206,21 @@ class _BaseGameState extends BaseState<BaseGame> {
                     )));
       });
     }
+  }
+
+  _navigateToChildGameWeb(Game game) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: game.gamePlatformCode,
+                    gameId: game.id,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                  )));
+    });
   }
 
   _isTcgGame() =>
