@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 
@@ -150,7 +151,7 @@ class _CustomDialogState extends BaseState<CustomDialog> {
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
         fontSize: 13.auto,
-        color: CustomColor.theme_text_black_color,
+        color: EnvironmentConfig.template_version == 11 ? Color(0xff4B4B4B) : CustomColor.theme_text_black_color,
         radius: 45.auto,
       );
 }

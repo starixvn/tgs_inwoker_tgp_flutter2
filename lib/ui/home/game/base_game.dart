@@ -211,7 +211,10 @@ class _BaseGameState extends BaseState<BaseGame> {
   _navigateToChildGameWeb(Game game) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
-      Navigator.push(
+      if (widget.vm.userProfile == null) {
+        showPreLoginDialog();
+      }
+      else Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => GameWeb(
