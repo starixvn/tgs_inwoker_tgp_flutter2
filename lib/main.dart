@@ -2,8 +2,10 @@ import 'package:api/network/event_result.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_livechat_plugin/flutter_livechat_plugin.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iphone_has_notch/iphone_has_notch.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main_view_model.dart';
@@ -102,6 +104,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   Future<EventResult<dynamic>> initData() async {
     if (firstInit) {
       LanguageProvider.getSingleton().init(EnvironmentConfig.brandName);
+
       if (_vm.authApiState?.isMaintenance == true) {
         //prevent loop
         return _vm.authApiState; //return if maintenance
@@ -378,6 +381,24 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         child: _buildBottomAppBarRow(),
                       ),
           ),
+          /*Positioned(
+            bottom: context.screenWidth / 7 + (IphoneHasNotch.hasNotch ? 20 : 0),
+            right: -10,
+            child: RawMaterialButton(
+              onPressed: () {
+                FlutterLivechatPlugin.beginChat("14246631");
+              },
+              elevation: 2.0,
+              fillColor: Color(0xff6819d2),
+              child: ImageIcon(
+                AssetImage("images/livechat.png"),
+                color: Colors.white,
+                size: 20,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+            ),
+          ),*/
         ],
       ),
     );

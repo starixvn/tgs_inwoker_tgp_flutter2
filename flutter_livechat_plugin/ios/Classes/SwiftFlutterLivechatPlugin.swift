@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import LiveChat
+
 
 public class SwiftFlutterLivechatPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -11,25 +11,24 @@ public class SwiftFlutterLivechatPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     result("iOS " + UIDevice.current.systemVersion)
-        switch call.method {
-            case "getPlatformVersion":
-                result("iOS " + UIDevice.current.systemVersion)
-            case "beginChat":
-                let arguments = call.arguments as! [String:Any]
+    switch call.method {
+        case "getPlatformVersion":
+            result("iOS " + UIDevice.current.systemVersion)
+        case "beginChat":
+            let arguments = call.arguments as! [String:Any]
 
-                let licenseNo = (arguments["licenseNo"] as? String)
+            let licenseNo = (arguments["licenseNo"] as? String)
 
-                if (licenseNo == ""){
-                    result(FlutterError(code: "", message: "LICENSE NUMBER EMPTY", details: nil))
-                 }else{
-                    LiveChat.licenseId = licenseNo // Set your licence number here
+            if (licenseNo == ""){
+                result(FlutterError(code: "", message: "LICENSE NUMBER EMPTY", details: nil))
+           }else{
+                LiveChat.licenseId = licenseNo // Set your licence number here
 
-
-                    LiveChat.presentChat()
-                    result(nil)
-                }
-            default:
-                result(FlutterMethodNotImplemented)
-        }
-      }
+                LiveChat.presentChat()
+                result(nil)
+            }
+        default:
+            result(FlutterMethodNotImplemented)
     }
+  }
+}
