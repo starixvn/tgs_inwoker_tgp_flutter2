@@ -19,8 +19,9 @@ class ChildGame extends StatefulWidget {
   final GameType? gameType;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final GameViewModel vm;
 
-  ChildGame({this.gamePlatformCode, this.gameType, this.onPauseBgMusic, this.onResumeBgMusic});
+  ChildGame({this.gamePlatformCode, this.gameType, this.onPauseBgMusic, this.onResumeBgMusic, required this.vm});
 
   @override
   _ChildGameState createState() => _ChildGameState();
@@ -38,7 +39,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     "捕鱼游戏",
     "历史游戏"*/
   ];
-  var _vm = GameViewModel();
+  var _vm;
   var searchController = TextEditingController();
   var _focusNode = FocusNode();
   var isSearching = false, isVisibleSuggestionList = false, isInitLoading = true;
@@ -46,6 +47,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   @override
   void initState() {
+    _vm = widget.vm;
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
     currGamePlatformCode = widget.gamePlatformCode;

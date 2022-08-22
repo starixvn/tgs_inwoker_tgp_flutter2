@@ -282,6 +282,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       );
 
   getImagePath(GameProvider2 gameProvider) {
+    //temp set t11 getting image from dev-t3
     var url = EnvironmentConfig.environmentStage == "development"
         ? 'https://dev-t${EnvironmentConfig.light_mode ? "5" : EnvironmentConfig.template_version}.rpgp.cc/'
         : EnvironmentConfig.url;
@@ -306,6 +307,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         return "/T3T4";
       case 4:
         return "/T3T4";
+      case 11:
+        return "/T11";
       default:
         return "/T${EnvironmentConfig.template_version}";
     }

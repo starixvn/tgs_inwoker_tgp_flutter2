@@ -1101,5 +1101,9 @@
   "withdrawalBankType": "類別",
   "eWalletAccount": "電子貨幣名稱",
   "msgEnterEwalletAccount": "請輸入電子貨幣名稱",
-  "maintenance_time": "維護時間"
+  "maintenance_time": "維護時間",
+  "marquee_welcome": "歡迎",
+  "at": " 在",
+  "won": " 赢",
+  "win_list": "獲獎名單"
 }

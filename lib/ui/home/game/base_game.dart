@@ -1,3 +1,4 @@
+import 'package:api/entity/game.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
@@ -10,6 +11,7 @@ import 'package:tgp_flutter2/ui/home/game/game_T4/game_T4.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_item_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t10/game_t10.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t11/game_t11.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
@@ -23,12 +25,16 @@ class BaseGame extends StatefulWidget {
   final Function onRefreshHomePage;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final Function? onClickGameTab;
+  final bool isDisplayGameView;
 
   BaseGame({
     required this.vm,
     required this.onRefreshHomePage,
     this.onPauseBgMusic,
     this.onResumeBgMusic,
+    this.onClickGameTab,
+    required this.isDisplayGameView,
   });
 
   @override
@@ -115,6 +121,16 @@ class _BaseGameState extends BaseState<BaseGame> {
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
+      case 11:
+        return GameT11(
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          vm: widget.vm,
+          onRefreshHomePage: () => widget.onRefreshHomePage,
+          onGameClick: (gameProvider) => _onGameClick(gameProvider),
+          onClickGameTab: () => widget.onClickGameTab,
+          onClickChildGame: (game) => _navigateToChildGameWeb(game),
+        );
       default:
         return GameT1(
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
@@ -152,6 +168,7 @@ class _BaseGameState extends BaseState<BaseGame> {
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
+                      vm: widget.vm,
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
@@ -189,6 +206,24 @@ class _BaseGameState extends BaseState<BaseGame> {
                     )));
       });
     }
+  }
+
+  _navigateToChildGameWeb(Game game) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+      if (widget.vm.userProfile == null) {
+        showPreLoginDialog();
+      }
+      else Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => GameWeb(
+                    gamePlatformCode: game.gamePlatformCode,
+                    gameId: game.id,
+                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                  )));
+    });
   }
 
   _isTcgGame() =>

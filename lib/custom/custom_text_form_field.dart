@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -95,7 +96,11 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                           ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
                           : null,
                       textInputAction: widget.textInputAction,
-                      style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
+                      style: TextStyle(
+                          color: EnvironmentConfig.template_version != 11
+                              ? CustomColor.theme_text_black_color
+                              : Color(0xff4B4B4B),
+                          fontSize: 13.auto),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: widget.hintText,

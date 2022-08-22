@@ -235,6 +235,7 @@ class _GameItemT4State extends BaseState<GameItemT4> {
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
+                  vm:_vm,
                       gamePlatformCode: gamePlatformCode,
                       gameType: gameType,
                       onPauseBgMusic: () => (widget.onPauseBgMusic != null)

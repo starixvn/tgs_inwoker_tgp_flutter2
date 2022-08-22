@@ -41,10 +41,12 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
   }
 
   _initData() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var code = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
     await _vm.getMaintenanceDetails();
     if (widget.isShowCS) {
       _vm.getBrandCommunication();
-      _vm.getLiveChatUrl(getCurrentLanguage().apiCode);
+      _vm.getLiveChatUrl(code);
     }
     getLanguage();
   }

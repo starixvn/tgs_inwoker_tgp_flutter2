@@ -13,20 +13,22 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
+import 'package:tgp_flutter2/ui/home/home_t11.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
 import 'package:tgp_flutter2/ui/home/home_t4.dart';
 import 'package:tgp_flutter2/ui/home/home_t8.dart';
 import 'package:tgp_flutter2/ui/home/home_t9.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
-import 'package:tgp_flutter2/ui/home/phone_verification_dialog.dart';
-import 'package:tgp_flutter2/ui/home/promotion_dialog.dart';
-import 'package:tgp_flutter2/ui/home/roulette_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/marquee_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/roulette_dialog.dart';
 import 'dart:io' show Platform;
 
 import 'dart:math';
@@ -70,6 +72,7 @@ class _HomeState extends BaseState<Home> {
   var randomNumber;
   var _assetsAudioPlayer;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
+  var isDisplayGameView = false; //to check either display jackpot or game view in t11
 
   @override
   void initState() {
@@ -91,6 +94,7 @@ class _HomeState extends BaseState<Home> {
     randomNumber = _randomGenerator();
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
+    await _gameViewModel.getJackpotRecommendList();
   }
 
   getLanguage() async {
@@ -107,20 +111,11 @@ class _HomeState extends BaseState<Home> {
             children: [
               CustomScaffold(
                 appBar: EnvironmentConfig.template_version == 2
-                    ? PreferredSize(
-                        child: Container(),
-                        preferredSize: Size.fromHeight(0),
-                      )
+                    ? PreferredSize(child: Container(), preferredSize: Size.fromHeight(0))
                     : CustomLoginAppBar(
-                        onClickLoginButton: () {
-                          Navigator.of(context).pushNamed(RoutePath.login);
-                        },
-                        onClickRegisterButton: () {
-                          Navigator.of(context).pushNamed(RoutePath.register);
-                        },
-                        onClickLogoutButton: () {
-                          _logout();
-                        },
+                        onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+                        onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+                        onClickLogoutButton: () => _logout(),
                         isLogin: _vm.userProfile != null,
                         brandLogoUrl: _vm.brandLogoUrl,
                         userProfile: _vm.userProfile,
@@ -134,6 +129,7 @@ class _HomeState extends BaseState<Home> {
                             isShowTransferUI = !isShowTransferUI;
                           });
                         },
+                        randomNumber: randomNumber ?? 0,
                       ),
                 body: Container(
                   child: Stack(
@@ -226,6 +222,16 @@ class _HomeState extends BaseState<Home> {
           randomNumber: randomNumber,
           gameView: _buildGameView(),
         );
+      case 11:
+        return HomeT11(
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          initData: () => _initData(),
+          homeViewModel: _vm,
+          gameViewModel: _gameViewModel,
+          randomNumber: randomNumber,
+          gameView: _buildGameView(),
+        );
       default:
         return HomeT1(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
@@ -238,55 +244,18 @@ class _HomeState extends BaseState<Home> {
     }
   }
 
-  _displayLoginDialog() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var loginLater = prefs.getBool("login_later") ?? false;
-    if (_vm.userProfile == null && !loginLater) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => CustomDialog(
-          title: getTranslatedText("login_expired"),
-          description: getTranslatedText("login_again"),
-          buttonText1: getTranslatedText("login"),
-          buttonText2: getTranslatedText("no"),
-          onClick: this.navigateToLogin,
-          onClick2: () {
-            prefs.setBool("login_later", true);
-            Navigator.pop(context);
-          },
-          popIndex: 2,
-        ),
+  _buildGameView() => BaseGame(
+        vm: _gameViewModel,
+        onRefreshHomePage: () => _initData(),
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        onClickGameTab: () => {
+          setState(() {
+            isDisplayGameView = true;
+          })
+        },
+        isDisplayGameView: false,
       );
-    }
-  }
-
-  _logout() {
-    ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.logout();
-  }
-
-  _displayRouletteDialog() async {
-    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
-    if ((_vm.campaign?.length ?? 0) > 0)
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => RouletteDialog(
-          onTapCloseIcon: () {
-            Navigator.pop(context);
-            if (!onClickFromSmallRoulette) _displayDialog();
-            setState(() {
-              onClickFromSmallRoulette = false;
-            });
-          },
-          userProfile: _vm.userProfile,
-          isPlayed: _vm.isRoulettePlayed,
-          vm: _vm,
-          // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
-        ),
-      );
-  }
 
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
@@ -314,6 +283,51 @@ class _HomeState extends BaseState<Home> {
         ),
       );
 
+  _displayLoginDialog() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var loginLater = prefs.getBool("login_later") ?? false;
+    if (_vm.userProfile == null && !loginLater) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CustomDialog(
+          title: getTranslatedText("login_expired"),
+          description: getTranslatedText("login_again"),
+          buttonText1: getTranslatedText("login"),
+          buttonText2: getTranslatedText("no"),
+          onClick: this.navigateToLogin,
+          onClick2: () {
+            prefs.setBool("login_later", true);
+            Navigator.pop(context);
+          },
+          popIndex: 2,
+        ),
+      );
+    }
+  }
+
+  _displayRouletteDialog() async {
+    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
+    if ((_vm.campaign?.length ?? 0) > 0)
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => RouletteDialog(
+          onTapCloseIcon: () {
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
+            setState(() {
+              onClickFromSmallRoulette = false;
+            });
+          },
+          userProfile: _vm.userProfile,
+          isPlayed: _vm.isRoulettePlayed,
+          vm: _vm,
+          // getRouletteResult: () => _vm.getRouletteResult(),
+          campaign: _vm.campaign,
+        ),
+      );
+  }
+
   _displayDialog() {
     if (isShowAnnouncement()) {
       _displayMarqueeDialog();
@@ -329,19 +343,31 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayMarqueeDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context2) => CustomDialog(
-          title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-          description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-          buttonText1: getTranslatedText("confirm"),
-          onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
-          onClick: () {
-            if (isShowPromotion()) {
-              _displayPromotionDialog();
-            }
-          }),
-    );
+    EnvironmentConfig.template_version == 11
+        ? showDialog(
+            context: context,
+            builder: (BuildContext context2) => MarqueeDialog(
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+                onClick: () {
+                  if (isShowPromotion()) {
+                    _displayPromotionDialog();
+                  }
+                }),
+          )
+        : showDialog(
+            context: context,
+            builder: (BuildContext context2) => CustomDialog(
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+                buttonText1: getTranslatedText("confirm"),
+                onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
+                onClick: () {
+                  if (isShowPromotion()) {
+                    _displayPromotionDialog();
+                  }
+                }),
+          );
   }
 
   _displayPromotionDialog() {
@@ -355,25 +381,6 @@ class _HomeState extends BaseState<Home> {
       ),
     );
   }
-
-  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
-
-  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
-
-  _randomGenerator() {
-    Random _random = new Random();
-    int min = 20000;
-    int max = 30000;
-    int result = min + _random.nextInt(max - min);
-    return result;
-  }
-
-  _buildGameView() => BaseGame(
-        vm: _gameViewModel,
-        onRefreshHomePage: () => _initData(),
-        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      );
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -411,6 +418,23 @@ class _HomeState extends BaseState<Home> {
       );
       if (result) _handleNavigationAndPopUpDialog();
     });
+  }
+
+  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
+
+  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
+
+  _randomGenerator() {
+    Random _random = new Random();
+    int min = 20000;
+    int max = 30000;
+    int result = min + _random.nextInt(max - min);
+    return result;
+  }
+
+  _logout() {
+    ProgressDialog.show(context, _vm.brandLogoUrl);
+    _vm.logout();
   }
 
   _handleApiState() {

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:tgp_flutter2/custom/custom_picker.dart';
 import 'package:tgp_flutter2/custom/custom_picker_dialog.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -44,7 +45,12 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
         child: Container(
           height: 40.auto,
           padding: EdgeInsets.symmetric(horizontal: 10.auto),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(2)),
+          decoration: BoxDecoration(
+            color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+            borderRadius: BorderRadius.circular(
+              EnvironmentConfig.template_version == 11 ? 25 : 2,
+            ),
+          ),
           child: InkWell(
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -73,7 +79,12 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
           height: 40.auto,
           margin: EdgeInsets.only(left: 5.auto),
           padding: EdgeInsets.symmetric(horizontal: 10.auto),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(2)),
+          decoration: BoxDecoration(
+            color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+            borderRadius: BorderRadius.circular(
+              EnvironmentConfig.template_version == 11 ? 25 : 2,
+            ),
+          ),
           alignment: Alignment.center,
           child: TextFormField(
             autofocus: false,
@@ -87,7 +98,9 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
               isDense: true,
               border: InputBorder.none,
               hintText: getTranslatedText("enter_phone_hint"),
-              hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+              hintStyle: TextStyle(
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two,
+                  fontSize: 13.auto),
               counterText: '',
               counterStyle: TextStyle(fontSize: 0),
             ),

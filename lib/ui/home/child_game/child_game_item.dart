@@ -13,6 +13,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
+import 'package:api/extension/list_extension.dart';
 
 class ChildGameItem extends StatefulWidget {
   final bool? isFavourite;
@@ -37,7 +38,7 @@ class ChildGameItem extends StatefulWidget {
 
 class _ChildGameItemState extends BaseState<ChildGameItem> {
   var languageCode;
-  var platformList;
+  List? platformList;
 
   @override
   void initState() {
@@ -170,10 +171,7 @@ class _ChildGameItemState extends BaseState<ChildGameItem> {
   }
 
   String returnGameName(gameCode) {
-    return platformList
-            ?.singleWhere((element) => element.code == gameCode)
-            .name ??
-        gameCode;
+    return platformList?.singleWhereOrNull((element) => element.code == gameCode)?.name ?? gameCode;
   }
 
   _buildPlatformText() => Positioned(
