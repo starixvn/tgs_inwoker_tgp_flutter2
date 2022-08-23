@@ -39,11 +39,15 @@ class Home extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final bool isDisplayGameView;
+  final Function? onClickGameTab;
 
   Home({
     this.isFirstRun = false,
     this.onPauseBgMusic,
     this.onResumeBgMusic,
+    this.isDisplayGameView = false,
+    this.onClickGameTab,
   });
 
   @override
@@ -110,27 +114,25 @@ class _HomeState extends BaseState<Home> {
           return Stack(
             children: [
               CustomScaffold(
-                appBar: EnvironmentConfig.template_version == 2
-                    ? PreferredSize(child: Container(), preferredSize: Size.fromHeight(0))
-                    : CustomLoginAppBar(
-                        onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-                        onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-                        onClickLogoutButton: () => _logout(),
-                        isLogin: _vm.userProfile != null,
-                        brandLogoUrl: _vm.brandLogoUrl,
-                        userProfile: _vm.userProfile,
-                        phone: _vm.phone,
-                        config: _vm.config,
-                        totalBalance: _vm.totalBalance,
-                        //_vm.totalBalance,
-                        brandName: EnvironmentConfig.brandName,
-                        onClickBalance: () {
-                          setState(() {
-                            isShowTransferUI = !isShowTransferUI;
-                          });
-                        },
-                        randomNumber: randomNumber ?? 0,
-                      ),
+                appBar: CustomLoginAppBar(
+                  onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+                  onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+                  onClickLogoutButton: () => _logout(),
+                  isLogin: _vm.userProfile != null,
+                  brandLogoUrl: _vm.brandLogoUrl,
+                  userProfile: _vm.userProfile,
+                  phone: _vm.phone,
+                  config: _vm.config,
+                  totalBalance: _vm.totalBalance,
+                  //_vm.totalBalance,
+                  brandName: EnvironmentConfig.brandName,
+                  onClickBalance: () {
+                    setState(() {
+                      isShowTransferUI = !isShowTransferUI;
+                    });
+                  },
+                  randomNumber: randomNumber ?? 0,
+                ),
                 body: Container(
                   child: Stack(
                     children: [
@@ -249,12 +251,8 @@ class _HomeState extends BaseState<Home> {
         onRefreshHomePage: () => _initData(),
         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
         onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-        onClickGameTab: () => {
-          setState(() {
-            isDisplayGameView = true;
-          })
-        },
-        isDisplayGameView: false,
+        isDisplayGameView: widget.isDisplayGameView,
+        onClickGameTab: (value) => (widget.onClickGameTab != null) ? widget.onClickGameTab!(value) : null,
       );
 
   _getSmallRouletteIcon() => Visibility(

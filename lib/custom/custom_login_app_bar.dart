@@ -47,7 +47,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight((EnvironmentConfig.template_version == 2) ? 60 : 90);
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
@@ -112,18 +112,19 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _getAppBarTitle(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: _getActionButton(),
-                ),
-                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-              ],
-            ),
+            if (EnvironmentConfig.template_version != 2)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: _getActionButton(),
+                  ),
+                  if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
+                ],
+              ),
           ],
         ),
       );
@@ -150,7 +151,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 alignment: Alignment.centerLeft,
                 errorWidget: (context, url, error) => Container(),
               ),
-              _getUserDetailsRow(),
+              if (EnvironmentConfig.template_version != 2) _getUserDetailsRow(),
             ],
           ),
         );

@@ -2,7 +2,6 @@ import 'package:api/network/event_result.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iphone_has_notch/iphone_has_notch.dart';
@@ -131,8 +130,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
         firstInit = false;
       });
       _getLocale();
-      langList =
-          LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
+      langList = LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
       _getAssetsAudioPlayer();
       return _vm.getLanguageApiState;
     } else
@@ -179,26 +177,21 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     _handleApiState();
     return FutureBuilder(
         future: initData(),
-        builder: (BuildContext context,
-            AsyncSnapshot<EventResult<dynamic>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
           if (!snapshot.hasData) {
-            return MaterialApp(
-                debugShowCheckedModeBanner: false, home: Splash());
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
           } else {
             return GestureDetector(
               onTap: () {
                 FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus &&
-                    currentFocus.focusedChild != null) {
+                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
                   currentFocus.focusedChild!.unfocus();
                 }
               },
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: appTitle,
-                initialRoute: snapshot.data!.isMaintenance
-                    ? RoutePath.splashMaintenance
-                    : RoutePath.myHome,
+                initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
                 routes: {
                   RoutePath.myHome: (context) => MyHomePage(
                         versionUpdate: _vm.versionUpdateState,
@@ -211,8 +204,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
                   RoutePath.login: (context) => Login(),
-                  RoutePath.register: (context) =>
-                      Login(defaultRegisterTab: true),
+                  RoutePath.register: (context) => Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(
                         onResumeBgMusic: () => _assetsAudioPlayer.play(),
@@ -221,12 +213,10 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                         isShowCS: true,
                         isShowsAppBar: false,
                       ),
-                  RoutePath.customerServiceWebView: (context) =>
-                      CustomerServiceWebView(),
+                  RoutePath.customerServiceWebView: (context) => CustomerServiceWebView(),
                   RoutePath.mainCard: (context) => MainCard(),
                   RoutePath.message: (context) => MessageView(),
-                  RoutePath.emailVerification: (context) =>
-                      EmailVerification(0),
+                  RoutePath.emailVerification: (context) => EmailVerification(0),
                   RoutePath.qqAccount: (context) => QQAccount(),
                   RoutePath.wechat: (context) => Wechat(),
                   RoutePath.editPassword: (context) => EditPassword(),
@@ -234,8 +224,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.payPassword: (context) => PayPassword(),
                   RoutePath.language: (context) => LanguageView(),
                   RoutePath.addCard: (context) => AddCard(),
-                  RoutePath.realNameVerification: (context) =>
-                      RealNameVerification(),
+                  RoutePath.realNameVerification: (context) => RealNameVerification(),
                   RoutePath.profileInfo: (context) => ProfileInfo(),
                   RoutePath.promotion: (context) => Promotion(),
                   RoutePath.walletTransfer: (context) => WalletTransfer(),
@@ -266,10 +255,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   GlobalCupertinoLocalizations.delegate
                 ],
                 // MyHomePage(title: appTitle),
-                supportedLocales: LanguageProvider.getSingleton()
-                    .list
-                    .map((e) => e.locale)
-                    .toList(),
+                supportedLocales: LanguageProvider.getSingleton().list.map((e) => e.locale).toList(),
                 locale: _locale,
                 localeResolutionCallback: (locale, supportedLocales) {
                   for (var supportedLocale in supportedLocales) {
@@ -287,12 +273,9 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.getBrandLogoApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.authApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }
 
@@ -320,12 +303,18 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   List _page = [];
   var isMenu = false;
   var _vm = MainViewModel();
+  var isDisplayGameView = false;
+
+  onClickGameTab(value) {
+    setState(() {
+      isDisplayGameView = value;
+    });
+  }
 
   @override
   void initState() {
     if (widget.versionUpdate != null) {
-      Future.delayed(Duration.zero,
-          () => _showNewVersionUpdateDialog(widget.versionUpdate));
+      Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
     }
 
     if (widget.index != null) currentBottomIndex = widget.index!;
@@ -338,7 +327,10 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             Profile(),
           ]
         : [
-            Home(),
+            Home(
+              isDisplayGameView: isDisplayGameView,
+              onClickGameTab: (value) => onClickGameTab(value),
+            ),
             Promotion(),
             Deposit(),
             Withdraw(),
@@ -364,42 +356,39 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                 _buildMenu()
               ],
             ),
-            bottomNavigationBar: ((EnvironmentConfig.template_version == 8 ||
-                        EnvironmentConfig.template_version == 9) &&
-                    EnvironmentConfig.dark_mode)
-                ? Container(
-                    child: BottomAppBar(
-                        child: Container(
-                      decoration: EnvironmentConfig.template_version == 8
-                          ? BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xff011F60),
-                                  Colors.transparent.withOpacity(1.0)
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            )
-                          : BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  //Color.fromRGBO(0, 1, 41, -0.1),
-                                  CustomColor.theme_bar_gradient_2,
-                                  Color.fromRGBO(199, 219, 231, 0.9),
-                                  // Colors.white.withOpacity(1.0)
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            ),
-                      child: _buildBottomAppBarRow(),
-                    )),
-                  )
-                : BottomAppBar(
-                    color: CustomColor.theme_bottom_app_bar_color,
-                    child: _buildBottomAppBarRow(),
-                  ),
+            bottomNavigationBar:
+                ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
+                        EnvironmentConfig.dark_mode)
+                    ? Container(
+                        child: BottomAppBar(
+                            child: Container(
+                          decoration: EnvironmentConfig.template_version == 8
+                              ? BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xff011F60), Colors.transparent.withOpacity(1.0)],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                )
+                              : BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      //Color.fromRGBO(0, 1, 41, -0.1),
+                                      CustomColor.theme_bar_gradient_2,
+                                      Color.fromRGBO(199, 219, 231, 0.9),
+                                      // Colors.white.withOpacity(1.0)
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                ),
+                          child: _buildBottomAppBarRow(),
+                        )),
+                      )
+                    : BottomAppBar(
+                        color: CustomColor.theme_bottom_app_bar_color,
+                        child: _buildBottomAppBarRow(),
+                      ),
           ),
           /*Positioned(
             bottom: context.screenWidth / 7 + (IphoneHasNotch.hasNotch ? 20 : 0),
@@ -432,12 +421,10 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           _buildBottomBarItem(1, "ic_promotion", "promotion"),
           EnvironmentConfig.template_version == 2
               ? _buildBottomBarItem(2, "ic_menu", "")
-              : _buildBottomBarItem(2, "ic_deposit", "deposit",
-                  isNeedLogin: true),
+              : _buildBottomBarItem(2, "ic_deposit", "deposit", isNeedLogin: true),
           EnvironmentConfig.template_version != 11
               ? _buildBottomBarItem(3, "ic_cs", "customer_service")
-              : _buildBottomBarItem(3, "ic_withdraw", "withdrawal",
-                  isNeedLogin: true),
+              : _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true),
           _buildBottomBarItem(4, "ic_profile", "my_profile", isNeedLogin: true),
         ],
       );
@@ -460,34 +447,30 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         return;
                       }
                     }
-                    if (EnvironmentConfig.template_version == 11) {
+                    if (EnvironmentConfig.template_version == 11 && index == 0 && isDisplayGameView)
                       //will refresh page for t11
-                      if (index == 0)
-                        Navigator.of(context).pushNamed(RoutePath.myHome);
-                      else if (index == 2)
-                        Navigator.of(context).pushNamed(RoutePath.deposit);
-                      else if (index == 3)
-                        Navigator.of(context).pushNamed(RoutePath.withdraw);
-                    } else if (index == 1) {
+                      Navigator.of(context).pushNamed(RoutePath.myHome);
+                    else if (EnvironmentConfig.template_version == 11 && index == 2)
+                      Navigator.of(context).pushNamed(RoutePath.deposit);
+                    else if (EnvironmentConfig.template_version == 11 && index == 3)
+                      Navigator.of(context).pushNamed(RoutePath.withdraw);
+                    else if (index == 1)
                       Navigator.of(context).pushNamed("/promotion");
-                    } else if (index == 3) {
+                    else if (index == 3)
                       Navigator.of(context).pushNamed("/customer_service");
-                    } else if (index == 2 &&
-                        EnvironmentConfig.template_version != 2) {
+                    else if (index == 2 && EnvironmentConfig.template_version != 2)
                       setState(() {
                         isMenu = !isMenu;
                       });
-                    } else if (index == 2 &&
-                        EnvironmentConfig.template_version == 2) {
+                    else if (index == 2 && EnvironmentConfig.template_version == 2)
                       setState(() {
                         Navigator.of(context).pushNamed(RoutePath.menuT2);
                       });
-                    } else {
+                    else
                       setState(() {
                         isMenu = false;
                         currentBottomIndex = index;
                       });
-                    }
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -518,9 +501,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) {
-    if (EnvironmentConfig.template_version == 11 &&
-        imagePath != "ic_home" &&
-        imagePath != "ic_profile") {
+    if (EnvironmentConfig.template_version == 11 && imagePath != "ic_home" && imagePath != "ic_profile") {
       return Container(
         height: 30,
         alignment: Alignment.topCenter,

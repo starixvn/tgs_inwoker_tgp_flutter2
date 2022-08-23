@@ -77,14 +77,12 @@ class GameViewModel extends BaseViewModel {
     GameType.Fishing
   ];
   var _pb3Gamelist = [
-    GameType.ESports,
     GameType.Slot,
     GameType.LiveDealerLobby,
     GameType.Sportsbook,
     GameType.EGame,
     GameType.Fishing,
-    GameType.CardGameLobby,
-    GameType.LotteryLobby,
+    GameType.ESports,
   ];
 
   List<GameType>? gameListT3;
