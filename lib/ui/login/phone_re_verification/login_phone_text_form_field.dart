@@ -93,13 +93,13 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
             onFieldSubmitted: (value) => widget.onChanged(value),
             keyboardType: TextInputType.phone,
             textInputAction: widget.textInputAction,
-            style: TextStyle(fontSize: 13.auto),
+            style: TextStyle(fontSize: 13.auto, color: EnvironmentConfig.template_version == 11 ? Colors.white : Colors.black),
             decoration: InputDecoration(
               isDense: true,
               border: InputBorder.none,
               hintText: getTranslatedText("enter_phone_hint"),
               hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two,
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white.withOpacity(0.5) : CustomColor.very_light_pink_two,
                   fontSize: 13.auto),
               counterText: '',
               counterStyle: TextStyle(fontSize: 0),

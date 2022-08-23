@@ -88,10 +88,16 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   }
 
   _buildUsernameTextFormField() => LoginTextFormField(
-        icon: SvgPicture.asset(
-          "images/login/ic_login_username.svg",
-          height: 20.auto,
-        ),
+        icon: EnvironmentConfig.template_version == 11
+            ? Image.asset(
+                "images/login/t11/ic_login_username.png",
+                width: 20.auto,
+                height: 20.auto,
+              )
+            : SvgPicture.asset(
+                "images/login/ic_login_username.svg",
+                height: 20.auto,
+              ),
         hintText: getTranslatedText("signup_username_hint"),
         //onChanged: (value) => null,
         //onFieldSubmitted: (value) => null,
@@ -104,10 +110,16 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   _buildPasswordTextFormField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: LoginPasswordTextFormField(
-          icon: SvgPicture.asset(
-            "images/login/ic_login_password.svg",
-            height: 20.auto,
-          ),
+          icon: EnvironmentConfig.template_version == 11
+              ? Image.asset(
+                  "images/login/t11/ic_login_password.png",
+                  width: 20.auto,
+                  height: 20.auto,
+                )
+              : SvgPicture.asset(
+                  "images/login/ic_login_password.svg",
+                  height: 20.auto,
+                ),
           hintText: getTranslatedText("signup_password_hint"),
           onChanged: (value) => null,
           onFieldSubmitted: (value) => null,
@@ -125,10 +137,16 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   _buildConfirmPasswordTextFormField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: LoginPasswordTextFormField(
-          icon: SvgPicture.asset(
-            "images/login/ic_login_password.svg",
-            height: 20.auto,
-          ),
+          icon: EnvironmentConfig.template_version == 11
+              ? Image.asset(
+                  "images/login/t11/ic_confirm_password.png",
+                  width: 20.auto,
+                  height: 20.auto,
+                )
+              : SvgPicture.asset(
+                  "images/login/ic_login_password.svg",
+                  height: 20.auto,
+                ),
           hintText: getTranslatedText("confirm_password"),
           onChanged: (value) => null,
           onFieldSubmitted: (value) => null,
@@ -204,10 +222,12 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
         child: Container(
           margin: EdgeInsets.only(top: 10.auto),
           child: LoginTextFormField(
-            icon: SvgPicture.asset(
-              "images/login/ic_login_promotion.svg",
-              height: 20.auto,
-            ),
+            icon: EnvironmentConfig.template_version == 11
+                ? Container()
+                : SvgPicture.asset(
+                    "images/login/ic_login_promotion.svg",
+                    height: 20.auto,
+                  ),
             hintText: getTranslatedText("signup_promotion_code_hint"),
             onChanged: (value) => null,
             onFieldSubmitted: (value) => _register(),

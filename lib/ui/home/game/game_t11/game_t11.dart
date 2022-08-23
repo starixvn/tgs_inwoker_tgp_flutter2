@@ -16,7 +16,7 @@ class GameT11 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
   final ValueChanged<GameProvider2> onGameClick;
-  final Function onClickGameTab;
+  final ValueChanged<bool> onClickGameTab;
   final ValueChanged<Game> onClickChildGame;
 
   GameT11({
@@ -142,6 +142,7 @@ class _GameT11State extends BaseState<GameT11> {
   }
 
   _onTabClick(int tabIndex, GameType gameType) {
+    widget.onClickGameTab(true);
     setState(() {
       isDisplayGameView = true;
       currentGameType = gameType == GameType.VirtualSports ? GameType.Sportsbook : gameType;

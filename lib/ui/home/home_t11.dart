@@ -77,7 +77,11 @@ class _HomeT11State extends BaseState<HomeT11> {
       child: Column(
         children: [
           _buildImageSlider(),
-          if (!(widget.homeViewModel.config?.hideMarquee ?? false)) _buildTextMarquee(),
+          !(widget.homeViewModel.config?.hideMarquee ?? false)
+              ? _buildTextMarquee()
+              : SizedBox(
+                  height: 10.auto,
+                ),
           widget.gameView,
         ],
       ),

@@ -58,10 +58,16 @@ class MainViewModel extends BaseViewModel {
   }
 
   getEnvFeatures() async {
-    var brand = EnvironmentConfig.environmentStage == "staging" &&
-        !(EnvironmentConfig.brandName == "PGG" || EnvironmentConfig.brandName == "MGM"||  EnvironmentConfig.brandName.contains("PB"))
-        ? "stg_${EnvironmentConfig.brandName}"
-        : EnvironmentConfig.brandName;
+    var brand;
+    if (EnvironmentConfig.environmentStage == "staging" &&
+        !(EnvironmentConfig.brandName == "PGG" ||
+            EnvironmentConfig.brandName == "MGM" ||
+            EnvironmentConfig.brandName.contains("PB")))
+      brand = "stg_${EnvironmentConfig.brandName}";
+    else if (EnvironmentConfig.environmentStage == "development" && EnvironmentConfig.template_version == 11)
+      brand = "T11";
+    else
+      brand = EnvironmentConfig.brandName;
     setLoading();
     await contentRepo.getEnvFeaturesJson(brand);
     setLoading(false);

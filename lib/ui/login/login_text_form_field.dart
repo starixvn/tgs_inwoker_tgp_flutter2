@@ -32,7 +32,7 @@ class LoginTextFormField extends StatelessWidget {
       height: 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
       decoration: BoxDecoration(
-        color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+        color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color.withOpacity(0.8): Colors.white,
         borderRadius: BorderRadius.circular(
           EnvironmentConfig.template_version == 11 ? 25 : 2,
         ),
@@ -57,13 +57,13 @@ class LoginTextFormField extends StatelessWidget {
               autocorrect: false,
               keyboardType: textInputType,
               textInputAction: textInputAction,
-              style: TextStyle(fontSize: 13.auto),
+              style: TextStyle(fontSize: 13.auto, color: EnvironmentConfig.template_version == 11 ? Colors.white : Colors.black),
               decoration: InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two,
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white.withOpacity(0.5) : CustomColor.very_light_pink_two,
                   fontSize: 13.auto,
                 ),
               ),

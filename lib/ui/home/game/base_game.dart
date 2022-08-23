@@ -25,7 +25,7 @@ class BaseGame extends StatefulWidget {
   final Function onRefreshHomePage;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
-  final Function? onClickGameTab;
+  final ValueChanged<bool>? onClickGameTab;
   final bool isDisplayGameView;
 
   BaseGame({
@@ -128,7 +128,7 @@ class _BaseGameState extends BaseState<BaseGame> {
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
-          onClickGameTab: () => widget.onClickGameTab,
+          onClickGameTab: (value) => widget.onClickGameTab!(value),
           onClickChildGame: (game) => _navigateToChildGameWeb(game),
         );
       default:
@@ -213,16 +213,16 @@ class _BaseGameState extends BaseState<BaseGame> {
       if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
       if (widget.vm.userProfile == null) {
         showPreLoginDialog();
-      }
-      else Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => GameWeb(
-                    gamePlatformCode: game.gamePlatformCode,
-                    gameId: game.id,
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                  )));
+      } else
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(
+                      gamePlatformCode: game.gamePlatformCode,
+                      gameId: game.id,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                    )));
     });
   }
 
