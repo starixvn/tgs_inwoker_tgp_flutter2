@@ -438,31 +438,30 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         return;
                       }
                     }
-                    if (EnvironmentConfig.template_version == 11) {
+                    if (EnvironmentConfig.template_version == 11 && index == 0)
                       //will refresh page for t11
-                      if (index == 0)
-                        Navigator.of(context).pushNamed(RoutePath.myHome);
-                      else if (index == 2)
-                        Navigator.of(context).pushNamed(RoutePath.deposit);
-                      else if (index == 3) Navigator.of(context).pushNamed(RoutePath.withdraw);
-                    } else if (index == 1) {
+                      Navigator.of(context).pushNamed(RoutePath.myHome);
+                    else if (EnvironmentConfig.template_version == 11 && index == 2)
+                      Navigator.of(context).pushNamed(RoutePath.deposit);
+                    else if (EnvironmentConfig.template_version == 11 && index == 3)
+                      Navigator.of(context).pushNamed(RoutePath.withdraw);
+                    else if (index == 1)
                       Navigator.of(context).pushNamed("/promotion");
-                    } else if (index == 3) {
+                    else if (index == 3)
                       Navigator.of(context).pushNamed("/customer_service");
-                    } else if (index == 2 && EnvironmentConfig.template_version != 2) {
+                    else if (index == 2 && EnvironmentConfig.template_version != 2)
                       setState(() {
                         isMenu = !isMenu;
                       });
-                    } else if (index == 2 && EnvironmentConfig.template_version == 2) {
+                    else if (index == 2 && EnvironmentConfig.template_version == 2)
                       setState(() {
                         Navigator.of(context).pushNamed(RoutePath.menuT2);
                       });
-                    } else {
+                    else
                       setState(() {
                         isMenu = false;
                         currentBottomIndex = index;
                       });
-                    }
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -493,15 +492,28 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) {
-    if (EnvironmentConfig.template_version == 11 && imagePath != "ic_home" && imagePath != "ic_profile") {
-      return Container(
-        height: 30,
-        alignment: Alignment.topCenter,
-        child: Image.asset(
-          "images/bottom_nav_bar/T11/$imagePath.gif",
-          fit: BoxFit.fitHeight,
-        ),
-      );
+    if (EnvironmentConfig.template_version == 11) {
+      if (imagePath == "ic_home" || imagePath == "ic_profile")
+        return Container(
+          height: 30,
+          alignment: Alignment.topCenter,
+          child: SvgPicture.asset(
+            "images/bottom_nav_bar/T11/$imagePath.svg",
+            matchTextDirection: true,
+            color: currentBottomIndex == index && !isMenu
+                ? CustomColor.bottom_nav_selected_color
+                : CustomColor.bottom_nav_unselected_color,
+          ),
+        );
+      else
+        return Container(
+          height: 30,
+          alignment: Alignment.topCenter,
+          child: Image.asset(
+            "images/bottom_nav_bar/T11/$imagePath.gif",
+            fit: BoxFit.fitHeight,
+          ),
+        );
     } else if (index == 2 && imagePath == "ic_menu") {
       return Container(
         height: 35.auto,
