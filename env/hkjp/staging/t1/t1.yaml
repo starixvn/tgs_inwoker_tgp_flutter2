@@ -1,12 +1,12 @@
 flutter_icons:
   android: true
   ios: true
-  image_path:  "images/hkjp_logo.png"
+  image_path:  "images/app_logo/hkjp_logo.png"
 
 environment_config:
   fields:
     jwtKey:
-      default: "gntgc6hllWr1GFxbhCueZj8CfHwPW74Kydj9ZAdygO764u8QIMU0uz"
+      default: "Pt336ttlgrpnWASUn8wQPtXuZq0OFrJeNWCBXGywKi99kqq5HDYc6G"
     url:
       default: "https://stg.hkjp168.com/"
     currency:
@@ -16,7 +16,7 @@ environment_config:
     slotGameUrl:
       default: "https://images.srvptt.com/"
     imageLogo:
-      default: "hkjp_logo"
+      default: "app_logo/hkjp_logo"
     environmentStage:
       default: "staging"
     template_version:
@@ -103,3 +103,5 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
+    configFileName:
+      default: "stg_HKJP"

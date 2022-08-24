@@ -1,16 +1,16 @@
 flutter_icons:
   android: true
   ios: true
-  image_path:  "images/Pisobet_logo.png"
+  image_path:  "images/app_logo/Pisobet_logo.png"
 
 environment_config:
   fields:
     jwtKey:
-      default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
+      default: "hHQIGzZf0cTfW8id1YJqZDOhZeHUaORcIWoREShoptpiaiXHelH1d2"
     url:
       default: "https://stg.pisobet.com/"
     currency:
-      default: "CNY"
+      default: "PHP"
     appTitleName:
       default: "Pisobet"
     slotGameUrl:
@@ -103,3 +103,5 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
+    configFileName:
+      default: "stg_PISO"
