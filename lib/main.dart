@@ -525,6 +525,18 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           ),
         ),
       );
+    } else if (EnvironmentConfig.template_version == 2 &&
+        (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) {
+      return Container(
+        height: 20.auto,
+        child: ImageIcon(
+          AssetImage(
+            "images/bottom_nav_bar/T2/$imagePath.png",
+          ),
+          size: 20.auto,
+          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+        ),
+      );
     } else {
       return Container(
         padding: EdgeInsets.only(top: 5),

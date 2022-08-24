@@ -237,7 +237,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                           color: Colors.white,
                         )
                       : Image.asset(
-                          imagePath == "vip" ? "images/login_app_bar/vip.png" : "images/home/$imagePath.png",
+                          imagePath == "vip" ? "images/login_app_bar/vip.png" : "images/home/T2/$imagePath.png",
                         ),
                 ),
               ),
