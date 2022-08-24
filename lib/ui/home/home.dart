@@ -324,6 +324,7 @@ class _HomeState extends BaseState<Home> {
           campaign: _vm.campaign,
         ),
       );
+    else _displayDialog();
   }
 
   _displayDialog() {
