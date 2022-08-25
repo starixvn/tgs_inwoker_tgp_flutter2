@@ -525,8 +525,9 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           ),
         ),
       );
-    } else if (EnvironmentConfig.template_version == 2 &&
-        (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) {
+    } else if ((EnvironmentConfig.template_version == 2 &&
+            (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) ||
+        (EnvironmentConfig.template_version == 11 && (imagePath == "ic_home" || imagePath == "ic_profile"))) {
       return Container(
         height: 20.auto,
         child: ImageIcon(
@@ -534,7 +535,8 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             "images/bottom_nav_bar/T2/$imagePath.png",
           ),
           size: 20.auto,
-          color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+          color: currentBottomIndex == index ?  CustomColor.bottom_nav_selected_color
+            : CustomColor.bottom_nav_unselected_color,
         ),
       );
     } else {
