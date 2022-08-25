@@ -163,8 +163,8 @@ class _BaseGameState extends BaseState<BaseGame> {
           currentGamePlatformCode, widget.vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
     } else if (_isChildGame()) {
       //navigate to child game
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        var result = await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
@@ -174,6 +174,8 @@ class _BaseGameState extends BaseState<BaseGame> {
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                       onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                     )));
+
+        if (result != null) widget.vm.clearFilteredGameList();
       });
     } else if (currentGameType == GameType.Lottery || currentGameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist

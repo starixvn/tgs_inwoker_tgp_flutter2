@@ -510,4 +510,8 @@ class GameViewModel extends BaseViewModel {
       return null;
     }
   }
+
+  clearFilteredGameList(){
+    filteredGameList = null;
+  }
 }
