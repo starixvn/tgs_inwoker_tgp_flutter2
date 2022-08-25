@@ -66,7 +66,7 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
         clipBehavior: Clip.none,
         children: [
           Container(
-            padding: EdgeInsets.only(bottom: 13.auto, left: 20.auto, top: 20.auto),
+            padding: EdgeInsets.only(bottom: 13.auto, left: 15.auto, top: 20.auto),
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("images/marquee_dialog/marquee_top_bg.png"),
@@ -76,20 +76,25 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
             alignment: Alignment.centerLeft,
             height: context.screenHeight / 6.5,
             child: SizedBox(
-              width: 130,
+              width: 120,
               height: context.screenHeight / 6.5,
               child: Container(
                 alignment: Alignment.centerLeft,
                 child: AutoSizeText(
                   getTranslatedText("marquee_welcome"),
-                  style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 25),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
             ),
           ),
           Positioned(
             top: -30.auto,
-            right: -15.auto,
+            right: -30.auto,
             child: Container(
               height: context.screenHeight / 5,
               child: Image.asset("images/marquee_dialog/marquee_girl.png"),
@@ -97,7 +102,7 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
           ),
           Positioned(
             top: -70,
-            right: 0,
+            right: -30,
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pop();
@@ -124,7 +129,7 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
 
   _buildBottomContent() => Container(
       width: context.screenWidth,
-      padding: EdgeInsets.all(20.auto),
+      padding: EdgeInsets.all(18.auto),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage("images/marquee_dialog/marquee_bottom_bg.png"),
@@ -138,9 +143,10 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
               ? Text(
                   widget.title!,
                   style: TextStyle(
-                    fontSize: 13.auto,
+                    fontSize: 15.auto,
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.italic,
                   ),
                   textAlign: widget.title == null ? TextAlign.center : TextAlign.start,
                 )
@@ -153,7 +159,7 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
               color: CustomColor.black.withOpacity(0.5),
             ),
             margin: EdgeInsets.only(top: 10.auto),
-            alignment: Alignment.center,
+            alignment: Alignment.topLeft,
             child: SingleChildScrollView(
               padding: EdgeInsets.all(20.auto),
               child: Text(

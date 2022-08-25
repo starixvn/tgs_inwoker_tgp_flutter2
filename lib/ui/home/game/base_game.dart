@@ -25,7 +25,7 @@ class BaseGame extends StatefulWidget {
   final Function onRefreshHomePage;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
-  final Function? onClickGameTab;
+  final ValueChanged<bool>? onClickGameTab;
   final bool isDisplayGameView;
 
   BaseGame({
@@ -128,7 +128,7 @@ class _BaseGameState extends BaseState<BaseGame> {
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
-          onClickGameTab: () => widget.onClickGameTab,
+          onClickGameTab: (value) => widget.onClickGameTab!(value),
           onClickChildGame: (game) => _navigateToChildGameWeb(game),
         );
       default:
@@ -163,8 +163,8 @@ class _BaseGameState extends BaseState<BaseGame> {
           currentGamePlatformCode, widget.vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
     } else if (_isChildGame()) {
       //navigate to child game
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        var result = await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ChildGame(
@@ -174,6 +174,8 @@ class _BaseGameState extends BaseState<BaseGame> {
                       onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
                       onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
                     )));
+
+        if (result != null) widget.vm.clearFilteredGameList();
       });
     } else if (currentGameType == GameType.Lottery || currentGameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
@@ -213,16 +215,16 @@ class _BaseGameState extends BaseState<BaseGame> {
       if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
       if (widget.vm.userProfile == null) {
         showPreLoginDialog();
-      }
-      else Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => GameWeb(
-                    gamePlatformCode: game.gamePlatformCode,
-                    gameId: game.id,
-                    onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                    onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                  )));
+      } else
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GameWeb(
+                      gamePlatformCode: game.gamePlatformCode,
+                      gameId: game.id,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                    )));
     });
   }
 

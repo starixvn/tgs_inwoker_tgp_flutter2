@@ -1,7 +1,7 @@
 flutter_icons:
   android: true
   ios: true
-  image_path:  "images/bunny_logo.png"
+  image_path:  "images/app_logo/bunny_logo.png"
 
 environment_config:
   fields:
@@ -60,7 +60,7 @@ environment_config:
       default: 0xffFFFFFF
     bottom_nav_selected_color:
       type: int
-      default: 0xff707070
+      default: 0xff0B1014
     bottom_nav_unselected_color:
       type: int
       default: 0xffFFFFFF
@@ -103,3 +103,5 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
+    configFileName:
+      default: "stg_BUNNY"

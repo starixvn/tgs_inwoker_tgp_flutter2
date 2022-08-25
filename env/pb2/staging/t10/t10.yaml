@@ -103,3 +103,5 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
+    configFileName:
+      default: "PB2"

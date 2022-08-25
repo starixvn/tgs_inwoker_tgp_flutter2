@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -31,10 +32,18 @@ class _ProfileTopItemState extends BaseState<ProfileTopItem> {
         onTap: () => _navigate(),
         child: Column(
           children: [
-            ImageIcon(
-              AssetImage("images/home/${widget.imagePath}.png"),
-              size: 50.auto,
-            ),
+            widget.imagePath == "transfer"
+                ? Container(
+              height: 50.auto,
+              child: SvgPicture.asset(
+                "images/profile/t2/ic_${widget.imagePath}.svg",
+                height: 40.auto,
+              ),
+            )
+                : ImageIcon(
+                    AssetImage("images/menu/ic_menu_${widget.imagePath}.png"),
+                    size: 50.auto,
+                  ),
             Text(
               getTranslatedText(widget.title),
               style: TextStyle(fontSize: 15.auto),

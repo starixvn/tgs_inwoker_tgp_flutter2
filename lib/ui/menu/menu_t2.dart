@@ -45,7 +45,7 @@ class _MenuT2State extends BaseState<MenuT2> {
                   navigationID: 0,
                 ),
                 MenuItemT2(
-                  image: "ic_menu_transfer",
+                  image: "ic_transfer",
                   text: getTranslatedText("transfer"),
                   navigationPath: "wallet_transfer",
                   navigationID: 0,
@@ -80,18 +80,18 @@ class _MenuT2State extends BaseState<MenuT2> {
                   navigationPath: "transaction",
                   navigationID: 2,
                 ),
-                MenuItemT2(
-                  image: "ic_menu_withdraw_history",
-                  text: getTranslatedText("transfer_history"),
-                  navigationPath: "transaction",
-                  navigationID: 3,
-                ),
-                MenuItemT2(
-                  image: "ic_menu_withdraw_history",
-                  text: getTranslatedText("promotion_history"),
-                  navigationPath: "transaction",
-                  navigationID: 4,
-                ),
+                // MenuItemT2(
+                //   image: "ic_menu_withdraw_history",
+                //   text: getTranslatedText("transfer_history"),
+                //   navigationPath: "transaction",
+                //   navigationID: 3,
+                // ),
+                // MenuItemT2(
+                //   image: "ic_menu_withdraw_history",
+                //   text: getTranslatedText("promotion_history"),
+                //   navigationPath: "transaction",
+                //   navigationID: 4,
+                // ),
                 MenuItemT2(
                   image: "ic_menu_card",
                   text: getTranslatedText("manage_card"),

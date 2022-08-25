@@ -1,7 +1,7 @@
 flutter_icons:
   android: true
   ios: true
-  image_path:  "images/gmo_logo.png"
+  image_path:  "images/app_logo/gmo_logo.png"
 
 environment_config:
   fields:
@@ -100,6 +100,5 @@ environment_config:
     vipPresentType:
       type: int
       default: 1
-    theme_border_color:
-      type: int
-      default: 0xffFEFFA1
+    configFileName:
+      default: "stg_GMO"

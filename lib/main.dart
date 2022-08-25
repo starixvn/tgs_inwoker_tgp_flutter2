@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iphone_has_notch/iphone_has_notch.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main_view_model.dart';
@@ -102,6 +103,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   Future<EventResult<dynamic>> initData() async {
     if (firstInit) {
       LanguageProvider.getSingleton().init(EnvironmentConfig.brandName);
+
       if (_vm.authApiState?.isMaintenance == true) {
         //prevent loop
         return _vm.authApiState; //return if maintenance
@@ -301,6 +303,13 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   List _page = [];
   var isMenu = false;
   var _vm = MainViewModel();
+  var isDisplayGameView = false;
+
+  onClickGameTab(value) {
+    setState(() {
+      isDisplayGameView = value;
+    });
+  }
 
   @override
   void initState() {
@@ -318,7 +327,10 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             Profile(),
           ]
         : [
-            Home(),
+            Home(
+              isDisplayGameView: isDisplayGameView,
+              onClickGameTab: (value) => onClickGameTab(value),
+            ),
             Promotion(),
             Deposit(),
             Withdraw(),
@@ -378,6 +390,24 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         child: _buildBottomAppBarRow(),
                       ),
           ),
+          /*Positioned(
+            bottom: context.screenWidth / 7 + (IphoneHasNotch.hasNotch ? 20 : 0),
+            right: -10,
+            child: RawMaterialButton(
+              onPressed: () {
+                FlutterLivechatPlugin.beginChat("14246631");
+              },
+              elevation: 2.0,
+              fillColor: Color(0xff6819d2),
+              child: ImageIcon(
+                AssetImage("images/livechat.png"),
+                color: Colors.white,
+                size: 20,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+            ),
+          ),*/
         ],
       ),
     );
@@ -417,31 +447,30 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         return;
                       }
                     }
-                    if (EnvironmentConfig.template_version == 11) {
+                    if (EnvironmentConfig.template_version == 11 && index == 0 && isDisplayGameView)
                       //will refresh page for t11
-                      if (index == 0)
-                        Navigator.of(context).pushNamed(RoutePath.myHome);
-                      else if (index == 2)
-                        Navigator.of(context).pushNamed(RoutePath.deposit);
-                      else if (index == 3) Navigator.of(context).pushNamed(RoutePath.withdraw);
-                    } else if (index == 1) {
+                      Navigator.of(context).pushNamed(RoutePath.myHome);
+                    else if (EnvironmentConfig.template_version == 11 && index == 2)
+                      Navigator.of(context).pushNamed(RoutePath.deposit);
+                    else if (EnvironmentConfig.template_version == 11 && index == 3)
+                      Navigator.of(context).pushNamed(RoutePath.withdraw);
+                    else if (index == 1)
                       Navigator.of(context).pushNamed("/promotion");
-                    } else if (index == 3) {
+                    else if (index == 3)
                       Navigator.of(context).pushNamed("/customer_service");
-                    } else if (index == 2 && EnvironmentConfig.template_version != 2) {
+                    else if (index == 2 && EnvironmentConfig.template_version != 2)
                       setState(() {
                         isMenu = !isMenu;
                       });
-                    } else if (index == 2 && EnvironmentConfig.template_version == 2) {
+                    else if (index == 2 && EnvironmentConfig.template_version == 2)
                       setState(() {
                         Navigator.of(context).pushNamed(RoutePath.menuT2);
                       });
-                    } else {
+                    else
                       setState(() {
                         isMenu = false;
                         currentBottomIndex = index;
                       });
-                    }
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -494,6 +523,20 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             size: 20.auto,
             color: currentBottomIndex == index ? Colors.yellow : Colors.white,
           ),
+        ),
+      );
+    } else if ((EnvironmentConfig.template_version == 2 &&
+            (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) ||
+        (EnvironmentConfig.template_version == 11 && (imagePath == "ic_home" || imagePath == "ic_profile"))) {
+      return Container(
+        height: 20.auto,
+        child: ImageIcon(
+          AssetImage(
+            "images/bottom_nav_bar/T2/$imagePath.png",
+          ),
+          size: 20.auto,
+          color: currentBottomIndex == index ?  CustomColor.bottom_nav_selected_color
+            : CustomColor.bottom_nav_unselected_color,
         ),
       );
     } else {

@@ -39,7 +39,8 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
       height: 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
       decoration: BoxDecoration(
-        color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+        color:
+            EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color.withOpacity(0.8) : Colors.white,
         borderRadius: BorderRadius.circular(
           EnvironmentConfig.template_version == 11 ? 25 : 2,
         ),
@@ -62,14 +63,17 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
               keyboardType: widget.textInputType,
               textInputAction: widget.textInputAction,
               obscureText: widget.obscurePassword,
-              style: TextStyle(fontSize: 13.auto),
+              style: TextStyle(
+                  fontSize: 13.auto, color: EnvironmentConfig.template_version == 11 ? Colors.white : Colors.black),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(top: 13.5),
                 isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two,
+                  color: EnvironmentConfig.template_version == 11
+                      ? Colors.white.withOpacity(0.5)
+                      : CustomColor.very_light_pink_two,
                   fontSize: 13.auto,
                 ),
                 suffixIcon: IconButton(
@@ -77,10 +81,8 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
                   padding: EdgeInsets.only(bottom: 0),
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  icon: Icon(
-                    widget.obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two,
-                  ),
+                  icon: Icon(widget.obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two),
                   onPressed: () => widget.onShowPassword(),
                 ),
               ),

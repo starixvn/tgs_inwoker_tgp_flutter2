@@ -39,7 +39,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     "捕鱼游戏",
     "历史游戏"*/
   ];
-  var _vm;
+  var _vm = GameViewModel();
   var searchController = TextEditingController();
   var _focusNode = FocusNode();
   var isSearching = false, isVisibleSuggestionList = false, isInitLoading = true;
@@ -47,7 +47,6 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
 
   @override
   void initState() {
-    _vm = widget.vm;
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
     currGamePlatformCode = widget.gamePlatformCode;

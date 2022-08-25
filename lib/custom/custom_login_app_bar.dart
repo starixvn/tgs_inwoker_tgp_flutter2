@@ -47,7 +47,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight((EnvironmentConfig.template_version == 2) ? 60 : 90);
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
@@ -95,6 +95,30 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
         centerTitle: false,
       );
+    } else if (EnvironmentConfig.template_version == 2 && EnvironmentConfig.brandName =="PB3") {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: CustomColor.theme_app_bar_color,
+        centerTitle: true,
+        flexibleSpace: Container(
+          alignment: Alignment.center,
+          child: SafeArea(
+            child: CachedNetworkImage(
+              placeholder: (context, url) => Container(
+                height: 30.auto,
+                width: 30.auto,
+              ),
+              imageUrl: widget.brandLogoUrl!,
+              //handling error
+              height: _isDisplayUserDetailsRow() ? 38.auto : 50.auto,
+              width: 100.auto,
+              fit: BoxFit.contain,
+              alignment: Alignment.centerLeft,
+              errorWidget: (context, url, error) => Container(),
+            ),
+          ),
+        ),
+      );
     } else {
       return AppBar(
         automaticallyImplyLeading: false,
@@ -112,18 +136,18 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _getAppBarTitle(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: _getActionButton(),
-                ),
-                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-              ],
-            ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: _getActionButton(),
+                  ),
+                  if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
+                ],
+              ),
           ],
         ),
       );

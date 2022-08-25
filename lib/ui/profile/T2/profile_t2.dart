@@ -39,36 +39,52 @@ class _ProfileT2State extends BaseState<ProfileT2> {
   }
 
   _buildUserInfoContainerT2() => Container(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-            colorFilter: ColorFilter.mode(CustomColor.theme_button_color, BlendMode.color),
-            image: AssetImage("images/profile/profile_top_background.png"),
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topCenter,
+          child: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  color: CustomColor.theme_button_color,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  color: Colors.white,
+                ),
+              )
+            ],
           ),
-        ),
-        child: Column(children: [
-          Padding(
-            padding: EdgeInsets.only(top: 10.auto, left: 50.auto, right: 50.auto, bottom: 10.auto),
-            child: Row(
+          Container(
+            height: context.screenHeight,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            child: Column(
               children: [
-                Container(
-                    width: 65.auto,
-                    height: 65.auto,
-                    decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: new DecorationImage(
-                            fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
-                _buildUserInfoText(),
+                Padding(
+                  padding: EdgeInsets.only(top: 10.auto, left: 50.auto, right: 50.auto, bottom: 10.auto),
+                  child: Row(
+                    children: [
+                      Container(
+                          width: 65.auto,
+                          height: 65.auto,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+                      _buildUserInfoText(),
+                    ],
+                  ),
+                ),
+                _buildProfileTopItem(),
+                _buildGridViewLayout(),
               ],
             ),
           ),
-          _buildProfileTopItem(),
-          _buildGridViewLayout(),
-        ]),
-      );
+        ],
+      ));
 
   _buildProfileTopItem() => Container(
         margin: EdgeInsets.only(left: 15.auto, right: 15.auto),
@@ -82,9 +98,9 @@ class _ProfileT2State extends BaseState<ProfileT2> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ProfileTopItem(title: "deposit", imagePath: "ic_deposit", routePath: "deposit"),
-              ProfileTopItem(title: "transfer", imagePath: "ic_transfer", routePath: "wallet_transfer"),
-              ProfileTopItem(title: "withdrawal", imagePath: "ic_withdraw", routePath: "withdraw"),
+              ProfileTopItem(title: "deposit", imagePath: "deposit", routePath: "deposit"),
+              ProfileTopItem(title: "transfer", imagePath: "transfer", routePath: "wallet_transfer"),
+              ProfileTopItem(title: "withdrawal", imagePath: "withdraw", routePath: "withdraw"),
             ],
           ),
         ),
@@ -116,8 +132,8 @@ class _ProfileT2State extends BaseState<ProfileT2> {
                   _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 4),
                   _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
                   _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
-                  if(_vm.config?.haveAffiliateFeature ?? false)
-                       _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
+                  if (_vm.config?.haveAffiliateFeature ?? false)
+                    _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
                   _buildProfileBottomItem("ic_lang", "language", "language", 0),
                 ],
               ),

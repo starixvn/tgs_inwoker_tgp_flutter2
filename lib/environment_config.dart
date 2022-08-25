@@ -68,7 +68,9 @@ class EnvironmentConfig {
 
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
 
-  static const String brandName = 'GPI';
+  static const String brandName = 'PGG';
 
   static const int vipPresentType = 1;
+
+  static const String configFileName = 'PGG';
 }

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/report_view.dart';
@@ -34,10 +35,27 @@ class _MenuItemT2State extends BaseState<MenuItemT2> {
           FloatingActionButton(
             heroTag: null,
             onPressed: () => _onClick(),
-            child: ImageIcon(
-              AssetImage("images/menu/${widget.image}.png"),
-              size: 25.auto,
-            ),
+            child: ((() {
+              if (widget.image == "ic_transfer")
+                return SvgPicture.asset(
+                  "images/profile/t2/${widget.image}.svg",
+                  matchTextDirection: true,
+                  height: 28.auto,
+                  color: Colors.white,
+                );
+              else if (widget.image?.contains("history") ?? false)
+                return SvgPicture.asset(
+                  "images/profile/t1/ic_account_report.svg",
+                  matchTextDirection: true,
+                  height: 25.auto,
+                  color: Colors.white,
+                );
+              else
+                return ImageIcon(
+                  AssetImage("images/menu/${widget.image}.png"),
+                  size: 25.auto,
+                );
+            }())),
             backgroundColor: Colors.transparent,
             materialTapTargetSize: MaterialTapTargetSize.padded,
             shape: RoundedRectangleBorder(

@@ -66,7 +66,9 @@ class _ProfileBottomItemState extends BaseState<ProfileBottomItem> {
   _buildImageIcon() => Expanded(
         flex: 9,
         child: SvgPicture.asset(
-          "images/profile/t1/${widget.imagePath}.svg",
+          widget.imagePath == "ic_vip"
+              ? "images/profile/t2/${widget.imagePath}.svg"
+              : "images/profile/t1/${widget.imagePath}.svg",
           matchTextDirection: true,
           height: 28.auto,
         ),

@@ -134,7 +134,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                       _buildHomeIcon("vip", "VIP", RoutePath.vip),
                       _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.deposit),
                       _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), RoutePath.walletTransfer),
-                      _buildHomeIcon("ic_withdraw", getTranslatedText("withdrawal"), RoutePath.withdraw)
+                      _buildHomeIcon("withdraw", getTranslatedText("withdrawal"), RoutePath.withdraw)
                     ],
                   ),
                 ),
@@ -214,7 +214,7 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () async {
-          if (widget.userProfile == null) {
+          if (widget.userProfile == null && imagePath != "vip") {
             var res = await Navigator.of(context).pushNamed(RoutePath.login);
             if (res != null) widget.onRefreshHomePage!();
           } else {
@@ -231,9 +231,14 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                 child: Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(imagePath == "vip" ? 5.auto : 0),
-                  child: Image.asset(
-                    imagePath == "vip" ? "images/login_app_bar/vip.png" : "images/home/$imagePath.png",
-                  ),
+                  child: (imagePath == "withdraw")
+                      ? Image.asset(
+                          "images/menu/ic_menu_withdraw.png",
+                          color: Colors.white,
+                        )
+                      : Image.asset(
+                          imagePath == "vip" ? "images/login_app_bar/vip.png" : "images/home/T2/$imagePath.png",
+                        ),
                 ),
               ),
               Text(
