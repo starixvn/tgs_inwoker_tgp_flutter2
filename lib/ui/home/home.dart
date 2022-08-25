@@ -324,7 +324,8 @@ class _HomeState extends BaseState<Home> {
           campaign: _vm.campaign,
         ),
       );
-    else _displayDialog();
+    else
+      _displayDialog();
   }
 
   _displayDialog() {
@@ -425,8 +426,8 @@ class _HomeState extends BaseState<Home> {
 
   _randomGenerator() {
     Random _random = new Random();
-    int min = 20000;
-    int max = 30000;
+    int min = EnvironmentConfig.template_version == 11 ? 500 : 20000;
+    int max = EnvironmentConfig.template_version == 11 ? 1200 : 30000;
     int result = min + _random.nextInt(max - min);
     return result;
   }
