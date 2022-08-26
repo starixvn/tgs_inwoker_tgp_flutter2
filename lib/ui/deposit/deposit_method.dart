@@ -84,11 +84,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
             margin: EdgeInsets.only(
                 left: 10.auto, right: 10.auto, top: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ListView(
-              children: [
+              children: <Widget>[
                 _buildCard("deposit_method", _vm.depositMethodList!.keys.toList(), isDepositMethod: true),
                 _buildCard("deposit_channel", _vm.paymentList),
                 if (_isManualDeposit()) _buildTransferToAccount(),
-                if (isShowBankAcc() && !(_vm.config?.depositCustomBankNameTranslation ?? false))
+                if (isShowBankAcc() && (_vm.config?.depositAddTips ?? false))
+                  _buildNameTextFieldWithTips("bank_acc_name", "enter_bank_acc_name", _bankNameController)
+                else if( !(_vm.config?.depositCustomBankNameTranslation ?? false))
                   _buildNameTextField("bank_acc_name", "enter_bank_acc_name", _bankNameController),
                 if (isShowBankAcc() && (_vm.config?.depositCustomBankNameTranslation ?? false))
                   _buildNameTextFieldWithTips("deposit_bank_name", "enter_deposit_bank_name_hint", _bankNameController),

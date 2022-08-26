@@ -85,7 +85,7 @@ class _MarqueeDialogState extends BaseState<MarqueeDialog> {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 25,
+                    fontSize: 23,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
