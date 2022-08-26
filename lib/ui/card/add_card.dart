@@ -77,12 +77,7 @@ class _AddCardState extends BaseState<AddCard> {
                     ? buildProgressDialog(_vm.brandLogoUrl)
                     : Container(
                         height: context.screenHeight,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("images/t11_bg/game_bg.png"),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                        color: Colors.transparent,
                         child: ListView(
                           padding: EdgeInsets.only(
                             left: 10.auto,

@@ -93,12 +93,7 @@ class _PromotionState extends BaseState<Promotion> {
     } else {
       return Container(
         height: context.screenHeight,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/t11_bg/game_bg.png"),
-            fit: BoxFit.fill,
-          ),
-        ),
+        color: Colors.transparent,
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.only(bottom: 10.auto),
