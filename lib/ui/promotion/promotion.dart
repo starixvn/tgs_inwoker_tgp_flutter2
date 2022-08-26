@@ -91,12 +91,21 @@ class _PromotionState extends BaseState<Promotion> {
         ),
       );
     } else {
-      return ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.only(bottom: 10.auto),
-        children: List.generate(_vm.promotionList.length, (index) {
-          return PromotionItem(promotion: _vm.promotionList[index], vm: _vm);
-        }),
+      return Container(
+        height: context.screenHeight,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/t11_bg/game_bg.png"),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(bottom: 10.auto),
+          children: List.generate(_vm.promotionList.length, (index) {
+            return PromotionItem(promotion: _vm.promotionList[index], vm: _vm);
+          }),
+        ),
       );
     }
   }

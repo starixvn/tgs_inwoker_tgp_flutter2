@@ -75,25 +75,34 @@ class _AddCardState extends BaseState<AddCard> {
                 appBar: _buildAppBar(),
                 body: _vm.bankTypeList == null
                     ? buildProgressDialog(_vm.brandLogoUrl)
-                    : ListView(
-                        padding: EdgeInsets.only(
-                          left: 10.auto,
-                          right: 10.auto,
-                          top: 5.auto,
-                          bottom: MediaQuery.of(context).viewInsets.bottom,
-                        ),
-                        children: [
-                          _buildAddCardTitle(),
-                          if (!_isAddCardHideCertainField()) _buildBankTypePicker(),
-                          _buildChannelPicker(),
-                          ListView(
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            children: _getWidgetList(),
+                    : Container(
+                        height: context.screenHeight,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("images/t11_bg/game_bg.png"),
+                            fit: BoxFit.fill,
                           ),
-                          _getHintText(),
-                          _buildConfirmButton()
-                        ],
+                        ),
+                        child: ListView(
+                          padding: EdgeInsets.only(
+                            left: 10.auto,
+                            right: 10.auto,
+                            top: 5.auto,
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          children: [
+                            _buildAddCardTitle(),
+                            if (!_isAddCardHideCertainField()) _buildBankTypePicker(),
+                            _buildChannelPicker(),
+                            ListView(
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              children: _getWidgetList(),
+                            ),
+                            _getHintText(),
+                            _buildConfirmButton()
+                          ],
+                        ),
                       ),
               ),
             ),
