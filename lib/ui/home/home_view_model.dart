@@ -2,6 +2,7 @@ import 'package:api/entity/home_banner.dart';
 import 'package:api/entity/main_dialog_content.dart';
 import 'package:api/entity/marquees.dart';
 import 'package:api/entity/promotion.dart';
+import 'package:api/entity/promotion_roulette.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/game_provider.dart';
@@ -42,7 +43,8 @@ class HomeViewModel extends BaseViewModel {
       getTodayRouletteResultApiState,
       getRouletteApiState,
       getRouletteCountApiState,
-      getDepositRoulettePrizeApiState;
+      getDepositRoulettePrizeApiState,
+      getDepositRouletteResultApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -56,10 +58,11 @@ class HomeViewModel extends BaseViewModel {
   bool isRoulettePlayed = false;
   List<CampaignDetails>? campaign;
   Promotion? roulettePromo;
-  Promotion? depositRoulettePromo;
-  int? rotatedResultId;
+  List<PromotionRoulette>? depositRoulettePromo;
+  int? rotatedResultId, depositRotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
+  Map<String, List<CampaignDetails>>? depositPrizeList;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -199,9 +202,9 @@ class HomeViewModel extends BaseViewModel {
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
       roulettePromo = promotionList?.singleWhereOrNull((element) => (element.promotionType == "Roulette"));
-      depositRoulettePromo =
-          promotionList?.singleWhereOrNull((element) => (element.promotionType == "DepositAccumulateRoulette"));
+      // depositRoulettePromo = promotionList?.where((element) => (element.promotionType == "DepositAccumulateRoulette")).toList();
       campaign = roulettePromo?.campaignDetails?.items ?? [];
+      // if(depositRoulettePromo!=null) await getDepositRoulettePrize();
     } else
       promotionList = [];
     setLoading(false);
@@ -233,19 +236,41 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getRouletteCountApiState = await contentRepo.getRouletteCount();
     if (getRouletteCountApiState.isSuccess) {
-      print(getRouletteCountApiState.result);
+      depositRoulettePromo = getRouletteCountApiState.result;
+      await _addPrizeList();
     }
     setLoading(false);
     return getRouletteCountApiState;
   }
 
-  getDepositRoulettePrize() async {
+  _addPrizeList() async {
+    var task = <Future>[];
+    depositRoulettePromo!.forEach((element) {
+      task.add(getDepositRoulettePrize(element.id ?? ""));
+    });
+    await Future.wait(task);
+  }
+
+  getDepositRoulettePrize(String id) async {
     setLoading();
-    getDepositRoulettePrizeApiState = await contentRepo.getDepositRoulettePrize(depositRoulettePromo?.id ?? "");
+    getDepositRoulettePrizeApiState = await contentRepo.getDepositRoulettePrize(id);
     if (getDepositRoulettePrizeApiState.isSuccess) {
       print(getDepositRoulettePrizeApiState.result);
+      if (depositPrizeList == null) depositPrizeList = Map<String, List<CampaignDetails>>();
+      depositPrizeList?[id] = getDepositRoulettePrizeApiState.result;
+      print(depositPrizeList);
     }
     setLoading(false);
     return getDepositRoulettePrizeApiState;
+  }
+
+  getDepositRouletteResult(String id) async {
+    setLoading();
+    getDepositRouletteResultApiState = await contentRepo.getDepositRouletteResult(id);
+    if (getDepositRouletteResultApiState.isSuccess) {
+      depositRotatedResultId = getRouletteApiState.result.itemIndex;
+    }
+    setLoading(false);
+    return getDepositRouletteResultApiState;
   }
 }

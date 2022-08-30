@@ -77,6 +77,7 @@ class _HomeState extends BaseState<Home> {
   var _assetsAudioPlayer;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var isDisplayGameView = false; //to check either display jackpot or game view in t11
+  List<Widget> multipleRoulette = [];
 
   @override
   void initState() {
@@ -93,7 +94,6 @@ class _HomeState extends BaseState<Home> {
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
-    if (_vm.depositRoulettePromo != null) task.add(_vm.getDepositRoulettePrize());
     task.add(_vm.getRouletteCount());
     await Future.wait(task);
     getLanguage();
@@ -101,11 +101,42 @@ class _HomeState extends BaseState<Home> {
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
     await _gameViewModel.getJackpotRecommendList();
+    _getRouletteWidget();
   }
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  }
+
+  _getRouletteWidget() {
+    //temp for adding multiple deposit roulette
+    _vm.depositRoulettePromo?.forEach((element) {
+      print(context.screenHeight / 5 - 60.auto);
+      multipleRoulette.add(Positioned(
+        top: context.screenHeight / 5 - 60.auto - (100.auto * (_vm.depositRoulettePromo?.length ?? 0)),
+        left: -5,
+        child: Container(
+          width: context.screenHeight / 10,
+          height: context.screenHeight / 10,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              //prevent click more than once
+              if (!onClickFromSmallRoulette) {
+                _displayDepositRouletteDialog(element.id ?? "");
+                setState(() {
+                  onClickFromSmallRoulette = true;
+                });
+              }
+            },
+            child: Image.asset("images/roulette/small_roulette.png"),
+          ),
+        ),
+      ));
+    });
+    print(multipleRoulette);
   }
 
   Widget build(BuildContext context) {
@@ -140,7 +171,7 @@ class _HomeState extends BaseState<Home> {
                     children: [
                       _getHomeTemplateView(),
                       _getSmallRouletteIcon(),
-                    ],
+                    ]..addAll(multipleRoulette),
                   ),
                 ),
               ),
@@ -324,6 +355,33 @@ class _HomeState extends BaseState<Home> {
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
           campaign: _vm.campaign,
+        ),
+      );
+    else
+      _displayDialog();
+  }
+
+  _displayDepositRouletteDialog(String id) async {
+    if (_vm.depositPrizeList?[id] != null) await _vm.getDepositRoulettePrize(id);
+    if ((_vm.depositPrizeList?[id]?.length ?? 0) > 0)
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => RouletteDialog(
+          onTapCloseIcon: () {
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
+            setState(() {
+              onClickFromSmallRoulette = false;
+            });
+          },
+          userProfile: _vm.userProfile,
+          isPlayed: (_vm.depositRoulettePromo?.singleWhere((element) => element.id == id).rouletteCount ?? 0) < 0,
+          vm: _vm,
+          // getRouletteResult: () => _vm.getRouletteResult(),
+          campaign: _vm.depositPrizeList?[id],
+          isDepositRoulette: true,
+          depositRouletteId: id,
         ),
       );
     else

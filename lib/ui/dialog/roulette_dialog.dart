@@ -19,9 +19,20 @@ class RouletteDialog extends StatefulWidget {
   final bool isPlayed;
   final List<CampaignDetails>? campaign;
   final HomeViewModel vm;
+  final bool isDepositRoulette;
+  final String? depositRouletteId;
 
-  RouletteDialog(
-      {required this.onTapCloseIcon, this.isPlayed = false, this.userProfile, required this.vm, this.campaign});
+//  final int rouletteCount;
+
+  RouletteDialog({
+    required this.onTapCloseIcon,
+    this.isPlayed = false,
+    this.userProfile,
+    required this.vm,
+    this.campaign,
+    this.isDepositRoulette = false,
+    this.depositRouletteId,
+  });
 
   @override
   _RouletteDialogState createState() => _RouletteDialogState();
@@ -205,20 +216,39 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                                           } else {
                                             animate();
 
-                                            await widget.vm.getRouletteResult().then((_apiState) {
-                                              if (_apiState.isSuccess) {
-                                                setState(() {
-                                                  selectedValue = widget.vm.rotatedResultId ?? 0;
-                                                  // to fix controller animate in different direction but except 0
-                                                  var list = [0, 5, 4, 3, 2, 1];
-                                                  currentSelectValue = ((1 / 6) * list[selectedValue]) * 2.0 * pi;
-                                                  isClick = true;
-                                                });
-                                              } else {
-                                                // for handling api return error
-                                                _controller.reset();
-                                              }
-                                            });
+                                            if (!widget.isDepositRoulette) {
+                                              await widget.vm.getRouletteResult().then((_apiState) {
+                                                if (_apiState.isSuccess) {
+                                                  setState(() {
+                                                    selectedValue = widget.vm.rotatedResultId ?? 0;
+                                                    // to fix controller animate in different direction but except 0
+                                                    var list = [0, 5, 4, 3, 2, 1];
+                                                    currentSelectValue = ((1 / 6) * list[selectedValue]) * 2.0 * pi;
+                                                    isClick = true;
+                                                  });
+                                                } else {
+                                                  // for handling api return error
+                                                  _controller.reset();
+                                                }
+                                              });
+                                            } else {
+                                              await widget.vm
+                                                  .getDepositRouletteResult(widget.depositRouletteId ?? "")
+                                                  .then((_apiState) {
+                                                if (_apiState.isSuccess) {
+                                                  setState(() {
+                                                    selectedValue = widget.vm.depositRotatedResultId ?? 0;
+                                                    // to fix controller animate in different direction but except 0
+                                                    var list = [0, 5, 4, 3, 2, 1];
+                                                    currentSelectValue = ((1 / 6) * list[selectedValue]) * 2.0 * pi;
+                                                    isClick = true;
+                                                  });
+                                                } else {
+                                                  // for handling api return error
+                                                  _controller.reset();
+                                                }
+                                              });
+                                            }
                                           }
                                         },
                                         child: Image.asset(
@@ -432,10 +462,12 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
               return PromotionMainDetails(promotion: widget.vm.roulettePromo);
             case 1:
               return PromotionTermsContent(
-                  termsContent: ((widget.vm.roulettePromo?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
-                          ? widget.vm.roulettePromo?.localization![getCurrentLanguage().apiCode]!.content!
-                          : widget.vm.roulettePromo?.content ?? "") ??
-                      "");
+                  termsContent:
+                      ((widget.vm.roulettePromo?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ??
+                                  false)
+                              ? widget.vm.roulettePromo?.localization![getCurrentLanguage().apiCode]!.content!
+                              : widget.vm.roulettePromo?.content ?? "") ??
+                          "");
             case 2:
               return PromotionTermsContent(termsContent: widget.vm.roulettePromo?.terms ?? "");
             default:
