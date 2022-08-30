@@ -36,6 +36,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       color: Colors.white,
       appBar: _buildAppBar(),
       body: Container(
+        height: context.screenHeight,
         color: Colors.white,
         child: ListView(
           shrinkWrap: true,
