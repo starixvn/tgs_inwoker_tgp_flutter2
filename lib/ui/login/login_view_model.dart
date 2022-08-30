@@ -193,22 +193,32 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, true);
-      verifyPhoneState = await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: true);
-      if (verifyPhoneState.isSuccess) {
-        await authRepo.phoneReVerify(verifyPhoneState.result?["stepResponse"] ?? "", "123456", isIdrRegister: true);
-        if (config.registerShowEmail ?? false) {
-          verifyEmailState = await authRepo.getEmailVerifyCode(email, isIdrRegister: true);
-          if (verifyEmailState.isSuccess) {
-            await authRepo.emailVerification(verifyEmailState.result["stepResponse"] ?? "", "123456",
-                isIdrRegister: true);
-          }
-        }
-      }
+      await _verifyPhone(username, password, phone, areacode, email);
       await getUserInfo();
       await getWalletBalance();
       await getBankCardList();
     }
     setLoading(false);
     return loginApiState;
+  }
+
+  _verifyPhone(String username, String password, String phone, String areaCode, String email) async {
+    verifyPhoneState = await authRepo.getReVerifyCode(username, password, areaCode, phone, isIdrRegister: true);
+    if (verifyPhoneState.isSuccess) {
+      if (registerApiState.result.nextStepType != "SetPhoneDontCareDuplicate")
+        await authRepo.phoneReVerify(verifyPhoneState.result?["stepResponse"] ?? "", "123456", isIdrRegister: true);
+      await _verifyEmail(email);
+    }
+  }
+
+  _verifyEmail(String email) async {
+    if (config.registerShowEmail ?? false) {
+      verifyEmailState = await authRepo.getEmailVerifyCode(email, isIdrRegister: true);
+      if (verifyEmailState.isSuccess) {
+        if (verifyPhoneState.result?["nextStepType"] != "SetEmailDontCareDuplicate")
+          await authRepo.emailVerification(verifyEmailState.result["stepResponse"] ?? "", "123456",
+              isIdrRegister: true);
+      }
+    }
   }
 }

@@ -372,7 +372,9 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
         });
       } else {
         if (_registerShowPhone() || _registerShowEmail()) {
-          _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
+          });
         }
         /* else if (_registerShowPhone() && _registerShowEmail()) {
           _vm.loginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
