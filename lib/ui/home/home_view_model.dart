@@ -40,7 +40,9 @@ class HomeViewModel extends BaseViewModel {
       getBankCardListApiState,
       getPromotionListApiState,
       getTodayRouletteResultApiState,
-      getRouletteApiState;
+      getRouletteApiState,
+      getRouletteCountApiState,
+      getDepositRoulettePrizeApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -54,6 +56,7 @@ class HomeViewModel extends BaseViewModel {
   bool isRoulettePlayed = false;
   List<CampaignDetails>? campaign;
   Promotion? roulettePromo;
+  Promotion? depositRoulettePromo;
   int? rotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
@@ -188,7 +191,6 @@ class HomeViewModel extends BaseViewModel {
   getUserDetails() async {
     //if (userProfile != null) {
     await _getTotalBalance();
-
   }
 
   getPromotionList() async {
@@ -196,7 +198,9 @@ class HomeViewModel extends BaseViewModel {
     getPromotionListApiState = await contentRepo.getPromotionList();
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
-      roulettePromo = promotionList?.singleWhereOrNull((element) => element.promotionType == "Roulette");
+      roulettePromo = promotionList?.singleWhereOrNull((element) => (element.promotionType == "Roulette"));
+      depositRoulettePromo =
+          promotionList?.singleWhereOrNull((element) => (element.promotionType == "DepositAccumulateRoulette"));
       campaign = roulettePromo?.campaignDetails?.items ?? [];
     } else
       promotionList = [];
@@ -223,5 +227,25 @@ class HomeViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getRouletteApiState;
+  }
+
+  getRouletteCount() async {
+    setLoading();
+    getRouletteCountApiState = await contentRepo.getRouletteCount();
+    if (getRouletteCountApiState.isSuccess) {
+      print(getRouletteCountApiState.result);
+    }
+    setLoading(false);
+    return getRouletteCountApiState;
+  }
+
+  getDepositRoulettePrize() async {
+    setLoading();
+    getDepositRoulettePrizeApiState = await contentRepo.getDepositRoulettePrize(depositRoulettePromo?.id ?? "");
+    if (getDepositRoulettePrizeApiState.isSuccess) {
+      print(getDepositRoulettePrizeApiState.result);
+    }
+    setLoading(false);
+    return getDepositRoulettePrizeApiState;
   }
 }

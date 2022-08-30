@@ -102,7 +102,8 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       return;
     } else if (widget.promotion.promotionType == "FirstDeposit" ||
         widget.promotion.promotionType == "DailySecondDeposit" ||
-        widget.promotion.promotionType == "DailyFirstDeposit") {
+        widget.promotion.promotionType == "DailyFirstDeposit" ||
+        widget.promotion.promotionType == "DepositAccumulateRoulette") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed(RoutePath.deposit);
       });

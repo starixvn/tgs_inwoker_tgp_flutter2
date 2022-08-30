@@ -93,6 +93,8 @@ class _HomeState extends BaseState<Home> {
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
+    if (_vm.depositRoulettePromo != null) task.add(_vm.getDepositRoulettePrize());
+    task.add(_vm.getRouletteCount());
     await Future.wait(task);
     getLanguage();
     randomNumber = _randomGenerator();

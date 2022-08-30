@@ -24,24 +24,8 @@ class PromotionViewModel extends BaseViewModel {
 
   getPromotionList() async {
     setLoading();
-
-    // if (isLoadMore) {
-    //   if (page! * rows < getPromotionListApiState.result.totalCount)
-    //     page = page!+1;
-    //   else
-    //     return;
-    // } else
-    //   page = 1;
-    //if (userProfile == null)
     getPromotionListApiState = await contentRepo.getPromotionList();
-    // else
-    //   getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
-    // List<Promotion> list = [];
     if (getPromotionListApiState.isSuccess) {
-      // list = getPromotionListApiState.result;
-      // if (promotionList == null) promotionList = [];
-      // if (list.isNotEmpty) promotionList.addAll(list);
-      // endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
       promotionList = getPromotionListApiState.result;
     } else
       promotionList = [];
