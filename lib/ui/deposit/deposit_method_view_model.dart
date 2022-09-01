@@ -132,8 +132,9 @@ class DepositMethodViewModel extends BaseViewModel {
       if (!isUmPay)
         exchangeRate =
             getExchangeRateApiState.result.buyPrice.replaceAll(',', '.');
-      else
-        exchangeRate = getExchangeRateApiState.result.rate.toString();
+      else {
+        exchangeRate = getExchangeRateApiState.result;
+      }
     }
     setLoading(false);
     return getExchangeRateApiState;
