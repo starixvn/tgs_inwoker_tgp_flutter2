@@ -282,49 +282,62 @@ class _DepositMethodState extends BaseState<DepositMethod>
         isEnabled: isButtonEnabled,
       ));
 
+  _newCalculation(double rate) {
+    if (_vm.exchangeRate != null) {
+      var expectedAmount = (amount ?? 0) * (1 / rate);
+      return Format().doubleToString(expectedAmount);
+    } else
+      return "0.00";
+  }
+
+  _exchangeRateWidget(double rate) => Container(
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: getTranslatedText("exchange_rate") + ": ",
+                style: TextStyle(
+                    fontSize: 11.auto,
+                    color: CustomColor.theme_text_grey_white_color),
+                children: [
+                  TextSpan(
+                    text: rate.toString(),
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: 11.auto),
+                  ),
+                ],
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: getTranslatedText("expected_amount") + ": ",
+                style: TextStyle(
+                    fontSize: 11.auto,
+                    color: CustomColor.theme_text_grey_white_color),
+                children: [
+                  TextSpan(
+                    text: _newCalculation(rate),
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: 11.auto),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+
   _buildExchangeRateText() => _isUSDT()
       ? _buildUSDTExchangeRateText()
-      : Container(
-          margin:
-              EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RichText(
-                text: TextSpan(
-                  text: getTranslatedText("exchange_rate") + ": ",
-                  style: TextStyle(
-                      fontSize: 11.auto,
-                      color: CustomColor.theme_text_grey_white_color),
-                  children: [
-                    TextSpan(
-                      text: _vm.exchangeRate ?? "0.00",
-                      style: TextStyle(
-                          color: CustomColor.theme_button_color,
-                          fontSize: 11.auto),
-                    ),
-                  ],
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: getTranslatedText("expected_amount") + ": ",
-                  style: TextStyle(
-                      fontSize: 11.auto,
-                      color: CustomColor.theme_text_grey_white_color),
-                  children: [
-                    TextSpan(
-                      text: _calculateExpectedAmount(),
-                      style: TextStyle(
-                          color: CustomColor.theme_button_color,
-                          fontSize: 11.auto),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
+      : (_vm.exchangeRate ?? []).forEach((result) {
+            print("result ${result.rate}");
+            _exchangeRateWidget(result.rate);
+          }) ??
+          _exchangeRateWidget(0);
 
   _buildUSDTExchangeRateText() => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 20.auto),
