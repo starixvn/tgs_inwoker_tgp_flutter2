@@ -126,7 +126,7 @@ class _HomeT11State extends BaseState<HomeT11> {
             ),
           ),
           Expanded(
-              flex: 9,
+              flex: 8,
               child: Container(
                 decoration: BoxDecoration(
                     color: CustomColor.theme_button_color.withOpacity(0.5),
