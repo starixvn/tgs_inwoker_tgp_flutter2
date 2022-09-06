@@ -19,6 +19,7 @@ import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
 import 'package:tgp_flutter2/ui/home/home_t10.dart';
+import 'package:tgp_flutter2/ui/home/home_t100.dart';
 import 'package:tgp_flutter2/ui/home/home_t11.dart';
 import 'package:tgp_flutter2/ui/home/home_t2.dart';
 import 'package:tgp_flutter2/ui/home/home_t3.dart';
@@ -271,7 +272,7 @@ class _HomeState extends BaseState<Home> {
       case 100:
         //the reason it's 100 is because apparently all existing using int data type
         //to prevent for everything become fucked up, custom homepage (non T related will start from 100)
-        return HomeT11(
+        return HomeT100(
           onPauseBgMusic: () =>
               (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null)

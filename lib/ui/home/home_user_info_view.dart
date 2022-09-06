@@ -15,6 +15,7 @@ class HomeUserInfoView extends StatefulWidget {
   final void Function()? onLoginTap;
   final Function? onRefreshHomePage;
   final int? randomNumber;
+  final bool? forWGHK;
 
   HomeUserInfoView({
     this.userProfile,
@@ -22,6 +23,7 @@ class HomeUserInfoView extends StatefulWidget {
     this.onLoginTap,
     this.onRefreshHomePage,
     this.randomNumber,
+    this.forWGHK,
   });
 
   @override
@@ -35,10 +37,14 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: widget.forWGHK == true
+            ? BorderRadius.circular(0)
+            : BorderRadius.circular(5.0),
       ),
       elevation: 5,
-      margin: EdgeInsets.all(10.auto),
+      margin: widget.forWGHK == true
+          ? EdgeInsets.only(top: 10.auto)
+          : EdgeInsets.all(10.auto),
       child: Container(
         decoration: gradientDecoration,
         child: Column(
@@ -72,14 +78,18 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                       children: [
                         Text(
                           widget.userProfile?.username ?? "",
-                          style: TextStyle(color: CustomColor.theme_label_text_highlight_color, fontSize: 10.auto),
+                          style: TextStyle(
+                              color:
+                                  CustomColor.theme_label_text_highlight_color,
+                              fontSize: 10.auto),
                           textAlign: TextAlign.center,
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 3.auto),
                           child: Text(
                             "(VIP ${widget.userProfile?.vipLevel ?? 0}) ",
-                            style: TextStyle(color: Colors.white, fontSize: 10.auto),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 10.auto),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -119,22 +129,30 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
             color: Colors.white,
           ),
           Container(
-            padding: EdgeInsets.only(bottom: 5.auto, left: 10.auto, right: 10.auto),
+            padding:
+                EdgeInsets.only(bottom: 5.auto, left: 10.auto, right: 10.auto),
             color: CustomColor.theme_bar_gradient_1.withOpacity(0.4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                widget.userProfile != null ? _buildWalletText() : _buildLoginRegisterButton(),
+                widget.userProfile != null
+                    ? _buildWalletText()
+                    : _buildLoginRegisterButton(),
                 Expanded(
                   flex: 4,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _buildHomeIcon("vip", "VIP", RoutePath.vip),
-                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"), RoutePath.deposit),
-                      _buildHomeIcon("ic_transfer", getTranslatedText("transfer"), RoutePath.walletTransfer),
-                      _buildHomeIcon("withdraw", getTranslatedText("withdrawal"), RoutePath.withdraw)
+                      _buildHomeIcon("ic_deposit", getTranslatedText("deposit"),
+                          RoutePath.deposit),
+                      _buildHomeIcon(
+                          "ic_transfer",
+                          getTranslatedText("transfer"),
+                          RoutePath.walletTransfer),
+                      _buildHomeIcon("withdraw",
+                          getTranslatedText("withdrawal"), RoutePath.withdraw)
                     ],
                   ),
                 ),
@@ -145,7 +163,10 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       );
 
   _buildWelcomeText() => AutoSizeText(
-        (widget.userProfile != null ? getTranslatedText("welcome_back") : getTranslatedText("home_login_hint")) ?? "",
+        (widget.userProfile != null
+                ? getTranslatedText("welcome_back")
+                : getTranslatedText("home_login_hint")) ??
+            "",
         style: TextStyle(color: Colors.white, fontSize: 10.auto),
         minFontSize: 5,
         maxLines: 1,
@@ -168,8 +189,11 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
         child: Column(
           children: [
             AutoSizeText(
-              widget.wallet == null ? "-" : "${Format().currencyWithDecimalFormat(widget.wallet!)}",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+              widget.wallet == null
+                  ? "-"
+                  : "${Format().currencyWithDecimalFormat(widget.wallet!)}",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
               minFontSize: 10,
               stepGranularity: 1,
             ),
@@ -237,7 +261,9 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
                           color: Colors.white,
                         )
                       : Image.asset(
-                          imagePath == "vip" ? "images/login_app_bar/vip.png" : "images/home/T2/$imagePath.png",
+                          imagePath == "vip"
+                              ? "images/login_app_bar/vip.png"
+                              : "images/home/T2/$imagePath.png",
                         ),
                 ),
               ),
