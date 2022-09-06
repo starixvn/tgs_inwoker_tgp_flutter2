@@ -95,6 +95,8 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
+    // TODO: temporary comment this code, since its for DAR and DAR only available next version.
+    //task.add(_vm.getRoulettePlayCount());
     if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
     await Future.wait(task);
     getLanguage();
@@ -144,7 +146,8 @@ class _HomeState extends BaseState<Home> {
                     children: [
                       _getHomeTemplateView(),
                       _getSmallRouletteIcon(),
-                      _getAnotherSmallRouletteIcon(),
+                      // TODO: temporary comment this code, since its for DAR and DAR only available next version.
+                      // _getAnotherSmallRouletteIcon(),
                     ],
                   ),
                 ),
@@ -350,7 +353,7 @@ class _HomeState extends BaseState<Home> {
               onPressed: () {
                 //prevent click more than once
                 if (!onClickFromAnotherSmallRoulette) {
-                  _displayRouletteDialog();
+                  _displayAnotherRouletteDialog();
                   setState(() {
                     onClickFromAnotherSmallRoulette = true;
                   });
