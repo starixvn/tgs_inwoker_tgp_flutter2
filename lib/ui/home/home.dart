@@ -316,7 +316,7 @@ class _HomeState extends BaseState<Home> {
             _vm.roulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: 75,
+          left: -5,
           child: Container(
             width: context.screenHeight / 10,
             height: context.screenHeight / 10,
@@ -343,7 +343,7 @@ class _HomeState extends BaseState<Home> {
             _vm.roulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: -5,
+          left: -75,
           child: Container(
             width: context.screenHeight / 10,
             height: context.screenHeight / 10,
