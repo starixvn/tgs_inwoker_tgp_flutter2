@@ -1091,6 +1091,7 @@
   "details": "รายละเอียด",
   "roulette_reward": "ยินดีด้วยกับชัยชนะของคุณ",
   "roulette_is_played_text_1": "จำกัด 1 การเล่นต่อวัน",
+  "roulette_play_count": "จำกัด  {balance} การเล่นต่อวัน",
   "roulette_is_played_text_2": "พรุ่งนี้โปรดกลับมาใหม่",
   "roulette_is_played_text_3": "คลิกเพื่อดูรายละเอียดโปรโมชั่นเพิ่มเติม",
   "roulette_promo_home": "เสนอหน้าแรก",

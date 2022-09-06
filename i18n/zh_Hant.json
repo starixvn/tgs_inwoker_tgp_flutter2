@@ -1091,6 +1091,7 @@
   "details": "詳情",
   "roulette_reward": "恭喜您赢得",
   "roulette_is_played_text_1": "每日限玩1次",
+  "roulette_play_count": "每日限玩{balance}次",
   "roulette_is_played_text_2": "明天再來唷",
   "roulette_is_played_text_3": "點我看更多好康優惠",
   "roulette_promo_home": "优惠主页",
