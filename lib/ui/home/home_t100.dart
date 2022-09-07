@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
@@ -99,23 +100,20 @@ class _HomeT100State extends BaseState<HomeT100> {
         child: Row(
           children: [
             Expanded(
-              flex: _getNoticeFlex(),
+              flex: 1,
               child: Container(
-                width: (widget.language?.contains("zh") ?? false)
-                    ? context.screenWidth / 10
-                    : context.screenWidth / 5,
-                child: AutoSizeText(
-                  getTranslatedText("notice"),
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                  maxFontSize: 13,
-                  minFontSize: 5,
-                  maxLines: 1,
-                  stepGranularity: 1,
+                width: context.screenWidth,
+                child: Expanded(
+                  child: SvgPicture.asset(
+                    "images/home/ic_marquee.svg",
+                    height: 15.auto,
+                    color: CustomColor.theme_button_color,
+                  ),
                 ),
               ),
             ),
             Expanded(
-              flex: 13,
+              flex: 11,
               child: _buildTextMarquee(),
             )
           ],
@@ -145,15 +143,6 @@ class _HomeT100State extends BaseState<HomeT100> {
               pauseAfterRound: Duration(seconds: 1),
               showFadingOnlyWhenScrolling: false),
     );
-  }
-
-  _getNoticeFlex() {
-    if ((languageCode?.contains("zh") ?? false))
-      return 1;
-    else if (languageCode == "th-TH" || languageCode == "vi-VN")
-      return 2;
-    else
-      return 4;
   }
 
   _removeMultiLine(String text) {

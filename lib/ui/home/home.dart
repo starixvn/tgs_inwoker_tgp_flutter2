@@ -15,6 +15,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
+import 'package:tgp_flutter2/ui/home/custom_home/home_wghk.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_t1.dart';
@@ -272,7 +273,7 @@ class _HomeState extends BaseState<Home> {
       case 100:
         //the reason it's 100 is because apparently all existing using int data type
         //to prevent for everything become fucked up, custom homepage (non T related will start from 100)
-        return HomeT100(
+        return HomeWGHK(
           onPauseBgMusic: () =>
               (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null)
@@ -317,7 +318,7 @@ class _HomeState extends BaseState<Home> {
             _vm.roulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: 75,
+          left: -5,
           child: Container(
             width: context.screenHeight / 10,
             height: context.screenHeight / 10,
@@ -344,7 +345,7 @@ class _HomeState extends BaseState<Home> {
             _vm.roulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: -5,
+          left: 75,
           child: Container(
             width: context.screenHeight / 10,
             height: context.screenHeight / 10,
