@@ -145,6 +145,7 @@ flutter:
     - images/t11_bg/
     - images/login/t11/
     - images/marquee_dialog/
+    - images/homepage/wghk/
 
     - i18n/
     - features/
