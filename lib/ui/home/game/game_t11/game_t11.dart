@@ -71,7 +71,8 @@ class _GameT11State extends BaseState<GameT11> {
                             widget.vm.gameTypeList.length,
                             (index) => Container(
                                   padding: const EdgeInsets.all(5),
-                                  child: _buildGameTab(index, widget.vm.gameTypeList[index]),
+                                  child: _buildGameTab(
+                                      index, widget.vm.gameTypeList[index]),
                                 ))),
                   ),
                 ),
@@ -80,7 +81,6 @@ class _GameT11State extends BaseState<GameT11> {
                   child: Container(
                     height: context.screenHeight,
                     width: context.screenWidth,
-                    margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
                     child: isDisplayGameView
                         ? GameItemT11(
                             gameViewItem,
@@ -90,7 +90,10 @@ class _GameT11State extends BaseState<GameT11> {
                             config: widget.vm.config,
                             vm: widget.vm,
                           )
-                        : Jackpot(vm: widget.vm, onClickChildGame: (game) => widget.onClickChildGame(game)),
+                        : Jackpot(
+                            vm: widget.vm,
+                            onClickChildGame: (game) =>
+                                widget.onClickChildGame(game)),
                   ),
                 ),
               ],
@@ -126,7 +129,8 @@ class _GameT11State extends BaseState<GameT11> {
                 child: Opacity(
                   opacity: currentTabIndex == tabIndex ? 1 : 0.5,
                   child: AutoSizeText(
-                    gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
+                    gameType.getName(
+                        context, widget.vm.config?.menuItemShootFish ?? false),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white),
                     minFontSize: 8,
@@ -145,7 +149,8 @@ class _GameT11State extends BaseState<GameT11> {
     widget.onClickGameTab(true);
     setState(() {
       isDisplayGameView = true;
-      currentGameType = gameType == GameType.VirtualSports ? GameType.Sportsbook : gameType;
+      currentGameType =
+          gameType == GameType.VirtualSports ? GameType.Sportsbook : gameType;
       currentTabIndex = tabIndex;
       //_controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
     });
