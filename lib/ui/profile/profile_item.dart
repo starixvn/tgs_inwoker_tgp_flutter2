@@ -64,7 +64,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
               : _buildBottomProfileItem("ic_lang", "language", "language", 0),
           EnvironmentConfig.template_version == 11
               ? _buildBottomProfileItem(
-                  "ic_transfer", "transfer", "transfer", 0)
+                  "ic_transfer", "transfer", "wallet_transfer", 0)
               : Container(),
         ],
       );
