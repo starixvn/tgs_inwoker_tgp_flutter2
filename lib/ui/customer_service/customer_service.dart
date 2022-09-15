@@ -42,9 +42,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
           _handleApiState();
           return CustomScaffold(
               appBar: CustomAppBar(
-                title: getTranslatedText("customer_service") == "customer_service"
-                    ? "Customer Service"
-                    : getTranslatedText("customer_service"),
+                title:
+                    getTranslatedText("customer_service") == "customer_service"
+                        ? "Customer Service"
+                        : getTranslatedText("customer_service"),
               ),
               body: _vm.communicationList == null
                   ? buildProgressDialog(_vm.brandLogoUrl)
@@ -53,17 +54,25 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                         Container(
                           width: context.screenWidth,
                           height: context.screenHeight,
-                          padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
+                          padding: EdgeInsets.only(
+                              top: 260.auto, left: 20.auto, right: 20.auto),
                           decoration: BoxDecoration(image: _getCsBgImage()),
                           child: ListView(shrinkWrap: true, children: [
                             buildLiveChatRow(),
                             ListView(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              children: List.generate(_vm.communicationList!.length, (index) {
+                              children: List.generate(
+                                  _vm.communicationList!.length, (index) {
                                 return Container(
-                                  child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
-                                      "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                                  child: _buildCSRow(
+                                      _vm.communicationList![index].type,
+                                      "cs_join",
+                                      "cs_qr_code",
+                                      "support-" +
+                                          (_vm.communicationList![index].type ??
+                                                  "")
+                                              .toLowerCase(),
                                       qrCode: _vm.communicationList![index]),
                                 );
                               }),
@@ -78,7 +87,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                             child: Row(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                                  margin: EdgeInsets.only(
+                                      left: 30.auto, right: 3.auto),
                                   child: SvgPicture.asset(
                                     "images/support/ic_phone.svg",
                                     matchTextDirection: true,
@@ -88,7 +98,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                                 ),
                                 AutoSizeText(
                                   _vm.phone ?? "",
-                                  style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      color: Color(0xfffD18206),
+                                      fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.left,
                                   minFontSize: 5,
                                   stepGranularity: 1,
@@ -113,8 +125,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
     //cs_bg_t2, cs_bg_t3
 
     return DecorationImage(
-        image:
-            AssetImage("images/support/cs_bg/$language/cs_bg_t${EnvironmentConfig.template_version == 2 ? 2 : 3}.png"),
+        image: AssetImage(
+            "images/support/cs_bg/$language/cs_bg_t${EnvironmentConfig.template_version == 2 ? 2 : 3}.png"),
         fit: BoxFit.fitWidth,
         alignment: Alignment.topLeft);
   }
@@ -133,7 +145,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                         )));
           },
           child: Container(
-            padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
+            padding: EdgeInsets.only(
+                left: 15.auto, right: 20.auto, top: 0, bottom: 0),
             margin: EdgeInsets.only(top: 15.auto),
             height: 40.auto,
             decoration: BoxDecoration(
@@ -161,7 +174,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                         padding: EdgeInsets.only(top: 16),
                         child: AutoSizeText(
                           getTranslatedText("online_cs"),
-                          style: TextStyle(color: CustomColor.theme_text_black_color),
+                          style: TextStyle(
+                              color: CustomColor.theme_text_black_color),
                           maxLines: 1,
                           minFontSize: 13,
                           stepGranularity: 1,
@@ -190,7 +204,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         ),
       );
 
-  _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => InkWell(
+  _buildCSRow(String? title, String text, String routePath, String? imagePath,
+          {BrandCommunication? qrCode}) =>
+      InkWell(
         onTap: () {},
         child: Container(
           padding: EdgeInsets.only(left: 15.auto, right: 20.auto),
@@ -217,7 +233,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   margin: EdgeInsets.only(left: 10.auto),
                   child: Text(
                     getTranslatedText(title) ?? title,
-                    style: TextStyle(color: CustomColor.theme_text_black_color),
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
               ),
@@ -251,9 +267,12 @@ class _CustomerServiceState extends BaseState<CustomerService> {
       );
 
   _handleApiState() {
-    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getLiveChatUrlApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBrandCommunicationApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBrandCommunicationApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getLiveChatUrlApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 
   _handleDeepLinkApps(String comType, String value) {
