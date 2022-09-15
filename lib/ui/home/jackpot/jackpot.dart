@@ -303,7 +303,7 @@ class _JackpotState extends BaseState<Jackpot> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 50,
+                  height: 46,
                   child: Container(
                     margin: EdgeInsets.only(top: 20.auto),
                     padding: EdgeInsets.only(left: 10),
