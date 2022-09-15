@@ -1118,5 +1118,7 @@
   "marquee_welcome": "WELCOME",
   "at": " at",
   "won": " won",
-  "win_list": "WIN LIST"
+  "win_list": "WIN LIST",
+  "fees_withdraw": "Withdrawal fee",
+  "fees_deposit": "Deposit fee"
 }
