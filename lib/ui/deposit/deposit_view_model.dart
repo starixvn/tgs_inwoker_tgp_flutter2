@@ -63,7 +63,7 @@ class DepositViewModel extends BaseViewModel {
     return uploadDepositImageApiState;
   }
 
-  getPlayerPromotionList(String languageCode)async {
+  getPlayerPromotionList(String languageCode) async {
     setLoading();
     getPlayerPromotionListApiState = await contentRepo.getPromotionList();
     if (getPlayerPromotionListApiState.isSuccess) {
@@ -73,10 +73,11 @@ class DepositViewModel extends BaseViewModel {
             value.promotionType == "DailySecondDeposit" ||
             value.promotionType == "DailyFirstDeposit")
           displayPromotionList.add({
-            "name": ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
-                    ? value.localization![languageCode]!.name
-                    : value.name) ??
-                "",
+            "name":
+                ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
+                        ? value.localization![languageCode]!.name
+                        : value.name) ??
+                    "",
             "id": value.id ?? ""
           });
       });

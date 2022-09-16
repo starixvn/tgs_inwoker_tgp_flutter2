@@ -1105,5 +1105,7 @@
   "marquee_welcome": "SELAMAT DATANG",
   "at": " pada",
   "won": " won",
-  "win_list": "DAFTAR MENANG"
+  "win_list": "DAFTAR MENANG",
+  "fees_withdraw": "Biaya penarikan",
+  "fees_deposit": "Biaya setoran"
 }
