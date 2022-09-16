@@ -82,7 +82,6 @@ class WithdrawViewModel extends BaseViewModel {
           maxList.add(withdraw.transferLimit?.to ?? 0);
           bankCard.transferLimit?.from = minList.reduce(min);
           bankCard.transferLimit?.to = maxList.reduce(max);
-          //TODO: To figure out why fees isn't assigned to bank card when displaying
           bankCard.fees = withdraw.fees ?? 0;
         }
       });
