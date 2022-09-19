@@ -1091,6 +1091,7 @@
   "details": "Perincian",
   "roulette_reward": "Selamat atas kemenangan",
   "roulette_is_played_text_1": "Batasi 1 permainan per hari",
+  "roulette_play_count": "Batasi {balance} permainan per hari",
   "roulette_is_played_text_2": "Silakan datang lagi besok",
   "roulette_is_played_text_3": "Klik untuk melihat detail promosi lainnya",
   "roulette_promo_home": "Beranda Promosi",
