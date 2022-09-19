@@ -267,32 +267,32 @@ class _WithdrawState extends BaseState<Withdraw> {
           tipsText: "${getTranslatedText("amount_limit")}: " +
               "${Format().amountFormat(selectedBankCard?.transferLimit?.from ?? 0)} - " +
               "${Format().amountFormat(selectedBankCard?.transferLimit?.to ?? 0)}",
-          customPart: Row(
-            children: [
-              Text(
-                getTranslatedText("fees_withdraw") + ": ",
-                style: TextStyle(
-                    color: CustomColor.theme_app_bar_color, fontSize: 12.auto),
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "${selectedBankCard?.fees ?? 0}",
-                style: TextStyle(
-                    color: CustomColor.theme_app_bar_color,
-                    fontSize: 12.auto,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "%",
-                style: TextStyle(
-                    color: CustomColor.theme_app_bar_color,
-                    fontSize: 12.auto,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
-              ),
-            ],
-          ),
+          // customPart: Row(
+          //   children: [
+          //     Text(
+          //       getTranslatedText("fees_withdraw") + ": ",
+          //       style: TextStyle(
+          //           color: CustomColor.theme_app_bar_color, fontSize: 12.auto),
+          //       textAlign: TextAlign.start,
+          //     ),
+          //     Text(
+          //       "${selectedBankCard?.fees ?? 0}",
+          //       style: TextStyle(
+          //           color: CustomColor.theme_app_bar_color,
+          //           fontSize: 12.auto,
+          //           fontWeight: FontWeight.bold),
+          //       textAlign: TextAlign.start,
+          //     ),
+          //     Text(
+          //       "%",
+          //       style: TextStyle(
+          //           color: CustomColor.theme_app_bar_color,
+          //           fontSize: 12.auto,
+          //           fontWeight: FontWeight.bold),
+          //       textAlign: TextAlign.start,
+          //     ),
+          //   ],
+          // ),
         ),
       );
 
