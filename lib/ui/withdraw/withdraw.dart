@@ -270,7 +270,7 @@ class _WithdrawState extends BaseState<Withdraw> {
           customPart: Row(
             children: [
               Text(
-                getTranslatedText("fees_deposit") + ": ",
+                getTranslatedText("fees_withdraw") + ": ",
                 style: TextStyle(
                     color: CustomColor.theme_app_bar_color, fontSize: 12.auto),
                 textAlign: TextAlign.start,
