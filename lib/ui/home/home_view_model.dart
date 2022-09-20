@@ -209,13 +209,16 @@ class HomeViewModel extends BaseViewModel {
     getPromotionListApiState = await contentRepo.getPromotionList();
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
-      roulettePromo = promotionList
-          ?.firstWhere((element) => element.promotionType == "Roulette");
-      depositRoulettePromo = promotionList?.firstWhere(
+      roulettePromo = promotionList?.firstWhereOrNull(
+        (element) => element.promotionType == "Roulette",
+      );
+      depositRoulettePromo = promotionList?.firstWhereOrNull(
           (element) => element.promotionType == "DepositAccumulateRoulette");
+
       campaign = roulettePromo?.campaignDetails?.items ?? [];
-    } else
+    } else {
       promotionList = [];
+    }
     setLoading(false);
     return getPromotionListApiState;
   }
