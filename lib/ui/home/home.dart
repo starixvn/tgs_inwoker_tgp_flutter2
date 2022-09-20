@@ -9,7 +9,6 @@ import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
@@ -29,7 +28,6 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/dialog/marquee_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/roulette_dialog.dart';
-import 'dart:io' show Platform;
 
 import 'dart:math';
 
@@ -67,15 +65,12 @@ class _HomeState extends BaseState<Home> {
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
-
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  int _current = 0;
   CarouselController carouselController = CarouselController();
   var languageCode;
   var _gameViewModel = GameViewModel();
   var randomNumber;
-  var _assetsAudioPlayer;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
   var isDisplayGameView =
@@ -95,9 +90,13 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
-    // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-    //task.add(_vm.getRoulettePlayCount());
-    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
+    task.add(_vm.getRoulettePlayCount());
+    if (_vm.roulettePromo != null) {
+      task.add(_vm.getRouletteTodayResult());
+    }
+    if (_vm.depositRoulettePromo != null) {
+      task.add(_vm.getDepositRouletteTodayResult());
+    }
     await Future.wait(task);
     getLanguage();
     randomNumber = _randomGenerator();
@@ -146,8 +145,7 @@ class _HomeState extends BaseState<Home> {
                     children: [
                       _getHomeTemplateView(),
                       _getSmallRouletteIcon(),
-                      // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-                      // _getAnotherSmallRouletteIcon(),
+                      _getAnotherSmallRouletteIcon(),
                     ],
                   ),
                 ),
@@ -340,10 +338,10 @@ class _HomeState extends BaseState<Home> {
 
   _getAnotherSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.roulettePromo != null,
+            _vm.depositRoulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: -75,
+          left: 75,
           child: Container(
             width: context.screenHeight / 10,
             height: context.screenHeight / 10,
@@ -413,7 +411,8 @@ class _HomeState extends BaseState<Home> {
   }
 
   _displayAnotherRouletteDialog() async {
-    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
+    if (_vm.depositRoulettePromo != null)
+      await _vm.getDepositRouletteTodayResult();
     if ((_vm.campaign?.length ?? 0) > 0)
       showDialog(
         context: context,
@@ -427,7 +426,7 @@ class _HomeState extends BaseState<Home> {
             });
           },
           userProfile: _vm.userProfile,
-          isPlayed: _vm.isRoulettePlayed,
+          isPlayed: _vm.isDepositRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
           campaign: _vm.campaign,

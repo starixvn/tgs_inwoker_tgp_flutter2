@@ -41,7 +41,10 @@ class HomeViewModel extends BaseViewModel {
       getPromotionListApiState,
       getTodayRouletteResultApiState,
       getRouletteApiState,
-      getRoulettePlayCountState;
+      getRoulettePlayCountState,
+      // new addition
+      getTodayDepositRouletteResultApiState,
+      getDepositRouletteApiState;
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -53,11 +56,14 @@ class HomeViewModel extends BaseViewModel {
   bool endRecord = false;
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
+  bool isDepositRoulettePlayed = false;
   List<CampaignDetails>? campaign;
-  Promotion? roulettePromo;
+  Promotion? roulettePromo, depositRoulettePromo;
   int? rotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
+
+  var rouletteCount = [];
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -170,6 +176,7 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     logoutApiState = await userRepo.logout();
     isRoulettePlayed = false;
+    isDepositRoulettePlayed = false;
     setLoading(false);
     return logoutApiState;
   }
@@ -203,7 +210,9 @@ class HomeViewModel extends BaseViewModel {
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
       roulettePromo = promotionList
-          ?.singleWhereOrNull((element) => element.promotionType == "Roulette");
+          ?.firstWhere((element) => element.promotionType == "Roulette");
+      depositRoulettePromo = promotionList?.firstWhere(
+          (element) => element.promotionType == "DepositAccumulateRoulette");
       campaign = roulettePromo?.campaignDetails?.items ?? [];
     } else
       promotionList = [];
@@ -214,7 +223,7 @@ class HomeViewModel extends BaseViewModel {
   getRouletteTodayResult() async {
     setLoading();
     getTodayRouletteResultApiState =
-        await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
+        await contentRepo.getDepositRoulettePrize(roulettePromo?.id ?? "");
     if (getTodayRouletteResultApiState.isSuccess) {
       isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
     }
@@ -234,11 +243,35 @@ class HomeViewModel extends BaseViewModel {
     return getRouletteApiState;
   }
 
+  getDepositRouletteTodayResult() async {
+    setLoading();
+    getTodayDepositRouletteResultApiState = await contentRepo
+        .getDepositRouletteResult(depositRoulettePromo?.id ?? "");
+    if (getTodayDepositRouletteResultApiState.isSuccess) {
+      isDepositRoulettePlayed =
+          getTodayDepositRouletteResultApiState.result.id != null;
+    }
+    setLoading(false);
+    return getTodayRouletteResultApiState;
+  }
+
+  getDepositRouletteResult() async {
+    setLoading();
+    getDepositRouletteApiState = await contentRepo
+        .getDepositRouletteResult(depositRoulettePromo?.id ?? "");
+    if (getDepositRouletteApiState.isSuccess) {
+      getDepositRouletteTodayResult();
+      rotatedResultId = getDepositRouletteApiState.result.itemIndex;
+    }
+    setLoading(false);
+    return getDepositRouletteApiState;
+  }
+
   getRoulettePlayCount() async {
     setLoading();
     getRoulettePlayCountState = await contentRepo.getRouletteCount();
     if (getRoulettePlayCountState.isSuccess) {
-      //TODO: Decide what data to return after SIE is available in data returned.
+      rouletteCount = getRoulettePlayCountState.result;
     }
     setLoading(false);
     return getRoulettePlayCountState;
