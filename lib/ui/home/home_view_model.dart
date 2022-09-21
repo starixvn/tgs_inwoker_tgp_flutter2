@@ -57,9 +57,10 @@ class HomeViewModel extends BaseViewModel {
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
   bool isDepositRoulettePlayed = false;
-  List<CampaignDetails>? campaign;
-  Promotion? roulettePromo, depositRoulettePromo;
-  int? rotatedResultId;
+  var campaign, depositcampaign;
+  Promotion? roulettePromo;
+  var depositRoulettePromo;
+  int? rotatedResultId, depositRotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
 
@@ -207,15 +208,20 @@ class HomeViewModel extends BaseViewModel {
   getPromotionList() async {
     setLoading();
     getPromotionListApiState = await contentRepo.getPromotionList();
+
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
       roulettePromo = promotionList?.firstWhereOrNull(
         (element) => element.promotionType == "Roulette",
       );
-      depositRoulettePromo = promotionList?.firstWhereOrNull(
-          (element) => element.promotionType == "DepositAccumulateRoulette");
 
-      campaign = roulettePromo?.campaignDetails?.items ?? [];
+      depositRoulettePromo = promotionList
+          ?.where(
+              (element) => element.promotionType == "DepositAccumulateRoulette")
+          .toList();
+
+      campaign = roulettePromo?.campaignDetails ?? [];
+      depositcampaign = depositRoulettePromo?.campaignDetails ?? [];
     } else {
       promotionList = [];
     }
@@ -226,7 +232,7 @@ class HomeViewModel extends BaseViewModel {
   getRouletteTodayResult() async {
     setLoading();
     getTodayRouletteResultApiState =
-        await contentRepo.getDepositRoulettePrize(roulettePromo?.id ?? "");
+        await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
     if (getTodayRouletteResultApiState.isSuccess) {
       isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
     }
@@ -264,7 +270,7 @@ class HomeViewModel extends BaseViewModel {
         .getDepositRouletteResult(depositRoulettePromo?.id ?? "");
     if (getDepositRouletteApiState.isSuccess) {
       getDepositRouletteTodayResult();
-      rotatedResultId = getDepositRouletteApiState.result.itemIndex;
+      depositRotatedResultId = getDepositRouletteApiState.result.itemIndex;
     }
     setLoading(false);
     return getDepositRouletteApiState;

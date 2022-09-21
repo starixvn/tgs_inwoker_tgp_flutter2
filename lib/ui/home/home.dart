@@ -12,6 +12,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/dialog/another_roulette_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
@@ -403,7 +404,7 @@ class _HomeState extends BaseState<Home> {
           isPlayed: _vm.isRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
+          campaign: _vm.depositcampaign,
         ),
       );
     else
@@ -413,11 +414,13 @@ class _HomeState extends BaseState<Home> {
   _displayAnotherRouletteDialog() async {
     if (_vm.depositRoulettePromo != null)
       await _vm.getDepositRouletteTodayResult();
-    if ((_vm.campaign?.length ?? 0) > 0)
+    if (_vm.depositRoulettePromo != null)
+      //temporary use depositroulettepromo to check if there is any campaign
+      //if ((_vm.depositcampaign?.length ?? 0) > 0)
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => RouletteDialog(
+        builder: (BuildContext context) => AnotherRouletteDialog(
           onTapCloseIcon: () {
             Navigator.pop(context);
             if (!onClickFromAnotherSmallRoulette) _displayDialog();
@@ -429,7 +432,7 @@ class _HomeState extends BaseState<Home> {
           isPlayed: _vm.isDepositRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
+          campaign: _vm.depositcampaign,
         ),
       );
     else
