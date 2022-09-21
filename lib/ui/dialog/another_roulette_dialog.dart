@@ -18,7 +18,7 @@ class AnotherRouletteDialog extends StatefulWidget {
   final Function onTapCloseIcon;
   final UserProfile? userProfile;
   final bool isPlayed;
-  final CampaignDetails? campaign;
+  final campaign;
   final HomeViewModel vm;
 
   AnotherRouletteDialog(
@@ -105,8 +105,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         FortuneWheelChild(foreground: Text(""), value: 1)
       ];
     } else {
-      for (var i = 0; i < widget.campaign!.rouletteItems!.length; i++) {
-        var createNewList = widget.campaign!.rouletteItems![i];
+      for (var i = 0; i < widget.campaign!.length; i++) {
+        var createNewList = widget.campaign![i];
 
         list.add(FortuneWheelChild(
           foreground: Text(
@@ -226,7 +226,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                             animate();
 
                                             await widget.vm
-                                                .getDepositRouletteResult()
+                                                .getDepositRouletteResult(
+                                                    widget.campaign?.id)
                                                 .then((_apiState) {
                                               if (_apiState.isSuccess) {
                                                 setState(() {

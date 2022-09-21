@@ -256,24 +256,24 @@ class HomeViewModel extends BaseViewModel {
     return getRouletteApiState;
   }
 
-  getDepositRouletteTodayResult() async {
+  getDepositRouletteTodayResult(data) async {
     setLoading();
-    getTodayDepositRouletteResultApiState = await contentRepo
-        .getDepositRouletteResult(depositRoulettePromo?.id ?? "");
+    getTodayDepositRouletteResultApiState =
+        await contentRepo.getDepositRouletteResult(data ?? "");
     if (getTodayDepositRouletteResultApiState.isSuccess) {
       isDepositRoulettePlayed =
-          getTodayDepositRouletteResultApiState.result.id != null;
+          getTodayDepositRouletteResultApiState.result != null;
     }
     setLoading(false);
     return getTodayRouletteResultApiState;
   }
 
-  getDepositRouletteResult() async {
+  getDepositRouletteResult(data) async {
     setLoading();
-    getDepositRouletteApiState = await contentRepo
-        .getDepositRouletteResult(depositRoulettePromo?.id ?? "");
+    getDepositRouletteApiState =
+        await contentRepo.getDepositRouletteResult(data ?? "");
     if (getDepositRouletteApiState.isSuccess) {
-      getDepositRouletteTodayResult();
+      getDepositRouletteTodayResult(data);
       depositRotatedResultId = getDepositRouletteApiState.result.itemIndex;
     }
     setLoading(false);

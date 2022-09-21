@@ -1,3 +1,4 @@
+import 'package:api/entity/campaign_details.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -96,9 +97,9 @@ class _HomeState extends BaseState<Home> {
     if (_vm.roulettePromo != null) {
       task.add(_vm.getRouletteTodayResult());
     }
-    if (_vm.depositRoulettePromo != null) {
-      task.add(_vm.getDepositRouletteTodayResult());
-    }
+    //  if (_vm.depositRoulettePromo != null) {
+    //    task.add(_vm.getDepositRouletteTodayResult());
+    //  }
     await Future.wait(task);
     getLanguage();
     randomNumber = _randomGenerator();
@@ -423,10 +424,11 @@ class _HomeState extends BaseState<Home> {
 
   _displayAnotherRouletteDialog(data) async {
     if (_vm.depositRoulettePromo != null)
-      await _vm.getDepositRouletteTodayResult();
+      await _vm.getDepositRouletteTodayResult(data.id);
     if (_vm.depositRoulettePromo != null)
       //temporary use depositroulettepromo to check if there is any campaign
       //if ((_vm.depositcampaign?.length ?? 0) > 0)
+
       showDialog(
         context: context,
         barrierDismissible: false,
