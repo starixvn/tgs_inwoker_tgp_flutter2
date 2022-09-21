@@ -215,6 +215,10 @@ class HomeViewModel extends BaseViewModel {
         (element) => element.promotionType == "Roulette",
       );
 
+      // depositRoulettePromo = promotionList?.firstWhereOrNull(
+      //   (element) => element.promotionType == "DepositAccumulateRoulette",
+      // );
+
       depositRoulettePromo = promotionList
           ?.where(
               (element) => element.promotionType == "DepositAccumulateRoulette")

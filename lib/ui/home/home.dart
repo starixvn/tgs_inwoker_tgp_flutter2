@@ -1,3 +1,4 @@
+import 'package:api/entity/promotion.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -145,8 +146,7 @@ class _HomeState extends BaseState<Home> {
                   child: Stack(
                     children: [
                       _getHomeTemplateView(),
-                      _getSmallRouletteIcon(),
-                      _getAnotherSmallRouletteIcon(),
+                      _rouletteHolder(),
                     ],
                   ),
                 ),
@@ -313,54 +313,64 @@ class _HomeState extends BaseState<Home> {
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
             _vm.roulettePromo != null,
-        child: Positioned(
-          top: context.screenHeight / 5 - 60.auto,
-          left: -5,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromSmallRoulette) {
-                  _displayRouletteDialog();
-                  setState(() {
-                    onClickFromSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
-            ),
+        child: Container(
+          width: context.screenHeight / 10,
+          height: context.screenHeight / 10,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              //prevent click more than once
+              if (!onClickFromSmallRoulette) {
+                _displayRouletteDialog();
+                setState(() {
+                  onClickFromSmallRoulette = true;
+                });
+              }
+            },
+            child: Image.asset("images/roulette/small_roulette.png"),
           ),
         ),
       );
 
-  _getAnotherSmallRouletteIcon() => Visibility(
+  _rouletteHolder() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
             _vm.depositRoulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: 75,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromAnotherSmallRoulette) {
-                  _displayAnotherRouletteDialog();
-                  setState(() {
-                    onClickFromAnotherSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
-            ),
+          left: -5,
+          child: Row(
+            children: [_getSmallRouletteIcon(), _smallRouletteGenerator()],
           ),
+        ),
+      );
+
+  _smallRouletteGenerator() {
+    var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
+    return Row(
+      children: List.generate(depositRoulettePromo.length, (index) {
+        return _getAnotherSmallRouletteIcon(depositRoulettePromo[index]);
+      }),
+    );
+  }
+
+  _getAnotherSmallRouletteIcon(Promotion data) => Container(
+        width: context.screenHeight / 10,
+        height: context.screenHeight / 10,
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          onPressed: () {
+            //prevent click more than once
+            if (!onClickFromAnotherSmallRoulette) {
+              print("data id is: ${data.id}");
+              _displayAnotherRouletteDialog(data);
+              setState(() {
+                onClickFromAnotherSmallRoulette = true;
+              });
+            }
+          },
+          child: Image.asset("images/roulette/small_roulette.png"),
         ),
       );
 
@@ -411,7 +421,7 @@ class _HomeState extends BaseState<Home> {
       _displayDialog();
   }
 
-  _displayAnotherRouletteDialog() async {
+  _displayAnotherRouletteDialog(data) async {
     if (_vm.depositRoulettePromo != null)
       await _vm.getDepositRouletteTodayResult();
     if (_vm.depositRoulettePromo != null)
@@ -432,7 +442,7 @@ class _HomeState extends BaseState<Home> {
           isPlayed: _vm.isDepositRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.depositcampaign,
+          campaign: data.campaignDetails?.rouletteItems ?? [],
         ),
       );
     else
