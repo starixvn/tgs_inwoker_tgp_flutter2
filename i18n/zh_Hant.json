@@ -1108,5 +1108,7 @@
   "won": " 赢",
   "win_list": "獲獎名單",
   "fees_withdraw": "提款費",
-  "fees_deposit": "手續費"
+  "fees_deposit": "手續費",
+  "playerNote": "玩家備註",
+  "plsEnterPlayerNote": "請輸入玩家備註"
 }

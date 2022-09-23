@@ -1121,5 +1121,7 @@
   "won": " won",
   "win_list": "WIN LIST",
   "fees_withdraw": "Withdrawal fee",
-  "fees_deposit": "Transfer fee"
+  "fees_deposit": "Transfer fee",
+  "playerNote": "Player Note",
+  "plsEnterPlayerNote": "Please enter the note"
 }

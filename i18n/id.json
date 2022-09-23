@@ -1108,5 +1108,7 @@
   "won": " won",
   "win_list": "DAFTAR MENANG",
   "fees_withdraw": "Biaya penarikan",
-  "fees_deposit": "Biaya setoran"
+  "fees_deposit": "Biaya setoran",
+  "playerNote": "Catatan Pemain",
+  "plsEnterPlayerNote": "Silakan masukkan catatan pemain"
 }

@@ -37,7 +37,8 @@ class _WithdrawState extends BaseState<Withdraw> {
   var isDetailsButtonEnabled = false, isNextButtonEnabled = false;
   var selectedBankCard;
   TextEditingController _amountController = TextEditingController(),
-      _usdtController = TextEditingController();
+      _usdtController = TextEditingController(),
+      _remarkController = TextEditingController();
   var amount;
   InputValidationProvider validate = new InputValidationProvider();
   String? selectedBankCardText;
@@ -80,6 +81,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                           _buildBankPicker(),
                           _buildTextField("amount", "enter_withdraw_amount",
                               _amountController, true),
+                          _buildPlayerNoteTextField(),
                           //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
                           if (_isUSDT()) _buildUSDTExchangeRateText(),
                           if (_isUSDT()) _buildUSDTAmount(),
@@ -246,6 +248,28 @@ class _WithdrawState extends BaseState<Withdraw> {
         return bankCard.bankDetail?.phone;
     }
   }
+
+  _buildPlayerNoteTextField() => Visibility(
+        visible: (_isEWallet() || _isPulsa() || _isBank()) &&
+            !(_vm.config?.addPlayerNote ?? false),
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 20.auto,
+          ),
+          child: CustomTextFormField(
+            title: getTranslatedText("playerNote"),
+            hintText: getTranslatedText("plsEnterPlayerNote"),
+            onChanged: (value) {
+              onTextChange();
+            },
+            onFieldSubmitted: (value) => onTextChange(),
+            controller: _remarkController,
+            width: context.screenWidth - 70.auto,
+            textInputType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+          ),
+        ),
+      );
 
   _buildTextField(String titleText, String hintText,
           TextEditingController controller, bool isNum) =>
@@ -455,7 +479,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       );
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.withdraw(amount, selectedBankCard.id, "");
+      _vm.withdraw(amount, selectedBankCard.id, "", _remarkController.text);
     }
   }
 
@@ -489,6 +513,10 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   _isUSDT() => (selectedBankCard?.bankType ?? BankType.BANK) == BankType.USDT;
+
+  _isEWallet() => selectedBankCard?.bankType == BankType.EWALLET;
+  _isPulsa() => selectedBankCard?.bankType == BankType.PULSA;
+  _isBank() => selectedBankCard?.bankType == BankType.BANK;
 
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {
