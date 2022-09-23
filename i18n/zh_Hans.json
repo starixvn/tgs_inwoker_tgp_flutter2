@@ -1107,5 +1107,7 @@
   "won": " 赢",
   "win_list": "获奖名单",
   "fees_withdraw": "提款费",
-  "fees_deposit": "手续费"
+  "fees_deposit": "手续费",
+  "playerNote": "玩家备注",
+  "plsEnterPlayerNote": "请输入玩家备注"
 }
