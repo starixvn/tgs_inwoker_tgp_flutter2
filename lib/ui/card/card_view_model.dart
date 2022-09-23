@@ -27,8 +27,12 @@ class CardViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
-  var getBankCardListApiState, getWithdrawalInfoListApiState, addBankCardApiState, deleteBankCardApiState;
-  Map<BankType, List<WithdrawalInfo>> bankTypeList = new Map<BankType, List<WithdrawalInfo>>();
+  var getBankCardListApiState,
+      getWithdrawalInfoListApiState,
+      addBankCardApiState,
+      deleteBankCardApiState;
+  Map<BankType, List<WithdrawalInfo>> bankTypeList =
+      new Map<BankType, List<WithdrawalInfo>>();
   List? withdrawalInfoList;
   BankType? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
@@ -99,7 +103,14 @@ class CardViewModel extends BaseViewModel {
   }
 
   addBankCard(
-      {String? address, bankAccount, bankName, name, bankBranch, phone, realName, bool isIdrRegister = false}) async {
+      {String? address,
+      bankAccount,
+      bankName,
+      name,
+      bankBranch,
+      phone,
+      realName,
+      bool isIdrRegister = false}) async {
     setLoading();
     var state = await bankRepo.addBankCard(
       pWithdrawalInfo!.channelId,
@@ -116,8 +127,10 @@ class CardViewModel extends BaseViewModel {
     //get bank card list if navigate from profile
     if (state.isSuccess) {
       if (config?.navigateToAddCard ?? false) getBankCardList();
-      if (config?.idrRegisterCustomFlow ?? false) addBankCardApiState = await userRepo.getBasicInfo();
-      else addBankCardApiState = state;
+      if (config?.idrRegisterCustomFlow ?? false)
+        addBankCardApiState = await userRepo.getBasicInfo();
+      else
+        addBankCardApiState = state;
     } else
       addBankCardApiState = state;
     setLoading(false);

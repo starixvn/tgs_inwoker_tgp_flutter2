@@ -48,7 +48,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
   TextEditingController _amountController = TextEditingController(),
       _bankNameController = TextEditingController(),
       _transferNameController = TextEditingController(),
-      _bankAccNameController = TextEditingController();
+      _bankAccNameController = TextEditingController(),
+      _playerRemarkController = TextEditingController();
 
   var isButtonEnabled = false, isHintText = false, isPromotionEnabled = false;
   var selectedPayment;
@@ -126,6 +127,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
                 if (_isUmPayDeposit()) _buildHintText(),
                 _buildCard("promotion_picker", widget.promotionList),
                 _buildUploadImageColumn(),
+                _buildPlayerNoteTextField(),
+
                 _buildButton(),
               ],
             ),
@@ -303,10 +306,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
 
   _buildButton() => Container(
       margin: EdgeInsets.only(
-        left: 10.auto,
-        right: 10.auto,
-        top: 15.auto,
-      ),
+          left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
       child: ColorButton(
         onClick: () => _onClick(),
         title: getTranslatedText("submit"),
@@ -786,6 +786,28 @@ class _DepositMethodState extends BaseState<DepositMethod>
         ),
       );
 
+  _buildPlayerNoteTextField() => Visibility(
+        visible: (_isEwallet() || _isPulsa() || _isBank()) &&
+            !(_vm.config?.addPlayerNote ?? false),
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 20.auto,
+          ),
+          child: CustomTextFormField(
+            title: getTranslatedText("playerNote"),
+            hintText: getTranslatedText("plsEnterPlayerNote"),
+            onChanged: (value) {
+              onTextChange();
+            },
+            onFieldSubmitted: (value) => onTextChange(),
+            controller: _playerRemarkController,
+            width: context.screenWidth - 70.auto,
+            textInputType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+          ),
+        ),
+      );
+
   _buildUploadTextRow() => Visibility(
         visible: _isManualDeposit() && !(_vm.config?.deposit_DualPage ?? false),
         child: Container(
@@ -910,14 +932,14 @@ class _DepositMethodState extends BaseState<DepositMethod>
         if ((_vm.config?.depositAutoFillFirstCard ?? false) &&
             (_vm.bankCardList?.length ?? 0) > 1)
           _vm.getManualDepositId(
-            currBankType,
-            _vm.bankCardList.first.bankDetail?.bankAccount ?? "",
-            _amountController.text,
-            _payment!.id,
-            promotionId ?? null,
-            uploadImage,
-            _vm.userProfile.realname ?? "",
-          );
+              currBankType,
+              _vm.bankCardList.first.bankDetail?.bankAccount ?? "",
+              _amountController.text,
+              _payment!.id,
+              promotionId ?? null,
+              uploadImage,
+              _vm.userProfile.realname ?? "",
+              _playerRemarkController.text);
         else
           _vm.getManualDepositId(
               currBankType,
@@ -926,7 +948,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
               _payment!.id,
               promotionId ?? null,
               uploadImage,
-              _bankAccNameController.text);
+              _bankAccNameController.text,
+              _playerRemarkController.text);
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(_amountController.text, _payment!.id,
@@ -967,6 +990,10 @@ class _DepositMethodState extends BaseState<DepositMethod>
       _isUSDT();
 
   _isUSDT() => currBankType == BankType.USDT;
+
+  _isEwallet() => currBankType == BankType.EWALLET;
+  _isPulsa() => currBankType == BankType.PULSA;
+  _isBank() => currBankType == BankType.BANK;
 
   onSelectedMethod(BankType bankType) async {
     _vm.filterMethod(bankType);
