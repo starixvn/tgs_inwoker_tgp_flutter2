@@ -235,9 +235,22 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                                           .depositRotatedResultId ??
                                                       0;
                                                   // to fix controller animate in different direction but except 0
-                                                  var list = [0, 5, 4, 3, 2, 1];
+                                                  var list = [
+                                                    0,
+                                                    11,
+                                                    10,
+                                                    9,
+                                                    8,
+                                                    7,
+                                                    6,
+                                                    5,
+                                                    4,
+                                                    3,
+                                                    2,
+                                                    1
+                                                  ];
                                                   currentSelectValue = ((1 /
-                                                              6) *
+                                                              12) *
                                                           list[selectedValue]) *
                                                       2.0 *
                                                       pi;
