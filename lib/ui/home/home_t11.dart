@@ -79,7 +79,7 @@ class _HomeT11State extends BaseState<HomeT11> {
       child: Column(
         children: [
           _buildImageSlider(),
-          !(widget.homeViewModel.config?.hideMarquee ?? false)
+          !(widget.homeViewModel.config?.hideMarquee ?? true)
               ? _buildTextMarquee()
               : SizedBox(
                   height: 10.auto,
