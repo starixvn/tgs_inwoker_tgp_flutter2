@@ -348,21 +348,32 @@ class _HomeState extends BaseState<Home> {
 
   _smallRouletteGenerator() {
     var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
-    var rouletteWithPlayCounts = _vm.rouletteCount ?? [];
+    var rouletteWithPlayCounts = _vm.rouletteCount;
+    var rouletteCount = 0;
+
     return Row(
       children: List.generate(depositRoulettePromo.length, (index) {
         var isSameId = rouletteWithPlayCounts
             .any((element) => element.id == depositRoulettePromo[index].id);
 
+        //if the id is same, then get the play count
+        if (isSameId) {
+          rouletteCount = rouletteWithPlayCounts
+              .firstWhere(
+                  (element) => element.id == depositRoulettePromo[index].id)
+              .rouletteCount;
+        }
+
         return isSameId
-            ? _getAnotherSmallRouletteIcon(depositRoulettePromo[index])
+            ? _getAnotherSmallRouletteIcon(
+                depositRoulettePromo[index], rouletteCount)
             : SizedBox.shrink();
       }),
       //
     );
   }
 
-  _getAnotherSmallRouletteIcon(Promotion data) => Container(
+  _getAnotherSmallRouletteIcon(Promotion data, int playcount) => Container(
         width: context.screenHeight / 10,
         height: context.screenHeight / 10,
         child: FloatingActionButton(
@@ -372,7 +383,7 @@ class _HomeState extends BaseState<Home> {
             //prevent click more than once
             if (!onClickFromAnotherSmallRoulette) {
               print("data id is: ${data.id}");
-              _displayAnotherRouletteDialog(data);
+              _displayAnotherRouletteDialog(data, playcount);
               setState(() {
                 onClickFromAnotherSmallRoulette = true;
               });
@@ -429,7 +440,7 @@ class _HomeState extends BaseState<Home> {
       _displayDialog();
   }
 
-  _displayAnotherRouletteDialog(data) async {
+  _displayAnotherRouletteDialog(data, playcount) async {
     if (_vm.depositRoulettePromo != null)
       await _vm.getDepositRouletteTodayResult(data.id);
     if (_vm.depositRoulettePromo != null)
@@ -452,6 +463,7 @@ class _HomeState extends BaseState<Home> {
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
           contents: data,
+          playcount: playcount,
           campaign: data.campaignDetails?.rouletteItems ?? [],
         ),
       );

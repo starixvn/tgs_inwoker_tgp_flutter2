@@ -20,6 +20,7 @@ class AnotherRouletteDialog extends StatefulWidget {
   final bool isPlayed;
   final contents;
   final campaign;
+  final playcount;
   final HomeViewModel vm;
 
   AnotherRouletteDialog(
@@ -28,6 +29,7 @@ class AnotherRouletteDialog extends StatefulWidget {
       this.userProfile,
       required this.vm,
       this.contents,
+      this.playcount,
       this.campaign});
 
   @override
@@ -89,7 +91,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       elevation: 5,
       backgroundColor: Colors.transparent,
       child: (() {
-        if (widget.isPlayed)
+        if (widget.playcount == 0 || widget.playcount == null)
           return _buildIsPlayedRouletteText();
         else if (isDisplayReward)
           return _buildRewardText();
@@ -229,33 +231,21 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
 
                                             await widget.vm
                                                 .getDepositRouletteResult(
-                                                    widget.campaign?.id)
+                                                    widget.contents?.id)
                                                 .then((_apiState) {
                                               if (_apiState.isSuccess) {
                                                 setState(() {
-                                                  selectedValue = widget.vm
-                                                          .depositRotatedResultId ??
-                                                      0;
-                                                  // to fix controller animate in different direction but except 0
-                                                  var list = [
-                                                    0,
-                                                    11,
-                                                    10,
-                                                    9,
-                                                    8,
-                                                    7,
-                                                    6,
-                                                    5,
-                                                    4,
-                                                    3,
-                                                    2,
-                                                    1
-                                                  ];
-                                                  currentSelectValue = ((1 /
-                                                              12) *
-                                                          list[selectedValue]) *
-                                                      2.0 *
-                                                      pi;
+                                                  //if depositrotatedresultid is -1 then display no reward
+                                                  if (_apiState.data
+                                                          ?.depositRotatedResultId ==
+                                                      -1) {
+                                                    selectedValue = 0;
+                                                  } else {
+                                                    selectedValue = widget.vm
+                                                            .depositRotatedResultId ??
+                                                        0;
+                                                  }
+
                                                   isClick = true;
                                                 });
                                               } else {
@@ -371,8 +361,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                   ),
                 ),
                 Text(
-                  widget.campaign?.rouletteItems![selectedValue].title ??
-                      "lose",
+                  widget.campaign[selectedValue]["title"] ?? "lose",
                   style: TextStyle(color: Colors.black, fontSize: 20.auto),
                 ),
               ],

@@ -208,6 +208,7 @@ class HomeViewModel extends BaseViewModel {
   getPromotionList() async {
     setLoading();
     getPromotionListApiState = await contentRepo.getPromotionList();
+    getRoulettePlayCount();
 
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
