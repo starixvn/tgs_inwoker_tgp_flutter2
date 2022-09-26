@@ -216,48 +216,53 @@ class _DepositMethodState extends BaseState<DepositMethod>
   _buildAmountTextField() => Container(
         //margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
-          title: getTranslatedText(
-                  _isUSDT() ? "deposit_usdt_amount" : "deposit_amount") ??
-              "",
-          hintText: getTranslatedText("enter") +
-              " " +
-              (Format().amountFormat(paymentMin)) +
-              "-" +
-              (Format().amountFormat(paymentMax)),
-          onChanged: (value) => onTextChange(),
-          onFieldSubmitted: (value) => onTextChange(),
-          controller: _amountController,
-          width: context.screenWidth - 70.auto,
-          textInputType: TextInputType.number,
-          textInputAction: TextInputAction.done,
-          bottomMargin: _isUmPayDeposit() || _isShowExchangeRateText() ? 0 : 15,
-          customPart: Row(
-            children: [
-              Text(
-                getTranslatedText("fees_deposit") + ": ",
-                style: TextStyle(
-                    color: CustomColor.theme_app_bar_color, fontSize: 12.auto),
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                fees.toString(),
-                style: TextStyle(
-                    color: CustomColor.theme_app_bar_color,
-                    fontSize: 12.auto,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
-              ),
-              Text(
-                "%",
-                style: TextStyle(
-                    color: CustomColor.theme_app_bar_color,
-                    fontSize: 12.auto,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
-              ),
-            ],
-          ),
-        ),
+            title: getTranslatedText(
+                    _isUSDT() ? "deposit_usdt_amount" : "deposit_amount") ??
+                "",
+            hintText: getTranslatedText("enter") +
+                " " +
+                (Format().amountFormat(paymentMin)) +
+                "-" +
+                (Format().amountFormat(paymentMax)),
+            onChanged: (value) => onTextChange(),
+            onFieldSubmitted: (value) => onTextChange(),
+            controller: _amountController,
+            width: context.screenWidth - 70.auto,
+            textInputType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            bottomMargin:
+                _isUmPayDeposit() || _isShowExchangeRateText() ? 0 : 15,
+            customPart: (() {
+              if (fees > 0) {
+                return Row(
+                  children: [
+                    Text(
+                      getTranslatedText("fees_deposit") + ": ",
+                      style: TextStyle(
+                          color: CustomColor.theme_app_bar_color,
+                          fontSize: 12.auto),
+                      textAlign: TextAlign.start,
+                    ),
+                    Text(
+                      fees.toString(),
+                      style: TextStyle(
+                          color: CustomColor.theme_app_bar_color,
+                          fontSize: 12.auto,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
+                    Text(
+                      "%",
+                      style: TextStyle(
+                          color: CustomColor.theme_app_bar_color,
+                          fontSize: 12.auto,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                );
+              }
+            }())),
       );
 
   _buildNameTextField(
