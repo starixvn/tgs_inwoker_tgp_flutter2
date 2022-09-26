@@ -1104,6 +1104,7 @@
   "details": "Details",
   "roulette_reward": "Congratulations on winning",
   "roulette_is_played_text_1": "Limit 1 play per day",
+  "roulette_play_count": "Limit {balance} play per day",
   "roulette_is_played_text_2": "Please come again tomorrow",
   "roulette_is_played_text_3": "Click to see more promotion details",
   "roulette_promo_home": "Promotion Home",
@@ -1118,5 +1119,9 @@
   "marquee_welcome": "WELCOME",
   "at": " at",
   "won": " won",
-  "win_list": "WIN LIST"
+  "win_list": "WIN LIST",
+  "fees_withdraw": "Withdrawal fee",
+  "fees_deposit": "Transfer fee",
+  "playerNote": "Player Note",
+  "plsEnterPlayerNote": "Please enter the note"
 }
