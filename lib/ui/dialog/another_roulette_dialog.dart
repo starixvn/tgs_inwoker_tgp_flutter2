@@ -18,6 +18,7 @@ class AnotherRouletteDialog extends StatefulWidget {
   final Function onTapCloseIcon;
   final UserProfile? userProfile;
   final bool isPlayed;
+  final contents;
   final campaign;
   final HomeViewModel vm;
 
@@ -26,6 +27,7 @@ class AnotherRouletteDialog extends StatefulWidget {
       this.isPlayed = false,
       this.userProfile,
       required this.vm,
+      this.contents,
       this.campaign});
 
   @override
@@ -482,26 +484,24 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         child: (() {
           switch (buttonIndex) {
             case 0:
-              return PromotionMainDetails(promotion: widget.vm.roulettePromo);
+              return PromotionMainDetails(promotion: widget.contents);
             case 1:
               return PromotionTermsContent(
                   termsContent: ((widget
-                                  .vm
-                                  .roulettePromo
+                                  .contents
                                   ?.localization?[getCurrentLanguage().apiCode]
                                   ?.content
                                   ?.isNotEmpty ??
                               false)
                           ? widget
-                              .vm
-                              .roulettePromo
+                              .contents
                               ?.localization![getCurrentLanguage().apiCode]!
                               .content!
-                          : widget.vm.roulettePromo?.content ?? "") ??
+                          : widget.contents?.content ?? "") ??
                       "");
             case 2:
               return PromotionTermsContent(
-                  termsContent: widget.vm.roulettePromo?.terms ?? "");
+                  termsContent: widget.contents?.terms ?? "");
             default:
               return Container();
           }

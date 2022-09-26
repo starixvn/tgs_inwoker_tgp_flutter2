@@ -348,10 +348,17 @@ class _HomeState extends BaseState<Home> {
 
   _smallRouletteGenerator() {
     var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
+    var rouletteWithPlayCounts = _vm.rouletteCount ?? [];
     return Row(
       children: List.generate(depositRoulettePromo.length, (index) {
-        return _getAnotherSmallRouletteIcon(depositRoulettePromo[index]);
+        var isSameId = rouletteWithPlayCounts
+            .any((element) => element.id == depositRoulettePromo[index].id);
+
+        return isSameId
+            ? _getAnotherSmallRouletteIcon(depositRoulettePromo[index])
+            : SizedBox.shrink();
       }),
+      //
     );
   }
 
@@ -444,6 +451,7 @@ class _HomeState extends BaseState<Home> {
           isPlayed: _vm.isDepositRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
+          contents: data,
           campaign: data.campaignDetails?.rouletteItems ?? [],
         ),
       );
