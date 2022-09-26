@@ -474,7 +474,14 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         index == 0 &&
                         isDisplayGameView)
                       //will refresh page for t11
-                      Navigator.of(context).pushNamed(RoutePath.myHome);
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) => MyHomePage(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
                     else if (EnvironmentConfig.template_version == 11 &&
                         index == 2)
                       Navigator.of(context).pushNamed(RoutePath.deposit);
