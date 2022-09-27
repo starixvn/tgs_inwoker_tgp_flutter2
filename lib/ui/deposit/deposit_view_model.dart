@@ -71,7 +71,9 @@ class DepositViewModel extends BaseViewModel {
       list.forEach((value) {
         if (value.promotionType == "FirstDeposit" ||
             value.promotionType == "DailySecondDeposit" ||
-            value.promotionType == "DailyFirstDeposit")
+            value.promotionType == "DailyFirstDeposit" ||
+            value.promotionType == "DepositAccumulateRoulette" ||
+            value.promotionType == "DepositReward")
           displayPromotionList.add({
             "name":
                 ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
