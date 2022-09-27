@@ -274,8 +274,8 @@ class HomeViewModel extends BaseViewModel {
     getDepositRouletteApiState =
         await contentRepo.getDepositRouletteResult(data ?? "");
     if (getDepositRouletteApiState.isSuccess) {
-      getDepositRouletteTodayResult(data);
       depositRotatedResultId = getDepositRouletteApiState.result.itemIndex;
+      getRoulettePlayCount();
     }
     setLoading(false);
     return getDepositRouletteApiState;

@@ -236,13 +236,16 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                               if (_apiState.isSuccess) {
                                                 setState(() {
                                                   //if depositrotatedresultid is -1 then display no reward
-                                                  if (_apiState.data
-                                                          ?.depositRotatedResultId ==
+                                                  if (_apiState
+                                                          .result?.itemIndex ==
                                                       -1) {
-                                                    selectedValue = 0;
+                                                    setState(() {
+                                                      isDisplayReward = true;
+                                                    });
                                                   } else {
-                                                    selectedValue = widget.vm
-                                                            .depositRotatedResultId ??
+                                                    selectedValue = _apiState
+                                                            .result
+                                                            ?.itemIndex ??
                                                         0;
                                                   }
 

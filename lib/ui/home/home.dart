@@ -442,8 +442,6 @@ class _HomeState extends BaseState<Home> {
 
   _displayAnotherRouletteDialog(data, playcount) async {
     if (_vm.depositRoulettePromo != null)
-      await _vm.getDepositRouletteTodayResult(data.id);
-    if (_vm.depositRoulettePromo != null)
       //temporary use depositroulettepromo to check if there is any campaign
       //if ((_vm.depositcampaign?.length ?? 0) > 0)
 
