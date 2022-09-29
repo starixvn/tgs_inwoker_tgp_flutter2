@@ -17,11 +17,13 @@ class CustomPickerDialog extends StatefulWidget {
   final String title;
   final List<dynamic> list;
   final ValueChanged<dynamic> onChanged;
+  final int? amount;
 
   CustomPickerDialog({
     required this.title,
     required this.list,
     required this.onChanged,
+    this.amount,
   });
 
   @override
@@ -39,7 +41,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
             width: context.screenWidth,
             padding: EdgeInsets.only(bottom: 5),
             margin: EdgeInsets.only(left: 5, right: 5, top: 5),
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
+            decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
             child: Text(
               getTranslatedText(widget.title),
               style: TextStyle(
@@ -51,13 +55,20 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           ),
           Wrap(
             children: List.generate(widget.list.length, (index) {
-              return ListTile(
-                title: _getPickerItem(index),
-                onTap: () {
-                  widget.onChanged(widget.list[index]);
-                },
-                hoverColor: Colors.transparent,
-                dense: true,
+              return Visibility(
+                visible: widget.amount == null ||
+                    (widget.amount != null &&
+                        widget.amount! >=
+                            int.parse(
+                                widget.list[index]["depositMinimumLimit"])),
+                child: ListTile(
+                  title: _getPickerItem(index),
+                  onTap: () {
+                    widget.onChanged(widget.list[index]);
+                  },
+                  hoverColor: Colors.transparent,
+                  dense: true,
+                ),
               );
             }),
           ),
@@ -78,7 +89,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
       return bankType.getName(context);
     } else if (widget.list is List<Wallet>) {
       Wallet wallet = widget.list[index];
-      return (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title;
+      return (wallet.isMainWallet)
+          ? getTranslatedText(wallet.title)
+          : wallet.title;
     } else if (widget.list is List<Promotion>) {
       Promotion promotion = widget.list[index];
       return promotion.name;
@@ -126,7 +139,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         Expanded(
             flex: 1,
             child: Text(
-              (wallet.isMainWallet) ? getTranslatedText(wallet.title) : wallet.title,
+              (wallet.isMainWallet)
+                  ? getTranslatedText(wallet.title)
+                  : wallet.title,
               style: TextStyle(fontSize: 13.auto),
               textAlign: TextAlign.center,
             )),

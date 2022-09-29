@@ -45,6 +45,7 @@ class HomeViewModel extends BaseViewModel {
       // new addition
       getTodayDepositRouletteResultApiState,
       getDepositRouletteApiState;
+
   String? announcement;
   double? gameBalance;
   double? totalBalance;
