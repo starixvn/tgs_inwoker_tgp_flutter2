@@ -20,7 +20,11 @@ class MainViewModel extends BaseViewModel {
   List<BaseRepository> get repoList => [];
 
   bool isNotLogin = false, isExpired = false;
-  var authApiState, getLanguageApiState, getBrandLogoApiState, autoLoginApiState, getBasicInfoApiState;
+  var authApiState,
+      getLanguageApiState,
+      getBrandLogoApiState,
+      autoLoginApiState,
+      getBasicInfoApiState;
   var versionUpdateState;
   double gameBalance = 0.0;
   double? totalBalance;
@@ -33,9 +37,12 @@ class MainViewModel extends BaseViewModel {
 
   get config => contentRepo.featuresConfig;
 
+  var isPhoneNull, isEmailNull, isRegisterCompleted;
+
   getVersion() async {
     setLoading();
-    EventResult<dynamic> eventResult = await contentRepo.getVersionJson(EnvironmentConfig.brandName);
+    EventResult<dynamic> eventResult =
+        await contentRepo.getVersionJson(EnvironmentConfig.brandName);
     if (eventResult.isSuccess) {
       var package = await PackageInfo.fromPlatform();
       try {
@@ -45,7 +52,9 @@ class MainViewModel extends BaseViewModel {
             : Platform.isIOS
                 ? "iOS"
                 : "";
-        var version = versionList.where((element) => element["platform"] == platform).first;
+        var version = versionList
+            .where((element) => element["platform"] == platform)
+            .first;
 
         if (version["version"] != package.version) {
           versionUpdateState = version;
@@ -77,8 +86,12 @@ class MainViewModel extends BaseViewModel {
 
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency,
-        EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
+    InitData().getData(
+        EnvironmentConfig.url,
+        EnvironmentConfig.jwtKey,
+        EnvironmentConfig.currency,
+        EnvironmentConfig.assetUrl,
+        EnvironmentConfig.default_lang);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;
@@ -122,7 +135,12 @@ class MainViewModel extends BaseViewModel {
     setLoading();
     getBasicInfoApiState = await userRepo.getBasicInfo();
     if (getBasicInfoApiState.isSuccess) {
-      print("111");
+      //check for null safety
+      isPhoneNull = getBasicInfoApiState.result?.phone == null;
+      isEmailNull = getBasicInfoApiState.result?.email == null;
+      //check if register completed if true, set to true else false
+      isRegisterCompleted =
+          getBasicInfoApiState.result?.registerCompleted ?? false;
     }
     setLoading(false);
     return getBasicInfoApiState;
@@ -130,7 +148,8 @@ class MainViewModel extends BaseViewModel {
 
   autoLogin() async {
     setLoading();
-    autoLoginApiState = await userRepo.login(await getUsername(), await getPassword());
+    autoLoginApiState =
+        await userRepo.login(await getUsername(), await getPassword());
     if (autoLoginApiState.isSuccess) {
       savePreferences(autoLoginApiState.result.token);
       getUserInfo();
