@@ -1109,5 +1109,8 @@
   "fees_withdraw": "Phí rút tiền",
   "fees_deposit": "Phí đặt cọc",
   "playerNote": "Ghi chú của người chơi",
-  "plsEnterPlayerNote": "Vui lòng nhập ghi chú của người chơi"
+  "plsEnterPlayerNote": "Vui lòng nhập ghi chú của người chơi",
+
+  "report_bet": "Lịch sử đặt cược",
+  "report_withdrawal": "Rút tiền"
 }

@@ -1111,5 +1111,7 @@
   "fees_withdraw": "ค่าธรรมเนียมการถอน",
   "fees_deposit": "ค่าธรรมเนียมการฝาก",
   "playerNote": "หมายเหตุผู้เล่น",
-  "plsEnterPlayerNote": "กรุณาใส่หมายเหตุผู้เล่น"
+  "plsEnterPlayerNote": "กรุณาใส่หมายเหตุผู้เล่น",
+  "report_bet": "ประวัติการเดิมพัน",
+  "report_withdrawal": "รายงานการถอนเงิน"
 }

@@ -1110,5 +1110,8 @@
   "fees_withdraw": "Biaya penarikan",
   "fees_deposit": "Biaya setoran",
   "playerNote": "Catatan Pemain",
-  "plsEnterPlayerNote": "Silakan masukkan catatan pemain"
+  "plsEnterPlayerNote": "Silakan masukkan catatan pemain",
+
+  "report_bet": "Riwayat Taruhan",
+  "report_withdrawal": "Penarikan"
 }

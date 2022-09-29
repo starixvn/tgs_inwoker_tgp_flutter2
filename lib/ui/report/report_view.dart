@@ -28,10 +28,10 @@ class _ReportViewState extends BaseState<ReportView>
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
-    {"id": "0", "text": "bet_history"},
-    {"id": "1", "text": "deposit_history"},
-    {"id": "2", "text": "withdrawal_history"},
-    {"id": "3", "text": "transfer_history"},
+    {"id": "0", "text": "report_bet"},
+    {"id": "1", "text": "report_withdrawal"},
+    {"id": "2", "text": "deposit"},
+    {"id": "3", "text": "transfer"},
     {"id": "4", "text": "promotion_history"},
     /*{"id": "4", "text": "返水记录"},*/
   ];
@@ -58,7 +58,7 @@ class _ReportViewState extends BaseState<ReportView>
               children: [
                 Container(
                   width: context.screenWidth,
-              color: Colors.transparent,
+                  color: Colors.transparent,
                   child: TabBar(
                     controller: _tabController,
                     isScrollable: true,

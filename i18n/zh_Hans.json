@@ -1109,5 +1109,8 @@
   "fees_withdraw": "提款费",
   "fees_deposit": "手续费",
   "playerNote": "玩家备注",
-  "plsEnterPlayerNote": "请输入玩家备注"
+  "plsEnterPlayerNote": "请输入玩家备注",
+
+  "report_bet": "投注记录",
+  "report_withdrawal": "提现记录"
 }
