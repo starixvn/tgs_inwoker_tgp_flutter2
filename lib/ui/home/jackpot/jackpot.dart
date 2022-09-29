@@ -140,58 +140,57 @@ class _JackpotState extends BaseState<Jackpot> {
       );
 
   _buildWinList() => Stack(
-    children: [
-      Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.auto),
-          alignment: Alignment.center,
-          child: Image.asset(
-            "images/home/T11/win_list.png",
-            width: context.screenWidth,
-            fit: BoxFit.fill,
-          )),
-      Positioned(
-        left: 0,
-        top: context.screenWidth / 3,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 50.auto),
-          width: context.screenWidth,
-          height: context.screenWidth / 0.9,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                  width: context.screenWidth,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.only(bottom: 10.auto),
-                  child: Text(
-                    getTranslatedText("win_list"),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13.auto,
-                    ),
-                  )),
-              SizedBox(
+        children: [
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.auto),
+              alignment: Alignment.center,
+              child: Image.asset(
+                "images/home/T11/win_list.png",
                 width: context.screenWidth,
-                height: context.screenWidth / 1.3,
-                child: (widget.vm.expandRecommendList?.isEmpty ?? true)
-                    ? buildProgressDialog(widget.vm.brandLogoUrl)
-                    : ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(right: 20),
-                  children: List.generate(winList.length, (index) {
-                    return Container(
-                      child: _buildWinListItem(winList[index],
-                          widget.vm.randomGameData()),
-                    );
-                  }),
-                ),
+                fit: BoxFit.fill,
+              )),
+          Positioned(
+            left: 0,
+            top: context.screenWidth / 3,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 50.auto),
+              width: context.screenWidth,
+              height: context.screenWidth / 0.9,
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Container(
+                      width: context.screenWidth,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(bottom: 10.auto),
+                      child: Text(
+                        getTranslatedText("win_list"),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13.auto,
+                        ),
+                      )),
+                  SizedBox(
+                    width: context.screenWidth,
+                    height: context.screenWidth / 1.3,
+                    child: (widget.vm.expandRecommendList?.isEmpty ?? true)
+                        ? buildProgressDialog(widget.vm.brandLogoUrl)
+                        : ListView(
+                            shrinkWrap: true,
+                            children: List.generate(winList.length, (index) {
+                              return Container(
+                                child: _buildWinListItem(
+                                    winList[index], widget.vm.randomGameData()),
+                              );
+                            }),
+                          ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    ],
-  );
+        ],
+      );
 
   _buildWinListItem(String name, Game? game) => game == null
       ? Container()
