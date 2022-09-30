@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -61,21 +62,21 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
   }
 
   _buildButton() => Container(
-        height: context.screenHeight,
-        width: double.infinity,
         child: Positioned(
           child: Container(
-            height: 10,
-            width: 10,
+            height: 50,
+            width: 200,
             margin: EdgeInsets.only(
-                left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
+                left: 10.auto, right: 10.auto, top: 15.auto, bottom: 75.auto),
             child: ColorButton(
               title: getTranslatedText("loginregister"),
               onClick: () {
                 Navigator.of(context).pushNamed("/login");
               },
               isEnabled: true,
-              color: CustomColor.theme_button_color,
+              //rgb(255, 153, 0) color
+              color: Color(0xFFFF9900),
+
               radius: 9.6,
             ),
           ),
@@ -86,16 +87,27 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
     return Scaffold(
       backgroundColor: CustomColor.theme_button_color,
       body: SafeArea(
+        top: true,
         child: Container(
-          height: context.screenHeight,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/homepage/wghk/background.png"),
-                fit: BoxFit.cover),
-          ),
-          child: _buildButton(),
-        ),
+            height: context.screenHeight,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("images/homepage/wghk/background.png"),
+                  fit: BoxFit.cover),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //empty container that takes hgalf of the screen
+                Container(
+                  height: context.screenHeight / 2,
+                  width: double.infinity,
+                ),
+
+                _buildButton(),
+              ],
+            )),
       ),
     );
   }
