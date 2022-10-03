@@ -1126,5 +1126,14 @@
   "plsEnterPlayerNote": "Please enter the note",
 
   "report_bet": "Bet History",
-  "report_withdrawal": "Withdrawal"
+  "report_withdrawal": "Withdrawal",
+
+  "dialogDARUnavailableTitle": "Deposit Roulette has ended",
+  "dialogUnavailableTitle1": "Play once a day",
+  "dialogUnavailableTitle2": "Come again tomorrow",
+  "dialogUnavailableTitle3": "Click to see more good deals",
+  "dialogRewardTitle1": "Congratulations on winning",
+  "dialogErrorTitle1": "Failed to play Roulette",
+  "dialogErrorTitle2": "Please try again later",
+  "dialogIndexErrorTitle1": "Player please refresh"
 }
