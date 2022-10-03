@@ -86,6 +86,7 @@ class _HomeState extends BaseState<Home> {
   }
 
   _initData() async {
+    await _gameViewModel.getJackpotRecommendList();
     var task = <Future>[];
     task.add(_vm.getAnnouncement());
     task.add(_vm.getPromotionList());
@@ -105,7 +106,6 @@ class _HomeState extends BaseState<Home> {
     randomNumber = _randomGenerator();
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
-    await _gameViewModel.getJackpotRecommendList();
   }
 
   getLanguage() async {
