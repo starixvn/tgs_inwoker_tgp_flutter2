@@ -402,12 +402,12 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    getTranslatedText("roulette_is_played_text_1"),
+                    getTranslatedText("dialogDARUnavailableTitle"),
                     style: TextStyle(color: Colors.black, fontSize: 23.auto),
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    getTranslatedText("roulette_is_played_text_2"),
+                    getTranslatedText("roulette_is_played_text_3"),
                     style: TextStyle(color: Colors.black, fontSize: 20.auto),
                     textAlign: TextAlign.center,
                   ),
