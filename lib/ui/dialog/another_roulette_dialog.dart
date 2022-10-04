@@ -36,8 +36,7 @@ class AnotherRouletteDialog extends StatefulWidget {
   _AnotherRouletteDialogState createState() => _AnotherRouletteDialogState();
 }
 
-class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
-    with SingleTickerProviderStateMixin {
+class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   int selectedValue = 0;
   var currentSelectValue = 0.0;
@@ -45,6 +44,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
   late CurvedAnimation _animation;
   var isDisplayReward = false, isExpandedColumn = false;
   var buttonIndex = 0;
+  var shownReward = false;
 
   @override
   void initState() {
@@ -56,6 +56,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       parent: _controller,
       curve: Curves.linear,
     );
+
     super.initState();
   }
 
@@ -63,16 +64,23 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
     _controller
       ..repeat()
       ..addListener(() async {
-        var a =
-            double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
+        var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
         var b = double.parse((currentSelectValue).toStringAsFixed(2));
         if (a == b && isClick) {
           _controller.stop();
-          Future.delayed(const Duration(seconds: 2), () {
-            _displayReward(context).then((value) {
-              _controller.clearListeners();
-              super.initState();
-            });
+          Future.delayed(const Duration(seconds: 1), () {
+            print(shownReward);
+            if (!shownReward) {
+              shownReward = true;
+              _displayReward(context).then((value) {
+                isClick = false;
+
+                // _controller.dispose();
+                // ignore: invalid_use_of_protected_member
+                // _controller.clearListeners();
+                // super.initState();
+              });
+            }
           });
         }
       });
@@ -114,10 +122,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
   List<FortuneWheelChild<int>> totalList() {
     List<FortuneWheelChild<int>> list = [];
     if (widget.campaign == null) {
-      list = [
-        FortuneWheelChild(foreground: Text(""), value: 1),
-        FortuneWheelChild(foreground: Text(""), value: 1)
-      ];
+      list = [FortuneWheelChild(foreground: Text(""), value: 1), FortuneWheelChild(foreground: Text(""), value: 1)];
     } else {
       for (var i = 0; i < widget.campaign!.length; i++) {
         var createNewList = widget.campaign![i];
@@ -240,15 +245,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                             animate();
 
                                             await widget.vm
-                                                .getDepositRouletteResult(
-                                                    widget.contents?.id)
+                                                .getDepositRouletteResult(widget.contents?.id)
                                                 .then((_apiState) {
+                                              shownReward = false;
                                               if (_apiState.isSuccess) {
                                                 setState(() {
                                                   //if depositrotatedresultid is -1 then display no reward
-                                                  selectedValue = _apiState
-                                                          .result?.itemIndex ??
-                                                      0;
+                                                  selectedValue = _apiState.result?.itemIndex ?? 0;
 
                                                   isClick = true;
                                                 });
@@ -274,15 +277,11 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                               flex: 1,
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildRoulettePromoButton(
-                                      0, "roulette_promo_home"),
-                                  _buildRoulettePromoButton(
-                                      1, "roulette_promo_content"),
-                                  _buildRoulettePromoButton(
-                                      2, "roulette_promo_terms"),
+                                  _buildRoulettePromoButton(0, "roulette_promo_home"),
+                                  _buildRoulettePromoButton(1, "roulette_promo_content"),
+                                  _buildRoulettePromoButton(2, "roulette_promo_terms"),
                                 ],
                               ),
                             )
@@ -436,7 +435,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         top: position,
         right: position,
         child: InkWell(
-          onTap: () => widget.onTapCloseIcon(),
+          onTap: () => position == 0 ? widget.onTapCloseIcon() : closeRewardClick(),
           child: Container(
             height: 25,
             width: 25,
@@ -445,19 +444,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
               borderRadius: BorderRadius.circular(100),
               border: Border.all(
                 width: 2,
-                color: !(widget.isPlayed || isDisplayReward)
-                    ? Colors.white
-                    : Colors.black,
+                color: !(widget.isPlayed || isDisplayReward) ? Colors.white : Colors.black,
               ),
-              color: !(widget.isPlayed || isDisplayReward)
-                  ? Colors.black
-                  : Colors.transparent,
+              color: !(widget.isPlayed || isDisplayReward) ? Colors.black : Colors.transparent,
             ),
             child: Icon(
               Icons.close,
-              color: !(widget.isPlayed || isDisplayReward)
-                  ? Colors.white
-                  : Colors.black,
+              color: !(widget.isPlayed || isDisplayReward) ? Colors.white : Colors.black,
               size: 20,
             ),
           ),
@@ -480,21 +473,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
               return PromotionMainDetails(promotion: widget.contents);
             case 1:
               return PromotionTermsContent(
-                  termsContent: ((widget
-                                  .contents
-                                  ?.localization?[getCurrentLanguage().apiCode]
-                                  ?.content
-                                  ?.isNotEmpty ??
-                              false)
-                          ? widget
-                              .contents
-                              ?.localization![getCurrentLanguage().apiCode]!
-                              .content!
-                          : widget.contents?.content ?? "") ??
-                      "");
+                  termsContent:
+                      ((widget.contents?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
+                              ? widget.contents?.localization![getCurrentLanguage().apiCode]!.content!
+                              : widget.contents?.content ?? "") ??
+                          "");
             case 2:
-              return PromotionTermsContent(
-                  termsContent: widget.contents?.terms ?? "");
+              return PromotionTermsContent(termsContent: widget.contents?.terms ?? "");
             default:
               return Container();
           }
@@ -505,6 +490,11 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.promotion);
     });
+  }
+
+  closeRewardClick() {
+    shownReward = false;
+    Navigator.pop(context);
   }
 
   navigateToPhoneVerification() {
