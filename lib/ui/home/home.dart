@@ -79,6 +79,8 @@ class _HomeState extends BaseState<Home> {
   var isDisplayGameView =
       false; //to check either display jackpot or game view in t11
 
+  var token;
+
   @override
   void initState() {
     _initData();
@@ -106,6 +108,11 @@ class _HomeState extends BaseState<Home> {
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
     await _gameViewModel.getJackpotRecommendList();
+  }
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString('token');
   }
 
   getLanguage() async {
@@ -346,15 +353,28 @@ class _HomeState extends BaseState<Home> {
         ),
       );
 
+  var appearedDAR = [];
+
   _smallRouletteGenerator() {
     var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
     var rouletteWithPlayCounts = _vm.rouletteCount;
-    var rouletteCount = 0;
+
+    print(appearedDAR);
 
     return Row(
       children: List.generate(depositRoulettePromo.length, (index) {
         var isSameId = rouletteWithPlayCounts
             .any((element) => element.id == depositRoulettePromo[index].id);
+
+        var rouletteCount = 0;
+
+        // if the ID are the same save the id inside appearedDAR
+        if (isSameId) {
+          //add depositRoulettePromo[index].id to appearedDAR and prevent duplicate
+          if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
+            appearedDAR.add(depositRoulettePromo[index].id);
+          }
+        }
 
         //if the id is same, then get the play count
         if (isSameId) {
@@ -364,7 +384,7 @@ class _HomeState extends BaseState<Home> {
               .rouletteCount;
         }
 
-        return isSameId
+        return appearedDAR.contains(depositRoulettePromo[index].id)
             ? _getAnotherSmallRouletteIcon(
                 depositRoulettePromo[index], rouletteCount)
             : SizedBox.shrink();

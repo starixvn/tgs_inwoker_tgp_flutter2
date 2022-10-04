@@ -69,8 +69,9 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         if (a == b && isClick) {
           _controller.stop();
           Future.delayed(const Duration(seconds: 2), () {
-            setState(() {
-              isDisplayReward = true;
+            _displayReward(context).then((value) {
+              _controller.clearListeners();
+              super.initState();
             });
           });
         }
@@ -93,12 +94,21 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       child: (() {
         if (widget.playcount == 0 || widget.playcount == null)
           return _buildIsPlayedRouletteText();
-        else if (isDisplayReward)
-          return _buildRewardText();
         else
           return _buildRoulette();
       }()),
     );
+  }
+
+  _displayReward(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: _buildRewardText(),
+          );
+        });
   }
 
   List<FortuneWheelChild<int>> totalList() {
@@ -236,18 +246,9 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                               if (_apiState.isSuccess) {
                                                 setState(() {
                                                   //if depositrotatedresultid is -1 then display no reward
-                                                  if (_apiState
-                                                          .result?.itemIndex ==
-                                                      -1) {
-                                                    setState(() {
-                                                      isDisplayReward = true;
-                                                    });
-                                                  } else {
-                                                    selectedValue = _apiState
-                                                            .result
-                                                            ?.itemIndex ??
-                                                        0;
-                                                  }
+                                                  selectedValue = _apiState
+                                                          .result?.itemIndex ??
+                                                      0;
 
                                                   isClick = true;
                                                 });
