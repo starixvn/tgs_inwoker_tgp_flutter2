@@ -368,27 +368,37 @@ class _HomeState extends BaseState<Home> {
 
         var rouletteCount = 0;
 
-        // if the ID are the same save the id inside appearedDAR
-        if (isSameId) {
-          //add depositRoulettePromo[index].id to appearedDAR and prevent duplicate
-          if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
-            appearedDAR.add(depositRoulettePromo[index].id);
-          }
-        }
-
         //if the id is same, then get the play count
         if (isSameId) {
+          // if the ID are the same save the id inside appearedDAR
+          if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
+            //add the id at the back reversely
+            appearedDAR.insert(0, depositRoulettePromo[index].id);
+          }
           rouletteCount = rouletteWithPlayCounts
               .firstWhere(
                   (element) => element.id == depositRoulettePromo[index].id)
               .rouletteCount;
         }
 
-        return appearedDAR.contains(depositRoulettePromo[index].id)
-            ? _getAnotherSmallRouletteIcon(
-                depositRoulettePromo[index], rouletteCount)
-            : SizedBox.shrink();
+//display the first item in depositRoulettePromo that matches id in appearedDAR
+        if (appearedDAR.isNotEmpty &&
+            depositRoulettePromo[index].id == appearedDAR.first) {
+          return _getAnotherSmallRouletteIcon(
+            depositRoulettePromo[index],
+            rouletteCount,
+          );
+        } else if (appearedDAR.isEmpty) {
+          //if appearedDAR is empty, then display the first item in depositRoulettePromo
+          return _getAnotherSmallRouletteIcon(
+            depositRoulettePromo[index],
+            rouletteCount,
+          );
+        } else {
+          return Container();
+        }
       }),
+
       //
     );
   }
