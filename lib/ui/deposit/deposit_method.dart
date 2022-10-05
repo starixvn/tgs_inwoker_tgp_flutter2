@@ -796,7 +796,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
 
   _buildPlayerNoteTextField() => Visibility(
         visible: (_isEwallet() || _isPulsa() || _isBank()) &&
-            !(_vm.config?.addPlayerNote ?? false),
+            (_vm.config?.addPlayerNote ?? false),
         child: Container(
           margin: EdgeInsets.only(
             top: 20.auto,
