@@ -388,12 +388,6 @@ class _HomeState extends BaseState<Home> {
             depositRoulettePromo[index],
             rouletteCount,
           );
-        } else if (appearedDAR.isEmpty) {
-          //if appearedDAR is empty, then display the first item in depositRoulettePromo
-          return _getAnotherSmallRouletteIcon(
-            depositRoulettePromo[index],
-            rouletteCount,
-          );
         } else {
           return Container();
         }
