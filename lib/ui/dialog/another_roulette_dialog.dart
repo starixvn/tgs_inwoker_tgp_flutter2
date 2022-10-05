@@ -442,7 +442,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         right: position,
         child: InkWell(
           onTap: () =>
-              position == 0 ? widget.onTapCloseIcon() : closeRewardClick(),
+              position != 5.auto ? widget.onTapCloseIcon() : closeRewardClick(),
           child: Container(
             height: 25,
             width: 25,
