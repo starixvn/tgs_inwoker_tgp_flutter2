@@ -1112,5 +1112,14 @@
   "plsEnterPlayerNote": "请输入玩家备注",
 
   "report_bet": "投注记录",
-  "report_withdrawal": "提现记录"
+  "report_withdrawal": "提现记录",
+
+  "dialogDARUnavailableTitle": "充值抽奖已结束",
+  "dialogUnavailableTitle1": "每日限玩一次",
+  "dialogUnavailableTitle2": "明天再来唷",
+  "dialogUnavailableTitle3": "点我看更多好康优惠",
+  "dialogRewardTitle1": "恭喜您赢得",
+  "dialogErrorTitle1": "无法进行抽奖",
+  "dialogErrorTitle2": "请稍后再试",
+  "dialogIndexErrorTitle1": "请玩家重新整理"
 }

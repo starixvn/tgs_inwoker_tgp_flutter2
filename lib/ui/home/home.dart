@@ -79,6 +79,8 @@ class _HomeState extends BaseState<Home> {
   var isDisplayGameView =
       false; //to check either display jackpot or game view in t11
 
+  var token;
+
   @override
   void initState() {
     _initData();
@@ -106,6 +108,11 @@ class _HomeState extends BaseState<Home> {
     randomNumber = _randomGenerator();
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
+  }
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString('token');
   }
 
   getLanguage() async {
@@ -346,29 +353,46 @@ class _HomeState extends BaseState<Home> {
         ),
       );
 
+  var appearedDAR = [];
+
   _smallRouletteGenerator() {
     var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
     var rouletteWithPlayCounts = _vm.rouletteCount;
-    var rouletteCount = 0;
+
+    print(appearedDAR);
 
     return Row(
       children: List.generate(depositRoulettePromo.length, (index) {
         var isSameId = rouletteWithPlayCounts
             .any((element) => element.id == depositRoulettePromo[index].id);
 
+        var rouletteCount = 0;
+
         //if the id is same, then get the play count
         if (isSameId) {
+          // if the ID are the same save the id inside appearedDAR
+          if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
+            //add the id at the back reversely
+            appearedDAR.insert(0, depositRoulettePromo[index].id);
+          }
           rouletteCount = rouletteWithPlayCounts
               .firstWhere(
                   (element) => element.id == depositRoulettePromo[index].id)
               .rouletteCount;
         }
 
-        return isSameId
-            ? _getAnotherSmallRouletteIcon(
-                depositRoulettePromo[index], rouletteCount)
-            : SizedBox.shrink();
+//display the first item in depositRoulettePromo that matches id in appearedDAR
+        if (appearedDAR.isNotEmpty &&
+            depositRoulettePromo[index].id == appearedDAR.first) {
+          return _getAnotherSmallRouletteIcon(
+            depositRoulettePromo[index],
+            rouletteCount,
+          );
+        } else {
+          return Container();
+        }
       }),
+
       //
     );
   }

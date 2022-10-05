@@ -1113,5 +1113,14 @@
   "playerNote": "หมายเหตุผู้เล่น",
   "plsEnterPlayerNote": "กรุณาใส่หมายเหตุผู้เล่น",
   "report_bet": "ประวัติการเดิมพัน",
-  "report_withdrawal": "รายงานการถอนเงิน"
+  "report_withdrawal": "รายงานการถอนเงิน",
+
+  "dialogDARUnavailableTitle": "หวยเติมเงินหมดเขตแล้ว",
+  "dialogUnavailableTitle1": "เล่นวันละครั้ง",
+  "dialogUnavailableTitle2": "พรุ่งนี้มาอีกนะ",
+  "dialogUnavailableTitle3": "คลิกเพื่อดูข้อเสนอที่ดีเพิ่มเติม",
+  "dialogRewardTitle1": "ยินดีด้วยกับชัยชนะของคุณ",
+  "dialogErrorTitle1": "ไม่สามารถชิงโชคได้",
+  "dialogErrorTitle2": "โปรดลองอีกครั้งในภายหลัง",
+  "dialogIndexErrorTitle1": "ผู้เล่นโปรดรีเฟรช"
 }

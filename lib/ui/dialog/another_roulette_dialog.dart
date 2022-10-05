@@ -45,6 +45,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
   late CurvedAnimation _animation;
   var isDisplayReward = false, isExpandedColumn = false;
   var buttonIndex = 0;
+  var shownReward = false;
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       parent: _controller,
       curve: Curves.linear,
     );
+
     super.initState();
   }
 
@@ -68,10 +70,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         var b = double.parse((currentSelectValue).toStringAsFixed(2));
         if (a == b && isClick) {
           _controller.stop();
-          Future.delayed(const Duration(seconds: 2), () {
-            setState(() {
-              isDisplayReward = true;
-            });
+          Future.delayed(const Duration(seconds: 1), () {
+            if (!shownReward) {
+              shownReward = true;
+              _displayReward(context).then((value) {
+                isClick = false;
+              });
+            }
           });
         }
       });
@@ -93,12 +98,21 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       child: (() {
         if (widget.playcount == 0 || widget.playcount == null)
           return _buildIsPlayedRouletteText();
-        else if (isDisplayReward)
-          return _buildRewardText();
         else
           return _buildRoulette();
       }()),
     );
+  }
+
+  _displayReward(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.transparent,
+            content: _buildRewardText(),
+          );
+        });
   }
 
   List<FortuneWheelChild<int>> totalList() {
@@ -233,21 +247,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                                 .getDepositRouletteResult(
                                                     widget.contents?.id)
                                                 .then((_apiState) {
+                                              shownReward = false;
                                               if (_apiState.isSuccess) {
                                                 setState(() {
                                                   //if depositrotatedresultid is -1 then display no reward
-                                                  if (_apiState
-                                                          .result?.itemIndex ==
-                                                      -1) {
-                                                    setState(() {
-                                                      isDisplayReward = true;
-                                                    });
-                                                  } else {
-                                                    selectedValue = _apiState
-                                                            .result
-                                                            ?.itemIndex ??
-                                                        0;
-                                                  }
+                                                  selectedValue = _apiState
+                                                          .result?.itemIndex ??
+                                                      0;
 
                                                   isClick = true;
                                                 });
@@ -402,12 +408,12 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    getTranslatedText("roulette_is_played_text_1"),
+                    getTranslatedText("dialogDARUnavailableTitle"),
                     style: TextStyle(color: Colors.black, fontSize: 23.auto),
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    getTranslatedText("roulette_is_played_text_2"),
+                    getTranslatedText("roulette_is_played_text_3"),
                     style: TextStyle(color: Colors.black, fontSize: 20.auto),
                     textAlign: TextAlign.center,
                   ),
@@ -435,7 +441,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         top: position,
         right: position,
         child: InkWell(
-          onTap: () => widget.onTapCloseIcon(),
+          onTap: () =>
+              position != 5.auto ? widget.onTapCloseIcon() : closeRewardClick(),
           child: Container(
             height: 25,
             width: 25,
@@ -504,6 +511,11 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushNamed(RoutePath.promotion);
     });
+  }
+
+  closeRewardClick() {
+    shownReward = false;
+    Navigator.pop(context);
   }
 
   navigateToPhoneVerification() {
