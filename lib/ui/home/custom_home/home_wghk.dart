@@ -1,21 +1,12 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
-import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
 class HomeWGHK extends StatefulWidget {
@@ -52,6 +43,7 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
   @override
   void initState() {
     getLanguage();
+    getToken();
     super.initState();
   }
 
@@ -59,6 +51,13 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode =
         _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  }
+
+  var token;
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString("auth_token");
   }
 
   _buildButton() => Container(
@@ -69,7 +68,9 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
             margin: EdgeInsets.only(
                 left: 10.auto, right: 10.auto, top: 15.auto, bottom: 75.auto),
             child: ColorButton(
-              title: getTranslatedText("loginregister"),
+              title: token != null
+                  ? getTranslatedText("123")
+                  : getTranslatedText("loginregister"),
               onClick: () {
                 Navigator.of(context).pushNamed("/login");
               },
@@ -84,10 +85,10 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
       );
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomColor.theme_button_color,
-      body: SafeArea(
-        top: true,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SafeArea(
+        minimum: EdgeInsets.only(top: 30),
         child: Container(
             height: context.screenHeight,
             width: double.infinity,
@@ -104,7 +105,6 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
                   height: context.screenHeight / 2,
                   width: double.infinity,
                 ),
-
                 _buildButton(),
               ],
             )),

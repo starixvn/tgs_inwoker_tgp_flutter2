@@ -56,6 +56,7 @@ class _HomeT100State extends BaseState<HomeT100> {
   var isMenu = false;
 
   var itemHeightRatio = 335 / 90;
+  var token;
 
   //var widget.homeViewModel = HomeViewModel();
   CarouselController carouselController = CarouselController();
@@ -73,6 +74,12 @@ class _HomeT100State extends BaseState<HomeT100> {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     languageCode =
         _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  }
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString("auth_token");
+    return token;
   }
 
   Widget build(BuildContext context) {

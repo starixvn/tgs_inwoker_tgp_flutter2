@@ -323,28 +323,6 @@ class _HomeState extends BaseState<Home> {
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
             _vm.roulettePromo != null,
-<<<<<<< HEAD
-        child: Positioned(
-          top: context.screenHeight / 5 - 60.auto,
-          left: -5,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromSmallRoulette) {
-                  _displayRouletteDialog();
-                  setState(() {
-                    onClickFromSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
-            ),
-=======
         child: Container(
           width: context.screenHeight / 10,
           height: context.screenHeight / 10,
@@ -361,7 +339,6 @@ class _HomeState extends BaseState<Home> {
               }
             },
             child: Image.asset("images/roulette/small_roulette.png"),
->>>>>>> develop
           ),
         ),
       );
@@ -371,30 +348,9 @@ class _HomeState extends BaseState<Home> {
             _vm.depositRoulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-<<<<<<< HEAD
-          left: 75,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromAnotherSmallRoulette) {
-                  _displayAnotherRouletteDialog();
-                  setState(() {
-                    onClickFromAnotherSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
-            ),
-=======
           left: -5,
           child: Row(
             children: [_getSmallRouletteIcon(), _smallRouletteGenerator()],
->>>>>>> develop
           ),
         ),
       );
