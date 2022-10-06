@@ -1,3 +1,5 @@
+import 'package:api/entity/campaign_details.dart';
+import 'package:api/entity/promotion.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +11,10 @@ import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/dialog/another_roulette_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/custom_home/home_wghk.dart';
@@ -31,7 +33,6 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/dialog/marquee_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/roulette_dialog.dart';
-import 'dart:io' show Platform;
 
 import 'dart:math';
 
@@ -69,19 +70,18 @@ class _HomeState extends BaseState<Home> {
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
-
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  int _current = 0;
   CarouselController carouselController = CarouselController();
   var languageCode;
   var _gameViewModel = GameViewModel();
   var randomNumber;
-  var _assetsAudioPlayer;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
   var isDisplayGameView =
       false; //to check either display jackpot or game view in t11
+
+  var token;
 
   @override
   void initState() {
@@ -90,6 +90,7 @@ class _HomeState extends BaseState<Home> {
   }
 
   _initData() async {
+    await _gameViewModel.getJackpotRecommendList();
     var task = <Future>[];
     task.add(_vm.getAnnouncement());
     task.add(_vm.getPromotionList());
@@ -97,15 +98,23 @@ class _HomeState extends BaseState<Home> {
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
-    // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-    //task.add(_vm.getRoulettePlayCount());
-    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
+    task.add(_vm.getRoulettePlayCount());
+    if (_vm.roulettePromo != null) {
+      task.add(_vm.getRouletteTodayResult());
+    }
+    //  if (_vm.depositRoulettePromo != null) {
+    //    task.add(_vm.getDepositRouletteTodayResult());
+    //  }
     await Future.wait(task);
     getLanguage();
     randomNumber = _randomGenerator();
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
-    await _gameViewModel.getJackpotRecommendList();
+  }
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString('token');
   }
 
   getLanguage() async {
@@ -147,9 +156,7 @@ class _HomeState extends BaseState<Home> {
                   child: Stack(
                     children: [
                       _getHomeTemplateView(),
-                      _getSmallRouletteIcon(),
-                      // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-                      // _getAnotherSmallRouletteIcon(),
+                      _rouletteHolder(),
                     ],
                   ),
                 ),
@@ -316,6 +323,7 @@ class _HomeState extends BaseState<Home> {
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
             _vm.roulettePromo != null,
+<<<<<<< HEAD
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
           left: -5,
@@ -336,15 +344,34 @@ class _HomeState extends BaseState<Home> {
               },
               child: Image.asset("images/roulette/small_roulette.png"),
             ),
+=======
+        child: Container(
+          width: context.screenHeight / 10,
+          height: context.screenHeight / 10,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              //prevent click more than once
+              if (!onClickFromSmallRoulette) {
+                _displayRouletteDialog();
+                setState(() {
+                  onClickFromSmallRoulette = true;
+                });
+              }
+            },
+            child: Image.asset("images/roulette/small_roulette.png"),
+>>>>>>> develop
           ),
         ),
       );
 
-  _getAnotherSmallRouletteIcon() => Visibility(
+  _rouletteHolder() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.roulettePromo != null,
+            _vm.depositRoulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
+<<<<<<< HEAD
           left: 75,
           child: Container(
             width: context.screenHeight / 10,
@@ -363,7 +390,76 @@ class _HomeState extends BaseState<Home> {
               },
               child: Image.asset("images/roulette/small_roulette.png"),
             ),
+=======
+          left: -5,
+          child: Row(
+            children: [_getSmallRouletteIcon(), _smallRouletteGenerator()],
+>>>>>>> develop
           ),
+        ),
+      );
+
+  var appearedDAR = [];
+
+  _smallRouletteGenerator() {
+    var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
+    var rouletteWithPlayCounts = _vm.rouletteCount;
+
+    print(appearedDAR);
+
+    return Row(
+      children: List.generate(depositRoulettePromo.length, (index) {
+        var isSameId = rouletteWithPlayCounts
+            .any((element) => element.id == depositRoulettePromo[index].id);
+
+        var rouletteCount = 0;
+
+        //if the id is same, then get the play count
+        if (isSameId) {
+          // if the ID are the same save the id inside appearedDAR
+          if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
+            //add the id at the back reversely
+            appearedDAR.insert(0, depositRoulettePromo[index].id);
+          }
+          rouletteCount = rouletteWithPlayCounts
+              .firstWhere(
+                  (element) => element.id == depositRoulettePromo[index].id)
+              .rouletteCount;
+        }
+
+//display the first item in depositRoulettePromo that matches id in appearedDAR
+        if (appearedDAR.isNotEmpty &&
+            depositRoulettePromo[index].id == appearedDAR.first) {
+          return _getAnotherSmallRouletteIcon(
+            depositRoulettePromo[index],
+            rouletteCount,
+          );
+        } else {
+          return Container();
+        }
+      }),
+
+      //
+    );
+  }
+
+  _getAnotherSmallRouletteIcon(Promotion data, int playcount) => Container(
+        width: context.screenHeight / 10,
+        height: context.screenHeight / 10,
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          onPressed: () {
+            //prevent click more than once
+            if (!onClickFromAnotherSmallRoulette) {
+              print("data id is: ${data.id}");
+              _displayAnotherRouletteDialog(data, playcount);
+              setState(() {
+                onClickFromAnotherSmallRoulette = true;
+              });
+            }
+          },
+          child: Image.asset("images/roulette/small_roulette.png"),
         ),
       );
 
@@ -407,20 +503,22 @@ class _HomeState extends BaseState<Home> {
           isPlayed: _vm.isRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
+          campaign: _vm.depositcampaign,
         ),
       );
     else
       _displayDialog();
   }
 
-  _displayAnotherRouletteDialog() async {
-    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
-    if ((_vm.campaign?.length ?? 0) > 0)
+  _displayAnotherRouletteDialog(data, playcount) async {
+    if (_vm.depositRoulettePromo != null)
+      //temporary use depositroulettepromo to check if there is any campaign
+      //if ((_vm.depositcampaign?.length ?? 0) > 0)
+
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => RouletteDialog(
+        builder: (BuildContext context) => AnotherRouletteDialog(
           onTapCloseIcon: () {
             Navigator.pop(context);
             if (!onClickFromAnotherSmallRoulette) _displayDialog();
@@ -429,10 +527,12 @@ class _HomeState extends BaseState<Home> {
             });
           },
           userProfile: _vm.userProfile,
-          isPlayed: _vm.isRoulettePlayed,
+          isPlayed: _vm.isDepositRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
+          contents: data,
+          playcount: playcount,
+          campaign: data.campaignDetails?.rouletteItems ?? [],
         ),
       );
     else

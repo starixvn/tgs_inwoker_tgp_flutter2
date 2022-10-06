@@ -191,6 +191,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   List<Widget> _getActionButton() => widget.isLogin
       ? [
+    if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
           _getUsernameText(),
           _getLogoutButton(),
         ]
@@ -337,7 +338,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getUsernameText() => Container(
-        padding: EdgeInsets.symmetric(vertical: 8.auto),
+        padding: EdgeInsets.only(left: 8.auto),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,

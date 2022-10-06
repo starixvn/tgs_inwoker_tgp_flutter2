@@ -40,7 +40,12 @@ class HomeViewModel extends BaseViewModel {
       getBankCardListApiState,
       getPromotionListApiState,
       getTodayRouletteResultApiState,
-      getRouletteApiState;
+      getRouletteApiState,
+      getRoulettePlayCountState,
+      // new addition
+      getTodayDepositRouletteResultApiState,
+      getDepositRouletteApiState;
+
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -52,11 +57,15 @@ class HomeViewModel extends BaseViewModel {
   bool endRecord = false;
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
-  List<CampaignDetails>? campaign;
+  bool isDepositRoulettePlayed = false;
+  var campaign, depositcampaign;
   Promotion? roulettePromo;
-  int? rotatedResultId;
+  var depositRoulettePromo;
+  int? rotatedResultId, depositRotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
+
+  var rouletteCount = [];
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -67,7 +76,9 @@ class HomeViewModel extends BaseViewModel {
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
       List<Marquees> _list = getAnnouncementApiState.result.marquees;
-      marqueeDialog = ((getAnnouncementApiState.result.main) as List<MainDialogContent>).firstOrNull;
+      marqueeDialog =
+          ((getAnnouncementApiState.result.main) as List<MainDialogContent>)
+              .firstOrNull;
       if (_list.isEmpty)
         announcement = "";
       else {
@@ -75,7 +86,8 @@ class HomeViewModel extends BaseViewModel {
           if (index == 0)
             announcement = _getAnnouncementContent(element);
           else
-            announcement = announcement! + " " + _getAnnouncementContent(element);
+            announcement =
+                announcement! + " " + _getAnnouncementContent(element);
         });
       }
     }
@@ -97,7 +109,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    if (contentRepo.gameProviderList == null) await contentRepo.getGameProviderList();
+    if (contentRepo.gameProviderList == null)
+      await contentRepo.getGameProviderList();
     walletList = contentRepo.gameProvider2List!
         .where((element) => element.transferWallet == true)
         .map((e) => Wallet(e.code, e.name, e.gameType))
@@ -109,7 +122,9 @@ class HomeViewModel extends BaseViewModel {
       task.add(_getGameWalletBalance(wallet));
     });
     await Future.wait(task);
-    gameWalletList = walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
+    gameWalletList = walletList
+        .where((element) => !element.isMainWallet && element.balance != null)
+        .toList();
     totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
     wallet?.totalBalance = totalBalance;
     notifyListeners();
@@ -163,6 +178,7 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     logoutApiState = await userRepo.logout();
     isRoulettePlayed = false;
+    isDepositRoulettePlayed = false;
     setLoading(false);
     return logoutApiState;
   }
@@ -188,25 +204,41 @@ class HomeViewModel extends BaseViewModel {
   getUserDetails() async {
     //if (userProfile != null) {
     await _getTotalBalance();
-
   }
 
   getPromotionList() async {
     setLoading();
     getPromotionListApiState = await contentRepo.getPromotionList();
+    getRoulettePlayCount();
+
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
-      roulettePromo = promotionList?.singleWhereOrNull((element) => element.promotionType == "Roulette");
-      campaign = roulettePromo?.campaignDetails?.items ?? [];
-    } else
+      roulettePromo = promotionList?.firstWhereOrNull(
+        (element) => element.promotionType == "Roulette",
+      );
+
+      // depositRoulettePromo = promotionList?.firstWhereOrNull(
+      //   (element) => element.promotionType == "DepositAccumulateRoulette",
+      // );
+
+      depositRoulettePromo = promotionList
+          ?.where(
+              (element) => element.promotionType == "DepositAccumulateRoulette")
+          .toList();
+
+      campaign = roulettePromo?.campaignDetails ?? [];
+      depositcampaign = depositRoulettePromo?.campaignDetails ?? [];
+    } else {
       promotionList = [];
+    }
     setLoading(false);
     return getPromotionListApiState;
   }
 
   getRouletteTodayResult() async {
     setLoading();
-    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
+    getTodayRouletteResultApiState =
+        await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
     if (getTodayRouletteResultApiState.isSuccess) {
       isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
     }
@@ -216,12 +248,47 @@ class HomeViewModel extends BaseViewModel {
 
   getRouletteResult() async {
     setLoading();
-    getRouletteApiState = await contentRepo.getRouletteResult(roulettePromo?.id ?? "");
+    getRouletteApiState =
+        await contentRepo.getRouletteResult(roulettePromo?.id ?? "");
     if (getRouletteApiState.isSuccess) {
       getRouletteTodayResult();
       rotatedResultId = getRouletteApiState.result.itemIndex;
     }
     setLoading(false);
     return getRouletteApiState;
+  }
+
+  getDepositRouletteTodayResult(data) async {
+    setLoading();
+    getTodayDepositRouletteResultApiState =
+        await contentRepo.getDepositRouletteResult(data ?? "");
+    if (getTodayDepositRouletteResultApiState.isSuccess) {
+      isDepositRoulettePlayed =
+          getTodayDepositRouletteResultApiState.result != null;
+    }
+    setLoading(false);
+    return getTodayRouletteResultApiState;
+  }
+
+  getDepositRouletteResult(data) async {
+    setLoading();
+    getDepositRouletteApiState =
+        await contentRepo.getDepositRouletteResult(data ?? "");
+    if (getDepositRouletteApiState.isSuccess) {
+      depositRotatedResultId = getDepositRouletteApiState.result.itemIndex;
+      getRoulettePlayCount();
+    }
+    setLoading(false);
+    return getDepositRouletteApiState;
+  }
+
+  getRoulettePlayCount() async {
+    setLoading();
+    getRoulettePlayCountState = await contentRepo.getRouletteCount();
+    if (getRoulettePlayCountState.isSuccess) {
+      rouletteCount = getRoulettePlayCountState.result;
+    }
+    setLoading(false);
+    return getRoulettePlayCountState;
   }
 }

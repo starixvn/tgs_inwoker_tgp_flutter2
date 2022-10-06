@@ -1091,6 +1091,7 @@
   "details": "詳情",
   "roulette_reward": "恭喜您赢得",
   "roulette_is_played_text_1": "每日限玩1次",
+  "roulette_play_count": "每日限玩{balance}次",
   "roulette_is_played_text_2": "明天再來唷",
   "roulette_is_played_text_3": "點我看更多好康優惠",
   "roulette_promo_home": "优惠主页",
@@ -1106,5 +1107,20 @@
   "at": " 在",
   "won": " 赢",
   "win_list": "獲獎名單",
-  "loginregister": "立即登入/註冊"
+  "loginregister": "立即登入/註冊",
+  "fees_withdraw": "提款費",
+  "fees_deposit": "手續費",
+  "playerNote": "玩家備註",
+  "plsEnterPlayerNote": "請輸入玩家備註",
+  "report_bet": "投注記錄",
+  "report_withdrawal": "提現記錄",
+
+  "dialogDARUnavailableTitle": "充值抽獎已結束",
+  "dialogUnavailableTitle1": "每日限玩一次",
+  "dialogUnavailableTitle2": "明天再來唷",
+  "dialogUnavailableTitle3": "點我看更多好康優惠",
+  "dialogRewardTitle1": "恭喜您贏得",
+  "dialogErrorTitle1": "無法進行抽獎",
+  "dialogErrorTitle2": "請稍後再試",
+  "dialogIndexErrorTitle1": "請玩家重新整理"
 }

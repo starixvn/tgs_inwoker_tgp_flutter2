@@ -36,7 +36,9 @@ class _WithdrawState extends BaseState<Withdraw> {
   //UserProfile user;
   var isDetailsButtonEnabled = false, isNextButtonEnabled = false;
   var selectedBankCard;
-  TextEditingController _amountController = TextEditingController(), _usdtController = TextEditingController();
+  TextEditingController _amountController = TextEditingController(),
+      _usdtController = TextEditingController(),
+      _remarkController = TextEditingController();
   var amount;
   InputValidationProvider validate = new InputValidationProvider();
   String? selectedBankCardText;
@@ -67,7 +69,9 @@ class _WithdrawState extends BaseState<Withdraw> {
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(
                     padding: EdgeInsets.only(
-                        left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
+                        left: 10.auto,
+                        right: 10.auto,
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: ScrollConfiguration(
                       behavior: MyBehavior(),
                       child: ListView(
@@ -75,7 +79,9 @@ class _WithdrawState extends BaseState<Withdraw> {
                           _buildWithdrawCard(),
                           _buildEditBankItem(),
                           _buildBankPicker(),
-                          _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
+                          _buildTextField("amount", "enter_withdraw_amount",
+                              _amountController, true),
+                          _buildPlayerNoteTextField(),
                           //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
                           if (_isUSDT()) _buildUSDTExchangeRateText(),
                           if (_isUSDT()) _buildUSDTAmount(),
@@ -110,8 +116,8 @@ class _WithdrawState extends BaseState<Withdraw> {
             children: [
               _buildWithdrawItem(getTranslatedText("available_withdraw"),
                   " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0.0)}"),
-              _buildWithdrawItem(
-                  getTranslatedText("turnover"), " ${Format().currencyWithDecimalFormat(_vm.turnover ?? 0.0)}"),
+              _buildWithdrawItem(getTranslatedText("turnover"),
+                  " ${Format().currencyWithDecimalFormat(_vm.turnover ?? 0.0)}"),
             ],
           ),
         ),
@@ -126,7 +132,8 @@ class _WithdrawState extends BaseState<Withdraw> {
               width: 3,
               height: 20.auto,
               color: Colors.black,
-              margin: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
+              margin:
+                  EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
               alignment: Alignment.topCenter,
             ),
             Column(
@@ -140,7 +147,9 @@ class _WithdrawState extends BaseState<Withdraw> {
                   padding: EdgeInsets.only(top: 5.auto),
                   child: Text(
                     "$amount",
-                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 12.auto),
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: 12.auto),
                     textAlign: TextAlign.start,
                   ),
                 ),
@@ -173,7 +182,9 @@ class _WithdrawState extends BaseState<Withdraw> {
             ),
             Text(
               getTranslatedText("manage_card"),
-              style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: 12.auto),
+              style: TextStyle(
+                  color: CustomColor.theme_text_grey_white_color,
+                  fontSize: 12.auto),
             )
           ]),
         ),
@@ -183,7 +194,9 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: getTranslatedText("bank_card"),
         displayText: selectedBankCardText ?? "",
         list: _vm.bankCardList ?? [],
-        isHintText: selectedBankCard != null || _vm.bankCardList != null || (_vm.bankCardList?.isNotEmpty ?? false)
+        isHintText: selectedBankCard != null ||
+                _vm.bankCardList != null ||
+                (_vm.bankCardList?.isNotEmpty ?? false)
             ? false
             : true,
         width: context.screenWidth,
@@ -201,9 +214,11 @@ class _WithdrawState extends BaseState<Withdraw> {
               title: title,
               list: list,
               onChanged: (value) {
+                print(value.fees);
                 setState(() {
                   selectedBankCard = value;
-                  selectedBankCardText = _getDisplayBankAccountText(selectedBankCard);
+                  selectedBankCardText =
+                      _getDisplayBankAccountText(selectedBankCard);
                   Navigator.pop(context);
                 });
               });
@@ -234,7 +249,31 @@ class _WithdrawState extends BaseState<Withdraw> {
     }
   }
 
-  _buildTextField(String titleText, String hintText, TextEditingController controller, bool isNum) => Container(
+  _buildPlayerNoteTextField() => Visibility(
+        visible: (_isEWallet() || _isPulsa() || _isBank()) &&
+            (_vm.config?.addPlayerNote ?? false),
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 20.auto,
+          ),
+          child: CustomTextFormField(
+            title: getTranslatedText("playerNote"),
+            hintText: getTranslatedText("plsEnterPlayerNote"),
+            onChanged: (value) {
+              onTextChange();
+            },
+            onFieldSubmitted: (value) => onTextChange(),
+            controller: _remarkController,
+            width: context.screenWidth - 70.auto,
+            textInputType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+          ),
+        ),
+      );
+
+  _buildTextField(String titleText, String hintText,
+          TextEditingController controller, bool isNum) =>
+      Container(
         margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
           title: getTranslatedText(titleText),
@@ -244,12 +283,40 @@ class _WithdrawState extends BaseState<Withdraw> {
           controller: controller,
           focusNode: null,
           width: context.screenWidth - 70.auto,
-          textInputType: isNum ? TextInputType.number : TextInputType.visiblePassword,
-          textInputAction: _isUSDT() ? TextInputAction.next : TextInputAction.done,
+          textInputType:
+              isNum ? TextInputType.number : TextInputType.visiblePassword,
+          textInputAction:
+              _isUSDT() ? TextInputAction.next : TextInputAction.done,
           bottomMargin: 0,
           tipsText: "${getTranslatedText("amount_limit")}: " +
               "${Format().amountFormat(selectedBankCard?.transferLimit?.from ?? 0)} - " +
               "${Format().amountFormat(selectedBankCard?.transferLimit?.to ?? 0)}",
+          // customPart: Row(
+          //   children: [
+          //     Text(
+          //       getTranslatedText("fees_withdraw") + ": ",
+          //       style: TextStyle(
+          //           color: CustomColor.theme_app_bar_color, fontSize: 12.auto),
+          //       textAlign: TextAlign.start,
+          //     ),
+          //     Text(
+          //       "${selectedBankCard?.fees ?? 0}",
+          //       style: TextStyle(
+          //           color: CustomColor.theme_app_bar_color,
+          //           fontSize: 12.auto,
+          //           fontWeight: FontWeight.bold),
+          //       textAlign: TextAlign.start,
+          //     ),
+          //     Text(
+          //       "%",
+          //       style: TextStyle(
+          //           color: CustomColor.theme_app_bar_color,
+          //           fontSize: 12.auto,
+          //           fontWeight: FontWeight.bold),
+          //       textAlign: TextAlign.start,
+          //     ),
+          //   ],
+          // ),
         ),
       );
 
@@ -300,11 +367,15 @@ class _WithdrawState extends BaseState<Withdraw> {
             RichText(
               text: TextSpan(
                 text: getTranslatedText("exchange_rate") + ": ",
-                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                style: TextStyle(
+                    fontSize: 11.auto,
+                    color: CustomColor.theme_text_grey_white_color),
                 children: [
                   TextSpan(
                     text: "1",
-                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: 11.auto),
                   ),
                 ],
               ),
@@ -312,11 +383,16 @@ class _WithdrawState extends BaseState<Withdraw> {
             RichText(
               text: TextSpan(
                 text: "USDT: ",
-                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                style: TextStyle(
+                    fontSize: 11.auto,
+                    color: CustomColor.theme_text_grey_white_color),
                 children: [
                   TextSpan(
-                    text: _vm.config.withdrawalUSDTExchangeRate?.toString() ?? "0.00",
-                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 11.auto),
+                    text: _vm.config.withdrawalUSDTExchangeRate?.toString() ??
+                        "0.00",
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: 11.auto),
                   ),
                 ],
               ),
@@ -327,7 +403,8 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _calculateUSDTExchangeRate() {
     if (_vm.config.withdrawalUSDTExchangeRate != null) {
-      double expectedAmount = (amount ?? 0) * (_vm.config.withdrawalUSDTExchangeRate ?? 0);
+      double expectedAmount =
+          (amount ?? 0) * (_vm.config.withdrawalUSDTExchangeRate ?? 0);
       return Format().doubleToString(expectedAmount);
     } else
       return "0.00";
@@ -340,11 +417,13 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: "",
         description: getTranslatedText("withdraw_success"),
         buttonText1: getTranslatedText("confirm"),
-        buttonText2: (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
+        buttonText2: (_vm.userProfile.realname != null &&
+                !_vm.userProfile.identityAuthentication)
             ? getTranslatedText("verify_realname")
             : null,
         onClick: () => Navigator.pop(context),
-        onClick2: () => (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
+        onClick2: () => (_vm.userProfile.realname != null &&
+                !_vm.userProfile.identityAuthentication)
             ? Navigator.pushNamed(context, RoutePath.realNameVerification)
             : null,
       ),
@@ -369,7 +448,8 @@ class _WithdrawState extends BaseState<Withdraw> {
   }
 
   onNextButtonClick() {
-    if ((_vm.config?.withdrawalHundredDigit ?? false) && !validate.validateIncremental100(_amountController.text)) {
+    if ((_vm.config?.withdrawalHundredDigit ?? false) &&
+        !validate.validateIncremental100(_amountController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("withdrawal_amount_warning"));
       });
@@ -399,7 +479,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       );
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.withdraw(amount, selectedBankCard.id, "");
+      _vm.withdraw(amount, selectedBankCard.id, "", _remarkController.text);
     }
   }
 
@@ -434,6 +514,10 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _isUSDT() => (selectedBankCard?.bankType ?? BankType.BANK) == BankType.USDT;
 
+  _isEWallet() => selectedBankCard?.bankType == BankType.EWALLET;
+  _isPulsa() => selectedBankCard?.bankType == BankType.PULSA;
+  _isBank() => selectedBankCard?.bankType == BankType.BANK;
+
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -444,6 +528,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       });
     });
 
-    handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBankCardListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

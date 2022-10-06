@@ -13,7 +13,10 @@ class WithdrawViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getWithdrawalInfoListApiState;
+  var getBankCardListApiState,
+      withdrawApiState,
+      getTurnoverAmountApiState,
+      getWithdrawalInfoListApiState;
   var turnover;
   List<WithdrawalInfo>? withdrawList;
   List<BankCard>? bankCardList;
@@ -37,9 +40,10 @@ class WithdrawViewModel extends BaseViewModel {
     return getBankCardListApiState;
   }
 
-  withdraw(int amount, String bankInfoId, String payPassword) async {
+  withdraw(
+      int amount, String bankInfoId, String payPassword, String? note) async {
     setLoading();
-    var status = await bankRepo.withdraw(amount, bankInfoId, payPassword);
+    var status = await bankRepo.withdraw(amount, bankInfoId, payPassword, note);
     if (status.isSuccess) {
       withdrawApiState = await userRepo.getWalletBalance();
     } else
@@ -79,6 +83,7 @@ class WithdrawViewModel extends BaseViewModel {
           maxList.add(withdraw.transferLimit?.to ?? 0);
           bankCard.transferLimit?.from = minList.reduce(min);
           bankCard.transferLimit?.to = maxList.reduce(max);
+          bankCard.fees = withdraw.fees ?? 0;
         }
       });
     });

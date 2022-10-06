@@ -1090,6 +1090,7 @@
   "details": "thông tin chi tiết",
   "roulette_reward": "chúc mừng chiến thắng của bạn",
   "roulette_is_played_text_1": "Giới hạn 1 lần chơi mỗi ngày",
+  "roulette_play_count": "Giới hạn {balance} lần chơi mỗi ngày",
   "roulette_is_played_text_2": "Vui lòng quay lại vào ngày mai",
   "roulette_is_played_text_3": "Nhấp để xem thêm chi tiết khuyến mại",
   "roulette_promo_home": "Trang chủ ưu đãi",
@@ -1105,5 +1106,21 @@
   "at": " tại",
   "won": " thắng",
   "win_list": "DANH SÁCH CHIẾN THẮNG",
-  "loginregister": "Đăng nhập / Đăng ký"
+  "loginregister": "Đăng nhập / Đăng ký",
+  "fees_withdraw": "Phí rút tiền",
+  "fees_deposit": "Phí đặt cọc",
+  "playerNote": "Ghi chú của người chơi",
+  "plsEnterPlayerNote": "Vui lòng nhập ghi chú của người chơi",
+
+  "report_bet": "Lịch sử đặt cược",
+  "report_withdrawal": "Rút tiền",
+
+  "dialogDARUnavailableTitle": "Xổ số nạp tiền đã kết thúc",
+  "dialogUnavailableTitle1": "Chơi mỗi ngày một lần",
+  "dialogUnavailableTitle2": "Hãy đến lại vào ngày mai",
+  "dialogUnavailableTitle3": "Click để xem thêm nhiều ưu đãi tốt",
+  "dialogRewardTitle1": "chúc mừng chiến thắng của bạn",
+  "dialogErrorTitle1": "Không thể rút thăm trúng thưởng",
+  "dialogErrorTitle2": "Vui lòng thử lại sau",
+  "dialogIndexErrorTitle1": "Người chơi vui lòng làm mới"
 }

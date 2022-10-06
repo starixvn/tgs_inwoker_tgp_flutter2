@@ -1091,6 +1091,7 @@
   "details": "Perincian",
   "roulette_reward": "Selamat atas kemenangan",
   "roulette_is_played_text_1": "Batasi 1 permainan per hari",
+  "roulette_play_count": "Batasi {balance} permainan per hari",
   "roulette_is_played_text_2": "Silakan datang lagi besok",
   "roulette_is_played_text_3": "Klik untuk melihat detail promosi lainnya",
   "roulette_promo_home": "Beranda Promosi",
@@ -1106,5 +1107,21 @@
   "at": " pada",
   "won": " won",
   "win_list": "DAFTAR MENANG",
-  "loginregister": "Masuk / Dafter Sekarang"
+  "loginregister": "Masuk / Dafter Sekarang",
+  "fees_withdraw": "Biaya penarikan",
+  "fees_deposit": "Biaya setoran",
+  "playerNote": "Catatan Pemain",
+  "plsEnterPlayerNote": "Silakan masukkan catatan pemain",
+
+  "report_bet": "Riwayat Taruhan",
+  "report_withdrawal": "Penarikan",
+
+  "dialogDARUnavailableTitle": "Lotre isi ulang telah berakhir",
+  "dialogUnavailableTitle1": "Mainkan sekali sehari",
+  "dialogUnavailableTitle2": "Datang lagi besok",
+  "dialogUnavailableTitle3": "Klik untuk melihat lebih banyak penawaran bagus",
+  "dialogRewardTitle1": "Selamat atas kemenangan",
+  "dialogErrorTitle1": "Undian tidak mungkin",
+  "dialogErrorTitle2": "Silakan coba lagi nanti",
+  "dialogIndexErrorTitle1": "Pemain harap segarkan"
 }

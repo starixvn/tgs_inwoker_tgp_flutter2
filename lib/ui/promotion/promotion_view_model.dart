@@ -38,14 +38,20 @@ class PromotionViewModel extends BaseViewModel {
     //   getPromotionListApiState = await contentRepo.getPlayerPromotionList(page, rows, true, true);
     // List<Promotion> list = [];
     if (getPromotionListApiState.isSuccess) {
+      setLoading(false);
       // list = getPromotionListApiState.result;
       // if (promotionList == null) promotionList = [];
       // if (list.isNotEmpty) promotionList.addAll(list);
       // endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
-      promotionList = getPromotionListApiState.result;
-    } else
+      List<Promotion> theList = getPromotionListApiState.result;
+
+      promotionList = theList;
+      promotionList.sort((a, b) => a.order!.compareTo(b.order!));
+    } else {
       promotionList = [];
-    setLoading(false);
+      setLoading(false);
+    }
+
     return getPromotionListApiState;
   }
 

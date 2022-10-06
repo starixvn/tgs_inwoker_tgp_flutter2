@@ -1091,6 +1091,7 @@
   "details": "รายละเอียด",
   "roulette_reward": "ยินดีด้วยกับชัยชนะของคุณ",
   "roulette_is_played_text_1": "จำกัด 1 การเล่นต่อวัน",
+  "roulette_play_count": "จำกัด  {balance} การเล่นต่อวัน",
   "roulette_is_played_text_2": "พรุ่งนี้โปรดกลับมาใหม่",
   "roulette_is_played_text_3": "คลิกเพื่อดูรายละเอียดโปรโมชั่นเพิ่มเติม",
   "roulette_promo_home": "เสนอหน้าแรก",
@@ -1107,5 +1108,20 @@
   "at": " ที่",
   "won": " วอน",
   "win_list": "รายชื่อผู้ชนะ",
-  "loginregister": "เข้าสู่ระบบ/ลงทะเบียน"
+  "loginregister": "เข้าสู่ระบบ/ลงทะเบียน",
+  "fees_withdraw": "ค่าธรรมเนียมการถอน",
+  "fees_deposit": "ค่าธรรมเนียมการฝาก",
+  "playerNote": "หมายเหตุผู้เล่น",
+  "plsEnterPlayerNote": "กรุณาใส่หมายเหตุผู้เล่น",
+  "report_bet": "ประวัติการเดิมพัน",
+  "report_withdrawal": "รายงานการถอนเงิน",
+
+  "dialogDARUnavailableTitle": "หวยเติมเงินหมดเขตแล้ว",
+  "dialogUnavailableTitle1": "เล่นวันละครั้ง",
+  "dialogUnavailableTitle2": "พรุ่งนี้มาอีกนะ",
+  "dialogUnavailableTitle3": "คลิกเพื่อดูข้อเสนอที่ดีเพิ่มเติม",
+  "dialogRewardTitle1": "ยินดีด้วยกับชัยชนะของคุณ",
+  "dialogErrorTitle1": "ไม่สามารถชิงโชคได้",
+  "dialogErrorTitle2": "โปรดลองอีกครั้งในภายหลัง",
+  "dialogIndexErrorTitle1": "ผู้เล่นโปรดรีเฟรช"
 }

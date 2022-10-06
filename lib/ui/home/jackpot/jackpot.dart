@@ -98,12 +98,20 @@ class _JackpotState extends BaseState<Jackpot> {
   }
 
   Widget build(BuildContext context) {
-    return ListView(
-      children: [_buildJackPotItem(), _buildWinList(), _buildRecommendList()],
+    return Container(
+      child: ListView(
+        children: [_buildJackPotItem(), _buildWinList(), _buildRecommendList()],
+      ),
     );
   }
 
   _buildJackPotItem() => Container(
+        height: context.screenHeight / 4,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("images/t11_bg/jackpot.png"),
+              fit: BoxFit.cover),
+        ),
         padding: EdgeInsets.symmetric(horizontal: 25.auto),
         child: Wrap(
           children: [
@@ -169,10 +177,10 @@ class _JackpotState extends BaseState<Jackpot> {
                         ? buildProgressDialog(widget.vm.brandLogoUrl)
                         : ListView(
                             shrinkWrap: true,
-                            padding: EdgeInsets.only(right: 20),
                             children: List.generate(winList.length, (index) {
                               return Container(
-                                child: _buildWinListItem(winList[index], widget.vm.randomGameData()),
+                                child: _buildWinListItem(
+                                    winList[index], widget.vm.randomGameData()),
                               );
                             }),
                           ),
@@ -198,14 +206,19 @@ class _JackpotState extends BaseState<Jackpot> {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(height: 40, width: 40, margin: EdgeInsets.only(right: 10), child: _buildImage(game)),
+                child: Container(
+                    height: 40,
+                    width: 40,
+                    margin: EdgeInsets.only(right: 10),
+                    child: _buildImage(game)),
               ),
               Expanded(
                 flex: 5,
                 child: RichText(
                   text: TextSpan(
                     text: getTranslatedText("player"),
-                    style: TextStyle(fontSize: 10.auto, color: Color(0xff707070)),
+                    style:
+                        TextStyle(fontSize: 10.auto, color: Color(0xff707070)),
                     children: [
                       TextSpan(
                         text: " $name",
@@ -213,7 +226,8 @@ class _JackpotState extends BaseState<Jackpot> {
                       ),
                       TextSpan(
                         text: "${getTranslatedText("at")}\n",
-                        style: TextStyle(fontSize: 10.auto, color: Color(0xff707070)),
+                        style: TextStyle(
+                            fontSize: 10.auto, color: Color(0xff707070)),
                       ),
                       TextSpan(
                         text: game.name,
@@ -221,7 +235,8 @@ class _JackpotState extends BaseState<Jackpot> {
                       ),
                       TextSpan(
                         text: getTranslatedText("won"),
-                        style: TextStyle(fontSize: 10.auto, color: Color(0xff707070)),
+                        style: TextStyle(
+                            fontSize: 10.auto, color: Color(0xff707070)),
                       ),
                     ],
                   ),
@@ -259,9 +274,9 @@ class _JackpotState extends BaseState<Jackpot> {
             children: [
               _buildItem("JILITF", GameType.Slot),
               _buildItem("RTTF", GameType.Slot),
-              _buildItem("JDB", GameType.Slot),
+              _buildItem("JDBTF", GameType.Slot),
               _buildItem("JILITF", GameType.Fishing),
-              _buildItem("JDB", GameType.Fishing),
+              _buildItem("JDBTF", GameType.Fishing),
             ],
           ),
         ),
@@ -276,7 +291,8 @@ class _JackpotState extends BaseState<Jackpot> {
       else
         return code;
     }()));
-    return (widget.vm.jackpotRecommendGameList["${code}_$type"]?.isEmpty ?? true)
+    return (widget.vm.jackpotRecommendGameList["${code}_$type"]?.isEmpty ??
+            true)
         ? Container()
         : SizedBox(
             width: context.screenWidth,
@@ -284,7 +300,7 @@ class _JackpotState extends BaseState<Jackpot> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 50,
+                  height: 46,
                   child: Container(
                     margin: EdgeInsets.only(top: 20.auto),
                     padding: EdgeInsets.only(left: 10),
@@ -376,7 +392,8 @@ class _JackpotState extends BaseState<Jackpot> {
   _getImageUrl(Game game) {
     var gameName = game.code;
     if (gameName == "FishingYiLuFa")
-      return EnvironmentConfig.slotGameUrl + "${(game.gamePlatformCode ?? "").toUpperCase()}/zh-CN/$gameName.jpg";
+      return EnvironmentConfig.slotGameUrl +
+          "${(game.gamePlatformCode ?? "").toUpperCase()}/zh-CN/$gameName.jpg";
     else
       return EnvironmentConfig.slotGameUrl +
           "${(game.gamePlatformCode ?? "").toUpperCase()}/${languageCode ?? "en-US"}/$gameName.jpg";

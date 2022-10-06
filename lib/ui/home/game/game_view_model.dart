@@ -113,7 +113,7 @@ class GameViewModel extends BaseViewModel {
     "Dragon's_Luck_Deluxe",
   ];
 
-  var JDB_slot = [
+  var JDBTF_slot = [
     "TrumpCard",
     "MayaGoldCrazy",
     "TreasureBowl",
@@ -132,20 +132,20 @@ class GameViewModel extends BaseViewModel {
     "Dinosaur_Tycoon",
     "Happy_Fishing",
     "Bombing_Fishing",
-    "All-star_Fishing",
+    "All_star_Fishing",
     "Boom_Legend",
     "Royal_Fishing",
     "Dragon_Fortune",
   ];
 
-  var JDB_fish = [
-    "Cai Shen_Fishing",
+  var JDBTF_fish = [
+    "Cai_Shen_Fishing",
     "Fishing_YiLuFa",
-    "Dragon_Fishing II",
+    "Dragon_Fishing_II",
     "Dragon_Master",
     "Dragon_Fishing",
     "Five_Dragons_Fishing",
-    "Fishing_Disco",
+    "FishingDisco",
   ];
   List<Game>? expandRecommendList;
 
@@ -424,7 +424,7 @@ class GameViewModel extends BaseViewModel {
     var recommendList = [
       "JILITF",
       "RTTF",
-      "JDB",
+      "JDBTF",
     ];
     var gameTypeList = [GameType.Slot, GameType.Fishing];
     expandRecommendList = [];
@@ -477,9 +477,9 @@ class GameViewModel extends BaseViewModel {
           });
           break;
         }
-      case "JDB":
+      case "JDBTF":
         if (type == GameType.Slot) {
-          JDB_slot.forEach((name) {
+          JDBTF_slot.forEach((name) {
             (gameListMap[gpCode] ?? []).forEach((element) {
               if (element.code == name) {
                 list.add(element);
@@ -488,7 +488,7 @@ class GameViewModel extends BaseViewModel {
             });
           });
         } else {
-          JDB_fish.forEach((name) {
+          JDBTF_fish.forEach((name) {
             (gameListMap[gpCode] ?? []).forEach((element) {
               if (element.code == name) {
                 list.add(element);
