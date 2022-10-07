@@ -166,7 +166,6 @@ class _DepositMethodState extends BaseState<DepositMethod>
             title: title,
             displayText: display ?? "",
             //isDeposit? depositText??"请选择红利": pickerText?? "",
-
             list: list ?? [],
             isHintText: isHintText,
             width: context.screenWidth,
@@ -176,7 +175,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
                   }
                 : () {
                     _buildBottomSheet(
-                        title, list ?? [], int.parse(_amountController.text));
+                        title, list ?? [], _amountController.text ?? "0");
                   },
             tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay"
                 ? "(${getTranslatedText("available")} 9:00-23:30)"
@@ -185,7 +184,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
         ));
   }
 
-  _buildBottomSheet(String title, List<dynamic> list, int amount) {
+  _buildBottomSheet(String title, List<dynamic> list, amount) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {

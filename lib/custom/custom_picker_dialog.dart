@@ -17,14 +17,13 @@ class CustomPickerDialog extends StatefulWidget {
   final String title;
   final List<dynamic> list;
   final ValueChanged<dynamic> onChanged;
-  final int? amount;
+  final amount;
 
-  CustomPickerDialog({
-    required this.title,
-    required this.list,
-    required this.onChanged,
-    this.amount,
-  });
+  CustomPickerDialog(
+      {required this.title,
+      required this.list,
+      required this.onChanged,
+      this.amount});
 
   @override
   _CustomPickerDialogState createState() => _CustomPickerDialogState();
@@ -55,21 +54,30 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
           ),
           Wrap(
             children: List.generate(widget.list.length, (index) {
-              return Visibility(
-                visible: widget.amount == null ||
-                    (widget.amount != null &&
-                        widget.amount! >=
-                            int.parse(
-                                widget.list[index]["depositMinimumLimit"])),
-                child: ListTile(
+              if (widget.title != "promotion_picker") {
+                return ListTile(
                   title: _getPickerItem(index),
                   onTap: () {
                     widget.onChanged(widget.list[index]);
                   },
                   hoverColor: Colors.transparent,
                   dense: true,
-                ),
-              );
+                );
+              } else {
+                return Visibility(
+                  visible: (widget.amount != "" &&
+                      int.parse(widget.amount) >=
+                          int.parse(widget.list[index]["depositMinimumLimit"])),
+                  child: ListTile(
+                    title: _getPickerItem(index),
+                    onTap: () {
+                      widget.onChanged(widget.list[index]);
+                    },
+                    hoverColor: Colors.transparent,
+                    dense: true,
+                  ),
+                );
+              }
             }),
           ),
         ]),
