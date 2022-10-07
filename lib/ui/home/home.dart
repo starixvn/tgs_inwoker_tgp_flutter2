@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:api/entity/campaign_details.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -88,7 +90,9 @@ class _HomeState extends BaseState<Home> {
   }
 
   _initData() async {
+    _generateNewNumberEveryFewSec();
     await _gameViewModel.getJackpotRecommendList();
+    randomGeneratedPlayerCount = _randomGenerator();
     var task = <Future>[];
     task.add(_vm.getAnnouncement());
     task.add(_vm.getPromotionList());
@@ -105,7 +109,7 @@ class _HomeState extends BaseState<Home> {
     //  }
     await Future.wait(task);
     getLanguage();
-    randomNumber = _randomGenerator();
+
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
   }
@@ -182,7 +186,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 2:
@@ -195,7 +199,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 3:
@@ -208,7 +212,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 4:
@@ -221,7 +225,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 8:
@@ -234,7 +238,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 9:
@@ -259,7 +263,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 11:
@@ -272,7 +276,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       case 100:
@@ -287,7 +291,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount,
           gameView: _buildGameView(),
         );
       default:
@@ -600,6 +604,22 @@ class _HomeState extends BaseState<Home> {
   isShowPromotion() =>
       (_vm.config?.popupPromotion ?? false) &&
       (_vm.promotionList?.isNotEmpty ?? false);
+
+  var randomGeneratedPlayerCount;
+
+  _generateNewNumberEveryFewSec() {
+    //generate random number every 5second
+
+    int min = EnvironmentConfig.template_version == 11 ? 500 : 20000;
+    int max = EnvironmentConfig.template_version == 11 ? 1200 : 30000;
+    Random _random = new Random();
+
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      setState(() {
+        randomGeneratedPlayerCount = min + _random.nextInt(max - min);
+      });
+    });
+  }
 
   _randomGenerator() {
     Random _random = new Random();
