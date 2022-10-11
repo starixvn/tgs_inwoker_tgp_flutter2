@@ -8,7 +8,7 @@ environment_config:
     jwtKey:
       default: "VWQVAd0teQR3XBk7D618pgeWjCRI2mJr2VqvJXpJIAsKkl3ohGIlSa"
     url:
-      default: "https://stg-wghk.srvptt.com/"
+      default: "https://goldmgm.com/"
     currency:
       default: "HKD"
     appTitleName:

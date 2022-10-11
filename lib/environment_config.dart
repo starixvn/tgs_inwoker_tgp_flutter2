@@ -1,20 +1,20 @@
 class EnvironmentConfig {
   static const String jwtKey =
-      'I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ';
+      'VWQVAd0teQR3XBk7D618pgeWjCRI2mJr2VqvJXpJIAsKkl3ohGIlSa';
 
-  static const String url = 'https://dev-t1.rpgp.cc/';
+  static const String url = 'https://goldmgm.com/';
 
-  static const String currency = 'CNY';
+  static const String currency = 'HKD';
 
-  static const String appTitleName = 'PG Gaming';
+  static const String appTitleName = 'WGHK';
 
   static const String slotGameUrl = 'https://images.srvptt.com/';
 
   static const String imageLogo = 'pg_login_logo';
 
-  static const String environmentStage = 'development';
+  static const String environmentStage = 'staging';
 
-  static const int template_version = 2;
+  static const int template_version = 100;
 
   static const bool dark_mode = false;
 
@@ -40,7 +40,7 @@ class EnvironmentConfig {
 
   static const int tab_unselected_color = 4285558896;
 
-  static const int bottom_nav_selected_color = 4285558896;
+  static const int bottom_nav_selected_color = 4283124555;
 
   static const int bottom_nav_unselected_color = 4294967295;
 
@@ -64,13 +64,13 @@ class EnvironmentConfig {
 
   static const int theme_bottom_app_bar_color = 4291206250;
 
-  static const String default_lang = 'en-US';
+  static const String brandName = 'BUNNY';
 
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
 
-  static const String brandName = 'PGG';
+  static const String default_lang = 'en-US';
 
   static const int vipPresentType = 1;
 
-  static const String configFileName = 'PGG';
+  static const String configFileName = 'stg_BUNNY';
 }
