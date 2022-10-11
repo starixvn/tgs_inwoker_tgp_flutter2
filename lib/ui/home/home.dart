@@ -90,17 +90,19 @@ class _HomeState extends BaseState<Home> {
   }
 
   _initData() async {
+    var task = <Future>[];
     _generateNewNumberEveryFewSec();
+
+    task.add(_vm.getPromotionList());
     await _gameViewModel.getJackpotRecommendList();
     randomGeneratedPlayerCount = _randomGenerator();
-    var task = <Future>[];
     task.add(_vm.getAnnouncement());
-    task.add(_vm.getPromotionList());
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
     task.add(_vm.getRoulettePlayCount());
+
     if (_vm.roulettePromo != null) {
       task.add(_vm.getRouletteTodayResult());
     }
@@ -461,7 +463,7 @@ class _HomeState extends BaseState<Home> {
           isPlayed: _vm.isRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.depositcampaign,
+          campaign: _vm.campaign,
         ),
       );
     else
@@ -470,9 +472,6 @@ class _HomeState extends BaseState<Home> {
 
   _displayAnotherRouletteDialog(data, playcount) async {
     if (_vm.depositRoulettePromo != null)
-      //temporary use depositroulettepromo to check if there is any campaign
-      //if ((_vm.depositcampaign?.length ?? 0) > 0)
-
       showDialog(
         context: context,
         barrierDismissible: false,

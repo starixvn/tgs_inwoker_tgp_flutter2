@@ -58,7 +58,7 @@ class HomeViewModel extends BaseViewModel {
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
   bool isDepositRoulettePlayed = false;
-  var campaign, depositcampaign;
+  var campaign;
   Promotion? roulettePromo;
   var depositRoulettePromo;
   int? rotatedResultId, depositRotatedResultId;
@@ -227,7 +227,6 @@ class HomeViewModel extends BaseViewModel {
           .toList();
 
       campaign = roulettePromo?.campaignDetails ?? [];
-      depositcampaign = depositRoulettePromo?.campaignDetails ?? [];
     } else {
       promotionList = [];
     }
