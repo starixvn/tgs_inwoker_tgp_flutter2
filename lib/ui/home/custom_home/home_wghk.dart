@@ -151,22 +151,28 @@ class _HomeWGHKState extends BaseState<HomeWGHK> {
           children: [
             token == null || token == ""
                 ? Container()
-                : Column(
-                    children: [
-                      _buildMarqueeRow(),
-                      HomeUserInfoView(
-                        userProfile: widget.homeViewModel.userProfile,
-                        wallet: widget.homeViewModel.totalBalance,
-                        onLoginTap: () => navigateToLogin(),
-                        onRefreshHomePage: () => widget.initData(),
-                        randomNumber: widget.randomNumber,
-                        gapless: true,
-                      ),
-                    ],
+                : Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        _buildMarqueeRow(),
+                        HomeUserInfoView(
+                          userProfile: widget.homeViewModel.userProfile,
+                          wallet: widget.homeViewModel.totalBalance,
+                          onLoginTap: () => navigateToLogin(),
+                          onRefreshHomePage: () => widget.initData(),
+                          randomNumber: widget.randomNumber,
+                          gapless: true,
+                        ),
+                      ],
+                    ),
                   ),
             Expanded(
+              flex: 5,
               child: Container(
                 //height based on available screen height
+                //height = fit content
+
                 height: context.screenHeight,
                 width: double.infinity,
                 decoration: const BoxDecoration(
