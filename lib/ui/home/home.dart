@@ -378,9 +378,10 @@ class _HomeState extends BaseState<Home> {
         if (isSameId) {
           // if the ID are the same save the id inside appearedDAR
           if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
-            //add the id at the back reversely
-            appearedDAR.insert(0, depositRoulettePromo[index].id);
+            appearedDAR.add(depositRoulettePromo[index].id);
           }
+          //temporary comment
+
           rouletteCount = rouletteWithPlayCounts
               .firstWhere(
                   (element) => element.id == depositRoulettePromo[index].id)

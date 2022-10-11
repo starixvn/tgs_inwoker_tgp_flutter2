@@ -47,6 +47,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
   var buttonIndex = 0;
   var shownReward = false;
 
+  var nomore = false;
+
   @override
   void initState() {
     _controller = AnimationController(
@@ -73,9 +75,6 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
           Future.delayed(const Duration(seconds: 1), () {
             if (!shownReward) {
               shownReward = true;
-              _displayReward(context).then((value) {
-                isClick = false;
-              });
             }
           });
         }
@@ -96,7 +95,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       elevation: 5,
       backgroundColor: Colors.transparent,
       child: (() {
-        if (widget.playcount == 0 || widget.playcount == null)
+        if (widget.playcount == 0 || widget.playcount == null || nomore)
           return _buildIsPlayedRouletteText();
         else
           return _buildRoulette();
@@ -249,14 +248,27 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                                 .then((_apiState) {
                                               shownReward = false;
                                               if (_apiState.isSuccess) {
-                                                setState(() {
-                                                  //if depositrotatedresultid is -1 then display no reward
-                                                  selectedValue = _apiState
-                                                          .result?.itemIndex ??
-                                                      0;
+                                                if (_apiState
+                                                        .result?.itemIndex ==
+                                                    -1) {
+                                                  setState(() {
+                                                    nomore = true;
+                                                  });
+                                                } else {
+                                                  _displayReward(context)
+                                                      .then((value) {
+                                                    isClick = false;
+                                                  });
+                                                  _controller.stop();
+                                                  setState(() {
+                                                    selectedValue = _apiState
+                                                            .result
+                                                            ?.itemIndex ??
+                                                        0;
 
-                                                  isClick = true;
-                                                });
+                                                    isClick = true;
+                                                  });
+                                                }
                                               } else {
                                                 // for handling api return error
                                                 _controller.reset();
