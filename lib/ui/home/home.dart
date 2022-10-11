@@ -408,7 +408,6 @@ class _HomeState extends BaseState<Home> {
           onPressed: () {
             //prevent click more than once
             if (!onClickFromAnotherSmallRoulette) {
-              print("data id is: ${data.id}");
               _displayAnotherRouletteDialog(data, playcount);
               setState(() {
                 onClickFromAnotherSmallRoulette = true;

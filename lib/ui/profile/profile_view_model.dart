@@ -1,4 +1,5 @@
 import 'package:api/entity/game_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/api.dart';
 
@@ -25,16 +26,26 @@ class ProfileViewModel extends BaseViewModel {
 
   get bankCardList => bankRepo.bankCardList;
 
+  removePrefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("auth_token")?.isNotEmpty ?? false)
+      await prefs.remove("auth_token");
+  }
+
   logout() async {
     setLoading();
     logoutApiState = await userRepo.logout();
+    removePrefs();
+
     setLoading(false);
     return logoutApiState;
   }
 
   computeTotalBalance() async {
     if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
-    var gameList = contentRepo.gameProviderList?.where((element) => element.transferWallet == true) ?? [];
+    var gameList = contentRepo.gameProviderList
+            ?.where((element) => element.transferWallet == true) ??
+        [];
 
     var task = <Future>[];
     gameList.forEach((game) {

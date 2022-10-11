@@ -1,6 +1,7 @@
 import 'package:api/extension/format.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -46,7 +47,8 @@ class _ProfileT2State extends BaseState<ProfileT2> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  padding:
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   color: CustomColor.theme_button_color,
                 ),
               ),
@@ -64,7 +66,11 @@ class _ProfileT2State extends BaseState<ProfileT2> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 10.auto, left: 50.auto, right: 50.auto, bottom: 10.auto),
+                  padding: EdgeInsets.only(
+                      top: 10.auto,
+                      left: 50.auto,
+                      right: 50.auto,
+                      bottom: 10.auto),
                   child: Row(
                     children: [
                       Container(
@@ -73,7 +79,9 @@ class _ProfileT2State extends BaseState<ProfileT2> {
                           decoration: new BoxDecoration(
                               shape: BoxShape.circle,
                               image: new DecorationImage(
-                                  fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                      "images/profile/profile_image.png")))),
                       _buildUserInfoText(),
                     ],
                   ),
@@ -98,9 +106,16 @@ class _ProfileT2State extends BaseState<ProfileT2> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ProfileTopItem(title: "deposit", imagePath: "deposit", routePath: "deposit"),
-              ProfileTopItem(title: "transfer", imagePath: "transfer", routePath: "wallet_transfer"),
-              ProfileTopItem(title: "withdrawal", imagePath: "withdraw", routePath: "withdraw"),
+              ProfileTopItem(
+                  title: "deposit", imagePath: "deposit", routePath: "deposit"),
+              ProfileTopItem(
+                  title: "transfer",
+                  imagePath: "transfer",
+                  routePath: "wallet_transfer"),
+              ProfileTopItem(
+                  title: "withdrawal",
+                  imagePath: "withdraw",
+                  routePath: "withdraw"),
             ],
           ),
         ),
@@ -110,7 +125,8 @@ class _ProfileT2State extends BaseState<ProfileT2> {
         child: ScrollConfiguration(
           behavior: MyBehavior(),
           child: ListView(
-            padding: EdgeInsets.only(left: 25.auto, right: 25.auto, bottom: 10.auto, top: 20.auto),
+            padding: EdgeInsets.only(
+                left: 25.auto, right: 25.auto, bottom: 10.auto, top: 20.auto),
             shrinkWrap: true,
             primary: false,
             physics: AlwaysScrollableScrollPhysics(),
@@ -123,17 +139,26 @@ class _ProfileT2State extends BaseState<ProfileT2> {
                 crossAxisSpacing: 15.auto,
                 mainAxisSpacing: 15.auto,
                 children: [
-                  _buildProfileBottomItem("ic_profile", "profile_detail", "profile_info", 0),
-                  _buildProfileBottomItem("ic_message", "message_center", "message", 0),
-                  _buildProfileBottomItem("ic_account_report", "bet_history", "transaction", 0),
-                  _buildProfileBottomItem("ic_deposit_report", "deposit_history", "transaction", 1),
-                  _buildProfileBottomItem("ic_withdraw_report", "withdrawal_history", "transaction", 2),
-                  _buildProfileBottomItem("ic_transfer_report", "transfer_history", "transaction", 3),
-                  _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 4),
-                  _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
+                  _buildProfileBottomItem(
+                      "ic_profile", "profile_detail", "profile_info", 0),
+                  _buildProfileBottomItem(
+                      "ic_message", "message_center", "message", 0),
+                  _buildProfileBottomItem(
+                      "ic_account_report", "bet_history", "transaction", 0),
+                  _buildProfileBottomItem(
+                      "ic_deposit_report", "deposit_history", "transaction", 1),
+                  _buildProfileBottomItem("ic_withdraw_report",
+                      "withdrawal_history", "transaction", 2),
+                  _buildProfileBottomItem("ic_transfer_report",
+                      "transfer_history", "transaction", 3),
+                  _buildProfileBottomItem("ic_account_report",
+                      "promotion_history", "transaction", 4),
+                  _buildProfileBottomItem(
+                      "ic_card_detail", "manage_card", "main_card", 0),
                   _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
                   if (_vm.config?.haveAffiliateFeature ?? false)
-                    _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
+                    _buildProfileBottomItem(
+                        "ic_affiliate", "affiliate", "affiliate", 0),
                   _buildProfileBottomItem("ic_lang", "language", "language", 0),
                 ],
               ),
@@ -143,7 +168,8 @@ class _ProfileT2State extends BaseState<ProfileT2> {
         ),
       );
 
-  _buildProfileBottomItem(String imagePath, String title, String routePath, int navigationID,
+  _buildProfileBottomItem(
+          String imagePath, String title, String routePath, int navigationID,
           {bool isMessage = false}) =>
       ProfileBottomItem(
         title: getTranslatedText(title),
@@ -170,12 +196,14 @@ class _ProfileT2State extends BaseState<ProfileT2> {
                 children: [
                   Text(
                     getTranslatedText("main_wallet") + " :",
-                    style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
+                    style:
+                        TextStyle(color: Colors.white, fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
                   Text(
                     " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0)}",
-                    style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
+                    style:
+                        TextStyle(color: Colors.white, fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
                 ],
@@ -190,7 +218,9 @@ class _ProfileT2State extends BaseState<ProfileT2> {
                 textAlign: TextAlign.start,
               ),
               Text(
-                (_vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}" : "-"),
+                (_vm.totalBalance != null
+                    ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}"
+                    : "-"),
                 //"总资金  "+(_vm.totalBalance != null ?  "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
                 style: TextStyle(color: Colors.white, fontSize: (11.2).auto),
                 textAlign: TextAlign.start,
@@ -210,7 +240,7 @@ class _ProfileT2State extends BaseState<ProfileT2> {
         ),
       );
 
-  _logout() {
+  _logout() async {
     ProgressDialog.show(context, _vm.brandLogoUrl);
     _vm.logout();
   }
@@ -218,8 +248,9 @@ class _ProfileT2State extends BaseState<ProfileT2> {
   _navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
-      Navigator.of(context)
-          .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Login()),
+          (Route<dynamic> route) => false);
     });
   }
 }

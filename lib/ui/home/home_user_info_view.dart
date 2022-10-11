@@ -16,6 +16,7 @@ class HomeUserInfoView extends StatefulWidget {
   final Function? onRefreshHomePage;
   final int? randomNumber;
   final bool? forWGHK;
+  final gapless;
 
   HomeUserInfoView({
     this.userProfile,
@@ -24,6 +25,7 @@ class HomeUserInfoView extends StatefulWidget {
     this.onRefreshHomePage,
     this.randomNumber,
     this.forWGHK,
+    this.gapless,
   });
 
   @override
@@ -37,14 +39,16 @@ class _HomeUserInfoViewState extends BaseState<HomeUserInfoView> {
       semanticContainer: true,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-        borderRadius: widget.forWGHK == true
+        borderRadius: widget.forWGHK == true || widget.gapless
             ? BorderRadius.circular(0)
             : BorderRadius.circular(5.0),
       ),
-      elevation: 5,
-      margin: widget.forWGHK == true
-          ? EdgeInsets.only(top: 10.auto)
-          : EdgeInsets.all(10.auto),
+      elevation: widget.gapless ? 0 : 5,
+      margin: widget.gapless
+          ? EdgeInsets.all(0)
+          : widget.forWGHK == true
+              ? EdgeInsets.only(top: 10.auto)
+              : EdgeInsets.all(10.auto),
       child: Container(
         decoration: gradientDecoration,
         child: Column(
