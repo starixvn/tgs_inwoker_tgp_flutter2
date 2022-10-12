@@ -154,7 +154,7 @@ class _HomeState extends BaseState<Home> {
                       isShowTransferUI = !isShowTransferUI;
                     });
                   },
-                  randomNumber: randomNumber ?? 0,
+                  randomNumber: randomGeneratedPlayerCount,
                 ),
                 body: Container(
                   child: Stack(
