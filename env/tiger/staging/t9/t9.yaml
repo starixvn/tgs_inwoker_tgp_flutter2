@@ -104,4 +104,4 @@ environment_config:
       type: int
       default: 1
     configFileName:
-      default: "stg_TIGER"
+      default: "TIGER"
