@@ -608,12 +608,9 @@ class _HomeState extends BaseState<Home> {
   var randomGeneratedPlayerCount;
 
   _generateNewNumberEveryFewSec() {
-    //generate random number every 5second
-
-    int min = EnvironmentConfig.template_version == 11 ? 500 : 20000;
-    int max = EnvironmentConfig.template_version == 11 ? 1200 : 30000;
     Random _random = new Random();
-
+    int min = _vm.config.homeOnlineUsers["min"] ?? 20000;
+    int max = _vm.config.homeOnlineUsers["max"] ?? 30000;
     Timer.periodic(Duration(seconds: 10), (timer) {
       setState(() {
         randomGeneratedPlayerCount = min + _random.nextInt(max - min);
@@ -623,8 +620,8 @@ class _HomeState extends BaseState<Home> {
 
   _randomGenerator() {
     Random _random = new Random();
-    int min = EnvironmentConfig.template_version == 11 ? 500 : 20000;
-    int max = EnvironmentConfig.template_version == 11 ? 1200 : 30000;
+    int min = _vm.config.homeOnlineUsers["min"] ?? 20000;
+    int max = _vm.config.homeOnlineUsers["max"] ?? 30000;
     int result = min + _random.nextInt(max - min);
     return result;
   }
