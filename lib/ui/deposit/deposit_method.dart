@@ -175,7 +175,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
                   }
                 : () {
                     _buildBottomSheet(
-                        title, list ?? [], _amountController.text ?? "0");
+                        title, list ?? [], _amountController.text);
                   },
             tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay"
                 ? "(${getTranslatedText("available")} 9:00-23:30)"

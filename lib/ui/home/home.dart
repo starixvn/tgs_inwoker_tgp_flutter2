@@ -136,26 +136,25 @@ class _HomeState extends BaseState<Home> {
             children: [
               CustomScaffold(
                 appBar: CustomLoginAppBar(
-                  onClickLoginButton: () =>
-                      Navigator.of(context).pushNamed(RoutePath.login),
-                  onClickRegisterButton: () =>
-                      Navigator.of(context).pushNamed(RoutePath.register),
-                  onClickLogoutButton: () => _logout(),
-                  isLogin: _vm.userProfile != null,
-                  brandLogoUrl: _vm.brandLogoUrl,
-                  userProfile: _vm.userProfile,
-                  phone: _vm.phone,
-                  config: _vm.config,
-                  totalBalance: _vm.totalBalance,
-                  //_vm.totalBalance,
-                  brandName: EnvironmentConfig.brandName,
-                  onClickBalance: () {
-                    setState(() {
-                      isShowTransferUI = !isShowTransferUI;
-                    });
-                  },
-                  randomNumber: randomGeneratedPlayerCount ?? 0,
-                ),
+                    onClickLoginButton: () =>
+                        Navigator.of(context).pushNamed(RoutePath.login),
+                    onClickRegisterButton: () =>
+                        Navigator.of(context).pushNamed(RoutePath.register),
+                    onClickLogoutButton: () => _logout(),
+                    isLogin: _vm.userProfile != null,
+                    brandLogoUrl: _vm.brandLogoUrl,
+                    userProfile: _vm.userProfile,
+                    phone: _vm.phone,
+                    config: _vm.config,
+                    totalBalance: _vm.totalBalance,
+                    //_vm.totalBalance,
+                    brandName: EnvironmentConfig.brandName,
+                    onClickBalance: () {
+                      setState(() {
+                        isShowTransferUI = !isShowTransferUI;
+                      });
+                    },
+                    randomNumber: randomGeneratedPlayerCount ?? 0),
                 body: Container(
                   child: Stack(
                     children: [
@@ -253,6 +252,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 10:
@@ -609,8 +609,14 @@ class _HomeState extends BaseState<Home> {
 
   _generateNewNumberEveryFewSec() {
     Random _random = new Random();
-    int min = _vm.config.homeOnlineUsers["min"] ?? 20000;
-    int max = _vm.config.homeOnlineUsers["max"] ?? 30000;
+    var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
+    int min = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["min"]
+        : 20000;
+
+    int max = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["max"]
+        : 30000;
     Timer.periodic(Duration(seconds: 10), (timer) {
       setState(() {
         randomGeneratedPlayerCount = min + _random.nextInt(max - min);
@@ -620,8 +626,14 @@ class _HomeState extends BaseState<Home> {
 
   _randomGenerator() {
     Random _random = new Random();
-    int min = _vm.config.homeOnlineUsers["min"] ?? 20000;
-    int max = _vm.config.homeOnlineUsers["max"] ?? 30000;
+    var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
+    int min = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["min"]
+        : 20000;
+
+    int max = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["max"]
+        : 30000;
     int result = min + _random.nextInt(max - min);
     return result;
   }
