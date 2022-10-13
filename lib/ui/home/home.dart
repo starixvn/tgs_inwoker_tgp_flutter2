@@ -154,7 +154,7 @@ class _HomeState extends BaseState<Home> {
                       isShowTransferUI = !isShowTransferUI;
                     });
                   },
-                  randomNumber: randomGeneratedPlayerCount,
+                  randomNumber: randomGeneratedPlayerCount ?? 0,
                 ),
                 body: Container(
                   child: Stack(
@@ -188,7 +188,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 2:
@@ -201,7 +201,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 3:
@@ -214,7 +214,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 4:
@@ -227,7 +227,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 8:
@@ -240,7 +240,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 9:
@@ -265,7 +265,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 11:
@@ -278,7 +278,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 100:
@@ -293,7 +293,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomGeneratedPlayerCount,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       default:
