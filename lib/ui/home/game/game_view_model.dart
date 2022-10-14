@@ -68,10 +68,10 @@ class GameViewModel extends BaseViewModel {
   ];
   var _gameListT11 = [
     GameType.LiveDealerLobby,
-    GameType.CardGameLobby,
+    //   GameType.CardGameLobby,
     GameType.Sportsbook,
     GameType.ESports,
-    GameType.LotteryLobby,
+    //   GameType.LotteryLobby,
     GameType.Slot,
     GameType.EGame,
     GameType.Fishing,
