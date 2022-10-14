@@ -441,7 +441,12 @@ class _MyHomePageState extends BaseState<MyHomePage> {
           _buildBottomBarItem(1, "ic_promotion", "promotion"),
           EnvironmentConfig.template_version == 2
               ? _buildBottomBarItem(2, "ic_menu", "")
-              : _buildBottomBarItem(2, "ic_deposit", "wallet",
+              : _buildBottomBarItem(
+                  2,
+                  "ic_deposit",
+                  EnvironmentConfig.template_version == 11
+                      ? "deposit"
+                      : "wallet",
                   isNeedLogin: true),
           EnvironmentConfig.template_version != 11
               ? SizedBox.shrink()
