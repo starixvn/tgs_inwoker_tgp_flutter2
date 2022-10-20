@@ -27,6 +27,10 @@ dart pub global run rename --bundleId $2
 #App Name
 dart pub global run rename --appname $3
 
+# run command below in case of error
+# pub global activate rename
+
+
 
 
 echo "Done"
