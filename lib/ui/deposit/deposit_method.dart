@@ -91,6 +91,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ListView(
               children: <Widget>[
+                _depositAddCard() ? _buildAddCardBtton() : SizedBox.shrink(),
                 _buildCard(
                     "deposit_method", _vm.depositMethodList!.keys.toList(),
                     isDepositMethod: true),
@@ -135,6 +136,31 @@ class _DepositMethodState extends BaseState<DepositMethod>
           );
         });
   }
+
+  _depositAddCard() => _vm.config?.depositAddCard ? true : false;
+  // render button that show + sign
+  _buildAddCardBtton() => Align(
+        alignment: Alignment.topLeft,
+        child: Container(
+          margin: EdgeInsets.all(10.auto),
+          width: 80.auto,
+          height: 35.auto,
+          decoration: BoxDecoration(
+            //add border-radius
+            borderRadius: BorderRadius.all(Radius.circular(4.auto)),
+            color: Colors.white,
+          ),
+          child: Center(
+            child: Text(
+              "+",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.auto,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      );
 
   _buildCard(String title, List<dynamic>? list,
       {bool isDepositMethod = false}) {
