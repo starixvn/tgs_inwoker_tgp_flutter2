@@ -22,9 +22,11 @@ import 'card_view_model.dart';
 
 class AddCard extends StatefulWidget {
   final bool isNavigateFromRegister;
+  final bool isNavigateFromDeposit;
 
   AddCard({
     this.isNavigateFromRegister = false,
+    this.isNavigateFromDeposit = false,
   });
 
   @override
@@ -49,6 +51,7 @@ class _AddCardState extends BaseState<AddCard> {
   @override
   void initState() {
     onSelectedBankType();
+    _vm.getDepositBankList();
     super.initState();
   }
 
@@ -74,7 +77,10 @@ class _AddCardState extends BaseState<AddCard> {
               behavior: MyBehavior(),
               child: CustomScaffold(
                 appBar: _buildAppBar(),
-                body: _vm.bankTypeList == null
+                body: (!widget.isNavigateFromDeposit
+                            ? _vm.bankTypeList
+                            : _vm.depositBankTypeList) ==
+                        null
                     ? buildProgressDialog(_vm.brandLogoUrl)
                     : Container(
                         height: context.screenHeight,
@@ -138,11 +144,21 @@ class _AddCardState extends BaseState<AddCard> {
       displayText: bankTypePickerText == null
           ? getTranslatedText("select_bank_type")
           : bankTypePickerText,
-      list: _vm.bankTypeList.keys.toList(),
+      list: (!widget.isNavigateFromDeposit
+              ? _vm.bankTypeList
+              : _vm.depositBankTypeList)
+          .keys
+          .toList(),
       isHintText: false,
       width: context.screenWidth,
       onClick: () {
-        _buildBottomSheet("bank_type", _vm.bankTypeList.keys.toList());
+        _buildBottomSheet(
+            "bank_type",
+            (!widget.isNavigateFromDeposit
+                    ? _vm.bankTypeList
+                    : _vm.depositBankTypeList)
+                .keys
+                .toList());
       });
 
   _buildChannelPicker() => Visibility(

@@ -1,6 +1,7 @@
 import 'package:api/api.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
+import 'package:api/entity/payment.dart';
 import 'package:api/entity/withdrawal_info.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
@@ -29,10 +30,13 @@ class CardViewModel extends BaseViewModel {
 
   var getBankCardListApiState,
       getWithdrawalInfoListApiState,
+      getBankTypeListApiState,
       addBankCardApiState,
       deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList =
       new Map<BankType, List<WithdrawalInfo>>();
+  Map<BankType, List> depositBankTypeList = new Map<BankType, List>();
+
   List? withdrawalInfoList;
   BankType? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
@@ -71,8 +75,23 @@ class CardViewModel extends BaseViewModel {
     return getWithdrawalInfoListApiState;
   }
 
+  getDepositBankList() async {
+    setLoading();
+    getBankTypeListApiState = await bankRepo.getPayment();
+    if (getBankTypeListApiState.isSuccess) {
+      var list = getBankTypeListApiState.result;
+      print(list);
+
+      //if (!config.addCardDisplayFPS) (list).removeWhere((e) => e.bankType == BankType.FPS);
+      depositBankTypeList = groupBy(list, (obj) => obj.bankType!);
+    }
+    setLoading(false);
+    return getBankTypeListApiState;
+  }
+
   onSelectedBankType(BankType? bankType) async {
     if (bankTypeList.isEmpty) await getWithdrawalInfoList();
+    if (depositBankTypeList.isEmpty) await getDepositBankList();
     if (bankType == null && pBankType == null) {
       if (config.addCardHideCertainField ?? false)
         pBankType = BankType.BANK;

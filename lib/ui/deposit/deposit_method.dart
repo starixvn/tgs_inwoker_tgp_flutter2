@@ -22,6 +22,7 @@ import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_html.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_method_view_model.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_order_view.dart';
@@ -138,7 +139,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
   }
 
   _depositAddCard() => _vm.config?.depositAddCard ? true : false;
-  // render button that show + sign
+
   _buildAddCardBtton() => Align(
         alignment: Alignment.topLeft,
         child: Container(
@@ -146,19 +147,33 @@ class _DepositMethodState extends BaseState<DepositMethod>
           width: 80.auto,
           height: 35.auto,
           decoration: BoxDecoration(
-            //add border-radius
             borderRadius: BorderRadius.all(Radius.circular(4.auto)),
             color: Colors.white,
           ),
-          child: Center(
-            child: Text(
-              "+",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.auto,
-                  fontWeight: FontWeight.bold),
+          child: Stack(children: [
+            GestureDetector(
+              onTap: () {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddCard(
+                                isNavigateFromRegister: false,
+                                isNavigateFromDeposit: true,
+                              )));
+                });
+              },
             ),
-          ),
+            Center(
+              child: Text(
+                "+",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.auto,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ]),
         ),
       );
 
