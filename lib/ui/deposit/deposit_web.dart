@@ -15,11 +15,7 @@ class DepositWeb extends StatefulWidget {
   final String? url;
   final String? brandLogoUrl;
 
-  DepositWeb({
-
-    this.url,
-    this.brandLogoUrl
-  }) ;
+  DepositWeb({this.url, this.brandLogoUrl});
 
   @override
   _DepositWebState createState() => _DepositWebState();
@@ -33,9 +29,9 @@ class _DepositWebState extends BaseState<DepositWeb> {
     return CustomScaffold(
         appBar: CustomAppBar(
           title: getTranslatedText("deposit"),
-        ) ,
+        ),
         body: InAppWebView(
-          initialUrlRequest: URLRequest(url:Uri.parse(widget.url!)),
+          initialUrlRequest: URLRequest(url: Uri.parse(widget.url!)),
           //initialUrl: widget.url,
           initialOptions: InAppWebViewGroupOptions(
               crossPlatform: InAppWebViewOptions(
@@ -44,16 +40,19 @@ class _DepositWebState extends BaseState<DepositWeb> {
               ),
               android: AndroidInAppWebViewOptions(
                 useWideViewPort: true,
-                mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                mixedContentMode:
+                    AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
               )),
           onWebViewCreated: (InAppWebViewController controller) {
             _webViewController = controller;
-            _webViewController!.loadUrl(urlRequest: URLRequest(url:Uri.parse(widget.url!)),);
+            _webViewController!.loadUrl(
+              urlRequest: URLRequest(url: Uri.parse(widget.url!)),
+            );
           },
-          onLoadStart: ( controller,  url) {
+          onLoadStart: (controller, url) {
             ProgressDialog.show(context, widget.brandLogoUrl);
           },
-          onLoadStop: ( controller,  url) async {
+          onLoadStop: (controller, url) async {
             ProgressDialog.hide();
           },
         ));

@@ -65,8 +65,7 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return CustomScaffold(
-              appBar: _buildAppBar(),
-              body: _buildManualBankDepositOrder());
+              appBar: _buildAppBar(), body: _buildManualBankDepositOrder());
         });
   }
 

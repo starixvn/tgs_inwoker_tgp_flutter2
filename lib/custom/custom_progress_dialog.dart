@@ -21,7 +21,8 @@ class ProgressDialog {
   }
 
   create(BuildContext context, String? url) {
-    _progressDialog = CustomProgressDialog(context, blur: 2, dismissable: false);
+    _progressDialog =
+        CustomProgressDialog(context, blur: 2, dismissable: false);
     _progressDialog!.setLoadingWidget(Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -35,9 +36,9 @@ class ProgressDialog {
                 fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Container(),
               ),
-
         CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+          valueColor:
+              AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
         ),
       ],
     ));

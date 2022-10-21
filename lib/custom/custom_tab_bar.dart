@@ -32,7 +32,9 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                   style: TextStyle(
                       fontFamily: 'PingFang',
                       fontSize: 10.auto,
-                      color: (widget.index == 0) ? CustomColor.theme_button_color : Colors.grey),
+                      color: (widget.index == 0)
+                          ? CustomColor.theme_button_color
+                          : Colors.grey),
                   textAlign: TextAlign.center),
               Container(
                 width: context.screenWidth / 2 - 20.auto,
@@ -42,13 +44,19 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                       bottomLeft: Radius.circular(25.0),
                     ),
                     border: Border.all(
-                        width: 2.0, color: (widget.index == 0) ? CustomColor.theme_button_color : Colors.grey)),
+                        width: 2.0,
+                        color: (widget.index == 0)
+                            ? CustomColor.theme_button_color
+                            : Colors.grey)),
                 margin: EdgeInsets.symmetric(vertical: 3.auto),
               ),
               AutoSizeText(
                 getTranslatedText(widget.step1Text),
                 style: TextStyle(
-                    fontFamily: 'PingFang', color: (widget.index == 0) ? CustomColor.theme_button_color : Colors.grey),
+                    fontFamily: 'PingFang',
+                    color: (widget.index == 0)
+                        ? CustomColor.theme_button_color
+                        : Colors.grey),
                 textAlign: TextAlign.center,
                 minFontSize: 10,
                 stepGranularity: 1,
@@ -65,7 +73,9 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                   style: TextStyle(
                       fontFamily: 'PingFang',
                       fontSize: 10.auto,
-                      color: (widget.index == 1) ? CustomColor.theme_button_color : Colors.grey),
+                      color: (widget.index == 1)
+                          ? CustomColor.theme_button_color
+                          : Colors.grey),
                   textAlign: TextAlign.center),
               Container(
                 width: context.screenWidth / 2 - 20.auto,
@@ -75,13 +85,19 @@ class _CustomTabBarState extends BaseState<CustomTabBar> {
                       bottomRight: Radius.circular(25.0),
                     ),
                     border: Border.all(
-                        width: 2.0, color: (widget.index == 1) ? CustomColor.theme_button_color : Colors.grey)),
+                        width: 2.0,
+                        color: (widget.index == 1)
+                            ? CustomColor.theme_button_color
+                            : Colors.grey)),
                 margin: EdgeInsets.symmetric(vertical: 3.auto),
               ),
               AutoSizeText(
                 getTranslatedText(widget.step2Text),
                 style: TextStyle(
-                    fontFamily: 'PingFang', color: (widget.index == 1) ? CustomColor.theme_button_color : Colors.grey),
+                    fontFamily: 'PingFang',
+                    color: (widget.index == 1)
+                        ? CustomColor.theme_button_color
+                        : Colors.grey),
                 textAlign: TextAlign.center,
                 minFontSize: 10,
                 stepGranularity: 1,
