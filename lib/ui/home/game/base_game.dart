@@ -1,4 +1,6 @@
+import 'package:api/api.dart';
 import 'package:api/entity/game.dart';
+import 'package:api/entity/game_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
@@ -45,6 +47,17 @@ class _BaseGameState extends BaseState<BaseGame> {
   var currentTabIndex = 0, currentGameType, currentGamePlatformCode;
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
+
+  final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
+  final walletRepo = WalletRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
+
+  var logoutApiState, getWalletBalanceApiState;
+  double? gameBalance;
+  double? totalBalance;
+
+  get wallet => userRepo.wallet;
 
   @override
   void initState() {
@@ -178,7 +191,32 @@ class _BaseGameState extends BaseState<BaseGame> {
         currentGamePlatformCode = gameProvider.code;
       });
       _navigate();
+      computeTotalBalance();
     }
+  }
+
+  computeTotalBalance() async {
+    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+    var gameList = contentRepo.gameProviderList
+            ?.where((element) => element.transferWallet == true) ??
+        [];
+
+    var task = <Future>[];
+    gameList.forEach((game) {
+      task.add(_getGameWalletBalance(game));
+    });
+    await Future.wait(task);
+    totalBalance = (wallet?.main ?? 0.0) + (gameBalance ?? 0.0);
+    wallet?.totalBalance = totalBalance;
+    widget.vm.notifyListeners();
+  }
+
+  _getGameWalletBalance(GameProvider game) async {
+    var state = await walletRepo.getGameWallet(game.code);
+    if (state.isSuccess) {
+      gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
+    }
+    widget.vm.notifyListeners();
   }
 
   _navigate() async {
