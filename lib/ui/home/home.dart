@@ -558,6 +558,21 @@ class _HomeState extends BaseState<Home> {
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_vm.config.idrRegisterCustomFlow) {
+        if (_vm.userProfile?.phone == "") {
+          //navigate to add phone
+          Navigator.pushNamed(context, "/phone_verification");
+        } else if (_vm.userProfile?.email == "") {
+          //navigate to add email
+          Navigator.pushNamed(context, "/email_verification");
+        } else if (_vm.userProfile?.registerCompleted == true) {
+          //navigate to add card
+          Navigator.pushNamed(context, "/add_card");
+        }
+      }
+      if (_vm.userProfile?.registerCompleted) {
+        print(_vm.userProfile?.registerCompleted ? "true" : "false");
+      }
       if ((_vm.config?.smsVerification ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {

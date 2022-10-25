@@ -1,4 +1,4 @@
-class RoutePath{
+class RoutePath {
   static final empty = '/';
   static final home = '/home';
   static final myHome = '/my_home';
@@ -29,11 +29,12 @@ class RoutePath{
   static final wechat = '/wechat';
   static final address = '/address';
   static final editPassword = '/edit_password';
-  static final resetPayPassword= '/reset_pay_password';
-  static final payPassword= '/pay_password';
+  static final resetPayPassword = '/reset_pay_password';
+  static final payPassword = '/pay_password';
   static final securityAnswer = '/security_answer';
   static final editSecurityAnswer = '/edit_security_answer';
-  static final editSecurityAnswerBySecurityAnswer = '/edit_security_answer_by_security_answer';
+  static final editSecurityAnswerBySecurityAnswer =
+      '/edit_security_answer_by_security_answer';
   static final aboutUs = '/about_us';
   static final system = '/system';
   static final childGame = '/child_game';
@@ -52,8 +53,8 @@ class RoutePath{
   static final maintenance = '/maintenance';
   static final splashMaintenance = '/splash_maintenance';
   static final depositWithdrawTransaction = '/deposit_withdraw_transaction';
-  static final  blacklistedUser = '/blacklisted_user';
-  static final  phoneReVerification = '/phone_re_verification';
+  static final blacklistedUser = '/blacklisted_user';
+  static final phoneReVerification = '/phone_re_verification';
   static final customerServiceWebView = '/customer_service_web_view';
   static final affiliate = '/affiliate';
   static final menuT2 = '/menuT2';
