@@ -80,16 +80,13 @@ class CardViewModel extends BaseViewModel {
     getBankTypeListApiState = await bankRepo.getPayment();
     if (getBankTypeListApiState.isSuccess) {
       var list = getBankTypeListApiState.result;
-      print(list);
-
-      //if (!config.addCardDisplayFPS) (list).removeWhere((e) => e.bankType == BankType.FPS);
       depositBankTypeList = groupBy(list, (obj) => obj.bankType!);
     }
     setLoading(false);
     return getBankTypeListApiState;
   }
 
-  onSelectedBankType(BankType? bankType) async {
+  onSelectedBankType(BankType? bankType, bool? fromDeposit) async {
     if (bankTypeList.isEmpty) await getWithdrawalInfoList();
     if (depositBankTypeList.isEmpty) await getDepositBankList();
     if (bankType == null && pBankType == null) {
@@ -99,12 +96,15 @@ class CardViewModel extends BaseViewModel {
         pBankType = bankTypeList.keys.first;
     } else
       pBankType = bankType;
-    withdrawalInfoList = (bankTypeList[pBankType])!;
+    withdrawalInfoList = ((fromDeposit == true
+        ? depositBankTypeList
+        : bankTypeList)[pBankType])!;
     notifyListeners();
   }
 
   onSelectedWithdrawalInfo({WithdrawalInfo? withdrawalInfo}) async {
     if (bankTypeList.isEmpty) await getWithdrawalInfoList();
+    if (depositBankTypeList.isEmpty) await getDepositBankList();
     if (withdrawalInfo == null)
       pWithdrawalInfo = withdrawalInfoList!.first;
     else

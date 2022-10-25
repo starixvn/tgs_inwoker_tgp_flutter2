@@ -1,4 +1,5 @@
 import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:api/entity/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -458,7 +459,7 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   onSelectedBankType({BankType? bankType}) async {
-    await _vm.onSelectedBankType(bankType);
+    await _vm.onSelectedBankType(bankType, widget.isNavigateFromDeposit);
     BankType _currentBankType = bankType ?? _vm.pBankType!;
     onSelectedWithdrawalInfo();
     setState(() {
