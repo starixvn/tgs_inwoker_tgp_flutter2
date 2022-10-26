@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:api/entity/campaign_details.dart';
+import 'package:api/entity/promotion.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +13,10 @@ import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/dialog/another_roulette_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
@@ -29,7 +33,6 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/dialog/marquee_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/roulette_dialog.dart';
-import 'dart:io' show Platform;
 
 import 'dart:math';
 
@@ -67,19 +70,18 @@ class _HomeState extends BaseState<Home> {
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
-
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  int _current = 0;
   CarouselController carouselController = CarouselController();
   var languageCode;
   var _gameViewModel = GameViewModel();
   var randomNumber;
-  var _assetsAudioPlayer;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
   var isDisplayGameView =
       false; //to check either display jackpot or game view in t11
+
+  var token;
 
   @override
   void initState() {
@@ -89,21 +91,34 @@ class _HomeState extends BaseState<Home> {
 
   _initData() async {
     var task = <Future>[];
-    task.add(_vm.getAnnouncement());
+    _generateNewNumberEveryFewSec();
+
     task.add(_vm.getPromotionList());
+    await _gameViewModel.getJackpotRecommendList();
+    randomGeneratedPlayerCount = _randomGenerator();
+    task.add(_vm.getAnnouncement());
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
-    // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-    //task.add(_vm.getRoulettePlayCount());
-    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
+    task.add(_vm.getRoulettePlayCount());
+
+    if (_vm.roulettePromo != null) {
+      task.add(_vm.getRouletteTodayResult());
+    }
+    //  if (_vm.depositRoulettePromo != null) {
+    //    task.add(_vm.getDepositRouletteTodayResult());
+    //  }
     await Future.wait(task);
     getLanguage();
-    randomNumber = _randomGenerator();
+
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
-    await _gameViewModel.getJackpotRecommendList();
+  }
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString('token');
   }
 
   getLanguage() async {
@@ -121,33 +136,30 @@ class _HomeState extends BaseState<Home> {
             children: [
               CustomScaffold(
                 appBar: CustomLoginAppBar(
-                  onClickLoginButton: () =>
-                      Navigator.of(context).pushNamed(RoutePath.login),
-                  onClickRegisterButton: () =>
-                      Navigator.of(context).pushNamed(RoutePath.register),
-                  onClickLogoutButton: () => _logout(),
-                  isLogin: _vm.userProfile != null,
-                  brandLogoUrl: _vm.brandLogoUrl,
-                  userProfile: _vm.userProfile,
-                  phone: _vm.phone,
-                  config: _vm.config,
-                  totalBalance: _vm.totalBalance,
-                  //_vm.totalBalance,
-                  brandName: EnvironmentConfig.brandName,
-                  onClickBalance: () {
-                    setState(() {
-                      isShowTransferUI = !isShowTransferUI;
-                    });
-                  },
-                  randomNumber: randomNumber ?? 0,
-                ),
+                    onClickLoginButton: () =>
+                        Navigator.of(context).pushNamed(RoutePath.login),
+                    onClickRegisterButton: () =>
+                        Navigator.of(context).pushNamed(RoutePath.register),
+                    onClickLogoutButton: () => _logout(),
+                    isLogin: _vm.userProfile != null,
+                    brandLogoUrl: _vm.brandLogoUrl,
+                    userProfile: _vm.userProfile,
+                    phone: _vm.phone,
+                    config: _vm.config,
+                    totalBalance: _vm.totalBalance,
+                    //_vm.totalBalance,
+                    brandName: EnvironmentConfig.brandName,
+                    onClickBalance: () {
+                      setState(() {
+                        isShowTransferUI = !isShowTransferUI;
+                      });
+                    },
+                    randomNumber: randomGeneratedPlayerCount ?? 0),
                 body: Container(
                   child: Stack(
                     children: [
                       _getHomeTemplateView(),
-                      _getSmallRouletteIcon(),
-                      // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-                      // _getAnotherSmallRouletteIcon(),
+                      _rouletteHolder(),
                     ],
                   ),
                 ),
@@ -175,7 +187,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 2:
@@ -188,7 +200,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 3:
@@ -201,7 +213,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 4:
@@ -214,7 +226,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 8:
@@ -227,7 +239,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 9:
@@ -240,6 +252,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 10:
@@ -252,7 +265,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 11:
@@ -265,7 +278,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 100:
@@ -280,7 +293,7 @@ class _HomeState extends BaseState<Home> {
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       default:
@@ -314,54 +327,100 @@ class _HomeState extends BaseState<Home> {
   _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
             _vm.roulettePromo != null,
-        child: Positioned(
-          top: context.screenHeight / 5 - 60.auto,
-          left: -5,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromSmallRoulette) {
-                  _displayRouletteDialog();
-                  setState(() {
-                    onClickFromSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
-            ),
+        child: Container(
+          width: context.screenHeight / 10,
+          height: context.screenHeight / 10,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              //prevent click more than once
+              if (!onClickFromSmallRoulette) {
+                _displayRouletteDialog();
+                setState(() {
+                  onClickFromSmallRoulette = true;
+                });
+              }
+            },
+            child: Image.asset("images/roulette/small_roulette.png"),
           ),
         ),
       );
 
-  _getAnotherSmallRouletteIcon() => Visibility(
+  _rouletteHolder() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.roulettePromo != null,
+            _vm.depositRoulettePromo != null,
         child: Positioned(
           top: context.screenHeight / 5 - 60.auto,
-          left: -75,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromAnotherSmallRoulette) {
-                  _displayAnotherRouletteDialog();
-                  setState(() {
-                    onClickFromAnotherSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
-            ),
+          left: -5,
+          child: Row(
+            children: [_getSmallRouletteIcon(), _smallRouletteGenerator()],
           ),
+        ),
+      );
+
+  var appearedDAR = [];
+
+  _smallRouletteGenerator() {
+    var depositRoulettePromo = _vm.depositRoulettePromo ?? [];
+    var rouletteWithPlayCounts = _vm.rouletteCount;
+
+    print(appearedDAR);
+
+    return Row(
+      children: List.generate(depositRoulettePromo.length, (index) {
+        var isSameId = rouletteWithPlayCounts
+            .any((element) => element.id == depositRoulettePromo[index].id);
+
+        var rouletteCount = 0;
+
+        //if the id is same, then get the play count
+        if (isSameId) {
+          // if the ID are the same save the id inside appearedDAR
+          if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
+            appearedDAR.add(depositRoulettePromo[index].id);
+          }
+          //temporary comment
+
+          rouletteCount = rouletteWithPlayCounts
+              .firstWhere(
+                  (element) => element.id == depositRoulettePromo[index].id)
+              .rouletteCount;
+        }
+
+//display the first item in depositRoulettePromo that matches id in appearedDAR
+        if (appearedDAR.isNotEmpty &&
+            depositRoulettePromo[index].id == appearedDAR.first) {
+          return _getAnotherSmallRouletteIcon(
+            depositRoulettePromo[index],
+            rouletteCount,
+          );
+        } else {
+          return Container();
+        }
+      }),
+
+      //
+    );
+  }
+
+  _getAnotherSmallRouletteIcon(Promotion data, int playcount) => Container(
+        width: context.screenHeight / 10,
+        height: context.screenHeight / 10,
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          onPressed: () {
+            //prevent click more than once
+            if (!onClickFromAnotherSmallRoulette) {
+              print("data id is: ${data.id}");
+              _displayAnotherRouletteDialog(data, playcount);
+              setState(() {
+                onClickFromAnotherSmallRoulette = true;
+              });
+            }
+          },
+          child: Image.asset("images/roulette/small_roulette.png"),
         ),
       );
 
@@ -412,13 +471,12 @@ class _HomeState extends BaseState<Home> {
       _displayDialog();
   }
 
-  _displayAnotherRouletteDialog() async {
-    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
-    if ((_vm.campaign?.length ?? 0) > 0)
+  _displayAnotherRouletteDialog(data, playcount) async {
+    if (_vm.depositRoulettePromo != null)
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => RouletteDialog(
+        builder: (BuildContext context) => AnotherRouletteDialog(
           onTapCloseIcon: () {
             Navigator.pop(context);
             if (!onClickFromAnotherSmallRoulette) _displayDialog();
@@ -427,10 +485,12 @@ class _HomeState extends BaseState<Home> {
             });
           },
           userProfile: _vm.userProfile,
-          isPlayed: _vm.isRoulettePlayed,
+          isPlayed: _vm.isDepositRoulettePlayed,
           vm: _vm,
           // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
+          contents: data,
+          playcount: playcount,
+          campaign: data.campaignDetails?.rouletteItems ?? [],
         ),
       );
     else
@@ -498,6 +558,21 @@ class _HomeState extends BaseState<Home> {
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_vm.config.idrRegisterCustomFlow) {
+        if (_vm.userProfile?.phone == "") {
+          //navigate to add phone
+          Navigator.pushNamed(context, "/phone_verification");
+        } else if (_vm.userProfile?.email == "") {
+          //navigate to add email
+          Navigator.pushNamed(context, "/email_verification");
+        } else if (_vm.userProfile?.registerCompleted == true) {
+          //navigate to add card
+          Navigator.pushNamed(context, "/add_card");
+        }
+      }
+      if (_vm.userProfile?.registerCompleted) {
+        print(_vm.userProfile?.registerCompleted ? "true" : "false");
+      }
       if ((_vm.config?.smsVerification ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
@@ -545,10 +620,35 @@ class _HomeState extends BaseState<Home> {
       (_vm.config?.popupPromotion ?? false) &&
       (_vm.promotionList?.isNotEmpty ?? false);
 
+  var randomGeneratedPlayerCount;
+
+  _generateNewNumberEveryFewSec() {
+    Random _random = new Random();
+    var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
+    int min = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["min"]
+        : 20000;
+
+    int max = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["max"]
+        : 30000;
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      setState(() {
+        randomGeneratedPlayerCount = min + _random.nextInt(max - min);
+      });
+    });
+  }
+
   _randomGenerator() {
     Random _random = new Random();
-    int min = EnvironmentConfig.template_version == 11 ? 500 : 20000;
-    int max = EnvironmentConfig.template_version == 11 ? 1200 : 30000;
+    var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
+    int min = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["min"]
+        : 20000;
+
+    int max = checkIfHomeOnlineUsersIsNull
+        ? _vm.config.homeOnlineUsers["max"]
+        : 30000;
     int result = min + _random.nextInt(max - min);
     return result;
   }

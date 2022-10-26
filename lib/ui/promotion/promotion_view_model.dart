@@ -45,8 +45,10 @@ class PromotionViewModel extends BaseViewModel {
       // endRecord = promotionList.length >= getPromotionListApiState.result.totalCount ? true : false;
       List<Promotion> theList = getPromotionListApiState.result;
 
+      //sort item in theList based on order then add to promotionList
+      theList.sort((a, b) => a.order!.compareTo(b.order!));
+
       promotionList = theList;
-      promotionList.sort((a, b) => a.order!.compareTo(b.order!));
     } else {
       promotionList = [];
       setLoading(false);

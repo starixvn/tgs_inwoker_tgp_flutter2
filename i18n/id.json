@@ -1110,5 +1110,17 @@
   "fees_withdraw": "Biaya penarikan",
   "fees_deposit": "Biaya setoran",
   "playerNote": "Catatan Pemain",
-  "plsEnterPlayerNote": "Silakan masukkan catatan pemain"
+  "plsEnterPlayerNote": "Silakan masukkan catatan pemain",
+
+  "report_bet": "Riwayat Taruhan",
+  "report_withdrawal": "Penarikan",
+
+  "dialogDARUnavailableTitle": "Lotre isi ulang telah berakhir",
+  "dialogUnavailableTitle1": "Mainkan sekali sehari",
+  "dialogUnavailableTitle2": "Datang lagi besok",
+  "dialogUnavailableTitle3": "Klik untuk melihat lebih banyak penawaran bagus",
+  "dialogRewardTitle1": "Selamat atas kemenangan",
+  "dialogErrorTitle1": "Undian tidak mungkin",
+  "dialogErrorTitle2": "Silakan coba lagi nanti",
+  "dialogIndexErrorTitle1": "Pemain harap segarkan"
 }

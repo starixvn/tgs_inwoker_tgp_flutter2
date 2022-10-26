@@ -44,10 +44,18 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
             _buildPromotionImage(),
             PromotionMainDetails(promotion: widget.promotion),
             PromotionTermsContent(
-                termsContent:
-                    (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
-                        ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
-                        : widget.promotion.content ?? "")),
+                termsContent: (((widget
+                                .promotion
+                                .localization?[getCurrentLanguage().apiCode]
+                                ?.content)
+                            ?.isNotEmpty ??
+                        false)
+                    ? (widget
+                            .promotion
+                            .localization?[getCurrentLanguage().apiCode]
+                            ?.content) ??
+                        ""
+                    : widget.promotion.content ?? "")),
             PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
             _buildJoinButton()
           ],
@@ -63,7 +71,8 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   _buildJoinButton() => Visibility(
         visible: widget.promotion.promotionType != "Dummy",
         child: Container(
-          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
+          margin: EdgeInsets.only(
+              left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
           child: ColorButton(
             title: getTranslatedText("join"),
             onClick: () {
@@ -102,7 +111,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       return;
     } else if (widget.promotion.promotionType == "FirstDeposit" ||
         widget.promotion.promotionType == "DailySecondDeposit" ||
-        widget.promotion.promotionType == "DailyFirstDeposit") {
+        widget.promotion.promotionType == "DailyFirstDeposit" ||
+        widget.promotion.promotionType == "DepositAccumulateRoulette" ||
+        widget.promotion.promotionType == "DepositReward") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed(RoutePath.deposit);
       });

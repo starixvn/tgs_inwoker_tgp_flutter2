@@ -174,7 +174,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
                     CustomToast.show(getTranslatedText("empty_promotion"));
                   }
                 : () {
-                    _buildBottomSheet(title, list ?? []);
+                    _buildBottomSheet(
+                        title, list ?? [], _amountController.text);
                   },
             tipsText: isDepositMethod && widget.paymentCode == "ZeroNineNinePay"
                 ? "(${getTranslatedText("available")} 9:00-23:30)"
@@ -183,13 +184,14 @@ class _DepositMethodState extends BaseState<DepositMethod>
         ));
   }
 
-  _buildBottomSheet(String title, List<dynamic> list) {
+  _buildBottomSheet(String title, List<dynamic> list, amount) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
           return CustomPickerDialog(
               title: title,
               list: list,
+              amount: amount,
               onChanged: (value) {
                 setState(() {
                   if (value is BankType)
@@ -233,20 +235,20 @@ class _DepositMethodState extends BaseState<DepositMethod>
             bottomMargin:
                 _isUmPayDeposit() || _isShowExchangeRateText() ? 0 : 15,
             customPart: (() {
-              if (fees > 0) {
+              if ((fees ?? 0) > 0) {
                 return Row(
                   children: [
                     Text(
                       getTranslatedText("fees_deposit") + ": ",
                       style: TextStyle(
-                          color: CustomColor.theme_app_bar_color,
+                          color: CustomColor.theme_button_color,
                           fontSize: 12.auto),
                       textAlign: TextAlign.start,
                     ),
                     Text(
                       fees.toString(),
                       style: TextStyle(
-                          color: CustomColor.theme_app_bar_color,
+                          color: CustomColor.theme_button_color,
                           fontSize: 12.auto,
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.start,
@@ -254,7 +256,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
                     Text(
                       "%",
                       style: TextStyle(
-                          color: CustomColor.theme_app_bar_color,
+                          color: CustomColor.theme_button_color,
                           fontSize: 12.auto,
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.start,
@@ -793,7 +795,7 @@ class _DepositMethodState extends BaseState<DepositMethod>
 
   _buildPlayerNoteTextField() => Visibility(
         visible: (_isEwallet() || _isPulsa() || _isBank()) &&
-            !(_vm.config?.addPlayerNote ?? false),
+            (_vm.config?.addPlayerNote ?? false),
         child: Container(
           margin: EdgeInsets.only(
             top: 20.auto,
@@ -997,7 +999,9 @@ class _DepositMethodState extends BaseState<DepositMethod>
   _isUSDT() => currBankType == BankType.USDT;
 
   _isEwallet() => currBankType == BankType.EWALLET;
+
   _isPulsa() => currBankType == BankType.PULSA;
+
   _isBank() => currBankType == BankType.BANK;
 
   onSelectedMethod(BankType bankType) async {

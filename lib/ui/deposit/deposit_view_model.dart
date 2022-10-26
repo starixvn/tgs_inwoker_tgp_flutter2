@@ -67,18 +67,22 @@ class DepositViewModel extends BaseViewModel {
     setLoading();
     getPlayerPromotionListApiState = await contentRepo.getPromotionList();
     if (getPlayerPromotionListApiState.isSuccess) {
-      List<Promotion> list = getPlayerPromotionListApiState.result;
+      List list = getPlayerPromotionListApiState.result;
       list.forEach((value) {
         if (value.promotionType == "FirstDeposit" ||
             value.promotionType == "DailySecondDeposit" ||
-            value.promotionType == "DailyFirstDeposit")
+            value.promotionType == "DailyFirstDeposit" ||
+            value.promotionType == "DepositAccumulateRoulette" ||
+            value.promotionType == "DepositReward")
           displayPromotionList.add({
             "name":
                 ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
                         ? value.localization![languageCode]!.name
                         : value.name) ??
                     "",
-            "id": value.id ?? ""
+            "id": value.id ?? "",
+            "depositMinimumLimit":
+                value.campaignDetails?.depositMinimumLimit?.toString() ?? "0",
           });
       });
       setLoading(false);

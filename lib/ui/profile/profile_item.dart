@@ -45,20 +45,21 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem(
               "ic_account_report", "bet_history", "transaction", 0),
           _buildMiddleProfileItem(
-              "ic_deposit_report", "deposit_history", "transaction", 1),
+              "ic_withdraw_report", "withdrawal_history", "transaction", 1),
           _buildMiddleProfileItem(
-              "ic_withdraw_report", "withdrawal_history", "transaction", 2),
+              "ic_deposit_report", "deposit_history", "transaction", 2),
           _buildMiddleProfileItem(
               "ic_transfer_report", "transfer_history", "transaction", 3),
-          _buildMiddleProfileItem(
-              "ic_account_report", "promotion_history", "transaction", 4),
-          _buildMiddleProfileItem(
-              "ic_card_detail", "manage_card", "main_card", 0),
           _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.config?.haveAffiliateFeature ?? false)
               ? _buildMiddleProfileItem(
                   "ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
+          //  _buildMiddleProfileItem(
+          //      "ic_account_report", "promotion_history", "transaction", 4),
+          _buildMiddleProfileItem(
+              "ic_card_detail", "manage_card", "main_card", 0),
+
           EnvironmentConfig.template_version == 11
               ? _buildMiddleProfileItem("ic_lang", "language", "language", 0)
               : _buildBottomProfileItem("ic_lang", "language", "language", 0),

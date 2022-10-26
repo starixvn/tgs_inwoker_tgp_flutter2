@@ -17,17 +17,22 @@ class RouletteDialog extends StatefulWidget {
   final Function onTapCloseIcon;
   final UserProfile? userProfile;
   final bool isPlayed;
-  final List<CampaignDetails>? campaign;
+  final CampaignDetails? campaign;
   final HomeViewModel vm;
 
   RouletteDialog(
-      {required this.onTapCloseIcon, this.isPlayed = false, this.userProfile, required this.vm, this.campaign});
+      {required this.onTapCloseIcon,
+      this.isPlayed = false,
+      this.userProfile,
+      required this.vm,
+      this.campaign});
 
   @override
   _RouletteDialogState createState() => _RouletteDialogState();
 }
 
-class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerProviderStateMixin {
+class _RouletteDialogState extends BaseState<RouletteDialog>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   int selectedValue = 0;
   var currentSelectValue = 0.0;
@@ -53,7 +58,8 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
     _controller
       ..repeat()
       ..addListener(() async {
-        var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
+        var a =
+            double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
         var b = double.parse((currentSelectValue).toStringAsFixed(2));
         if (a == b && isClick) {
           _controller.stop();
@@ -93,12 +99,15 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
   List<FortuneWheelChild<int>> totalList() {
     List<FortuneWheelChild<int>> list = [];
     if (widget.campaign == null) {
-      list = [FortuneWheelChild(foreground: Text(""), value: 1), FortuneWheelChild(foreground: Text(""), value: 1)];
+      list = [
+        FortuneWheelChild(foreground: Text(""), value: 1),
+        FortuneWheelChild(foreground: Text(""), value: 1)
+      ];
     } else {
-      for (var i = 0; i < widget.campaign!.length; i++) {
+      for (var i = 0; i < widget.campaign!.rouletteItems!.length; i++) {
         list.add(FortuneWheelChild(
           foreground: Text(
-            widget.campaign?[i].title ?? "",
+            widget.campaign?.rouletteItems![i].title ?? "",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: i % 2 == 0 ? Colors.black : Colors.white,
@@ -199,19 +208,31 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                                         onTap: () async {
                                           if (widget.userProfile == null) {
                                             navigateToLogin();
-                                          } else if ((widget.vm.config?.promoRouletteSMSVerification ?? false) &&
-                                              (widget.userProfile?.phone?.isEmpty ?? true)) {
+                                          } else if ((widget.vm.config
+                                                      ?.promoRouletteSMSVerification ??
+                                                  false) &&
+                                              (widget.userProfile?.phone
+                                                      ?.isEmpty ??
+                                                  true)) {
                                             navigateToPhoneVerification();
                                           } else {
                                             animate();
 
-                                            await widget.vm.getRouletteResult().then((_apiState) {
+                                            await widget.vm
+                                                .getRouletteResult()
+                                                .then((_apiState) {
                                               if (_apiState.isSuccess) {
                                                 setState(() {
-                                                  selectedValue = widget.vm.rotatedResultId ?? 0;
+                                                  selectedValue = widget
+                                                          .vm.rotatedResultId ??
+                                                      0;
                                                   // to fix controller animate in different direction but except 0
                                                   var list = [0, 5, 4, 3, 2, 1];
-                                                  currentSelectValue = ((1 / 6) * list[selectedValue]) * 2.0 * pi;
+                                                  currentSelectValue = ((1 /
+                                                              6) *
+                                                          list[selectedValue]) *
+                                                      2.0 *
+                                                      pi;
                                                   isClick = true;
                                                 });
                                               } else {
@@ -236,11 +257,15 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                               flex: 1,
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildRoulettePromoButton(0, "roulette_promo_home"),
-                                  _buildRoulettePromoButton(1, "roulette_promo_content"),
-                                  _buildRoulettePromoButton(2, "roulette_promo_terms"),
+                                  _buildRoulettePromoButton(
+                                      0, "roulette_promo_home"),
+                                  _buildRoulettePromoButton(
+                                      1, "roulette_promo_content"),
+                                  _buildRoulettePromoButton(
+                                      2, "roulette_promo_terms"),
                                 ],
                               ),
                             )
@@ -323,7 +348,8 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
                   ),
                 ),
                 Text(
-                  widget.campaign?[selectedValue].title ?? "lose",
+                  widget.campaign?.rouletteItems![selectedValue].title ??
+                      "lose",
                   style: TextStyle(color: Colors.black, fontSize: 20.auto),
                 ),
               ],
@@ -403,13 +429,19 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
               borderRadius: BorderRadius.circular(100),
               border: Border.all(
                 width: 2,
-                color: !(widget.isPlayed || isDisplayReward) ? Colors.white : Colors.black,
+                color: !(widget.isPlayed || isDisplayReward)
+                    ? Colors.white
+                    : Colors.black,
               ),
-              color: !(widget.isPlayed || isDisplayReward) ? Colors.black : Colors.transparent,
+              color: !(widget.isPlayed || isDisplayReward)
+                  ? Colors.black
+                  : Colors.transparent,
             ),
             child: Icon(
               Icons.close,
-              color: !(widget.isPlayed || isDisplayReward) ? Colors.white : Colors.black,
+              color: !(widget.isPlayed || isDisplayReward)
+                  ? Colors.white
+                  : Colors.black,
               size: 20,
             ),
           ),
@@ -432,12 +464,23 @@ class _RouletteDialogState extends BaseState<RouletteDialog> with SingleTickerPr
               return PromotionMainDetails(promotion: widget.vm.roulettePromo);
             case 1:
               return PromotionTermsContent(
-                  termsContent: ((widget.vm.roulettePromo?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
-                          ? widget.vm.roulettePromo?.localization![getCurrentLanguage().apiCode]!.content!
+                  termsContent: ((widget
+                                  .vm
+                                  .roulettePromo
+                                  ?.localization?[getCurrentLanguage().apiCode]
+                                  ?.content
+                                  ?.isNotEmpty ??
+                              false)
+                          ? widget
+                              .vm
+                              .roulettePromo
+                              ?.localization![getCurrentLanguage().apiCode]!
+                              .content!
                           : widget.vm.roulettePromo?.content ?? "") ??
                       "");
             case 2:
-              return PromotionTermsContent(termsContent: widget.vm.roulettePromo?.terms ?? "");
+              return PromotionTermsContent(
+                  termsContent: widget.vm.roulettePromo?.terms ?? "");
             default:
               return Container();
           }

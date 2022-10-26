@@ -251,7 +251,7 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _buildPlayerNoteTextField() => Visibility(
         visible: (_isEWallet() || _isPulsa() || _isBank()) &&
-            !(_vm.config?.addPlayerNote ?? false),
+            (_vm.config?.addPlayerNote ?? false),
         child: Container(
           margin: EdgeInsets.only(
             top: 20.auto,
