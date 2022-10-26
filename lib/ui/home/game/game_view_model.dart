@@ -196,7 +196,7 @@ class GameViewModel extends BaseViewModel {
       else
         return _gameTypeList;
     }());
-    //(EnvironmentConfig.brandName == "PB" || EnvironmentConfig.brandName == "PB2") ? _pbGamelist : _gameTypeList;
+
     gameProviderList = gameTypeList
         .map((type) => list
             .where((element) => (type ==
@@ -208,6 +208,16 @@ class GameViewModel extends BaseViewModel {
                 : element.gameType == type)
             .toList())
         .toList();
+
+    gameProviderList!.forEach((element) {
+      if (EnvironmentConfig.currency == "CNY") {
+        element.forEach((element) {
+          if (element.code == "BTI") {
+            element.code = "PHSB";
+          }
+        });
+      }
+    });
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!))
       ..forEach((key, value) {
         if (key == GameType.Sportsbook) {
