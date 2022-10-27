@@ -1097,6 +1097,8 @@
   "roulette_promo_home": "优惠主页",
   "roulette_promo_content": "优惠内容",
   "roulette_promo_terms": "优惠条款",
+  "roulette_history": "中奖纪录",
+  "roulette_remaining": "您還有{balance}次機會!",
   "idr_withdrawalNumber": "銀行卡號碼",
   "idr_msgEnterWithdrawalNumber": "請輸入銀行卡號碼",
   "withdrawalBankType": "類別",

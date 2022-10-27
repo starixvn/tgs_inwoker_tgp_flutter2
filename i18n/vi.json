@@ -1096,6 +1096,8 @@
   "roulette_promo_home": "Trang chủ ưu đãi",
   "roulette_promo_content": "Nội dung khuyến mãi",
   "roulette_promo_terms": "điều khoản ưu đãi",
+  "roulette_history": "Lịch sử",
+  "roulette_remaining": "Còn lại {balance} Spin",
   "idr_withdrawalNumber": "Số thẻ ngân hàng",
   "idr_msgEnterWithdrawalNumber": "Vui lòng nhập số thẻ ngân hàng",
   "withdrawalBankType": "Loại",
