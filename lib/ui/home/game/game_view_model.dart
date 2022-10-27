@@ -210,7 +210,7 @@ class GameViewModel extends BaseViewModel {
         .toList();
 
     gameProviderList!.forEach((element) {
-      if (EnvironmentConfig.currency == "CNY") {
+      if (EnvironmentConfig.currency == "PHP") {
         element.forEach((element) {
           if (element.code == "BTI") {
             element.code = "PHSB";
