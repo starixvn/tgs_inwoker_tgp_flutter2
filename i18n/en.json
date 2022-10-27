@@ -1110,6 +1110,8 @@
   "roulette_promo_home": "Promotion Home",
   "roulette_promo_content": "Promotion Content",
   "roulette_promo_terms": "Promotion T&C",
+  "roulette_history": "History",
+  "roulette_remaining": "Remaining {balance} Spin(s)",
   "idr_withdrawalNumber": "Bank card number",
   "idr_msgEnterWithdrawalNumber": "Please enter bank card number",
   "withdrawalBankType": "Type",
