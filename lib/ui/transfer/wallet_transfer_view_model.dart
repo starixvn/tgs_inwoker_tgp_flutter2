@@ -1,7 +1,6 @@
 import 'package:api/api.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
-import 'package:tgp_flutter2/environment_config.dart';
 
 class WalletTransferViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
@@ -13,9 +12,15 @@ class WalletTransferViewModel extends BaseViewModel {
   WalletTransferViewModel() {
     walletList = contentRepo.gameProviderList!
         .where((element) => element.transferWallet == true)
-        .map((e) => Wallet(e.code, e.name, null))
+        .map((e) => Wallet(
+              e.code,
+              e.name,
+              null,
+              e.code,
+            ))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
+      ..insert(0,
+          Wallet("-1", "main_wallet", null, "main_wallet", isMainWallet: true));
   }
 
   get userMainWalletBalance =>
@@ -78,16 +83,6 @@ class WalletTransferViewModel extends BaseViewModel {
     if (config.mergeEVORTNT ?? true)
       walletList.removeWhere(
           (wallet) => (wallet.gpCode == "RTTF" || wallet.gpCode == "NTTF"));
-
-    walletList.forEach((wallet) {
-      if (EnvironmentConfig.currency == "PHP") {
-        if (wallet.gpCode == "BTI") {
-          wallet.gpCode = "PHSB";
-          wallet.title = "PHSB";
-        }
-      }
-    });
-
     await Future.wait(task);
     isFetchingBalance = false;
     if (hasListeners) notifyListeners();
