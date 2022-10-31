@@ -186,9 +186,16 @@ class _BaseGameState extends BaseState<BaseGame> {
     if (widget.vm.userProfile == null) {
       showPreLoginDialog();
     } else {
+      var gpcode;
+      if (gameProvider.code.toString() == "PHSB" &&
+          EnvironmentConfig.currency == "PHP") {
+        gpcode = "BTI";
+      } else {
+        gpcode = gameProvider.code;
+      }
       setState(() {
         currentGameType = gameProvider.gameType!;
-        currentGamePlatformCode = gameProvider.code;
+        currentGamePlatformCode = gpcode;
       });
       _navigate();
       computeTotalBalance();
