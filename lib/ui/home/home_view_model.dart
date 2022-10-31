@@ -113,9 +113,15 @@ class HomeViewModel extends BaseViewModel {
       await contentRepo.getGameProviderList();
     walletList = contentRepo.gameProvider2List!
         .where((element) => element.transferWallet == true)
-        .map((e) => Wallet(e.code, e.name, e.gameType))
+        .map((e) => Wallet(
+              e.code,
+              e.name,
+              e.gameType,
+              e.code,
+            ))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
+      ..insert(0,
+          Wallet("-1", "main_wallet", null, "main_wallet", isMainWallet: true));
     var task = <Future>[];
     print(walletList);
     walletList.forEach((wallet) {
