@@ -38,15 +38,15 @@ class WheelSlice extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: size / 2,
-            left: size / 2 - pieceWidth / 2,
+            top: size / 2 + 10,
+            left: (size / 2 - pieceWidth / 2),
             child: Container(
               padding: EdgeInsets.all(size / fortuneWheelChildren.length / 4),
               height: pieceHeight,
               width: pieceWidth,
               child: FittedBox(
                   fit: BoxFit.scaleDown,
-                  alignment: Alignment.center,
+                  alignment: Alignment.topLeft,
                   child: Container(
                       child: RotatedBox(
                           quarterTurns: (() {

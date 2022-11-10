@@ -287,6 +287,36 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                 ),
                               ),
                             ),
+                            //black container with centered container containing text 123
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                  top: 5.auto,
+                                  bottom: 5.auto,
+                                ),
+                                margin: EdgeInsets.only(
+                                    left: 10.auto,
+                                    right: 10.auto,
+                                    bottom: 10.auto),
+                                color: Colors.black,
+                                child: Center(
+                                  child: Text(
+                                    // getTranslatedText("roulette_remaining") replace the {balance} with   widget.playcount and keep rerendering
+                                    getTranslatedText("roulette_remaining")
+                                        .replaceAll(
+                                            "{balance}",
+                                            widget.playcount == null
+                                                ? "0"
+                                                : widget.playcount.toString()),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             Expanded(
                               flex: 1,
                               child: Row(
@@ -300,6 +330,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                                       1, "roulette_promo_content"),
                                   _buildRoulettePromoButton(
                                       2, "roulette_promo_terms"),
+                                  _buildRoulettePromoButton(
+                                      3, "roulette_history"),
                                 ],
                               ),
                             )
@@ -513,6 +545,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
             case 2:
               return PromotionTermsContent(
                   termsContent: widget.contents?.terms ?? "");
+            case 3:
+              return PromotionTermsContent(termsContent: "wait api ");
             default:
               return Container();
           }
