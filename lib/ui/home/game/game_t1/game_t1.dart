@@ -63,7 +63,8 @@ class _GameT1State extends BaseState<GameT1> {
                       elevation: 5,
                       child: ListView(
                         // padding: EdgeInsets.only(bottom: 10.auto),
-                        children: List.generate(widget.vm.gameTypeList.length, (index) {
+                        children: List.generate(widget.vm.gameTypeList.length,
+                            (index) {
                           var gameType = widget.vm.gameTypeList[index];
                           if (index == 0)
                             return _buildTopGameTab(index, gameType);
@@ -134,24 +135,29 @@ class _GameT1State extends BaseState<GameT1> {
                   matchTextDirection: true,
                   width: 28.auto,
                   height: 28.auto,
-                  color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
-                          tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
+                  color: (tabIndex == currentTabIndex &&
+                              EnvironmentConfig.brandName == "PB" ||
+                          tabIndex != currentTabIndex &&
+                              EnvironmentConfig.brandName != "PB")
                       //only PB, selected game tab color is grey, not selected game tab is button color
                       ? CustomColor.theme_text_grey_color
                       : CustomColor.theme_button_color,
                 ),
               ),
               AutoSizeText(
-                gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
+                gameType.getName(
+                    context, widget.vm.config?.menuItemShootFish ?? false),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
-                          tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
+                  color: (tabIndex == currentTabIndex &&
+                              EnvironmentConfig.brandName == "PB" ||
+                          tabIndex != currentTabIndex &&
+                              EnvironmentConfig.brandName != "PB")
                       ? CustomColor.theme_text_grey_color
                       : CustomColor.theme_button_color,
                 ),
                 minFontSize: 2,
-                maxFontSize: 13,
+                maxFontSize: 12,
                 stepGranularity: 1,
                 maxLines: 2,
               ),
@@ -171,7 +177,8 @@ class _GameT1State extends BaseState<GameT1> {
     });
     setState(() {
       //  currentTabIndex = tabIndex;
-      _controller.animateTo(des, curve: Curves.linear, duration: Duration(milliseconds: 250));
+      _controller.animateTo(des,
+          curve: Curves.linear, duration: Duration(milliseconds: 250));
     });
   }
 
@@ -185,7 +192,11 @@ class _GameT1State extends BaseState<GameT1> {
         des += scrollTab * widget.vm.gameProviderList![i].length;
         index = i;
       } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = widget.vm.gameProviderList!.where((i) => i.length > 0).toList().length - 1;
+        index = widget.vm.gameProviderList!
+                .where((i) => i.length > 0)
+                .toList()
+                .length -
+            1;
       }
     });
     setState(() {
