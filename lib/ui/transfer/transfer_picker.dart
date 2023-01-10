@@ -4,7 +4,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
-class TransferPicker extends StatefulWidget{
+class TransferPicker extends StatefulWidget {
   final String title;
   final String displayText;
   final List<dynamic> list;
@@ -17,7 +17,7 @@ class TransferPicker extends StatefulWidget{
     required this.list,
     required this.onClick,
     required this.isHintText,
-  }) ;
+  });
 
   @override
   _TransferPickerState createState() => _TransferPickerState();
@@ -56,7 +56,6 @@ class _TransferPickerState extends BaseState<TransferPicker> {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }

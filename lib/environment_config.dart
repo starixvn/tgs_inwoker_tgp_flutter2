@@ -14,19 +14,19 @@ class EnvironmentConfig {
 
   static const String environmentStage = 'development';
 
-  static const int template_version = 2;
+  static const int template_version = 1;
 
   static const bool dark_mode = false;
 
   static const bool light_mode = false;
 
-  static const int primaryColorCode = 4291206250;
+  static const int primaryColorCode = 4287693580;
 
-  static const int primaryGradientColorCode = 4291206250;
+  static const int primaryGradientColorCode = 4291036433;
 
-  static const int theme_app_bar_color = 4291206250;
+  static const int theme_app_bar_color = 4291036433;
 
-  static const int theme_button_color = 4291206250;
+  static const int theme_button_color = 4291036433;
 
   static const int theme_grey_button_color = 4286743170;
 
@@ -36,13 +36,13 @@ class EnvironmentConfig {
 
   static const int menu_bg_color = 4294967295;
 
-  static const int tab_selected_color = 4291206250;
+  static const int tab_selected_color = 4291036433;
 
   static const int tab_unselected_color = 4285558896;
 
-  static const int bottom_nav_selected_color = 4285558896;
+  static const int bottom_nav_selected_color = 4287693580;
 
-  static const int bottom_nav_unselected_color = 4294967295;
+  static const int bottom_nav_unselected_color = 4285558896;
 
   static const int promotion_bg_color = 4294967295;
 
@@ -60,9 +60,9 @@ class EnvironmentConfig {
 
   static const int theme_marquee_text_color = 4285558896;
 
-  static const int announcement_icon_color = 4291206250;
+  static const int announcement_icon_color = 4291036433;
 
-  static const int theme_bottom_app_bar_color = 4291206250;
+  static const int theme_bottom_app_bar_color = 4294309365;
 
   static const String default_lang = 'en-US';
 

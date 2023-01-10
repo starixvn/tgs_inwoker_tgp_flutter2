@@ -7,6 +7,7 @@
   "cat_fish": "ยิงปลา",
   "cat_shoot_fish": "ตกปลา",
   "cat_e_game": "อีสปอร์ต",
+  "cat_e_cockfight": "การชนไก่",
   "cat_e_sports": "กีฬา",
   "home": "หน้าหลัก",
   "promotion": "โปรโมชั่น",
@@ -1097,7 +1098,8 @@
   "roulette_promo_home": "เสนอหน้าแรก",
   "roulette_promo_content": "ข้อเสนอ",
   "roulette_promo_terms": "เงื่อนไขพิเศษ",
-
+  "roulette_history": "ประวัติ",
+  "roulette_remaining": "หมุน {balance} ที่เหลืออยู่",
   "idr_withdrawalNumber": "หมายเลขบัตรธนาคาร",
   "idr_msgEnterWithdrawalNumber": "โปรดป้อนหมายเลขบัตรธนาคาร",
   "withdrawalBankType": "หมวดหมู่",

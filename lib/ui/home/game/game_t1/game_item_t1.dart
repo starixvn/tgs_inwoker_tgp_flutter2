@@ -37,9 +37,17 @@ class GameItemT1State extends BaseState<GameItemT1> {
   double _itemPaddingTop = 0;
   double _itemPaddingBottom = (5).auto;
 
-  double get _itemWidth => context.size!.width - _listViewPaddingRight - _itemPaddingRight - _itemPaddingLeft;
+  double get _itemWidth =>
+      context.size!.width -
+      _listViewPaddingRight -
+      _itemPaddingRight -
+      _itemPaddingLeft;
 
-  double get itemHeight => _itemWidth * (1 / _imageRatio) + _itemPaddingTop + _itemPaddingBottom + 6.5;
+  double get itemHeight =>
+      _itemWidth * (1 / _imageRatio) +
+      _itemPaddingTop +
+      _itemPaddingBottom +
+      6.5;
 
   //ScrollController? controller;
 
@@ -47,7 +55,9 @@ class GameItemT1State extends BaseState<GameItemT1> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(),
-      decoration: BoxDecoration(color: CustomColor.very_light_pink_four, borderRadius: BorderRadius.circular(5.auto)),
+      decoration: BoxDecoration(
+          color: CustomColor.very_light_pink_four,
+          borderRadius: BorderRadius.circular(5.auto)),
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),
           controller: widget.controller,
@@ -55,7 +65,8 @@ class GameItemT1State extends BaseState<GameItemT1> {
               .expand((element) => element)
               .toList()
               .map((item) => Container(
-                  padding: EdgeInsets.only(top: _itemPaddingTop, bottom: _itemPaddingBottom),
+                  padding: EdgeInsets.only(
+                      top: _itemPaddingTop, bottom: _itemPaddingBottom),
                   child: _buildImageLayout(item)))
               .toList()),
     );
@@ -96,7 +107,8 @@ class GameItemT1State extends BaseState<GameItemT1> {
                         margin: EdgeInsets.only(bottom: 15.auto),
                         child: Text(
                           getTranslatedText("sports_$gamePlatformCode"),
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       )
@@ -105,13 +117,16 @@ class GameItemT1State extends BaseState<GameItemT1> {
                   width: 74.auto,
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration:
-                      BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T2/btn-start-game.jpg"))),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image:
+                              AssetImage("images/game/T2/btn-start-game.jpg"))),
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: AutoSizeText(
                       getTranslatedText("start_game"),
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                       minFontSize: 5,
                       maxFontSize: 8,
                       stepGranularity: 1,
@@ -132,7 +147,10 @@ class GameItemT1State extends BaseState<GameItemT1> {
                 ),
                 child: Center(
                   child: Text(getTranslatedText("maintenance"),
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.auto)),
                 ),
               ),
             ),
@@ -150,13 +168,16 @@ class GameItemT1State extends BaseState<GameItemT1> {
               placeholder: (context, url) => Container(
                     width: context.screenWidth,
                     height: context.screenHeight,
-                    color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                    color: gameProvider.status != 0
+                        ? Colors.transparent
+                        : CustomColor.very_light_pink_four,
                     child: Center(
                       child: SizedBox(
                         height: 50.0,
                         width: 50.0,
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              CustomColor.theme_button_color),
                         ),
                       ),
                     ),
@@ -174,5 +195,6 @@ class GameItemT1State extends BaseState<GameItemT1> {
       );
 
   _isSportsHideLogo(String? gamePlatformCode) =>
-      (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+      (widget.config?.sportsHideLogo ?? false) &&
+      (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 }

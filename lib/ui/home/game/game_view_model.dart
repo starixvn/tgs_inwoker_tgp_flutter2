@@ -25,7 +25,8 @@ class GameViewModel extends BaseViewModel {
       getFavouriteGameApiState,
       setFavouriteGameApiState,
       deleteFavouriteGameApiState,
-      getBetConstructHtmlApiState;
+      getBetConstructHtmlApiState,
+      getSM01CockfightApiState;
   List<Game>? _gameList, filteredGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   int mCategory = 0;
@@ -44,6 +45,7 @@ class GameViewModel extends BaseViewModel {
     GameType.LotteryLobby,
     GameType.Slot,
     GameType.EGame,
+    GameType.Cockfight
   ];
   List<GameType> nonExistGameTypeList = [];
   var _gameListT3 = [
@@ -182,6 +184,13 @@ class GameViewModel extends BaseViewModel {
     }
     if (contentRepo.gameProvider2List == null) return;
     List<GameProvider2> list = contentRepo.gameProvider2List!;
+    // alter list to replace gameType to Cockfight if the name is SM01
+    list.forEach((element) {
+      if (element.name == "SM01" || element.name == "AWC_COCKFIGHT") {
+        element.gameType = GameType.Cockfight;
+      }
+    });
+
     gameTypeList = (() {
       if (EnvironmentConfig.brandName == "PB") return _pbGamelist;
       if (EnvironmentConfig.brandName == "BUNNY")
@@ -196,7 +205,7 @@ class GameViewModel extends BaseViewModel {
       else
         return _gameTypeList;
     }());
-    //(EnvironmentConfig.brandName == "PB" || EnvironmentConfig.brandName == "PB2") ? _pbGamelist : _gameTypeList;
+
     gameProviderList = gameTypeList
         .map((type) => list
             .where((element) => (type ==
@@ -208,6 +217,16 @@ class GameViewModel extends BaseViewModel {
                 : element.gameType == type)
             .toList())
         .toList();
+
+    gameProviderList!.forEach((element) {
+      if (EnvironmentConfig.currency == "PHP") {
+        element.forEach((element) {
+          if (element.code == "BTI") {
+            element.code = "PHSB";
+          }
+        });
+      }
+    });
     gameTypeMap = (groupBy(list, (obj) => obj.gameType!))
       ..forEach((key, value) {
         if (key == GameType.Sportsbook) {
@@ -455,6 +474,16 @@ class GameViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getBetConstructHtmlApiState;
+  }
+
+  getSM01Cockfight() async {
+    setLoading();
+    getSM01CockfightApiState.getSM01Cockfight();
+    if (getSM01CockfightApiState.isSuccess) {
+      url = getSM01CockfightApiState.result;
+    }
+    setLoading(false);
+    return getSM01CockfightApiState;
   }
 
   getJackpotRecommendList() async {
