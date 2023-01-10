@@ -20,6 +20,7 @@ import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t9/game_t9.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
+import 'package:tgp_flutter2/ui/home/game/webGameView.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BaseGame extends StatefulWidget {
@@ -187,14 +188,30 @@ class _BaseGameState extends BaseState<BaseGame> {
       showPreLoginDialog();
     } else {
       var gpcode;
-      if (gameProvider.code.toString() == "PHSB" &&
+
+      if (gameProvider.code == "SM01" &&
+          gameProvider.gameType == GameType.Cockfight) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebGameView(
+                      gameProviderCode: "sm01",
+                    )));
+        return;
+      } else if (gameProvider.code.toString() == "PHSB" &&
           EnvironmentConfig.currency == "PHP") {
         gpcode = "BTI";
       } else {
         gpcode = gameProvider.code;
       }
       setState(() {
-        currentGameType = gameProvider.gameType!;
+        if (gameProvider.gameType == GameType.Cockfight &&
+            gameProvider.code != "SM01") {
+          currentGameType = GameType.Sportsbook;
+        } else {
+          currentGameType = gameProvider.gameType!;
+        }
+
         currentGamePlatformCode = gpcode;
       });
       _navigate();

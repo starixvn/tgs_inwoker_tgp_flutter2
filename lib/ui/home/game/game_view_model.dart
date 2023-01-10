@@ -186,7 +186,7 @@ class GameViewModel extends BaseViewModel {
     List<GameProvider2> list = contentRepo.gameProvider2List!;
     // alter list to replace gameType to Cockfight if the name is SM01
     list.forEach((element) {
-      if (element.name == "SM01") {
+      if (element.name == "SM01" || element.name == "AWC_COCKFIGHT") {
         element.gameType = GameType.Cockfight;
       }
     });
