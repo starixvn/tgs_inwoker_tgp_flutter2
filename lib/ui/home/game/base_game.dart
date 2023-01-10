@@ -195,7 +195,7 @@ class _BaseGameState extends BaseState<BaseGame> {
             context,
             MaterialPageRoute(
                 builder: (context) => WebGameView(
-                      gameProviderCode: "sm01",
+                      gameProvider: "sm01",
                     )));
         return;
       } else if (gameProvider.code.toString() == "PHSB" &&
