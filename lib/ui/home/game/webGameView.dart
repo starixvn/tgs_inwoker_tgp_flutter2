@@ -49,7 +49,9 @@ class _GameWebState extends BaseState<WebGameView> {
             _handleApiState();
             return CustomScaffold(
               appBar: _buildAppBar(),
-              body: _buildWebView(),
+              body: isLoading
+                  ? buildProgressDialog(_vm.brandLogoUrl)
+                  : _buildWebView(),
             );
           }),
     );
@@ -60,11 +62,22 @@ class _GameWebState extends BaseState<WebGameView> {
         widget: Container(
           margin: EdgeInsets.all(5.auto),
           alignment: Alignment.center,
+          child: IconButton(
+            icon: Image.asset("images/ic_refresh.png"),
+            onPressed: () {
+              _loadWebView();
+            },
+          ),
         ),
         onPop: () {
           Navigator.pop(context);
         },
       );
+
+  _loadWebView() {
+    isLoading = true;
+    _webViewController!.reload();
+  }
 
   _getSharedPrefs() async {
     prefs = await SharedPreferences.getInstance();
