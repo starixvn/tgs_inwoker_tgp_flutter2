@@ -82,12 +82,19 @@ class _DepositHtmlState extends BaseState<DepositHtml> {
           width: context.screenWidth,
           height: context.screenHeight,
           child: Builder(builder: (BuildContext context) {
-            return WebView(
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _controller = webViewController;
+            _controller!.setJavaScriptMode(JavaScriptMode.unrestricted);
+            _controller!.setNavigationDelegate(NavigationDelegate(
+              onPageStarted: (String url) {
                 _loadUrl();
               },
+            ));
+
+            return WebViewWidget(
+              controller: _controller!,
+              // onWebViewCreated: (WebViewController webViewController) {
+              //   _controller = webViewController;
+              //   _loadUrl();
+              // },
               //javascriptMode: JavascriptMode.unrestricted,
             );
           }),
@@ -95,11 +102,11 @@ class _DepositHtmlState extends BaseState<DepositHtml> {
   }
 
   _loadUrl() async {
-    _controller!.loadUrl(
+    _controller!.loadRequest(
       Uri.dataFromString(
         widget.htmlText!,
         mimeType: 'text/html',
-      ).toString(),
+      ),
     );
   }
 }
