@@ -63,8 +63,7 @@ class _HomeState extends BaseState<Home> {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -78,10 +77,10 @@ class _HomeState extends BaseState<Home> {
   var randomNumber;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
-  var isDisplayGameView =
-      false; //to check either display jackpot or game view in t11
+  var isDisplayGameView = false; //to check either display jackpot or game view in t11
 
   var token;
+  var isCloseRouletteIcon = false; //handle users close roulette icon by themselves
 
   @override
   void initState() {
@@ -123,8 +122,7 @@ class _HomeState extends BaseState<Home> {
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -136,10 +134,8 @@ class _HomeState extends BaseState<Home> {
             children: [
               CustomScaffold(
                 appBar: CustomLoginAppBar(
-                    onClickLoginButton: () =>
-                        Navigator.of(context).pushNamed(RoutePath.login),
-                    onClickRegisterButton: () =>
-                        Navigator.of(context).pushNamed(RoutePath.register),
+                    onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+                    onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
                     onClickLogoutButton: () => _logout(),
                     isLogin: _vm.userProfile != null,
                     brandLogoUrl: _vm.brandLogoUrl,
@@ -179,11 +175,8 @@ class _HomeState extends BaseState<Home> {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return HomeT1(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -192,11 +185,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 2:
         return HomeT2(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -205,11 +195,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 3:
         return HomeT3(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -218,11 +205,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 4:
         return HomeT4(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -231,11 +215,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 8:
         return HomeT8(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -244,11 +225,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 9:
         return HomeT9(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -257,11 +235,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 10:
         return HomeT10(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -270,11 +245,8 @@ class _HomeState extends BaseState<Home> {
         );
       case 11:
         return HomeT11(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -285,11 +257,8 @@ class _HomeState extends BaseState<Home> {
         //the reason it's 100 is because apparently all existing using int data type
         //to prevent for everything become fucked up, custom homepage (non T related will start from 100)
         return HomeT11(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -298,11 +267,8 @@ class _HomeState extends BaseState<Home> {
         );
       default:
         return HomeT1(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -314,45 +280,68 @@ class _HomeState extends BaseState<Home> {
   _buildGameView() => BaseGame(
         vm: _gameViewModel,
         onRefreshHomePage: () => _initData(),
-        onPauseBgMusic: () =>
-            (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () =>
-            (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         isDisplayGameView: widget.isDisplayGameView,
-        onClickGameTab: (value) => (widget.onClickGameTab != null)
-            ? widget.onClickGameTab!(value)
-            : null,
+        onClickGameTab: (value) => (widget.onClickGameTab != null) ? widget.onClickGameTab!(value) : null,
       );
 
   _getSmallRouletteIcon() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.roulettePromo != null,
-        child: Container(
-          width: context.screenHeight / 10,
-          height: context.screenHeight / 10,
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            onPressed: () {
-              //prevent click more than once
-              if (!onClickFromSmallRoulette) {
-                _displayRouletteDialog();
-                setState(() {
-                  onClickFromSmallRoulette = true;
-                });
-              }
-            },
-            child: Image.asset("images/roulette/small_roulette.png"),
-          ),
+        visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: context.screenHeight / 5,
+              height: context.screenHeight / 5,
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                onPressed: () {
+                  //prevent click more than once
+                  if (!onClickFromSmallRoulette) {
+                    _displayRouletteDialog();
+                    setState(() {
+                      onClickFromSmallRoulette = true;
+                    });
+                  }
+                },
+                child: Image.asset("images/roulette/small_roulette.png"),
+              ),
+            ),
+            InkWell(
+              onTap: () => setState(() {
+                isCloseRouletteIcon = true;
+              }),
+              child: Container(
+                width: 15,
+                height: 15,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                  color: Colors.transparent,
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: 10,
+                ),
+              ),
+            ),
+          ],
         ),
       );
 
   _rouletteHolder() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.depositRoulettePromo != null,
+        visible: (_vm.config?.homePagePromoRoulette ?? false) /* && _vm.depositRoulettePromo != null*/ &&
+            !isCloseRouletteIcon,
         child: Positioned(
-          top: context.screenHeight / 5 - 60.auto,
-          left: -5,
+          bottom: 0,
+          right: 0,
           child: Row(
             children: [_getSmallRouletteIcon(), _smallRouletteGenerator()],
           ),
@@ -369,8 +358,7 @@ class _HomeState extends BaseState<Home> {
 
     return Row(
       children: List.generate(depositRoulettePromo.length, (index) {
-        var isSameId = rouletteWithPlayCounts
-            .any((element) => element.id == depositRoulettePromo[index].id);
+        var isSameId = rouletteWithPlayCounts.any((element) => element.id == depositRoulettePromo[index].id);
 
         var rouletteCount = 0;
 
@@ -383,14 +371,12 @@ class _HomeState extends BaseState<Home> {
           //temporary comment
 
           rouletteCount = rouletteWithPlayCounts
-              .firstWhere(
-                  (element) => element.id == depositRoulettePromo[index].id)
+              .firstWhere((element) => element.id == depositRoulettePromo[index].id)
               .rouletteCount;
         }
 
 //display the first item in depositRoulettePromo that matches id in appearedDAR
-        if (appearedDAR.isNotEmpty &&
-            depositRoulettePromo[index].id == appearedDAR.first) {
+        if (appearedDAR.isNotEmpty && depositRoulettePromo[index].id == appearedDAR.first) {
           return _getAnotherSmallRouletteIcon(
             depositRoulettePromo[index],
             rouletteCount,
@@ -405,22 +391,57 @@ class _HomeState extends BaseState<Home> {
   }
 
   _getAnotherSmallRouletteIcon(Promotion data, int playcount) => Container(
-        width: context.screenHeight / 10,
-        height: context.screenHeight / 10,
-        child: FloatingActionButton(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          onPressed: () {
-            //prevent click more than once
-            if (!onClickFromAnotherSmallRoulette) {
-              print("data id is: ${data.id}");
-              _displayAnotherRouletteDialog(data, playcount);
-              setState(() {
-                onClickFromAnotherSmallRoulette = true;
-              });
-            }
-          },
-          child: Image.asset("images/roulette/small_roulette.png"),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: context.screenHeight / 5,
+              height: context.screenHeight / 5,
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                onPressed: () {
+                  if (_vm.userProfile == null) {
+                    navigateToLogin();
+                  }
+                  //prevent click more than once
+                  if (!onClickFromAnotherSmallRoulette) {
+                    print("data id is: ${data.id}");
+                    _displayAnotherRouletteDialog(data, playcount);
+                    setState(() {
+                      onClickFromAnotherSmallRoulette = true;
+                    });
+                  }
+                },
+                child: Image.asset(
+                  "images/roulette/small_roulette.png",
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () => setState(() {
+                isCloseRouletteIcon = true;
+              }),
+              child: Container(
+                width: 15,
+                height: 15,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                  color: Colors.transparent,
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: 10,
+                ),
+              ),
+            ),
+          ],
         ),
       );
 
@@ -516,10 +537,8 @@ class _HomeState extends BaseState<Home> {
         ? showDialog(
             context: context,
             builder: (BuildContext context2) => MarqueeDialog(
-                title: (_vm.marqueeDialog?.localization?.subject ??
-                    _vm.marqueeDialog?.subject),
-                description: (_vm.marqueeDialog?.localization?.content ??
-                    _vm.marqueeDialog?.content),
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
                 onClick: () {
                   if (isShowPromotion()) {
                     _displayPromotionDialog();
@@ -529,13 +548,10 @@ class _HomeState extends BaseState<Home> {
         : showDialog(
             context: context,
             builder: (BuildContext context2) => CustomDialog(
-                title: (_vm.marqueeDialog?.localization?.subject ??
-                    _vm.marqueeDialog?.subject),
-                description: (_vm.marqueeDialog?.localization?.content ??
-                    _vm.marqueeDialog?.content),
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
                 buttonText1: getTranslatedText("confirm"),
-                onPopBeforeTriggerOnClick: isShowPromotion() ||
-                    (!isShowPromotion() && isShowAnnouncement()),
+                onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
                 onClick: () {
                   if (isShowPromotion()) {
                     _displayPromotionDialog();
@@ -593,10 +609,7 @@ class _HomeState extends BaseState<Home> {
 
   _navigateToAddCard() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AddCard(isNavigateFromRegister: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }
@@ -606,32 +619,24 @@ class _HomeState extends BaseState<Home> {
       // Navigator.of(context).pushNamed(RoutePath.phoneVerification);
       var result = await Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => PhoneVerification(isFromRegister: true)),
+        MaterialPageRoute(builder: (context) => PhoneVerification(isFromRegister: true)),
       );
       if (result) _handleNavigationAndPopUpDialog();
     });
   }
 
-  isShowAnnouncement() =>
-      (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
+  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
 
-  isShowPromotion() =>
-      (_vm.config?.popupPromotion ?? false) &&
-      (_vm.promotionList?.isNotEmpty ?? false);
+  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
 
   var randomGeneratedPlayerCount;
 
   _generateNewNumberEveryFewSec() {
     Random _random = new Random();
     var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
-    int min = checkIfHomeOnlineUsersIsNull
-        ? _vm.config.homeOnlineUsers["min"]
-        : 20000;
+    int min = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["min"] : 20000;
 
-    int max = checkIfHomeOnlineUsersIsNull
-        ? _vm.config.homeOnlineUsers["max"]
-        : 30000;
+    int max = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["max"] : 30000;
     Timer.periodic(Duration(seconds: 10), (timer) {
       setState(() {
         randomGeneratedPlayerCount = min + _random.nextInt(max - min);
@@ -642,13 +647,9 @@ class _HomeState extends BaseState<Home> {
   _randomGenerator() {
     Random _random = new Random();
     var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
-    int min = checkIfHomeOnlineUsersIsNull
-        ? _vm.config.homeOnlineUsers["min"]
-        : 20000;
+    int min = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["min"] : 20000;
 
-    int max = checkIfHomeOnlineUsersIsNull
-        ? _vm.config.homeOnlineUsers["max"]
-        : 30000;
+    int max = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["max"] : 30000;
     int result = min + _random.nextInt(max - min);
     return result;
   }
@@ -674,17 +675,11 @@ class _HomeState extends BaseState<Home> {
     }, onLogout: () {
       ProgressDialog.hide();
     });
-    handleApiState(_vm.getBasicInfoApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getTodayRouletteResultApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getRouletteApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getTodayRouletteResultApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getRouletteApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
