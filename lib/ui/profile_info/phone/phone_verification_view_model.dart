@@ -22,7 +22,7 @@ class PhoneVerificationViewModel extends BaseViewModel {
     setLoading();
     getPhoneVerifyCodeApiState = isFromRegister
         //isFromRegister calling api/player/register
-        ? await authRepo.getReVerifyCode("", "", area, phone, isIdrRegister: true)
+        ? await authRepo.getReVerifyCode("", "", area, phone,"", isIdrRegister: true)
         : await authRepo.getPhoneVerify(area, phone);
     if (getPhoneVerifyCodeApiState.isSuccess) {
       //securityKey = getPhoneVerifyCodeApiState.result;

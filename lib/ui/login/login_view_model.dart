@@ -29,6 +29,7 @@ class LoginViewModel extends BaseViewModel {
   bool isPhoneReVerificationReset = false;
   String? securityKey;
   bool isNavigateFromSmsVerification = false;
+  String nextStepType = "";
 
   get brandLogo => contentRepo.brandLogo;
 
@@ -52,7 +53,7 @@ class LoginViewModel extends BaseViewModel {
   register(String _username, String _password, String rpassword, String? invitationCode, bool isAgent) async {
     setLoading();
     registerApiState = await userRepo.register(_username, _password, rpassword, invitationCode, isAgent);
-    if (registerApiState.isSuccess && (config?.smsVerification ?? false)) {
+    if (registerApiState.isSuccess && config?.smsVerification ?? false) {
       username = _username;
       password = _password;
       isPhoneReVerificationReset = true;
@@ -70,7 +71,8 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, true);
-      verifyPhoneState = await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: false);
+      verifyPhoneState =
+          await authRepo.getReVerifyCode(username, password, areacode, phone, nextStepType, isIdrRegister: false);
       print(verifyPhoneState);
       if (verifyPhoneState.isSuccess) {
         authRepo.phoneReVerify(verifyPhoneState.result, "123456");
@@ -137,7 +139,8 @@ class LoginViewModel extends BaseViewModel {
 
   getReVerifyCode(String areaCode, String phone) async {
     setLoading();
-    getReVerifyCodeApiState = await authRepo.getReVerifyCode("", "", areaCode, phone, isIdrRegister: true);
+    getReVerifyCodeApiState =
+        await authRepo.getReVerifyCode("", "", areaCode, phone, nextStepType, isIdrRegister: true);
     if (getReVerifyCodeApiState.isSuccess) {
       securityKey = getReVerifyCodeApiState.result?["stepResponse"] ?? "";
       username = await getUsername();
@@ -177,10 +180,13 @@ class LoginViewModel extends BaseViewModel {
   idrRegister(String _username, String _password) async {
     setLoading();
     registerApiState = await userRepo.idrRegister(_username, _password);
-    if (registerApiState.isSuccess && (config?.smsVerification ?? false)) {
-      username = _username;
-      password = _password;
-      isPhoneReVerificationReset = true;
+    if (registerApiState.isSuccess ) {
+      if(config?.smsVerification ?? false){
+        username = _username;
+        password = _password;
+        isPhoneReVerificationReset = true;
+      }
+      nextStepType = registerApiState.result.nextStepType;
     }
     setLoading(false);
     return registerApiState;
@@ -193,7 +199,8 @@ class LoginViewModel extends BaseViewModel {
       token = loginApiState.result.token;
       print(token);
       savePreferences(username, password, true);
-      verifyPhoneState = await authRepo.getReVerifyCode(username, password, areacode, phone, isIdrRegister: true);
+      verifyPhoneState =
+          await authRepo.getReVerifyCode(username, password, areacode, phone, nextStepType, isIdrRegister: true);
       if (verifyPhoneState.isSuccess) {
         await authRepo.phoneReVerify(verifyPhoneState.result?["stepResponse"] ?? "", "123456", isIdrRegister: true);
         if (config.registerShowEmail ?? false) {
