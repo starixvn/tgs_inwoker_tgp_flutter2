@@ -44,7 +44,9 @@ class HomeViewModel extends BaseViewModel {
       getRoulettePlayCountState,
       // new addition
       getTodayDepositRouletteResultApiState,
-      getDepositRouletteApiState;
+      getDepositRouletteApiState,
+      getDepositRouletteHistoryRecordApiState,
+      getDepositRoulettePrizeApiState;
 
   String? announcement;
   double? gameBalance;
@@ -66,6 +68,8 @@ class HomeViewModel extends BaseViewModel {
   var userMainWalletBalance, gameWalletList;
 
   var rouletteCount = [];
+
+  var rouletteHistoryList, prize;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -295,5 +299,21 @@ class HomeViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getRoulettePlayCountState;
+  }
+
+  getDepositRouletteHistoryRecord(String promoId) async {
+    getDepositRouletteHistoryRecordApiState = await contentRepo.getDepositRouletteHistoryRecord(promoId);
+    if (getDepositRouletteHistoryRecordApiState.isSuccess) {
+      rouletteHistoryList = getDepositRouletteHistoryRecordApiState.result;
+    }
+    return getDepositRouletteHistoryRecordApiState;
+  }
+
+  getDepositRoulettePrize(String promoId) async {
+    getDepositRoulettePrizeApiState = await contentRepo.getDepositRoulettePrize(promoId);
+    if (getDepositRoulettePrizeApiState.isSuccess) {
+      prize = getDepositRoulettePrizeApiState.result;
+    }
+    return getDepositRoulettePrizeApiState;
   }
 }

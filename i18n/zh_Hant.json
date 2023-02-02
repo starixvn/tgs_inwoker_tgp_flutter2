@@ -1124,5 +1124,9 @@
   "dialogRewardTitle1": "恭喜您贏得",
   "dialogErrorTitle1": "無法進行抽獎",
   "dialogErrorTitle2": "請稍後再試",
-  "dialogIndexErrorTitle1": "請玩家重新整理"
+  "dialogIndexErrorTitle1": "請玩家重新整理",
+
+  "winning_id": "Winning ID",
+  "date_time": "Date & Time",
+  "winning_content": "Winnings"
 }

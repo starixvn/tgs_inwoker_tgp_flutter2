@@ -1108,9 +1108,9 @@
   "roulette_play_count": "Limit {balance} play per day",
   "roulette_is_played_text_2": "Please come again tomorrow",
   "roulette_is_played_text_3": "Click to see more promotion details",
-  "roulette_promo_home": "Promotion Home",
-  "roulette_promo_content": "Promotion Content",
-  "roulette_promo_terms": "Promotion T&C",
+  "roulette_promo_home": "Home",
+  "roulette_promo_content": "Content",
+  "roulette_promo_terms": "T&C",
   "roulette_history": "History",
   "roulette_remaining": "Remaining {balance} Spin(s)",
   "idr_withdrawalNumber": "Bank card number",
@@ -1138,5 +1138,9 @@
   "dialogRewardTitle1": "Congratulations on winning",
   "dialogErrorTitle1": "Failed to play Roulette",
   "dialogErrorTitle2": "Please try again later",
-  "dialogIndexErrorTitle1": "Player please refresh"
+  "dialogIndexErrorTitle1": "Player please refresh",
+
+  "winning_id": "Winning ID",
+  "date_time": "Date & Time",
+  "winning_content": "Winnings"
 }

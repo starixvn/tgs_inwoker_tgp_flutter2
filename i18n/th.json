@@ -1124,5 +1124,9 @@
   "dialogRewardTitle1": "ยินดีด้วยกับชัยชนะของคุณ",
   "dialogErrorTitle1": "ไม่สามารถชิงโชคได้",
   "dialogErrorTitle2": "โปรดลองอีกครั้งในภายหลัง",
-  "dialogIndexErrorTitle1": "ผู้เล่นโปรดรีเฟรช"
+  "dialogIndexErrorTitle1": "ผู้เล่นโปรดรีเฟรช",
+
+  "winning_id": "รหัสที่ชนะ",
+  "date_time": "เวลา",
+  "winning_content": "เนื้อหาที่ชนะ"
 }

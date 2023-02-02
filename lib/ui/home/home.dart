@@ -337,7 +337,7 @@ class _HomeState extends BaseState<Home> {
       );
 
   _rouletteHolder() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false) /* && _vm.depositRoulettePromo != null*/ &&
+        visible: (_vm.config?.homePagePromoRoulette ?? false)  && _vm.depositRoulettePromo != null &&
             !isCloseRouletteIcon,
         child: Positioned(
           bottom: 0,
@@ -374,6 +374,9 @@ class _HomeState extends BaseState<Home> {
               .firstWhere((element) => element.id == depositRoulettePromo[index].id)
               .rouletteCount;
         }
+
+        _vm.getDepositRouletteHistoryRecord(depositRoulettePromo[index].id ?? "");
+        _vm.getDepositRoulettePrize(depositRoulettePromo[index].id ?? "");
 
 //display the first item in depositRoulettePromo that matches id in appearedDAR
         if (appearedDAR.isNotEmpty && depositRoulettePromo[index].id == appearedDAR.first) {
@@ -512,6 +515,8 @@ class _HomeState extends BaseState<Home> {
           contents: data,
           playcount: playcount,
           campaign: data.campaignDetails?.rouletteItems ?? [],
+          rouletteHistoryList: _vm.rouletteHistoryList,
+          prize: _vm.prize,
         ),
       );
     else

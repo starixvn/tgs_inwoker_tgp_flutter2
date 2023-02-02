@@ -1125,5 +1125,10 @@
   "dialogRewardTitle1": "Selamat atas kemenangan",
   "dialogErrorTitle1": "Undian tidak mungkin",
   "dialogErrorTitle2": "Silakan coba lagi nanti",
-  "dialogIndexErrorTitle1": "Pemain harap segarkan"
+  "dialogIndexErrorTitle1": "Pemain harap segarkan",
+
+  "winning_id": "Pemenang ID",
+  "date_time": "Waktu",
+  "winning_content": "Pemenang"
 }
+
