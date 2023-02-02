@@ -1128,5 +1128,9 @@
 
   "winning_id": "中獎 ID",
   "date_time": "時間",
-  "winning_content": "中獎内容"
+  "winning_content": "中獎内容",
+  "spin_run_out": "您的次数已经使用完毕！",
+  "remaining_spin": "您还有",
+  "remaining_spin2": "次机会"
+
 }

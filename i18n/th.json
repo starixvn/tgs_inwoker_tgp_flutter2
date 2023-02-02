@@ -1128,5 +1128,8 @@
 
   "winning_id": "รหัสที่ชนะ",
   "date_time": "เวลา",
-  "winning_content": "เนื้อหาที่ชนะ"
+  "winning_content": "เนื้อหาที่ชนะ",
+  "spin_run_out": "หมายเลขของคุณถูกใช้หมดแล้ว",
+  "remaining_spin": "คุณยังมี ",
+  "remaining_spin2": " โอกาสครั้งที่สอง!"
 }

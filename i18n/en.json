@@ -1142,5 +1142,8 @@
 
   "winning_id": "Winning ID",
   "date_time": "Date & Time",
-  "winning_content": "Winnings"
+  "winning_content": "Winnings",
+  "spin_run_out": "Oops, it seems you've\nrun out of spins.",
+  "remaining_spin": "Remaining ",
+  "remaining_spin2": " Spin(s) !"
 }

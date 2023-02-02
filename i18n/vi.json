@@ -1128,5 +1128,8 @@
 
   "winning_id": "ID chiến thắng",
   "date_time": "thời gian",
-  "winning_content": "chiến thắng"
+  "winning_content": "chiến thắng",
+  "spin_run_out": "Số của bạn đã được sử dụng hết",
+  "remaining_spin": "Bạn có thêm ",
+  "remaining_spin2": " cơ hội!"
 }

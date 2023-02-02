@@ -179,18 +179,32 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                       shape: BoxShape.rectangle,
                       color: Colors.white,
                     ),
-                    padding: EdgeInsets.only(
-                      top: height / 30,
-                    ),
                     child: Stack(
                       children: [
                         Positioned.fill(
-                          bottom: -8,
+                          bottom: -63,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Image.asset(
                               "images/roulette/roulette_bottom.png",
-                              height: height / 3.5,
+                              height: height / 1.5,
+                            ),
+                          ),
+                        ),
+                        Positioned.fill(
+                          bottom: 40,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 3.auto, horizontal: 50.auto),
+                              decoration: BoxDecoration(color: Colors.black),
+                              child: Text(
+                                getTranslatedText("remaining_spin") +
+                                    widget.playcount.toString() +
+                                    getTranslatedText("remaining_spin2"),
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.auto),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
@@ -199,101 +213,125 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              flex: 9,
-                              child: Container(
-                                child: Stack(
-                                  children: [
-                                    AnimatedBuilder(
-                                      animation: _animation,
-                                      builder: (BuildContext _, child) {
-                                        return Transform.rotate(
-                                          angle: _controller.value * 2.0 * pi,
-                                          child: Stack(
-                                            children: [
-                                              Center(
-                                                child: Image.asset(
-                                                  'images/roulette/roulette12.png',
-                                                  width: height - 20.auto,
-                                                  height: height - 20.auto,
-                                                ),
+                              flex: 10,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(top: height / 30, bottom: 30),
+                                    child: Stack(
+                                      children: [
+                                        AnimatedBuilder(
+                                          animation: _animation,
+                                          builder: (BuildContext _, child) {
+                                            return Transform.rotate(
+                                              angle: _controller.value * 2.0 * pi,
+                                              child: Stack(
+                                                children: [
+                                                  Center(
+                                                    child: Image.asset(
+                                                      'images/roulette/roulette12.png',
+                                                      width: height - 20.auto,
+                                                      height: height - 20.auto,
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: FortuneWheel<int>(
+                                                      children: totalList(),
+                                                      size: height - 45.auto,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              Center(
-                                                child: FortuneWheel<int>(
-                                                  children: totalList(),
-                                                  size: height - 25.auto,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    Center(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          if (widget.userProfile == null) {
-                                            navigateToLogin();
-                                          }
-                                          //  else if ((widget.vm.config
-                                          //              ?.promoRouletteSMSVerification ??
-                                          //          false) &&
-                                          //      (widget.userProfile?.phone
-                                          //              ?.isEmpty ??
-                                          //          true)) {
-                                          //    navigateToPhoneVerification();
-                                          //  }
-                                          else {
-                                            animate();
-
-                                            await widget.vm
-                                                .getDepositRouletteResult(widget.contents?.id)
-                                                .then((_apiState) {
-                                              shownReward = false;
-                                              if (_apiState.isSuccess) {
-                                                if (_apiState.result?.itemIndex == -1) {
-                                                  setState(() {
-                                                    nomore = true;
-                                                  });
-                                                } else {
-                                                  _displayReward(context).then((value) {
-                                                    isClick = false;
-                                                  });
-                                                  _controller.stop();
-                                                  setState(() {
-                                                    selectedValue = _apiState.result?.itemIndex ?? 0;
-
-                                                    isClick = true;
-                                                  });
-                                                }
-                                              } else {
-                                                // for handling api return error
-                                                _controller.reset();
+                                            );
+                                          },
+                                        ),
+                                        Center(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              if (widget.userProfile == null) {
+                                                navigateToLogin();
                                               }
-                                            });
-                                          }
-                                        },
-                                        child: Image.asset(
-                                          'images/roulette/roulette_start.png',
-                                          width: height / 3.8,
-                                          height: height / 3.8,
+                                              //  else if ((widget.vm.config
+                                              //              ?.promoRouletteSMSVerification ??
+                                              //          false) &&
+                                              //      (widget.userProfile?.phone
+                                              //              ?.isEmpty ??
+                                              //          true)) {
+                                              //    navigateToPhoneVerification();
+                                              //  }
+                                              else {
+                                                animate();
+
+                                                await widget.vm
+                                                    .getDepositRouletteResult(widget.contents?.id)
+                                                    .then((_apiState) {
+                                                  shownReward = false;
+                                                  if (_apiState.isSuccess) {
+                                                    if (_apiState.result?.itemIndex == -1) {
+                                                      setState(() {
+                                                        nomore = true;
+                                                      });
+                                                    } else {
+                                                      _displayReward(context).then((value) {
+                                                        isClick = false;
+                                                      });
+                                                      _controller.stop();
+                                                      setState(() {
+                                                        selectedValue = _apiState.result?.itemIndex ?? 0;
+
+                                                        isClick = true;
+                                                      });
+                                                    }
+                                                  } else {
+                                                    // for handling api return error
+                                                    _controller.reset();
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            child: Image.asset(
+                                              'images/roulette/roulette_start.png',
+                                              width: height / 3.8,
+                                              height: height / 3.8,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: widget.playcount == 0 || widget.playcount == null || nomore,
+                                    child: Container(
+                                      decoration: _buildGreyedOutBackground(),
+                                      child: Center(
+                                        child: Text(
+                                          getTranslatedText("spin_run_out"),
+                                          style: TextStyle(
+                                              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25.auto),
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
                               flex: 1,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildRoulettePromoButton(0, "roulette_promo_home"),
-                                  _buildRoulettePromoButton(1, "roulette_promo_content"),
-                                  _buildRoulettePromoButton(2, "roulette_promo_terms"),
-                                  _buildRoulettePromoButton(3, "roulette_history"),
-                                ],
+                              child: Container(
+                                decoration: widget.playcount == 0 || widget.playcount == null || nomore
+                                    ? _buildGreyedOutBackground()
+                                    : BoxDecoration(),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildRoulettePromoButton(0, "roulette_promo_home"),
+                                    _buildRoulettePromoButton(1, "roulette_promo_content"),
+                                    _buildRoulettePromoButton(2, "roulette_promo_terms"),
+                                    _buildRoulettePromoButton(3, "roulette_history"),
+                                  ],
+                                ),
                               ),
                             )
                           ],
@@ -321,16 +359,23 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
           });
         },
         child: Container(
-          width: 70.auto,
-          height: context.screenHeight / 10,
+          width: 50.auto,
+          height: context.screenHeight / 2,
           alignment: Alignment.center,
           padding: EdgeInsets.all(3.auto),
-          color: buttonIndex == index ? Color(0xffc79f58) : Colors.black,
+          decoration: BoxDecoration(
+            color: buttonIndex == index ? Color(0xffc79f58) : Colors.black,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(5.0),
+                topRight: Radius.circular(5.0),
+              ),
+          ),
+
           child: AutoSizeText(
             getTranslatedText(title),
             textAlign: TextAlign.center,
             minFontSize: 5,
-            maxFontSize: 14,
+            maxFontSize: 12,
             stepGranularity: 1,
             maxLines: 1,
             style: TextStyle(
@@ -525,4 +570,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
       );
     });
   }
+
+  _buildGreyedOutBackground() => BoxDecoration(
+        color: Colors.black.withOpacity(0.75),
+      );
 }

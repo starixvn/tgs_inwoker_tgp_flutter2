@@ -1129,6 +1129,10 @@
 
   "winning_id": "Pemenang ID",
   "date_time": "Waktu",
-  "winning_content": "Pemenang"
+  "winning_content": "Pemenang",
+  "spin_run_out": "Nomor anda telah digunakan.",
+  "remaining_spin": "Anda memiliki ",
+  "remaining_spin2": " peluang!"
+
 }
 
