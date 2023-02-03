@@ -22,7 +22,6 @@ class PromotionHistory extends StatefulWidget {
 class _PromotionHistoryState extends BaseState<PromotionHistory> {
   Widget build(BuildContext context) {
     return Container(
-      child: Expanded(
         child: ListView(
           padding: EdgeInsets.all(8.auto),
           children: [
@@ -70,7 +69,7 @@ class _PromotionHistoryState extends BaseState<PromotionHistory> {
                     }),
           ],
         ),
-      ),
+
     );
   }
 
