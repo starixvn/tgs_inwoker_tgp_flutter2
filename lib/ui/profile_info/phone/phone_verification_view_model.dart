@@ -18,11 +18,13 @@ class PhoneVerificationViewModel extends BaseViewModel {
 
   var securityKey;
 
-  getPhoneVerifyCode(String area, String phone, {bool isFromRegister = false}) async {
+  getPhoneVerifyCode(String area, String phone,
+      {bool isFromRegister = false}) async {
     setLoading();
     getPhoneVerifyCodeApiState = isFromRegister
         //isFromRegister calling api/player/register
-        ? await authRepo.getReVerifyCode("", "", area, phone,"", isIdrRegister: true)
+        ? await authRepo.getReVerifyCode("", "", area, phone, "",
+            isIdrRegister: true)
         : await authRepo.getPhoneVerify(area, phone);
     if (getPhoneVerifyCodeApiState.isSuccess) {
       //securityKey = getPhoneVerifyCodeApiState.result;
@@ -32,7 +34,16 @@ class PhoneVerificationViewModel extends BaseViewModel {
     return getPhoneVerifyCodeApiState;
   }
 
-  submitVerifyCode(int index, String verificationCode, {bool isFromRegister = false}) async {
+  performSetPhoneDontCareDuplicate(String area, String phone) async {
+    setLoading();
+    submitVerifyCodeApiState =
+        await authRepo.setPhoneDontCareDuplicate(area, phone);
+    setLoading(false);
+    return submitVerifyCodeApiState;
+  }
+
+  submitVerifyCode(int index, String verificationCode,
+      {bool isFromRegister = false}) async {
     setLoading();
     var _status = isFromRegister
         //isFromRegister calling api/player/register
@@ -40,7 +51,8 @@ class PhoneVerificationViewModel extends BaseViewModel {
             securityKey ?? "",
             verificationCode,
           )
-        : await authRepo.submitVerifyCode(securityKey, verificationCode, isPhone: true);
+        : await authRepo.submitVerifyCode(securityKey, verificationCode,
+            isPhone: true);
     if (_status.isSuccess && index == 1) {
       submitVerifyCodeApiState = await userRepo.getBasicInfo();
     } else
