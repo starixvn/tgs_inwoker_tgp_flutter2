@@ -8,6 +8,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter2/custom/phone_text_form_field.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -80,7 +81,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       title: getTranslatedText("phone_number"),
       onPop: () {
         if (isCompleted == true) {
-          Navigator.of(context).pushNamed("/profile");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage(
+                        index: 4,
+                      )),
+              (Route<dynamic> route) => false);
         } else if (_vm.userProfile.phone == null &&
             !(_vm.userProfile?.registerCompleted ?? true) &&
             (_vm.config?.forcedVerification ?? false)) {
@@ -231,9 +238,6 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _setButtonToDone() {
     setState(() {
-      buttonText = getTranslatedText("verified");
-      isButtonEnabled = false;
-      isTextFieldEnabled = false;
       isCompleted = true;
     });
   }
@@ -264,7 +268,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         (_vm.config?.initPhoneWithoutVerify ?? false)) {
       _vm.performSetPhoneDontCareDuplicate(display!, _phoneController.text);
 
-      if (_vm.submitVerifyCodeApiState.isSuccess) {
+      if (_vm.performSetPhoneDontCareDuplicateApiState.isSuccess) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _getUserProfile();
           _setButtonToDone();
@@ -295,6 +299,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () async {
       await _getUserProfile();
+    });
+
+    handleApiState(_vm.performSetPhoneDontCareDuplicateApiState,
+        onSuccess: () async {
+      isCompleted = true;
+      await _getUserProfile();
+      CustomToast.show(getTranslatedText("success"));
     });
   }
 }

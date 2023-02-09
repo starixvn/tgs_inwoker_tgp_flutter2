@@ -33,7 +33,7 @@ class _ProfileState extends BaseState<Profile> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
         _vm.computeTotalBalance();
-      } else  {
+      } else {
         Navigator.of(context).pushNamed(RoutePath.login);
       }
     });
@@ -46,25 +46,29 @@ class _ProfileState extends BaseState<Profile> {
         builder: (ctx, vm, _) {
           _handleApiState();
           return CustomScaffold(
-              body: EnvironmentConfig.template_version == 2
-                  ? ProfileT2(vm: _vm)
-                  : Container(
-                      padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
-                      child: ListView(
-                        children: [
-                          _buildUserInfoContainer(),
-                          ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList),
-                          _buildLogoutButton()
-                        ],
-                      ),
-                    ));
+            body: EnvironmentConfig.template_version == 2
+                ? ProfileT2(vm: _vm)
+                : Container(
+                    padding: EdgeInsets.only(
+                        left: 20.auto, right: 20.auto, top: 30.auto),
+                    child: ListView(
+                      children: [
+                        _buildUserInfoContainer(),
+                        ProfileItem(
+                            config: _vm.config, bankCardList: _vm.bankCardList),
+                        _buildLogoutButton()
+                      ],
+                    ),
+                  ),
+          );
         });
   }
 
   _buildUserInfoContainer() => /*EnvironmentConfig.template_version == 1
       ? */
       Padding(
-        padding: EdgeInsets.only(top: 10.auto, left: 10.auto, right: 10.auto, bottom: 10.auto),
+        padding: EdgeInsets.only(
+            top: 10.auto, left: 10.auto, right: 10.auto, bottom: 10.auto),
         child: Row(
           children: [
             Container(
@@ -72,8 +76,10 @@ class _ProfileState extends BaseState<Profile> {
                 height: 65.auto,
                 decoration: new BoxDecoration(
                     shape: BoxShape.circle,
-                    image:
-                        new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+                    image: new DecorationImage(
+                        fit: BoxFit.fill,
+                        image:
+                            AssetImage("images/profile/profile_image.png")))),
             _buildUserInfoText(),
           ],
         ),
@@ -92,7 +98,9 @@ class _ProfileState extends BaseState<Profile> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AutoSizeText(
             _vm.userProfile?.username ?? "",
-            style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: CustomColor.theme_text_grey_white_color,
+                fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
             minFontSize: 10,
             stepGranularity: 1,
@@ -104,12 +112,16 @@ class _ProfileState extends BaseState<Profile> {
                 children: [
                   Text(
                     getTranslatedText("main_wallet") + " :",
-                    style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: (11.2).auto),
+                    style: TextStyle(
+                        color: CustomColor.theme_text_grey_white_color,
+                        fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
                   Text(
                     " ${Format().currencyWithDecimalFormat(_vm.wallet?.main ?? 0)}",
-                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
+                    style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontSize: (11.2).auto),
                     textAlign: TextAlign.start,
                   ),
                 ],
@@ -120,13 +132,19 @@ class _ProfileState extends BaseState<Profile> {
               Text(
                 getTranslatedText("total_balance") + " :",
                 //"总资金  "+(_vm.totalBalance != null ?  "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
-                style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: (11.2).auto),
+                style: TextStyle(
+                    color: CustomColor.theme_text_grey_white_color,
+                    fontSize: (11.2).auto),
                 textAlign: TextAlign.start,
               ),
               Text(
-                (_vm.totalBalance != null ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}" : "-"),
+                (_vm.totalBalance != null
+                    ? " ${Format().currencyWithDecimalFormat(_vm.totalBalance ?? 0.0)}"
+                    : "-"),
                 //"总资金  "+(_vm.totalBalance != null ?  "+ Format().currencyWithDecimalFormat(_vm.totalBalance) : "-"),
-                style: TextStyle(color: CustomColor.theme_button_color, fontSize: (11.2).auto),
+                style: TextStyle(
+                    color: CustomColor.theme_button_color,
+                    fontSize: (11.2).auto),
                 textAlign: TextAlign.start,
               )
             ],
@@ -152,8 +170,9 @@ class _ProfileState extends BaseState<Profile> {
   _navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
-      Navigator.of(context)
-          .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Login()),
+          (Route<dynamic> route) => false);
     });
   }
 
@@ -163,6 +182,7 @@ class _ProfileState extends BaseState<Profile> {
     }, onLogout: () {
       _navigateToLogin();
     });
-    handleApiState(_vm.getWalletBalanceApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getWalletBalanceApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

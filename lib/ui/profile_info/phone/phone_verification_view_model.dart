@@ -5,7 +5,9 @@ class PhoneVerificationViewModel extends BaseViewModel {
   final authRepo = AuthenticationRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-  var submitVerifyCodeApiState, getPhoneVerifyCodeApiState;
+  var submitVerifyCodeApiState,
+      getPhoneVerifyCodeApiState,
+      performSetPhoneDontCareDuplicateApiState;
 
   @override
   List<BaseRepository> get repoList => [];
@@ -36,13 +38,13 @@ class PhoneVerificationViewModel extends BaseViewModel {
 
   performSetPhoneDontCareDuplicate(String area, String phone) async {
     setLoading();
-    submitVerifyCodeApiState =
-        await authRepo.setPhoneDontCareDuplicate(area, phone);
-    if (submitVerifyCodeApiState.isSuccess) {
-      userRepo.getBasicInfo();
-    }
+    var _status = await authRepo.setPhoneDontCareDuplicate(area, phone);
+    if (_status.isSuccess) {
+      performSetPhoneDontCareDuplicateApiState = await userRepo.getBasicInfo();
+    } else
+      performSetPhoneDontCareDuplicateApiState = _status;
     setLoading(false);
-    return submitVerifyCodeApiState;
+    return performSetPhoneDontCareDuplicateApiState;
   }
 
   submitVerifyCode(int index, String verificationCode,
