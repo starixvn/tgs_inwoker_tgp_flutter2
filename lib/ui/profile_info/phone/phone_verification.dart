@@ -36,6 +36,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       isTextFieldEnabled = false,
       isOtpCountdown = false;
   var buttonText;
+
+  var isCompleted = false;
   InputValidationProvider validate = new InputValidationProvider();
   String? display;
 
@@ -79,6 +81,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         if (_vm.userProfile.phone == null &&
             !(_vm.userProfile?.registerCompleted ?? true) &&
             (_vm.config?.forcedVerification ?? false)) {
+        } else if (isCompleted == true) {
+          Navigator.of(context).pushNamed("/profile_info");
         } else if (widget.isFromRouletteRoute ||
             (_vm.userProfile.phone != null && widget.isFromRegister))
           //pop back to home page
@@ -224,6 +228,14 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     });
   }
 
+  _setButtonToDone() {
+    setState(() {
+      buttonText = getTranslatedText("done");
+      isButtonEnabled = false;
+      isTextFieldEnabled = false;
+    });
+  }
+
   _getSmsCode() {
     if (!validate.validatePhoneLength(_phoneController.text)) {
       setState(() {
@@ -251,7 +263,9 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       _vm.performSetPhoneDontCareDuplicate(display!, _phoneController.text);
 
       if (_vm.submitVerifyCodeApiState.isSuccess) {
-        _getUserProfile();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _getUserProfile();
+        });
       }
     } else {
       _vm.submitVerifyCode(1, _otpController.text,
@@ -277,6 +291,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () async {
       await _getUserProfile();
+      isCompleted = true;
+      _setButtonToDone();
       CustomToast.show(getTranslatedText("success"));
     });
   }
