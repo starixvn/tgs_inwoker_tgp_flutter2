@@ -33,6 +33,7 @@ class _ReportViewState extends BaseState<ReportView>
     {"id": "2", "text": "deposit"},
     {"id": "3", "text": "transfer"},
     {"id": "4", "text": "promotion_history"},
+    {"id": "6", "text": "balanceChangeRecords"},
     /*{"id": "4", "text": "返水记录"},*/
   ];
   ReportViewModel _vm = ReportViewModel();

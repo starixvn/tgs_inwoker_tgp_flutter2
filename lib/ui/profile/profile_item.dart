@@ -50,6 +50,8 @@ class _ProfileItemState extends BaseState<ProfileItem> {
               "ic_deposit_report", "deposit_history", "transaction", 2),
           _buildMiddleProfileItem(
               "ic_transfer_report", "transfer_history", "transaction", 3),
+          _buildMiddleProfileItem(
+              "ic_transfer_report", "balanceChangeRecords", "transaction", 5),
           _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.config?.haveAffiliateFeature ?? false)
               ? _buildMiddleProfileItem(
@@ -83,6 +85,8 @@ class _ProfileItemState extends BaseState<ProfileItem> {
               "ic_transaction", "withdrawal_history", "transaction", 2),
           _buildMiddleProfileItem(
               "ic_transfer", "transfer_history", "transaction", 3),
+          _buildMiddleProfileItem(
+              "ic_transfer_report", "balanceChangeRecords", "transaction", 5),
           _buildMiddleProfileItem(
               "ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem(

@@ -17,18 +17,32 @@ class ReportViewModel extends BaseViewModel {
       getTransferReportApiState,
       getDepositOrderApiState,
       getPromotionReportApiState,
-      getAccountReportTotalApiState;
+      getAccountReportTotalApiState,
+      getTransactionReportApiState;
   var page = 1, rows = 10;
-  var pStartDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0, 0, 0),
+  var pStartDate = DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 0, 0, 0, 0, 0),
       pEndDate = DateTime.now();
   List<AccountReport>? accountReportList;
   List<Report>? reportList, withdrawReportList;
   List<TransferReport>? transferReportList;
   List<PromotionReport>? promotionReportList;
   var endRecord = false;
-  var depositStatusList = [Status.All, Status.Review, Status.WaitingPayment, Status.Approved, Status.Rejected];
+  var depositStatusList = [
+    Status.All,
+    Status.Review,
+    Status.WaitingPayment,
+    Status.Approved,
+    Status.Rejected
+  ];
 
-  var withdrawalStatusList = [Status.All, Status.Review, Status.WaitingPaid, Status.Paid, Status.Rejected];
+  var withdrawalStatusList = [
+    Status.All,
+    Status.Review,
+    Status.WaitingPaid,
+    Status.Paid,
+    Status.Rejected
+  ];
 
   var pStatus = Status.All;
   var paymentId;
@@ -56,8 +70,8 @@ class ReportViewModel extends BaseViewModel {
       getAccountReportApiState = null;
       accountReportList = null;
     }
-    getAccountReportApiState =
-        await userRepo.getAccountReport(pStartDate, pEndDate, page, rows /*, orderBy, isDesc, sortBy, showAll*/);
+    getAccountReportApiState = await userRepo.getAccountReport(pStartDate,
+        pEndDate, page, rows /*, orderBy, isDesc, sortBy, showAll*/);
 
     List<AccountReport> list = [];
     if (getAccountReportApiState.isSuccess) {
@@ -66,7 +80,10 @@ class ReportViewModel extends BaseViewModel {
       if (accountReportList == null) accountReportList = [];
 
       accountReportList!.addAll(list);
-      endRecord = accountReportList!.length >= getAccountReportApiState.result.totalCount ? true : false;
+      endRecord = accountReportList!.length >=
+              getAccountReportApiState.result.totalCount
+          ? true
+          : false;
       notifyListeners();
     }
     setLoading(false);
@@ -75,7 +92,8 @@ class ReportViewModel extends BaseViewModel {
 
   getAccountReportTotal() async {
     setLoading();
-    getAccountReportTotalApiState = await userRepo.getAccountReportTotal(pStartDate, pEndDate);
+    getAccountReportTotalApiState =
+        await userRepo.getAccountReportTotal(pStartDate, pEndDate);
     if (getAccountReportTotalApiState.isSuccess) {
       accountReportTotal = getAccountReportTotalApiState.result;
     }
@@ -98,7 +116,8 @@ class ReportViewModel extends BaseViewModel {
     }
 
     if (status != null) pStatus = status;
-    getReportApiState = await userRepo.getReport(pStartDate, pEndDate, page, rows, pStatus);
+    getReportApiState =
+        await userRepo.getReport(pStartDate, pEndDate, page, rows, pStatus);
 
     List<Report> list = [];
     if (getReportApiState.isSuccess) {
@@ -106,7 +125,9 @@ class ReportViewModel extends BaseViewModel {
       if (reportList == null) reportList = [];
 
       reportList!.addAll(list);
-      endRecord = reportList!.length >= getReportApiState.result.totalCount ? true : false;
+      endRecord = reportList!.length >= getReportApiState.result.totalCount
+          ? true
+          : false;
       notifyListeners();
     }
     setLoading(false);
@@ -127,7 +148,8 @@ class ReportViewModel extends BaseViewModel {
       withdrawReportList = null;
     }
     if (status != null) pStatus = status;
-    getWithdrawReportApiState = await userRepo.getWithdrawReport(pStartDate, pEndDate, page, rows, pStatus);
+    getWithdrawReportApiState = await userRepo.getWithdrawReport(
+        pStartDate, pEndDate, page, rows, pStatus);
 
     List<Report> list = [];
     if (getWithdrawReportApiState.isSuccess) {
@@ -135,7 +157,10 @@ class ReportViewModel extends BaseViewModel {
       if (withdrawReportList == null) withdrawReportList = [];
 
       withdrawReportList!.addAll(list);
-      endRecord = withdrawReportList!.length >= getWithdrawReportApiState.result.totalCount ? true : false;
+      endRecord = withdrawReportList!.length >=
+              getWithdrawReportApiState.result.totalCount
+          ? true
+          : false;
       notifyListeners();
     }
     setLoading(false);
@@ -155,7 +180,8 @@ class ReportViewModel extends BaseViewModel {
       getTransferReportApiState = null;
       transferReportList = null;
     }
-    getTransferReportApiState = await userRepo.getTransferReport(pStartDate, pEndDate, page, rows);
+    getTransferReportApiState =
+        await userRepo.getTransferReport(pStartDate, pEndDate, page, rows);
 
     List<TransferReport> list = [];
     if (getTransferReportApiState.isSuccess) {
@@ -163,7 +189,10 @@ class ReportViewModel extends BaseViewModel {
       if (transferReportList == null) transferReportList = [];
 
       transferReportList!.addAll(list);
-      endRecord = transferReportList!.length >= getTransferReportApiState.result.totalCount ? true : false;
+      endRecord = transferReportList!.length >=
+              getTransferReportApiState.result.totalCount
+          ? true
+          : false;
       notifyListeners();
     }
     setLoading(false);
@@ -174,7 +203,8 @@ class ReportViewModel extends BaseViewModel {
     if (startDate != null) pStartDate = startDate;
     if (endDate != null) {
       if (endDate == pStartDate)
-        pEndDate = DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59, 59, 59);
+        pEndDate = DateTime(
+            endDate.year, endDate.month, endDate.day, 23, 59, 59, 59, 59);
       else
         pEndDate = endDate;
     }
@@ -204,7 +234,8 @@ class ReportViewModel extends BaseViewModel {
       getPromotionReportApiState = null;
       promotionReportList = null;
     }
-    getPromotionReportApiState = await userRepo.getPromotionReport(pStartDate, pEndDate, page, rows);
+    getPromotionReportApiState =
+        await userRepo.getPromotionReport(pStartDate, pEndDate, page, rows);
 
     List<PromotionReport> list = [];
     if (getPromotionReportApiState.isSuccess) {
@@ -212,11 +243,17 @@ class ReportViewModel extends BaseViewModel {
       if (promotionReportList == null) promotionReportList = [];
 
       promotionReportList!.addAll(list);
-      endRecord =
-          ((promotionReportList?.length ?? 0) >= (getPromotionReportApiState.result.totalCount ?? 0)) ? true : false;
+      endRecord = ((promotionReportList?.length ?? 0) >=
+              (getPromotionReportApiState.result.totalCount ?? 0))
+          ? true
+          : false;
       notifyListeners();
     }
     setLoading(false);
     return getPromotionReportApiState;
+  }
+
+  getTransactionReport({bool isLoadMore = false}) async {
+    setLoading();
   }
 }
