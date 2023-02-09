@@ -1131,5 +1131,6 @@
   "winning_content": "เนื้อหาที่ชนะ",
   "spin_run_out": "หมายเลขของคุณถูกใช้หมดแล้ว",
   "remaining_spin": "คุณยังมี ",
-  "remaining_spin2": " โอกาสครั้งที่สอง!"
+  "remaining_spin2": " โอกาสครั้งที่สอง!",
+  "balanceChangeRecords": "บันทึกการเปลี่ยนแปลงบัญชี"
 }

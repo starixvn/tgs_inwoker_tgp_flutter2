@@ -1145,5 +1145,6 @@
   "winning_content": "Winnings",
   "spin_run_out": "Oops, it seems you've\nrun out of spins.",
   "remaining_spin": "Remaining ",
-  "remaining_spin2": " Spin(s) !"
+  "remaining_spin2": " Spin(s) !",
+  "balanceChangeRecords": "Balance Change Records"
 }

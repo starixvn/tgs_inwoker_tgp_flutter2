@@ -1132,7 +1132,6 @@
   "winning_content": "Pemenang",
   "spin_run_out": "Nomor anda telah digunakan.",
   "remaining_spin": "Anda memiliki ",
-  "remaining_spin2": " peluang!"
-
+  "remaining_spin2": " peluang!",
+  "balanceChangeRecords": "Riwayat Perubahan Saldo"
 }
-
