@@ -261,7 +261,6 @@
   "set_new_email": "ตั้งอีเมลใหม่",
   "set_new_pay_password": "ตั้งรหัสผ่านการถอนใหม่",
   "enter_wechat_error_message": "รูปแบบโค้ด Wechat ไม่ถูกต้อง",
-  "enter_qq_error_message": "รูปแบบโค้ด QQ ไม่ถูกต้อง",
   "invalid_old_password": "ป้อนรหัสผ่านเก่าไม่ถูกต้อง",
   "invalid_invitation_code": "ป้อนรหัสผ่านคำเชิญไม่ถูกต้อง",
   "deposit_not_available": "ไม่สามารถใช้ฟังก์ชันการฝากเงินได้",
