@@ -34,10 +34,11 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var isButtonEnabled = false,
       isOtpEnabled = false,
       isTextFieldEnabled = false,
-      isOtpCountdown = false;
+      isOtpCountdown = false,
+      isCompleted = false;
+
   var buttonText;
 
-  var isCompleted = false;
   InputValidationProvider validate = new InputValidationProvider();
   String? display;
 
@@ -78,11 +79,11 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("phone_number"),
       onPop: () {
-        if (_vm.userProfile.phone == null &&
+        if (isCompleted == true) {
+          Navigator.of(context).pushNamed("/profile");
+        } else if (_vm.userProfile.phone == null &&
             !(_vm.userProfile?.registerCompleted ?? true) &&
             (_vm.config?.forcedVerification ?? false)) {
-        } else if (isCompleted == true) {
-          Navigator.of(context).pushNamed("/profile_info");
         } else if (widget.isFromRouletteRoute ||
             (_vm.userProfile.phone != null && widget.isFromRegister))
           //pop back to home page
@@ -230,9 +231,10 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _setButtonToDone() {
     setState(() {
-      buttonText = getTranslatedText("done");
+      buttonText = getTranslatedText("verified");
       isButtonEnabled = false;
       isTextFieldEnabled = false;
+      isCompleted = true;
     });
   }
 
@@ -265,6 +267,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       if (_vm.submitVerifyCodeApiState.isSuccess) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _getUserProfile();
+          _setButtonToDone();
+          CustomToast.show(getTranslatedText("success"));
         });
       }
     } else {
@@ -291,9 +295,6 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () async {
       await _getUserProfile();
-      isCompleted = true;
-      _setButtonToDone();
-      CustomToast.show(getTranslatedText("success"));
     });
   }
 }
