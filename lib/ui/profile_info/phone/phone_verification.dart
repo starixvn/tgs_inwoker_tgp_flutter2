@@ -76,11 +76,12 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("phone_number"),
       onPop: () {
-        if (_vm.userProfile.phone == null &&
-            !(_vm.userProfile?.registerCompleted ?? true) &&
-            (_vm.config?.forcedVerification ?? false)) {
-          // dont pop
-        } else if (widget.isFromRouletteRoute ||
+        // if (_vm.userProfile.phone == null &&
+        //     !(_vm.userProfile?.registerCompleted ?? true) &&
+        //     (_vm.config?.forcedVerification ?? false)) {
+        //
+        // } else
+        if (widget.isFromRouletteRoute ||
             (_vm.userProfile.phone != null && widget.isFromRegister))
           //pop back to home page
           Navigator.pop(context, true);

@@ -38,6 +38,9 @@ class PhoneVerificationViewModel extends BaseViewModel {
     setLoading();
     submitVerifyCodeApiState =
         await authRepo.setPhoneDontCareDuplicate(area, phone);
+    if (submitVerifyCodeApiState.isSuccess) {
+      userRepo.getBasicInfo();
+    }
     setLoading(false);
     return submitVerifyCodeApiState;
   }
