@@ -76,12 +76,10 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("phone_number"),
       onPop: () {
-        // if (_vm.userProfile.phone == null &&
-        //     !(_vm.userProfile?.registerCompleted ?? true) &&
-        //     (_vm.config?.forcedVerification ?? false)) {
-        //
-        // } else
-        if (widget.isFromRouletteRoute ||
+        if (_vm.userProfile.phone == null &&
+            !(_vm.userProfile?.registerCompleted ?? true) &&
+            (_vm.config?.forcedVerification ?? false)) {
+        } else if (widget.isFromRouletteRoute ||
             (_vm.userProfile.phone != null && widget.isFromRegister))
           //pop back to home page
           Navigator.pop(context, true);
@@ -181,10 +179,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _onTextChange() {
     setState(() {
-      if (
-          //phone controller is not empty and initPhoneWithoutVerify is true set button enabled
-          _phoneController.text.isNotEmpty &&
-              _vm.config?.initPhoneWithoutVerify) {
+      if (_phoneController.text.isNotEmpty &&
+          _vm.config?.initPhoneWithoutVerify) {
         isOtpEnabled = false;
         isButtonEnabled = true;
       } else if (_otpController.text.isNotEmpty &&
@@ -253,6 +249,10 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         !(_vm.userProfile?.registerCompleted ?? true) &&
         (_vm.config?.initPhoneWithoutVerify ?? false)) {
       _vm.performSetPhoneDontCareDuplicate(display!, _phoneController.text);
+
+      if (_vm.submitVerifyCodeApiState.isSuccess) {
+        _getUserProfile();
+      }
     } else {
       _vm.submitVerifyCode(1, _otpController.text,
           isFromRegister: widget.isFromRegister);
