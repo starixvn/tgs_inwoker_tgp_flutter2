@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -30,7 +31,13 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("profile_detail"),
       onPop: () {
-        Navigator.of(context).pushNamed(RoutePath.profile);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                      index: 4,
+                    )),
+            (Route<dynamic> route) => false);
       });
 
   Widget build(BuildContext context) {
