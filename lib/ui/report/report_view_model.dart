@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:api/entity/account_report.dart';
+import 'package:api/entity/balance_changes.dart';
 import 'package:api/entity/promotion_report.dart';
 import 'package:api/entity/report.dart';
 import 'package:api/entity/status.dart';
@@ -18,7 +19,7 @@ class ReportViewModel extends BaseViewModel {
       getDepositOrderApiState,
       getPromotionReportApiState,
       getAccountReportTotalApiState,
-      getTransactionReportApiState;
+      getBalanceChangesApiState;
   var page = 1, rows = 10;
   var pStartDate = DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, 0, 0, 0, 0, 0),
@@ -27,6 +28,7 @@ class ReportViewModel extends BaseViewModel {
   List<Report>? reportList, withdrawReportList;
   List<TransferReport>? transferReportList;
   List<PromotionReport>? promotionReportList;
+  List<BalanceChangesRecord>? balanceChangesList;
   var endRecord = false;
   var depositStatusList = [
     Status.All,
@@ -253,7 +255,36 @@ class ReportViewModel extends BaseViewModel {
     return getPromotionReportApiState;
   }
 
-  getTransactionReport({bool isLoadMore = false}) async {
+  getBalanceChangeRecord({bool isLoadMore = false}) async {
     setLoading();
+
+    if (isLoadMore) {
+      if (page * rows < getBalanceChangesApiState.result.totalCount) {
+        page++;
+      } else
+        return;
+    } else {
+      page = 1;
+      getBalanceChangesApiState = null;
+      balanceChangesList = null;
+
+      getBalanceChangesApiState = await userRepo.getBalanceChangesRecord(
+          pStartDate, pEndDate, page, rows);
+
+      List<BalanceChangesRecord> list = [];
+      if (getPromotionReportApiState.isSuccess) {
+        list = getPromotionReportApiState.result.items;
+        if (balanceChangesList == null) balanceChangesList = [];
+
+        balanceChangesList!.addAll(list);
+        endRecord = ((balanceChangesList?.length ?? 0) >=
+                (getBalanceChangesApiState.result.totalCount ?? 0))
+            ? true
+            : false;
+        notifyListeners();
+      }
+      setLoading(false);
+      return getBalanceChangesApiState;
+    }
   }
 }

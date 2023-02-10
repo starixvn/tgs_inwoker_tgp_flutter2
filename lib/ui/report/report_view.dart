@@ -8,6 +8,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/report/account_report_view.dart';
+import 'package:tgp_flutter2/ui/report/balance_change_view.dart';
 import 'package:tgp_flutter2/ui/report/deposit_report_view.dart';
 import 'package:tgp_flutter2/ui/report/promotion_report_view.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
@@ -96,7 +97,8 @@ class _ReportViewState extends BaseState<ReportView>
                       DepositReportView(vm: _vm),
                       WithdrawReportView(vm: _vm),
                       TransferReportView(vm: _vm),
-                      PromotionReportView(vm: _vm)
+                      PromotionReportView(vm: _vm),
+                      BalanceChangesView(vm: _vm),
                     ],
                   ),
                 ),
