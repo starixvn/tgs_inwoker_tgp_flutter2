@@ -115,6 +115,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
   _displayReward(BuildContext context) async {
     return showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Colors.transparent,
@@ -264,6 +265,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                               //    navigateToPhoneVerification();
                                               //  }
                                               else if (preventClickMoreThanOnce) {
+                                                //do nothing when it is true
                                               } else {
                                                 animate();
                                                 setState(() {
