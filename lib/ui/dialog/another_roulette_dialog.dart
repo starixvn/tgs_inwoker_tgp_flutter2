@@ -23,7 +23,6 @@ class AnotherRouletteDialog extends StatefulWidget {
   final bool isPlayed;
   final contents;
   final campaign;
-  final playcount;
   final HomeViewModel vm;
   final List<RouletteHistoryRecord>? rouletteHistoryList;
   final RoulettePrize? prize;
@@ -34,7 +33,6 @@ class AnotherRouletteDialog extends StatefulWidget {
     this.userProfile,
     required this.vm,
     this.contents,
-    this.playcount,
     this.campaign,
     this.rouletteHistoryList,
     this.prize,
@@ -58,6 +56,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
 
   @override
   void initState() {
+    _initData();
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -68,6 +67,10 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
     );
 
     super.initState();
+  }
+
+  _initData() async{
+    await widget.vm.getDepositRouletteHistoryRecord(widget.contents.id ?? "");
   }
 
   void animate() {
@@ -147,6 +150,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
 
   _buildRoulette() {
     var height = context.screenHeight / 3;
+    int? playCount = widget.vm.rouletteCount.firstWhere((element) => element.id == widget.contents.id).rouletteCount;
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Container(
@@ -200,7 +204,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                               decoration: BoxDecoration(color: Colors.black),
                               child: Text(
                                 getTranslatedText("remaining_spin") +
-                                    widget.playcount.toString() +
+                                    playCount.toString() +
                                     getTranslatedText("remaining_spin2"),
                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.auto),
                                 textAlign: TextAlign.center,
@@ -259,11 +263,10 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                               //          true)) {
                                               //    navigateToPhoneVerification();
                                               //  }
-                                              else if(preventClickMoreThanOnce) {}
-                                              else  {
+                                              else if (preventClickMoreThanOnce) {
+                                              } else {
                                                 animate();
-
-                                                setState((){
+                                                setState(() {
                                                   preventClickMoreThanOnce = true;
                                                 });
                                                 await widget.vm
@@ -303,7 +306,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                     ),
                                   ),
                                   Visibility(
-                                    visible: widget.playcount == 0 || widget.playcount == null || nomore,
+                                    visible: playCount == 0 || playCount == null || nomore,
                                     child: Container(
                                       decoration: _buildGreyedOutBackground(),
                                       child: Center(
@@ -322,7 +325,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                             Expanded(
                               flex: 1,
                               child: Container(
-                                decoration: widget.playcount == 0 || widget.playcount == null || nomore
+                                decoration: playCount == 0 || playCount == null || nomore
                                     ? _buildGreyedOutBackground()
                                     : BoxDecoration(),
                                 child: Row(
@@ -516,39 +519,41 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
         ),
       );
 
-  _buildExpandedPromoContent() => Container(
-        height: 200.auto,
-        width: context.screenWidth,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
-          color: Color(0xfffffded),
+  _buildExpandedPromoContent() {
+    return Container(
+      height: 200.auto,
+      width: context.screenWidth,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15),
+          bottomRight: Radius.circular(15),
         ),
-        child: (() {
-          switch (buttonIndex) {
-            case 0:
-              return PromotionMainDetails(promotion: widget.contents);
-            case 1:
-              return PromotionTermsContent(
-                  termsContent:
-                      ((widget.contents?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
-                              ? widget.contents?.localization![getCurrentLanguage().apiCode]!.content!
-                              : widget.contents?.content ?? "") ??
-                          "");
-            case 2:
-              return PromotionTermsContent(termsContent: widget.contents?.terms ?? "");
-            case 3:
-              return PromotionHistory(
-                historyList: widget.rouletteHistoryList,
-                prize: widget.prize,
-              );
-            default:
-              return Container();
-          }
-        }()),
-      );
+        color: Color(0xfffffded),
+      ),
+      child: (() {
+        switch (buttonIndex) {
+          case 0:
+            return PromotionMainDetails(promotion: widget.contents);
+          case 1:
+            return PromotionTermsContent(
+                termsContent:
+                    ((widget.contents?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
+                            ? widget.contents?.localization![getCurrentLanguage().apiCode]!.content!
+                            : widget.contents?.content ?? "") ??
+                        "");
+          case 2:
+            return PromotionTermsContent(termsContent: widget.contents?.terms ?? "");
+          case 3:
+            return PromotionHistory(
+              historyList: widget.vm.rouletteHistoryList,
+              prize: widget.vm.prize,
+            );
+          default:
+            return Container();
+        }
+      }()),
+    );
+  }
 
   navigateToPromo() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
