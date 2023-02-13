@@ -53,8 +53,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
   var isDisplayReward = false, isExpandedColumn = false;
   var buttonIndex = 0;
   var shownReward = false;
-
   var nomore = false;
+  var preventClickMoreThanOnce = false;
 
   @override
   void initState() {
@@ -259,9 +259,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                               //          true)) {
                                               //    navigateToPhoneVerification();
                                               //  }
-                                              else {
+                                              else if(preventClickMoreThanOnce) {}
+                                              else  {
                                                 animate();
 
+                                                setState((){
+                                                  preventClickMoreThanOnce = true;
+                                                });
                                                 await widget.vm
                                                     .getDepositRouletteResult(widget.contents?.id)
                                                     .then((_apiState) {
@@ -278,7 +282,6 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                                       _controller.stop();
                                                       setState(() {
                                                         selectedValue = _apiState.result?.itemIndex ?? 0;
-
                                                         isClick = true;
                                                       });
                                                     }
@@ -365,12 +368,11 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
           padding: EdgeInsets.all(3.auto),
           decoration: BoxDecoration(
             color: buttonIndex == index ? Color(0xffc79f58) : Colors.black,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(5.0),
-                topRight: Radius.circular(5.0),
-              ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(5.0),
+              topRight: Radius.circular(5.0),
+            ),
           ),
-
           child: AutoSizeText(
             getTranslatedText(title),
             textAlign: TextAlign.center,
@@ -386,6 +388,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
       );
 
   _buildRewardText() {
+    isDisplayReward = true;
     return Container(
       height: context.screenWidth / 2,
       width: context.screenWidth,
@@ -555,6 +558,9 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
 
   closeRewardClick() {
     shownReward = false;
+    setState(() {
+      preventClickMoreThanOnce = false;
+    });
     Navigator.pop(context);
   }
 
