@@ -81,18 +81,16 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.auto,
+                  padding: EdgeInsets.only(
+                    top: 10.auto,
+                    left: 20.auto,
+                    right: 20.auto,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [],
                   ),
                 ),
-                Divider(
-                  thickness: (1.0).auto,
-                  color: CustomColor.very_light_pink_four,
-                )
               ],
             ),
           ),
@@ -107,50 +105,53 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
             ),
         ];
 
+  _inputLayout(String title, String data) {
+    return Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(bottom: 3.auto),
+        child: Row(
+          children: [
+            AutoSizeText(
+              title + ": ",
+              style: TextStyle(
+                color: Colors.grey[700],
+                fontWeight: FontWeight.bold,
+              ),
+              minFontSize: 10,
+              maxFontSize: 12,
+              stepGranularity: 1,
+              maxLines: 1,
+            ),
+            AutoSizeText(
+              data,
+              style: TextStyle(
+                color: Colors.grey[700],
+              ),
+              minFontSize: 10,
+              maxFontSize: 12,
+              stepGranularity: 1,
+              maxLines: 1,
+            )
+          ],
+        ));
+  }
+
   _buildReportCellItemLayout(int index) => Column(children: [
         Container(
             margin: EdgeInsets.symmetric(horizontal: 10.auto),
             child: Flex(
               direction: Axis.vertical,
               children: [
-                Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(bottom: 3.auto),
-                    child: AutoSizeText(
-                      getTranslatedText("order_number") +
-                          (_vm.balanceChangesList![index].id ?? ""),
-                      style: TextStyle(color: Colors.grey[700]),
-                      minFontSize: 10,
-                      maxFontSize: 12,
-                      stepGranularity: 1,
-                      maxLines: 1,
-                    )),
-                Container(
-                  height: 20.auto,
-                  padding: EdgeInsets.only(bottom: 3.auto),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AutoSizeText(
-                        (_vm.balanceChangesList![index].recordedon ?? "") +
-                            " - " +
-                            (_vm.balanceChangesList![index].type ?? ""),
-                        style: TextStyle(color: Colors.grey[700]),
-                        minFontSize: 10,
-                        maxFontSize: 12,
-                        stepGranularity: 1,
-                      ),
-                      AutoSizeText(
-                        Format().dateTimezoneFormat(
-                            _vm.balanceChangesList![index].amount),
-                        style: TextStyle(color: Colors.grey[700]),
-                        minFontSize: 10,
-                        maxFontSize: 12,
-                        stepGranularity: 1,
-                      )
-                    ],
-                  ),
-                ),
+                _inputLayout(
+                    getTranslatedText("time"),
+                    Format().dateTimezoneFormat(
+                        _vm.balanceChangesList![index].recordedon ?? "")),
+                _inputLayout(
+                    getTranslatedText("bcr_type"),
+                    userRepo.apiError![_vm.balanceChangesList![index].type] ??
+                        ""),
+                _inputLayout(getTranslatedText("bcr_amount"),
+                    (_vm.balanceChangesList![index].amount.toString())),
               ],
             )),
       ]);

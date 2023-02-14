@@ -1146,5 +1146,7 @@
   "spin_run_out": "Oops, it seems you've\nrun out of spins.",
   "remaining_spin": "Remaining ",
   "remaining_spin2": " Spin(s) !",
-  "balanceChangeRecords": "Balance Change Records"
+  "balanceChangeRecords": "Balance Change Records",
+  "bcr_type": "Transaction Type",
+  "bcr_amount": "Amount"
 }

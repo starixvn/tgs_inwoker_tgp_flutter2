@@ -1133,5 +1133,7 @@
   "spin_run_out": "Nomor anda telah digunakan.",
   "remaining_spin": "Anda memiliki ",
   "remaining_spin2": " peluang!",
-  "balanceChangeRecords": "Riwayat Perubahan Saldo"
+  "balanceChangeRecords": "Riwayat Perubahan Saldo",
+  "bcr_type": "Tipe Transaksi",
+  "bcr_amount": "Jumlah"
 }

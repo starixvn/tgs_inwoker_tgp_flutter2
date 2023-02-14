@@ -1131,5 +1131,7 @@
   "spin_run_out": "หมายเลขของคุณถูกใช้หมดแล้ว",
   "remaining_spin": "คุณยังมี ",
   "remaining_spin2": " โอกาสครั้งที่สอง!",
-  "balanceChangeRecords": "บันทึกการเปลี่ยนแปลงบัญชี"
+  "balanceChangeRecords": "บันทึกการเปลี่ยนแปลงบัญชี",
+  "bcr_type": "ประเภทธุรกรรม",
+  "bcr_amount": "จำนวน"
 }
