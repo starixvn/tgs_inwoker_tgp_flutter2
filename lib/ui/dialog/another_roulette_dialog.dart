@@ -53,6 +53,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
   var shownReward = false;
   var nomore = false;
   var preventClickMoreThanOnce = false;
+  List<int> getSelectedPositionList = [];
 
   @override
   void initState() {
@@ -65,11 +66,10 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
       parent: _controller,
       curve: Curves.linear,
     );
-
     super.initState();
   }
 
-  _initData() async{
+  _initData() async {
     await widget.vm.getDepositRouletteHistoryRecord(widget.contents.id ?? "");
   }
 
@@ -81,6 +81,15 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
         var b = double.parse((currentSelectValue).toStringAsFixed(2));
         if (a == b && isClick) {
           _controller.stop();
+          if (!isDisplayReward) {
+            setState(() {
+              // to prevent reward dialog show more than once
+              isDisplayReward = true;
+            });
+            _displayReward(context).then((value) {
+              isClick = false;
+            });
+          }
           Future.delayed(const Duration(seconds: 1), () {
             if (!shownReward) {
               shownReward = true;
@@ -131,7 +140,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
     } else {
       for (var i = 0; i < widget.campaign!.length; i++) {
         var createNewList = widget.campaign![i];
-
+        if (getSelectedPositionList.length <= widget.campaign!.length) getSelectedPositionList.add(i);
         list.add(FortuneWheelChild(
           foreground: Text(
             //display title text
@@ -145,6 +154,11 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
           value: 1,
         ));
       }
+
+      //descending list index except 0 for example [0,11,....,1]
+      getSelectedPositionList.sort((b, a) => a.compareTo(b));
+      getSelectedPositionList.removeWhere((item) => item == 0);
+      getSelectedPositionList.insert(0, 0);
     }
     return list;
   }
@@ -255,17 +269,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                             onTap: () async {
                                               if (widget.userProfile == null) {
                                                 navigateToLogin();
-                                              }
-                                              //  else if ((widget.vm.config
-                                              //              ?.promoRouletteSMSVerification ??
-                                              //          false) &&
-                                              //      (widget.userProfile?.phone
-                                              //              ?.isEmpty ??
-                                              //          true)) {
-                                              //    navigateToPhoneVerification();
-                                              //  }
-                                              else if (preventClickMoreThanOnce) {
-                                                //do nothing when it is true
+                                              } else if (preventClickMoreThanOnce) {
+                                                // do nothing when it is true
                                               } else {
                                                 animate();
                                                 setState(() {
@@ -281,13 +286,16 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                                         nomore = true;
                                                       });
                                                     } else {
-                                                      _displayReward(context).then((value) {
-                                                        isClick = false;
-                                                      });
-                                                      _controller.stop();
                                                       setState(() {
                                                         selectedValue = _apiState.result?.itemIndex ?? 0;
+
+                                                        //stored value for prize position
+                                                        currentSelectValue = ((1 / getSelectedPositionList.length) *
+                                                                getSelectedPositionList[selectedValue]) *
+                                                            2.0 *
+                                                            pi;
                                                         isClick = true;
+                                                        isDisplayReward  = false;
                                                       });
                                                     }
                                                   } else {
@@ -393,7 +401,6 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
       );
 
   _buildRewardText() {
-    isDisplayReward = true;
     return Container(
       height: context.screenWidth / 2,
       width: context.screenWidth,
