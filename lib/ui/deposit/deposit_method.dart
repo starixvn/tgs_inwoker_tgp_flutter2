@@ -946,7 +946,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
               promotionId ?? null,
               uploadImage,
               _vm.userProfile.realname ?? "",
-              _playerRemarkController.text);
+              _playerRemarkController.text,
+              _vm.bankCardList.first.bankDetail?.phone ?? "");
         else
           _vm.getManualDepositId(
               currBankType,
@@ -956,7 +957,8 @@ class _DepositMethodState extends BaseState<DepositMethod>
               promotionId ?? null,
               uploadImage,
               _bankAccNameController.text,
-              _playerRemarkController.text);
+              _playerRemarkController.text,
+              _vm.bankCardList.first.bankDetail?.phone ?? "");
         break;
       case "ApplePay":
         _vm.applePayDepositOrder(_amountController.text, _payment!.id,
