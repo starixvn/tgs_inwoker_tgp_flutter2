@@ -30,6 +30,7 @@ class CardViewModel extends BaseViewModel {
   var getBankCardListApiState,
       getWithdrawalInfoListApiState,
       addBankCardApiState,
+      getDepositInfoListApiState,
       deleteBankCardApiState;
   Map<BankType, List<WithdrawalInfo>> bankTypeList =
       new Map<BankType, List<WithdrawalInfo>>();
@@ -57,6 +58,18 @@ class CardViewModel extends BaseViewModel {
     getBankCardListApiState = await bankRepo.getBankCardList();
     setLoading(false);
     return getBankCardListApiState;
+  }
+
+  getDepositInfoList() async {
+    setLoading();
+    getDepositInfoListApiState = await bankRepo.getPayment();
+    if (getDepositInfoListApiState.isSuccess) {
+      List<WithdrawalInfo> list = getDepositInfoListApiState.result;
+
+      bankTypeList = groupBy(list, (obj) => obj.bankType!);
+    }
+    setLoading(false);
+    return getDepositInfoListApiState;
   }
 
   getWithdrawalInfoList() async {

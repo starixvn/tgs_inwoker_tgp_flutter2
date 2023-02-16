@@ -33,6 +33,7 @@ class _MainCardState extends BaseState<MainCard> {
   @override
   void initState() {
     _vm.getWithdrawalInfoList();
+    _vm.getDepositInfoList();
     _getBankCardList();
     super.initState();
   }
@@ -53,22 +54,33 @@ class _MainCardState extends BaseState<MainCard> {
                       child: ListView(
                         children: [
                           Wrap(
-                            children: List.generate(_vm.bankCardList!.length, (index) {
+                            children: List.generate(_vm.bankCardList!.length,
+                                (index) {
                               return Container(
-                                  child: ((_vm.config?.addCardNotAllowedEditDelete ?? false) ||
-                                          (_vm.config?.addCardDisableCreateUpdateDelete ?? false))
-                                      ? _buildBankCardItem(_vm.bankCardList![index])
+                                  child: ((_vm.config
+                                                  ?.addCardNotAllowedEditDelete ??
+                                              false) ||
+                                          (_vm.config
+                                                  ?.addCardDisableCreateUpdateDelete ??
+                                              false))
+                                      ? _buildBankCardItem(
+                                          _vm.bankCardList![index])
                                       : Dismissible(
                                           key: UniqueKey(),
-                                          child: _buildBankCardItem(_vm.bankCardList![index]),
+                                          child: _buildBankCardItem(
+                                              _vm.bankCardList![index]),
                                           background: _swipeLeftBackground(),
-                                          direction: DismissDirection.endToStart,
-                                          behavior: HitTestBehavior.deferToChild,
+                                          direction:
+                                              DismissDirection.endToStart,
+                                          behavior:
+                                              HitTestBehavior.deferToChild,
                                           onDismissed: (_) {
-                                            if (_vm.config?.changesNotAllowed ?? false)
+                                            if (_vm.config?.changesNotAllowed ??
+                                                false)
                                               _showNotAllowedEditDeleteDialog();
                                             else
-                                              _delete(_vm.bankCardList![index], index);
+                                              _delete(_vm.bankCardList![index],
+                                                  index);
                                           },
                                         ));
                             }),
@@ -130,7 +142,8 @@ class _MainCardState extends BaseState<MainCard> {
         padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 30.auto),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
+          image: DecorationImage(
+              image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +157,8 @@ class _MainCardState extends BaseState<MainCard> {
               child: Text(
                 _getDisplayBankAccountText(bankCard) ?? "",
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+                style: TextStyle(
+                    fontSize: 15.auto, color: CustomColor.theme_button_color),
               ),
             )
           ],
@@ -170,7 +184,9 @@ class _MainCardState extends BaseState<MainCard> {
                 margin: EdgeInsets.only(left: 5.auto),
                 child: Text(
                   getTranslatedText("slide_to_delete_card"),
-                  style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+                  style: TextStyle(
+                      fontSize: 9.auto,
+                      color: CustomColor.theme_text_grey_white_color),
                 ),
               ),
             ],
@@ -178,12 +194,15 @@ class _MainCardState extends BaseState<MainCard> {
         ),
       );
 
-  _buildAddCardItem() => (_vm.config?.addCardDisableCreateUpdateDelete ?? false) ||
+  _buildAddCardItem() => (_vm.config?.addCardDisableCreateUpdateDelete ??
+              false) ||
           (_vm.config?.addCardNotAllowedEditDelete ?? false) ||
           (!(_vm.config?.addCardDisableCreateUpdateDelete ?? false) &&
                   !(_vm.config?.addCardDisableCreateUpdateDelete ?? false) &&
-                  (EnvironmentConfig.template_version == 8 && _vm.bankCardList.length == 4) ||
-              _vm.bankCardList.length == (_vm.config?.addCardMaximumCardAllowed ?? 99))
+                  (EnvironmentConfig.template_version == 8 &&
+                      _vm.bankCardList.length == 4) ||
+              _vm.bankCardList.length ==
+                  (_vm.config?.addCardMaximumCardAllowed ?? 99))
       ? SizedBox(
           height: 10.auto,
         )
@@ -199,7 +218,8 @@ class _MainCardState extends BaseState<MainCard> {
             }
           },
           child: Container(
-            margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
+            margin: EdgeInsets.only(
+                top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
             child: DottedBorder(
                 color: CustomColor.theme_text_grey_white_color,
                 borderType: BorderType.RRect,
@@ -211,19 +231,26 @@ class _MainCardState extends BaseState<MainCard> {
                     Expanded(
                       flex: 8,
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                        margin: EdgeInsets.symmetric(
+                            vertical: 20.auto, horizontal: 20.auto),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               getTranslatedText("add_card"),
-                              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                              style: TextStyle(
+                                  fontSize: 11.auto,
+                                  color:
+                                      CustomColor.theme_text_grey_white_color),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 5.auto),
                               child: Text(
                                 getTranslatedText("max_card_hint"),
-                                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+                                style: TextStyle(
+                                    fontSize: 9.auto,
+                                    color: CustomColor
+                                        .theme_text_grey_white_color),
                               ),
                             )
                           ],
@@ -250,12 +277,15 @@ class _MainCardState extends BaseState<MainCard> {
     if (_vm.config?.addCardDisableCreateUpdateDelete ?? false)
       return false;
     else
-      return !(EnvironmentConfig.template_version == 8 && _vm.bankCardList.length == 4) ||
-          _vm.bankCardList.length != (_vm.config?.addCardMaximumCardAllowed ?? 99);
+      return !(EnvironmentConfig.template_version == 8 &&
+              _vm.bankCardList.length == 4) ||
+          _vm.bankCardList.length !=
+              (_vm.config?.addCardMaximumCardAllowed ?? 99);
   }
 
   _delete(BankCard card, int index) async {
-    if (_vm.bankCardList!.length > 1) //only show when existing list more than 1, else overlapped
+    if (_vm.bankCardList!.length >
+        1) //only show when existing list more than 1, else overlapped
       ProgressDialog.show(context, _vm.brandLogoUrl);
     setState(() {
       _vm.bankCardList!.removeAt(index);
@@ -322,7 +352,8 @@ class _MainCardState extends BaseState<MainCard> {
       );*/
 
   _handleApiState() async {
-    handleApiState(_vm.getBankCardListApiState, isAutoHideLoading: isInitLoading, onSuccess: () {
+    handleApiState(_vm.getBankCardListApiState,
+        isAutoHideLoading: isInitLoading, onSuccess: () {
       if (!isInitLoading) {
         isInitLoading = true;
       }
@@ -330,7 +361,11 @@ class _MainCardState extends BaseState<MainCard> {
         _checkBankCardListLength(); //check card list every time fetched
       });
     });
-    handleApiState(_vm.getWithdrawalInfoListApiState, isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.deleteBankCardApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getWithdrawalInfoListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getDepositInfoListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.deleteBankCardApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

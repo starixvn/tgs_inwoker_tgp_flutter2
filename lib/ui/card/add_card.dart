@@ -22,9 +22,11 @@ import 'card_view_model.dart';
 
 class AddCard extends StatefulWidget {
   final bool isNavigateFromRegister;
+  final bool isFromDeposit;
 
   AddCard({
     this.isNavigateFromRegister = false,
+    this.isFromDeposit = false,
   });
 
   @override

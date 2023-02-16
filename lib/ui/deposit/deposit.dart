@@ -40,7 +40,8 @@ class _DepositState extends BaseState<Deposit> {
 
   _initData() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    var code = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    var code =
+        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
     await _vm.getPlayerPromotionList(code);
     _vm.getPayment();
     _displayDepositDialog();
@@ -64,38 +65,54 @@ class _DepositState extends BaseState<Deposit> {
                         child: Column(
                           children: [
                             Container(
-                              width: context.screenWidth,
-                              child: TabBar(
-                                isScrollable: true,
-                                unselectedLabelColor: CustomColor.theme_text_grey_color,
-                                labelColor: CustomColor.theme_label_text_highlight_color,
-                                indicatorColor: Colors.transparent,
-                                indicator: BoxDecoration(),
-                                onTap: (index) {
-                                  setState(() {
-                                    currentTabIndex = index;
-                                  });
-                                },
-                                labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
-                                unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_grey_color),
-                                tabs: List.generate(_vm.paymentCodeList!.keys.length, (index) {
-                                  return TabButton(
-                                    text: getTranslatedText(_vm.paymentCodeList!.keys.toList()[index]) ?? "",
-                                    index: index,
-                                    currentTabIndex: currentTabIndex,
-                                    width: 90.auto,
-                                    height: 32.auto,
-                                  );
-                                }).toList(),
-                              ),
-                            ),
+                                width: context.screenWidth,
+                                child: !_vm.config.depositAddCard
+                                    ? TabBar(
+                                        isScrollable: true,
+                                        unselectedLabelColor:
+                                            CustomColor.theme_text_grey_color,
+                                        labelColor: CustomColor
+                                            .theme_label_text_highlight_color,
+                                        indicatorColor: Colors.transparent,
+                                        indicator: BoxDecoration(),
+                                        onTap: (index) {
+                                          setState(() {
+                                            currentTabIndex = index;
+                                          });
+                                        },
+                                        labelPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.auto,
+                                            vertical: 5.auto),
+                                        unselectedLabelStyle: TextStyle(
+                                            color: CustomColor
+                                                .theme_text_grey_color),
+                                        tabs: List.generate(
+                                            _vm.paymentCodeList!.keys.length,
+                                            (index) {
+                                          return TabButton(
+                                            text: getTranslatedText(_vm
+                                                    .paymentCodeList!.keys
+                                                    .toList()[index]) ??
+                                                "",
+                                            index: index,
+                                            currentTabIndex: currentTabIndex,
+                                            width: 90.auto,
+                                            height: 32.auto,
+                                          );
+                                        }).toList(),
+                                      )
+                                    : SizedBox.shrink()),
                             Expanded(
                               child: TabBarView(
                                 physics: NeverScrollableScrollPhysics(),
-                                children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
+                                children: List.generate(
+                                    _vm.paymentCodeList!.keys.length, (index) {
                                   return DepositMethod(
-                                    paymentCode: _vm.paymentCodeList!.keys.toList()[index],
-                                    depositMethodList: _vm.paymentCodeList!.values.toList()[index],
+                                    paymentCode: _vm.paymentCodeList!.keys
+                                        .toList()[index],
+                                    depositMethodList: _vm
+                                        .paymentCodeList!.values
+                                        .toList()[index],
                                     promotionList: _vm.displayPromotionList,
                                   );
                                 }).toList(),
@@ -123,7 +140,8 @@ class _DepositState extends BaseState<Deposit> {
         } else {
           _showDialog("bank_transferring_notification_content");
         }*/
-        if (_vm.depositDialogContent?.isNotEmpty ?? false) _showDialog(_vm.depositDialogContent ?? "");
+        if (_vm.depositDialogContent?.isNotEmpty ?? false)
+          _showDialog(_vm.depositDialogContent ?? "");
       }
     });
   }
@@ -138,11 +156,13 @@ class _DepositState extends BaseState<Deposit> {
       );
 
   _handleApiState() {
-    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false, onSuccess: () {
+    handleApiState(_vm.getPaymentApiState, isAutoHideLoading: false,
+        onSuccess: () {
       if (_vm.getPaymentApiState.result.isEmpty) {
         CustomToast.show(getTranslatedText("deposit_not_available"));
       }
     });
-    handleApiState(_vm.getPlayerPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPlayerPromotionListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
   }
 }

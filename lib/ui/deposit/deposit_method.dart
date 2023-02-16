@@ -20,8 +20,10 @@ import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_html.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_method_view_model.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit_order_view.dart';
@@ -91,6 +93,9 @@ class _DepositMethodState extends BaseState<DepositMethod>
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: ListView(
               children: <Widget>[
+                _vm.config.depositAddCard
+                    ? _depositAddCardButton()
+                    : Container(),
                 _buildCard(
                     "deposit_method", _vm.depositMethodList!.keys.toList(),
                     isDepositMethod: true),
@@ -134,6 +139,38 @@ class _DepositMethodState extends BaseState<DepositMethod>
             ),
           );
         });
+  }
+
+  _depositAddCardButton() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: 60.auto,
+        padding: EdgeInsets.only(left: 10.auto, bottom: 10.auto),
+        child: MaterialButton(
+          color: Colors.white,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddCard(
+                          isFromDeposit: true,
+                        )));
+          },
+          child: Text(
+            "+",
+            style:
+                //big text
+                TextStyle(
+              fontSize: 20.auto,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+      ),
+    );
   }
 
   _buildCard(String title, List<dynamic>? list,
