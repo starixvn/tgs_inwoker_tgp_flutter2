@@ -92,7 +92,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
             isDisplayReward = true;
           });
           _displayReward(context).then((value) {
-            spinning = false;
+            // spinning = false;
             isClick = false;
           });
         }
@@ -123,7 +123,6 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
 
   void spin() {
     double randomRadian = generateRandomRadianToSpinTo();
-    _controller.reset();
     angle = randomRadian;
     _controller.forward();
   }
@@ -269,8 +268,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                             // color: Colors.green,
                             child: Image.asset(
                               "images/roulette/roulette_bottom.png",
-                              height: (height /3) ,
-                              width: context.screenWidth/2,
+                              height: (height / 3),
+                              width: context.screenWidth / 2,
                               fit: BoxFit.fill,
                             ),
                           ),
@@ -332,6 +331,28 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                         Center(
                                           child: InkWell(
                                             onTap: () async {
+                                              // if (preventClickMoreThanOnce) {
+                                              // } else {
+                                              //   _controller.reset();
+                                              //   _controller.forward(from: 0.0);
+                                              //
+                                              //   Future.delayed(Duration(seconds: 1), () {
+                                              //     setState(() {
+                                              //       selectedValue = 1;
+                                              //
+                                              //       // //stored value for prize position
+                                              //       // currentSelectValue = ((1 / getSelectedPositionList.length) *
+                                              //       //         getSelectedPositionList[selectedValue]) *
+                                              //       //     2.0 *
+                                              //       //     pi;
+                                              //       if (!isClick) spin();
+                                              //       // spinning = true;
+                                              //       isClick = true;
+                                              //       isDisplayReward = false;
+                                              //       preventClickMoreThanOnce = true;
+                                              //     });
+                                              //   });
+                                              // }
                                               if (widget.userProfile == null) {
                                                 navigateToLogin();
                                               } else if (preventClickMoreThanOnce) {
@@ -359,9 +380,10 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                                         //         getSelectedPositionList[selectedValue]) *
                                                         //     2.0 *
                                                         //     pi;
-                                                        spin();
+                                                        if(!isClick)spin();
                                                         isClick = true;
                                                         isDisplayReward = false;
+                                                        preventClickMoreThanOnce = true;
                                                       });
                                                     }
                                                   } else {
@@ -581,13 +603,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
               borderRadius: BorderRadius.circular(100),
               border: Border.all(
                 width: 2,
-                color: !(widget.isPlayed || isDisplayReward) ? Colors.white : Colors.black,
+                color: Colors.white,
               ),
-              color: !(widget.isPlayed || isDisplayReward) ? Colors.black : Colors.transparent,
+              color: Colors.black,
             ),
             child: Icon(
               Icons.close,
-              color: !(widget.isPlayed || isDisplayReward) ? Colors.white : Colors.black,
+              color: Colors.white,
               size: 20,
             ),
           ),
@@ -640,6 +662,9 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
     shownReward = false;
     setState(() {
       preventClickMoreThanOnce = false;
+      // to prevent reward dialog show after roulette closed
+      isDisplayReward = true;
+      isClick = false;
     });
     Navigator.pop(context);
   }
