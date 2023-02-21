@@ -55,49 +55,112 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
   var preventClickMoreThanOnce = false;
   List<int> getSelectedPositionList = [];
 
+  List<double> sectorRadians = [];
+  double angle = 0;
+
+  bool spinning = false;
+  int spins = 0;
+
+  late Animation<double> animation;
+
   @override
   void initState() {
     _initData();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
-    _animation = new CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linear,
-    );
+    generateSectorRadians();
+    // _controller = AnimationController(
+    //   duration: const Duration(seconds: 1),
+    //   vsync: this,
+    // );
+    // _animation = new CurvedAnimation(
+    //   parent: _controller,
+    //   curve: Curves.linear,
+    // );
+
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 3600));
+
+    Tween<double> tween = Tween(begin: 0, end: 1);
+
+    CurvedAnimation curve = CurvedAnimation(parent: _controller, curve: Curves.decelerate);
+
+    animation = tween.animate(curve);
+
+    _controller.addListener(() {
+      if (_controller.isCompleted) {
+        if (!isDisplayReward) {
+          setState(() {
+            // to prevent reward dialog show more than once
+            isDisplayReward = true;
+          });
+          _displayReward(context).then((value) {
+            spinning = false;
+            isClick = false;
+          });
+        }
+        Future.delayed(const Duration(seconds: 1), () {
+          if (!shownReward) {
+            shownReward = true;
+          }
+        });
+      }
+    });
+
     super.initState();
+  }
+
+  void generateSectorRadians() {
+    //radian for 1 sector
+    double sectorRadian = (2.0 * pi) / widget.campaign.length;
+
+    for (int i = 0; i < widget.campaign.length; i++) {
+      sectorRadians.add((i) * sectorRadian);
+    }
+
+    // descending list index except 0 for example [0,11,....,1]
+    sectorRadians.sort((b, a) => a.compareTo(b));
+    sectorRadians.removeWhere((item) => item == 0);
+    sectorRadians.insert(0, 0.0);
+  }
+
+  void spin() {
+    double randomRadian = generateRandomRadianToSpinTo();
+    _controller.reset();
+    angle = randomRadian;
+    _controller.forward();
+  }
+
+  double generateRandomRadianToSpinTo() {
+    return (2.0 * pi * widget.campaign.length) + sectorRadians[selectedValue];
   }
 
   _initData() async {
     await widget.vm.getDepositRouletteHistoryRecord(widget.contents.id ?? "");
   }
 
-  void animate() {
-    _controller
-      ..repeat()
-      ..addListener(() async {
-        var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
-        var b = double.parse((currentSelectValue).toStringAsFixed(2));
-        if (a == b && isClick) {
-          _controller.stop();
-          if (!isDisplayReward) {
-            setState(() {
-              // to prevent reward dialog show more than once
-              isDisplayReward = true;
-            });
-            _displayReward(context).then((value) {
-              isClick = false;
-            });
-          }
-          Future.delayed(const Duration(seconds: 1), () {
-            if (!shownReward) {
-              shownReward = true;
-            }
-          });
-        }
-      });
-  }
+  // void animate() {
+  //   _controller
+  //     ..repeat()
+  //     ..addListener(() async {
+  //       var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
+  //       var b = double.parse((currentSelectValue).toStringAsFixed(2));
+  //       if (a == b && isClick) {
+  //         _controller.stop();
+  //         if (!isDisplayReward) {
+  //           setState(() {
+  //             // to prevent reward dialog show more than once
+  //             isDisplayReward = true;
+  //           });
+  //           _displayReward(context).then((value) {
+  //             isClick = false;
+  //           });
+  //         }
+  //         Future.delayed(const Duration(seconds: 1), () {
+  //           if (!shownReward) {
+  //             shownReward = true;
+  //           }
+  //         });
+  //       }
+  //     });
+  // }
 
   @override
   void dispose() {
@@ -154,11 +217,6 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
           value: 1,
         ));
       }
-
-      //descending list index except 0 for example [0,11,....,1]
-      getSelectedPositionList.sort((b, a) => a.compareTo(b));
-      getSelectedPositionList.removeWhere((item) => item == 0);
-      getSelectedPositionList.insert(0, 0);
     }
     return list;
   }
@@ -200,18 +258,25 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                     ),
                     child: Stack(
                       children: [
-                        Positioned.fill(
-                          bottom: -63,
+                        Positioned(
+                          // top:height/1.6,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          // bottom: -(height / 100),
                           child: Align(
                             alignment: Alignment.bottomCenter,
+                            // color: Colors.green,
                             child: Image.asset(
                               "images/roulette/roulette_bottom.png",
-                              height: height / 1.5,
+                              height: (height /3) ,
+                              width: context.screenWidth/2,
+                              fit: BoxFit.fill,
                             ),
                           ),
                         ),
                         Positioned.fill(
-                          bottom: 40,
+                          bottom: height / 9.5,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
@@ -240,10 +305,10 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                     child: Stack(
                                       children: [
                                         AnimatedBuilder(
-                                          animation: _animation,
+                                          animation: animation,
                                           builder: (BuildContext _, child) {
                                             return Transform.rotate(
-                                              angle: _controller.value * 2.0 * pi,
+                                              angle: _controller.value * angle,
                                               child: Stack(
                                                 children: [
                                                   Center(
@@ -272,7 +337,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                               } else if (preventClickMoreThanOnce) {
                                                 // do nothing when it is true
                                               } else {
-                                                animate();
+                                                _controller.forward(from: 0.0);
                                                 setState(() {
                                                   preventClickMoreThanOnce = true;
                                                 });
@@ -289,13 +354,14 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                                       setState(() {
                                                         selectedValue = _apiState.result?.itemIndex ?? 0;
 
-                                                        //stored value for prize position
-                                                        currentSelectValue = ((1 / getSelectedPositionList.length) *
-                                                                getSelectedPositionList[selectedValue]) *
-                                                            2.0 *
-                                                            pi;
+                                                        // //stored value for prize position
+                                                        // currentSelectValue = ((1 / getSelectedPositionList.length) *
+                                                        //         getSelectedPositionList[selectedValue]) *
+                                                        //     2.0 *
+                                                        //     pi;
+                                                        spin();
                                                         isClick = true;
-                                                        isDisplayReward  = false;
+                                                        isDisplayReward = false;
                                                       });
                                                     }
                                                   } else {
