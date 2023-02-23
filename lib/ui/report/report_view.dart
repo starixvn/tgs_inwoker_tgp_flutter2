@@ -33,8 +33,8 @@ class _ReportViewState extends BaseState<ReportView>
     {"id": "1", "text": "report_withdrawal"},
     {"id": "2", "text": "deposit"},
     {"id": "3", "text": "transfer"},
-    {"id": "4", "text": "promotion_history"},
     {"id": "6", "text": "balanceChangeRecords"},
+    {"id": "4", "text": "promotion_history"},
     /*{"id": "4", "text": "返水记录"},*/
   ];
   ReportViewModel _vm = ReportViewModel();
@@ -94,11 +94,11 @@ class _ReportViewState extends BaseState<ReportView>
                     controller: _tabController,
                     children: [
                       AccountReportView(vm: _vm),
-                      DepositReportView(vm: _vm),
                       WithdrawReportView(vm: _vm),
+                      DepositReportView(vm: _vm),
                       TransferReportView(vm: _vm),
-                      PromotionReportView(vm: _vm),
                       BalanceChangesView(vm: _vm),
+                      PromotionReportView(vm: _vm),
                     ],
                   ),
                 ),
