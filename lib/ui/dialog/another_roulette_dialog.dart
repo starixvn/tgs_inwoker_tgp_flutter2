@@ -1,7 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:api/entity/promotion.dart';
+import 'package:api/entity/promotion_roulette.dart';
 import 'package:api/entity/roulette_history_record.dart';
 import 'package:api/entity/roulette_prize.dart';
+import 'package:api/entity/roulette_prize_details.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +24,13 @@ class AnotherRouletteDialog extends StatefulWidget {
   final Function onTapCloseIcon;
   final UserProfile? userProfile;
   final bool isPlayed;
-  final contents;
-  final campaign;
+  final Promotion? contents;
+
+  // final campaign;
   final HomeViewModel vm;
   final List<RouletteHistoryRecord>? rouletteHistoryList;
   final RoulettePrize? prize;
+  final PromotionRoulette? promotionRoulette;
 
   AnotherRouletteDialog({
     required this.onTapCloseIcon,
@@ -33,9 +38,10 @@ class AnotherRouletteDialog extends StatefulWidget {
     this.userProfile,
     required this.vm,
     this.contents,
-    this.campaign,
+    // this.campaign,
     this.rouletteHistoryList,
     this.prize,
+    this.promotionRoulette,
   });
 
   @override
@@ -108,17 +114,21 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
   }
 
   void generateSectorRadians() {
-    //radian for 1 sector
-    double sectorRadian = (2.0 * pi) / widget.campaign.length;
+    if (widget.vm.prize != null &&
+        widget.vm.prize!.rouletteItems != null &&
+        widget.vm.prize!.rouletteItems!.length > 0) {
+      //radian for 1 sector
+      double sectorRadian = (2.0 * pi) / widget.vm.prize!.rouletteItems!.length;
 
-    for (int i = 0; i < widget.campaign.length; i++) {
-      sectorRadians.add((i) * sectorRadian);
+      for (int i = 0; i < widget.vm.prize!.rouletteItems!.length; i++) {
+        sectorRadians.add((i) * sectorRadian);
+      }
+
+      // descending list index except 0 for example [0,11,....,1]
+      sectorRadians.sort((b, a) => a.compareTo(b));
+      sectorRadians.removeWhere((item) => item == 0);
+      sectorRadians.insert(0, 0.0);
     }
-
-    // descending list index except 0 for example [0,11,....,1]
-    sectorRadians.sort((b, a) => a.compareTo(b));
-    sectorRadians.removeWhere((item) => item == 0);
-    sectorRadians.insert(0, 0.0);
   }
 
   void spin() {
@@ -128,11 +138,11 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
   }
 
   double generateRandomRadianToSpinTo() {
-    return (2.0 * pi * widget.campaign.length) + sectorRadians[selectedValue];
+    return (2.0 * pi * widget.vm.prize!.rouletteItems!.length) + sectorRadians[selectedValue];
   }
 
   _initData() async {
-    await widget.vm.getDepositRouletteHistoryRecord(widget.contents.id ?? "");
+    // await widget.vm.getDepositRouletteHistoryRecord(widget.promotionRoulette?.id ?? "");
   }
 
   // void animate() {
@@ -197,16 +207,16 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
 
   List<FortuneWheelChild<int>> totalList() {
     List<FortuneWheelChild<int>> list = [];
-    if (widget.campaign == null) {
+    if (widget.vm.prize == null || widget.vm.prize!.rouletteItems == null) {
       list = [FortuneWheelChild(foreground: Text(""), value: 1), FortuneWheelChild(foreground: Text(""), value: 1)];
     } else {
-      for (var i = 0; i < widget.campaign!.length; i++) {
-        var createNewList = widget.campaign![i];
-        if (getSelectedPositionList.length <= widget.campaign!.length) getSelectedPositionList.add(i);
+      for (var i = 0; i < widget.vm.prize!.rouletteItems!.length; i++) {
+        RoulettePrizeDetails createNewList = widget.vm.prize!.rouletteItems![i];
+        if (getSelectedPositionList.length <= widget.vm.prize!.rouletteItems!.length) getSelectedPositionList.add(i);
         list.add(FortuneWheelChild(
           foreground: Text(
             //display title text
-            createNewList["title"] ?? "",
+            createNewList.title ?? "",
 
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -222,7 +232,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
 
   _buildRoulette() {
     var height = context.screenHeight / 3;
-    int? playCount = widget.vm.rouletteCount.firstWhere((element) => element.id == widget.contents.id).rouletteCount;
+    int playCount = 0;
+    for (int i = 0; i < widget.vm.rouletteCount.length; i++) {
+      if (widget.vm.rouletteCount[i].id == widget.promotionRoulette?.id) {
+        playCount = widget.promotionRoulette?.rouletteCount ?? 0;
+      }
+    }
+    // int? playCount = widget.vm.rouletteCount.first.rouletteCount;
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Container(
@@ -363,7 +379,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                                   preventClickMoreThanOnce = true;
                                                 });
                                                 await widget.vm
-                                                    .getDepositRouletteResult(widget.contents?.id)
+                                                    .getDepositRouletteResult(widget.promotionRoulette?.id ?? "")
                                                     .then((_apiState) {
                                                   shownReward = false;
                                                   if (_apiState.isSuccess) {
@@ -380,7 +396,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                                                         //         getSelectedPositionList[selectedValue]) *
                                                         //     2.0 *
                                                         //     pi;
-                                                        if(!isClick)spin();
+                                                        if (!isClick) spin();
                                                         isClick = true;
                                                         isDisplayReward = false;
                                                         preventClickMoreThanOnce = true;
@@ -523,7 +539,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with 
                   ),
                 ),
                 Text(
-                  widget.campaign[selectedValue]["title"] ?? "lose",
+                  widget.vm.prize!.rouletteItems![selectedValue].title ?? "lose",
                   style: TextStyle(color: Colors.black, fontSize: 20.auto),
                 ),
               ],

@@ -2,6 +2,7 @@ import 'package:api/entity/home_banner.dart';
 import 'package:api/entity/main_dialog_content.dart';
 import 'package:api/entity/marquees.dart';
 import 'package:api/entity/promotion.dart';
+import 'package:api/entity/promotion_roulette.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/game_provider.dart';
@@ -62,12 +63,12 @@ class HomeViewModel extends BaseViewModel {
   bool isDepositRoulettePlayed = false;
   var campaign;
   Promotion? roulettePromo;
-  var depositRoulettePromo;
+  List<Promotion>? depositRoulettePromo;
   int? rotatedResultId, depositRotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
 
-  var rouletteCount = [];
+  List<PromotionRoulette> rouletteCount = [];
 
   var rouletteHistoryList, prize;
 
