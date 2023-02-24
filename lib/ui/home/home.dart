@@ -76,8 +76,7 @@ class _HomeState extends BaseState<Home> {
   var languageCode;
   var _gameViewModel = GameViewModel();
   var randomNumber;
-  var onClickFromSmallRoulette = false,
-      isShowTransferUI = false;
+  var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
   var isDisplayGameView = false; //to check either display jackpot or game view in t11
 
@@ -256,8 +255,8 @@ class _HomeState extends BaseState<Home> {
           gameView: _buildGameView(),
         );
       case 100:
-      //the reason it's 100 is because apparently all existing using int data type
-      //to prevent for everything become fucked up, custom homepage (non T related will start from 100)
+        //the reason it's 100 is because apparently all existing using int data type
+        //to prevent for everything become fucked up, custom homepage (non T related will start from 100)
         return HomeT11(
           onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
@@ -279,8 +278,7 @@ class _HomeState extends BaseState<Home> {
     }
   }
 
-  _buildGameView() =>
-      BaseGame(
+  _buildGameView() => BaseGame(
         vm: _gameViewModel,
         onRefreshHomePage: () => _initData(),
         onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
@@ -289,8 +287,7 @@ class _HomeState extends BaseState<Home> {
         onClickGameTab: (value) => (widget.onClickGameTab != null) ? widget.onClickGameTab!(value) : null,
       );
 
-  _getSmallRouletteIcon() =>
-      Visibility(
+  _getSmallRouletteIcon() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,10 +311,9 @@ class _HomeState extends BaseState<Home> {
               ),
             ),
             InkWell(
-              onTap: () =>
-                  setState(() {
-                    isCloseRouletteIcon = true;
-                  }),
+              onTap: () => setState(() {
+                isCloseRouletteIcon = true;
+              }),
               child: Container(
                 width: 15,
                 height: 15,
@@ -341,8 +337,7 @@ class _HomeState extends BaseState<Home> {
         ),
       );
 
-  _rouletteHolder() =>
-      Visibility(
+  _rouletteHolder() => Visibility(
         visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.rouletteCount.isNotEmpty && !isCloseRouletteIcon,
         child: Positioned(
           bottom: 0,
@@ -365,7 +360,6 @@ class _HomeState extends BaseState<Home> {
       children: List.generate(_vm.rouletteCount.length, (index) {
         // var isSameId = rouletteWithPlayCounts.any((element) => element.id == depositRoulettePromo[index].id);
 
-
 //         //if the id is same, then get the play count
 //         if (isSameId) {
 //           // if the ID are the same save the id inside appearedDAR
@@ -381,9 +375,9 @@ class _HomeState extends BaseState<Home> {
 //
 // //display the first item in depositRoulettePromo that matches id in appearedDAR
 //         if (appearedDAR.isNotEmpty && depositRoulettePromo[index].id == appearedDAR.first) {
-        if(_vm.depositRoulettePromo != null && _vm.depositRoulettePromo!.length > 0){
-          for(Promotion item in _vm.depositRoulettePromo!){
-            if(item.id ==  _vm.rouletteCount[index].id){
+        if (_vm.depositRoulettePromo != null && _vm.depositRoulettePromo!.length > 0) {
+          for (Promotion item in _vm.depositRoulettePromo!) {
+            if (item.id == _vm.rouletteCount[index].id) {
               _depositPromo = item;
             }
           }
@@ -403,8 +397,7 @@ class _HomeState extends BaseState<Home> {
     );
   }
 
-  _getAnotherSmallRouletteIcon(Promotion? data, PromotionRoulette promotionRoulette) =>
-      Container(
+  _getAnotherSmallRouletteIcon(Promotion? data, PromotionRoulette promotionRoulette) => Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -433,10 +426,9 @@ class _HomeState extends BaseState<Home> {
               ),
             ),
             InkWell(
-              onTap: () =>
-                  setState(() {
-                    isCloseRouletteIcon = true;
-                  }),
+              onTap: () => setState(() {
+                isCloseRouletteIcon = true;
+              }),
               child: Container(
                 width: 15,
                 height: 15,
@@ -466,19 +458,18 @@ class _HomeState extends BaseState<Home> {
     if (_vm.userProfile == null && !loginLater) {
       showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            CustomDialog(
-              title: getTranslatedText("login_expired"),
-              description: getTranslatedText("login_again"),
-              buttonText1: getTranslatedText("login"),
-              buttonText2: getTranslatedText("no"),
-              onClick: this.navigateToLogin,
-              onClick2: () {
-                prefs.setBool("login_later", true);
-                Navigator.pop(context);
-              },
-              popIndex: 2,
-            ),
+        builder: (BuildContext context) => CustomDialog(
+          title: getTranslatedText("login_expired"),
+          description: getTranslatedText("login_again"),
+          buttonText1: getTranslatedText("login"),
+          buttonText2: getTranslatedText("no"),
+          onClick: this.navigateToLogin,
+          onClick2: () {
+            prefs.setBool("login_later", true);
+            Navigator.pop(context);
+          },
+          popIndex: 2,
+        ),
       );
     }
   }
@@ -489,21 +480,20 @@ class _HomeState extends BaseState<Home> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) =>
-            RouletteDialog(
-              onTapCloseIcon: () {
-                Navigator.pop(context);
-                if (!onClickFromSmallRoulette) _displayDialog();
-                setState(() {
-                  onClickFromSmallRoulette = false;
-                });
-              },
-              userProfile: _vm.userProfile,
-              isPlayed: _vm.isRoulettePlayed,
-              vm: _vm,
-              // getRouletteResult: () => _vm.getRouletteResult(),
-              campaign: _vm.campaign,
-            ),
+        builder: (BuildContext context) => RouletteDialog(
+          onTapCloseIcon: () {
+            Navigator.pop(context);
+            if (!onClickFromSmallRoulette) _displayDialog();
+            setState(() {
+              onClickFromSmallRoulette = false;
+            });
+          },
+          userProfile: _vm.userProfile,
+          isPlayed: _vm.isRoulettePlayed,
+          vm: _vm,
+          // getRouletteResult: () => _vm.getRouletteResult(),
+          campaign: _vm.campaign,
+        ),
       );
     else
       _displayDialog();
@@ -515,27 +505,26 @@ class _HomeState extends BaseState<Home> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) =>
-          AnotherRouletteDialog(
-            onTapCloseIcon: () {
-              Navigator.pop(context);
-              if (!onClickFromAnotherSmallRoulette) _displayDialog();
-              setState(() {
-                onClickFromAnotherSmallRoulette = false;
-              });
-            },
-            userProfile: _vm.userProfile,
-            isPlayed: _vm.isDepositRoulettePlayed,
-            vm: _vm,
-            promotionRoulette: promotionRoulette,
-            contents: data,
-            // getRouletteResult: () => _vm.getRouletteResult(),
+      builder: (BuildContext context) => AnotherRouletteDialog(
+        onTapCloseIcon: () {
+          Navigator.pop(context);
+          if (!onClickFromAnotherSmallRoulette) _displayDialog();
+          setState(() {
+            onClickFromAnotherSmallRoulette = false;
+          });
+        },
+        userProfile: _vm.userProfile,
+        isPlayed: _vm.isDepositRoulettePlayed,
+        vm: _vm,
+        promotionRoulette: promotionRoulette,
+        contents: data,
+        // getRouletteResult: () => _vm.getRouletteResult(),
 
-            // playcount: playcount,
-            // campaign: data.campaignDetails?.rouletteItems ?? [],
-            // rouletteHistoryList: _vm.rouletteHistoryList,
-            // prize: _vm.prize,
-          ),
+        // playcount: playcount,
+        // campaign: data.campaignDetails?.rouletteItems ?? [],
+        // rouletteHistoryList: _vm.rouletteHistoryList,
+        // prize: _vm.prize,
+      ),
     );
     // else
     //   _displayDialog();
@@ -558,43 +547,40 @@ class _HomeState extends BaseState<Home> {
   _displayMarqueeDialog() {
     EnvironmentConfig.template_version == 11
         ? showDialog(
-      context: context,
-      builder: (BuildContext context2) =>
-          MarqueeDialog(
-              title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-              description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-              onClick: () {
-                if (isShowPromotion()) {
-                  _displayPromotionDialog();
-                }
-              }),
-    )
+            context: context,
+            builder: (BuildContext context2) => MarqueeDialog(
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+                onClick: () {
+                  if (isShowPromotion()) {
+                    _displayPromotionDialog();
+                  }
+                }),
+          )
         : showDialog(
-      context: context,
-      builder: (BuildContext context2) =>
-          CustomDialog(
-              title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
-              description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
-              buttonText1: getTranslatedText("confirm"),
-              onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
-              onClick: () {
-                if (isShowPromotion()) {
-                  _displayPromotionDialog();
-                }
-              }),
-    );
+            context: context,
+            builder: (BuildContext context2) => CustomDialog(
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
+                buttonText1: getTranslatedText("confirm"),
+                onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
+                onClick: () {
+                  if (isShowPromotion()) {
+                    _displayPromotionDialog();
+                  }
+                }),
+          );
   }
 
   _displayPromotionDialog() {
     showDialog(
       context: context,
-      builder: (BuildContext context) =>
-          PromotionDialog(
-            promotionList: _vm.promotionList!,
-            onClick: () {
-              Navigator.of(context).pop();
-            },
-          ),
+      builder: (BuildContext context) => PromotionDialog(
+        promotionList: _vm.promotionList!,
+        onClick: () {
+          Navigator.of(context).pop();
+        },
+      ),
     );
   }
 
@@ -606,7 +592,7 @@ class _HomeState extends BaseState<Home> {
         Navigator.pushNamed(context, "/phone_verification");
       }
 
-      if (_vm.config.idrRegisterCustomFlow) {
+      if (_vm.config?.idrRegisterCustomFlow ?? false) {
         if (_vm.userProfile?.phone == "") {
           //navigate to add phone
           Navigator.pushNamed(context, "/phone_verification");
@@ -619,14 +605,14 @@ class _HomeState extends BaseState<Home> {
         }
       }
 
-      if (_vm.userProfile?.registerCompleted) {
+      if (_vm.userProfile?.registerCompleted ?? false) {
         print(_vm.userProfile?.registerCompleted ? "true" : "false");
       }
       if ((_vm.config?.smsVerification ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
         _displayPhoneVerificationDialog();
-      } else if ((_vm.config.registerShowPhone ?? false) &&
+      } else if ((_vm.config?.registerShowPhone ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
         _navigateToPhoneVerification();
