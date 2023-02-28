@@ -1,4 +1,5 @@
 import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:api/entity/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/card_text_form_field.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -364,7 +365,9 @@ class _AddCardState extends BaseState<AddCard> {
               list: list,
               onChanged: (value) {
                 setState(() {
-                  if (value is BankType)
+                  if (value is Payment)
+                    onSelectedDepositInfo(depositInfo: value);
+                  else if (value is BankType)
                     onSelectedBankType(bankType: value);
                   else if (value is WithdrawalInfo)
                     onSelectedWithdrawalInfo(withdrawalInfo: value);
@@ -444,9 +447,9 @@ class _AddCardState extends BaseState<AddCard> {
   }
 
   onSelectedBankType({BankType? bankType}) async {
-    await _vm.onSelectedBankType(bankType);
+    await _vm.onSelectedBankType(bankType, widget.isFromDeposit);
     BankType _currentBankType = bankType ?? _vm.pBankType!;
-    onSelectedWithdrawalInfo();
+    widget.isFromDeposit ? onSelectedDepositInfo() : onSelectedWithdrawalInfo();
     setState(() {
       isCrypto = _currentBankType == BankType.CRYPTO;
       bankTypePickerText = _currentBankType.getName(context);
@@ -462,6 +465,22 @@ class _AddCardState extends BaseState<AddCard> {
       channelPickerText = _vm.pWithdrawalInfo!.channelName;
       if (_vm.pWithdrawalInfo?.channelCode != "CustomBank") {
         _bankNameController.text = _vm.pWithdrawalInfo?.channelCode ?? "";
+        isBankNameEnabledEdit = false;
+      } else {
+        _bankNameController.text = "";
+        isBankNameEnabledEdit = true;
+      }
+    });
+  }
+
+  onSelectedDepositInfo({Payment? depositInfo}) async {
+    await _vm.onSelectedDepositInfo(depositInfo: depositInfo);
+    onSelectedBankName();
+
+    setState(() {
+      channelPickerText = _vm.pDepositInfo!.channelName;
+      if (_vm.pDepositInfo?.channelCode != "CustomBank") {
+        _bankNameController.text = _vm.pDepositInfo?.channelCode ?? "";
         isBankNameEnabledEdit = false;
       } else {
         _bankNameController.text = "";

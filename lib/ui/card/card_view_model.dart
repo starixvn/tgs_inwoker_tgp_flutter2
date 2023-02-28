@@ -1,6 +1,7 @@
 import 'package:api/api.dart';
 import 'package:api/entity/bank_card.dart';
 import 'package:api/entity/bank_type.dart';
+import 'package:api/entity/payment.dart';
 import 'package:api/entity/withdrawal_info.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
@@ -32,11 +33,12 @@ class CardViewModel extends BaseViewModel {
       addBankCardApiState,
       getDepositInfoListApiState,
       deleteBankCardApiState;
-  Map<BankType, List<WithdrawalInfo>> bankTypeList =
-      new Map<BankType, List<WithdrawalInfo>>();
-  List? withdrawalInfoList;
+  Map<BankType, List> bankTypeList = new Map<BankType, List>();
+
+  List? withdrawalInfoList, depositInfoList;
   BankType? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
+  Payment? pDepositInfo;
   String? pBankName;
   List<String> bankNameList = [
     "bank_KKR",
@@ -64,7 +66,7 @@ class CardViewModel extends BaseViewModel {
     setLoading();
     getDepositInfoListApiState = await bankRepo.getPayment();
     if (getDepositInfoListApiState.isSuccess) {
-      List<WithdrawalInfo> list = getDepositInfoListApiState.result;
+      List<Payment> list = getDepositInfoListApiState.result;
 
       bankTypeList = groupBy(list, (obj) => obj.bankType!);
     }
@@ -84,8 +86,8 @@ class CardViewModel extends BaseViewModel {
     return getWithdrawalInfoListApiState;
   }
 
-  onSelectedBankType(BankType? bankType) async {
-    if (bankTypeList.isEmpty) await getWithdrawalInfoList();
+  onSelectedBankType(BankType? bankType, fromDeposit) async {
+    await fromDeposit ? getDepositInfoList() : getWithdrawalInfoList();
     if (bankType == null && pBankType == null) {
       if (config.addCardHideCertainField ?? false)
         pBankType = BankType.BANK;
@@ -106,8 +108,17 @@ class CardViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  onSelectedBankName({String? bankName}) async {
-    if (bankTypeList.isEmpty) await getWithdrawalInfoList();
+  onSelectedDepositInfo({Payment? depositInfo}) async {
+    if (bankTypeList.isEmpty) await getDepositInfoList();
+    if (depositInfo == null)
+      pDepositInfo = depositInfoList!.first;
+    else
+      pDepositInfo = depositInfo;
+    notifyListeners();
+  }
+
+  onSelectedBankName({String? bankName, fromDeposit}) async {
+    await fromDeposit ? getDepositInfoList() : getWithdrawalInfoList();
     if (bankName == null)
       pBankName = bankNameList.first;
     else
