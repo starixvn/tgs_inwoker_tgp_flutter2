@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
@@ -53,7 +54,11 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
                 _webViewController = controller;
                 _webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(widget.url!)));
               },
-            ),
+              androidOnPermissionRequest:
+                  (InAppWebViewController controller, String origin, List<String> resources) async {
+                await Permission.camera.request();
+                return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
+              }),
     );
   }
 }
