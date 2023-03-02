@@ -95,7 +95,13 @@ class CardViewModel extends BaseViewModel {
         pBankType = bankTypeList.keys.first;
     } else
       pBankType = bankType;
-    withdrawalInfoList = (bankTypeList[pBankType])!;
+
+    if (fromDeposit) {
+      depositInfoList = (bankTypeList[pBankType])!;
+    } else {
+      withdrawalInfoList = (bankTypeList[pBankType])!;
+    }
+
     notifyListeners();
   }
 

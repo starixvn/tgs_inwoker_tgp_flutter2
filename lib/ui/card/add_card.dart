@@ -93,7 +93,9 @@ class _AddCardState extends BaseState<AddCard> {
                             _buildAddCardTitle(),
                             if (!_isAddCardHideCertainField())
                               _buildBankTypePicker(),
-                            _buildChannelPicker(),
+                            widget.isFromDeposit
+                                ? _buildDepositChannelPicker()
+                                : _buildChannelPicker(),
                             ListView(
                               shrinkWrap: true,
                               physics: ClampingScrollPhysics(),
@@ -162,6 +164,23 @@ class _AddCardState extends BaseState<AddCard> {
             width: context.screenWidth,
             onClick: () {
               _buildBottomSheet("channel", _vm.withdrawalInfoList!);
+            }),
+      );
+
+  _buildDepositChannelPicker() => Visibility(
+        visible: !(((_vm.config?.addCardHideChannel ?? false))),
+        child: CustomPicker(
+            title: (_vm.config?.addCardBankCustomIdr ?? false)
+                ? "bank_name"
+                : "channel",
+            displayText: channelPickerText == null
+                ? getTranslatedText("select_channel")
+                : channelPickerText,
+            list: _vm.depositInfoList,
+            isHintText: false,
+            width: context.screenWidth,
+            onClick: () {
+              _buildBottomSheet("channel", _vm.depositInfoList!);
             }),
       );
 
