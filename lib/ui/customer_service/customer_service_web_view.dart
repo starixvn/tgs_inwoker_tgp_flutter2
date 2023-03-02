@@ -32,6 +32,7 @@ class _CustomerServiceWebViewState extends BaseState<CustomerServiceWebView> {
 
   Widget build(BuildContext context) {
     return CustomScaffold(
+      resizeToAvoidBottomInset: true,
       appBar: CustomAppBar(
         title: getTranslatedText("customer_service") == "customer_service"
             ? "Customer Service"
