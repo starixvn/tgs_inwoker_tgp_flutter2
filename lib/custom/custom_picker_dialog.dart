@@ -87,38 +87,40 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
   }
 
   _getText(int index) {
-    if (widget.list is List<Payment>) {
-      var name = widget.list[index].channelName.replaceAll(RegExp("_"), " ");
-      return name;
-    } else if (widget.list is List<GameProvider>) {
-      GameProvider game = widget.list[index];
-      return game.name;
-    } else if (widget.list is List<BankType>) {
-      BankType bankType = widget.list[index];
-      return bankType.getName(context);
-    } else if (widget.list is List<Wallet>) {
-      Wallet wallet = widget.list[index];
-      return (wallet.isMainWallet)
-          ? getTranslatedText(wallet.title)
-          : wallet.title;
-    } else if (widget.list is List<Promotion>) {
-      Promotion promotion = widget.list[index];
-      return promotion.name;
-    } else if (widget.list is List<Status>) {
-      Status status = widget.list[index];
-      String name = status.getName(context);
-      return name;
-    } else if (widget.list is List<WithdrawalInfo>) {
-      var code = widget.list[index].channelName;
-      return code;
-    } else if (widget.list is List<Map<String, String>>) {
-      String promotionName = widget.list[index]["name"];
-      return getTranslatedText(promotionName) ?? promotionName;
-    } else if (widget.list is List<String>) {
-      String bankName = widget.list[index];
-      return getTranslatedText(bankName) ?? bankName;
-    } else {
-      return getTranslatedText(widget.list[index]) ?? widget.list[index];
+    switch (widget.list.runtimeType) {
+      case List<Payment>:
+        var name = widget.list[index].channelName.replaceAll(RegExp("_"), " ");
+        return name;
+      case List<GameProvider>:
+        GameProvider game = widget.list[index];
+        return game.name;
+      case List<BankType>:
+        BankType bankType = widget.list[index];
+        return bankType.getName(context);
+      case List<Wallet>:
+        Wallet wallet = widget.list[index];
+        return (wallet.isMainWallet)
+            ? getTranslatedText(wallet.title)
+            : wallet.title;
+      case List<Promotion>:
+        Promotion promotion = widget.list[index];
+        return promotion.name;
+      case List<Status>:
+        Status status = widget.list[index];
+        String name = status.getName(context);
+        return name;
+      case List<WithdrawalInfo>:
+        var code = widget.list[index].channelName;
+        return code;
+      case List<Map<String, String>>:
+        String promotionName = widget.list[index]["name"];
+        return getTranslatedText(promotionName) ?? promotionName;
+      case List<String>:
+        String bankName = widget.list[index];
+        return getTranslatedText(bankName) ?? bankName;
+      default:
+        var name = widget.list[index].channelName.replaceAll(RegExp("_"), " ");
+        return name ?? getTranslatedText(widget.list[index]);
     }
   }
 
