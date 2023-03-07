@@ -23,14 +23,15 @@ class LoginViewModel extends BaseViewModel {
       checkUsernameApiState,
       getReVerifyCodeApiState,
       phoneReVerifyApiState,
-      getBankCardListApiState;
+      getBankCardListApiState,
+      getAffiliateStatusState;
 
   String? username, password;
   bool isPhoneReVerificationReset = false;
   String? securityKey;
   bool isNavigateFromSmsVerification = false;
   String nextStepType = "";
-
+  bool haveAffiliate = false;
   get brandLogo => contentRepo.brandLogo;
 
   get config => contentRepo.featuresConfig;
@@ -217,5 +218,16 @@ class LoginViewModel extends BaseViewModel {
     }
     setLoading(false);
     return loginApiState;
+  }
+
+  getAffiliateStatus() async {
+    setLoading();
+    getAffiliateStatusState = await contentRepo.getAffiliateStatus();
+    if (getAffiliateStatusState.isSuccess) {
+      haveAffiliate = getAffiliateStatusState.result.switchOn;
+    }
+    setLoading(false);
+    notifyListeners();
+    return getAffiliateStatusState;
   }
 }

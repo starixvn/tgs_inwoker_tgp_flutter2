@@ -33,6 +33,7 @@ class _ProfileState extends BaseState<Profile> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
         _vm.computeTotalBalance();
+        _vm.getAffiliateStatus();
       } else {
         Navigator.of(context).pushNamed(RoutePath.login);
       }
@@ -55,7 +56,7 @@ class _ProfileState extends BaseState<Profile> {
                       children: [
                         _buildUserInfoContainer(),
                         ProfileItem(
-                            config: _vm.config, bankCardList: _vm.bankCardList),
+                            config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
                         _buildLogoutButton()
                       ],
                     ),
@@ -184,5 +185,6 @@ class _ProfileState extends BaseState<Profile> {
     });
     handleApiState(_vm.getWalletBalanceApiState,
         isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAffiliateStatusState, onSuccess: () {});
   }
 }

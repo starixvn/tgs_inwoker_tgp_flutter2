@@ -8,10 +8,10 @@ class ProfileViewModel extends BaseViewModel {
   final walletRepo = WalletRepository.getSingleton();
   final bankRepo = BankRepository.getSingleton();
 
-  var logoutApiState, getWalletBalanceApiState;
+  var logoutApiState, getWalletBalanceApiState, getAffiliateStatusState;
   double? gameBalance;
   double? totalBalance;
-
+  bool haveAffiliate = false;
   @override
   List<BaseRepository> get repoList => [userRepo];
 
@@ -52,5 +52,16 @@ class ProfileViewModel extends BaseViewModel {
       gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
     }
     notifyListeners();
+  }
+
+  getAffiliateStatus() async {
+    setLoading();
+    getAffiliateStatusState = await contentRepo.getAffiliateStatus();
+    if (getAffiliateStatusState.isSuccess) {
+      haveAffiliate = getAffiliateStatusState.result.switchOn;
+    }
+    setLoading(false);
+    notifyListeners();
+    return getAffiliateStatusState;
   }
 }
