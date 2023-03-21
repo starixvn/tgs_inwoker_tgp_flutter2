@@ -1135,5 +1135,15 @@
   "remaining_spin2": " peluang!",
   "balanceChangeRecords": "Riwayat Perubahan Saldo",
   "bcr_type": "Tipe Transaksi",
-  "bcr_amount": "Jumlah"
+  "bcr_amount": "Jumlah",
+  "affiliate_rebate_sports": "Olahraga",
+  "affiliate_rebate_virtualsports": "Bintik maya",
+  "affiliate_rebate_livecasino": "Orang Sejati",
+  "affiliate_rebate_qipai": "Catur",
+  "affiliate_rebate_lottery": "lotere",
+  "affiliate_rebate_e_game": "Elektronik",
+  "affiliate_rebate_title": "Tingkat Rebate",
+  "affiliate_rebate_players": "Pemain",
+  "affiliate_rebate_turnover": "Pengeluaran",
+  "affiliate_rebate_rebates": "Rebate"
 }

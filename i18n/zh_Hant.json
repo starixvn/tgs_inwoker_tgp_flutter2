@@ -1134,5 +1134,15 @@
   "remaining_spin2": "次机会",
   "balanceChangeRecords": "賬變記錄",
   "bcr_type": "交易類型",
-  "bcr_amount": "交易金額"
+  "bcr_amount": "交易金額",
+  "affiliate_rebate_sports": "體育",
+  "affiliate_rebate_virtualsports": "虛擬體育",
+  "affiliate_rebate_livecasino": "真人娛樂",
+  "affiliate_rebate_qipai": "棋牌遊戲",
+  "affiliate_rebate_lottery": "彩票遊戲",
+  "affiliate_rebate_e_game": "電子遊戲",
+  "affiliate_rebate_title": "返水比例",
+  "affiliate_rebate_players": "活躍玩家",
+  "affiliate_rebate_turnover": "有效投注",
+  "affiliate_rebate_rebates": "返水比例"
 }

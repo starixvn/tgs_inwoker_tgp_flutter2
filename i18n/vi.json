@@ -1134,5 +1134,15 @@
   "remaining_spin2": " cơ hội!",
   "balanceChangeRecords": "Hồ sơ thay đổi tài khoản",
   "bcr_type": "Loại giao dịch",
-  "bcr_amount": "Số lượng"
+  "bcr_amount": "Số lượng",
+  "affiliate_rebate_sports": "Thể thao",
+  "affiliate_rebate_virtualsports": "Thể thao ảo",
+  "affiliate_rebate_livecasino": "Casino",
+  "affiliate_rebate_qipai": "Cờ vua",
+  "affiliate_rebate_lottery": "Xổ số",
+  "affiliate_rebate_e_game": "Điện tử",
+  "affiliate_rebate_title": "Tỷ lệ hoàn trả",
+  "affiliate_rebate_players": "Người chơi",
+  "affiliate_rebate_turnover": "Tổng số tiền cược",
+  "affiliate_rebate_rebates": "Tiền hoàn trả"
 }

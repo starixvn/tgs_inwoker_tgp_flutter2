@@ -1133,5 +1133,15 @@
   "remaining_spin2": " โอกาสครั้งที่สอง!",
   "balanceChangeRecords": "บันทึกการเปลี่ยนแปลงบัญชี",
   "bcr_type": "ประเภทธุรกรรม",
-  "bcr_amount": "จำนวน"
+  "bcr_amount": "จำนวน",
+  "affiliate_rebate_sports": "กีฬา",
+  "affiliate_rebate_virtualsports": "กีฬาเสมือน",
+  "affiliate_rebate_livecasino": "คาสิโน",
+  "affiliate_rebate_qipai": "365 เกม",
+  "affiliate_rebate_lottery": "หวย",
+  "affiliate_rebate_e_game": "อีสปอร์ต",
+  "affiliate_rebate_title": "อัตราการคืนเงิน",
+  "affiliate_rebate_players": "ผู้เล่น",
+  "affiliate_rebate_turnover": "ยอดเงินเดิมพัน",
+  "affiliate_rebate_rebates": "คืนเงิน"
 }
