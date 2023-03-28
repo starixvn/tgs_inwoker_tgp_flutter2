@@ -1,5 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:api/entity/promotion.dart';
+import 'package:api/entity/promotion_roulette.dart';
+import 'package:api/entity/roulette_history_record.dart';
+import 'package:api/entity/roulette_prize.dart';
+import 'package:api/entity/roulette_prize_details.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +16,7 @@ import 'package:tgp_flutter2/ui/Wheel/fortune_wheel.dart';
 import 'package:tgp_flutter2/ui/dialog/roulette_dialog.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
+import 'package:tgp_flutter2/ui/promotion/promotion_history.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_main_details.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_terms_content.dart';
 
@@ -18,26 +24,31 @@ class AnotherRouletteDialog extends StatefulWidget {
   final Function onTapCloseIcon;
   final UserProfile? userProfile;
   final bool isPlayed;
-  final contents;
-  final campaign;
-  final playcount;
-  final HomeViewModel vm;
+  final Promotion? contents;
 
-  AnotherRouletteDialog(
-      {required this.onTapCloseIcon,
-      this.isPlayed = false,
-      this.userProfile,
-      required this.vm,
-      this.contents,
-      this.playcount,
-      this.campaign});
+  // final campaign;
+  final HomeViewModel vm;
+  final List<RouletteHistoryRecord>? rouletteHistoryList;
+  final RoulettePrize? prize;
+  final PromotionRoulette? promotionRoulette;
+
+  AnotherRouletteDialog({
+    required this.onTapCloseIcon,
+    this.isPlayed = false,
+    this.userProfile,
+    required this.vm,
+    this.contents,
+    // this.campaign,
+    this.rouletteHistoryList,
+    this.prize,
+    this.promotionRoulette,
+  });
 
   @override
   _AnotherRouletteDialogState createState() => _AnotherRouletteDialogState();
 }
 
-class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
-    with SingleTickerProviderStateMixin {
+class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   int selectedValue = 0;
   var currentSelectValue = 0.0;
@@ -46,40 +57,119 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
   var isDisplayReward = false, isExpandedColumn = false;
   var buttonIndex = 0;
   var shownReward = false;
-
   var nomore = false;
+  var preventClickMoreThanOnce = false;
+  List<int> getSelectedPositionList = [];
+
+  List<double> sectorRadians = [];
+  double angle = 0;
+
+  bool spinning = false;
+  int spins = 0;
+
+  late Animation<double> animation;
 
   @override
   void initState() {
-    _controller = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
-    _animation = new CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linear,
-    );
+    _initData();
+    generateSectorRadians();
+    // _controller = AnimationController(
+    //   duration: const Duration(seconds: 1),
+    //   vsync: this,
+    // );
+    // _animation = new CurvedAnimation(
+    //   parent: _controller,
+    //   curve: Curves.linear,
+    // );
+
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 3600));
+
+    Tween<double> tween = Tween(begin: 0, end: 1);
+
+    CurvedAnimation curve = CurvedAnimation(parent: _controller, curve: Curves.decelerate);
+
+    animation = tween.animate(curve);
+
+    _controller.addListener(() {
+      if (_controller.isCompleted) {
+        if (!isDisplayReward) {
+          setState(() {
+            // to prevent reward dialog show more than once
+            isDisplayReward = true;
+          });
+          _displayReward(context).then((value) {
+            // spinning = false;
+            isClick = false;
+          });
+        }
+        Future.delayed(const Duration(seconds: 1), () {
+          if (!shownReward) {
+            shownReward = true;
+          }
+        });
+      }
+    });
 
     super.initState();
   }
 
-  void animate() {
-    _controller
-      ..repeat()
-      ..addListener(() async {
-        var a =
-            double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
-        var b = double.parse((currentSelectValue).toStringAsFixed(2));
-        if (a == b && isClick) {
-          _controller.stop();
-          Future.delayed(const Duration(seconds: 1), () {
-            if (!shownReward) {
-              shownReward = true;
-            }
-          });
-        }
-      });
+  void generateSectorRadians() {
+    if (widget.vm.prize != null &&
+        widget.vm.prize!.rouletteItems != null &&
+        widget.vm.prize!.rouletteItems!.length > 0) {
+      //radian for 1 sector
+      double sectorRadian = (2.0 * pi) / widget.vm.prize!.rouletteItems!.length;
+
+      for (int i = 0; i < widget.vm.prize!.rouletteItems!.length; i++) {
+        sectorRadians.add((i) * sectorRadian);
+      }
+
+      // descending list index except 0 for example [0,11,....,1]
+      sectorRadians.sort((b, a) => a.compareTo(b));
+      sectorRadians.removeWhere((item) => item == 0);
+      sectorRadians.insert(0, 0.0);
+    }
   }
+
+  void spin() {
+    double randomRadian = generateRandomRadianToSpinTo();
+    angle = randomRadian;
+    _controller.forward();
+  }
+
+  double generateRandomRadianToSpinTo() {
+    return (2.0 * pi * widget.vm.prize!.rouletteItems!.length) + sectorRadians[selectedValue];
+  }
+
+  _initData() async {
+    // await widget.vm.getDepositRouletteHistoryRecord(widget.promotionRoulette?.id ?? "");
+  }
+
+  // void animate() {
+  //   _controller
+  //     ..repeat()
+  //     ..addListener(() async {
+  //       var a = double.parse(((_controller.value * 2.0 * pi)).toStringAsFixed(2));
+  //       var b = double.parse((currentSelectValue).toStringAsFixed(2));
+  //       if (a == b && isClick) {
+  //         _controller.stop();
+  //         if (!isDisplayReward) {
+  //           setState(() {
+  //             // to prevent reward dialog show more than once
+  //             isDisplayReward = true;
+  //           });
+  //           _displayReward(context).then((value) {
+  //             isClick = false;
+  //           });
+  //         }
+  //         Future.delayed(const Duration(seconds: 1), () {
+  //           if (!shownReward) {
+  //             shownReward = true;
+  //           }
+  //         });
+  //       }
+  //     });
+  // }
 
   @override
   void dispose() {
@@ -95,10 +185,10 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       elevation: 5,
       backgroundColor: Colors.transparent,
       child: (() {
-        if (widget.playcount == 0 || widget.playcount == null || nomore)
-          return _buildIsPlayedRouletteText();
-        else
-          return _buildRoulette();
+        // if (widget.playcount == 0 || widget.playcount == null || nomore)
+        //   return _buildIsPlayedRouletteText();
+        // else
+        return _buildRoulette();
       }()),
     );
   }
@@ -106,6 +196,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
   _displayReward(BuildContext context) async {
     return showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Colors.transparent,
@@ -116,19 +207,16 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
 
   List<FortuneWheelChild<int>> totalList() {
     List<FortuneWheelChild<int>> list = [];
-    if (widget.campaign == null) {
-      list = [
-        FortuneWheelChild(foreground: Text(""), value: 1),
-        FortuneWheelChild(foreground: Text(""), value: 1)
-      ];
+    if (widget.vm.prize == null || widget.vm.prize!.rouletteItems == null) {
+      list = [FortuneWheelChild(foreground: Text(""), value: 1), FortuneWheelChild(foreground: Text(""), value: 1)];
     } else {
-      for (var i = 0; i < widget.campaign!.length; i++) {
-        var createNewList = widget.campaign![i];
-
+      for (var i = 0; i < widget.vm.prize!.rouletteItems!.length; i++) {
+        RoulettePrizeDetails createNewList = widget.vm.prize!.rouletteItems![i];
+        if (getSelectedPositionList.length <= widget.vm.prize!.rouletteItems!.length) getSelectedPositionList.add(i);
         list.add(FortuneWheelChild(
           foreground: Text(
             //display title text
-            createNewList["title"] ?? "",
+            createNewList.title ?? "",
 
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -144,6 +232,13 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
 
   _buildRoulette() {
     var height = context.screenHeight / 3;
+    int playCount = 0;
+    for (int i = 0; i < widget.vm.rouletteCount.length; i++) {
+      if (widget.vm.rouletteCount[i].id == widget.promotionRoulette?.id) {
+        playCount = widget.promotionRoulette?.rouletteCount ?? 0;
+      }
+    }
+    // int? playCount = widget.vm.rouletteCount.first.rouletteCount;
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Container(
@@ -176,18 +271,39 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                       shape: BoxShape.rectangle,
                       color: Colors.white,
                     ),
-                    padding: EdgeInsets.only(
-                      top: height / 30,
-                    ),
                     child: Stack(
                       children: [
-                        Positioned.fill(
-                          bottom: -8,
+                        Positioned(
+                          // top:height/1.6,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          // bottom: -(height / 100),
                           child: Align(
                             alignment: Alignment.bottomCenter,
+                            // color: Colors.green,
                             child: Image.asset(
                               "images/roulette/roulette_bottom.png",
-                              height: height / 3.5,
+                              height: (height / 3),
+                              width: context.screenWidth / 2,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Positioned.fill(
+                          bottom: height / 9.5,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 3.auto, horizontal: 50.auto),
+                              decoration: BoxDecoration(color: Colors.black),
+                              child: Text(
+                                getTranslatedText("remaining_spin") +
+                                    playCount.toString() +
+                                    getTranslatedText("remaining_spin2"),
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.auto),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
@@ -196,111 +312,146 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              flex: 9,
-                              child: Container(
-                                child: Stack(
-                                  children: [
-                                    AnimatedBuilder(
-                                      animation: _animation,
-                                      builder: (BuildContext _, child) {
-                                        return Transform.rotate(
-                                          angle: _controller.value * 2.0 * pi,
-                                          child: Stack(
-                                            children: [
-                                              Center(
-                                                child: Image.asset(
-                                                  'images/roulette/roulette12.png',
-                                                  width: height - 20.auto,
-                                                  height: height - 20.auto,
-                                                ),
+                              flex: 10,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(top: height / 30, bottom: 30),
+                                    child: Stack(
+                                      children: [
+                                        AnimatedBuilder(
+                                          animation: animation,
+                                          builder: (BuildContext _, child) {
+                                            return Transform.rotate(
+                                              angle: _controller.value * angle,
+                                              child: Stack(
+                                                children: [
+                                                  Center(
+                                                    child: Image.asset(
+                                                      'images/roulette/roulette12.png',
+                                                      width: height - 20.auto,
+                                                      height: height - 20.auto,
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: FortuneWheel<int>(
+                                                      children: totalList(),
+                                                      size: height - 45.auto,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              Center(
-                                                child: FortuneWheel<int>(
-                                                  children: totalList(),
-                                                  size: height - 25.auto,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    Center(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          if (widget.userProfile == null) {
-                                            navigateToLogin();
-                                          }
-                                          //  else if ((widget.vm.config
-                                          //              ?.promoRouletteSMSVerification ??
-                                          //          false) &&
-                                          //      (widget.userProfile?.phone
-                                          //              ?.isEmpty ??
-                                          //          true)) {
-                                          //    navigateToPhoneVerification();
-                                          //  }
-                                          else {
-                                            animate();
-
-                                            await widget.vm
-                                                .getDepositRouletteResult(
-                                                    widget.contents?.id)
-                                                .then((_apiState) {
-                                              shownReward = false;
-                                              if (_apiState.isSuccess) {
-                                                if (_apiState
-                                                        .result?.itemIndex ==
-                                                    -1) {
-                                                  setState(() {
-                                                    nomore = true;
-                                                  });
-                                                } else {
-                                                  _displayReward(context)
-                                                      .then((value) {
-                                                    isClick = false;
-                                                  });
-                                                  _controller.stop();
-                                                  setState(() {
-                                                    selectedValue = _apiState
-                                                            .result
-                                                            ?.itemIndex ??
-                                                        0;
-
-                                                    isClick = true;
-                                                  });
-                                                }
+                                            );
+                                          },
+                                        ),
+                                        Center(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              // if (preventClickMoreThanOnce) {
+                                              // } else {
+                                              //   _controller.reset();
+                                              //   _controller.forward(from: 0.0);
+                                              //
+                                              //   Future.delayed(Duration(seconds: 1), () {
+                                              //     setState(() {
+                                              //       selectedValue = 1;
+                                              //
+                                              //       // //stored value for prize position
+                                              //       // currentSelectValue = ((1 / getSelectedPositionList.length) *
+                                              //       //         getSelectedPositionList[selectedValue]) *
+                                              //       //     2.0 *
+                                              //       //     pi;
+                                              //       if (!isClick) spin();
+                                              //       // spinning = true;
+                                              //       isClick = true;
+                                              //       isDisplayReward = false;
+                                              //       preventClickMoreThanOnce = true;
+                                              //     });
+                                              //   });
+                                              // }
+                                              if (widget.userProfile == null) {
+                                                navigateToLogin();
+                                              } else if (preventClickMoreThanOnce) {
+                                                // do nothing when it is true
                                               } else {
-                                                // for handling api return error
-                                                _controller.reset();
+                                                _controller.forward(from: 0.0);
+                                                setState(() {
+                                                  preventClickMoreThanOnce = true;
+                                                });
+                                                await widget.vm
+                                                    .getDepositRouletteResult(widget.promotionRoulette?.id ?? "")
+                                                    .then((_apiState) {
+                                                  shownReward = false;
+                                                  if (_apiState.isSuccess) {
+                                                    if (_apiState.result?.itemIndex == -1) {
+                                                      setState(() {
+                                                        nomore = true;
+                                                      });
+                                                    } else {
+                                                      setState(() {
+                                                        selectedValue = _apiState.result?.itemIndex ?? 0;
+
+                                                        // //stored value for prize position
+                                                        // currentSelectValue = ((1 / getSelectedPositionList.length) *
+                                                        //         getSelectedPositionList[selectedValue]) *
+                                                        //     2.0 *
+                                                        //     pi;
+                                                        if (!isClick) spin();
+                                                        isClick = true;
+                                                        isDisplayReward = false;
+                                                        preventClickMoreThanOnce = true;
+                                                      });
+                                                    }
+                                                  } else {
+                                                    // for handling api return error
+                                                    _controller.reset();
+                                                  }
+                                                });
                                               }
-                                            });
-                                          }
-                                        },
-                                        child: Image.asset(
-                                          'images/roulette/roulette_start.png',
-                                          width: height / 3.8,
-                                          height: height / 3.8,
+                                            },
+                                            child: Image.asset(
+                                              'images/roulette/roulette_start.png',
+                                              width: height / 3.8,
+                                              height: height / 3.8,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: playCount == 0 || playCount == null || nomore,
+                                    child: Container(
+                                      decoration: _buildGreyedOutBackground(),
+                                      child: Center(
+                                        child: Text(
+                                          getTranslatedText("spin_run_out"),
+                                          style: TextStyle(
+                                              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25.auto),
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
                               flex: 1,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildRoulettePromoButton(
-                                      0, "roulette_promo_home"),
-                                  _buildRoulettePromoButton(
-                                      1, "roulette_promo_content"),
-                                  _buildRoulettePromoButton(
-                                      2, "roulette_promo_terms"),
-                                ],
+                              child: Container(
+                                decoration: playCount == 0 || playCount == null || nomore
+                                    ? _buildGreyedOutBackground()
+                                    : BoxDecoration(),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildRoulettePromoButton(0, "roulette_promo_home"),
+                                    _buildRoulettePromoButton(1, "roulette_promo_content"),
+                                    _buildRoulettePromoButton(2, "roulette_promo_terms"),
+                                    _buildRoulettePromoButton(3, "roulette_history"),
+                                  ],
+                                ),
                               ),
                             )
                           ],
@@ -328,16 +479,22 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
           });
         },
         child: Container(
-          width: 70.auto,
-          height: context.screenHeight / 10,
+          width: 50.auto,
+          height: context.screenHeight / 2,
           alignment: Alignment.center,
           padding: EdgeInsets.all(3.auto),
-          color: buttonIndex == index ? Color(0xffc79f58) : Colors.black,
+          decoration: BoxDecoration(
+            color: buttonIndex == index ? Color(0xffc79f58) : Colors.black,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(5.0),
+              topRight: Radius.circular(5.0),
+            ),
+          ),
           child: AutoSizeText(
             getTranslatedText(title),
             textAlign: TextAlign.center,
             minFontSize: 5,
-            maxFontSize: 14,
+            maxFontSize: 12,
             stepGranularity: 1,
             maxLines: 1,
             style: TextStyle(
@@ -382,7 +539,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
                   ),
                 ),
                 Text(
-                  widget.campaign[selectedValue]["title"] ?? "lose",
+                  widget.vm.prize!.rouletteItems![selectedValue].title ?? "lose",
                   style: TextStyle(color: Colors.black, fontSize: 20.auto),
                 ),
               ],
@@ -453,8 +610,7 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
         top: position,
         right: position,
         child: InkWell(
-          onTap: () =>
-              position != 5.auto ? widget.onTapCloseIcon() : closeRewardClick(),
+          onTap: () => position != 5.auto ? widget.onTapCloseIcon() : closeRewardClick(),
           child: Container(
             height: 25,
             width: 25,
@@ -463,61 +619,54 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
               borderRadius: BorderRadius.circular(100),
               border: Border.all(
                 width: 2,
-                color: !(widget.isPlayed || isDisplayReward)
-                    ? Colors.white
-                    : Colors.black,
+                color: Colors.white,
               ),
-              color: !(widget.isPlayed || isDisplayReward)
-                  ? Colors.black
-                  : Colors.transparent,
+              color: Colors.black,
             ),
             child: Icon(
               Icons.close,
-              color: !(widget.isPlayed || isDisplayReward)
-                  ? Colors.white
-                  : Colors.black,
+              color: Colors.white,
               size: 20,
             ),
           ),
         ),
       );
 
-  _buildExpandedPromoContent() => Container(
-        height: 200.auto,
-        width: context.screenWidth,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
-          color: Color(0xfffffded),
+  _buildExpandedPromoContent() {
+    return Container(
+      height: 200.auto,
+      width: context.screenWidth,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15),
+          bottomRight: Radius.circular(15),
         ),
-        child: (() {
-          switch (buttonIndex) {
-            case 0:
-              return PromotionMainDetails(promotion: widget.contents);
-            case 1:
-              return PromotionTermsContent(
-                  termsContent: ((widget
-                                  .contents
-                                  ?.localization?[getCurrentLanguage().apiCode]
-                                  ?.content
-                                  ?.isNotEmpty ??
-                              false)
-                          ? widget
-                              .contents
-                              ?.localization![getCurrentLanguage().apiCode]!
-                              .content!
-                          : widget.contents?.content ?? "") ??
-                      "");
-            case 2:
-              return PromotionTermsContent(
-                  termsContent: widget.contents?.terms ?? "");
-            default:
-              return Container();
-          }
-        }()),
-      );
+        color: Color(0xfffffded),
+      ),
+      child: (() {
+        switch (buttonIndex) {
+          case 0:
+            return PromotionMainDetails(promotion: widget.contents);
+          case 1:
+            return PromotionTermsContent(
+                termsContent:
+                    ((widget.contents?.localization?[getCurrentLanguage().apiCode]?.content?.isNotEmpty ?? false)
+                            ? widget.contents?.localization![getCurrentLanguage().apiCode]!.content!
+                            : widget.contents?.content ?? "") ??
+                        "");
+          case 2:
+            return PromotionTermsContent(termsContent: widget.contents?.terms ?? "");
+          case 3:
+            return PromotionHistory(
+              historyList: widget.vm.rouletteHistoryList,
+              prize: widget.vm.prize,
+            );
+          default:
+            return Container();
+        }
+      }()),
+    );
+  }
 
   navigateToPromo() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -527,6 +676,12 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
 
   closeRewardClick() {
     shownReward = false;
+    setState(() {
+      preventClickMoreThanOnce = false;
+      // to prevent reward dialog show after roulette closed
+      isDisplayReward = true;
+      isClick = false;
+    });
     Navigator.pop(context);
   }
 
@@ -542,4 +697,8 @@ class _AnotherRouletteDialogState extends BaseState<AnotherRouletteDialog>
       );
     });
   }
+
+  _buildGreyedOutBackground() => BoxDecoration(
+        color: Colors.black.withOpacity(0.75),
+      );
 }

@@ -57,6 +57,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   void initState() {
     _vm = widget.vm;
     display = _vm.config?.phonePrefix ?? "+852";
+    _getAffiliateStatus();
     super.initState();
   }
 
@@ -222,58 +223,59 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
         child: Container(
           margin: EdgeInsets.only(top: 10.auto),
           child: LoginTextFormField(
-            icon: EnvironmentConfig.template_version == 11
-                ? Container()
-                : SvgPicture.asset(
-                    "images/login/ic_login_promotion.svg",
-                    height: 20.auto,
+              icon: EnvironmentConfig.template_version == 11
+                  ? Container()
+                  : SvgPicture.asset(
+                      "images/login/ic_login_promotion.svg",
+                      height: 20.auto,
+                    ),
+              hintText: getTranslatedText("signup_promotion_code_hint"),
+              onChanged: (value) => null,
+              onFieldSubmitted: (value) => _register(),
+              controller: invitationCode,
+              width: context.screenWidth,
+              textInputType: TextInputType.name,
+              textInputAction: TextInputAction.done,
+              dropDown: Visibility(
+                visible: (_vm.haveAffiliate ?? false),
+                child: Container(
+                  color: CustomColor.very_light_pink_two,
+                  padding: EdgeInsets.only(
+                    left: 5.auto,
                   ),
-            hintText: getTranslatedText("signup_promotion_code_hint"),
-            onChanged: (value) => null,
-            onFieldSubmitted: (value) => _register(),
-            controller: invitationCode,
-            width: context.screenWidth,
-            textInputType: TextInputType.name,
-            textInputAction: TextInputAction.done,
-            dropDown: (_vm.config?.haveAffiliateFeature ?? false)
-                ? Container(
-                    color: CustomColor.very_light_pink_two,
-                    padding: EdgeInsets.only(
-                      left: 5.auto,
+                  margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
+                  child: DropdownButton(
+                    elevation: 0,
+                    isExpanded: true,
+                    hint: Container(
+                      child: AutoSizeText(
+                        getTranslatedText(agentPlayer),
+                        minFontSize: 2,
+                        stepGranularity: 1,
+                        maxLines: 1,
+                      ),
                     ),
-                    margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
-                    child: DropdownButton(
-                      elevation: 0,
-                      isExpanded: true,
-                      hint: Container(
-                        child: AutoSizeText(
-                          getTranslatedText(agentPlayer),
-                          minFontSize: 2,
-                          stepGranularity: 1,
-                          maxLines: 1,
+                    items: agentPlayerList.map((value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(
+                          getTranslatedText(value),
+                          style: TextStyle(
+                              color: CustomColor.theme_title_text_color),
                         ),
-                      ),
-                      items: agentPlayerList.map((value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(
-                            getTranslatedText(value),
-                            style: TextStyle(color: CustomColor.theme_title_text_color),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          agentPlayer = value.toString();
-                        });
-                      },
-                      style: TextStyle(
-                        color: CustomColor.theme_title_text_color,
-                      ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        agentPlayer = value.toString();
+                      });
+                    },
+                    style: TextStyle(
+                      color: CustomColor.theme_title_text_color,
                     ),
-                  )
-                : Container(),
-          ),
+                  ),
+                ),
+              )),
         ),
       );
 
@@ -406,6 +408,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
     });
 
     handleApiState(_vm.phoneReVerifyApiState, onSuccess: () {});
+    handleApiState(_vm.getAffiliateStatusState, onSuccess: () {});
   }
 
   _navigateToHome() {
@@ -428,4 +431,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   }
 
   _isShowSmsVerification() => (_vm.config?.smsVerification ?? false);
+
+  _getAffiliateStatus() async {
+    await _vm.getAffiliateStatus();
+  }
 }

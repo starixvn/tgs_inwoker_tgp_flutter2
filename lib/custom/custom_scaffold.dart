@@ -8,17 +8,19 @@ class CustomScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget body;
   final Color? color;
+  final bool? resizeToAvoidBottomInset;
 
   CustomScaffold({
     this.appBar,
     required this.body,
     this.color,
+    this.resizeToAvoidBottomInset = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) ||
               EnvironmentConfig.template_version == 11)
           ? Colors.transparent

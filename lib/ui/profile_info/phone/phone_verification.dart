@@ -8,6 +8,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
 import 'package:tgp_flutter2/custom/phone_text_form_field.dart';
+import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -20,7 +21,8 @@ class PhoneVerification extends StatefulWidget {
   final bool isFromRegister;
   final bool isFromRouletteRoute;
 
-  PhoneVerification({this.isFromRegister = false, this.isFromRouletteRoute = false});
+  PhoneVerification(
+      {this.isFromRegister = false, this.isFromRouletteRoute = false});
 
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
@@ -28,15 +30,23 @@ class PhoneVerification extends StatefulWidget {
 
 class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var _vm = PhoneVerificationViewModel();
-  TextEditingController _phoneController = TextEditingController(), _otpController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
+  TextEditingController _phoneController = TextEditingController(),
+      _otpController = TextEditingController();
+  var isButtonEnabled = false,
+      isOtpEnabled = false,
+      isTextFieldEnabled = false,
+      isOtpCountdown = false,
+      isCompleted = false;
+
   var buttonText;
+
   InputValidationProvider validate = new InputValidationProvider();
   String? display;
 
   @override
   void initState() {
     display = _vm.config?.phonePrefix ?? "+852";
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getUserProfile();
     });
@@ -52,7 +62,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
               appBar: _buildAppBar(),
               body: Container(
                   child: Container(
-                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
+                margin: EdgeInsets.only(
+                    left: 10.auto, right: 10.auto, top: 10.auto),
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
@@ -69,11 +80,19 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("phone_number"),
       onPop: () {
-        if (_vm.userProfile.phone == null &&
+        if (isCompleted == true) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage(
+                        index: 4,
+                      )),
+              (Route<dynamic> route) => false);
+        } else if (_vm.userProfile.phone == null &&
             !(_vm.userProfile?.registerCompleted ?? true) &&
             (_vm.config?.forcedVerification ?? false)) {
-          // dont pop
-        } else if (widget.isFromRouletteRoute || (_vm.userProfile.phone != null && widget.isFromRegister))
+        } else if (widget.isFromRouletteRoute ||
+            (_vm.userProfile.phone != null && widget.isFromRegister))
           //pop back to home page
           Navigator.pop(context, true);
         else
@@ -91,15 +110,17 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           enabled: isTextFieldEnabled,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
-          maxLength:  _vm.config?.maxPhoneLength??10,
+          maxLength: _vm.config?.maxPhoneLength ?? 10,
         ),
       );
 
   _buildOtpTextFormField() {
-    print("1");
     return Visibility(
-        visible: _vm.userProfile.phone == null && !(_vm.config?.profileDisableVerifyPhone ?? true) ||
-            !(_vm.userProfile?.registerCompleted ?? true),
+        visible: _vm.config?.initPhoneWithoutVerify ?? false
+            ? false
+            : _vm.userProfile.phone == null &&
+                    !(_vm.config?.profileDisableVerifyPhone ?? true) ||
+                !(_vm.userProfile?.registerCompleted ?? true),
         child: OtpTextFormField(
           hintText: getTranslatedText("enter_email_otp_hint"),
           onChanged: (value) => _onTextChange(),
@@ -137,9 +158,9 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
           onTap: () {
             _isNotAllowedEditPhone()
                 ? Navigator.of(context).pushNamed("/customer_service")
-                : Navigator.of(context)
-                    .pushNamed(RoutePath.editPhone)
-                    .then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                : Navigator.of(context).pushNamed(RoutePath.editPhone).then(
+                    (value) =>
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
                           _getUserProfile();
                         }));
           },
@@ -148,12 +169,18 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
             child: RichText(
               text: TextSpan(
                 text: getTranslatedText("edit_phone_cs"),
-                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+                style: TextStyle(
+                    fontSize: 11.auto,
+                    color: CustomColor.theme_text_black_white_color),
                 children: [
                   TextSpan(
-                    text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
+                    text: _isNotAllowedEditPhone()
+                        ? getTranslatedText("online_cs")
+                        : getTranslatedText("here"),
                     style: TextStyle(
-                        decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                        decoration: TextDecoration.underline,
+                        color: CustomColor.theme_button_color,
+                        fontSize: 11.auto),
                   ),
                 ],
               ),
@@ -164,7 +191,12 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _onTextChange() {
     setState(() {
-      if (_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
+      if (_phoneController.text.isNotEmpty &&
+          _vm.config?.initPhoneWithoutVerify) {
+        isOtpEnabled = false;
+        isButtonEnabled = true;
+      } else if (_otpController.text.isNotEmpty &&
+          _phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_phoneController.text.isNotEmpty) {
@@ -192,7 +224,8 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         buttonText = getTranslatedText("verified");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
-      } else if ((_vm.config?.profileDisableVerifyPhone ?? false) && (_vm.userProfile?.registerCompleted ?? true)) {
+      } else if ((_vm.config?.profileDisableVerifyPhone ?? false) &&
+          (_vm.userProfile?.registerCompleted ?? true)) {
         buttonText = getTranslatedText("done");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
@@ -200,6 +233,12 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         buttonText = getTranslatedText("done");
         isTextFieldEnabled = true;
       }
+    });
+  }
+
+  _setButtonToDone() {
+    setState(() {
+      isCompleted = true;
     });
   }
 
@@ -216,13 +255,30 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     }*/
     else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getPhoneVerifyCode(display!, _phoneController.text, isFromRegister: widget.isFromRegister);
+      _vm.getPhoneVerifyCode(display!, _phoneController.text,
+          isFromRegister: widget.isFromRegister);
     }
   }
 
   _onClick() async {
     ProgressDialog.show(context, _vm.brandLogoUrl);
-    _vm.submitVerifyCode(1, _otpController.text, isFromRegister: widget.isFromRegister);
+
+    if (_vm.userProfile.phone == null &&
+        !(_vm.userProfile?.registerCompleted ?? true) &&
+        (_vm.config?.initPhoneWithoutVerify ?? false)) {
+      _vm.performSetPhoneDontCareDuplicate(display!, _phoneController.text);
+
+      if (_vm.performSetPhoneDontCareDuplicateApiState.isSuccess) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _getUserProfile();
+          _setButtonToDone();
+          CustomToast.show(getTranslatedText("success"));
+        });
+      }
+    } else {
+      _vm.submitVerifyCode(1, _otpController.text,
+          isFromRegister: widget.isFromRegister);
+    }
   }
 
   _isNotAllowedEditPhone() =>
@@ -242,6 +298,12 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     });
 
     handleApiState(_vm.submitVerifyCodeApiState, onSuccess: () async {
+      await _getUserProfile();
+    });
+
+    handleApiState(_vm.performSetPhoneDontCareDuplicateApiState,
+        onSuccess: () async {
+      isCompleted = true;
       await _getUserProfile();
       CustomToast.show(getTranslatedText("success"));
     });

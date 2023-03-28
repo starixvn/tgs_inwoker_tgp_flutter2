@@ -12,11 +12,9 @@ import 'package:tgp_flutter2/ui/report/report_view.dart';
 class ProfileItem extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final List<BankCard>? bankCardList;
+  bool? haveAffiliate = false;
 
-  ProfileItem({
-    this.config,
-    this.bankCardList,
-  });
+  ProfileItem({this.config, this.bankCardList, this.haveAffiliate});
 
   @override
   _ProfileItemState createState() => _ProfileItemState();
@@ -50,8 +48,10 @@ class _ProfileItemState extends BaseState<ProfileItem> {
               "ic_deposit_report", "deposit_history", "transaction", 2),
           _buildMiddleProfileItem(
               "ic_transfer_report", "transfer_history", "transaction", 3),
+          _buildMiddleProfileItem(
+              "ic_transfer_report", "balanceChangeRecords", "transaction", 5),
           _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
-          (widget.config?.haveAffiliateFeature ?? false)
+          (widget.haveAffiliate ?? false)
               ? _buildMiddleProfileItem(
                   "ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),
@@ -84,11 +84,13 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem(
               "ic_transfer", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem(
+              "ic_transfer_report", "balanceChangeRecords", "transaction", 5),
+          _buildMiddleProfileItem(
               "ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem(
               "ic_card_detail", "manage_card", "main_card", 0),
           _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
-          (widget.config?.haveAffiliateFeature ?? false)
+          (widget.haveAffiliate ?? false)
               ? _buildMiddleProfileItem(
                   "ic_affiliate", "affiliate", "affiliate", 0)
               : Container(),

@@ -12,14 +12,23 @@ class WalletTransferViewModel extends BaseViewModel {
   WalletTransferViewModel() {
     walletList = contentRepo.gameProviderList!
         .where((element) => element.transferWallet == true)
-        .map((e) => Wallet(e.code, e.name, null))
+        .map((e) => Wallet(
+              e.code,
+              e.name,
+              null,
+              e.code,
+            ))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
+      ..insert(0,
+          Wallet("-1", "main_wallet", null, "main_wallet", isMainWallet: true));
   }
 
-  get userMainWalletBalance => walletList.singleWhere((element) => element.isMainWallet).balance;
+  get userMainWalletBalance =>
+      walletList.singleWhere((element) => element.isMainWallet).balance;
 
-  get gameWalletList => walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
+  get gameWalletList => walletList
+      .where((element) => !element.isMainWallet && element.balance != null)
+      .toList();
 
   get brandLogoUrl => contentRepo.brandLogo?.mobileUrl;
 
@@ -39,7 +48,8 @@ class WalletTransferViewModel extends BaseViewModel {
 
   transferWallet(String? gpCode, int transferAmount, bool isFundOut) async {
     setLoading();
-    transferWalletApiState = await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
+    transferWalletApiState =
+        await walletRepo.fundTransfer(gpCode, transferAmount, isFundOut);
     if (transferWalletApiState.isSuccess) {
       getAllWallet();
     }
@@ -67,11 +77,20 @@ class WalletTransferViewModel extends BaseViewModel {
     isFetchingBalance = true;
     notifyListeners();
     var task = <Future>[];
+
     walletList.forEach((wallet) {
+      if (wallet.title == "Evolution" ||
+          wallet.title == "EVO" ||
+          wallet.title == "EVOTF") {
+        wallet.title = "EVO (NT,RT,BTG,NLC)";
+      }
       task.add(_getGameWalletBalance(wallet));
     });
+
     if (config.mergeEVORTNT ?? true)
-      walletList.removeWhere((wallet) => (wallet.gpCode == "RTTF" || wallet.gpCode == "NTTF"));
+      walletList.removeWhere(
+          (wallet) => (wallet.gpCode == "RTTF" || wallet.gpCode == "NTTF"));
+
     await Future.wait(task);
     isFetchingBalance = false;
     if (hasListeners) notifyListeners();

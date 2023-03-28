@@ -54,10 +54,11 @@ class DepositMethodViewModel extends BaseViewModel {
       String? promotionId,
       File? imageFile,
       String? name,
-      String? note) async {
+      String? note,
+      String? phone) async {
     setLoading();
-    getManualDepositIdApiState = await depositRepo.getManualDepositId(
-        account, amount, paymentId, promotionId, name, bankType.getJson, note);
+    getManualDepositIdApiState = await depositRepo.getManualDepositId(account,
+        amount, paymentId, promotionId, name, bankType.getJson, note, phone);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
       if (config.deposit_DualPage ?? false)

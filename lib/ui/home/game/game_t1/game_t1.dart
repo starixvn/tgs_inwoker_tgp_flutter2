@@ -129,17 +129,28 @@ class _GameT1State extends BaseState<GameT1> {
           child: Column(
             children: [
               Container(
-                child: SvgPicture.asset(
-                  "images/game_tab/t1/ic_${gameType.getImagePath()}.svg",
-                  matchTextDirection: true,
-                  width: 28.auto,
-                  height: 28.auto,
-                  color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
-                          tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
-                      //only PB, selected game tab color is grey, not selected game tab is button color
-                      ? CustomColor.theme_text_grey_color
-                      : CustomColor.theme_button_color,
-                ),
+                child: gameType == GameType.Fishing
+                //to fix fishing image will shake sometimes
+                    ? Image.asset(
+                        "images/game_tab/t1/ic_fish.png",
+                        width: 28.auto,
+                        height: 28.auto,
+                        color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
+                                tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
+                            //only PB, selected game tab color is grey, not selected game tab is button color
+                            ? CustomColor.theme_text_grey_color
+                            : CustomColor.theme_button_color,
+                      )
+                    : SvgPicture.asset(
+                        "images/game_tab/t1/ic_${gameType.getImagePath()}.svg",
+                        width: 28.auto,
+                        height: 28.auto,
+                        color: (tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||
+                                tabIndex != currentTabIndex && EnvironmentConfig.brandName != "PB")
+                            //only PB, selected game tab color is grey, not selected game tab is button color
+                            ? CustomColor.theme_text_grey_color
+                            : CustomColor.theme_button_color,
+                      ),
               ),
               AutoSizeText(
                 gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
@@ -151,7 +162,7 @@ class _GameT1State extends BaseState<GameT1> {
                       : CustomColor.theme_button_color,
                 ),
                 minFontSize: 2,
-                maxFontSize: 13,
+                maxFontSize: 12,
                 stepGranularity: 1,
                 maxLines: 2,
               ),

@@ -10,6 +10,7 @@ import 'package:api/entity/wallet.dart';
 import 'package:api/entity/withdrawal_info.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -149,7 +150,10 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
             child: Text(
               (wallet.isMainWallet)
                   ? getTranslatedText(wallet.title)
-                  : wallet.title,
+                  : (EnvironmentConfig.currency == "PHP" &&
+                          wallet.title == "BTI")
+                      ? "PHSB"
+                      : wallet.title,
               style: TextStyle(fontSize: 13.auto),
               textAlign: TextAlign.center,
             )),
