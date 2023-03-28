@@ -2,6 +2,7 @@ import 'package:api/entity/home_banner.dart';
 import 'package:api/entity/main_dialog_content.dart';
 import 'package:api/entity/marquees.dart';
 import 'package:api/entity/promotion.dart';
+import 'package:api/entity/promotion_roulette.dart';
 import 'package:api/entity/wallet.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/entity/game_provider.dart';
@@ -41,7 +42,13 @@ class HomeViewModel extends BaseViewModel {
       getPromotionListApiState,
       getTodayRouletteResultApiState,
       getRouletteApiState,
-      getRoulettePlayCountState;
+      getRoulettePlayCountState,
+      // new addition
+      getTodayDepositRouletteResultApiState,
+      getDepositRouletteApiState,
+      getDepositRouletteHistoryRecordApiState,
+      getDepositRoulettePrizeApiState;
+
   String? announcement;
   double? gameBalance;
   double? totalBalance;
@@ -53,11 +60,17 @@ class HomeViewModel extends BaseViewModel {
   bool endRecord = false;
   List<Promotion>? promotionList;
   bool isRoulettePlayed = false;
-  List<CampaignDetails>? campaign;
+  bool isDepositRoulettePlayed = false;
+  var campaign;
   Promotion? roulettePromo;
-  int? rotatedResultId;
+  List<Promotion>? depositRoulettePromo;
+  int? rotatedResultId, depositRotatedResultId;
   List<Wallet> walletList = List.empty();
   var userMainWalletBalance, gameWalletList;
+
+  List<PromotionRoulette> rouletteCount = [];
+
+  var rouletteHistoryList, prize;
 
   markIsNotLogin() {
     isNotLogin = false;
@@ -68,9 +81,7 @@ class HomeViewModel extends BaseViewModel {
     getAnnouncementApiState = await contentRepo.getAnnouncement();
     if (getAnnouncementApiState.isSuccess) {
       List<Marquees> _list = getAnnouncementApiState.result.marquees;
-      marqueeDialog =
-          ((getAnnouncementApiState.result.main) as List<MainDialogContent>)
-              .firstOrNull;
+      marqueeDialog = ((getAnnouncementApiState.result.main) as List<MainDialogContent>).firstOrNull;
       if (_list.isEmpty)
         announcement = "";
       else {
@@ -78,8 +89,7 @@ class HomeViewModel extends BaseViewModel {
           if (index == 0)
             announcement = _getAnnouncementContent(element);
           else
-            announcement =
-                announcement! + " " + _getAnnouncementContent(element);
+            announcement = announcement! + " " + _getAnnouncementContent(element);
         });
       }
     }
@@ -101,22 +111,24 @@ class HomeViewModel extends BaseViewModel {
   }
 
   _computeTotalBalance() async {
-    if (contentRepo.gameProviderList == null)
-      await contentRepo.getGameProviderList();
+    if (contentRepo.gameProviderList == null) await contentRepo.getGameProviderList();
     walletList = contentRepo.gameProvider2List!
         .where((element) => element.transferWallet == true)
-        .map((e) => Wallet(e.code, e.name, e.gameType))
+        .map((e) => Wallet(
+              e.code,
+              e.name,
+              e.gameType,
+              e.code,
+            ))
         .toList()
-      ..insert(0, Wallet("-1", "main_wallet", null, isMainWallet: true));
+      ..insert(0, Wallet("-1", "main_wallet", null, "main_wallet", isMainWallet: true));
     var task = <Future>[];
     print(walletList);
     walletList.forEach((wallet) {
       task.add(_getGameWalletBalance(wallet));
     });
     await Future.wait(task);
-    gameWalletList = walletList
-        .where((element) => !element.isMainWallet && element.balance != null)
-        .toList();
+    gameWalletList = walletList.where((element) => !element.isMainWallet && element.balance != null).toList();
     totalBalance = (balance ?? 0.0) + (gameBalance ?? 0.0);
     wallet?.totalBalance = totalBalance;
     notifyListeners();
@@ -170,6 +182,7 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     logoutApiState = await userRepo.logout();
     isRoulettePlayed = false;
+    isDepositRoulettePlayed = false;
     setLoading(false);
     return logoutApiState;
   }
@@ -200,21 +213,32 @@ class HomeViewModel extends BaseViewModel {
   getPromotionList() async {
     setLoading();
     getPromotionListApiState = await contentRepo.getPromotionList();
+    getRoulettePlayCount();
+
     if (getPromotionListApiState.isSuccess) {
       promotionList = getPromotionListApiState.result;
-      roulettePromo = promotionList
-          ?.singleWhereOrNull((element) => element.promotionType == "Roulette");
-      campaign = roulettePromo?.campaignDetails?.items ?? [];
-    } else
+      roulettePromo = promotionList?.firstWhereOrNull(
+        (element) => element.promotionType == "Roulette",
+      );
+
+      // depositRoulettePromo = promotionList?.firstWhereOrNull(
+      //   (element) => element.promotionType == "DepositAccumulateRoulette",
+      // );
+
+      depositRoulettePromo =
+          promotionList?.where((element) => element.promotionType == "DepositAccumulateRoulette").toList();
+
+      campaign = roulettePromo?.campaignDetails ?? [];
+    } else {
       promotionList = [];
+    }
     setLoading(false);
     return getPromotionListApiState;
   }
 
   getRouletteTodayResult() async {
     setLoading();
-    getTodayRouletteResultApiState =
-        await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
+    getTodayRouletteResultApiState = await contentRepo.getRouletteTodayResult(roulettePromo?.id ?? "");
     if (getTodayRouletteResultApiState.isSuccess) {
       isRoulettePlayed = getTodayRouletteResultApiState.result.id != null;
     }
@@ -224,8 +248,7 @@ class HomeViewModel extends BaseViewModel {
 
   getRouletteResult() async {
     setLoading();
-    getRouletteApiState =
-        await contentRepo.getRouletteResult(roulettePromo?.id ?? "");
+    getRouletteApiState = await contentRepo.getRouletteResult(roulettePromo?.id ?? "");
     if (getRouletteApiState.isSuccess) {
       getRouletteTodayResult();
       rotatedResultId = getRouletteApiState.result.itemIndex;
@@ -234,13 +257,53 @@ class HomeViewModel extends BaseViewModel {
     return getRouletteApiState;
   }
 
+  getDepositRouletteTodayResult(data) async {
+    setLoading();
+    getTodayDepositRouletteResultApiState = await contentRepo.getDepositRouletteResult(data ?? "");
+    if (getTodayDepositRouletteResultApiState.isSuccess) {
+      isDepositRoulettePlayed = getTodayDepositRouletteResultApiState.result != null;
+    }
+    setLoading(false);
+    return getTodayRouletteResultApiState;
+  }
+
+  getDepositRouletteResult(data) async {
+    setLoading();
+    getDepositRouletteApiState = await contentRepo.getDepositRouletteResult(data ?? "");
+    if (getDepositRouletteApiState.isSuccess) {
+      depositRotatedResultId = getDepositRouletteApiState.result.itemIndex;
+      getRoulettePlayCount();
+      getDepositRouletteHistoryRecord(data);
+    }
+    setLoading(false);
+    return getDepositRouletteApiState;
+  }
+
   getRoulettePlayCount() async {
     setLoading();
     getRoulettePlayCountState = await contentRepo.getRouletteCount();
     if (getRoulettePlayCountState.isSuccess) {
-      //TODO: Decide what data to return after SIE is available in data returned.
+      rouletteCount = getRoulettePlayCountState.result;
     }
     setLoading(false);
     return getRoulettePlayCountState;
+  }
+
+  getDepositRouletteHistoryRecord(String promoId) async {
+    var _status = await contentRepo.getDepositRouletteHistoryRecord(promoId);
+    if (_status.isSuccess) {
+      rouletteHistoryList = _status.result;
+      getDepositRouletteHistoryRecordApiState = await getDepositRoulettePrize(promoId);
+    } else
+      getDepositRouletteHistoryRecordApiState = _status;
+    return getDepositRouletteHistoryRecordApiState;
+  }
+
+  getDepositRoulettePrize(String promoId) async {
+    getDepositRoulettePrizeApiState = await contentRepo.getDepositRoulettePrize(promoId);
+    if (getDepositRoulettePrizeApiState.isSuccess) {
+      prize = getDepositRoulettePrizeApiState.result;
+    }
+    return getDepositRoulettePrizeApiState;
   }
 }

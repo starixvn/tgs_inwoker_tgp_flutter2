@@ -2,9 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/ui/Wheel/fortune_wheel_child.dart';
+import 'dart:math' as math;
 
 class WheelSlice extends StatelessWidget {
-  WheelSlice({required this.index, required this.size, required this.fortuneWheelChildren});
+  WheelSlice(
+      {required this.index,
+      required this.size,
+      required this.fortuneWheelChildren});
 
   final int index;
   final double size;
@@ -14,15 +18,17 @@ class WheelSlice extends StatelessWidget {
   Widget build(BuildContext context) {
     int childCount = fortuneWheelChildren.length;
     double pieceAngle = (index / childCount * pi * 2);
-    double pieceWidth = childCount == 2 ? size : sin(pi / childCount) * size / 2;
+    double pieceWidth =
+        childCount == 2 ? size : sin(pi / childCount) * size / 2;
     double pieceHeight = size / 2;
 
     return Stack(
-      children: [ _getSliceForeground(pieceAngle, pieceWidth, pieceHeight)],
+      children: [_getSliceForeground(pieceAngle, pieceWidth, pieceHeight)],
     );
   }
 
-  Widget _getSliceForeground(double pieceAngle, double pieceWidth, double pieceHeight) {
+  Widget _getSliceForeground(
+      double pieceAngle, double pieceWidth, double pieceHeight) {
     double centerOffset = (pi / fortuneWheelChildren.length);
     double leftRotationOffset = (-pi / 2);
 
@@ -39,19 +45,14 @@ class WheelSlice extends StatelessWidget {
               height: pieceHeight,
               width: pieceWidth,
               child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.center,
-                child: Transform.rotate(
-                    angle: (() {
-                      var angle = -pieceAngle - leftRotationOffset * 2;
-                      //rotating text angle
-                      if (index == 0)
-                        return angle -1.58;
-                      else
-                        return angle + (index - 1.45);
-                    }()), //,
-                    child: fortuneWheelChildren[index].foreground),
-              ),
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.center,
+                  child: Container(
+                      child: RotatedBox(
+                          quarterTurns: (() {
+                            return 1;
+                          }()), //,
+                          child: fortuneWheelChildren[index].foreground))),
             ),
           ),
         ],

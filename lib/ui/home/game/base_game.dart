@@ -1,4 +1,6 @@
+import 'package:api/api.dart';
 import 'package:api/entity/game.dart';
+import 'package:api/entity/game_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
@@ -18,6 +20,7 @@ import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t9/game_t9.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
+import 'package:tgp_flutter2/ui/home/game/webGameView.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BaseGame extends StatefulWidget {
@@ -46,6 +49,17 @@ class _BaseGameState extends BaseState<BaseGame> {
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
 
+  final userRepo = UserRepository.getSingleton();
+  final contentRepo = ContentRepository.getSingleton();
+  final walletRepo = WalletRepository.getSingleton();
+  final bankRepo = BankRepository.getSingleton();
+
+  var logoutApiState, getWalletBalanceApiState;
+  double? gameBalance;
+  double? totalBalance;
+
+  get wallet => userRepo.wallet;
+
   @override
   void initState() {
     super.initState();
@@ -67,64 +81,88 @@ class _BaseGameState extends BaseState<BaseGame> {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return GameT1(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 2:
         return GameT2(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 3:
         return GameT3(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 4:
         return GameT4(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 8:
         return GameT8(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 9:
         return GameT9(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 10:
         return GameT10(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       case 11:
         return GameT11(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
@@ -133,8 +171,11 @@ class _BaseGameState extends BaseState<BaseGame> {
         );
       default:
         return GameT1(
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
           vm: widget.vm,
           onRefreshHomePage: () => widget.onRefreshHomePage,
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
@@ -146,21 +187,72 @@ class _BaseGameState extends BaseState<BaseGame> {
     if (widget.vm.userProfile == null) {
       showPreLoginDialog();
     } else {
+      var gpcode;
+
+      if (gameProvider.code == "SM01" &&
+          gameProvider.gameType == GameType.Cockfight) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebGameView(
+                      gameProvider: "sm01",
+                    )));
+        return;
+      } else if (gameProvider.code.toString() == "PHSB" &&
+          EnvironmentConfig.currency == "PHP") {
+        gpcode = "BTI";
+      } else {
+        gpcode = gameProvider.code;
+      }
       setState(() {
-        currentGameType = gameProvider.gameType!;
-        currentGamePlatformCode = gameProvider.code;
+        if (gameProvider.gameType == GameType.Cockfight &&
+            gameProvider.code != "SM01") {
+          currentGameType = GameType.Sportsbook;
+        } else {
+          currentGameType = gameProvider.gameType!;
+        }
+
+        currentGamePlatformCode = gpcode;
       });
       _navigate();
+      computeTotalBalance();
     }
+  }
+
+  computeTotalBalance() async {
+    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+    var gameList = contentRepo.gameProviderList
+            ?.where((element) => element.transferWallet == true) ??
+        [];
+
+    var task = <Future>[];
+    gameList.forEach((game) {
+      task.add(_getGameWalletBalance(game));
+    });
+    await Future.wait(task);
+    totalBalance = (wallet?.main ?? 0.0) + (gameBalance ?? 0.0);
+    wallet?.totalBalance = totalBalance;
+    widget.vm.notifyListeners();
+  }
+
+  _getGameWalletBalance(GameProvider game) async {
+    var state = await walletRepo.getGameWallet(game.code);
+    if (state.isSuccess) {
+      gameBalance = (gameBalance ?? 0.0) + state.result!.balance!;
+    }
+    widget.vm.notifyListeners();
   }
 
   _navigate() async {
     if (_isSWGame() || _isSGGame())
-      await widget.vm.getLobbyGameUrl(currentGamePlatformCode!, currentGameType, EnvironmentConfig.url);
+      await widget.vm.getLobbyGameUrl(
+          currentGamePlatformCode!, currentGameType, EnvironmentConfig.url);
     else if (_isTcgGame()) {
       await widget.vm.getGameList(currentGamePlatformCode, currentGameType);
       await widget.vm.getGameUrl(
-          currentGamePlatformCode, widget.vm.gameListMap[currentGamePlatformCode]!.first.id!, EnvironmentConfig.url);
+          currentGamePlatformCode,
+          widget.vm.gameListMap[currentGamePlatformCode]!.first.id!,
+          EnvironmentConfig.url);
     } else if (_isChildGame()) {
       //navigate to child game
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -171,13 +263,18 @@ class _BaseGameState extends BaseState<BaseGame> {
                       vm: widget.vm,
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+                          ? widget.onResumeBgMusic!()
+                          : null,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null)
+                          ? widget.onPauseBgMusic!()
+                          : null,
                     )));
 
         if (result != null) widget.vm.clearFilteredGameList();
       });
-    } else if (currentGameType == GameType.Lottery || currentGameType == GameType.LotteryLobby) {
+    } else if (currentGameType == GameType.Lottery ||
+        currentGameType == GameType.LotteryLobby) {
       //only tcg will need to get gamelist
       await widget.vm.getGameList(currentGamePlatformCode, currentGameType);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -188,9 +285,14 @@ class _BaseGameState extends BaseState<BaseGame> {
                 builder: (context) => GameWeb(
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
-                      gameId: widget.vm.gameListMap[currentGamePlatformCode]!.first.id,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      gameId: widget
+                          .vm.gameListMap[currentGamePlatformCode]!.first.id,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+                          ? widget.onResumeBgMusic!()
+                          : null,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null)
+                          ? widget.onPauseBgMusic!()
+                          : null,
                     )));
       });
     } else {
@@ -203,8 +305,12 @@ class _BaseGameState extends BaseState<BaseGame> {
                 builder: (context) => GameWeb(
                       gamePlatformCode: currentGamePlatformCode,
                       gameType: currentGameType,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+                          ? widget.onResumeBgMusic!()
+                          : null,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null)
+                          ? widget.onPauseBgMusic!()
+                          : null,
                     )));
       });
     }
@@ -222,8 +328,12 @@ class _BaseGameState extends BaseState<BaseGame> {
                 builder: (context) => GameWeb(
                       gamePlatformCode: game.gamePlatformCode,
                       gameId: game.id,
-                      onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                      onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                      onPauseBgMusic: () => (widget.onPauseBgMusic != null)
+                          ? widget.onPauseBgMusic!()
+                          : null,
+                      onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+                          ? widget.onResumeBgMusic!()
+                          : null,
                     )));
     });
   }
@@ -233,7 +343,8 @@ class _BaseGameState extends BaseState<BaseGame> {
       currentGamePlatformCode == "TCG_LOTTO" ||
       currentGamePlatformCode == "TCG_LOTTO_VN";
 
-  _isSWGame() => (currentGamePlatformCode == "SW" && currentGameType == GameType.LiveDealerLobby);
+  _isSWGame() => (currentGamePlatformCode == "SW" &&
+      currentGameType == GameType.LiveDealerLobby);
 
   _isSGGame() => currentGamePlatformCode == "SG";
 
@@ -243,7 +354,8 @@ class _BaseGameState extends BaseState<BaseGame> {
       currentGameType == GameType.VirtualSports);
 
   _handleApiState() {
-    handleApiState(widget.vm.getGameProviderListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(widget.vm.getGameProviderListApiState,
+        isAutoHideLoading: false, onSuccess: () {});
     handleApiState(widget.vm.getGameApiState, onSuccess: () {});
 
     handleApiState(widget.vm.getLobbyGameUrlApiState, onSuccess: () {

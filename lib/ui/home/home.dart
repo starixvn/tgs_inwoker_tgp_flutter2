@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:api/entity/campaign_details.dart';
+import 'package:api/entity/promotion.dart';
+import 'package:api/entity/promotion_roulette.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +14,10 @@ import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
-import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/dialog/another_roulette_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
@@ -29,7 +34,6 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/dialog/marquee_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/roulette_dialog.dart';
-import 'dart:io' show Platform;
 
 import 'dart:math';
 
@@ -60,26 +64,24 @@ class _HomeState extends BaseState<Home> {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
   var currentBottomIndex = 0;
   var isMenu = false;
-
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
-  int _current = 0;
   CarouselController carouselController = CarouselController();
   var languageCode;
   var _gameViewModel = GameViewModel();
   var randomNumber;
-  var _assetsAudioPlayer;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
-  var isDisplayGameView =
-      false; //to check either display jackpot or game view in t11
+  var isDisplayGameView = false; //to check either display jackpot or game view in t11
+
+  var token;
+  var isCloseRouletteIcon = false; //handle users close roulette icon by themselves
 
   @override
   void initState() {
@@ -89,27 +91,39 @@ class _HomeState extends BaseState<Home> {
 
   _initData() async {
     var task = <Future>[];
-    task.add(_vm.getAnnouncement());
+    _generateNewNumberEveryFewSec();
+
     task.add(_vm.getPromotionList());
+    await _gameViewModel.getJackpotRecommendList();
+    randomGeneratedPlayerCount = _randomGenerator();
+    task.add(_vm.getAnnouncement());
     task.add(_vm.getBanner());
     task.add(_vm.getBrandCommunication());
     task.add(_gameViewModel.getGameProviderList(isRefresh: true));
     task.add(_vm.getBankCardList());
-    // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-    //task.add(_vm.getRoulettePlayCount());
-    if (_vm.roulettePromo != null) task.add(_vm.getRouletteTodayResult());
+    task.add(_vm.getRoulettePlayCount());
+
+    if (_vm.roulettePromo != null) {
+      task.add(_vm.getRouletteTodayResult());
+    }
+    //  if (_vm.depositRoulettePromo != null) {
+    //    task.add(_vm.getDepositRouletteTodayResult());
+    //  }
     await Future.wait(task);
     getLanguage();
-    randomNumber = _randomGenerator();
+
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
-    await _gameViewModel.getJackpotRecommendList();
+  }
+
+  getToken() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    token = _prefs.getString('token');
   }
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -121,33 +135,28 @@ class _HomeState extends BaseState<Home> {
             children: [
               CustomScaffold(
                 appBar: CustomLoginAppBar(
-                  onClickLoginButton: () =>
-                      Navigator.of(context).pushNamed(RoutePath.login),
-                  onClickRegisterButton: () =>
-                      Navigator.of(context).pushNamed(RoutePath.register),
-                  onClickLogoutButton: () => _logout(),
-                  isLogin: _vm.userProfile != null,
-                  brandLogoUrl: _vm.brandLogoUrl,
-                  userProfile: _vm.userProfile,
-                  phone: _vm.phone,
-                  config: _vm.config,
-                  totalBalance: _vm.totalBalance,
-                  //_vm.totalBalance,
-                  brandName: EnvironmentConfig.brandName,
-                  onClickBalance: () {
-                    setState(() {
-                      isShowTransferUI = !isShowTransferUI;
-                    });
-                  },
-                  randomNumber: randomNumber ?? 0,
-                ),
+                    onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+                    onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+                    onClickLogoutButton: () => _logout(),
+                    isLogin: _vm.userProfile != null,
+                    brandLogoUrl: _vm.brandLogoUrl,
+                    userProfile: _vm.userProfile,
+                    phone: _vm.phone,
+                    config: _vm.config,
+                    totalBalance: _vm.totalBalance,
+                    //_vm.totalBalance,
+                    brandName: EnvironmentConfig.brandName,
+                    onClickBalance: () {
+                      setState(() {
+                        isShowTransferUI = !isShowTransferUI;
+                      });
+                    },
+                    randomNumber: randomGeneratedPlayerCount ?? 0),
                 body: Container(
                   child: Stack(
                     children: [
                       _getHomeTemplateView(),
-                      _getSmallRouletteIcon(),
-                      // TODO: temporary comment this code, since its for DAR and DAR only available next version.
-                      // _getAnotherSmallRouletteIcon(),
+                      _rouletteHolder(),
                     ],
                   ),
                 ),
@@ -167,129 +176,100 @@ class _HomeState extends BaseState<Home> {
     switch (EnvironmentConfig.template_version) {
       case 1:
         return HomeT1(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 2:
         return HomeT2(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 3:
         return HomeT3(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 4:
         return HomeT4(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 8:
         return HomeT8(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 9:
         return HomeT9(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 10:
         return HomeT10(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 11:
         return HomeT11(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       case 100:
         //the reason it's 100 is because apparently all existing using int data type
         //to prevent for everything become fucked up, custom homepage (non T related will start from 100)
         return HomeT11(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
-          randomNumber: randomNumber,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
         );
       default:
         return HomeT1(
-          onPauseBgMusic: () =>
-              (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              ? widget.onResumeBgMusic!()
-              : null,
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
           initData: () => _initData(),
           homeViewModel: _vm,
           gameViewModel: _gameViewModel,
@@ -301,67 +281,174 @@ class _HomeState extends BaseState<Home> {
   _buildGameView() => BaseGame(
         vm: _gameViewModel,
         onRefreshHomePage: () => _initData(),
-        onPauseBgMusic: () =>
-            (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeBgMusic: () =>
-            (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         isDisplayGameView: widget.isDisplayGameView,
-        onClickGameTab: (value) => (widget.onClickGameTab != null)
-            ? widget.onClickGameTab!(value)
-            : null,
+        onClickGameTab: (value) => (widget.onClickGameTab != null) ? widget.onClickGameTab!(value) : null,
       );
 
   _getSmallRouletteIcon() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.roulettePromo != null,
-        child: Positioned(
-          top: context.screenHeight / 5 - 60.auto,
-          left: -5,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromSmallRoulette) {
-                  _displayRouletteDialog();
-                  setState(() {
-                    onClickFromSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
+        visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.roulettePromo != null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: context.screenHeight / 5,
+              height: context.screenHeight / 5,
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                onPressed: () {
+                  //prevent click more than once
+                  if (!onClickFromSmallRoulette) {
+                    _displayRouletteDialog();
+                    setState(() {
+                      onClickFromSmallRoulette = true;
+                    });
+                  }
+                },
+                child: Image.asset("images/roulette/small_roulette.png"),
+              ),
             ),
+            InkWell(
+              onTap: () => setState(() {
+                isCloseRouletteIcon = true;
+              }),
+              child: Container(
+                width: 15,
+                height: 15,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                  color: Colors.transparent,
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: 10,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  _rouletteHolder() => Visibility(
+        visible: (_vm.config?.homePagePromoRoulette ?? false) && _vm.rouletteCount.isNotEmpty && !isCloseRouletteIcon,
+        child: Positioned(
+          bottom: 0,
+          right: 0,
+          child: Row(
+            children: [_getSmallRouletteIcon(), _smallRouletteGenerator()],
           ),
         ),
       );
 
-  _getAnotherSmallRouletteIcon() => Visibility(
-        visible: (_vm.config?.homePagePromoRoulette ?? false) &&
-            _vm.roulettePromo != null,
-        child: Positioned(
-          top: context.screenHeight / 5 - 60.auto,
-          left: -75,
-          child: Container(
-            width: context.screenHeight / 10,
-            height: context.screenHeight / 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () {
-                //prevent click more than once
-                if (!onClickFromAnotherSmallRoulette) {
-                  _displayAnotherRouletteDialog();
-                  setState(() {
-                    onClickFromAnotherSmallRoulette = true;
-                  });
-                }
-              },
-              child: Image.asset("images/roulette/small_roulette.png"),
+  var appearedDAR = [];
+
+  _smallRouletteGenerator() {
+    Promotion? _depositPromo;
+    var rouletteWithPlayCounts = _vm.rouletteCount;
+
+    print(appearedDAR);
+
+    return Row(
+      children: List.generate(_vm.rouletteCount.length, (index) {
+        // var isSameId = rouletteWithPlayCounts.any((element) => element.id == depositRoulettePromo[index].id);
+
+//         //if the id is same, then get the play count
+//         if (isSameId) {
+//           // if the ID are the same save the id inside appearedDAR
+//           if (!appearedDAR.contains(depositRoulettePromo[index].id)) {
+//             appearedDAR.add(depositRoulettePromo[index].id);
+//           }
+//           //temporary comment
+//
+//           rouletteCount = rouletteWithPlayCounts
+//               .firstWhere((element) => element.id == depositRoulettePromo[index].id)
+//               .rouletteCount;
+//         }
+//
+// //display the first item in depositRoulettePromo that matches id in appearedDAR
+//         if (appearedDAR.isNotEmpty && depositRoulettePromo[index].id == appearedDAR.first) {
+        if (_vm.depositRoulettePromo != null && _vm.depositRoulettePromo!.length > 0) {
+          for (Promotion item in _vm.depositRoulettePromo!) {
+            if (item.id == _vm.rouletteCount[index].id) {
+              _depositPromo = item;
+            }
+          }
+        }
+
+        if (_vm.rouletteCount[index] != null) {
+          return _getAnotherSmallRouletteIcon(
+            _depositPromo,
+            _vm.rouletteCount[index],
+          );
+        } else {
+          return Container();
+        }
+      }),
+
+      //
+    );
+  }
+
+  _getAnotherSmallRouletteIcon(Promotion? data, PromotionRoulette promotionRoulette) => Container(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: context.screenHeight / 5,
+              height: context.screenHeight / 5,
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                onPressed: () {
+                  if (_vm.userProfile == null) {
+                    navigateToLogin();
+                  }
+                  //prevent click more than once
+                  if (!onClickFromAnotherSmallRoulette) {
+                    // print("data id is: ${data.id}");
+                    _displayAnotherRouletteDialog(data, promotionRoulette);
+                    setState(() {
+                      onClickFromAnotherSmallRoulette = true;
+                    });
+                  }
+                },
+                child: Image.asset(
+                  "images/roulette/small_roulette.png",
+                ),
+              ),
             ),
-          ),
+            InkWell(
+              onTap: () => setState(() {
+                isCloseRouletteIcon = true;
+              }),
+              child: Container(
+                width: 15,
+                height: 15,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                  color: Colors.transparent,
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: 10,
+                ),
+              ),
+            ),
+          ],
         ),
       );
 
@@ -412,29 +499,35 @@ class _HomeState extends BaseState<Home> {
       _displayDialog();
   }
 
-  _displayAnotherRouletteDialog() async {
-    if (_vm.roulettePromo != null) await _vm.getRouletteTodayResult();
-    if ((_vm.campaign?.length ?? 0) > 0)
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => RouletteDialog(
-          onTapCloseIcon: () {
-            Navigator.pop(context);
-            if (!onClickFromAnotherSmallRoulette) _displayDialog();
-            setState(() {
-              onClickFromAnotherSmallRoulette = false;
-            });
-          },
-          userProfile: _vm.userProfile,
-          isPlayed: _vm.isRoulettePlayed,
-          vm: _vm,
-          // getRouletteResult: () => _vm.getRouletteResult(),
-          campaign: _vm.campaign,
-        ),
-      );
-    else
-      _displayDialog();
+  _displayAnotherRouletteDialog(Promotion? data, PromotionRoulette? promotionRoulette) async {
+    // if (_vm.depositRoulettePromo != null)
+    await _vm.getDepositRouletteHistoryRecord(promotionRoulette?.id ?? "");
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AnotherRouletteDialog(
+        onTapCloseIcon: () {
+          Navigator.pop(context);
+          if (!onClickFromAnotherSmallRoulette) _displayDialog();
+          setState(() {
+            onClickFromAnotherSmallRoulette = false;
+          });
+        },
+        userProfile: _vm.userProfile,
+        isPlayed: _vm.isDepositRoulettePlayed,
+        vm: _vm,
+        promotionRoulette: promotionRoulette,
+        contents: data,
+        // getRouletteResult: () => _vm.getRouletteResult(),
+
+        // playcount: playcount,
+        // campaign: data.campaignDetails?.rouletteItems ?? [],
+        // rouletteHistoryList: _vm.rouletteHistoryList,
+        // prize: _vm.prize,
+      ),
+    );
+    // else
+    //   _displayDialog();
   }
 
   _displayDialog() {
@@ -456,10 +549,8 @@ class _HomeState extends BaseState<Home> {
         ? showDialog(
             context: context,
             builder: (BuildContext context2) => MarqueeDialog(
-                title: (_vm.marqueeDialog?.localization?.subject ??
-                    _vm.marqueeDialog?.subject),
-                description: (_vm.marqueeDialog?.localization?.content ??
-                    _vm.marqueeDialog?.content),
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
                 onClick: () {
                   if (isShowPromotion()) {
                     _displayPromotionDialog();
@@ -469,13 +560,10 @@ class _HomeState extends BaseState<Home> {
         : showDialog(
             context: context,
             builder: (BuildContext context2) => CustomDialog(
-                title: (_vm.marqueeDialog?.localization?.subject ??
-                    _vm.marqueeDialog?.subject),
-                description: (_vm.marqueeDialog?.localization?.content ??
-                    _vm.marqueeDialog?.content),
+                title: (_vm.marqueeDialog?.localization?.subject ?? _vm.marqueeDialog?.subject),
+                description: (_vm.marqueeDialog?.localization?.content ?? _vm.marqueeDialog?.content),
                 buttonText1: getTranslatedText("confirm"),
-                onPopBeforeTriggerOnClick: isShowPromotion() ||
-                    (!isShowPromotion() && isShowAnnouncement()),
+                onPopBeforeTriggerOnClick: isShowPromotion() || (!isShowPromotion() && isShowAnnouncement()),
                 onClick: () {
                   if (isShowPromotion()) {
                     _displayPromotionDialog();
@@ -498,11 +586,33 @@ class _HomeState extends BaseState<Home> {
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if ((_vm.config?.forcedVerification ?? false) &&
+          _vm.userProfile?.registerCompleted == false &&
+          (_vm.config?.initPhoneWithoutVerify ?? false)) {
+        Navigator.pushNamed(context, "/phone_verification");
+      }
+
+      if (_vm.config?.idrRegisterCustomFlow ?? false) {
+        if (_vm.userProfile?.phone == "") {
+          //navigate to add phone
+          Navigator.pushNamed(context, "/phone_verification");
+        } else if (_vm.userProfile?.email == "") {
+          //navigate to add email
+          Navigator.pushNamed(context, "/email_verification");
+        } else if (_vm.userProfile?.registerCompleted == true) {
+          //navigate to add card
+          Navigator.pushNamed(context, "/add_card");
+        }
+      }
+
+      if (_vm.userProfile?.registerCompleted ?? false) {
+        print(_vm.userProfile?.registerCompleted ? "true" : "false");
+      }
       if ((_vm.config?.smsVerification ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
         _displayPhoneVerificationDialog();
-      } else if ((_vm.config.registerShowPhone ?? false) &&
+      } else if ((_vm.config?.registerShowPhone ?? false) &&
           !(_vm.userProfile?.registerCompleted ?? true) &&
           (_vm.config?.forcedVerification ?? false)) {
         _navigateToPhoneVerification();
@@ -518,10 +628,7 @@ class _HomeState extends BaseState<Home> {
 
   _navigateToAddCard() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AddCard(isNavigateFromRegister: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }
@@ -531,24 +638,37 @@ class _HomeState extends BaseState<Home> {
       // Navigator.of(context).pushNamed(RoutePath.phoneVerification);
       var result = await Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => PhoneVerification(isFromRegister: true)),
+        MaterialPageRoute(builder: (context) => PhoneVerification(isFromRegister: true)),
       );
       if (result) _handleNavigationAndPopUpDialog();
     });
   }
 
-  isShowAnnouncement() =>
-      (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
+  isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
 
-  isShowPromotion() =>
-      (_vm.config?.popupPromotion ?? false) &&
-      (_vm.promotionList?.isNotEmpty ?? false);
+  isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
+
+  var randomGeneratedPlayerCount;
+
+  _generateNewNumberEveryFewSec() {
+    Random _random = new Random();
+    var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
+    int min = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["min"] : 20000;
+
+    int max = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["max"] : 30000;
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      setState(() {
+        randomGeneratedPlayerCount = min + _random.nextInt(max - min);
+      });
+    });
+  }
 
   _randomGenerator() {
     Random _random = new Random();
-    int min = EnvironmentConfig.template_version == 11 ? 500 : 20000;
-    int max = EnvironmentConfig.template_version == 11 ? 1200 : 30000;
+    var checkIfHomeOnlineUsersIsNull = _vm.config?.homeOnlineUsers != null;
+    int min = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["min"] : 20000;
+
+    int max = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["max"] : 30000;
     int result = min + _random.nextInt(max - min);
     return result;
   }
@@ -574,17 +694,11 @@ class _HomeState extends BaseState<Home> {
     }, onLogout: () {
       ProgressDialog.hide();
     });
-    handleApiState(_vm.getBasicInfoApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getAnnouncementApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getBannerApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getPromotionListApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getTodayRouletteResultApiState,
-        isAutoHideLoading: false, onSuccess: () {});
-    handleApiState(_vm.getRouletteApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBasicInfoApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAnnouncementApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBannerApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getPromotionListApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getTodayRouletteResultApiState, isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getRouletteApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

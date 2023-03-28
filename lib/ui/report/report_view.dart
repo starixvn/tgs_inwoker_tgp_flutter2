@@ -8,6 +8,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/report/account_report_view.dart';
+import 'package:tgp_flutter2/ui/report/balance_change_view.dart';
 import 'package:tgp_flutter2/ui/report/deposit_report_view.dart';
 import 'package:tgp_flutter2/ui/report/promotion_report_view.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
@@ -28,10 +29,11 @@ class _ReportViewState extends BaseState<ReportView>
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
-    {"id": "0", "text": "bet_history"},
-    {"id": "1", "text": "deposit_history"},
-    {"id": "2", "text": "withdrawal_history"},
-    {"id": "3", "text": "transfer_history"},
+    {"id": "0", "text": "report_bet"},
+    {"id": "1", "text": "report_withdrawal"},
+    {"id": "2", "text": "deposit"},
+    {"id": "3", "text": "transfer"},
+    {"id": "6", "text": "balanceChangeRecords"},
     {"id": "4", "text": "promotion_history"},
     /*{"id": "4", "text": "返水记录"},*/
   ];
@@ -58,7 +60,7 @@ class _ReportViewState extends BaseState<ReportView>
               children: [
                 Container(
                   width: context.screenWidth,
-              color: Colors.transparent,
+                  color: Colors.transparent,
                   child: TabBar(
                     controller: _tabController,
                     isScrollable: true,
@@ -92,10 +94,11 @@ class _ReportViewState extends BaseState<ReportView>
                     controller: _tabController,
                     children: [
                       AccountReportView(vm: _vm),
-                      DepositReportView(vm: _vm),
                       WithdrawReportView(vm: _vm),
+                      DepositReportView(vm: _vm),
                       TransferReportView(vm: _vm),
-                      PromotionReportView(vm: _vm)
+                      BalanceChangesView(vm: _vm),
+                      PromotionReportView(vm: _vm),
                     ],
                   ),
                 ),

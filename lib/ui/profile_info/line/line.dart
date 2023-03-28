@@ -44,9 +44,9 @@ class _LineState extends BaseState<Line> {
                 onPop: () => Navigator.pop(context, true),
               ),
               body: Container(
-                  child:
-                      Container(
-                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 20.auto),
+                  child: Container(
+                margin: EdgeInsets.only(
+                    left: 10.auto, right: 10.auto, top: 20.auto),
                 child: Column(
                   children: [
                     _buildTextFormField(),
@@ -66,7 +66,7 @@ class _LineState extends BaseState<Line> {
         controller: _lineController,
         focusNode: _focusNode,
         width: context.screenWidth - 40.auto,
-        textInputType: TextInputType.number,
+        textInputType: TextInputType.text,
         textInputAction: TextInputAction.done,
         enabled: isTextFieldEnabled,
       );
@@ -100,14 +100,18 @@ class _LineState extends BaseState<Line> {
           child: RichText(
             text: TextSpan(
               text: getTranslatedText("edit_line_cs"),
-              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
+              style: TextStyle(
+                  fontSize: 11.auto,
+                  color: CustomColor.theme_text_black_white_color),
               children: [
                 TextSpan(
                   text: (_vm.config?.changesNotAllowed ?? false)
                       ? getTranslatedText("online_cs")
                       : getTranslatedText("here"),
                   style: TextStyle(
-                      decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
+                      decoration: TextDecoration.underline,
+                      color: CustomColor.theme_button_color,
+                      fontSize: 11.auto),
                 ),
               ],
             ),

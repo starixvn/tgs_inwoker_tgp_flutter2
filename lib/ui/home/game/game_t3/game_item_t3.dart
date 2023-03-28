@@ -58,7 +58,8 @@ class _GameItemT3State extends BaseState<GameItemT3> {
         behavior: MyBehavior(),
         child: CustomScaffold(
             appBar: CustomAppBar(
-              title: getTranslatedText(widget.gameType!.getName(context, false)),
+              title:
+                  getTranslatedText(widget.gameType!.getName(context, false)),
               isPassTrueWhenPop: true,
             ),
             body: _getGameTypeMap() == null
@@ -66,9 +67,14 @@ class _GameItemT3State extends BaseState<GameItemT3> {
                 : ListView(
                     padding: EdgeInsets.only(bottom: 15.auto),
                     children: _getGameTypeMap()!
-                        .map((item) => Container(
-                            margin: EdgeInsets.only(top: 15.auto, left: 15.auto, right: 15.auto),
-                            child: _buildImageLayout(item)))
+                        .map((item) => Stack(children: <Widget>[
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      top: 15.auto,
+                                      left: 15.auto,
+                                      right: 15.auto),
+                                  child: _buildImageLayout(item)),
+                            ]))
                         .toList())));
   }
 
@@ -97,6 +103,7 @@ class _GameItemT3State extends BaseState<GameItemT3> {
                   )
                 : _buildImage(gameProvider),
           ),
+          _topGame(gamePlatformCode),
           Positioned(
             bottom: context.screenWidth / 15,
             left: context.screenWidth / 6,
@@ -108,7 +115,8 @@ class _GameItemT3State extends BaseState<GameItemT3> {
                         margin: EdgeInsets.only(bottom: 15.auto),
                         child: Text(
                           getTranslatedText("sports_$gamePlatformCode"),
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       )
@@ -132,7 +140,10 @@ class _GameItemT3State extends BaseState<GameItemT3> {
                 decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
                 child: Center(
                   child: Text(getTranslatedText("maintenance"),
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.auto)),
                 ),
               ),
             ),
@@ -142,11 +153,27 @@ class _GameItemT3State extends BaseState<GameItemT3> {
     );
   }
 
+  _topGame(provider) => Visibility(
+        visible: provider == "pptf",
+        child: Container(
+          //make position outer container
+          margin: EdgeInsets.only(top: 0.auto, left: 0.auto),
+          width: 50.auto,
+          height: 50.auto,
+          alignment: Alignment.center,
+          child: Container(),
+          decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage("images/game/top.png"))),
+        ),
+      );
+
   _buildStartGameButton() => Container(
         width: 74.auto,
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("images/game/T3/btn-start-game.jpg"))),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("images/game/T3/btn-start-game.jpg"))),
         child: Text(
           getTranslatedText("start_game"),
           style: TextStyle(
@@ -165,13 +192,16 @@ class _GameItemT3State extends BaseState<GameItemT3> {
               placeholder: (context, url) => Container(
                     width: context.screenWidth,
                     height: context.screenHeight,
-                    color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                    color: gameProvider.status != 0
+                        ? Colors.transparent
+                        : CustomColor.very_light_pink_four,
                     child: Center(
                       child: SizedBox(
                         height: 50.0,
                         width: 50.0,
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              CustomColor.theme_button_color),
                         ),
                       ),
                     ),
@@ -189,5 +219,6 @@ class _GameItemT3State extends BaseState<GameItemT3> {
       );
 
   _isSportsHideLogo(String? gamePlatformCode) =>
-      (widget.vm.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+      (widget.vm.config?.sportsHideLogo ?? false) &&
+      (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 }

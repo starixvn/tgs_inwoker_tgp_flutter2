@@ -70,10 +70,10 @@ class _GameT11State extends BaseState<GameT11> {
                         children: List.generate(
                             widget.vm.gameTypeList.length,
                             (index) => Container(
-                                  padding: const EdgeInsets.all(5),
-                                  child: _buildGameTab(
-                                      index, widget.vm.gameTypeList[index]),
-                                ))),
+                                padding: const EdgeInsets.all(5),
+                                //TODO: try use code figure out if empty data
+                                child: _buildGameTab(
+                                    index, widget.vm.gameTypeList[index])))),
                   ),
                 ),
                 Expanded(
