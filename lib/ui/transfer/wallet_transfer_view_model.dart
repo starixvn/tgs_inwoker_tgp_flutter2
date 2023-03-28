@@ -77,12 +77,20 @@ class WalletTransferViewModel extends BaseViewModel {
     isFetchingBalance = true;
     notifyListeners();
     var task = <Future>[];
+
     walletList.forEach((wallet) {
+      if (wallet.title == "Evolution" ||
+          wallet.title == "EVO" ||
+          wallet.title == "EVOTF") {
+        wallet.title = "EVO (NT,RT,BTG,NLC)";
+      }
       task.add(_getGameWalletBalance(wallet));
     });
+
     if (config.mergeEVORTNT ?? true)
       walletList.removeWhere(
           (wallet) => (wallet.gpCode == "RTTF" || wallet.gpCode == "NTTF"));
+
     await Future.wait(task);
     isFetchingBalance = false;
     if (hasListeners) notifyListeners();
