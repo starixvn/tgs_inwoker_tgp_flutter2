@@ -2,7 +2,7 @@ class EnvironmentConfig {
   static const String jwtKey =
       'I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ';
 
-  static const String url = 'https://dev-t1.rpgp.cc/';
+  static const String url = 'https://stg-t1.rpgp.cc/';
 
   static const String currency = 'CNY';
 
@@ -12,7 +12,7 @@ class EnvironmentConfig {
 
   static const String imageLogo = 'pg_login_logo';
 
-  static const String environmentStage = 'development';
+  static const String environmentStage = 'staging';
 
   static const int template_version = 1;
 
