@@ -1143,5 +1143,7 @@
   "affiliate_rebate_title": "อัตราการคืนเงิน",
   "affiliate_rebate_players": "ผู้เล่น",
   "affiliate_rebate_turnover": "ยอดเงินเดิมพัน",
-  "affiliate_rebate_rebates": "คืนเงิน"
+  "affiliate_rebate_rebates": "คืนเงิน",
+
+  "deposit_enter_amount": "กรุณากรอกจำนวนเงินฝาก"
 }

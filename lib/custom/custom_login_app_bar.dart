@@ -95,7 +95,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
         centerTitle: false,
       );
-    } else if (EnvironmentConfig.template_version == 2 && EnvironmentConfig.brandName =="PB3") {
+    } else if (EnvironmentConfig.template_version == 2 && EnvironmentConfig.brandName == "PB3") {
       return AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
@@ -136,18 +136,18 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _getAppBarTitle(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: _getActionButton(),
-                  ),
-                  if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-                ],
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: _getActionButton(),
+                ),
+                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
+              ],
+            ),
           ],
         ),
       );
@@ -181,7 +181,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   List<Widget> _getActionButton() => widget.isLogin
       ? [
-    if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
+          if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
           _getUsernameText(),
           _getLogoutButton(),
         ]
@@ -249,56 +249,58 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  _getVipButton() => EnvironmentConfig.template_version != 11
-      ? Container(
-          height: 50.auto,
-          padding: EdgeInsets.all(10.auto),
-          child: ColorButton(
-            title: "VIP",
-            onClick: () => Navigator.of(context).pushNamed("/vip"),
-            isEnabled: true,
-            width: 60.auto,
-            height: 17,
-            fontSize: 14,
-            radius: 5,
-            padding: 4,
-            textColor:
-                _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
-            color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
-                ? CustomColor.theme_button_color
-                : Colors.white,
-            icon: Container(
-              margin: EdgeInsets.only(right: 3.auto),
-              child: Image.asset(
-                "images/login_app_bar/vip.png",
-                matchTextDirection: true,
-                height: 18.auto,
+  _getVipButton() {
+    return !(EnvironmentConfig.template_version == 11 || EnvironmentConfig.brandName == "IDR1")
+        ? Container(
+            height: 50.auto,
+            padding: EdgeInsets.all(10.auto),
+            child: ColorButton(
+              title: "VIP",
+              onClick: () => Navigator.of(context).pushNamed("/vip"),
+              isEnabled: true,
+              width: 60.auto,
+              height: 17,
+              fontSize: 14,
+              radius: 5,
+              padding: 4,
+              textColor:
+                  _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+              color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+                  ? CustomColor.theme_button_color
+                  : Colors.white,
+              icon: Container(
+                margin: EdgeInsets.only(right: 3.auto),
+                child: Image.asset(
+                  "images/login_app_bar/vip.png",
+                  matchTextDirection: true,
+                  height: 18.auto,
+                ),
               ),
             ),
-          ),
-        )
-      : InkWell(
-          onTap: () => Navigator.of(context).pushNamed("/vip"),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
-            padding: EdgeInsets.all(1),
+          )
+        : InkWell(
+            onTap: () => Navigator.of(context).pushNamed("/vip"),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.black,
+                color: Colors.white,
               ),
-              padding: EdgeInsets.all(5),
-              child: Image.asset(
-                "images/login_app_bar/vip.png",
-                matchTextDirection: true,
-                height: 15.auto,
+              padding: EdgeInsets.all(1),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black,
+                ),
+                padding: EdgeInsets.all(5),
+                child: Image.asset(
+                  "images/login_app_bar/vip.png",
+                  matchTextDirection: true,
+                  height: 15.auto,
+                ),
               ),
             ),
-          ),
-        );
+          );
+  }
 
   _getLogoutButton() => Container(
         height: 50.auto,

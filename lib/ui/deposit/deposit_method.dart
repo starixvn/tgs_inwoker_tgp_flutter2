@@ -201,11 +201,13 @@ class _DepositMethodState extends BaseState<DepositMethod> with AutomaticKeepAli
         //margin: EdgeInsets.only(top: 15.auto),
         child: CustomTextFormField(
             title: getTranslatedText(_isUSDT() ? "deposit_usdt_amount" : "deposit_amount") ?? "",
-            hintText: getTranslatedText("enter") +
-                " " +
-                (Format().amountFormat(paymentMin)) +
-                "-" +
-                (Format().amountFormat(paymentMax)),
+            hintText: EnvironmentConfig.brandName == "IDR1"
+                ? getTranslatedText("deposit_enter_amount")
+                : getTranslatedText("enter") +
+                    " " +
+                    (Format().amountFormat(paymentMin)) +
+                    "-" +
+                    (Format().amountFormat(paymentMax)),
             onChanged: (value) => onTextChange(),
             onFieldSubmitted: (value) => onTextChange(),
             controller: _amountController,

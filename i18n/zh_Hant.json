@@ -1144,5 +1144,7 @@
   "affiliate_rebate_title": "返水比例",
   "affiliate_rebate_players": "活躍玩家",
   "affiliate_rebate_turnover": "有效投注",
-  "affiliate_rebate_rebates": "返水比例"
+  "affiliate_rebate_rebates": "返水比例",
+
+  "deposit_enter_amount": "請輸入存款金額"
 }

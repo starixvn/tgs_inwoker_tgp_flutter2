@@ -1,7 +1,9 @@
 import 'package:api/entity/game_type.dart';
 import 'package:api/entity/wallet.dart';
+import 'package:api/extension/format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -101,27 +103,33 @@ class _BalancePickerState extends BaseState<BalancePicker> {
     ];
   }
 
-  _getTotalBalanceText() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            getTranslatedText("balance"),
-            style: TextStyle(
-              color: CustomColor.theme_button_color,
-              fontWeight: FontWeight.bold,
-              fontSize: 15.auto,
-            ),
+  _getTotalBalanceText() {
+    double mainWalletBalance = (widget.walletList?.singleWhereOrNull((element) => element.isMainWallet)?.balance ?? 0);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          getTranslatedText("balance"),
+          style: TextStyle(
+            color: CustomColor.theme_button_color,
+            fontWeight: FontWeight.bold,
+            fontSize: 15.auto,
           ),
-          Text(
-            (widget.walletList?.singleWhereOrNull((element) => element.isMainWallet)?.balance ?? 0).toString(),
-            style: TextStyle(
-              color: CustomColor.theme_button_color,
-              fontWeight: FontWeight.bold,
-              fontSize: 15.auto,
-            ),
-          )
-        ],
-      );
+        ),
+        Text(
+          EnvironmentConfig.brandName == "IDR1"
+              ? Format().currencyFormat(mainWalletBalance.toInt())
+              : mainWalletBalance.toString(),
+          style: TextStyle(
+            color: CustomColor.theme_button_color,
+            fontWeight: FontWeight.bold,
+            fontSize: 15.auto,
+          ),
+        )
+      ],
+    );
+  }
 
   Widget _getGamePlatformBalanceText(Wallet wallet) => Padding(
         padding: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 5.auto),
@@ -135,7 +143,9 @@ class _BalancePickerState extends BaseState<BalancePicker> {
               ),
             ),
             Text(
-              wallet.balance.toString(),
+              EnvironmentConfig.brandName == "IDR1"
+                  ? Format().currencyFormat((wallet.balance ?? 0).toInt())
+                  : wallet.balance.toString(),
               style: TextStyle(
                 color: Colors.white,
               ),

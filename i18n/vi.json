@@ -1144,5 +1144,7 @@
   "affiliate_rebate_title": "Tỷ lệ hoàn trả",
   "affiliate_rebate_players": "Người chơi",
   "affiliate_rebate_turnover": "Tổng số tiền cược",
-  "affiliate_rebate_rebates": "Tiền hoàn trả"
+  "affiliate_rebate_rebates": "Tiền hoàn trả",
+
+  "deposit_enter_amount": "Vui lòng nhập số tiền gửi"
 }

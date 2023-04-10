@@ -160,7 +160,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         Expanded(
             flex: 1,
             child: Text(
-              wallet.balance.toString(),
+              EnvironmentConfig.brandName == "IDR1"
+                  ? Format().currencyFormat((wallet.balance ?? 0).toInt())
+                  : wallet.balance.toString(),
               style: TextStyle(fontSize: 13.auto),
               textAlign: TextAlign.center,
             ))
