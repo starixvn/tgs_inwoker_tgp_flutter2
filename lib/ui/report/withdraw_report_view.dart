@@ -6,6 +6,7 @@ import 'package:api/entity/status.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/deposit_picker.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/report/base_report.dart';
@@ -90,8 +91,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(bottom: 3.auto),
               child: AutoSizeText(
-                getTranslatedText("gms_order_number") +
-                    (_vm.withdrawReportList![index].orderNo ?? ""),
+                getTranslatedText("gms_order_number") + (_vm.withdrawReportList![index].orderNo ?? ""),
                 style: TextStyle(color: Colors.grey[700]),
                 minFontSize: 10,
                 maxFontSize: 12,
@@ -104,8 +104,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
                 Expanded(
                   flex: 1,
                   child: AutoSizeText(
-                    Format().dateTimezoneFormat(
-                        _vm.withdrawReportList![index].createdOn),
+                    Format().dateTimezoneFormat(_vm.withdrawReportList![index].createdOn),
                     style: TextStyle(color: Colors.grey[700]),
                     minFontSize: 10,
                     maxFontSize: 12,
@@ -126,7 +125,11 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
                 Expanded(
                   flex: 1,
                   child: AutoSizeText(
-                    _vm.withdrawReportList![index].amount.toString(),
+                    EnvironmentConfig.brandName == "IDR1"
+                        //without decimal places
+                        ? Format().currencyFormat((_vm.reportList?[index].amount ?? 0).toInt())
+                        //with 2 decimal places
+                        : _vm.withdrawReportList![index].amount.toString(),
                     style: TextStyle(color: Colors.grey[700]),
                     minFontSize: 10,
                     maxFontSize: 12,
@@ -148,8 +151,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
         children: [
           DepositPicker(
               title: "status",
-              displayText:
-                  pickerText1 == null ? getTranslatedText("all") : pickerText1,
+              displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.withdrawalStatusList,
               isHintText: false,
               width: context.screenWidth - 70.auto,
@@ -197,8 +199,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -211,7 +212,6 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getWithdrawReportApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getWithdrawReportApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

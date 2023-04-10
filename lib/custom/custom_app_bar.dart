@@ -130,7 +130,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: EdgeInsets.only(right: 15.auto),
           alignment: Alignment.center,
           child: Text(
-            "${Format().currencyWithDecimalFormat(walletBalance ?? 0)}",
+            EnvironmentConfig.brandName == "IDR1"
+            //without decimal places
+                ? Format().currencyFormat((walletBalance ?? 0).toInt())
+            //with 2 decimal places
+                : Format().currencyWithDecimalFormat(walletBalance ?? 0),
             style: TextStyle(color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white),
           ));
     } else if (widget != null) {

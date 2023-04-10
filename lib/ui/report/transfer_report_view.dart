@@ -2,6 +2,7 @@ import 'package:api/entity/report_cell_item_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/format.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -84,18 +85,20 @@ class TransferReportViewState extends BaseState<TransferReportView> {
             child: Flex(
               direction: Axis.vertical,
               children: [
+                _buildReportSubItem("from", (_vm.transferReportList![index].from ?? "")),
+                _buildReportSubItem("to", (_vm.transferReportList![index].to ?? "")),
                 _buildReportSubItem(
-                    "from", (_vm.transferReportList![index].from ?? "")),
-                _buildReportSubItem(
-                    "to", (_vm.transferReportList![index].to ?? "")),
-                _buildReportSubItem("amount",
-                    (_vm.transferReportList![index].amount ?? 0).toString()),
+                    "amount",
+                    EnvironmentConfig.brandName == "IDR1"
+                        //without decimal places
+                        ? Format().currencyFormat((_vm.reportList?[index].amount ?? 0).toInt())
+                        //with 2 decimal places
+                        : (_vm.transferReportList![index].amount ?? 0).toString()),
                 Container(
                     margin: EdgeInsets.only(top: 3.auto),
                     alignment: Alignment.centerLeft,
                     child: AutoSizeText(
-                      Format().dateTimezoneFormat(
-                          _vm.transferReportList![index].balanceTime),
+                      Format().dateTimezoneFormat(_vm.transferReportList![index].balanceTime),
                       style: TextStyle(color: Colors.grey[700]),
                       minFontSize: 10,
                       maxFontSize: 12,
@@ -133,8 +136,7 @@ class TransferReportViewState extends BaseState<TransferReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -147,7 +149,6 @@ class TransferReportViewState extends BaseState<TransferReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getTransferReportApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getTransferReportApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }
