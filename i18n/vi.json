@@ -1146,5 +1146,9 @@
   "affiliate_rebate_turnover": "Tổng số tiền cược",
   "affiliate_rebate_rebates": "Tiền hoàn trả",
 
-  "deposit_enter_amount": "Vui lòng nhập số tiền gửi"
+  "deposit_enter_amount": "Vui lòng nhập số tiền gửi",
+
+  "storage_permission_required": "yêu cầu quyền lưu trữ",
+  "affiliate_qr_code_saved": "Mã QR đã được lưu thành công",
+  "download": "Tải xuống"
 }

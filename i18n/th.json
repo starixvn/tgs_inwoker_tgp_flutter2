@@ -1145,5 +1145,9 @@
   "affiliate_rebate_turnover": "ยอดเงินเดิมพัน",
   "affiliate_rebate_rebates": "คืนเงิน",
 
-  "deposit_enter_amount": "กรุณากรอกจำนวนเงินฝาก"
+  "deposit_enter_amount": "กรุณากรอกจำนวนเงินฝาก",
+
+  "storage_permission_required": "ต้องการสิทธิ์การเข้าถึงเก็บข้อมูล",
+  "affiliate_qr_code_saved": "บันทึก QR Code สำเร็จ",
+  "download": "ดาวน์โหลด"
 }

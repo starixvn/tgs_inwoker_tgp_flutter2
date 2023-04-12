@@ -1,9 +1,19 @@
 import 'dart:ui';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:api/entity/affiliate_rebate_game_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:external_path/external_path.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
@@ -21,6 +31,8 @@ import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
 import 'package:tgp_flutter2/ui/profile_info/profile_info.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
 
 class Affiliate extends StatefulWidget {
   @override
@@ -35,10 +47,20 @@ class _AffiliateState extends BaseState<Affiliate> {
   @override
   void initState() {
     _vm.getBrandAllAgent();
+    _requestPermission();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getAffiliateUrl();
     });
     super.initState();
+  }
+
+  _requestPermission() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    final info = statuses[Permission.storage].toString();
+    print(info);
   }
 
   _getAffiliateUrl() {
@@ -63,6 +85,34 @@ class _AffiliateState extends BaseState<Affiliate> {
 
     (context as Element).visitChildren(rebuild);
   }
+
+  ScreenshotController screenshotController = ScreenshotController();
+
+  _saveScreenShot() async {
+    if (affiliateUrl == null) return;
+
+    // Check for storage permission
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      // Capture screenshot
+      var imageFile = await screenshotController.capture();
+
+      //save to album
+      final result = await ImageGallerySaver.saveImage(
+        Uint8List.fromList(imageFile!.toList()),
+        quality: 60,
+        name: "affiliate_qr_code",
+      );
+      print(result);
+
+      CustomToast.show(getTranslatedText("affiliate_qr_code_saved"));
+    } else {
+      // Permission denied
+      CustomToast.show(getTranslatedText("storage_permission_required"));
+    }
+  }
+
+  _copyScreenShot() async {}
 
   Widget build(BuildContext context) {
     _handleApiState();
@@ -90,12 +140,62 @@ class _AffiliateState extends BaseState<Affiliate> {
                           height: 140.auto,
                           width: 140.auto,
                           color: Colors.white,
-                          child: QrImage(
-                            data: affiliateUrl!,
-                            version: QrVersions.auto,
-                            size: 150.0,
+                          child: Screenshot(
+                              controller: screenshotController,
+                              child: Container(
+                                color: Colors.white,
+                                padding: EdgeInsets.all(10),
+                                child: PrettyQr(
+                                  size: 200,
+                                  data: affiliateUrl!,
+                                  errorCorrectLevel: QrErrorCorrectLevel.M,
+                                  roundEdges: false,
+                                ),
+                              ))),
+                  Container(
+                    padding: EdgeInsets.only(top: 5.auto),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //container with padding left and right
+                        //   Container(
+                        //   padding: EdgeInsets.only(left: 5.auto, right: 5.auto),
+                        //  child: OutlineBorderButton(
+                        //   title: getTranslatedText("copy"),
+                        //  onClick: () {
+                        //                    _copyScreenShot();
+                        //             },
+                        //              isEnabled: true,
+                        //           width: 75.auto,
+                        //         height: 17,
+                        //       color: CustomColor.theme_text_black_color,
+                        //     fontSize: 14,
+                        //              radius: 5,
+                        //                padding: 4,
+                        //            isBold: true,
+                        //        ),
+                        //     ),
+
+                        Container(
+                          padding: EdgeInsets.only(left: 5.auto, right: 5.auto),
+                          child: OutlineBorderButton(
+                            title: getTranslatedText("download"),
+                            onClick: () {
+                              _saveScreenShot();
+                            },
+                            isEnabled: true,
+                            width: 75.auto,
+                            height: 17,
+                            color: CustomColor.theme_text_black_color,
+                            fontSize: 14,
+                            radius: 5,
+                            padding: 4,
+                            isBold: true,
                           ),
                         ),
+                      ],
+                    ),
+                  ),
                   _buildReferIdText(),
                   _buildIdLink(),
                   _buildAffiliateGameTypePicker(),
@@ -160,13 +260,36 @@ class _AffiliateState extends BaseState<Affiliate> {
               ),
             ),
             Expanded(
-              flex: 10,
+              flex: 8,
               child: Text(
                 _vm.userProfile.playerCode ?? "",
                 style: TextStyle(
                     color: CustomColor.theme_text_black_color,
                     fontSize: 14.auto),
               ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.only(left: 3.auto),
+                  height: 25.auto,
+                  child: OutlineBorderButton(
+                    title: getTranslatedText("copy"),
+                    onClick: () {
+                      Clipboard.setData(ClipboardData(
+                          text: _vm.userProfile.playerCode ?? ""));
+                      CustomToast.show(getTranslatedText("copy_text"));
+                    },
+                    isEnabled: true,
+                    width: 50.auto,
+                    height: 17,
+                    color: CustomColor.theme_text_black_color,
+                    fontSize: 14,
+                    radius: 5,
+                    padding: 4,
+                    isBold: true,
+                  )),
             )
           ],
         ),
