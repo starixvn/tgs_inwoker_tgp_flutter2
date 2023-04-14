@@ -379,10 +379,8 @@ class _AffiliateState extends BaseState<Affiliate> {
             decoration:
                 BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
             margin: EdgeInsets.only(top: 15.auto, bottom: 5.auto),
-            height: 250,
-            child: ListView(
-              children: [_buildRebateTable()],
-            ),
+            // height: 250,
+            child:_buildRebateTable()
           ),
         ),
       );
