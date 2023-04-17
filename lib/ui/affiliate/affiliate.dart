@@ -66,8 +66,7 @@ class _AffiliateState extends BaseState<Affiliate> {
   _getAffiliateUrl() {
     setState(() {
       if (_vm.userProfile.playerCode != null)
-        affiliateUrl = EnvironmentConfig.url +
-            "${getCurrentLanguage().apiCode}/p/${_vm.userProfile.playerCode}?do=register";
+        affiliateUrl = "${EnvironmentConfig.url}p/${_vm.userProfile.playerCode}?do=register";
     });
   }
 
@@ -123,8 +122,7 @@ class _AffiliateState extends BaseState<Affiliate> {
           return CustomScaffold(
             appBar: _buildAppBar(),
             body: Container(
-              padding:
-                  EdgeInsets.only(top: 15.auto, left: 10.auto, right: 10.auto),
+              padding: EdgeInsets.only(top: 15.auto, left: 10.auto, right: 10.auto),
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -233,9 +231,7 @@ class _AffiliateState extends BaseState<Affiliate> {
   _buildReferIdText() => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: EnvironmentConfig.template_version == 11
-              ? CustomColor.theme_button_color
-              : Colors.white,
+          color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
         ),
         padding: EdgeInsets.only(
           left: 10.auto,
@@ -253,9 +249,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                 child: Text(
                   getTranslatedText("my_refer_id"),
                   style: TextStyle(
-                      color: CustomColor.theme_text_black_color,
-                      fontSize: 14.auto,
-                      fontWeight: FontWeight.bold),
+                      color: CustomColor.theme_text_black_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -263,9 +257,7 @@ class _AffiliateState extends BaseState<Affiliate> {
               flex: 8,
               child: Text(
                 _vm.userProfile.playerCode ?? "",
-                style: TextStyle(
-                    color: CustomColor.theme_text_black_color,
-                    fontSize: 14.auto),
+                style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 14.auto),
               ),
             ),
             Expanded(
@@ -277,8 +269,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                   child: OutlineBorderButton(
                     title: getTranslatedText("copy"),
                     onClick: () {
-                      Clipboard.setData(ClipboardData(
-                          text: _vm.userProfile.playerCode ?? ""));
+                      Clipboard.setData(ClipboardData(text: _vm.userProfile.playerCode ?? ""));
                       CustomToast.show(getTranslatedText("copy_text"));
                     },
                     isEnabled: true,
@@ -298,9 +289,7 @@ class _AffiliateState extends BaseState<Affiliate> {
   _buildIdLink() => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: EnvironmentConfig.template_version == 11
-              ? CustomColor.theme_button_color
-              : Colors.white,
+          color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
         ),
         padding: EdgeInsets.only(
           left: 10.auto,
@@ -318,9 +307,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                 child: Text(
                   getTranslatedText("affiliate_link"),
                   style: TextStyle(
-                      color: CustomColor.theme_text_black_color,
-                      fontSize: 14.auto,
-                      fontWeight: FontWeight.bold),
+                      color: CustomColor.theme_text_black_color, fontSize: 14.auto, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -346,8 +333,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                   child: OutlineBorderButton(
                     title: getTranslatedText("copy"),
                     onClick: () {
-                      Clipboard.setData(
-                          ClipboardData(text: affiliateUrl ?? ""));
+                      Clipboard.setData(ClipboardData(text: affiliateUrl ?? ""));
                       CustomToast.show(getTranslatedText("copy_text"));
                     },
                     isEnabled: true,
@@ -376,12 +362,10 @@ class _AffiliateState extends BaseState<Affiliate> {
   _buildTableScrollView() => Expanded(
         child: SingleChildScrollView(
           child: Container(
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
-            margin: EdgeInsets.only(top: 15.auto, bottom: 5.auto),
-            // height: 250,
-            child:_buildRebateTable()
-          ),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
+              margin: EdgeInsets.only(top: 15.auto, bottom: 5.auto),
+              // height: 250,
+              child: _buildRebateTable()),
         ),
       );
 
@@ -468,9 +452,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                   width: context.screenWidth,
                   padding: EdgeInsets.only(bottom: 5),
                   margin: EdgeInsets.only(left: 5, right: 5, top: 5),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(color: Colors.grey, width: 1.0))),
+                  decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey, width: 1.0))),
                   child: Text(
                     getTranslatedText("affiliate_rebate_title"),
                     style: TextStyle(
@@ -521,22 +503,16 @@ class _AffiliateState extends BaseState<Affiliate> {
                 2: FlexColumnWidth(1.0),
               },
               border: TableBorder(
-                  horizontalInside: BorderSide(
-                      width: 2,
-                      color: CustomColor.theme_bg_color,
-                      style: BorderStyle.solid)),
+                  horizontalInside: BorderSide(width: 2, color: CustomColor.theme_bg_color, style: BorderStyle.solid)),
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: [
                 TableRow(
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10))),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                     children: [
                       Container(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           height: 40,
                           child: Text(
                             getTranslatedText("affiliate_rebate_players"),
@@ -544,8 +520,7 @@ class _AffiliateState extends BaseState<Affiliate> {
                             textAlign: TextAlign.center,
                           )),
                       Container(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           height: 40,
                           child: Text(
                             getTranslatedText("affiliate_rebate_turnover"),
@@ -553,34 +528,24 @@ class _AffiliateState extends BaseState<Affiliate> {
                             textAlign: TextAlign.center,
                           )),
                       Container(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           height: 40,
                           child: Text(
-                            getTranslatedText("affiliate_rebate_rebates") +
-                                "(%)",
+                            getTranslatedText("affiliate_rebate_rebates") + "(%)",
                             style: TextStyle(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ))
                     ]),
-                for (var item in _vm.filterGamesByType(
-                    _vm.rebateList, _vm.selectedRebateGameType))
+                for (var item in _vm.filterGamesByType(_vm.rebateList, _vm.selectedRebateGameType))
                   TableRow(
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: item ==
-                                  _vm
-                                      .filterGamesByType(_vm.rebateList,
-                                          _vm.selectedRebateGameType)
-                                      .last
-                              ? BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10))
+                          borderRadius: item == _vm.filterGamesByType(_vm.rebateList, _vm.selectedRebateGameType).last
+                              ? BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
                               : BorderRadius.circular(0)),
                       children: [
                         Container(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           height: 40,
                           child: Text(
                             item.rank.toString(),
@@ -588,16 +553,14 @@ class _AffiliateState extends BaseState<Affiliate> {
                           ),
                         ),
                         Container(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                             height: 40,
                             child: Text(
                               item.turnover.toString(),
                               textAlign: TextAlign.center,
                             )),
                         Container(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                             height: 40,
                             child: Text(
                               item.rebatePercentage.toString(),
