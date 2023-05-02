@@ -31,10 +31,10 @@ class CardViewModel extends BaseViewModel {
       getWithdrawalInfoListApiState,
       addBankCardApiState,
       deleteBankCardApiState;
-  Map<BankType, List<WithdrawalInfo>> bankTypeList =
-      new Map<BankType, List<WithdrawalInfo>>();
+  Map<String, List<WithdrawalInfo>> bankTypeList =
+      new Map<String, List<WithdrawalInfo>>();
   List? withdrawalInfoList;
-  BankType? pBankType;
+  String? pBankType;
   WithdrawalInfo? pWithdrawalInfo;
   String? pBankName;
   List<String> bankNameList = [
@@ -71,11 +71,11 @@ class CardViewModel extends BaseViewModel {
     return getWithdrawalInfoListApiState;
   }
 
-  onSelectedBankType(BankType? bankType) async {
+  onSelectedBankType(String? bankType) async {
     if (bankTypeList.isEmpty) await getWithdrawalInfoList();
     if (bankType == null && pBankType == null) {
       if (config.addCardHideCertainField ?? false)
-        pBankType = BankType.BANK;
+        pBankType = "Bank";
       else
         pBankType = bankTypeList.keys.first;
     } else

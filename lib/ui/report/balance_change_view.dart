@@ -2,6 +2,7 @@ import 'package:api/entity/report_cell_item_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/format.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -10,6 +11,7 @@ import 'package:tgp_flutter2/ui/report/base_report.dart';
 import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
+
 
 class BalanceChangesView extends StatefulWidget {
   final ReportViewModel vm;
@@ -75,8 +77,7 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
             padding: EdgeInsets.only(top: 5.auto),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
             ),
             child: Column(
               children: [
@@ -142,16 +143,17 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
             child: Flex(
               direction: Axis.vertical,
               children: [
+                _inputLayout(getTranslatedText("time"),
+                    Format().dateTimezoneFormat(_vm.balanceChangesList![index].recordedon ?? "")),
                 _inputLayout(
-                    getTranslatedText("time"),
-                    Format().dateTimezoneFormat(
-                        _vm.balanceChangesList![index].recordedon ?? "")),
+                    getTranslatedText("bcr_type"), userRepo.apiError![_vm.balanceChangesList![index].type] ?? ""),
                 _inputLayout(
-                    getTranslatedText("bcr_type"),
-                    userRepo.apiError![_vm.balanceChangesList![index].type] ??
-                        ""),
-                _inputLayout(getTranslatedText("bcr_amount"),
-                    (_vm.balanceChangesList![index].amount.toString())),
+                    getTranslatedText("bcr_amount"),
+                    EnvironmentConfig.brandName == "IDR1"
+                        //without decimal places
+                        ? Format().currencyFormat((_vm.reportList?[index].amount ?? 0).toInt())
+                        //with 2 decimal places
+                        : (_vm.balanceChangesList![index].amount.toString())),
               ],
             )),
       ]);
@@ -171,8 +173,7 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
       setState(() {
         isLoading = true;
       });
@@ -185,7 +186,6 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getBalanceChangesApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getBalanceChangesApiState, isAutoHideLoading: false, onSuccess: () {});
   }
 }

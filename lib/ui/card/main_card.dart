@@ -136,7 +136,7 @@ class _MainCardState extends BaseState<MainCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              bankCard.bankType?.getName(context) ?? "",
+              getBankDisplayName(bankCard.bankType ?? ""),
               style: TextStyle(fontSize: 11.auto),
             ),
             Container(
@@ -285,11 +285,11 @@ class _MainCardState extends BaseState<MainCard> {
 
   _getDisplayBankAccountText(BankCard bankCard) {
     switch (bankCard.bankType) {
-      case BankType.CRYPTO:
+      case "Crypto":
         return bankCard.bankDetail?.address;
-      case BankType.USDT:
+      case "Usdt":
         return bankCard.bankDetail?.address;
-      case BankType.BANK:
+      case "Bank":
         return bankCard.bankDetail?.bankAccount;
       default:
         return bankCard.bankDetail?.phone;

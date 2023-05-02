@@ -8,7 +8,7 @@ environment_config:
     jwtKey:
       default: "oZQkLA6hSWvgqpDAv3JAeCNk3eTUVG9qWIS96p4wUNZmUZjfBhVKgA"
     url:
-      default: "https://stg.inyobet.com/"
+      default: "https://stg-pb3.rpgp.cc/"
     currency:
       default: "PHP"
     appTitleName:

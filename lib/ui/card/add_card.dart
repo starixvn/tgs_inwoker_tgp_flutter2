@@ -247,7 +247,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   List<Widget> _getWidgetList() {
     switch (_vm.pBankType) {
-      case BankType.BANK:
+      case "Bank":
         return [
           if (!(_isAddCardHideCertainField() ||
               (_vm.config?.addCardBankCustomIdr ?? false)))
@@ -294,18 +294,18 @@ class _AddCardState extends BaseState<AddCard> {
             true,
           ),
         ];
-      case BankType.EWALLET:
+      case "EWallet":
         return [
           _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount",
               _nameController, false,
               isBankName: false),
           _buildPhoneTextField(),
         ];
-      case BankType.CRYPTO:
+      case "Crypto":
         return [
           _buildCryptoAddressTextField(),
         ];
-      case BankType.USDT:
+      case "Usdt":
         return [
           _buildCryptoAddressTextField(),
         ];
@@ -362,7 +362,7 @@ class _AddCardState extends BaseState<AddCard> {
               list: list,
               onChanged: (value) {
                 setState(() {
-                  if (value is BankType)
+                  if (value is String)
                     onSelectedBankType(bankType: value);
                   else if (value is WithdrawalInfo)
                     onSelectedWithdrawalInfo(withdrawalInfo: value);
@@ -376,7 +376,7 @@ class _AddCardState extends BaseState<AddCard> {
   _onTextChange(String value) {
     setState(() {
       switch (_vm.pBankType) {
-        case (BankType.CRYPTO):
+        case "Crypto":
           {
             if (_addressController.text.isNotEmpty)
               isButtonEnabled = true;
@@ -384,7 +384,7 @@ class _AddCardState extends BaseState<AddCard> {
               isButtonEnabled = false;
             break;
           }
-        case BankType.USDT:
+        case "Usdt":
           {
             if (_addressController.text.isNotEmpty)
               isButtonEnabled = true;
@@ -393,7 +393,7 @@ class _AddCardState extends BaseState<AddCard> {
             break;
           }
 
-        case BankType.EWALLET:
+        case "EWallet":
           {
             if (_nameController.text.isNotEmpty &&
                 _phoneController.text.isNotEmpty) {
@@ -403,7 +403,7 @@ class _AddCardState extends BaseState<AddCard> {
             }
             break;
           }
-        case BankType.BANK:
+        case "Bank":
           {
             //addCardBankDropDown is false, check _bankNameController.text
             if (!(_vm.config?.addCardBankDropDown ?? false) &&
@@ -441,13 +441,13 @@ class _AddCardState extends BaseState<AddCard> {
     });
   }
 
-  onSelectedBankType({BankType? bankType}) async {
+  onSelectedBankType({String? bankType}) async {
     await _vm.onSelectedBankType(bankType);
-    BankType _currentBankType = bankType ?? _vm.pBankType!;
+    String _currentBankType = bankType ?? _vm.pBankType!;
     onSelectedWithdrawalInfo();
     setState(() {
-      isCrypto = _currentBankType == BankType.CRYPTO;
-      bankTypePickerText = _currentBankType.getName(context);
+      isCrypto = _currentBankType == "Crypto";
+      bankTypePickerText = getBankDisplayName(_currentBankType);
     });
   }
 
@@ -478,7 +478,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _onClick() {
     ProgressDialog.show(context, _vm.brandLogoUrl);
-    if (isCrypto || _vm.pBankType == BankType.USDT)
+    if (isCrypto || _vm.pBankType == "Usdt")
       _vm.addBankCard(address: _addressController.text);
     else
       _vm.addBankCard(

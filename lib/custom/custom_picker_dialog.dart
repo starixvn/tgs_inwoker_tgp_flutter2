@@ -93,9 +93,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
     } else if (widget.list is List<GameProvider>) {
       GameProvider game = widget.list[index];
       return game.name;
-    } else if (widget.list is List<BankType>) {
-      BankType bankType = widget.list[index];
-      return bankType.getName(context);
+    } else if (widget.list is List<String>) {
+      String bankType = widget.list[index];
+      return getBankDisplayName(bankType);
     } else if (widget.list is List<Wallet>) {
       Wallet wallet = widget.list[index];
       return (wallet.isMainWallet)
@@ -160,7 +160,9 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
         Expanded(
             flex: 1,
             child: Text(
-              wallet.balance.toString(),
+              EnvironmentConfig.brandName == "IDR1"
+                  ? Format().currencyFormat((wallet.balance ?? 0).toInt())
+                  : wallet.balance.toString(),
               style: TextStyle(fontSize: 13.auto),
               textAlign: TextAlign.center,
             ))
@@ -169,14 +171,14 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
   }
 
   _getBankCardPickerItem(index) {
-    BankType bankType = widget.list[index].bankType;
+    String bankType = widget.list[index].bankType;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           flex: 2,
           child: Text(
-            bankType.getName(context),
+            getBankDisplayName(bankType),
             style: TextStyle(fontSize: 13.auto),
             textAlign: TextAlign.left,
           ),
@@ -196,11 +198,11 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
 
   String? _getDisplayBankAccountText(BankCard bankCard) {
     switch (bankCard.bankType) {
-      case BankType.CRYPTO:
+      case "Crypto":
         return bankCard.bankDetail?.address;
-      case BankType.USDT:
+      case "Usdt":
         return bankCard.bankDetail?.address;
-      case BankType.BANK:
+      case "Bank":
         return bankCard.bankDetail?.bankAccount;
       default:
         return bankCard.bankDetail?.phone;

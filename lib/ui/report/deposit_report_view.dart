@@ -8,6 +8,7 @@ import 'package:api/entity/report_cell_item_type.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/custom/deposit_picker.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/deposit/manual_deposit_order_view.dart';
@@ -79,8 +80,8 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             child: ReportCellItem(
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              buildReportCellItemLayout: _buildReportCellItemLayout(
-                  index, _vm.reportList![index].canUploadCerts ?? false),
+              buildReportCellItemLayout:
+                  _buildReportCellItemLayout(index, _vm.reportList![index].canUploadCerts ?? false),
             ),
           );
         }).toList();
@@ -94,8 +95,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(bottom: 3.auto),
               child: AutoSizeText(
-                getTranslatedText("gms_order_number") +
-                    (_vm.reportList![index].orderNo ?? ""),
+                getTranslatedText("gms_order_number") + (_vm.reportList![index].orderNo ?? ""),
                 style: TextStyle(color: Colors.grey[700]),
                 minFontSize: 10,
                 maxFontSize: 12,
@@ -119,7 +119,11 @@ class DepositReportViewState extends BaseState<DepositReportView> {
                 Expanded(
                   flex: 2,
                   child: AutoSizeText(
-                    _vm.reportList![index].amount.toString(),
+                    "${EnvironmentConfig.brandName == "IDR1"
+                        //without decimal places
+                        ? Format().currencyFormat((_vm.reportList?[index].amount ?? 0).toInt())
+                        //with 2 decimal places
+                        : _vm.reportList?[index].amount.toString()}",
                     style: TextStyle(color: Colors.grey[700]),
                     minFontSize: 10,
                     maxFontSize: 12,
@@ -133,8 +137,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
                           height: 20,
                           child: ColorButton(
                             title: getTranslatedText("upload_prof"),
-                            onClick: () => _vm.getManualDepositOrder(
-                                _vm.reportList![index].id),
+                            onClick: () => _vm.getManualDepositOrder(_vm.reportList![index].id),
                             isEnabled: true,
                             radius: 4.8,
                             height: 20,
@@ -183,8 +186,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
         children: [
           DepositPicker(
               title: "status",
-              displayText:
-                  pickerText1 == null ? getTranslatedText("all") : pickerText1,
+              displayText: pickerText1 == null ? getTranslatedText("all") : pickerText1,
               list: _vm.depositStatusList,
               isHintText: false,
               width: context.screenWidth - 70.auto,
@@ -218,8 +220,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
   }
 
   _scrollListener() {
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent) {
       _getReport(isLoadMore: true);
       setState(() {
         isLoading = true;
@@ -232,8 +233,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getAccountReportApiState,
-        isAutoHideLoading: false, onSuccess: () {});
+    handleApiState(_vm.getAccountReportApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getDepositOrderApiState, onSuccess: () {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Navigator.push(

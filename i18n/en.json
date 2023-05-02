@@ -1158,5 +1158,12 @@
   "affiliate_rebate_title": "Rebate Rates",
   "affiliate_rebate_players": "Players",
   "affiliate_rebate_turnover": "Turnover",
-  "affiliate_rebate_rebates": "Rebates"
+  "affiliate_rebate_rebates": "Rebates",
+
+  "deposit_enter_amount": "Please enter deposit amount",
+
+  "download": "Download",
+  "storage_permission_required": "Storage permission required",
+  "affiliate_qr_code_saved": "QR code saved to album"
+
 }

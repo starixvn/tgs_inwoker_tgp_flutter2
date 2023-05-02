@@ -1144,5 +1144,11 @@
   "affiliate_rebate_title": "返水比例",
   "affiliate_rebate_players": "活跃玩家",
   "affiliate_rebate_turnover": "有效投注",
-  "affiliate_rebate_rebates": "返水比例"
+  "affiliate_rebate_rebates": "返水比例",
+
+  "deposit_enter_amount": "请输入存款金额",
+
+  "storage_permission_required": "需要存储权限",
+  "affiliate_qr_code_saved": "二维码已保存",
+  "download": "下载"
 }

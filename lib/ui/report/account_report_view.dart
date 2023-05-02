@@ -2,6 +2,7 @@ import 'package:api/entity/report_cell_item_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/format.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
@@ -87,10 +88,9 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildReportSubItem("total_bet_amount", (_vm.accountReportTotal?.betAmount ?? 0).toString()),
-                      _buildReportSubItem(
-                          "total_valid_bet_amount", (_vm.accountReportTotal?.validBetAmount ?? 0).toString()),
-                      _buildWinLossText("total_win_loss", (_vm.accountReportTotal?.winLoss ?? 0).toString()),
+                      _buildReportSubItem("total_bet_amount", _vm.accountReportTotal?.betAmount ?? 0),
+                      _buildReportSubItem("total_valid_bet_amount", _vm.accountReportTotal?.validBetAmount ?? 0),
+                      _buildWinLossText("total_win_loss", _vm.accountReportTotal?.winLoss ?? 0),
                     ],
                   ),
                 ),
@@ -157,19 +157,23 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildReportSubItem("bet_amount", _vm.accountReportList![index].betAmount.toString()),
-                    _buildReportSubItem("valid_bet_amount", _vm.accountReportList![index].validBetAmount.toString()),
-                    _buildWinLossText("win_loss", _vm.accountReportList![index].winLoss.toString()),
+                    _buildReportSubItem("bet_amount", _vm.accountReportList![index].betAmount ?? 0),
+                    _buildReportSubItem("valid_bet_amount", _vm.accountReportList![index].validBetAmount ?? 0),
+                    _buildWinLossText("win_loss", _vm.accountReportList![index].winLoss ?? 0),
                   ],
                 ),
               ],
             )),
       ]);
 
-  _buildReportSubItem(String title, String text) => Expanded(
+  _buildReportSubItem(String title, double text) => Expanded(
         flex: 1,
         child: AutoSizeText(
-          getTranslatedText(title) + " : " + text,
+          "${getTranslatedText(title)} : ${EnvironmentConfig.brandName == "IDR1"
+              //without decimal places
+              ? Format().currencyFormat(text.toInt())
+              //with 2 decimal places
+              : text}",
           style: TextStyle(color: Colors.grey[700]),
           minFontSize: 5,
           maxFontSize: 12,
@@ -178,7 +182,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
         ),
       );
 
-  _buildWinLossText(String title, String text) => Expanded(
+  _buildWinLossText(String title, double text) => Expanded(
         flex: 1,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -191,8 +195,11 @@ class AccountReportViewState extends BaseState<AccountReportView> {
               stepGranularity: 1,
               textAlign: TextAlign.left,
             ),
-            AutoSizeText(text,
-                style: TextStyle(color: _getTextColor(text)),
+            AutoSizeText(
+                " ${EnvironmentConfig.brandName == "IDR1"
+                    //without decimal places
+                    ? Format().currencyFormat(text.toInt()) : text}",
+                style: TextStyle(color: _getTextColor(text.toString())),
                 minFontSize: 5,
                 maxFontSize: 12,
                 stepGranularity: 1,
