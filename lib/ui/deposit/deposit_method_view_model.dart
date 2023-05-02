@@ -9,7 +9,7 @@ class DepositMethodViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   final bankRepo = BankRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
-  final Map<BankType, List<Payment>>? depositMethodList;
+  final Map<String, List<Payment>>? depositMethodList;
 
   DepositMethodViewModel(this.depositMethodList);
 
@@ -41,13 +41,13 @@ class DepositMethodViewModel extends BaseViewModel {
 
   get userProfile => userRepo.userProfile;
 
-  filterMethod(BankType bankType) async {
+  filterMethod(String bankType) async {
     paymentList = depositMethodList![bankType];
     notifyListeners();
   }
 
   getManualDepositId(
-      BankType bankType,
+      String bankType,
       String account,
       String amount,
       String? paymentId,
@@ -58,7 +58,7 @@ class DepositMethodViewModel extends BaseViewModel {
       String? phone) async {
     setLoading();
     getManualDepositIdApiState = await depositRepo.getManualDepositId(account,
-        amount, paymentId, promotionId, name, bankType.getJson, note, phone);
+        amount, paymentId, promotionId, name, bankType, note, phone);
     if (getManualDepositIdApiState.isSuccess) {
       orderNo = getManualDepositIdApiState.result;
       if (config.deposit_DualPage ?? false)

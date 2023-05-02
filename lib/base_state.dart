@@ -326,4 +326,19 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
           ),
         ),
       );
+
+  String getBankDisplayName(String bankType){
+      switch (bankType) {
+        case "bank":
+          return getTranslatedText( "bank_transfer");
+        case "Crypto":
+          return getTranslatedText( "crypto");
+        case "ThirdParty":
+          return "Third Party";
+        case "EWallet":
+          return "E-wallet";
+        default:
+          return bankType;
+      }
+  }
 }

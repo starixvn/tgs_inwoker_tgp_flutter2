@@ -8,7 +8,7 @@ environment_config:
     jwtKey:
       default: "uc0C5tXKanr6gN9P7HqlTQ1AGwUFJhg8jEzuFhCuHEC0E1QcCfZYrH"
     url:
-      default: "https://stg.atinbet.com/"
+      default: "https://stg-pb2.rpgp.cc/"
     currency:
       default: "PHP"
     appTitleName:

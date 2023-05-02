@@ -229,11 +229,11 @@ class _WithdrawState extends BaseState<Withdraw> {
 
   _getDisplayBankAccountText(BankCard bankCard) {
     switch (bankCard.bankType) {
-      case BankType.CRYPTO:
+      case "Crypto":
         return bankCard.bankDetail?.address;
-      case BankType.USDT:
+      case "Usdt":
         return bankCard.bankDetail?.address;
-      case BankType.BANK:
+      case "Bank":
         return bankCard.bankDetail?.bankAccount;
       default:
         return bankCard.bankDetail?.phone;
@@ -485,13 +485,13 @@ class _WithdrawState extends BaseState<Withdraw> {
     //   _checkUserProfile();
   }
 
-  _isUSDT() => (selectedBankCard?.bankType ?? BankType.BANK) == BankType.USDT;
+  _isUSDT() => (selectedBankCard?.bankType ?? "Bank") == "Usdt";
 
-  _isEWallet() => selectedBankCard?.bankType == BankType.EWALLET;
+  _isEWallet() => selectedBankCard?.bankType == "EWallet";
 
   _isPulsa() => selectedBankCard?.bankType == BankType.PULSA;
 
-  _isBank() => selectedBankCard?.bankType == BankType.BANK;
+  _isBank() => selectedBankCard?.bankType == "Bank";
 
   _handleApiState() {
     handleApiState(_vm.withdrawApiState, onSuccess: () {

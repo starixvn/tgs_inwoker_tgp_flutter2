@@ -20,7 +20,7 @@ class DepositViewModel extends BaseViewModel {
   var getPaymentApiState,
       uploadDepositImageApiState,
       getPlayerPromotionListApiState;
-  Map<String, Map<BankType, List<Payment>>>? paymentCodeList;
+  Map<String, Map<String, List<Payment>>>? paymentCodeList;
   List<Payment>? paymentList;
   var manualDepositOrder;
   List<Promotion>? promotionList;
