@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:api/entity/campaign_details.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:api/entity/promotion_roulette.dart';
+import 'package:api/entity/response/ws_response.dart';
+import 'package:api/websocket/web_socket_deposit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +20,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/dialog/another_roulette_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/deposit_order_dialog.dart';
 import 'package:tgp_flutter2/ui/dialog/phone_verification_dialog.dart';
 import 'package:tgp_flutter2/ui/home/balance_picker/balance_picker.dart';
 import 'package:tgp_flutter2/ui/home/game/base_game.dart';
@@ -83,10 +86,18 @@ class _HomeState extends BaseState<Home> {
   var token;
   var isCloseRouletteIcon = false; //handle users close roulette icon by themselves
 
+  late Timer _generateTimer;
+
   @override
   void initState() {
     _initData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _generateTimer.cancel();
+    super.dispose();
   }
 
   _initData() async {
@@ -656,10 +667,17 @@ class _HomeState extends BaseState<Home> {
     int min = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["min"] : 20000;
 
     int max = checkIfHomeOnlineUsersIsNull ? _vm.config.homeOnlineUsers["max"] : 30000;
-    Timer.periodic(Duration(seconds: 10), (timer) {
-      setState(() {
-        randomGeneratedPlayerCount = min + _random.nextInt(max - min);
-      });
+    _generateTimer = Timer.periodic(Duration(seconds: 10), (timer) {
+      try {
+        if (mounted) {
+          // Check whether the widget is still mounted before calling setState
+          setState(() {
+            randomGeneratedPlayerCount = min + _random.nextInt(max - min);
+          });
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
     });
   }
 

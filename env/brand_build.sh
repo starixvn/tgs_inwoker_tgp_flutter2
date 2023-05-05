@@ -5,9 +5,9 @@
 echo "Configurating"
 
 # to solve pub finished with exit code 65
-flutter pub get
-flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
+#flutter pub get
+#flutter pub get
+#flutter pub run build_runner build --delete-conflicting-outputs
 flutter pub get
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs

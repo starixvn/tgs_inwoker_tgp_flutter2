@@ -1150,5 +1150,16 @@
 
   "storage_permission_required": "yêu cầu quyền lưu trữ",
   "affiliate_qr_code_saved": "Mã QR đã được lưu thành công",
-  "download": "Tải xuống"
+  "download": "Tải xuống",
+
+  "deposit_dialog_deposit_form": "Mẫu gửi tiền",
+  "deposit_dialog_withdrawal_form": "Hình thức rút tiền",
+  "deposit_dialog_update_time": "Thời gian cập nhật: ",
+  "deposit_dialog_order_no": "Số đơn hàng: ",
+  "deposit_dialog_payment_channel": "Kênh: ",
+  "deposit_dialog_amount": "Số tiền: ",
+  "deposit_dialog_status": "Trạng thái: ",
+  "deposit_dialog_waiting": "Đang chờ thanh toán",
+  "deposit_dialog_success": "Thành công",
+  "deposit_dialog_rejected": "Bị từ chối"
 }

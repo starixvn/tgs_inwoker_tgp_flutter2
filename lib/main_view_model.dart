@@ -5,6 +5,7 @@ import 'package:api/api.dart';
 import 'package:api/entity/env_features_config.dart';
 import 'package:api/init.dart';
 import 'package:api/network/event_result.dart';
+import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
@@ -15,6 +16,7 @@ import 'environment_config.dart';
 class MainViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
+  final depositRepo = BankRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];
@@ -32,6 +34,8 @@ class MainViewModel extends BaseViewModel {
   get userProfile => userRepo.userProfile;
 
   get config => contentRepo.featuresConfig;
+
+  get depositList => depositRepo.depositPaymentList;
 
   getVersion() async {
     setLoading();
@@ -102,20 +106,24 @@ class MainViewModel extends BaseViewModel {
     await userRepo.getApiErrorLocalization();
   }
 
-  resumeIfNeed() async {
+  Future<bool> resumeIfNeed() async {
     setLoading();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString("token");
     if (token != null) {
       print(token);
+
       await getUserInfo();
       if (userProfile == null) await autoLogin();
       print("Token: " + token);
       print("Authorization: " + prefs.getString("auth_token")!);
+
+      return true;
     } else
       isNotLogin = true;
     setLoading(false);
     notifyListeners();
+    return false;
   }
 
   getUserInfo() async {
@@ -152,5 +160,12 @@ class MainViewModel extends BaseViewModel {
   getPassword() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("password") ?? "";
+  }
+
+  getPayment() async {
+    setLoading();
+    var state = await depositRepo.getPayment();
+    setLoading(false);
+    return state;
   }
 }
