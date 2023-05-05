@@ -319,7 +319,6 @@ class _MyHomePageState extends BaseState<MyHomePage> {
   var _vm = MainViewModel();
   var isDisplayGameView = false;
 
-
   onClickGameTab(value) {
     setState(() {
       isDisplayGameView = value;
@@ -352,7 +351,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             Profile(),
           ];
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
-    _initWebSocket();
+    if (EnvironmentConfig.brandName.toLowerCase().contains("idr")) _initWebSocket();
     super.initState();
   }
 
