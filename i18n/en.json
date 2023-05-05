@@ -1164,6 +1164,16 @@
 
   "download": "Download",
   "storage_permission_required": "Storage permission required",
-  "affiliate_qr_code_saved": "QR code saved to album"
+  "affiliate_qr_code_saved": "QR code saved to album",
 
+  "deposit_dialog_deposit_form": "Deposit Form",
+  "deposit_dialog_withdrawal_form": "Withdrawal Form",
+  "deposit_dialog_update_time": "Update Time: ",
+  "deposit_dialog_order_no": "Order Number: ",
+  "deposit_dialog_payment_channel": "Payment channel: ",
+  "deposit_dialog_amount": "Amount: ",
+  "deposit_dialog_status": "Status: ",
+  "deposit_dialog_waiting": "Waiting",
+  "deposit_dialog_success": "Success",
+  "deposit_dialog_rejected": "Rejected"
 }

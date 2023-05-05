@@ -1149,5 +1149,16 @@
 
   "storage_permission_required": "ต้องการสิทธิ์การเข้าถึงเก็บข้อมูล",
   "affiliate_qr_code_saved": "บันทึก QR Code สำเร็จ",
-  "download": "ดาวน์โหลด"
+  "download": "ดาวน์โหลด",
+
+  "deposit_dialog_deposit_form": "แบบฟอร์มการฝากเงิน",
+  "deposit_dialog_withdrawal_form": "แบบฟอร์มการถอน",
+  "deposit_dialog_update_time": "เวลาอัปเดต: ",
+  "deposit_dialog_order_no": "หมายเลขคำสั่งซื้อ: ",
+  "deposit_dialog_payment_channel": "ช่องทาง: ",
+  "deposit_dialog_amount": "จำนวนเงิน: ",
+  "deposit_dialog_status": "สถานะ: ",
+  "deposit_dialog_waiting": "รอการชำระเงิน",
+  "deposit_dialog_success": "สำเร็จ",
+  "deposit_dialog_rejected": "ถูกปฏิเสธ"
 }

@@ -17,9 +17,7 @@ class DepositViewModel extends BaseViewModel {
 
   @override
   List<BaseRepository> get repoList => [];
-  var getPaymentApiState,
-      uploadDepositImageApiState,
-      getPlayerPromotionListApiState;
+  var getPaymentApiState, uploadDepositImageApiState, getPlayerPromotionListApiState;
   Map<String, Map<String, List<Payment>>>? paymentCodeList;
   List<Payment>? paymentList;
   var manualDepositOrder;
@@ -40,15 +38,16 @@ class DepositViewModel extends BaseViewModel {
 
   get announcement => contentRepo.announcement;
 
+  // get depositList => depositRepo.depositPaymentList;
+
   getPayment() async {
     setLoading();
     getPaymentApiState = await depositRepo.getPayment();
     if (getPaymentApiState.isSuccess) {
       List<Payment> list = getPaymentApiState.result;
       list.sort((a, b) => a.order!.compareTo(b.order!));
-      paymentCodeList = groupBy(list, (Payment obj) => obj.paymentCode).map(
-          (key, value) =>
-              MapEntry(key!, groupBy(value, (obj) => obj.bankType!)));
+      paymentCodeList = groupBy(list, (Payment obj) => obj.paymentCode)
+          .map((key, value) => MapEntry(key!, groupBy(value, (obj) => obj.bankType!)));
     }
     setLoading(false);
     return getPaymentApiState;
@@ -56,8 +55,7 @@ class DepositViewModel extends BaseViewModel {
 
   uploadDepositImage(File imageFile, String id) async {
     setLoading();
-    uploadDepositImageApiState =
-        await depositRepo.uploadDepositImage(imageFile, id);
+    uploadDepositImageApiState = await depositRepo.uploadDepositImage(imageFile, id);
     if (uploadDepositImageApiState.isSuccess) {}
     setLoading(false);
     return uploadDepositImageApiState;
@@ -75,14 +73,12 @@ class DepositViewModel extends BaseViewModel {
             value.promotionType == "DepositAccumulateRoulette" ||
             value.promotionType == "DepositReward")
           displayPromotionList.add({
-            "name":
-                ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
-                        ? value.localization![languageCode]!.name
-                        : value.name) ??
-                    "",
+            "name": ((value.localization?[languageCode]?.name?.isNotEmpty ?? false)
+                    ? value.localization![languageCode]!.name
+                    : value.name) ??
+                "",
             "id": value.id ?? "",
-            "depositMinimumLimit":
-                value.campaignDetails?.depositMinimumLimit?.toString() ?? "0",
+            "depositMinimumLimit": value.campaignDetails?.depositMinimumLimit?.toString() ?? "0",
           });
       });
       setLoading(false);
@@ -91,8 +87,7 @@ class DepositViewModel extends BaseViewModel {
   }
 
   getDepositDialog() {
-    depositDialogContent = _getDepositDialogContent(
-        (announcement.deposit as List<DepositDialogContent>).firstOrNull);
+    depositDialogContent = _getDepositDialogContent((announcement.deposit as List<DepositDialogContent>).firstOrNull);
   }
 
   _getDepositDialogContent(DepositDialogContent? depositDialog) {

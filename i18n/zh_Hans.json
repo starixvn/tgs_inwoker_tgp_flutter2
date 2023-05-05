@@ -1150,5 +1150,16 @@
 
   "storage_permission_required": "需要存储权限",
   "affiliate_qr_code_saved": "二维码已保存",
-  "download": "下载"
+  "download": "下载",
+
+  "deposit_dialog_deposit_form": "存款单",
+  "deposit_dialog_withdrawal_form": "提款单",
+  "deposit_dialog_update_time": "更新时间: ",
+  "deposit_dialog_order_no": "订单号: ",
+  "deposit_dialog_payment_channel": "渠道: ",
+  "deposit_dialog_amount": "金额: ",
+  "deposit_dialog_status": "状态: ",
+  "deposit_dialog_waiting": "待支付",
+  "deposit_dialog_success": "成功",
+  "deposit_dialog_rejected": "已拒绝"
 }

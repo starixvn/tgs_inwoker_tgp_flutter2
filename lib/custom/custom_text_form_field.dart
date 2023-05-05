@@ -57,12 +57,14 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                          color: CustomColor.theme_text_black_white_color,
-                          fontSize: 12.auto),
-                      textAlign: TextAlign.start,
+                    Expanded(
+                      child: Text(
+                        widget.title,
+                        style: TextStyle(
+                            color: CustomColor.theme_text_black_white_color,
+                            fontSize: 12.auto),
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                     widget.customPart == null
                         ? SizedBox.shrink()

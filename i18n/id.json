@@ -1151,5 +1151,16 @@
 
   "download": "Unduh",
   "storage_permission_required": "Izin penyimpanan diperlukan",
-  "affiliate_qr_code_saved": "Kode QR disimpan di album"
+  "affiliate_qr_code_saved": "Kode QR disimpan di album",
+
+  "deposit_dialog_deposit_form": "Transaksi Deposit",
+  "deposit_dialog_withdrawal_form": "Transaksi Withdrawal",
+  "deposit_dialog_update_time": "Waktu: ",
+  "deposit_dialog_order_no": "Ref: ",
+  "deposit_dialog_payment_channel": "Jenis Bank: ",
+  "deposit_dialog_amount": "Jumlah: ",
+  "deposit_dialog_status": "Status: ",
+  "deposit_dialog_waiting": "Menunggu",
+  "deposit_dialog_success": "Success",
+  "deposit_dialog_rejected": "Ditolak"
 }
