@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
@@ -55,29 +56,22 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     _buildInfoCard(
                       "basic_info",
                       [
-                        if (_vm.config?.icVerification ?? true)
-                          ProfileInfoItem.REALNAME,
+                        if (_vm.config?.icVerification ?? true) ProfileInfoItem.REALNAME,
                         if (_isShowPhone()) ProfileInfoItem.PHONE_NUMBER,
-                        if (_vm.config?.emailVerification ?? true)
-                          ProfileInfoItem.EMAIL,
+                        if (_vm.config?.emailVerification ?? true) ProfileInfoItem.EMAIL,
                         ProfileInfoItem.BIRTHDATE,
                       ],
                       itemDescriptionList: [
                         if (_vm.config?.icVerification ?? true) _getRealName(),
                         if (_isShowPhone()) _getItemText(_vm.userProfile.phone),
-                        if (_vm.config?.emailVerification ?? true)
-                          _getItemText(_vm.userProfile.email,
-                              isShowFirstText: false),
-                        _getItemText(_vm.userProfile.birthdate,
-                            isShowFirstText: false)
+                        if (_vm.config?.emailVerification ?? true) _getItemText(_vm.userProfile.email, isShowFirstText: false),
+                        _getItemText(_vm.userProfile.birthdate, isShowFirstText: false)
                       ],
                     ),
                     _buildOtherInfoCard(),
                     Padding(
                       padding: EdgeInsets.only(bottom: 10.auto),
-                      child: _buildInfoCard(
-                          "security_center", [ProfileInfoItem.LOGIN_PASSWORD],
-                          isSecurity: true),
+                      child: _buildInfoCard("security_center", [ProfileInfoItem.LOGIN_PASSWORD], isSecurity: true),
                     )
                   ],
                 ),
@@ -88,11 +82,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   }
 
   _buildOtherInfoCard() {
-    return (_vm.config?.qqWeChat ?? true) ||
-            (_vm.config?.customMessaging?.isNotEmpty ?? false)
+    return (_vm.config?.qqWeChat ?? true) || (_vm.config?.customMessaging?.isNotEmpty ?? false)
         ? Container(
-            margin:
-                EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
+            margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
             child: Card(
               semanticContainer: true,
               clipBehavior: Clip.antiAlias,
@@ -100,6 +92,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               elevation: 5,
+              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
               child: Container(
                 margin: EdgeInsets.all(20.auto),
                 child: Column(
@@ -107,7 +100,10 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   children: [
                     Text(
                       getTranslatedText("other_info"),
-                      style: TextStyle(fontSize: 15.auto),
+                      style: TextStyle(
+                        fontSize: 15.auto,
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                      ),
                     ),
                     Column(
                       children: _vm.messagingMap.map((mapItem) {
@@ -117,8 +113,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                             item.getImagePath() ?? "",
                             item.getDisplayName(context) ?? "",
                             item.getNavigationPath() ?? "",
-                            itemDescription:
-                                _getItemText(mapItem["text"] ?? ""),
+                            itemDescription: _getItemText(mapItem["text"] ?? ""),
                             isMessaging: true,
                           ),
                         );
@@ -132,9 +127,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         : Container();
   }
 
-  _buildInfoCard(String title, List<ProfileInfoItem> itemList,
-          {List<String>? itemDescriptionList, bool isSecurity = false}) =>
-      Container(
+  _buildInfoCard(String title, List<ProfileInfoItem> itemList, {List<String>? itemDescriptionList, bool isSecurity = false}) => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
         child: Card(
           semanticContainer: true,
@@ -142,6 +135,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
+          color: EnvironmentConfig.template_version == 10 ? CustomColor.theme_bg_color : Colors.white,
           elevation: 5,
           child: Container(
             margin: EdgeInsets.all(20.auto),
@@ -151,7 +145,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
               children: [
                 Text(
                   getTranslatedText(title),
-                  style: TextStyle(fontSize: 15.auto),
+                  style: TextStyle(fontSize: 15.auto, color: EnvironmentConfig.template_version == 10 ? Colors.white : Colors.black),
                 ),
                 Column(
                     children: List.generate(itemList.length, (index) {
@@ -161,9 +155,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                             itemList[index].getImagePath()!,
                             itemList[index].getDisplayName(context)!,
                             itemList[index].getNavigationPath()!,
-                            itemDescription: itemDescriptionList != null
-                                ? itemDescriptionList[index]
-                                : "",
+                            itemDescription: itemDescriptionList != null ? itemDescriptionList[index] : "",
                           )
                         : _buildInfoItemWithoutText(
                             itemList[index].getImagePath()!,
@@ -178,13 +170,10 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
         ),
       );
 
-  _buildInfoItem(String imagePath, String itemTitle, String routePath,
-      {String? itemDescription, bool isMessaging = false}) {
+  _buildInfoItem(String imagePath, String itemTitle, String routePath, {String? itemDescription, bool isMessaging = false}) {
     if ((routePath == "phone_verification" && !_isShowPhone()) ||
-        (routePath == "real_name_verification" &&
-            !(_vm.config?.icVerification ?? true)) ||
-        (routePath == "email_verification" &&
-            !(_vm.config?.emailVerification ?? true)))
+        (routePath == "real_name_verification" && !(_vm.config?.icVerification ?? true)) ||
+        (routePath == "email_verification" && !(_vm.config?.emailVerification ?? true)))
       return Container();
     else
       return InkWell(
@@ -208,10 +197,12 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                           imagePath,
                           matchTextDirection: true,
                           height: 28.auto,
+                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
                         )
                       : ImageIcon(
                           AssetImage(imagePath),
                           size: 20.auto,
+                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
                         )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -219,7 +210,10 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 children: [
                   Text(
                     itemTitle,
-                    style: TextStyle(fontSize: 15.auto),
+                    style: TextStyle(
+                      fontSize: 15.auto,
+                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                    ),
                   ),
                   handleNullWidget(
                       itemDescription == null,
@@ -227,9 +221,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                         margin: EdgeInsets.only(top: 3.auto),
                         child: Text(
                           itemDescription!,
-                          style: TextStyle(
-                              fontSize: 15.auto,
-                              color: CustomColor.theme_button_color),
+                          style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
                         ),
                       ))
                 ],
@@ -240,6 +232,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 child: Icon(
                   Icons.arrow_forward_ios,
                   size: 13.auto,
+                  color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
                 ),
               ),
             ],
@@ -248,9 +241,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       );
   }
 
-  _buildInfoItemWithoutText(
-          String imagePath, String itemTitle, String routePath) =>
-      InkWell(
+  _buildInfoItemWithoutText(String imagePath, String itemTitle, String routePath) => InkWell(
         onTap: () {
           Navigator.of(context).pushNamed("/$routePath");
         },
@@ -264,6 +255,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                   child: ImageIcon(
                     AssetImage(imagePath),
                     size: 20.auto,
+                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
                   )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -271,7 +263,10 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 children: [
                   Text(
                     itemTitle,
-                    style: TextStyle(fontSize: 15.auto),
+                    style: TextStyle(
+                      fontSize: 15.auto,
+                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -281,6 +276,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 child: Icon(
                   Icons.arrow_forward_ios,
                   size: 13.auto,
+                  color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
                 ),
               ),
             ],
@@ -294,11 +290,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
       //if (_isShowIcVerificationUpload()) {
       if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
         return realName + " (${getTranslatedText("verified")})";
-      else if (_vm.userProfile.identityFormStatus ==
-          IdentityStatus.WaitingVerify)
+      else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
         return realName + " (${getTranslatedText("waiting_verify")})";
-      else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject)
-        return realName + " (${getTranslatedText("rejected")})";
+      else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject) return realName + " (${getTranslatedText("rejected")})";
       // } else
       //return realName;
     } else
@@ -318,12 +312,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
 
   _isDisableEditPhone(String routePath) =>
-      routePath == "phone_verification" &&
-      (_vm.userProfile.phone != null) &&
-      ((_vm.config?.profileNotAllowChangePhone ?? false));
+      routePath == "phone_verification" && (_vm.userProfile.phone != null) && ((_vm.config?.profileNotAllowChangePhone ?? false));
 
-  _isShowPhone() =>
-      (_vm.config?.smsVerification ?? false) ||
-      (_vm.config?.registerShowPhone ?? false) ||
-      (_vm.config?.promoRouletteSMSVerification ?? false);
+  _isShowPhone() => (_vm.config?.smsVerification ?? false) || (_vm.config?.registerShowPhone ?? false) || (_vm.config?.promoRouletteSMSVerification ?? false);
 }

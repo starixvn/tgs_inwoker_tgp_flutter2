@@ -15,6 +15,8 @@ import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
 
+import '../../environment_config.dart';
+
 class PromotionItemDetails extends StatefulWidget {
   final String imagePath;
   final Promotion promotion;
@@ -37,24 +39,15 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       appBar: _buildAppBar(),
       body: Container(
         height: context.screenHeight,
-        color: Colors.white,
+        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
         child: ListView(
           shrinkWrap: true,
           children: [
             _buildPromotionImage(),
             PromotionMainDetails(promotion: widget.promotion),
             PromotionTermsContent(
-                termsContent: (((widget
-                                .promotion
-                                .localization?[getCurrentLanguage().apiCode]
-                                ?.content)
-                            ?.isNotEmpty ??
-                        false)
-                    ? (widget
-                            .promotion
-                            .localization?[getCurrentLanguage().apiCode]
-                            ?.content) ??
-                        ""
+                termsContent: (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
+                    ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
                     : widget.promotion.content ?? "")),
             PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
             _buildJoinButton()
@@ -71,8 +64,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   _buildJoinButton() => Visibility(
         visible: widget.promotion.promotionType != "Dummy",
         child: Container(
-          margin: EdgeInsets.only(
-              left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
+          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
           child: ColorButton(
             title: getTranslatedText("join"),
             onClick: () {

@@ -9,6 +9,7 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/menu/menu_view_model.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 
 class Menu extends StatefulWidget {
   final Function? onCloseMenu;
@@ -33,15 +34,24 @@ class _MenuState extends BaseState<Menu> {
       child: Container(
           width: context.screenWidth,
           padding: EdgeInsets.all(10.auto),
-          color: CustomColor.theme_text_grey_color,
+          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : CustomColor.theme_text_grey_color,
           child: Wrap(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildMenuButton("transfer", "ic_menu_transfer.png", CustomColor.menu_blue, RoutePath.walletTransfer),
-                  _buildMenuButton("deposit", "ic_menu_deposit", CustomColor.menu_green, RoutePath.deposit),
-                  _buildMenuButton("withdrawal", "ic_menu_withdrawal.png", CustomColor.menu_orange, RoutePath.withdraw),
+                  _buildMenuButton(
+                      "transfer",
+                      "ic_menu_transfer.png",
+                      EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd2ff00) : CustomColor.menu_blue,
+                      RoutePath.walletTransfer),
+                  _buildMenuButton("deposit", "ic_menu_deposit",
+                      EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffe7ff77) : CustomColor.menu_green, RoutePath.deposit),
+                  _buildMenuButton(
+                      "withdrawal",
+                      "ic_menu_withdrawal.png",
+                      EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd2ff00) : CustomColor.menu_orange,
+                      RoutePath.withdraw),
                 ],
               ),
             ],
@@ -51,9 +61,7 @@ class _MenuState extends BaseState<Menu> {
 
   _buildMenuButton(String title, String imagePath, Color color, String route) => InkWell(
         onTap: () {
-          if (route == RoutePath.withdraw &&
-              (_vm.config?.addCardNotAllowedEditDelete ?? false) &&
-              (_vm.bankCardList?.isEmpty ?? false))
+          if (route == RoutePath.withdraw && (_vm.config?.addCardNotAllowedEditDelete ?? false) && (_vm.bankCardList?.isEmpty ?? false))
             _showNoCardDialog();
           else
             Navigator.of(context).pushNamed(route);
@@ -76,18 +84,19 @@ class _MenuState extends BaseState<Menu> {
                     ? Image.asset(
                         "images/menu/$imagePath",
                         height: 18.auto,
-                        color: Colors.white,
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white,
                       )
                     : SvgPicture.asset(
                         "images/menu/$imagePath.svg",
                         matchTextDirection: true,
                         height: 18.auto,
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white,
                       ),
               ),
               AutoSizeText(
                 getTranslatedText(title),
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white),
                 minFontSize: 10,
                 maxLines: 1,
                 stepGranularity: 1,

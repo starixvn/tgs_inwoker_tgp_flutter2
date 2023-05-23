@@ -253,7 +253,10 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
                 style: ElevatedButton.styleFrom(
                   primary: CustomColor.theme_button_color,
                 ),
-                child: Text(getTranslatedText("collect_all").toString()))
+                child: Text(
+                  getTranslatedText("collect_all").toString(),
+                  style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white),
+                ))
           ],
         ),
       );
@@ -330,8 +333,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
 
   getMaxAmount() {
     setState(() {
-      _amountController.text =
-          _vm.walletList.singleWhere((e) => e.gpCode == fromWallet!.gpCode).balance!.floor().toString();
+      _amountController.text = _vm.walletList.singleWhere((e) => e.gpCode == fromWallet!.gpCode).balance!.floor().toString();
       checkButtonState();
     });
   }
@@ -341,9 +343,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if (wallet == null)
       textFromWallet = getTranslatedText("please_select");
     else {
-      textFromWallet = (EnvironmentConfig.currency == "PHP" && wallet.title == "BTI"
-              ? "PHSB"
-              : getTranslatedText(wallet.title) ?? wallet.title) ??
+      textFromWallet = (EnvironmentConfig.currency == "PHP" && wallet.title == "BTI" ? "PHSB" : getTranslatedText(wallet.title) ?? wallet.title) ??
           getTranslatedText("please_select");
       setState(() {
         isMaxAmountButtonEnabled = true;
@@ -356,9 +356,7 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
     if (wallet == null)
       textToWallet = getTranslatedText("please_select");
     else
-      textToWallet = (EnvironmentConfig.currency == "PHP" && wallet.title == "BTI"
-              ? "PHSB"
-              : getTranslatedText(wallet.title) ?? wallet.title) ??
+      textToWallet = (EnvironmentConfig.currency == "PHP" && wallet.title == "BTI" ? "PHSB" : getTranslatedText(wallet.title) ?? wallet.title) ??
           getTranslatedText("please_select");
   }
 

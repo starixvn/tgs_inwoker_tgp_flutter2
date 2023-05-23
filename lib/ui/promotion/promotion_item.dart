@@ -55,6 +55,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
+        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
         elevation: 5,
         child: Column(
           children: [
@@ -74,8 +75,9 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                       margin: EdgeInsets.only(right: 3.auto),
                       child: Text(
                         widget.promotion.name ?? "",
-                        style: TextStyle(color: CustomColor.theme_text_black_color),
+                        style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode?CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
                         overflow: TextOverflow.ellipsis,
+
                       ),
                     ),
                   ),

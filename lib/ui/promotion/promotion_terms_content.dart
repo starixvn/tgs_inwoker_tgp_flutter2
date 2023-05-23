@@ -12,6 +12,8 @@ import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
 
+import '../../environment_config.dart';
+
 class PromotionTermsContent extends StatefulWidget {
   final String termsContent;
 
@@ -24,13 +26,20 @@ class PromotionTermsContent extends StatefulWidget {
 }
 
 class _PromotionTermsContentState extends BaseState<PromotionTermsContent> {
-
   Widget build(BuildContext context) {
     print(widget.termsContent);
     return Container(
       margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
       child: Html(
         data: """<style>tr{ border: 1px solid; } </style>""" + (widget.termsContent),
+        style: {
+          'body': Style(
+           fontSize : FontSize(13.auto),
+            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                ? CustomColor.theme_text_black_white_color
+                : CustomColor.theme_text_black_color,
+          )
+        },
       ),
     );
   }

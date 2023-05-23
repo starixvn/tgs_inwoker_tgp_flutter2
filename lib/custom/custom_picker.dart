@@ -4,6 +4,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
+import '../environment_config.dart';
+
 class CustomPicker extends StatefulWidget {
   final String title;
   final String displayText;
@@ -77,7 +79,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                           child: AutoSizeText(
                             widget.displayText,
                             style: TextStyle(
-                              color: widget.isHintText ? Colors.grey : CustomColor.theme_button_color,
+                              color: widget.isHintText ? Colors.grey : (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color :CustomColor.theme_button_color),
                             ),
                             maxFontSize: 12,
                             minFontSize: 8,

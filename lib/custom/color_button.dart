@@ -17,7 +17,7 @@ class ColorButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final Widget? icon;
-  final double minFontSize ;
+  final double minFontSize;
 
   ColorButton({
     required this.title,
@@ -45,15 +45,14 @@ class ColorButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(((() {
               if (radius != null)
                 return radius!;
-              else if(EnvironmentConfig.template_version==11)
+              else if (EnvironmentConfig.template_version == 11)
                 return 25.auto;
               else
                 return (5.8).auto;
             })())),
             side: border ?? BorderSide(color: Colors.transparent),
           )),
-          backgroundColor: MaterialStateProperty.all(
-              isEnabled ? (color ?? CustomColor.theme_button_color) : CustomColor.theme_grey_button_color),
+          backgroundColor: MaterialStateProperty.all(isEnabled ? (color ?? CustomColor.theme_button_color) : CustomColor.theme_grey_button_color),
           minimumSize: MaterialStateProperty.all(Size(width ?? context.screenWidth, height ?? 45.auto))),
       child: Container(
         alignment: Alignment.center,
@@ -70,7 +69,10 @@ class ColorButton extends StatelessWidget {
                 flex: 1,
                 child: AutoSizeText(
                   title,
-                  style: TextStyle(color: textColor ?? Colors.white),
+                  style: TextStyle(
+                    //EnvironmentConfig.template_version == 10 default text color is black, others template is white
+                    color: textColor ?? (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white),
+                  ),
                   minFontSize: minFontSize,
                   maxLines: 1,
                   textAlign: TextAlign.center,

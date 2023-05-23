@@ -1,6 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <g id="Group_91" data-name="Group 91" transform="translate(-14.745 -10.483)">
-    <circle id="Ellipse_1" data-name="Ellipse 1" cx="12" cy="12" r="12" transform="translate(14.745 10.483)" fill="#fff"/>
-    <path id="Shape" d="M9.714,3.818A4.245,4.245,0,0,0,6.692,2.567H1.957l1.6-1.6a.565.565,0,1,0-.8-.8L.165,2.762a.566.566,0,0,0,0,.8L2.686,6.082a.565.565,0,0,0,.8-.8L1.9,3.7H6.692A3.144,3.144,0,0,1,9.835,6.84V9.552a.565.565,0,1,0,1.13,0V6.84A4.24,4.24,0,0,0,9.714,3.818Z" transform="translate(21.262 17.425)" fill="#0a9d4c"/>
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="filter_1">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" />
+    </filter>
+    <path d="M0 0L31 0L31 31L0 31L0 0Z" id="path_1" />
+    <clipPath id="mask_1">
+      <use xlink:href="#path_1" />
+    </clipPath>
+    <image width="24" height="24" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAY5JREFUSEu1VtFVwzAMPE0AG0AmACYAJoBOQDIBdAJgAtiAdgLaDboBZQJgA5hAvMuT+kzqKElL9JUX27qTdJItCExVjwFcAbgAwO9T274G8AlgBWApIvzOmuT+muN7AGVEIFmbAXjMAW0BqOo1gBcAhz2d+7ZvAJWILNJzfwBUlYzpfB8jCCOqbQNgzF/38ZycnXgkNYDl/G2HtLTxYbrOWBMHYEg3/8Te3cxFpBRj/xE4fzeZUppHA0kUBLgD8NRy0J0/7xjhlACUFZupae6cDUbppkYJs+nOOyJaEoChn2Q2LkRkoqp0llv/su4mwYMWoDUBNGAxE5FKVXMioFKmAEiQCsxaFwAPOQgdNpnyX8E9LWlGlKKUEYcZa5GzS1MZZ9dWHaMi91VkBFAXOZJpH5AIoJYpQ48arQukMsneZjYW448KoloUlFubnruiaK7/MKrNsDMQdus449rhR71wEhBGwsYZmi6mpQyvzASEynoYMEHn3N/r0k+rZcVnRP5s8aHHSevPFg7F1mfLL63/nhgIAjNwAAAAAElFTkSuQmCC" id="img_1" />
+  </defs>
+  <g id="icons8_round" filter="url(#filter_1)">
+    <path d="M0 0L31 0L31 31L0 31L0 0Z" id="Background" fill="none" fill-rule="evenodd" stroke="none" />
+    <g clip-path="url(#mask_1)">
+      <path d="M12.9167 25.8333C5.8125 25.8333 0 20.0208 0 12.9167C0 5.8125 5.8125 0 12.9167 0C20.0208 0 25.8333 5.8125 25.8333 12.9167C25.8333 20.0208 20.0208 25.8333 12.9167 25.8333L12.9167 25.8333ZM12.9167 2.58333C7.23337 2.58333 2.58337 7.23333 2.58337 12.9167C2.58337 18.6 7.23337 23.25 12.9167 23.25C18.6 23.25 23.25 18.6 23.25 12.9167C23.25 7.23333 18.6 2.58333 12.9167 2.58333L12.9167 2.58333Z" transform="translate(2.583374 2.583313)" id="Shape" fill="#FFFFFF" fill-rule="evenodd" stroke="none" />
+    </g>
   </g>
+  <use xlink:href="#img_1" fill="#FFFFFF" stroke="none" transform="matrix(0.9583333 0 0 0.9583333 3.663208 3.999939)" />
 </svg>

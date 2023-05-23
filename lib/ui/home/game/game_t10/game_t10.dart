@@ -9,6 +9,8 @@ import 'package:tgp_flutter2/ui/home/game/game_t1/game_item_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t10/game_item_t10.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 
+import '../../../../environment_config.dart';
+
 class GameT10 extends StatefulWidget {
   final GameViewModel vm;
   final Function onRefreshHomePage;
@@ -54,7 +56,7 @@ class _GameT10State extends BaseState<GameT10> {
                     height: 40.auto,
                     margin: EdgeInsets.symmetric(horizontal: 5.auto),
                     decoration: BoxDecoration(
-                      color: CustomColor.theme_button_color,
+                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.transparent : CustomColor.theme_button_color,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListView(
@@ -97,18 +99,27 @@ class _GameT10State extends BaseState<GameT10> {
       },
       child: Container(
         height: 27.auto,
-        padding: EdgeInsets.only(top: (context.screenHeight/100), bottom: (context.screenHeight/100), left: 15, right: 15),
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                  color: tabIndex == currentTabIndex ? Color(0xffebde1d) : Colors.transparent,
-                  width: 3,
-                ))),
+        padding: EdgeInsets.only(top: (context.screenHeight / 100), bottom: (context.screenHeight / 100), left: 15, right: 15),
+        decoration: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+            ? tabIndex == currentTabIndex
+                ? BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("images/game/T10/button.png"),
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                : BoxDecoration()
+            : BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(
+                color: tabIndex == currentTabIndex ? Color(0xffebde1d) : Colors.transparent,
+                width: 3,
+              ))),
         alignment: Alignment.center,
         child: AutoSizeText(
           gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
           textAlign: TextAlign.center,
-          style: TextStyle(color: tabIndex == currentTabIndex ? Color(0xffebde1d) : Colors.white),
+          style: TextStyle(color: tabIndex == currentTabIndex ? (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Color(0xffebde1d)) : Colors.white),
           minFontSize: 8,
           maxFontSize: 13,
           stepGranularity: 1,

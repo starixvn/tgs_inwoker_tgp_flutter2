@@ -39,14 +39,16 @@ class _VipViewState extends BaseState<VipView> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(appBar: _buildAppBar(),
+          return CustomScaffold(
+            appBar: _buildAppBar(),
             body: _vm.vipList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
                 : Container(
                     height: context.screenHeight,
                     margin: EdgeInsets.all(15.auto),
-                    decoration:
-                        BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    decoration: BoxDecoration(
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     child: ListView(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -100,7 +102,10 @@ class _VipViewState extends BaseState<VipView> {
                 flex: 2,
                 child: Text(
                   "VIP ${index + 1}",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                  ),
                 ),
               )
             ],
@@ -162,6 +167,9 @@ class _VipViewState extends BaseState<VipView> {
               flex: 7,
               child: Text(
                 getTranslatedText(title),
+                style: TextStyle(
+                  color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                ),
               ),
             ),
             Expanded(
@@ -170,6 +178,9 @@ class _VipViewState extends BaseState<VipView> {
                 alignment: Alignment.centerRight,
                 child: Text(
                   content,
+                  style: TextStyle(
+                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                  ),
                 ),
               ),
             )

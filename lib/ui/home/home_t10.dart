@@ -68,7 +68,7 @@ class _HomeT10State extends BaseState<HomeT10> {
 
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 3.auto, left: 5.auto, right: 5.auto),
+      padding: EdgeInsets.only(top: 3.auto, left: 5.auto, right: 5.auto),
       child: Column(
         children: [
           Expanded(

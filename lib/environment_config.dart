@@ -1,22 +1,22 @@
 class EnvironmentConfig {
   static const String jwtKey =
-      'I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ';
+      'uc0C5tXKanr6gN9P7HqlTQ1AGwUFJhg8jEzuFhCuHEC0E1QcCfZYrH';
 
-  static const String url = 'https://dev-t3.rpgp.cc/';
+  static const String url = 'https://stg-pb2.rpgp.cc/';
 
-  static const String currency = 'CNY';
+  static const String currency = 'PHP';
 
-  static const String appTitleName = 'PG Gaming';
+  static const String appTitleName = 'PB2';
 
   static const String slotGameUrl = 'https://images.srvptt.com/';
 
   static const String imageLogo = 'pg_login_logo';
 
-  static const String environmentStage = 'development';
+  static const String environmentStage = 'staging';
 
-  static const int template_version = 3;
+  static const int template_version = 10;
 
-  static const bool dark_mode = false;
+  static const bool dark_mode = true;
 
   static const bool light_mode = false;
 
@@ -24,53 +24,53 @@ class EnvironmentConfig {
 
   static const int primaryGradientColorCode = 4279994055;
 
-  static const int theme_app_bar_color = 4279110930;
+  static const int theme_app_bar_color = 4278191132;
 
-  static const int theme_button_color = 4294940928;
+  static const int theme_button_color = 4292083462;
 
   static const int theme_grey_button_color = 4286743170;
 
-  static const int theme_bg_color = 4282006074;
+  static const int theme_bg_color = 4278191132;
 
   static const int theme_app_bar_icon_color = 4285558896;
 
-  static const int menu_bg_color = 4285558896;
+  static const int menu_bg_color = 4294967295;
 
-  static const int tab_selected_color = 4294940928;
+  static const int tab_selected_color = 4292083462;
 
   static const int tab_unselected_color = 4294967295;
 
-  static const int bottom_nav_selected_color = 4291206250;
+  static const int bottom_nav_selected_color = 4292083462;
 
-  static const int bottom_nav_unselected_color = 4285558896;
+  static const int bottom_nav_unselected_color = 4294967295;
 
-  static const int promotion_bg_color = 4279637273;
+  static const int promotion_bg_color = 4294967295;
 
-  static const int promotion_text_color = 4294967295;
+  static const int promotion_text_color = 4284572001;
 
-  static const int theme_text_black_color = 4279110930;
+  static const int theme_text_black_color = 4278190080;
 
   static const int theme_text_black_white_color = 4294967295;
 
-  static const int theme_text_grey_color = 4285558896;
+  static const int theme_text_grey_color = 4294967295;
 
   static const int theme_text_grey_white_color = 4294967295;
 
   static const int theme_app_bar_text_color = 4294967295;
 
-  static const int theme_marquee_text_color = 4285558896;
+  static const int theme_marquee_text_color = 4294967295;
 
-  static const int announcement_icon_color = 4294940928;
+  static const int announcement_icon_color = 4292083462;
 
-  static const int theme_bottom_app_bar_color = 4294309365;
+  static const int theme_bottom_app_bar_color = 4278191132;
 
   static const String default_lang = 'en-US';
 
   static const String assetUrl = 'https://app12.s3.ap-east-1.amazonaws.com/';
 
-  static const String brandName = 'PGG';
+  static const String brandName = 'PB2';
 
   static const int vipPresentType = 1;
 
-  static const String configFileName = 'PGG';
+  static const String configFileName = 'PB2';
 }

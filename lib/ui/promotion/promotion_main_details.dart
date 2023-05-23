@@ -12,6 +12,8 @@ import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
 
+import '../../environment_config.dart';
+
 class PromotionMainDetails extends StatefulWidget {
   final Promotion? promotion;
 
@@ -37,17 +39,12 @@ class _PromotionMainDetailsState extends BaseState<PromotionMainDetails> {
             physics: NeverScrollableScrollPhysics(),
             children: [
               Container(
-                  margin: EdgeInsets.only(
-                      left: 10.auto, right: 10.auto, top: 15.auto),
+                  margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto),
                   child: Text(
                     "【${getTranslatedText("promotion_condition")}】",
-                    style: TextStyle(
-                        color: CustomColor.theme_button_color,
-                        fontSize: 14.auto),
+                    style: TextStyle(color: CustomColor.theme_button_color, fontSize: 14.auto),
                   )),
-              _buildPromotionText(
-                  "${getTranslatedText("promotion_person")}：\n VIP" +
-                      (sortVip(lists)).join(", VIP")),
+              _buildPromotionText("${getTranslatedText("promotion_person")}：\n VIP" + (sortVip(lists)).join(", VIP")),
               _buildPromotionText("${getTranslatedText("promotion_time")}：\n " +
                   Format().dateTimeFormat(widget.promotion?.from) +
                   " - " +
@@ -63,6 +60,14 @@ class _PromotionMainDetailsState extends BaseState<PromotionMainDetails> {
           right: 10.auto,
           top: 15.auto,
         ),
-        child: Text(displayText),
+        child: Text(
+          displayText,
+          style: TextStyle(
+            fontSize: 13.auto,
+            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                ? CustomColor.theme_text_black_white_color
+                : CustomColor.theme_text_black_color,
+          ),
+        ),
       );
 }

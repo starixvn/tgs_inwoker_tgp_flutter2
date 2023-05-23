@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -9,8 +10,7 @@ class ReportDateItem extends StatefulWidget {
   final String title;
   final ValueChanged<DateTime> onDateChanged;
 
-  const ReportDateItem(
-      {required this.date, required this.title, required this.onDateChanged});
+  const ReportDateItem({required this.date, required this.title, required this.onDateChanged});
 
   @override
   _ReportDateItemState createState() => _ReportDateItemState();
@@ -33,9 +33,7 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
           ),
           Text(
             widget.title,
-            style: TextStyle(
-                fontSize: 10.auto,
-                color: CustomColor.theme_text_black_white_color),
+            style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_black_white_color),
           )
         ]),
         InkWell(
@@ -53,7 +51,7 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
                 child: Text(
                   Format().dateFormat(date),
                   style: TextStyle(
-                    color: CustomColor.theme_button_color,
+                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : CustomColor.theme_button_color,
                     fontSize: 13.auto,
                   ),
                   textAlign: TextAlign.center,
@@ -66,11 +64,7 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
 
   _showDatePicker(BuildContext context) async {
     var currentDate = DateTime.now();
-    final DateTime? dateTime = await showDatePicker(
-        context: context,
-        initialDate: date,
-        firstDate: DateTime(2020),
-        lastDate: currentDate);
+    final DateTime? dateTime = await showDatePicker(context: context, initialDate: date, firstDate: DateTime(2020), lastDate: currentDate);
 
     if (dateTime == null) {
       setState(() {

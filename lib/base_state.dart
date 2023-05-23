@@ -27,8 +27,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
 
   get apiError => userRepo.apiError;
 
-  getTranslatedText(String? key, {bool isByBrand = false}) =>
-      LanguageProvider.getSingleton().getTranslated(context, key, isByBrand: isByBrand);
+  getTranslatedText(String? key, {bool isByBrand = false}) => LanguageProvider.getSingleton().getTranslated(context, key, isByBrand: isByBrand);
 
   handleApiState(
     EventResult? eventResult, {
@@ -188,15 +187,12 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     var checkExistingLink = "";
     if (comType.contains("WeChat")) {
       url = "weixin://dl/add?phone=$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/wechat/id414478124"
-          : "https://play.google.com/store/apps/details?id=com.tencent.mm";
+      defaultLink = Platform.isIOS ? "https://apps.apple.com/my/app/wechat/id414478124" : "https://play.google.com/store/apps/details?id=com.tencent.mm";
       checkExistingLink = url;
     } else if (comType.contains("WhatsApp")) {
       url = Platform.isIOS ? "whatsapp://wa.me/+$value" : "whatsapp://send?phone=+$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/whatsapp-messenger/id310633997"
-          : "https://play.google.com/store/apps/details?id=com.whatsapp";
+      defaultLink =
+          Platform.isIOS ? "https://apps.apple.com/my/app/whatsapp-messenger/id310633997" : "https://play.google.com/store/apps/details?id=com.whatsapp";
       checkExistingLink = url;
     } else if (comType.contains("Telegram")) {
       url = "tg://addcontact?phone=$value";
@@ -206,33 +202,24 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       checkExistingLink = "https://t.me/";
     } else if (comType.contains("Zalo")) {
       url = "https://zalo.me/$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/zalo/id579523206"
-          : "https://play.google.com/store/apps/details?id=com.zing.zalo";
+      defaultLink = Platform.isIOS ? "https://apps.apple.com/my/app/zalo/id579523206" : "https://play.google.com/store/apps/details?id=com.zing.zalo";
       checkExistingLink = "https://zalo.me/";
     } else if (comType.contains("KakaoTalk")) {
       url = "kakaolink://send/";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/kakaotalk-messenger/id362057947"
-          : "https://play.google.com/store/apps/details?id=com.kakao.talk";
+      defaultLink =
+          Platform.isIOS ? "https://apps.apple.com/my/app/kakaotalk-messenger/id362057947" : "https://play.google.com/store/apps/details?id=com.kakao.talk";
       checkExistingLink = "";
     } else if (comType.contains("Line")) {
       url = Platform.isIOS ? "line://ti/p/$value" : "http://line.me/ti/p/$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/line/id443904275"
-          : "market://details?id=jp.naver.line.android";
+      defaultLink = Platform.isIOS ? "https://apps.apple.com/my/app/line/id443904275" : "market://details?id=jp.naver.line.android";
       checkExistingLink = url;
     } else if (comType.contains("Skype")) {
       url = Platform.isIOS ? "skype:" : "skype:$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/skype-for-iphone/id304878510"
-          : "market://details?id=com.skype.raider";
+      defaultLink = Platform.isIOS ? "https://apps.apple.com/my/app/skype-for-iphone/id304878510" : "market://details?id=com.skype.raider";
       checkExistingLink = url;
     } else if (comType.contains("Viber")) {
       url = "viber://pa?chatURI=$value";
-      defaultLink = Platform.isIOS
-          ? "https://apps.apple.com/my/app/viber-messenger-chats-calls/id382617920"
-          : "market://details?id=com.viper.voip";
+      defaultLink = Platform.isIOS ? "https://apps.apple.com/my/app/viber-messenger-chats-calls/id382617920" : "market://details?id=com.viper.voip";
       checkExistingLink = url;
     }
 
@@ -286,12 +273,13 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     var url = EnvironmentConfig.environmentStage == "development"
         ? 'https://dev-t${EnvironmentConfig.light_mode ? "5" : EnvironmentConfig.template_version}.rpgp.cc/'
         : EnvironmentConfig.url;
-    var frontImagePath =
-        "${url}assets/images/wapGame${_getFrontImagePathVersion()}"; //"images/game/T${_getFrontImagePathVersion()}/";
+    var frontImagePath = "${url}assets/images/wapGame${_getFrontImagePathVersion()}"; //"images/game/T${_getFrontImagePathVersion()}/";
     var gameType = gameProvider.gameType!.getImagePath();
     var gamePlatformCode = gameProvider.code?.toLowerCase();
-    var imageFileFormat = EnvironmentConfig.template_version == 10 ? "png" : "jpg";
-    return "$frontImagePath/${gameType == "" ? "sports" : gameType}-$gamePlatformCode.$imageFileFormat";
+    // var imageFileFormat = EnvironmentConfig.template_version == 10 ? "png" : "jpg";
+
+    var appendPathForDarkLightMode = EnvironmentConfig.template_version == 10 ? (EnvironmentConfig.dark_mode ? "dark/" : "light/") : "";
+    return "$frontImagePath/$appendPathForDarkLightMode${gameType == "" ? "sports" : gameType}-$gamePlatformCode.png";
   }
 
   String _getFrontImagePathVersion() {
@@ -314,8 +302,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  _isSportsHideLogo(String? gamePlatformCode) =>
-      (config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+  _isSportsHideLogo(String? gamePlatformCode) => (config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 
   buildLottie({double size = 50.0}) => Center(
         child: SizedBox(
@@ -327,18 +314,18 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         ),
       );
 
-  String getBankDisplayName(String bankType){
-      switch (bankType) {
-        case "bank":
-          return getTranslatedText( "bank_transfer");
-        case "Crypto":
-          return getTranslatedText( "crypto");
-        case "ThirdParty":
-          return "Third Party";
-        case "EWallet":
-          return "E-wallet";
-        default:
-          return bankType;
-      }
+  String getBankDisplayName(String bankType) {
+    switch (bankType) {
+      case "bank":
+        return getTranslatedText("bank_transfer");
+      case "Crypto":
+        return getTranslatedText("crypto");
+      case "ThirdParty":
+        return "Third Party";
+      case "EWallet":
+        return "E-wallet";
+      default:
+        return bankType;
+    }
   }
 }

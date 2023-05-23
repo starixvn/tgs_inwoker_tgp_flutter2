@@ -82,11 +82,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Colors.white.withOpacity(1.0),
-                CustomColor.theme_bar_gradient_2,
-                CustomColor.theme_bar_gradient_2
-              ],
+              colors: [Colors.white.withOpacity(1.0), CustomColor.theme_bar_gradient_2, CustomColor.theme_bar_gradient_2],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
             ),
@@ -240,66 +236,104 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           radius: 5,
           padding: 4,
           textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
-          color: EnvironmentConfig.template_version == 3 ||
-                  EnvironmentConfig.template_version == 4 ||
-                  _isDarkMode() ||
-                  EnvironmentConfig.light_mode
+          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 4 || _isDarkMode() || EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,
         ),
       );
 
   _getVipButton() {
-    return !(EnvironmentConfig.template_version == 11 || EnvironmentConfig.brandName == "IDR1")
-        ? Container(
-            height: 50.auto,
-            padding: EdgeInsets.all(10.auto),
-            child: ColorButton(
-              title: "VIP",
-              onClick: () => Navigator.of(context).pushNamed("/vip"),
-              isEnabled: true,
-              width: 60.auto,
-              height: 17,
-              fontSize: 14,
-              radius: 5,
-              padding: 4,
-              textColor:
-                  _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
-              color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
-                  ? CustomColor.theme_button_color
-                  : Colors.white,
-              icon: Container(
-                margin: EdgeInsets.only(right: 3.auto),
-                child: Image.asset(
-                  "images/login_app_bar/vip.png",
-                  matchTextDirection: true,
-                  height: 18.auto,
-                ),
-              ),
+    if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+      return InkWell(
+        onTap: () => Navigator.of(context).pushNamed("/vip"),
+        child: Container(
+          width: 60.auto,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: CustomColor.theme_button_color,
+          ),
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(1),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: CustomColor.theme_bg_color,
             ),
-          )
-        : InkWell(
-            onTap: () => Navigator.of(context).pushNamed("/vip"),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.all(1),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.black,
+            padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto, left: 5.auto),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 0,
+                  child: Image.asset(
+                    "images/login_app_bar/vip.png",
+                    matchTextDirection: true,
+                    height: 15.auto,
+                  ),
                 ),
-                padding: EdgeInsets.all(5),
-                child: Image.asset(
-                  "images/login_app_bar/vip.png",
-                  matchTextDirection: true,
-                  height: 15.auto,
+                Expanded(
+                  flex: 1,
+                  child: AutoSizeText(
+                    "VIP",
+                    style: TextStyle(color: CustomColor.theme_button_color),
+                    minFontSize: 14,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    stepGranularity: 1,
+                  ),
                 ),
-              ),
+              ],
             ),
-          );
+          ),
+        ),
+      );
+    else if (!(EnvironmentConfig.template_version == 11 || EnvironmentConfig.brandName == "IDR1"))
+      return Container(
+        height: 50.auto,
+        padding: EdgeInsets.all(10.auto),
+        child: ColorButton(
+          title: "VIP",
+          onClick: () => Navigator.of(context).pushNamed("/vip"),
+          isEnabled: true,
+          width: 60.auto,
+          height: 17,
+          fontSize: 14,
+          radius: 5,
+          padding: 4,
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Colors.white,
+          icon: Container(
+            margin: EdgeInsets.only(right: 3.auto),
+            child: Image.asset(
+              "images/login_app_bar/vip.png",
+              matchTextDirection: true,
+              height: 18.auto,
+            ),
+          ),
+        ),
+      );
+    else
+      return InkWell(
+        onTap: () => Navigator.of(context).pushNamed("/vip"),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          padding: EdgeInsets.all(1),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.black,
+            ),
+            padding: EdgeInsets.all(5),
+            child: Image.asset(
+              "images/login_app_bar/vip.png",
+              matchTextDirection: true,
+              height: 15.auto,
+            ),
+          ),
+        ),
+      );
   }
 
   _getLogoutButton() => Container(
@@ -314,7 +348,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           radius: 5,
           padding: 2,
           textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
-          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode
+          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 10 || _isDarkMode() || EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,
         ),
@@ -331,9 +365,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               style: TextStyle(
                 color: CustomColor.theme_app_bar_text_color,
                 fontWeight: FontWeight.bold,
-                fontSize: ((widget.config?.homePageDisplayBalance ?? false) || (widget.config?.newTransferUI ?? false))
-                    ? 10.auto
-                    : 14.auto,
+                fontSize: ((widget.config?.homePageDisplayBalance ?? false) || (widget.config?.newTransferUI ?? false)) ? 10.auto : 14.auto,
               ),
             ),
             if (widget.config?.homePageDisplayBalance ?? false) _getBalanceText(),
@@ -380,10 +412,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           margin: EdgeInsets.only(top: 5.auto, right: 10.auto),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              if (widget.config?.displayPhone ?? false) _getPhoneText(),
-              if (widget.config?.customVIP ?? false) _getVipText()
-            ],
+            children: [if (widget.config?.displayPhone ?? false) _getPhoneText(), if (widget.config?.customVIP ?? false) _getVipText()],
           ),
         )
       : Container();
@@ -458,8 +487,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
     }
   }
 
-  _isDarkMode() => ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) &&
-      !EnvironmentConfig.dark_mode);
+  _isDarkMode() => ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) && !EnvironmentConfig.dark_mode);
 
   _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) || (widget.config?.customVIP ?? false));
 }
