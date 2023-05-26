@@ -200,28 +200,46 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ),
       );
 
-  _getLoginButton() => Container(
-        padding: EdgeInsets.symmetric(horizontal: 5.auto, vertical: 10.auto),
-        height: 50.auto,
-        child: OutlineBorderButton(
-          title: getTranslatedText("login"),
-          onClick: () => widget.onClickLoginButton(),
-          isEnabled: true,
-          width: 60.auto,
-          height: 17,
-          color: ((() {
-            if (_isDarkMode())
-              return CustomColor.theme_text_black_color;
-            else if (EnvironmentConfig.light_mode)
-              return CustomColor.theme_button_color;
-            else
-              return Colors.white;
-          })()),
-          fontSize: 14,
-          radius: 5,
-          padding: 4,
-        ),
-      );
+  _getLoginButton() => EnvironmentConfig.template_version == 10
+      //t10 use color button, else use outline border button
+      ? Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.auto, vertical: 10.auto),
+          height: 50.auto,
+          child: ColorButton(
+            title: getTranslatedText("login"),
+            onClick: () => widget.onClickLoginButton(),
+            isEnabled: true,
+            width: 60.auto,
+            height: 17,
+            fontSize: 14,
+            radius: 5,
+            padding: 4,
+            textColor: Colors.black,
+            color: CustomColor.theme_button_color,
+          ),
+        )
+      : Container(
+          padding: EdgeInsets.symmetric(horizontal: 5.auto, vertical: 10.auto),
+          height: 50.auto,
+          child: OutlineBorderButton(
+            title: getTranslatedText("login"),
+            onClick: () => widget.onClickLoginButton(),
+            isEnabled: true,
+            width: 60.auto,
+            height: 17,
+            color: ((() {
+              if (_isDarkMode())
+                return CustomColor.theme_text_black_color;
+              else if (EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 10)
+                return CustomColor.theme_button_color;
+              else
+                return Colors.white;
+            })()),
+            fontSize: 14,
+            radius: 5,
+            padding: 4,
+          ),
+        );
 
   _getRegisterButton() => Container(
         padding: EdgeInsets.symmetric(horizontal: 5.auto, vertical: 10.auto),
@@ -236,7 +254,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           radius: 5,
           padding: 4,
           textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
-          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 4 || _isDarkMode() || EnvironmentConfig.light_mode
+          color: EnvironmentConfig.template_version == 3 ||
+                  EnvironmentConfig.template_version == 4 ||
+                  EnvironmentConfig.template_version == 10 ||
+                  _isDarkMode() ||
+                  EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,
         ),

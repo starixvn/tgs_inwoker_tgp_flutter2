@@ -99,7 +99,11 @@ class _GameT10State extends BaseState<GameT10> {
       },
       child: Container(
         height: 27.auto,
-        padding: EdgeInsets.only(top: (context.screenHeight / 100), bottom: (context.screenHeight / 100), left: 15, right: 15),
+        padding: EdgeInsets.only(
+            top: (context.screenHeight / 100),
+            bottom: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? (context.screenHeight / 70) : (context.screenHeight / 100),
+            left: 15,
+            right: 15),
         decoration: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
             ? tabIndex == currentTabIndex
                 ? BoxDecoration(
@@ -119,7 +123,10 @@ class _GameT10State extends BaseState<GameT10> {
         child: AutoSizeText(
           gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
           textAlign: TextAlign.center,
-          style: TextStyle(color: tabIndex == currentTabIndex ? (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Color(0xffebde1d)) : Colors.white),
+          style: TextStyle(
+              color: tabIndex == currentTabIndex
+                  ? (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Color(0xffebde1d))
+                  : Colors.white),
           minFontSize: 8,
           maxFontSize: 13,
           stepGranularity: 1,
