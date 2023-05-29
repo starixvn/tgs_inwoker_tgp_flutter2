@@ -197,11 +197,12 @@ class _ManualDepositOrderViewState extends BaseState<ManualDepositOrderView> {
     if (widget.manualDepositOrder?.qrCode?.isEmpty ?? false)
       return Expanded(
         flex: 2,
-        child: QrImage(
-          data: widget.manualDepositOrder!.qrCode!,
-          version: QrVersions.auto,
-          size: 150.0,
-        ),
+        child: Container()
+        // QrImage(
+        //   data: widget.manualDepositOrder!.qrCode!,
+        //   version: QrVersions.auto,
+        //   size: 150.0,
+        // ),
       );
     else if (widget.paymentQrCode?.qrCodeFileUrl?.isEmpty ?? false)
       return Expanded(

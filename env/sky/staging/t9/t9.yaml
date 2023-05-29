@@ -6,13 +6,13 @@ flutter_icons:
 environment_config:
   fields:
     jwtKey:
-      default: "TwOcgDbQmEauQ0KZRJ8GIuRJYeHIOC9Do8KbEKKmXJzy45tzKXmRVA"
+      default: "GWcE0mhlG0JeDmwadQAa5Gfuz7BGEfIWYCVwPPXmVQOQWu5ibE1fsX"
     url:
-      default: "https://stg.twplus666.com/"
+      default: "https://stg-sky8.rpgp.cc/"
     currency:
       default: "HKD"
     appTitleName:
-      default: "GMO"
+      default: "Sky8"
     slotGameUrl:
       default: "https://images.srvptt.com/"
     imageLogo:
@@ -21,7 +21,7 @@ environment_config:
       default: "staging"
     template_version:
       type: int
-      default: 9
+      default: 12
     dark_mode:
       type: bool
       default: false
@@ -99,7 +99,7 @@ environment_config:
     assetUrl:
       default: "https://app12.s3.ap-east-1.amazonaws.com/"
     brandName:
-      default: "SKY"
+      default: "SKY8"
     vipPresentType:
       type: int
       default: 1

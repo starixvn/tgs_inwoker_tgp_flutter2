@@ -31,6 +31,7 @@ import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter2/ui/home/home.dart';
 import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
+import 'package:tgp_flutter2/ui/login/CustomSky8/LoginTemplate02.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
 import 'package:tgp_flutter2/ui/menu/menu.dart';
 import 'package:tgp_flutter2/ui/menu/menu_t2.dart';
@@ -215,7 +216,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
-                  RoutePath.login: (context) => Login(),
+                  RoutePath.login: (context) => LoginTemplate02(),//Login(),
                   RoutePath.register: (context) => Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(
