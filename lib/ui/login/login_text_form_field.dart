@@ -29,14 +29,21 @@ class LoginTextFormField extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      height: 45.auto, //EnvironmentConfig.template_version == 15 ? 45.auto : 40.auto,
+      height: 45
+          .auto, //EnvironmentConfig.template_version == 15 ? 45.auto : 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.44),
-        // EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color.withOpacity(0.8) :
-        // EnvironmentConfig.template_version == 15 ? Colors.black.withOpacity(0.44) : Colors.white,
+        color: EnvironmentConfig.template_version == 11
+            ? CustomColor.theme_button_color.withOpacity(0.8)
+            : EnvironmentConfig.template_version == 15
+                ? Colors.black.withOpacity(0.44)
+                : Colors.white,
         borderRadius: BorderRadius.circular(
-          10,//EnvironmentConfig.template_version == 11 ? 25 : 2,
+          EnvironmentConfig.template_version == 11
+              ? 25
+              : EnvironmentConfig.template_version == 15
+                  ? 10
+                  : 2,
         ),
       ),
       child: Row(
@@ -59,13 +66,19 @@ class LoginTextFormField extends StatelessWidget {
               autocorrect: false,
               keyboardType: textInputType,
               textInputAction: textInputAction,
-              style: TextStyle(fontSize: 13.auto, color: EnvironmentConfig.template_version == 11 ? Colors.white : Colors.black),
+              style: TextStyle(
+                  fontSize: 13.auto,
+                  color: EnvironmentConfig.template_version == 11
+                      ? Colors.white
+                      : Colors.black),
               decoration: InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11 ? Colors.white.withOpacity(0.5) : CustomColor.very_light_pink_two,
+                  color: EnvironmentConfig.template_version == 11
+                      ? Colors.white.withOpacity(0.5)
+                      : CustomColor.very_light_pink_two,
                   fontSize: 13.auto,
                 ),
               ),

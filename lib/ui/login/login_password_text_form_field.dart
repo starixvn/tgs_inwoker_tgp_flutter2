@@ -30,19 +30,29 @@ class LoginPasswordTextFormField extends StatefulWidget {
   });
 
   @override
-  _LoginPasswordTextFormFieldState createState() => _LoginPasswordTextFormFieldState();
+  _LoginPasswordTextFormFieldState createState() =>
+      _LoginPasswordTextFormFieldState();
 }
 
-class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormField> {
+class _LoginPasswordTextFormFieldState
+    extends BaseState<LoginPasswordTextFormField> {
   Widget build(BuildContext context) {
     return Container(
-      height: 45.auto, //EnvironmentConfig.template_version == 15 ? 45.auto : 40.auto,
+      height: 45
+          .auto, //EnvironmentConfig.template_version == 15 ? 45.auto : 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.44),
-            //EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color.withOpacity(0.8) : Colors.white,
+        color: EnvironmentConfig.template_version == 11
+            ? CustomColor.theme_button_color.withOpacity(0.8)
+            : EnvironmentConfig.template_version == 15
+                ? Colors.black.withOpacity(0.44)
+                : Colors.white,
         borderRadius: BorderRadius.circular(
-         10,// EnvironmentConfig.template_version == 11 ? 25 : 2,
+          EnvironmentConfig.template_version == 11
+              ? 25
+              : EnvironmentConfig.template_version == 15
+                  ? 10
+                  : 2,
         ),
       ),
       child: Row(
@@ -64,7 +74,10 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
               textInputAction: widget.textInputAction,
               obscureText: widget.obscurePassword,
               style: TextStyle(
-                  fontSize: 13.auto, color: EnvironmentConfig.template_version == 11 ? Colors.white : Colors.black),
+                  fontSize: 13.auto,
+                  color: EnvironmentConfig.template_version == 11
+                      ? Colors.white
+                      : Colors.black),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(top: 13.5),
                 isDense: true,
@@ -81,8 +94,13 @@ class _LoginPasswordTextFormFieldState extends BaseState<LoginPasswordTextFormFi
                   padding: EdgeInsets.only(bottom: 0),
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  icon: Icon(widget.obscurePassword ? Icons.visibility_off : Icons.visibility,
-                      color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.very_light_pink_two),
+                  icon: Icon(
+                      widget.obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: EnvironmentConfig.template_version == 11
+                          ? Colors.white
+                          : CustomColor.very_light_pink_two),
                   onPressed: () => widget.onShowPassword(),
                 ),
               ),

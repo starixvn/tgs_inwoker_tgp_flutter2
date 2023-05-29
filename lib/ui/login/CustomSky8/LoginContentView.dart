@@ -107,7 +107,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
     var text = "会员注册"; // : "会员登录";
     return GestureDetector(
         onTap: () {
-          print("Click event on Container");
+          widget.onPressed();
         },
         child: Container(
             decoration: BoxDecoration(
@@ -140,7 +140,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
       height: 60,
       // margin: EdgeInsets.only(bottom: 5),
       child: Center(
-          child: Text('登录',
+          child: Text(getTranslatedText("login"),
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
@@ -250,7 +250,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
       );
 
   _buildLoginButton() => Container(
-        margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto, left: 25.auto,right:25.auto),
+        margin: EdgeInsets.only(top: 50.auto, bottom: 0.auto, left: 25.auto,right:25.auto),
         child: ColorButton(
           title: getTranslatedText("login"),
           height: 37.5.auto,
@@ -261,12 +261,15 @@ class _LoginContentViewState extends BaseState<LoginContentView>
         ),
       );
 
-  _buildLoginLaterButton() => ColorButton(
-        title: getTranslatedText("login_later"),
-        onClick: () => _navigateToHome(),
-        isEnabled: true,
-        color: CustomColor.theme_grey_button_color,
-      );
+  _buildLoginLaterButton() =>
+  Container(height: 35,child: ColorButton(
+    // height: 30,
+    title: getTranslatedText("login_later"),
+    onClick: () => _navigateToHome(),
+    isEnabled: true,
+    color: Colors.transparent,
+  ))
+      ;
 
   _buildChangeLanguageText() {
     var list = LanguageProvider.getSingleton().list;
@@ -291,12 +294,12 @@ class _LoginContentViewState extends BaseState<LoginContentView>
                       style: TextStyle(
                           color: deviceLanguage == list[index]
                               ? CustomColor.theme_button_color
-                              : CustomColor.theme_text_black_white_color),
+                              : Colors.white /*CustomColor.theme_text_black_white_color*/),
                     )),
                 Visibility(
                   visible: index + 1 != list.length,
                   child: VerticalDivider(
-                    color: CustomColor.theme_text_black_white_color,
+                    color: Colors.white /*CustomColor.theme_text_black_white_color*/,
                   ),
                 )
               ],

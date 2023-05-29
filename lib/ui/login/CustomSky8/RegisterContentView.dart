@@ -20,17 +20,20 @@ import 'package:tgp_flutter2/ui/login/phone_re_verification/login_otp_text_form_
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 
+import 'CustomCheckbox.dart';
+
 class RegisterContentView extends StatefulWidget {
   // final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
   final LoginViewModel vm;
-
-  RegisterContentView({required this.vm});
+  final VoidCallback onPressed;
+  RegisterContentView({required this.vm, required this.onPressed});
 
   @override
   _RegisterContentViewState createState() => _RegisterContentViewState();
 }
 
-class _RegisterContentViewState extends BaseState<RegisterContentView> with AutomaticKeepAliveClientMixin {
+class _RegisterContentViewState extends BaseState<RegisterContentView>
+    with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
   var username = TextEditingController(),
       password = TextEditingController(),
@@ -49,7 +52,11 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
   List agentPlayerList = ['agent', 'player'];
 
   String? display;
-
+  void onChanged() {
+    setState(() {
+    _isTermsChecked = !_isTermsChecked;
+    });
+  }
   @override
   bool get wantKeepAlive => true;
 
@@ -71,145 +78,189 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
           return _isShowSmsVerification() && _isRegisterSuccess
               ? PhoneReVerification(vm: vm)
               : Container(
-            child: Column(
-              children: [
-                _buildUsernameTextFormField(),
-                _buildPasswordTextFormField(),
-                _buildConfirmPasswordTextFormField(),
-                //_buildPayPasswordTextFormField(),
-                if (_registerShowPhone()) _buildPhoneTextFormField(),
-                if (_registerShowEmail()) _buildEmailTextFormField(),
-                _buildPromotionCodeTextFormField(),
-                _buildRegisterTermsText(),
-                _buildRegisterButton()
-              ],
-            ),
-          );
+                  child: Row(
+                  children: [
+                    _categoryButtonView(),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          _titleView(),
+                          _buildUsernameTextFormField(),
+                          _buildPasswordTextFormField(),
+                          _buildConfirmPasswordTextFormField(),
+                          //_buildPayPasswordTextFormField(),
+                          if (_registerShowPhone()) _buildPhoneTextFormField(),
+                          if (_registerShowEmail()) _buildEmailTextFormField(),
+                          _buildPromotionCodeTextFormField(),
+                          _buildRegisterTermsText(),
+                          _buildRegisterButton()
+                        ],
+                      ),
+                    )
+                  ],
+                ));
         });
   }
 
-  _buildUsernameTextFormField() => LoginTextFormField(
-    icon: EnvironmentConfig.template_version == 11
-        ? Image.asset(
-      "images/login/t11/ic_login_username.png",
-      width: 20.auto,
-      height: 20.auto,
-    )
-        : SvgPicture.asset(
-      "images/login/ic_login_username.svg",
-      height: 20.auto,
-    ),
-    hintText: getTranslatedText("signup_username_hint"),
-    //onChanged: (value) => null,
-    //onFieldSubmitted: (value) => null,
-    controller: username,
-    width: context.screenWidth,
-    textInputType: TextInputType.name,
-    textInputAction: TextInputAction.next,
-  );
+  _titleView() => Container(
+      height: 60,
+      // margin: EdgeInsets.only(bottom: 5),
+      child: Center(
+          child: Text(getTranslatedText("register"),
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold))));
+
+  _categoryButtonView() {
+    var text = "会员登录";
+    return GestureDetector(
+        onTap: () {
+          widget.onPressed();
+        },
+        child: Container(
+            decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.44),
+                border: Border.all(
+                  color: Colors.black.withOpacity(0.44),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            // color: isRegister ? Colors.blueAccent : Colors.cyanAccent,
+            width: 45,
+            height: double.infinity,
+            child: Align(
+                alignment: Alignment.center,
+                child: Wrap(
+                  runSpacing: 30,
+                  direction: Axis.vertical,
+                  alignment: WrapAlignment.center,
+                  children: text
+                      .split("")
+                      .map((string) => Text(string,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)))
+                      .toList(),
+                ))));
+  }
+
+  _buildUsernameTextFormField() =>
+      Container(
+          margin: EdgeInsets.only(
+              left: 10.auto,
+              right: 10.auto,
+              bottom: 8.auto,
+              top: 10.auto),
+      child:
+      LoginTextFormField(
+        icon: Image.asset(
+          "images/login/Sky8/icon-user.png",
+          width: 20.auto,
+          height: 20.auto,
+        ),
+        hintText: getTranslatedText("signup_username_hint"),
+        //onChanged: (value) => null,
+        //onFieldSubmitted: (value) => null,
+        controller: username,
+        width: context.screenWidth,
+        textInputType: TextInputType.name,
+        textInputAction: TextInputAction.next,
+      ));
 
   _buildPasswordTextFormField() => Container(
-    margin: EdgeInsets.only(top: 10.auto),
-    child: LoginPasswordTextFormField(
-      icon: EnvironmentConfig.template_version == 11
-          ? Image.asset(
-        "images/login/t11/ic_login_password.png",
-        width: 20.auto,
-        height: 20.auto,
-      )
-          : SvgPicture.asset(
-        "images/login/ic_login_password.svg",
-        height: 20.auto,
-      ),
-      hintText: getTranslatedText("signup_password_hint"),
-      onChanged: (value) => null,
-      onFieldSubmitted: (value) => null,
-      controller: password,
-      width: context.screenWidth,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: TextInputAction.next,
-      onShowPassword: () {
-        setState(() => this._obscurePassword = !this._obscurePassword);
-      },
-      obscurePassword: _obscurePassword,
-    ),
-  );
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+        child: LoginPasswordTextFormField(
+          icon: Image.asset(
+            "images/login/Sky8/icon-unlock.png",
+            width: 20.auto,
+            height: 20.auto,
+          ),
+          hintText: getTranslatedText("signup_password_hint"),
+          onChanged: (value) => null,
+          onFieldSubmitted: (value) => null,
+          controller: password,
+          width: context.screenWidth,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
+          onShowPassword: () {
+            setState(() => this._obscurePassword = !this._obscurePassword);
+          },
+          obscurePassword: _obscurePassword,
+        ),
+      );
 
   _buildConfirmPasswordTextFormField() => Container(
-    margin: EdgeInsets.only(top: 10.auto),
-    child: LoginPasswordTextFormField(
-      icon: EnvironmentConfig.template_version == 11
-          ? Image.asset(
-        "images/login/t11/ic_confirm_password.png",
-        width: 20.auto,
-        height: 20.auto,
-      )
-          : SvgPicture.asset(
-        "images/login/ic_login_password.svg",
-        height: 20.auto,
-      ),
-      hintText: getTranslatedText("confirm_password"),
-      onChanged: (value) => null,
-      onFieldSubmitted: (value) => null,
-      controller: confirmPassword,
-      width: context.screenWidth,
-      textInputType: TextInputType.visiblePassword,
-      textInputAction: TextInputAction.next,
-      onShowPassword: () {
-        setState(() => this._obscureConfirmPassword = !this._obscureConfirmPassword);
-      },
-      obscurePassword: _obscureConfirmPassword,
-    ),
-  );
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+        child: LoginPasswordTextFormField(
+          icon: Image.asset(
+            "images/login/Sky8/icon-unlock2.png",
+            width: 20.auto,
+            height: 20.auto,
+          ),
+          hintText: getTranslatedText("confirm_password"),
+          onChanged: (value) => null,
+          onFieldSubmitted: (value) => null,
+          controller: confirmPassword,
+          width: context.screenWidth,
+          textInputType: TextInputType.visiblePassword,
+          textInputAction: TextInputAction.next,
+          onShowPassword: () {
+            setState(() =>
+                this._obscureConfirmPassword = !this._obscureConfirmPassword);
+          },
+          obscurePassword: _obscureConfirmPassword,
+        ),
+      );
 
   _buildPayPasswordTextFormField() => Container(
-    margin: EdgeInsets.only(top: 10.auto),
-    child: LoginTextFormField(
-      icon: SvgPicture.asset(
-        "images/login/ic_login_pig.svg",
-        height: 20.auto,
-      ),
-      hintText: getTranslatedText("signup_pay_password_hint"),
-      //onChanged: (value) => null,
-      //onFieldSubmitted: (value) => null,
-      controller: pay,
-      width: context.screenWidth,
-      textInputType: TextInputType.name,
-      textInputAction: TextInputAction.next,
-    ),
-  );
+        margin: EdgeInsets.only(top: 10.auto),
+        child: LoginTextFormField(
+          icon: SvgPicture.asset(
+            "images/login/ic_login_pig.svg",
+            height: 20.auto,
+          ),
+          hintText: getTranslatedText("signup_pay_password_hint"),
+          //onChanged: (value) => null,
+          //onFieldSubmitted: (value) => null,
+          controller: pay,
+          width: context.screenWidth,
+          textInputType: TextInputType.name,
+          textInputAction: TextInputAction.next,
+        ),
+      );
 
   _buildPhoneTextFormField() => Container(
-    margin: EdgeInsets.only(top: 10.auto),
-    child: LoginPhoneTextFormField(
-      onChanged: (value) {},
-      onFieldSubmitted: (value) {},
-      controller: phone,
-      width: context.screenWidth - 70.auto,
-      textInputAction: TextInputAction.next,
-      enabled: true,
-      onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
-      displayedAreaCode: display,
-      maxLength: _vm.config?.maxPhoneLength ?? 10,
-    ),
-  );
+        margin: EdgeInsets.only(top: 10.auto),
+        child: LoginPhoneTextFormField(
+          onChanged: (value) {},
+          onFieldSubmitted: (value) {},
+          controller: phone,
+          width: context.screenWidth - 70.auto,
+          textInputAction: TextInputAction.next,
+          enabled: true,
+          onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
+          displayedAreaCode: display,
+          maxLength: _vm.config?.maxPhoneLength ?? 10,
+        ),
+      );
 
   _buildEmailTextFormField() => Container(
-    margin: EdgeInsets.only(top: 10.auto),
-    child: LoginTextFormField(
-      icon: SvgPicture.asset(
-        "images/login/login_email.svg",
-        height: 20.auto,
-      ),
-      hintText: getTranslatedText("email_hint"),
-      //onChanged: (value) => null,
-      //onFieldSubmitted: (value) => null,
-      controller: email,
-      width: context.screenWidth,
-      textInputType: TextInputType.name,
-      textInputAction: TextInputAction.next,
-    ),
-  );
+        margin: EdgeInsets.only(top: 10.auto),
+        child: LoginTextFormField(
+          icon: SvgPicture.asset(
+            "images/login/login_email.svg",
+            height: 20.auto,
+          ),
+          hintText: getTranslatedText("email_hint"),
+          //onChanged: (value) => null,
+          //onFieldSubmitted: (value) => null,
+          controller: email,
+          width: context.screenWidth,
+          textInputType: TextInputType.name,
+          textInputAction: TextInputAction.next,
+        ),
+      );
 
   _onAreaCodeClicked(String area) {
     setState(() {
@@ -218,108 +269,142 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
     });
   }
 
-  _buildPromotionCodeTextFormField() => Visibility(
-    visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
-    child: Container(
-      margin: EdgeInsets.only(top: 10.auto),
-      child: LoginTextFormField(
-          icon: EnvironmentConfig.template_version == 11
-              ? Container()
-              : SvgPicture.asset(
-            "images/login/ic_login_promotion.svg",
-            height: 20.auto,
-          ),
-          hintText: getTranslatedText("signup_promotion_code_hint"),
-          onChanged: (value) => null,
-          onFieldSubmitted: (value) => _register(),
-          controller: invitationCode,
-          width: context.screenWidth,
-          textInputType: TextInputType.name,
-          textInputAction: TextInputAction.done,
-          dropDown: Visibility(
-            visible: (_vm.haveAffiliate ?? false),
-            child: Container(
-              color: CustomColor.very_light_pink_two,
-              padding: EdgeInsets.only(
-                left: 5.auto,
-              ),
-              margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
-              child: DropdownButton(
-                elevation: 0,
-                isExpanded: true,
-                hint: Container(
-                  child: AutoSizeText(
-                    getTranslatedText(agentPlayer),
-                    minFontSize: 2,
-                    stepGranularity: 1,
-                    maxLines: 1,
+  _buildPromotionCodeTextFormField() =>
+      Visibility(
+        visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
+        child: Container(
+          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+          child: LoginTextFormField(
+              //icon: Container(),
+              // EnvironmentConfig.template_version == 11
+              //     ? Container()
+              //     : SvgPicture.asset(
+              //         "images/login/ic_login_promotion.svg",
+              //         height: 20.auto,
+              //       ),
+              hintText: getTranslatedText("signup_promotion_code_hint"),
+              onChanged: (value) => null,
+              onFieldSubmitted: (value) => _register(),
+              controller: invitationCode,
+              width: context.screenWidth,
+              textInputType: TextInputType.name,
+              textInputAction: TextInputAction.done,
+              dropDown: Visibility(
+                visible: (_vm.haveAffiliate ?? false),
+                child: Container(
+                  color: CustomColor.very_light_pink_two,
+                  padding: EdgeInsets.only(
+                    left: 5.auto,
+                  ),
+                  margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
+                  child: DropdownButton(
+                    elevation: 0,
+                    isExpanded: true,
+                    hint: Container(
+                      child: AutoSizeText(
+                        getTranslatedText(agentPlayer),
+                        minFontSize: 2,
+                        stepGranularity: 1,
+                        maxLines: 1,
+                      ),
+                    ),
+                    items: agentPlayerList.map((value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(
+                          getTranslatedText(value),
+                          style: TextStyle(
+                              color: CustomColor.theme_title_text_color),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        agentPlayer = value.toString();
+                      });
+                    },
+                    style: TextStyle(
+                      color: CustomColor.theme_title_text_color,
+                    ),
                   ),
                 ),
-                items: agentPlayerList.map((value) {
-                  return DropdownMenuItem(
-                    value: value,
-                    child: Text(
-                      getTranslatedText(value),
-                      style: TextStyle(
-                          color: CustomColor.theme_title_text_color),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    agentPlayer = value.toString();
-                  });
-                },
-                style: TextStyle(
-                  color: CustomColor.theme_title_text_color,
-                ),
-              ),
-            ),
-          )),
-    ),
-  );
+              )),
+        ),
+      );
 
   _buildRegisterButton() => Container(
-    margin: EdgeInsets.only(top: 10.auto, bottom: 10.auto),
-    child: ColorButton(
-      title: getTranslatedText(_customFlowForIDR() ? "next" : "register"),
-      onClick: () {
-        _register();
-      },
-      isEnabled: _isTermsChecked,
-    ),
-  );
+        margin: EdgeInsets.only(left: 25.auto, right: 25.auto, bottom: 10.auto, top: 10.auto),
+        child: ColorButton(
+          title: getTranslatedText(_customFlowForIDR() ? "next" : "register"),
+          height: 37.5.auto,
+          radius: 20,
+          onClick: () {
+            _register();
+          },
+          isEnabled: _isTermsChecked,
+        ),
+      );
 
   _buildRegisterTermsText() => Container(
-    margin: EdgeInsets.only(top: 10.auto),
-    child: Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Checkbox(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            value: this._isTermsChecked,
-            checkColor: Colors.white,
-            activeColor: Colors.black,
-            fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
-            onChanged: (val) => this.setState(() {
-              this._isTermsChecked = !this._isTermsChecked;
-            }),
-          ),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
+        child: Row(
+          children: [
+            Container(width: 35,child: CustomCheckbox(
+                checkColor: Colors.white,
+                iconSize: 15.0,
+                onChanged: () => onChanged()),),
+            // Expanded(
+            //   flex: 1,
+            //   child:  ,
+            //
+            //   // Checkbox(
+            //   //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //   //   value: this._isTermsChecked,
+            //   //   checkColor: Colors.white,
+            //   //   activeColor: Colors.black,
+            //   //   fillColor:
+            //   //       MaterialStateProperty.all(CustomColor.theme_button_color),
+            //   //   onChanged: (val) => this.setState(() {
+            //   //     this._isTermsChecked = !this._isTermsChecked;
+            //   //   }),
+            //   // ),
+            // ),
+            Expanded(
+              flex: 2,
+              child: Text(
+                getTranslatedText("register_terms"),
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Colors.white,//CustomColor.theme_text_black_white_color,
+                    fontSize: calculateFontSize(60)),
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          flex: 9,
-          child: Text(
-            getTranslatedText("register_terms"),
-            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
-          ),
-        ),
-      ],
-    ),
-  );
+      );
+
+  double calculateFontSize(double containerHeight) {
+    // Define your own logic to calculate the font size based on the container height
+    // Here's a simple example to demonstrate the concept
+    const double baseFontSize = 18;
+    const double lineHeight = 1.2;
+    const double maxLines = 5;
+    const double lineSpacing = 4;
+
+    double maxTextHeight = (baseFontSize * lineHeight + lineSpacing) * maxLines;
+    double fontSize = baseFontSize;
+
+    if (containerHeight < maxTextHeight) {
+      fontSize = containerHeight / maxLines / lineHeight;
+    }
+
+    return fontSize;
+  }
 
   _register() {
-    if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
+    if (!validate.validateUsernameLength(username.text) ||
+        !validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
@@ -335,7 +420,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    } else if (_registerShowPhone() && !validate.validatePhoneLength(phone.text)) {
+    } else if (_registerShowPhone() &&
+        !validate.validatePhoneLength(phone.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
@@ -374,7 +460,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
         });
       } else {
         if (_registerShowPhone() || _registerShowEmail()) {
-          _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
+          _vm.idrLoginWithPhoneAndEmail(
+              username.text, password.text, phone.text, display!, email.text);
         }
         /* else if (_registerShowPhone() && _registerShowEmail()) {
           _vm.loginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
@@ -384,7 +471,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
         }
       }
     });
-    handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
+    handleApiState(_vm.checkUsernameApiState, isRequireResult: true,
+        onSuccess: (result) {
       if (result.isExist) {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
@@ -401,8 +489,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
             _vm.getReVerifyCode(username, password, display!, phone, isIdrRegister: true);
           }*/
           else
-            _vm.register(
-                username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
+            _vm.register(username.text, password.text, confirmPassword.text,
+                invitationCode.text, agentPlayer == "agent");
         });
       }
     });
@@ -423,9 +511,12 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
           context,
           MaterialPageRoute(
               builder: (context) => MyHomePage(
-                index: 4,
-              )));
-      Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
+                    index: 4,
+                  )));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }

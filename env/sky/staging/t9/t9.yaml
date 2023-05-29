@@ -21,7 +21,7 @@ environment_config:
       default: "staging"
     template_version:
       type: int
-      default: 12
+      default: 15
     dark_mode:
       type: bool
       default: false

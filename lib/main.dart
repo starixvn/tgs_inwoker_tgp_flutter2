@@ -216,8 +216,8 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
-                  RoutePath.login: (context) => LoginTemplate02(),//Login(),
-                  RoutePath.register: (context) => Login(defaultRegisterTab: true),
+                  RoutePath.login: (context) => EnvironmentConfig.template_version == 15 ? LoginTemplate02() : Login(),
+                  RoutePath.register: (context) => EnvironmentConfig.template_version == 15 ? LoginTemplate02(defaultRegisterTab: true) : Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(
                         onResumeBgMusic: () => _assetsAudioPlayer.play(),

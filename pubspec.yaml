@@ -123,6 +123,11 @@ flutter:
     - images/support/
     - images/login/
     - images/login/Sky8/
+    - images/login/Sky8/sponsor-1.png
+    - images/login/Sky8/sponsor-2.png
+    - images/login/Sky8/sponsor-3.png
+    - images/login/Sky8/sponsor-4.png
+    - images/login/Sky8/sponsor-5.png
     - images/transaction/
     - images/promotion/
     - images/menu/

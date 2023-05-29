@@ -54,14 +54,14 @@ class _LoginTemplate02State extends BaseState<LoginTemplate02> {
             Expanded(
                 flex:23,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                  margin: EdgeInsets.symmetric(horizontal: 15.auto),
                   child: LoginInputView(
                     config: _vm.config,
                     defaultRegisterTab: widget.defaultRegisterTab,
                   ),
                 )),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: _buildVersionText(),
             )
           ],
@@ -92,7 +92,7 @@ class _LoginTemplate02State extends BaseState<LoginTemplate02> {
   }
 
   _buildLogoImage() => Container(
-      color: Colors.red,
+      // color: Colors.red,
       margin: EdgeInsets.only(top: ScreenUtil.getInstance().statusBarHeight, left: 27.auto, right: 27.auto),
       child: (_vm.brandLogo?.mobileUrl?.isEmpty ?? true)
           ? Container(
