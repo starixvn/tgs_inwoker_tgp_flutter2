@@ -108,14 +108,17 @@ flutter:
     - images/bottom_nav_bar/
     - images/bottom_nav_bar/T2/
     - images/bottom_nav_bar/T11/
+    - images/bottom_nav_bar/T15/
     - images/home/
     - images/home/T2/
     - images/home/T11/
+    - images/home/T15/
     - images/game/T2/
     - images/game/T3/
     - images/game/T8/
     - images/game/T10/
     - images/game/T11/
+    - images/game/T15/
     - images/profile/
     - images/profile/t1/
     - images/profile/t2/
@@ -128,6 +131,7 @@ flutter:
     - images/login/Sky8/sponsor-3.png
     - images/login/Sky8/sponsor-4.png
     - images/login/Sky8/sponsor-5.png
+    - images/audio/
     - images/transaction/
     - images/promotion/
     - images/menu/
@@ -137,6 +141,7 @@ flutter:
     - images/game_tab/t3/
     - images/game_tab/t4/
     - images/game_tab/t11/
+    - images/game_tab/t15/
     - images/child_game/
     - images/card/
     - images/language/

@@ -10,6 +10,7 @@ import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/login/CustomSky8/LoginTemplate02.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/profile/T2/profile_bottom_item.dart';
 import 'package:tgp_flutter2/ui/profile/profile_item.dart';
@@ -166,7 +167,7 @@ class _ProfileState extends BaseState<Profile> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //navigate to login and remove all previous route,
       Navigator.of(context)
-          .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);
+          .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => EnvironmentConfig.template_version == 15 ? LoginTemplate02() : Login()), (Route<dynamic> route) => false);
     });
   }
 

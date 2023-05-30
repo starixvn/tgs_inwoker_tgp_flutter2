@@ -297,6 +297,8 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         return "/T3T4";
       case 11:
         return "/T11";
+      case 15:
+        return "/T15/gold";
       default:
         return "/T${EnvironmentConfig.template_version}";
     }

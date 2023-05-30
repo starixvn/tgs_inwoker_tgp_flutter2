@@ -19,6 +19,8 @@
   "login_or_signup": "Đăng nhập / Đăng ký",
   "profile_detail": "Hồ sơ cá nhân",
   "home_login_hint": "Xin chào, người dùng thân mến, vui lòng đăng nhập ...",
+  "home_login_hint2": "Bạn không đăng nhập",
+  "home_login_hint3": "Đăng nhập để xem",
   "welcome_back": "Chào mừng bạn trở lại, ",
   "main_wallet": "Ví Trung tâm",
   "manage_card": "Quản lý thẻ ngân hàng",

@@ -20,6 +20,8 @@
   "login_or_signup": "Masuk/Daftar",
   "profile_detail": "Info Pribadi",
   "home_login_hint": "Halo, pengguna yang terhormat, silakan masuk...",
+  "home_login_hint2": "Anda belum masuk!",
+  "home_login_hint3": "Masuk untuk melihat",
   "welcome_back": "Selamat datang kembali, ",
   "main_wallet": "Akun Utama",
   "manage_card": "Manajemen Bank",

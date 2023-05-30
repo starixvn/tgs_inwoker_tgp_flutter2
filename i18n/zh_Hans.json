@@ -19,6 +19,8 @@
   "login_or_signup": "登录/注册",
   "profile_detail": "个人资料",
   "home_login_hint": "亲爱的用户您好，请登录...",
+  "home_login_hint2": "您还未登录!",
+  "home_login_hint3": "登录后查看",
   "welcome_back": "欢迎您回来, ",
   "main_wallet": "中心钱包",
   "manage_card": "管理银行卡",

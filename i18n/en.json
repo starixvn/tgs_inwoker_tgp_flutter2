@@ -21,6 +21,8 @@
   "login_or_signup": "Login/Register",
   "profile_detail": "Personal Info",
   "home_login_hint": "Dear user，please Login...",
+  "home_login_hint2": "You are not logged in!",
+  "home_login_hint3": "Login to view",
   "welcome_back": "Welcome back, ",
   "main_wallet": "Main Account",
   "manage_card": "Bank Management",

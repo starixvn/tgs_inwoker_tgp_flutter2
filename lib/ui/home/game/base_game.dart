@@ -14,6 +14,7 @@ import 'package:tgp_flutter2/ui/home/game/game_t1/game_item_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t1/game_t1.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t10/game_t10.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t11/game_t11.dart';
+import 'package:tgp_flutter2/ui/home/game/game_t15/game_t15.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t2/game_t2.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t8/game_t8.dart';
@@ -168,6 +169,17 @@ class _BaseGameState extends BaseState<BaseGame> {
           onGameClick: (gameProvider) => _onGameClick(gameProvider),
           onClickGameTab: (value) => widget.onClickGameTab!(value),
           onClickChildGame: (game) => _navigateToChildGameWeb(game),
+        );
+      case 15:
+        return GameT15(
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              ? widget.onResumeBgMusic!()
+              : null,
+          onPauseBgMusic: () =>
+          (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          vm: widget.vm,
+          onRefreshHomePage: () => widget.onRefreshHomePage,
+          onGameClick: (gameProvider) => _onGameClick(gameProvider),
         );
       default:
         return GameT1(
