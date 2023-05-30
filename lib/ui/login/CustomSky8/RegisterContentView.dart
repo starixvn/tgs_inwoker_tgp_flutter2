@@ -54,9 +54,10 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
   String? display;
   void onChanged() {
     setState(() {
-    _isTermsChecked = !_isTermsChecked;
+      _isTermsChecked = !_isTermsChecked;
     });
   }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -76,7 +77,19 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         builder: (ctx, vm, _) {
           _handleApiState();
           return _isShowSmsVerification() && _isRegisterSuccess
-              ? PhoneReVerification(vm: vm)
+              ? Container(
+                  child: Row(children: [
+                    _categoryButtonView(),
+                    Expanded(
+                        child: Column(
+                      children: [
+                        _titleView(getTranslatedText("phone_verification_title")
+                            .toString()),
+                        Expanded(child: PhoneReVerification(vm: vm))
+                      ],
+                    ))
+                  ]),
+                )
               : Container(
                   child: Row(
                   children: [
@@ -84,7 +97,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                     Expanded(
                       child: Column(
                         children: [
-                          _titleView(),
+                          _titleView(getTranslatedText("register").toString()),
                           _buildUsernameTextFormField(),
                           _buildPasswordTextFormField(),
                           _buildConfirmPasswordTextFormField(),
@@ -102,18 +115,18 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         });
   }
 
-  _titleView() => Container(
+  _titleView(String title) => Container(
       height: 60,
       // margin: EdgeInsets.only(bottom: 5),
       child: Center(
-          child: Text(getTranslatedText("register"),
+          child: Text(title,
               style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                   fontWeight: FontWeight.bold))));
 
   _categoryButtonView() {
-    var text = "会员登录";
+    var text = getTranslatedText('login_member').toString(); //"会员登录";
     return GestureDetector(
         onTap: () {
           widget.onPressed();
@@ -145,15 +158,10 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                 ))));
   }
 
-  _buildUsernameTextFormField() =>
-      Container(
-          margin: EdgeInsets.only(
-              left: 10.auto,
-              right: 10.auto,
-              bottom: 8.auto,
-              top: 10.auto),
-      child:
-      LoginTextFormField(
+  _buildUsernameTextFormField() => Container(
+      margin: EdgeInsets.only(
+          left: 10.auto, right: 10.auto, bottom: 8.auto, top: 10.auto),
+      child: LoginTextFormField(
         icon: Image.asset(
           "images/login/Sky8/icon-user.png",
           width: 20.auto,
@@ -269,11 +277,11 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
     });
   }
 
-  _buildPromotionCodeTextFormField() =>
-      Visibility(
+  _buildPromotionCodeTextFormField() => Visibility(
         visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
         child: Container(
-          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+          margin:
+              EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
           child: LoginTextFormField(
               //icon: Container(),
               // EnvironmentConfig.template_version == 11
@@ -333,7 +341,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
       );
 
   _buildRegisterButton() => Container(
-        margin: EdgeInsets.only(left: 25.auto, right: 25.auto, bottom: 10.auto, top: 10.auto),
+        margin: EdgeInsets.only(
+            left: 25.auto, right: 25.auto, bottom: 10.auto, top: 10.auto),
         child: ColorButton(
           title: getTranslatedText(_customFlowForIDR() ? "next" : "register"),
           height: 37.5.auto,
@@ -346,13 +355,18 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
       );
 
   _buildRegisterTermsText() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(
+            left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
         child: Row(
           children: [
-            Container(width: 35,child: CustomCheckbox(
-                checkColor: Colors.white,
-                iconSize: 15.0,
-                onChanged: () => onChanged()),),
+            Container(
+              width: 35,
+              child: CustomCheckbox(
+                  checkColor: Colors.white,
+                  isChecked: true,
+                  iconSize: 15.0,
+                  onChanged: () => onChanged()),
+            ),
             // Expanded(
             //   flex: 1,
             //   child:  ,
@@ -376,7 +390,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors.white,//CustomColor.theme_text_black_white_color,
+                    color: Colors
+                        .white, //CustomColor.theme_text_black_white_color,
                     fontSize: calculateFontSize(60)),
               ),
             ),

@@ -32,7 +32,8 @@ class LoginPhoneTextFormField extends StatefulWidget {
   });
 
   @override
-  _LoginPhoneTextFormFieldState createState() => _LoginPhoneTextFormFieldState();
+  _LoginPhoneTextFormFieldState createState() =>
+      _LoginPhoneTextFormFieldState();
 }
 
 class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
@@ -46,9 +47,17 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
           height: 40.auto,
           padding: EdgeInsets.symmetric(horizontal: 10.auto),
           decoration: BoxDecoration(
-            color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+            color: EnvironmentConfig.template_version == 11
+                ? CustomColor.theme_button_color
+                : EnvironmentConfig.template_version == 15
+                    ? Colors.black.withOpacity(0.44)
+                    : Colors.white,
             borderRadius: BorderRadius.circular(
-              EnvironmentConfig.template_version == 11 ? 25 : 2,
+              EnvironmentConfig.template_version == 11
+                  ? 25
+                  : EnvironmentConfig.template_version == 15
+                      ? 10
+                      : 2,
             ),
           ),
           child: InkWell(
@@ -62,7 +71,11 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
                 children: [
                   Text(
                     widget.displayedAreaCode ?? "", //?? areaCodeList.first,
-                    style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
+                    style: TextStyle(
+                        color: EnvironmentConfig.template_version == 15
+                            ? Colors.white
+                            : CustomColor.theme_text_black_color,
+                        fontSize: 13.auto),
                     maxLines: 1,
                   ),
                   Icon(
@@ -80,9 +93,17 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
           margin: EdgeInsets.only(left: 5.auto),
           padding: EdgeInsets.symmetric(horizontal: 10.auto),
           decoration: BoxDecoration(
-            color: EnvironmentConfig.template_version == 11 ? CustomColor.theme_button_color : Colors.white,
+            color: EnvironmentConfig.template_version == 11
+                ? CustomColor.theme_button_color
+                : EnvironmentConfig.template_version == 15
+                    ? Colors.black.withOpacity(0.44)
+                    : Colors.white,
             borderRadius: BorderRadius.circular(
-              EnvironmentConfig.template_version == 11 ? 25 : 2,
+              EnvironmentConfig.template_version == 11
+                  ? 25
+                  : EnvironmentConfig.template_version == 15
+                      ? 10
+                      : 2,
             ),
           ),
           alignment: Alignment.center,
@@ -93,13 +114,19 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
             onFieldSubmitted: (value) => widget.onChanged(value),
             keyboardType: TextInputType.phone,
             textInputAction: widget.textInputAction,
-            style: TextStyle(fontSize: 13.auto, color: EnvironmentConfig.template_version == 11 ? Colors.white : Colors.black),
+            style: TextStyle(
+                fontSize: 13.auto,
+                color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
+                    ? Colors.white
+                    : Colors.black),
             decoration: InputDecoration(
               isDense: true,
               border: InputBorder.none,
               hintText: getTranslatedText("enter_phone_hint"),
               hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11 ? Colors.white.withOpacity(0.5) : CustomColor.very_light_pink_two,
+                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
+                      ? Colors.white.withOpacity(0.5)
+                      : CustomColor.very_light_pink_two,
                   fontSize: 13.auto),
               counterText: '',
               counterStyle: TextStyle(fontSize: 0),

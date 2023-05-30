@@ -75,7 +75,7 @@ class _LoginPasswordTextFormFieldState
               obscureText: widget.obscurePassword,
               style: TextStyle(
                   fontSize: 13.auto,
-                  color: EnvironmentConfig.template_version == 11
+                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
                       ? Colors.white
                       : Colors.black),
               decoration: InputDecoration(
@@ -84,7 +84,7 @@ class _LoginPasswordTextFormFieldState
                 border: InputBorder.none,
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11
+                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
                       ? Colors.white.withOpacity(0.5)
                       : CustomColor.very_light_pink_two,
                   fontSize: 13.auto,

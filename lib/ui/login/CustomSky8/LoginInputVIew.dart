@@ -32,12 +32,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
   TabController? tabController;
   var tab = [];
   LoginViewModel _vm = LoginViewModel();
-  final List<String> sponsorTitleList = [
-    'Liverpool',
-    'Fiorentina',
-    'Real Sociedad',
-    'Lyon',
-    'Schalke 04'
+  List<String> sponsorTitleList = [
   ];
 
   // final List<String> sponsorDescList = [
@@ -70,6 +65,24 @@ class _LoginInputViewState extends BaseState<LoginInputView>
       {"id": "0", "text": "login"},
       {"id": "1", "text": "register"}
     ];
+
+
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    // Provider.of<>(context)
+    super.didChangeDependencies();
+    setState(() {
+      sponsorTitleList = [
+        getTranslatedText("sponsor_liver").toString(),
+        getTranslatedText("sponsor_fioren").toString(),
+        getTranslatedText("sponsor_real").toString(),
+        getTranslatedText("sponsor_lyon").toString(),
+        getTranslatedText("sponsor_schal").toString(),
+      ];
+    });
   }
 
   @override
@@ -152,7 +165,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
             Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
                 child: Text(
-                  'Sponsor',
+                  getTranslatedText("sponsor_title"),
                   style: TextStyle(
                       color: Colors
                           .white, //CustomColor.theme_text_black_white_color,
@@ -210,7 +223,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
                                       Expanded(
                                           child: FittedBox( alignment: Alignment.topCenter,
                                               child: Text(
-                                                  'Official Asian Partner',
+                                                  getTranslatedText("sponsor_desc"),
                                                   textAlign: TextAlign.center,
                                                   maxLines: 1,
                                                   style: TextStyle(

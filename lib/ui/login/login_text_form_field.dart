@@ -68,7 +68,7 @@ class LoginTextFormField extends StatelessWidget {
               textInputAction: textInputAction,
               style: TextStyle(
                   fontSize: 13.auto,
-                  color: EnvironmentConfig.template_version == 11
+                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
                       ? Colors.white
                       : Colors.black),
               decoration: InputDecoration(
@@ -76,7 +76,7 @@ class LoginTextFormField extends StatelessWidget {
                 border: InputBorder.none,
                 hintText: hintText,
                 hintStyle: TextStyle(
-                  color: EnvironmentConfig.template_version == 11
+                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
                       ? Colors.white.withOpacity(0.5)
                       : CustomColor.very_light_pink_two,
                   fontSize: 13.auto,

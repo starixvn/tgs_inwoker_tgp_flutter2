@@ -1161,5 +1161,18 @@
   "deposit_dialog_status": "狀態: ",
   "deposit_dialog_waiting": "待支付",
   "deposit_dialog_success": "成功",
-  "deposit_dialog_rejected": "已拒絕"
+  "deposit_dialog_rejected": "已拒絕",
+
+  "login_member": "会员登錄",
+  "register_member": "會員註冊",
+  "phone_verification_title": "手機驗證",
+  "email_verification_title": "郵箱驗證",
+
+  "sponsor_liver": "利物浦",
+  "sponsor_fioren": "費倫天拿",
+  "sponsor_real": "皇家蘇斯達",
+  "sponsor_lyon": "里昂",
+  "sponsor_schal": "史浩克04",
+  "sponsor_desc": "亞洲官方合作夥伴",
+  "sponsor_title": "贊助"
 }

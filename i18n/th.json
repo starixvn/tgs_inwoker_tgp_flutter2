@@ -1160,5 +1160,18 @@
   "deposit_dialog_status": "สถานะ: ",
   "deposit_dialog_waiting": "รอการชำระเงิน",
   "deposit_dialog_success": "สำเร็จ",
-  "deposit_dialog_rejected": "ถูกปฏิเสธ"
+  "deposit_dialog_rejected": "ถูกปฏิเสธ",
+
+  "login_member": "เข้าสู่ระบบสมาชิก",
+  "register_member": "ลงชื่อ",
+  "phone_verification_title": "การยืนยันทางโทรศัพท์",
+  "email_verification_title": "การยืนยันอีเมล",
+
+  "sponsor_liver": "Liverpool",
+  "sponsor_fioren": "Fiorentina",
+  "sponsor_real": "Real Sociedad",
+  "sponsor_lyon": "Lyon",
+  "sponsor_schal": "Schalke 04",
+  "sponsor_desc": "Official Asian Partner",
+  "sponsor_title": "Sponsor"
 }

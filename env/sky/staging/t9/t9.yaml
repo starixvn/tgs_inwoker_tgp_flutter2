@@ -39,7 +39,7 @@ environment_config:
       default: 0xffFFFFFF
     theme_button_color:
       type: int
-      default: 0xff6589F7
+      default: 0xffceb296 #0xff6589F7
     theme_grey_button_color:
       type: int
       default: 0xff828282

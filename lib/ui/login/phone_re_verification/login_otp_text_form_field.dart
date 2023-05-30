@@ -6,6 +6,8 @@ import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
+import '../../../environment_config.dart';
+
 class LoginOtpTextFormField extends StatefulWidget {
   final String hintText;
   final ValueChanged<String> onChanged;
@@ -45,19 +47,26 @@ class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
             margin: EdgeInsets.only(right: 5.auto),
             padding: EdgeInsets.symmetric(horizontal: 10.auto),
             decoration: BoxDecoration(
-                color: Colors.white, border: Border.all(color: CustomColor.very_light_pink_two, width: 2)),
+                color: EnvironmentConfig.template_version == 15
+                    ? Colors.black.withOpacity(0.44)
+                    : Colors.white,
+                border: Border.all(
+                    color: EnvironmentConfig.template_version == 15 ? Colors.transparent : CustomColor.very_light_pink_two, width: 2)),
             child: TextFormField(
               autofocus: false,
               onChanged: (value) => widget.onChanged(value),
               controller: widget.controller,
               keyboardType: TextInputType.text,
               textInputAction: widget.textInputAction,
-              style: TextStyle(color: CustomColor.theme_text_black_color, fontSize: 13.auto),
+              style: TextStyle(
+                  color: EnvironmentConfig.template_version == 15 ? Colors.white : CustomColor.theme_text_black_color, fontSize: 13.auto),
               decoration: InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
                 hintText: widget.hintText,
-                hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                hintStyle: TextStyle(
+                    color:  EnvironmentConfig.template_version == 15
+                        ? Colors.white.withOpacity(0.5) : CustomColor.very_light_pink_two, fontSize: 13.auto),
               ),
               enabled: widget.isEnabled,
             ),
@@ -69,7 +78,9 @@ class _LoginOtpTextFormFieldState extends BaseState<LoginOtpTextFormField> {
             title: widget.isCountdown
                 ? "${getTranslatedText("retry_otp")} (${_start}s)"
                 : getTranslatedText("request_otp"),
-            onClick: () => widget.isEnabled && !widget.isCountdown ? widget.getOtpCode() : null,
+            onClick: () => widget.isEnabled && !widget.isCountdown
+                ? widget.getOtpCode()
+                : null,
             width: 86.auto,
             height: 40.auto,
             isEnabled: widget.isEnabled,

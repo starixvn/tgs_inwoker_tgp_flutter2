@@ -10,6 +10,7 @@ import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/otp_text_form_field.dart';
 import 'package:tgp_flutter2/custom/phone_text_form_field.dart';
 import 'package:api/data/provider/input_validation_provider.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -34,14 +35,18 @@ class PhoneReVerification extends StatefulWidget {
   _PhoneReVerificationState createState() => _PhoneReVerificationState();
 }
 
-class _PhoneReVerificationState extends BaseState<PhoneReVerification> with AutomaticKeepAliveClientMixin {
+class _PhoneReVerificationState extends BaseState<PhoneReVerification>
+    with AutomaticKeepAliveClientMixin {
   var _vm;
 
   TextEditingController _phoneController = TextEditingController(),
       _otpController = TextEditingController(),
       _usernameController = TextEditingController(),
       _passwordController = TextEditingController();
-  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
+  var isButtonEnabled = false,
+      isOtpEnabled = false,
+      isTextFieldEnabled = false,
+      isOtpCountdown = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
   bool _obscurePassword = true;
@@ -91,7 +96,10 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
   }
 
   _buildPhoneTextFormField() => Container(
-        margin: EdgeInsets.only(top: 15.auto),
+        margin: EnvironmentConfig.template_version == 15
+            ? EdgeInsets.only(
+                left: 10.auto, right: 10.auto, bottom: 10.auto, top: 15.auto)
+            : EdgeInsets.only(top: 15.auto),
         child: LoginPhoneTextFormField(
           onChanged: (value) => _onTextChange(),
           onFieldSubmitted: (value) {},
@@ -101,7 +109,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
           enabled: isTextFieldEnabled,
           onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
           displayedAreaCode: display,
-          maxLength:  _vm.config?.maxPhoneLength??10,
+          maxLength: _vm.config?.maxPhoneLength ?? 10,
         ),
       );
 
@@ -115,7 +123,10 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
   _buildOtpTextFormField() => Visibility(
         visible: true,
         child: Container(
-          margin: EdgeInsets.only(top: 15.auto),
+          margin: EnvironmentConfig.template_version == 15
+              ? EdgeInsets.only(
+                  left: 10.auto, right: 10.auto, bottom: 10.auto, top: 0.auto)
+              : EdgeInsets.only(top: 15.auto),
           child: LoginOtpTextFormField(
               hintText: getTranslatedText("enter_phone_otp_hint"),
               onChanged: (value) => _onTextChange(),
@@ -136,14 +147,17 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   _buildButton() => Container(
       width: context.screenWidth,
-      margin: EdgeInsets.only(top: 30.auto, bottom: 20.auto),
+      margin: EnvironmentConfig.template_version == 15
+          ? EdgeInsets.only(
+              top: 30.auto, bottom: 20.auto, left: 25.auto, right: 25.auto)
+          : EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         title: getTranslatedText("submit"),
         onClick: () {
           _onClick();
         },
         isEnabled: isButtonEnabled,
-        radius: 9.6,
+        radius: EnvironmentConfig.template_version == 15 ? 20 : 9.6,
       ));
 
   _onTextChange() {
@@ -166,7 +180,8 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    } else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
+    } else if (!validate.validateAreaCodeAndPhone(
+        display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
@@ -202,7 +217,8 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          RoutePath.myHome, (Route<dynamic> route) => false);
     });
   }
 

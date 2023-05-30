@@ -1175,5 +1175,18 @@
   "deposit_dialog_status": "Status: ",
   "deposit_dialog_waiting": "Waiting",
   "deposit_dialog_success": "Success",
-  "deposit_dialog_rejected": "Rejected"
+  "deposit_dialog_rejected": "Rejected",
+
+  "login_member": "Member Login",
+  "register_member": "Member Register",
+  "phone_verification_title": "Phone Verification",
+  "email_verification_title": "Email Verification",
+
+  "sponsor_liver": "Liverpool",
+  "sponsor_fioren": "Fiorentina",
+  "sponsor_real": "Real Sociedad",
+  "sponsor_lyon": "Lyon",
+  "sponsor_schal": "Schalke 04",
+  "sponsor_desc": "Official Asian Partner",
+  "sponsor_title": "Sponsor"
 }

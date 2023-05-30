@@ -1161,5 +1161,18 @@
   "deposit_dialog_status": "Trạng thái: ",
   "deposit_dialog_waiting": "Đang chờ thanh toán",
   "deposit_dialog_success": "Thành công",
-  "deposit_dialog_rejected": "Bị từ chối"
+  "deposit_dialog_rejected": "Bị từ chối",
+
+  "login_member": "Đăng nhập thành viên",
+  "register_member": "Đăng ký",
+  "phone_verification_title": "xác minh điện thoại",
+  "email_verification_title": "Email xác thực",
+
+  "sponsor_liver": "Liverpool",
+  "sponsor_fioren": "Fiorentina",
+  "sponsor_real": "Real Sociedad",
+  "sponsor_lyon": "Lyon",
+  "sponsor_schal": "Schalke 04",
+  "sponsor_desc": "Official Asian Partner",
+  "sponsor_title": "Sponsor"
 }

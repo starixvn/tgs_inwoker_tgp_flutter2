@@ -1162,5 +1162,18 @@
   "deposit_dialog_status": "Status: ",
   "deposit_dialog_waiting": "Menunggu",
   "deposit_dialog_success": "Success",
-  "deposit_dialog_rejected": "Ditolak"
+  "deposit_dialog_rejected": "Ditolak",
+
+  "login_member": "Login Anggota",
+  "register_member": "Mendaftar",
+  "phone_verification_title": "Verifikasi telepon",
+  "email_verification_title": "Verifikasi email",
+
+  "sponsor_liver": "Liverpool",
+  "sponsor_fioren": "Fiorentina",
+  "sponsor_real": "Real Sociedad",
+  "sponsor_lyon": "Lyon",
+  "sponsor_schal": "Schalke 04",
+  "sponsor_desc": "Official Asian Partner",
+  "sponsor_title": "Sponsor"
 }
