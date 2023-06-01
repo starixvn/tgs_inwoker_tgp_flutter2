@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -28,6 +29,8 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
       this.totalBalance,
       this.brandName,
       this.onClickBalance,
+      this.onPauseMusic,
+      this.onResumeMusic,
       required this.randomNumber});
 
   final Function onClickLoginButton;
@@ -41,6 +44,8 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final double? totalBalance;
   final String? brandName;
   final Function? onClickBalance;
+  final Function? onPauseMusic;
+  final Function? onResumeMusic;
   final int randomNumber;
 
   @override
@@ -167,10 +172,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         margin: EdgeInsets.only(right: 5.auto),
         width: 70.auto,
         child: Row(
-          children: [
-            _getMediaActionButton(true),
-            _getMediaActionButton(false)
-          ],
+          children: [_getMediaActionButton(true), _getMediaActionButton(false)],
         ),
       );
 
@@ -201,7 +203,8 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       : Container(
           height: EnvironmentConfig.template_version == 15 ? 50.0 : 100.0,
           alignment: Alignment.center,
-          margin: EdgeInsets.only(left: EnvironmentConfig.template_version == 15 ? 10 : 0),
+          margin: EdgeInsets.only(
+              left: EnvironmentConfig.template_version == 15 ? 10 : 0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +246,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           "${getTranslatedText("online_user")} : ${widget.randomNumber}",
           textAlign: TextAlign.right,
           style: TextStyle(
-            color: EnvironmentConfig.template_version == 15 ? CustomColor.theme_button_color : Colors.white,
+            color: EnvironmentConfig.template_version == 15
+                ? CustomColor.theme_button_color
+                : Colors.white,
             fontSize: 10.auto,
             fontWeight: FontWeight.bold,
           ),
@@ -591,23 +596,32 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   }
 
   _getMediaActionButton(bool play) => InkWell(
-    onTap: () => print(""),
-    child: Container(
-      width: 35.auto,
-      height: 35.auto,
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(10),
-      //   color: CustomColor.theme_button_color,
-      // ),
-      alignment: Alignment.center,
-      padding: EdgeInsets.all(1),
-      child: Image.asset(
-        "images/audio/${play ? "play" : "pause"}.png",
-        matchTextDirection: true,
-        height: 22.5.auto,
-      ),
-    ),
-  );
+        onTap: () {
+          if (play) {
+            GlobalValueUtil.playerStatus = AssetPlayerStatus.normal;
+            widget.onResumeMusic!();
+          } else {
+            GlobalValueUtil.playerStatus = AssetPlayerStatus.manualClickPause;
+            widget.onPauseMusic!();
+          }
+        },
+        splashColor: Colors.transparent,
+        child: Container(
+          width: 35.auto,
+          height: 35.auto,
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(10),
+          //   color: CustomColor.theme_button_color,
+          // ),
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(1),
+          child: Image.asset(
+            "images/audio/${play ? "play" : "pause"}.png",
+            matchTextDirection: true,
+            height: 22.5.auto,
+          ),
+        ),
+      );
 
   _isDarkMode() => ((EnvironmentConfig.template_version == 8 ||
           EnvironmentConfig.template_version == 9) &&

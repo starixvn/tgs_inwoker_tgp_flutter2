@@ -109,6 +109,8 @@ flutter:
     - images/bottom_nav_bar/T2/
     - images/bottom_nav_bar/T11/
     - images/bottom_nav_bar/T15/
+    - images/bottom_nav_bar/T15/ic_withdraw.png
+    - images/bottom_nav_bar/T15/ic_withdraw-selected.png
     - images/home/
     - images/home/T2/
     - images/home/T11/

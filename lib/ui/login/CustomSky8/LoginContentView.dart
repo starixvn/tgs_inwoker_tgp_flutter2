@@ -71,7 +71,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Container(
+          return Expanded(
               child: Row(
             children: [
               Expanded(
@@ -120,7 +120,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             // color: isRegister ? Colors.blueAccent : Colors.cyanAccent,
-            width: 45,
+            width: 37.5.auto,
             height: double.infinity,
             child: Align(
                 alignment: Alignment.center,
@@ -130,7 +130,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
                         child: Text(
                           text,
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.auto,
                               color: Colors.white,
                               fontWeight: FontWeight.bold),
                         ) //your text
@@ -151,12 +151,12 @@ class _LoginContentViewState extends BaseState<LoginContentView>
   }
 
   _titleView() => Container(
-      height: 60,
+      height: 60.auto,
       // margin: EdgeInsets.only(bottom: 5),
       child: Center(
           child: Text(getTranslatedText("login"),
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.auto,
                   color: Colors.white,
                   fontWeight: FontWeight.bold))));
 
@@ -277,7 +277,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
       );
 
   _buildLoginLaterButton() => Container(
-      height: 35,
+      height: 35.auto,
       child: ColorButton(
         // height: 30,
         title: getTranslatedText("login_later"),

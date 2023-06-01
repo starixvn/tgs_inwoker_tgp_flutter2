@@ -9,7 +9,14 @@ import 'package:tgp_flutter2/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class Promotion extends StatefulWidget {
+
+  final Function? onPauseBgMusic;
+  final Function? onResumeBgMusic;
+
+  Promotion({this.onResumeBgMusic, this.onPauseBgMusic});
   @override
   _PromotionState createState() => _PromotionState();
 }
@@ -25,11 +32,14 @@ class _PromotionState extends BaseState<Promotion> {
   @override
   void initState() {
     _vm.getPromotionList();
+    if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
     super.initState();
   }
 
   @override
   void dispose() {
+    GlobalValueUtil.playerStatus = AssetPlayerStatus.returnHome;
+    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.dispose();
   }
 

@@ -45,7 +45,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_deposit_report", "deposit_history", "transaction", 2),
           _buildMiddleProfileItem("ic_transfer_report", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_transfer_report", "balanceChangeRecords", "transaction", 5),
-          _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
+          EnvironmentConfig.template_version == 15 ? Container() : _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.haveAffiliate ?? false) ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0) : Container(),
           //  _buildMiddleProfileItem(
           //      "ic_account_report", "promotion_history", "transaction", 4),

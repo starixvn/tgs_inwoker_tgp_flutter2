@@ -57,6 +57,7 @@ class _CustomPickerDialogState extends BaseState<CustomPickerDialog> {
             children: List.generate(widget.list.length, (index) {
               if (widget.title != "promotion_picker") {
                 return ListTile(
+                  textColor: EnvironmentConfig.template_version == 15 ? Colors.white : ListTile().textColor,
                   title: _getPickerItem(index),
                   onTap: () {
                     widget.onChanged(widget.list[index]);

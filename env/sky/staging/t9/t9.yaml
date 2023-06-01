@@ -45,7 +45,7 @@ environment_config:
       default: 0xff828282
     theme_bg_color:
       type: int
-      default: 0xffF0EFF5
+      default: 0xff3c3c3c #F0EFF5
     theme_app_bar_icon_color:
       type: int
       default: 0xff707070
@@ -54,7 +54,7 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xff6589F7
+      default: 0xffceb296 #6589F7
     tab_unselected_color:
       type: int
       default: 0xff707070
@@ -72,22 +72,22 @@ environment_config:
       default: 0xff616161
     theme_text_black_color:
       type: int
-      default: 0xff4B4B4B
+      default: 0xffceb296 #4B4B4B
     theme_text_black_white_color:
       type: int
-      default: 0xff4B4B4B
+      default: 0xffceb296 #4B4B4B
     theme_text_grey_color:
       type: int
       default: 0xff707070
     theme_text_grey_white_color:
       type: int
-      default: 0xff707070
+      default: 0xffceb296 #707070
     theme_app_bar_text_color:
       type: int
       default: 0xffceb296 #000000
     theme_marquee_text_color:
       type: int
-      default: 0xff707070
+      default: 0xffceb296 #707070
     announcement_icon_color:
       type: int
       default: 0xffceb296 #6589F7

@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iphone_has_notch/iphone_has_notch.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/MyRouteObserver.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main_view_model.dart';
@@ -90,7 +92,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   var langList;
   var _vm = MainViewModel();
   var firstInit = true;
-  var _assetsAudioPlayer;
+  // var _assetsAudioPlayer;
 
   setLocale(Locale locale) {
     setState(() {
@@ -143,6 +145,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       _getAssetsAudioPlayer();
       return _vm.getLanguageApiState;
     } else
+      // _getAssetsAudioPlayer();
       return EventResult.loading();
   }
 
@@ -156,7 +159,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+    // _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
     super.initState();
   }
 
@@ -167,21 +170,32 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _assetsAudioPlayer.play();
+      if (EnvironmentConfig.template_version == 15) {
+        if (GlobalValueUtil.playerStatus !=
+            AssetPlayerStatus.manualClickPause) {
+          GlobalValueUtil.assetsAudioPlayer.play();
+        }
+      } else {
+        GlobalValueUtil.assetsAudioPlayer.play();
+      }
     } else {
-      _assetsAudioPlayer.pause();
+      GlobalValueUtil.assetsAudioPlayer.pause();
     }
   }
 
   _getAssetsAudioPlayer() {
-    if (_vm.config?.backgroundMusic ?? false) {
-      _assetsAudioPlayer.open(
+    if (_vm.config?.backgroundMusic ??
+        false || EnvironmentConfig.template_version == 15) {
+      // GlobalValueUtil.assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+      GlobalValueUtil.assetsAudioPlayer.open(
         Playlist(audios: [
-          Audio("audio/caishendao.mp3"),
+          Audio(
+              "audio/${EnvironmentConfig.template_version == 15 ? "sky8BgMusic.mp3" : "caishendao.mp3"}"),
         ]),
         loopMode: LoopMode.playlist, //loop the full playlist
       );
-      _assetsAudioPlayer.pause();
+      print("diuneiiss");
+      GlobalValueUtil.assetsAudioPlayer.pause();
     }
     WidgetsBinding.instance.addObserver(this);
   }
@@ -189,6 +203,11 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     _handleApiState();
+    // if (GlobalValueUtil.playerStatus == AssetPlayerStatus.returnHome){
+    //   _assetsAudioPlayer.play();
+    // }else {
+    //   _assetsAudioPlayer.pause();
+    // }
     return FutureBuilder(
         future: initData(),
         builder: (BuildContext context,
@@ -206,6 +225,11 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 }
               },
               child: MaterialApp(
+                navigatorObservers: [routeObserver],
+                theme: ThemeData(
+                    canvasColor: EnvironmentConfig.template_version == 15
+                        ? CustomColor.theme_bg_color
+                        : Colors.white),
                 debugShowCheckedModeBanner: false,
                 title: appTitle,
                 initialRoute: snapshot.data!.isMaintenance
@@ -215,8 +239,8 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.myHome: (context) => MyHomePage(
                         versionUpdate: _vm.versionUpdateState,
                         isFirstRun: true,
-                        onPauseBgMusic: () => _assetsAudioPlayer.pause(),
-                        onResumeBgMusic: () => _assetsAudioPlayer.play(),
+                        onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
+                        onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
                       ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
@@ -224,15 +248,22 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.transaction: (context) => ReportView(),
                   RoutePath.login: (context) =>
                       EnvironmentConfig.template_version == 15
-                          ? LoginTemplate02()
+                          ? LoginTemplate02(
+                              onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
+                              onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
+                            )
                           : Login(),
                   RoutePath.register: (context) =>
                       EnvironmentConfig.template_version == 15
-                          ? LoginTemplate02(defaultRegisterTab: true)
+                          ? LoginTemplate02(
+                              defaultRegisterTab: true,
+                              onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
+                              onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
+                            )
                           : Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(
-                        onResumeBgMusic: () => _assetsAudioPlayer.play(),
+                        onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
                       ),
                   RoutePath.splashMaintenance: (context) => Maintenance(
                         isShowCS: true,
@@ -254,7 +285,10 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.realNameVerification: (context) =>
                       RealNameVerification(),
                   RoutePath.profileInfo: (context) => ProfileInfo(),
-                  RoutePath.promotion: (context) => Promotion(),
+                  RoutePath.promotion: (context) => Promotion(
+                        onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
+                        onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
+                      ),
                   RoutePath.walletTransfer: (context) => WalletTransfer(),
                   RoutePath.menu: (context) => Menu(),
                   RoutePath.deposit: (context) => Deposit(),
@@ -335,7 +369,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends BaseState<MyHomePage> {
+class _MyHomePageState extends BaseState<MyHomePage>
+    with WidgetsBindingObserver {
   int currentBottomIndex = 0;
   List _page = [];
   var isMenu = false;
@@ -348,17 +383,58 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     });
   }
 
+  // _getAssetsAudioPlayer() {
+  //   if (_vm.config?.backgroundMusic ??
+  //       false || EnvironmentConfig.template_version == 15) {
+  //     this.assetsAudioPlayer.open(
+  //       Playlist(audios: [
+  //         Audio(
+  //             "audio/${EnvironmentConfig.template_version == 15 ? "sky8BgMusic.mp3" : "caishendao.mp3"}"),
+  //       ]),
+  //       loopMode: LoopMode.playlist, //loop the full playlist
+  //     );
+  //     print("diuneiiss");
+  //     assetsAudioPlayer.pause();
+  //   }
+  //   WidgetsBinding.instance.addObserver(this);
+  // }
+
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     if (EnvironmentConfig.template_version == 15) {
+  //       if (GlobalValueUtil.playerStatus !=
+  //           AssetPlayerStatus.manualClickPause) {
+  //         assetsAudioPlayer.play();
+  //       }
+  //     } else {
+  //       assetsAudioPlayer.play();
+  //     }
+  //   } else {
+  //     assetsAudioPlayer.pause();
+  //   }
+  // }
+
   @override
   void initState() {
     if (widget.versionUpdate != null) {
       Future.delayed(Duration.zero,
           () => _showNewVersionUpdateDialog(widget.versionUpdate));
     }
-
+    GlobalValueUtil.assetsAudioPlayer.stop();
+    GlobalValueUtil.assetsAudioPlayer.play();
+    // assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+    // _getAssetsAudioPlayer();
     if (widget.index != null) currentBottomIndex = widget.index!;
     _page = EnvironmentConfig.template_version != 11
         ? [
-            Home(),
+            Home(
+              // onPauseBgMusic: () => (widget.onPauseBgMusic != null)
+              //     ? widget.onPauseBgMusic!()
+              //     : null,
+              // onResumeBgMusic: () => (widget.onResumeBgMusic != null)
+              //     ? widget.onResumeBgMusic!()
+              //     : null,
+            ),
             Promotion(),
             EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
             CustomerService(),
@@ -374,7 +450,9 @@ class _MyHomePageState extends BaseState<MyHomePage> {
             Withdraw(),
             Profile(),
           ];
-    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    print("masukkkk11");
+    // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    // if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
     if (EnvironmentConfig.brandName.toLowerCase().contains("idr"))
       _initWebSocket();
     super.initState();
@@ -409,7 +487,7 @@ class _MyHomePageState extends BaseState<MyHomePage> {
       child: Stack(
         children: [
           Scaffold(
-            extendBody: true,
+            extendBody: false,
             body: Stack(
               children: [
                 Center(
@@ -451,28 +529,27 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                       child: _buildBottomAppBarRow(),
                     )),
                   )
-                : EnvironmentConfig.template_version == 15 ?
-            Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                  color: Colors.white
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  ),
-                  child:  BottomAppBar(
-                    color: Colors.white,
-                    child: _buildBottomAppBarRow(),
-                  ),
-                )
-            )
-                : BottomAppBar(
-                    color: CustomColor.theme_bottom_app_bar_color,
-                    child: _buildBottomAppBarRow(),
-                  ),
+                : EnvironmentConfig.template_version == 15
+                    ? Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                            color: Colors.white),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0),
+                          ),
+                          child: BottomAppBar(
+                            color: Colors.white,
+                            child: _buildBottomAppBarRow(),
+                          ),
+                        ))
+                    : BottomAppBar(
+                        color: CustomColor.theme_bottom_app_bar_color,
+                        child: _buildBottomAppBarRow(),
+                      ),
           ),
           /*Positioned(
                 bottom: context.screenWidth / 7 + (IphoneHasNotch.hasNotch ? 20 : 0),
@@ -497,27 +574,43 @@ class _MyHomePageState extends BaseState<MyHomePage> {
     );
   }
 
+  _getCustomThirdPositionItem() => EnvironmentConfig.template_version == 2
+      ? _buildBottomBarItem(2, "ic_menu", "")
+      : _buildBottomBarItem(
+          2,
+          "ic_deposit",
+          (EnvironmentConfig.template_version == 11 ||
+                  EnvironmentConfig.template_version == 15)
+              ? "deposit"
+              : "wallet",
+          isNeedLogin: true);
+
+  _getCustomFourthPositionItem() => EnvironmentConfig.template_version != 11 &&
+          EnvironmentConfig.template_version != 15
+      ? SizedBox.shrink()
+      : _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true);
+
   _buildBottomAppBarRow() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildBottomBarItem(0, "ic_home", "home"),
+          _buildBottomBarItem(
+            0,
+            "ic_home",
+            "home",
+          ),
           _buildBottomBarItem(1, "ic_promotion", "promotion"),
-          EnvironmentConfig.template_version == 2
-              ? _buildBottomBarItem(2, "ic_menu", "")
-              : _buildBottomBarItem(
-                  2,
-                  "ic_deposit",
-                  EnvironmentConfig.template_version == 11
-                      ? "deposit"
-                      : "wallet",
-                  isNeedLogin: true),
-          EnvironmentConfig.template_version != 11
+          _getCustomThirdPositionItem(),
+          _getCustomFourthPositionItem(),
+          EnvironmentConfig.template_version == 15
               ? SizedBox.shrink()
-              : _buildBottomBarItem(3, "ic_withdraw", "withdrawal",
-                  isNeedLogin: true),
-          _buildBottomBarItem(6, "ic_cs", "customer_service"),
-          _buildBottomBarItem(4, "ic_profile", "my_profile", isNeedLogin: true),
+              : _buildBottomBarItem(6, "ic_cs", "customer_service"),
+          _buildBottomBarItem(
+            4,
+            "ic_profile",
+            "my_profile",
+            isNeedLogin: true,
+          ),
         ],
       );
 
@@ -539,6 +632,16 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                         return;
                       }
                     }
+                    if (EnvironmentConfig.template_version == 15 &&
+                        widget.onPauseBgMusic != null) {
+                      if (GlobalValueUtil.playerStatus !=
+                          AssetPlayerStatus.manualClickPause) {
+                        if (widget.onPauseBgMusic != null)
+                          widget.onPauseBgMusic!();
+                        GlobalValueUtil.playerStatus =
+                            AssetPlayerStatus.leavePagePause;
+                      }
+                    }
                     if (EnvironmentConfig.template_version == 11 &&
                         index == 0 &&
                         isDisplayGameView)
@@ -552,14 +655,21 @@ class _MyHomePageState extends BaseState<MyHomePage> {
                           reverseTransitionDuration: Duration.zero,
                         ),
                       );
-                    else if (EnvironmentConfig.template_version == 11 &&
+                    else if ((EnvironmentConfig.template_version == 11 ||
+                            EnvironmentConfig.template_version == 15) &&
                         index == 2)
                       Navigator.of(context).pushNamed(RoutePath.deposit);
-                    else if (EnvironmentConfig.template_version == 11 &&
+                    else if ((EnvironmentConfig.template_version == 11 ||
+                            EnvironmentConfig.template_version == 15) &&
                         index == 3)
                       Navigator.of(context).pushNamed(RoutePath.withdraw);
                     else if (index == 1)
-                      Navigator.of(context).pushNamed("/promotion");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Promotion()));
+                    //Navigator.pushNamed(context, RoutePath.addCard);
+                    //   Navigator.of(context). pushNamed("/promotion");
                     else if (index == 6)
                       Navigator.of(context).pushNamed("/customer_service");
                     else if (index == 2 &&

@@ -77,7 +77,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         builder: (ctx, vm, _) {
           _handleApiState();
           return _isShowSmsVerification() && _isRegisterSuccess
-              ? Container(
+              ? Expanded(
                   child: Row(children: [
                     _categoryButtonView(),
                     Expanded(
@@ -116,7 +116,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
   }
 
   _titleView(String title) => Container(
-      height: 60,
+      height: 60.auto,
       // margin: EdgeInsets.only(bottom: 5),
       child: Center(
           child: Text(title,
@@ -139,7 +139,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             // color: isRegister ? Colors.blueAccent : Colors.cyanAccent,
-            width: 45,
+            width: 37.5.auto,
             height: double.infinity,
             child: Align(
                 alignment: Alignment.center,
@@ -360,7 +360,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         child: Row(
           children: [
             Container(
-              width: 35,
+              width: 35.auto,
               child: CustomCheckbox(
                   checkColor: Colors.white,
                   isChecked: true,

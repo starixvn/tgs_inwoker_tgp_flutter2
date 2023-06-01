@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/entity/language.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/api.dart';
@@ -22,7 +23,8 @@ import 'package:url_launcher/url_launcher.dart';
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
-
+  // AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+  // get assetsAuPlayer => assetsAudioPlayer;
   get config => contentRepo.featuresConfig;
 
   get apiError => userRepo.apiError;
@@ -238,6 +240,14 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       // }
     }
   }
+
+  // getAssetsPLayer() {
+  //   return assetsAudioPlayer;
+  // }
+  //
+  // setAssetPlayer() {
+  //
+  // }
 
   navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

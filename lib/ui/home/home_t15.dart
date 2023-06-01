@@ -16,6 +16,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class HomeT15 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -39,7 +41,7 @@ class HomeT15 extends StatefulWidget {
   _HomeT15State createState() => _HomeT15State();
 }
 
-class _HomeT15State extends BaseState<HomeT15> {
+class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
   List<String> imgList = [
     '1',
     '2',
@@ -63,6 +65,7 @@ class _HomeT15State extends BaseState<HomeT15> {
   void initState() {
     isLogin = widget.homeViewModel.userProfile != null;
     getLanguage();
+    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
   }
 
@@ -131,7 +134,7 @@ class _HomeT15State extends BaseState<HomeT15> {
     var announcement = _removeMultiLine(
         parseHtmlString(widget.homeViewModel.announcement ?? ""));
     return Container(
-        height: 80,
+        height: 80.auto,
         padding: EdgeInsets.only(top: 0.auto, bottom: 5.auto),
         child: Column(
           children: [
@@ -261,6 +264,7 @@ class _HomeT15State extends BaseState<HomeT15> {
           if (!isLogin) {
             showPreLoginDialog();
           } else {
+            _checkDisableMusic();
             Navigator.of(context).pushNamed("/${typeName.toLowerCase()}");
           }
         },
@@ -305,5 +309,38 @@ class _HomeT15State extends BaseState<HomeT15> {
 
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");
+  }
+
+  _checkDisableMusic() {
+    if (EnvironmentConfig.template_version == 15 && widget.onPauseBgMusic != null) {
+      if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
+        widget.onPauseBgMusic!();
+        GlobalValueUtil.playerStatus =
+            AssetPlayerStatus.leavePagePause;
+      }
+    }
+  }
+
+  @override
+  void didPop() {
+    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
+      if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    }
+    // TODO: implement didPop
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+  }
+
+  @override
+  void didPush() {
+    // TODO: implement didPush
+  }
+
+  @override
+  void didPushNext() {
+    // TODO: implement didPushNext
   }
 }

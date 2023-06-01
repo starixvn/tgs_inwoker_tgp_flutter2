@@ -8,6 +8,7 @@ import 'package:api/websocket/web_socket_deposit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
@@ -43,6 +44,7 @@ import 'dart:math';
 
 import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
 
+import '../../MyRouteObserver.dart';
 import 'home_t15.dart';
 
 class Home extends StatefulWidget {
@@ -64,7 +66,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends BaseState<Home> {
+class _HomeState extends BaseState<Home> implements RouteAware{
   List<String> imgList = [
     '1',
     '2',
@@ -97,12 +99,23 @@ class _HomeState extends BaseState<Home> {
   @override
   void initState() {
     _initData();
+    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
+      if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    }
+    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
+    routeObserver.subscribe(this);
   }
 
   @override
   void dispose() {
+    print("leavehre???");
     _generateTimer.cancel();
+    if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
+      GlobalValueUtil.playerStatus = AssetPlayerStatus.leavePagePause;
+    }
+    routeObserver.unsubscribe(this);
     super.dispose();
   }
 
@@ -145,6 +158,7 @@ class _HomeState extends BaseState<Home> {
   }
 
   Widget build(BuildContext context) {
+    print("masukkksssHome:");
     return ProviderWidget<HomeViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
@@ -198,6 +212,10 @@ class _HomeState extends BaseState<Home> {
           isShowTransferUI = !isShowTransferUI;
         });
       },
+      onPauseMusic: () =>  (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+      onResumeMusic: () => (widget.onResumeBgMusic != null)
+          ? widget.onResumeBgMusic!()
+          : null,
       randomNumber: randomGeneratedPlayerCount ?? 0);
 
   _getHomeTemplateView() {
@@ -815,5 +833,32 @@ class _HomeState extends BaseState<Home> {
         isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.getRouletteApiState,
         isAutoHideLoading: false, onSuccess: () {});
+  }
+
+  @override
+  void didPop() {
+    print("didPop");
+    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
+      if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    }
+    // TODO: implement didPop
+  }
+
+  @override
+  void didPopNext() {
+    print("popNext");
+    // TODO: implement didPopNext
+  }
+
+  @override
+  void didPush() {
+    print("push");
+    // TODO: implement didPush
+  }
+
+  @override
+  void didPushNext() {
+    print("pushNext");
+    // TODO: implement didPushNext
   }
 }

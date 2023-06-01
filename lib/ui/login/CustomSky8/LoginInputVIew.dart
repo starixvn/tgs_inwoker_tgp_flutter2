@@ -18,8 +18,9 @@ import 'RegisterContentView.dart';
 class LoginInputView extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final bool defaultRegisterTab;
+  final Function(bool isRegister)? isRegister;
 
-  LoginInputView({this.config, this.defaultRegisterTab = false});
+  LoginInputView({this.config, this.defaultRegisterTab = false, this.isRegister});
 
   @override
   _LoginInputViewState createState() => _LoginInputViewState();
@@ -32,8 +33,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
   TabController? tabController;
   var tab = [];
   LoginViewModel _vm = LoginViewModel();
-  List<String> sponsorTitleList = [
-  ];
+  List<String> sponsorTitleList = [];
 
   // final List<String> sponsorDescList = [
   //   'Official Asian Partner',
@@ -47,6 +47,8 @@ class _LoginInputViewState extends BaseState<LoginInputView>
   void _onCategoryPressed(int index) {
     setState(() {
       _vm = LoginViewModel();
+      print("manausssss:${index}");
+      if (widget.isRegister != null) widget.isRegister!(index == 0 ? false : true);
       currentTabIndex = index;
     });
   }
@@ -65,9 +67,6 @@ class _LoginInputViewState extends BaseState<LoginInputView>
       {"id": "0", "text": "login"},
       {"id": "1", "text": "register"}
     ];
-
-
-
   }
 
   @override
@@ -97,10 +96,10 @@ class _LoginInputViewState extends BaseState<LoginInputView>
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             constraints: BoxConstraints(maxHeight: double.infinity),
-            height:
-                context.screenHeight * (currentTabIndex == 0 ? 0.485 : 0.535),
+            height: context.screenHeight *
+                (currentTabIndex == 0 ? 0.485 : 0.535).auto,
             width: context.screenWidth,
-            margin: EdgeInsets.symmetric(vertical: 20.auto),
+            // margin: EdgeInsets.symmetric(vertical: 20.auto),
             child: currentTabIndex == 0
                 ? LoginContentView(
                     vm: _vm, onPressed: () => _onCategoryPressed(1))
@@ -147,7 +146,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
             // ),
             ),
         Container(
-          height: 150,
+          height: 160.auto,
           child: Column(children: [_sponsorTitleView(), _sponsorListRow()]),
         )
       ],
@@ -155,13 +154,16 @@ class _LoginInputViewState extends BaseState<LoginInputView>
   }
 
   _sponsorTitleView() => Container(
+      width: context.screenWidth,
+      height: 30.auto,
       margin: EdgeInsets.only(top: 15.auto, left: 35.auto, right: 35.auto),
       child: Center(
         child: Row(
           children: [
             Expanded(
-                child:
-                    Container(height: 2, color: Colors.white.withOpacity(0.7))),
+              flex: 1,
+                child: Container(
+                    height: 2.auto, color: Colors.white.withOpacity(0.7))),
             Container(
                 margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
                 child: Text(
@@ -172,6 +174,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
                       fontSize: 13.auto),
                 )),
             Expanded(
+                flex: 1,
                 child:
                     Container(height: 2, color: Colors.white.withOpacity(0.7))),
           ],
@@ -179,69 +182,68 @@ class _LoginInputViewState extends BaseState<LoginInputView>
       ));
 
   _sponsorListRow() => Expanded(
-      child: Container(
-          margin: EdgeInsets.only(top: 10.auto),
-          child: Row(
-            children: [
-              ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: sponsorTitleList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  String imageString =
-                      "images/login/Sky8/sponsor-${index + 1}.png";
-                  return Container(
-                      width: (context.screenWidth - 30 - 52) /
-                          sponsorTitleList.length,
-                      // height: 100,
-                      margin: EdgeInsets.all(5),
-                      child: Column(
-                        children: [
-                          Container(
-                              height: 50.auto,
-                              width: 50.auto,
-                              child: Image.asset(
-                                imageString,
-                              )),
-                          Expanded(
-                              child: Container(
-                                  margin: EdgeInsets.only(top: 4.auto),
-                                  child: Column(
-                                    children: [
-                                      Align(
-                                          alignment: FractionalOffset.topCenter,
-                                          child: Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 5.0),
-                                              child: Text(
-                                                sponsorTitleList[index],
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 10.auto),
-                                              ))),
-                                      Expanded(
-                                          child: FittedBox( alignment: Alignment.topCenter,
-                                              child: Text(
-                                                  getTranslatedText("sponsor_desc"),
-                                                  textAlign: TextAlign.center,
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 8.auto))))
-                                    ],
-                                  )))
-                        ],
-                      ));
-                },
-              ),
-            ],
-          )));
+          child: Container(
+        // height: 90.auto,
+        margin: EdgeInsets.only(top: 10.auto),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: sponsorTitleList.length,
+          itemBuilder: (BuildContext context, int index) {
+            String imageString = "images/login/Sky8/sponsor-${index + 1}.png";
+            return Container(
+                width:
+                    ((context.screenWidth - 80 - 52) / sponsorTitleList.length)
+                        .auto,
+                // height: 100,
+                margin: EdgeInsets.all(5),
+                child: Column(
+                  children: [
+                    Container(
+                        height: 50.auto,
+                        width: 50.auto,
+                        child: Image.asset(
+                          imageString,
+                        )),
+                    Expanded(
+                        child: Container(
+                            margin: EdgeInsets.only(top: 4.auto),
+                            child: Column(
+                              children: [
+                                Align(
+                                    alignment: FractionalOffset.topCenter,
+                                    child: Padding(
+                                        padding: EdgeInsets.only(top: 5.0),
+                                        child: Text(
+                                          sponsorTitleList[index],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10.auto),
+                                        ))),
+                                Expanded(
+                                    child: FittedBox(
+                                        alignment: Alignment.topCenter,
+                                        child: Text(
+                                            getTranslatedText("sponsor_desc"),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8.auto))))
+                              ],
+                            )))
+                  ],
+                ));
+          },
+        ),
+      ));
 
   _navigateToPhoneReVerification(List<String> list) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        currentTabIndex = 2;
+        // if (widget.isRegister != null) widget.isRegister!(true);
+        // currentTabIndex = 2;
       });
       tabController!.animateTo(2);
     });
