@@ -285,10 +285,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.realNameVerification: (context) =>
                       RealNameVerification(),
                   RoutePath.profileInfo: (context) => ProfileInfo(),
-                  RoutePath.promotion: (context) => Promotion(
-                        onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
-                        onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
-                      ),
+                  RoutePath.promotion: (context) => Promotion(),
                   RoutePath.walletTransfer: (context) => WalletTransfer(),
                   RoutePath.menu: (context) => Menu(),
                   RoutePath.deposit: (context) => Deposit(),
@@ -428,12 +425,8 @@ class _MyHomePageState extends BaseState<MyHomePage>
     _page = EnvironmentConfig.template_version != 11
         ? [
             Home(
-              // onPauseBgMusic: () => (widget.onPauseBgMusic != null)
-              //     ? widget.onPauseBgMusic!()
-              //     : null,
-              // onResumeBgMusic: () => (widget.onResumeBgMusic != null)
-              //     ? widget.onResumeBgMusic!()
-              //     : null,
+              onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
+              onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
             ),
             Promotion(),
             EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),

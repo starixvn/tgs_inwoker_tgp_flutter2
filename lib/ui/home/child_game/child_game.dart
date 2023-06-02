@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -50,6 +51,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
     currGamePlatformCode = widget.gamePlatformCode;
+    GlobalValueUtil.assetsAudioPlayer.pause();
     _initData();
     super.initState();
   }

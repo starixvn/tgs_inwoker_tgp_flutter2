@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -34,6 +35,7 @@ class _DepositState extends BaseState<Deposit> {
 
   @override
   void initState() {
+    GlobalValueUtil.assetsAudioPlayer.pause();
     _initData();
     super.initState();
   }

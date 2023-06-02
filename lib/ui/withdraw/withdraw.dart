@@ -25,6 +25,8 @@ import 'package:tgp_flutter2/ui/withdraw/withdraw_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class Withdraw extends StatefulWidget {
   @override
   _WithdrawState createState() => _WithdrawState();
@@ -46,6 +48,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   @override
   void initState() {
     _initData();
+    GlobalValueUtil.assetsAudioPlayer.pause();
     super.initState();
   }
 

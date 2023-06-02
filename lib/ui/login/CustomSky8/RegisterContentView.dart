@@ -126,7 +126,10 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                   fontWeight: FontWeight.bold))));
 
   _categoryButtonView() {
-    var text = getTranslatedText('login_member').toString(); //"会员登录";
+    var text =
+    getTranslatedText('login_member').toString(); //"会员注册"; // : "会员登录";\
+    var langCode = getCurrentLanguage().apiCode;
+    var isChinese = (langCode == "zh-CN" || langCode == "zh-TW");
     return GestureDetector(
         onTap: () {
           widget.onPressed();
@@ -143,17 +146,28 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
             height: double.infinity,
             child: Align(
                 alignment: Alignment.center,
-                child: Wrap(
+                child: !isChinese
+                    ? RotatedBox(
+                    quarterTurns: 1,
+                    child: Text(
+                      text,
+                      style: TextStyle(
+                          fontSize: 14.auto,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ) //your text
+                )
+                    : Wrap(
                   runSpacing: 30,
                   direction: Axis.vertical,
                   alignment: WrapAlignment.center,
                   children: text
                       .split("")
                       .map((string) => Text(string,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)))
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)))
                       .toList(),
                 ))));
   }

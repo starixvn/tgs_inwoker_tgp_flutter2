@@ -105,7 +105,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
 
   _categoryButtonView() {
     var text =
-        getTranslatedText('login_member').toString(); //"会员注册"; // : "会员登录";\
+        getTranslatedText('register_member').toString(); //"会员注册"; // : "会员登录";\
     var langCode = getCurrentLanguage().apiCode;
     var isChinese = (langCode == "zh-CN" || langCode == "zh-TW");
     return GestureDetector(
