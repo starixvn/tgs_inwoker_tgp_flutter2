@@ -71,7 +71,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return Expanded(
+          return Container(
               child: Row(
             children: [
               Expanded(

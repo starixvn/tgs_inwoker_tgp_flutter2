@@ -97,7 +97,7 @@ class _LoginInputViewState extends BaseState<LoginInputView>
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             constraints: BoxConstraints(maxHeight: double.infinity),
             height: context.screenHeight *
-                (currentTabIndex == 0 ? 0.485 : 0.535).auto,
+                (currentTabIndex == 0 ? 0.53 : 0.55),
             width: context.screenWidth,
             // margin: EdgeInsets.symmetric(vertical: 20.auto),
             child: currentTabIndex == 0

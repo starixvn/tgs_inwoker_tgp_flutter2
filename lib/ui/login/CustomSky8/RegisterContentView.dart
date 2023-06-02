@@ -77,7 +77,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         builder: (ctx, vm, _) {
           _handleApiState();
           return _isShowSmsVerification() && _isRegisterSuccess
-              ? Expanded(
+              ? Container(
                   child: Row(children: [
                     _categoryButtonView(),
                     Expanded(

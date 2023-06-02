@@ -78,7 +78,7 @@ class _LoginTemplate02State extends BaseState<LoginTemplate02> {
                           child: _buildLogoImage(),
                         ),
                         Container(
-                          height: (context.screenHeight * (isRegister ? 0.6 : 0.55)).auto + 120.auto,
+                          height: (context.screenHeight * (isRegister ? 0.63 : 0.585)).auto + 120.auto,
                             // flex:6,
                             child: Container(
                               margin: EdgeInsets.symmetric(horizontal: 15.auto),
