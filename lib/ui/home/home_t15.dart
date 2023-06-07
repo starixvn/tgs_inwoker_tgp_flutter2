@@ -179,10 +179,10 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                     width: 120,
                     child: Row(children: [
                       Expanded(
-                          child: _getWalletView(getTranslatedText("deposit"))),
+                          child: _getWalletView(getTranslatedText("deposit"), "deposit")),
                       Expanded(
                           child:
-                              _getWalletView(getTranslatedText("withdrawal"))),
+                              _getWalletView(getTranslatedText("withdrawal"), "withdraw")),
                     ]))
               ],
             )
@@ -257,7 +257,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
         ],
       ));
 
-  _getWalletView(String typeName) => Container(
+  _getWalletView(String typeName, String path) => Container(
           // margin: EdgeInsets.only(right: 5),
           child: InkWell(
         onTap: () {
@@ -265,7 +265,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
             showPreLoginDialog();
           } else {
             _checkDisableMusic();
-            Navigator.of(context).pushNamed("/${typeName.toLowerCase()}");
+            Navigator.of(context).pushNamed("/${path.toLowerCase()}");
           }
         },
         child: Container(

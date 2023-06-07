@@ -26,14 +26,14 @@ class RegisterContentView extends StatefulWidget {
   // final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
   final LoginViewModel vm;
   final VoidCallback onPressed;
+
   RegisterContentView({required this.vm, required this.onPressed});
 
   @override
   _RegisterContentViewState createState() => _RegisterContentViewState();
 }
 
-class _RegisterContentViewState extends BaseState<RegisterContentView>
-    with AutomaticKeepAliveClientMixin {
+class _RegisterContentViewState extends BaseState<RegisterContentView> with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true, _obscureConfirmPassword = true;
   var username = TextEditingController(),
       password = TextEditingController(),
@@ -52,6 +52,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
   List agentPlayerList = ['agent', 'player'];
 
   String? display;
+
   void onChanged() {
     setState(() {
       _isTermsChecked = !_isTermsChecked;
@@ -83,9 +84,8 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                     Expanded(
                         child: Column(
                       children: [
-                        _titleView(getTranslatedText("phone_verification_title")
-                            .toString()),
-                        Expanded(child: PhoneReVerification(vm: vm))
+                        _titleView(getTranslatedText("phone_verification_title").toString()),
+                        Expanded(child: PhoneReVerification(vm: vm, isRegister: true))
                       ],
                     ))
                   ]),
@@ -118,16 +118,10 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
   _titleView(String title) => Container(
       height: 60.auto,
       // margin: EdgeInsets.only(bottom: 5),
-      child: Center(
-          child: Text(title,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold))));
+      child: Center(child: Text(title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold))));
 
   _categoryButtonView() {
-    var text =
-    getTranslatedText('login_member').toString(); //"会员注册"; // : "会员登录";\
+    var text = getTranslatedText('login_member').toString(); //"会员注册"; // : "会员登录";\
     var langCode = getCurrentLanguage().apiCode;
     var isChinese = (langCode == "zh-CN" || langCode == "zh-TW");
     return GestureDetector(
@@ -148,33 +142,25 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                 alignment: Alignment.center,
                 child: !isChinese
                     ? RotatedBox(
-                    quarterTurns: 1,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                          fontSize: 14.auto,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ) //your text
-                )
+                        quarterTurns: 1,
+                        child: Text(
+                          text,
+                          style: TextStyle(fontSize: 14.auto, color: Colors.white, fontWeight: FontWeight.bold),
+                        ) //your text
+                        )
                     : Wrap(
-                  runSpacing: 30,
-                  direction: Axis.vertical,
-                  alignment: WrapAlignment.center,
-                  children: text
-                      .split("")
-                      .map((string) => Text(string,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold)))
-                      .toList(),
-                ))));
+                        runSpacing: 30,
+                        direction: Axis.vertical,
+                        alignment: WrapAlignment.center,
+                        children: text
+                            .split("")
+                            .map((string) => Text(string, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold)))
+                            .toList(),
+                      ))));
   }
 
   _buildUsernameTextFormField() => Container(
-      margin: EdgeInsets.only(
-          left: 10.auto, right: 10.auto, bottom: 8.auto, top: 10.auto),
+      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 8.auto, top: 10.auto),
       child: LoginTextFormField(
         icon: Image.asset(
           "images/login/Sky8/icon-user.png",
@@ -228,8 +214,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
           textInputType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.next,
           onShowPassword: () {
-            setState(() =>
-                this._obscureConfirmPassword = !this._obscureConfirmPassword);
+            setState(() => this._obscureConfirmPassword = !this._obscureConfirmPassword);
           },
           obscurePassword: _obscureConfirmPassword,
         ),
@@ -294,8 +279,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
   _buildPromotionCodeTextFormField() => Visibility(
         visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
         child: Container(
-          margin:
-              EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
           child: LoginTextFormField(
               //icon: Container(),
               // EnvironmentConfig.template_version == 11
@@ -335,8 +319,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                         value: value,
                         child: Text(
                           getTranslatedText(value),
-                          style: TextStyle(
-                              color: CustomColor.theme_title_text_color),
+                          style: TextStyle(color: CustomColor.theme_title_text_color),
                         ),
                       );
                     }).toList(),
@@ -355,8 +338,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
       );
 
   _buildRegisterButton() => Container(
-        margin: EdgeInsets.only(
-            left: 25.auto, right: 25.auto, bottom: 10.auto, top: 10.auto),
+        margin: EdgeInsets.only(left: 25.auto, right: 25.auto, bottom: 10.auto, top: 10.auto),
         child: ColorButton(
           title: getTranslatedText(_customFlowForIDR() ? "next" : "register"),
           height: 37.5.auto,
@@ -369,17 +351,12 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
       );
 
   _buildRegisterTermsText() => Container(
-        margin: EdgeInsets.only(
-            left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
         child: Row(
           children: [
             Container(
               width: 35.auto,
-              child: CustomCheckbox(
-                  checkColor: Colors.white,
-                  isChecked: true,
-                  iconSize: 15.0,
-                  onChanged: () => onChanged()),
+              child: CustomCheckbox(checkColor: Colors.white, isChecked: true, iconSize: 15.0, onChanged: () => onChanged()),
             ),
             // Expanded(
             //   flex: 1,
@@ -404,8 +381,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors
-                        .white, //CustomColor.theme_text_black_white_color,
+                    color: Colors.white, //CustomColor.theme_text_black_white_color,
                     fontSize: calculateFontSize(60)),
               ),
             ),
@@ -432,8 +408,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
   }
 
   _register() {
-    if (!validate.validateUsernameLength(username.text) ||
-        !validate.validateUsernamePassword(username.text)) {
+    if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("enter_username_error_message"));
       });
@@ -449,8 +424,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
       setState(() {
         CustomToast.show(getTranslatedText("confirm_pay_error_msg"));
       });
-    } else if (_registerShowPhone() &&
-        !validate.validatePhoneLength(phone.text)) {
+    } else if (_registerShowPhone() && !validate.validatePhoneLength(phone.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
@@ -489,8 +463,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         });
       } else {
         if (_registerShowPhone() || _registerShowEmail()) {
-          _vm.idrLoginWithPhoneAndEmail(
-              username.text, password.text, phone.text, display!, email.text);
+          _vm.idrLoginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
         }
         /* else if (_registerShowPhone() && _registerShowEmail()) {
           _vm.loginWithPhoneAndEmail(username.text, password.text, phone.text, display!, email.text);
@@ -500,8 +473,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
         }
       }
     });
-    handleApiState(_vm.checkUsernameApiState, isRequireResult: true,
-        onSuccess: (result) {
+    handleApiState(_vm.checkUsernameApiState, isRequireResult: true, onSuccess: (result) {
       if (result.isExist) {
         CustomToast.show(getTranslatedText("username_exist"));
       } else {
@@ -518,8 +490,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
             _vm.getReVerifyCode(username, password, display!, phone, isIdrRegister: true);
           }*/
           else
-            _vm.register(username.text, password.text, confirmPassword.text,
-                invitationCode.text, agentPlayer == "agent");
+            _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
         });
       }
     });
@@ -542,10 +513,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView>
               builder: (context) => MyHomePage(
                     index: 4,
                   )));
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AddCard(isNavigateFromRegister: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);
     });
   }

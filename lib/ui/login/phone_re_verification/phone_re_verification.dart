@@ -17,6 +17,8 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/login/CustomSky8/LoginOtpInputView.dart';
+import 'package:tgp_flutter2/ui/login/CustomSky8/LoginPhoneInputView.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_otp_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_form_field.dart';
@@ -27,26 +29,30 @@ import 'package:api/extension/screen_apis.dart';
 class PhoneReVerification extends StatefulWidget {
   final LoginViewModel? vm;
 
+  //check for from register content view / from dialog / from user profile
+  final bool isRegister;
+
+  // check for api is calling init-phone / register
+  final bool isIdrRegister;
+
   PhoneReVerification({
     this.vm,
+    this.isRegister = false,
+    this.isIdrRegister = false,
   });
 
   @override
   _PhoneReVerificationState createState() => _PhoneReVerificationState();
 }
 
-class _PhoneReVerificationState extends BaseState<PhoneReVerification>
-    with AutomaticKeepAliveClientMixin {
+class _PhoneReVerificationState extends BaseState<PhoneReVerification> with AutomaticKeepAliveClientMixin {
   var _vm;
 
   TextEditingController _phoneController = TextEditingController(),
       _otpController = TextEditingController(),
       _usernameController = TextEditingController(),
       _passwordController = TextEditingController();
-  var isButtonEnabled = false,
-      isOtpEnabled = false,
-      isTextFieldEnabled = false,
-      isOtpCountdown = false;
+  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false;
   var buttonText;
   InputValidationProvider validate = new InputValidationProvider();
   bool _obscurePassword = true;
@@ -83,13 +89,15 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
             _vm.setIsPhoneReVerificationResetToFalse();
           }
           return Container(
-            child: Column(
-              children: [
-                //CustomTabBar(index:1),
-                _buildPhoneTextFormField(),
-                _buildOtpTextFormField(),
-                _buildButton()
-              ],
+            child: Expanded(
+              child: ListView(
+                children: [
+                  //CustomTabBar(index:1),
+                  _buildPhoneTextFormField(),
+                  _buildOtpTextFormField(),
+                  _buildButton()
+                ],
+              ),
             ),
           );
         });
@@ -97,20 +105,31 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
 
   _buildPhoneTextFormField() => Container(
         margin: EnvironmentConfig.template_version == 15
-            ? EdgeInsets.only(
-                left: 10.auto, right: 10.auto, bottom: 10.auto, top: 15.auto)
+            ? EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto, top: 15.auto)
             : EdgeInsets.only(top: 15.auto),
-        child: LoginPhoneTextFormField(
-          onChanged: (value) => _onTextChange(),
-          onFieldSubmitted: (value) {},
-          controller: _phoneController,
-          width: context.screenWidth - 70.auto,
-          textInputAction: TextInputAction.next,
-          enabled: isTextFieldEnabled,
-          onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
-          displayedAreaCode: display,
-          maxLength: _vm.config?.maxPhoneLength ?? 10,
-        ),
+        child: EnvironmentConfig.template_version == 15 && widget.isRegister
+            ? LoginPhoneTextFormField(
+                onChanged: (value) => _onTextChange(),
+                onFieldSubmitted: (value) {},
+                controller: _phoneController,
+                width: context.screenWidth - 70.auto,
+                textInputAction: TextInputAction.next,
+                enabled: isTextFieldEnabled,
+                onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
+                displayedAreaCode: display,
+                maxLength: _vm.config?.maxPhoneLength ?? 10,
+              )
+            : LoginPhoneInputView(
+                onChanged: (value) => _onTextChange(),
+                onFieldSubmitted: (value) {},
+                controller: _phoneController,
+                width: context.screenWidth - 70.auto,
+                textInputAction: TextInputAction.next,
+                enabled: isTextFieldEnabled,
+                onAreaCodeClicked: (value) => _onAreaCodeClicked(value),
+                displayedAreaCode: display,
+                maxLength: _vm.config?.maxPhoneLength ?? 10,
+              ),
       );
 
   _onAreaCodeClicked(String area) {
@@ -124,32 +143,46 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
         visible: true,
         child: Container(
           margin: EnvironmentConfig.template_version == 15
-              ? EdgeInsets.only(
-                  left: 10.auto, right: 10.auto, bottom: 10.auto, top: 0.auto)
+              ? EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto, top: 0.auto)
               : EdgeInsets.only(top: 15.auto),
-          child: LoginOtpTextFormField(
-              hintText: getTranslatedText("enter_phone_otp_hint"),
-              onChanged: (value) => _onTextChange(),
-              controller: _otpController,
-              textInputAction: TextInputAction.done,
-              getOtpCode: () {
-                _getSmsCode();
-              },
-              isCountdown: isOtpCountdown,
-              isEnabled: true,
-              onCountDownEnd: () => {
-                    setState(() {
-                      isOtpCountdown = false;
-                    })
-                  }),
+          child: EnvironmentConfig.template_version == 15 && widget.isRegister
+              ? LoginOtpTextFormField(
+                  hintText: getTranslatedText("enter_phone_otp_hint"),
+                  onChanged: (value) => _onTextChange(),
+                  controller: _otpController,
+                  textInputAction: TextInputAction.done,
+                  getOtpCode: () {
+                    _getSmsCode();
+                  },
+                  isCountdown: isOtpCountdown,
+                  isEnabled: true,
+                  onCountDownEnd: () => {
+                        setState(() {
+                          isOtpCountdown = false;
+                        })
+                      })
+              : LoginOtpInputView(
+                  hintText: getTranslatedText("enter_phone_otp_hint"),
+                  onChanged: (value) => _onTextChange(),
+                  controller: _otpController,
+                  textInputAction: TextInputAction.done,
+                  getOtpCode: () {
+                    _getSmsCode();
+                  },
+                  isCountdown: isOtpCountdown,
+                  isEnabled: true,
+                  onCountDownEnd: () => {
+                        setState(() {
+                          isOtpCountdown = false;
+                        })
+                      }),
         ),
       );
 
   _buildButton() => Container(
       width: context.screenWidth,
       margin: EnvironmentConfig.template_version == 15
-          ? EdgeInsets.only(
-              top: 30.auto, bottom: 20.auto, left: 25.auto, right: 25.auto)
+          ? EdgeInsets.only(top: 30.auto, bottom: 20.auto, left: 25.auto, right: 25.auto)
           : EdgeInsets.only(top: 30.auto, bottom: 20.auto),
       child: ColorButton(
         title: getTranslatedText("submit"),
@@ -157,7 +190,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
           _onClick();
         },
         isEnabled: isButtonEnabled,
-        radius: EnvironmentConfig.template_version == 15 ? 20 : 9.6,
+        radius: EnvironmentConfig.template_version == 15 && widget.isRegister ? 20 : 9.6,
       ));
 
   _onTextChange() {
@@ -180,12 +213,13 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    } else if (!validate.validateAreaCodeAndPhone(
-        display!, _phoneController.text)) {
+    }
+    /*else if (!validate.validateAreaCodeAndPhone(display!, _phoneController.text)) {
       setState(() {
         CustomToast.show(getTranslatedText("phone_format_error_msg"));
       });
-    } else {
+    }*/
+    else {
       //ProgressDialog.show(context, _vm.brandLogoUrl);
       _vm.getReVerifyCode(display!, _phoneController.text);
     }
@@ -193,7 +227,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
 
   _onClick() async {
     ProgressDialog.show(context, _vm.brandLogo.mobileUrl);
-    _vm.phoneVerify(_otpController.text);
+    _vm.phoneVerify(_otpController.text, widget.isIdrRegister);
   }
 
   _handleApiState() {
@@ -207,7 +241,10 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
     });
 
     handleApiState(_vm.phoneReVerifyApiState, onSuccess: () async {
-      await _vm.login(_vm.username, _vm.password, true);
+      if (widget.isRegister) await _vm.login(_vm.username, _vm.password, true);
+      else{
+        await _vm.getUserInfo();
+      }
       if (_vm.config?.navigateToAddCard ?? false)
         _navigateToAddCard();
       else
@@ -217,8 +254,7 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification>
 
   _navigateToHome() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          RoutePath.myHome, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
     });
   }
 

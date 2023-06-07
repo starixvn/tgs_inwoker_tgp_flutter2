@@ -45,7 +45,7 @@ class _PhoneVerificationDialogState extends BaseState<PhoneVerificationDialog> {
 
   dialogContent(BuildContext context) {
     return Container(
-      height: context.screenHeight/2.7,
+        height: context.screenHeight / 2.7,
         padding: EdgeInsets.symmetric(
           vertical: context.screenHeight / 30,
           horizontal: context.screenWidth / 20,
@@ -75,7 +75,9 @@ class _PhoneVerificationDialogState extends BaseState<PhoneVerificationDialog> {
                 ),
               ),
             ),
-            PhoneReVerification(),
+            PhoneReVerification(
+              isIdrRegister: true,
+            ),
           ],
         ));
   }
