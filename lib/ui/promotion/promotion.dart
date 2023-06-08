@@ -27,7 +27,7 @@ class _PromotionState extends BaseState<Promotion> {
   @override
   void initState() {
     _vm.getPromotionList();
-    GlobalValueUtil.assetsAudioPlayer.pause();
+    GlobalValueUtil.pausesong();
     super.initState();
   }
 

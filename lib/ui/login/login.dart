@@ -12,6 +12,8 @@ import 'package:tgp_flutter2/ui/login/login_tab.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class Login extends StatefulWidget {
   final bool defaultRegisterTab;
 
@@ -29,6 +31,7 @@ class _LoginState extends BaseState<Login> {
   @override
   void initState() {
     _getPackageInfo();
+    GlobalValueUtil.pausesong();
     super.initState();
   }
 

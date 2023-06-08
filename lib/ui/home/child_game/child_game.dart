@@ -51,7 +51,7 @@ class _ChildGameState extends BaseState<ChildGame> with SingleTickerProviderStat
     _groupTabController = TabController(length: _groupTabList.length, vsync: this, initialIndex: _groupTabIndex);
     _focusNode.addListener(_onFocusNodeListener);
     currGamePlatformCode = widget.gamePlatformCode;
-    GlobalValueUtil.assetsAudioPlayer.pause();
+    GlobalValueUtil.pausesong();
     _initData();
     super.initState();
   }

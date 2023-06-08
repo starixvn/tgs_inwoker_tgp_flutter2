@@ -48,7 +48,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   @override
   void initState() {
     _initData();
-    GlobalValueUtil.assetsAudioPlayer.pause();
+    GlobalValueUtil.pausesong();
     super.initState();
   }
 

@@ -100,9 +100,10 @@ class _HomeState extends BaseState<Home> implements RouteAware{
   void initState() {
     _initData();
     if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
-      if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+      // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+      GlobalValueUtil.playsong();
     }
-    if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
     routeObserver.subscribe(this);
   }
@@ -111,9 +112,11 @@ class _HomeState extends BaseState<Home> implements RouteAware{
   void dispose() {
     print("leavehre???");
     _generateTimer.cancel();
-    if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+
+    // if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
     if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
       GlobalValueUtil.playerStatus = AssetPlayerStatus.leavePagePause;
+      GlobalValueUtil.stopsong();
     }
     routeObserver.unsubscribe(this);
     super.dispose();

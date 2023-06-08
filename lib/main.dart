@@ -66,6 +66,8 @@ import 'package:tgp_flutter2/ui/vip/vip.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'custom/custom_toast.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -92,6 +94,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   var langList;
   var _vm = MainViewModel();
   var firstInit = true;
+
   // var _assetsAudioPlayer;
 
   setLocale(Locale locale) {
@@ -140,8 +143,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
         firstInit = false;
       });
       _getLocale();
-      langList =
-          LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
+      langList = LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
       _getAssetsAudioPlayer();
       return _vm.getLanguageApiState;
     } else
@@ -165,37 +167,40 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    GlobalValueUtil.stopsong();
     super.dispose();
   }
 
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       if (EnvironmentConfig.template_version == 15) {
-        if (GlobalValueUtil.playerStatus !=
-            AssetPlayerStatus.manualClickPause) {
-          GlobalValueUtil.assetsAudioPlayer.play();
+        if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
+          GlobalValueUtil.playsong();
         }
       } else {
-        GlobalValueUtil.assetsAudioPlayer.play();
+        GlobalValueUtil.playsong();
       }
     } else {
-      GlobalValueUtil.assetsAudioPlayer.pause();
+      print("stop when close");
+      GlobalValueUtil.pausesong();
     }
+
+    // GlobalValueUtil.assetsAudioPlayer.onErrorDo = (handler){
+    //   GlobalValueUtil.stopsong();
+    // };
   }
 
   _getAssetsAudioPlayer() {
-    if (_vm.config?.backgroundMusic ??
-        false || EnvironmentConfig.template_version == 15) {
+    if (_vm.config?.backgroundMusic ?? false || EnvironmentConfig.template_version == 15) {
       // GlobalValueUtil.assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
       GlobalValueUtil.assetsAudioPlayer.open(
         Playlist(audios: [
-          Audio(
-              "audio/${EnvironmentConfig.template_version == 15 ? "sky8BgMusic.mp3" : "caishendao.mp3"}"),
+          Audio("audio/${EnvironmentConfig.template_version == 15 ? "sky8BgMusic.mp3" : "caishendao.mp3"}"),
         ]),
         loopMode: LoopMode.playlist, //loop the full playlist
       );
       print("diuneiiss");
-      GlobalValueUtil.assetsAudioPlayer.pause();
+      GlobalValueUtil.pausesong();
     }
     WidgetsBinding.instance.addObserver(this);
   }
@@ -210,71 +215,59 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     // }
     return FutureBuilder(
         future: initData(),
-        builder: (BuildContext context,
-            AsyncSnapshot<EventResult<dynamic>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
           if (!snapshot.hasData) {
-            return MaterialApp(
-                debugShowCheckedModeBanner: false, home: Splash());
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
           } else {
             return GestureDetector(
               onTap: () {
                 FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus &&
-                    currentFocus.focusedChild != null) {
+                if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
                   currentFocus.focusedChild!.unfocus();
                 }
               },
               child: MaterialApp(
                 navigatorObservers: [routeObserver],
-                theme: ThemeData(
-                    canvasColor: EnvironmentConfig.template_version == 15
-                        ? CustomColor.theme_bg_color
-                        : Colors.white),
+                theme: ThemeData(canvasColor: EnvironmentConfig.template_version == 15 ? CustomColor.theme_bg_color : Colors.white),
                 debugShowCheckedModeBanner: false,
                 title: appTitle,
-                initialRoute: snapshot.data!.isMaintenance
-                    ? RoutePath.splashMaintenance
-                    : RoutePath.myHome,
+                initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
                 routes: {
                   RoutePath.myHome: (context) => MyHomePage(
                         versionUpdate: _vm.versionUpdateState,
                         isFirstRun: true,
-                        onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
-                        onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
+                        onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+                        onResumeBgMusic: () => GlobalValueUtil.playsong(),
                       ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
                   RoutePath.customerService: (context) => CustomerService(),
                   RoutePath.transaction: (context) => ReportView(),
-                  RoutePath.login: (context) =>
-                      EnvironmentConfig.template_version == 15
-                          ? LoginTemplate02(
-                              onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
-                              onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
-                            )
-                          : Login(),
-                  RoutePath.register: (context) =>
-                      EnvironmentConfig.template_version == 15
-                          ? LoginTemplate02(
-                              defaultRegisterTab: true,
-                              onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
-                              onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
-                            )
-                          : Login(defaultRegisterTab: true),
+                  RoutePath.login: (context) => EnvironmentConfig.template_version == 15
+                      ? LoginTemplate02(
+                          onResumeBgMusic: () => GlobalValueUtil.playsong(),
+                          onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+                        )
+                      : Login(),
+                  RoutePath.register: (context) => EnvironmentConfig.template_version == 15
+                      ? LoginTemplate02(
+                          defaultRegisterTab: true,
+                          onResumeBgMusic: () => GlobalValueUtil.playsong(),
+                          onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+                        )
+                      : Login(defaultRegisterTab: true),
                   RoutePath.forgotPassword: (context) => ForgotPassword(),
                   RoutePath.maintenance: (context) => Maintenance(
-                        onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
+                        onResumeBgMusic: () => GlobalValueUtil.playsong(),
                       ),
                   RoutePath.splashMaintenance: (context) => Maintenance(
                         isShowCS: true,
                         isShowsAppBar: false,
                       ),
-                  RoutePath.customerServiceWebView: (context) =>
-                      CustomerServiceWebView(),
+                  RoutePath.customerServiceWebView: (context) => CustomerServiceWebView(),
                   RoutePath.mainCard: (context) => MainCard(),
                   RoutePath.message: (context) => MessageView(),
-                  RoutePath.emailVerification: (context) =>
-                      EmailVerification(0),
+                  RoutePath.emailVerification: (context) => EmailVerification(0),
                   RoutePath.qqAccount: (context) => QQAccount(),
                   RoutePath.wechat: (context) => Wechat(),
                   RoutePath.editPassword: (context) => EditPassword(),
@@ -282,8 +275,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.payPassword: (context) => PayPassword(),
                   RoutePath.language: (context) => LanguageView(),
                   RoutePath.addCard: (context) => AddCard(),
-                  RoutePath.realNameVerification: (context) =>
-                      RealNameVerification(),
+                  RoutePath.realNameVerification: (context) => RealNameVerification(),
                   RoutePath.profileInfo: (context) => ProfileInfo(),
                   RoutePath.promotion: (context) => Promotion(),
                   RoutePath.walletTransfer: (context) => WalletTransfer(),
@@ -314,15 +306,11 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   GlobalCupertinoLocalizations.delegate
                 ],
                 // MyHomePage(title: appTitle),
-                supportedLocales: LanguageProvider.getSingleton()
-                    .list
-                    .map((e) => e.locale)
-                    .toList(),
+                supportedLocales: LanguageProvider.getSingleton().list.map((e) => e.locale).toList(),
                 locale: _locale,
                 localeResolutionCallback: (locale, supportedLocales) {
                   for (var supportedLocale in supportedLocales) {
-                    if (supportedLocale.languageCode == locale!.languageCode &&
-                        supportedLocale.scriptCode == locale.scriptCode) {
+                    if (supportedLocale.languageCode == locale!.languageCode && supportedLocale.scriptCode == locale.scriptCode) {
                       return supportedLocale;
                     }
                   }
@@ -335,14 +323,10 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   }
 
   _handleApiState() {
-    handleApiState(_vm.getLanguageApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.getBrandLogoApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.authApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.autoLoginApiState,
-        isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.autoLoginApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }
 
@@ -366,8 +350,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends BaseState<MyHomePage>
-    with WidgetsBindingObserver {
+class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver {
   int currentBottomIndex = 0;
   List _page = [];
   var isMenu = false;
@@ -414,19 +397,18 @@ class _MyHomePageState extends BaseState<MyHomePage>
   @override
   void initState() {
     if (widget.versionUpdate != null) {
-      Future.delayed(Duration.zero,
-          () => _showNewVersionUpdateDialog(widget.versionUpdate));
+      Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
     }
-    GlobalValueUtil.assetsAudioPlayer.stop();
-    GlobalValueUtil.assetsAudioPlayer.play();
+    // GlobalValueUtil.assetsAudioPlayer.stop();
+    // GlobalValueUtil.assetsAudioPlayer.play();
     // assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
     // _getAssetsAudioPlayer();
     if (widget.index != null) currentBottomIndex = widget.index!;
     _page = EnvironmentConfig.template_version != 11
         ? [
             Home(
-              onPauseBgMusic: () => GlobalValueUtil.assetsAudioPlayer.pause(),
-              onResumeBgMusic: () => GlobalValueUtil.assetsAudioPlayer.play(),
+              onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+              onResumeBgMusic: () => GlobalValueUtil.playsong(),
             ),
             Promotion(),
             EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
@@ -446,13 +428,19 @@ class _MyHomePageState extends BaseState<MyHomePage>
     print("masukkkk11");
     // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     // if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
-    if (EnvironmentConfig.brandName.toLowerCase().contains("idr"))
-      _initWebSocket();
+    if (EnvironmentConfig.brandName.toLowerCase().contains("idr")) _initWebSocket();
     super.initState();
   }
 
   @override
+  void deactivate() {
+    GlobalValueUtil.stopsong();
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
+    GlobalValueUtil.stopsong();
     super.dispose();
   }
 
@@ -490,19 +478,14 @@ class _MyHomePageState extends BaseState<MyHomePage>
                 _buildMenu()
               ],
             ),
-            bottomNavigationBar: ((EnvironmentConfig.template_version == 8 ||
-                        EnvironmentConfig.template_version == 9) &&
-                    EnvironmentConfig.dark_mode)
+            bottomNavigationBar: ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) && EnvironmentConfig.dark_mode)
                 ? Container(
                     child: BottomAppBar(
                         child: Container(
                       decoration: EnvironmentConfig.template_version == 8
                           ? BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [
-                                  Color(0xff011F60),
-                                  Colors.transparent.withOpacity(1.0)
-                                ],
+                                colors: [Color(0xff011F60), Colors.transparent.withOpacity(1.0)],
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                               ),
@@ -524,11 +507,8 @@ class _MyHomePageState extends BaseState<MyHomePage>
                   )
                 : EnvironmentConfig.template_version == 15
                     ? Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                topLeft: Radius.circular(20)),
-                            color: Colors.white),
+                        decoration:
+                            BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)), color: Colors.white),
                         child: ClipRRect(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.0),
@@ -569,17 +549,10 @@ class _MyHomePageState extends BaseState<MyHomePage>
 
   _getCustomThirdPositionItem() => EnvironmentConfig.template_version == 2
       ? _buildBottomBarItem(2, "ic_menu", "")
-      : _buildBottomBarItem(
-          2,
-          "ic_deposit",
-          (EnvironmentConfig.template_version == 11 ||
-                  EnvironmentConfig.template_version == 15)
-              ? "deposit"
-              : "wallet",
+      : _buildBottomBarItem(2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
           isNeedLogin: true);
 
-  _getCustomFourthPositionItem() => EnvironmentConfig.template_version != 11 &&
-          EnvironmentConfig.template_version != 15
+  _getCustomFourthPositionItem() => EnvironmentConfig.template_version != 11 && EnvironmentConfig.template_version != 15
       ? SizedBox.shrink()
       : _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true);
 
@@ -595,9 +568,7 @@ class _MyHomePageState extends BaseState<MyHomePage>
           _buildBottomBarItem(1, "ic_promotion", "promotion"),
           _getCustomThirdPositionItem(),
           _getCustomFourthPositionItem(),
-          EnvironmentConfig.template_version == 15
-              ? SizedBox.shrink()
-              : _buildBottomBarItem(6, "ic_cs", "customer_service"),
+          EnvironmentConfig.template_version == 15 ? SizedBox.shrink() : _buildBottomBarItem(6, "ic_cs", "customer_service"),
           _buildBottomBarItem(
             4,
             "ic_profile",
@@ -607,9 +578,7 @@ class _MyHomePageState extends BaseState<MyHomePage>
         ],
       );
 
-  _buildBottomBarItem(int index, String imagePath, String title,
-          {bool isNewMessage = false, bool isNeedLogin = false}) =>
-      Expanded(
+  _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false, bool isNeedLogin = false}) => Expanded(
         child: Stack(
           children: [
             SizedBox(
@@ -618,60 +587,45 @@ class _MyHomePageState extends BaseState<MyHomePage>
               child: Material(
                 type: MaterialType.transparency,
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (isNeedLogin) {
                       if (_vm.userProfile == null) {
                         showPreLoginDialog();
                         return;
                       }
                     }
-                    if (EnvironmentConfig.template_version == 15 &&
-                        widget.onPauseBgMusic != null) {
-                      if (GlobalValueUtil.playerStatus !=
-                          AssetPlayerStatus.manualClickPause) {
-                        if (widget.onPauseBgMusic != null)
-                          widget.onPauseBgMusic!();
-                        GlobalValueUtil.playerStatus =
-                            AssetPlayerStatus.leavePagePause;
+                    if (EnvironmentConfig.template_version == 15 && widget.onPauseBgMusic != null) {
+                      if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
+                        if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+                        GlobalValueUtil.pausesong();
+                        GlobalValueUtil.playerStatus = AssetPlayerStatus.leavePagePause;
                       }
                     }
-                    if (EnvironmentConfig.template_version == 11 &&
-                        index == 0 &&
-                        isDisplayGameView)
+                    if (EnvironmentConfig.template_version == 11 && index == 0 && isDisplayGameView)
                       //will refresh page for t11
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                              MyHomePage(),
+                          pageBuilder: (context, animation1, animation2) => MyHomePage(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ),
                       );
-                    else if ((EnvironmentConfig.template_version == 11 ||
-                            EnvironmentConfig.template_version == 15) &&
-                        index == 2)
+                    else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 2)
                       Navigator.of(context).pushNamed(RoutePath.deposit);
-                    else if ((EnvironmentConfig.template_version == 11 ||
-                            EnvironmentConfig.template_version == 15) &&
-                        index == 3)
+                    else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 3)
                       Navigator.of(context).pushNamed(RoutePath.withdraw);
                     else if (index == 1)
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Promotion()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Promotion()));
                     //Navigator.pushNamed(context, RoutePath.addCard);
                     //   Navigator.of(context). pushNamed("/promotion");
                     else if (index == 6)
                       Navigator.of(context).pushNamed("/customer_service");
-                    else if (index == 2 &&
-                        EnvironmentConfig.template_version != 2)
+                    else if (index == 2 && EnvironmentConfig.template_version != 2)
                       setState(() {
                         isMenu = !isMenu;
                       });
-                    else if (index == 2 &&
-                        EnvironmentConfig.template_version == 2)
+                    else if (index == 2 && EnvironmentConfig.template_version == 2)
                       setState(() {
                         Navigator.of(context).pushNamed(RoutePath.menuT2);
                       });
@@ -693,9 +647,7 @@ class _MyHomePageState extends BaseState<MyHomePage>
                             getTranslatedText(title) ?? title,
                             style: TextStyle(
                               fontSize: 9.auto,
-                              color: (currentBottomIndex == index && !isMenu)
-                                  ? CustomColor.bottom_nav_selected_color
-                                  : CustomColor.bottom_nav_unselected_color,
+                              color: (currentBottomIndex == index && !isMenu) ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -710,10 +662,7 @@ class _MyHomePageState extends BaseState<MyHomePage>
       );
 
   _buildImageIcon(String imagePath, int index, bool isNewMessage) {
-    if (EnvironmentConfig.template_version == 11 &&
-        imagePath != "ic_home" &&
-        imagePath != "ic_profile" &&
-        imagePath != "ic_cs") {
+    if (EnvironmentConfig.template_version == 11 && imagePath != "ic_home" && imagePath != "ic_profile" && imagePath != "ic_cs") {
       return Container(
         height: 30,
         alignment: Alignment.topCenter,
@@ -737,12 +686,8 @@ class _MyHomePageState extends BaseState<MyHomePage>
           ),
         ),
       );
-    } else if ((EnvironmentConfig.template_version == 2 &&
-            (imagePath == "ic_home" ||
-                imagePath == "ic_profile" ||
-                imagePath == "ic_promotion")) ||
-        (EnvironmentConfig.template_version == 11 &&
-            (imagePath == "ic_home" || imagePath == "ic_profile"))) {
+    } else if ((EnvironmentConfig.template_version == 2 && (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) ||
+        (EnvironmentConfig.template_version == 11 && (imagePath == "ic_home" || imagePath == "ic_profile"))) {
       return Container(
         height: 20.auto,
         child: ImageIcon(
@@ -750,18 +695,14 @@ class _MyHomePageState extends BaseState<MyHomePage>
             "images/bottom_nav_bar/T2/$imagePath.png",
           ),
           size: 20.auto,
-          color: currentBottomIndex == index
-              ? CustomColor.bottom_nav_selected_color
-              : CustomColor.bottom_nav_unselected_color,
+          color: currentBottomIndex == index ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
         ),
       );
     } else if (EnvironmentConfig.template_version == 15) {
       return Container(
           height: 25.auto,
           child: Image.asset(
-            currentBottomIndex == index
-                ? "images/bottom_nav_bar/T15/$imagePath-selected.png"
-                : "images/bottom_nav_bar/T15/$imagePath.png",
+            currentBottomIndex == index ? "images/bottom_nav_bar/T15/$imagePath-selected.png" : "images/bottom_nav_bar/T15/$imagePath.png",
           ));
     } else {
       return Container(
@@ -770,9 +711,7 @@ class _MyHomePageState extends BaseState<MyHomePage>
           "images/bottom_nav_bar/$imagePath.svg",
           matchTextDirection: true,
           height: 22.auto,
-          color: currentBottomIndex == index && !isMenu
-              ? CustomColor.bottom_nav_selected_color
-              : CustomColor.bottom_nav_unselected_color,
+          color: currentBottomIndex == index && !isMenu ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
         ),
       );
     }

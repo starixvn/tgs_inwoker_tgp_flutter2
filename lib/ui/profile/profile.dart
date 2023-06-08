@@ -19,6 +19,8 @@ import 'package:tgp_flutter2/ui/profile/T2/profile_top_item.dart';
 import 'package:tgp_flutter2/ui/profile/profile_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -39,6 +41,7 @@ class _ProfileState extends BaseState<Profile> {
         Navigator.of(context).pushNamed(RoutePath.login);
       }
     });
+    GlobalValueUtil.pausesong();
     super.initState();
   }
 

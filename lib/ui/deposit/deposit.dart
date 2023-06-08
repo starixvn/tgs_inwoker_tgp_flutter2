@@ -35,7 +35,7 @@ class _DepositState extends BaseState<Deposit> {
 
   @override
   void initState() {
-    GlobalValueUtil.assetsAudioPlayer.pause();
+    GlobalValueUtil.pausesong();
     _initData();
     super.initState();
   }
