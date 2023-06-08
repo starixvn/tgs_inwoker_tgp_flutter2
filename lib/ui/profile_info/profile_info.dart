@@ -288,13 +288,13 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
     var realName = _vm.userProfile.realname;
     if (realName != null && realName.isNotEmpty) {
       //if (_isShowIcVerificationUpload()) {
-      if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
-        return realName + " (${getTranslatedText("verified")})";
-      else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
-        return realName + " (${getTranslatedText("waiting_verify")})";
-      else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject) return realName + " (${getTranslatedText("rejected")})";
+      // if (_vm.userProfile.identityFormStatus == IdentityStatus.Approve)
+      //   return realName + " (${getTranslatedText("verified")})";
+      // else if (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify)
+      //   return realName + " (${getTranslatedText("waiting_verify")})";
+      // else if (_vm.userProfile.identityFormStatus == IdentityStatus.Reject) return realName + " (${getTranslatedText("rejected")})";
       // } else
-      //return realName;
+      return realName;
     } else
       return getTranslatedText("not_configured");
   }
