@@ -477,7 +477,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if ((widget.config?.displayPhone ?? false) && widget.phone != null && (widget.phone ?? "").isNotEmpty) _getPhoneText(),
+              if (_isDisplayPhone()) _getPhoneText(),
               if (widget.config?.customVIP ?? false) _getVipText(),
             ],
           ),
@@ -591,5 +591,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _isDarkMode() => ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) && !EnvironmentConfig.dark_mode);
 
-  _isDisplayUserDetailsRow() => ((widget.config?.displayPhone ?? false) || (widget.config?.customVIP ?? false));
+  _isDisplayUserDetailsRow() => (_isDisplayPhone()|| (widget.config?.customVIP ?? false));
+
+  _isDisplayPhone()=>(widget.config?.displayPhone ?? false) && widget.phone != null && (widget.phone ?? "").isNotEmpty;
 }
