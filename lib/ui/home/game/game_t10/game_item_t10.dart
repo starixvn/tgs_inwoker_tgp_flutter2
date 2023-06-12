@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:api/entity/env_features_config.dart';
+import 'package:api/entity/game_type.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_provider2.dart';
@@ -92,8 +93,7 @@ class GameItemT10State extends BaseState<GameItemT10> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Center(
-                    child: Text(getTranslatedText("maintenance"),
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
+                    child: Text(getTranslatedText("maintenance"), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.auto)),
                   ),
                 ),
               ),
@@ -108,33 +108,48 @@ class GameItemT10State extends BaseState<GameItemT10> {
         alignment: Alignment.center,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: CachedNetworkImage(
-              placeholder: (context, url) => Container(
-                width: context.screenWidth,
-                height: context.screenHeight,
-                color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
-                child: Center(
-                  child: SizedBox(
-                    height: 50.0,
-                    width: 50.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+          child: Stack(
+            children: [
+              CachedNetworkImage(
+                  placeholder: (context, url) => Container(
+                        width: context.screenWidth,
+                        height: context.screenHeight,
+                        color: gameProvider.status != 0 ? Colors.transparent : CustomColor.very_light_pink_four,
+                        child: Center(
+                          child: SizedBox(
+                            height: 50.0,
+                            width: 50.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                            ),
+                          ),
+                        ),
+                      ),
+                  imageUrl: getImagePath(gameProvider),
+                  errorWidget: (context, url, error) {
+                    print(url);
+                    return Container(
+                      color: CustomColor.very_light_pink_four,
+                    );
+                  },
+                  //handling error
+                  fit: BoxFit.fill),
+              if (gameProvider.gameType == GameType.Slot)
+                Positioned(
+                  left: 0,
+                  top: context.screenHeight / 70,
+                  child: Container(
+                    width: context.screenWidth / 4.5,
+                    child: Text(
+                      gameProvider.name ?? "",
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                 ),
-              ),
-              imageUrl: getImagePath(gameProvider),
-              errorWidget: (context, url, error) {
-                print(url);
-                return Container(
-                  color: CustomColor.very_light_pink_four,
-                );
-              },
-              //handling error
-              fit: BoxFit.fill),
+            ],
+          ),
         ),
       );
 
-  _isSportsHideLogo(String? gamePlatformCode) =>
-      (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
+  _isSportsHideLogo(String? gamePlatformCode) => (widget.config?.sportsHideLogo ?? false) && (gamePlatformCode == "wgfm" || gamePlatformCode == "wgvia");
 }
