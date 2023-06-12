@@ -138,53 +138,59 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
         padding: EdgeInsets.only(top: 0.auto, bottom: 5.auto),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: SvgPicture.asset(
-                    "images/home/T15/announce.svg",
-                    height: 21.auto,
-                    color: CustomColor.announcement_icon_color,
+            Expanded(
+              flex:0,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: SvgPicture.asset(
+                      "images/home/T15/announce.svg",
+                      height: 21.auto,
+                      color: CustomColor.announcement_icon_color,
+                    ),
                   ),
-                ),
-                Expanded(
-                    flex: 8,
-                    child: handleNullWidget(
-                      announcement.isEmpty,
-                      Container(
-                        // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
-                        margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
-                        height: 18.auto,
-                        child: Marquee(
-                            text: announcement,
-                            style: TextStyle(
-                              color: CustomColor.theme_marquee_text_color,
-                              fontSize: 10.auto,
-                            ),
-                            scrollAxis: Axis.horizontal,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            blankSpace: 300.auto,
-                            pauseAfterRound: Duration(seconds: 1),
-                            showFadingOnlyWhenScrolling: false),
-                      ),
-                    ))
-              ],
+                  Expanded(
+                      flex: 8,
+                      child: handleNullWidget(
+                        announcement.isEmpty,
+                        Container(
+                          // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+                          margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
+                          height: 18.auto,
+                          child: Marquee(
+                              text: announcement,
+                              style: TextStyle(
+                                color: CustomColor.theme_marquee_text_color,
+                                fontSize: 10.auto,
+                              ),
+                              scrollAxis: Axis.horizontal,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              blankSpace: 300.auto,
+                              pauseAfterRound: Duration(seconds: 1),
+                              showFadingOnlyWhenScrolling: false),
+                        ),
+                      ))
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Expanded(child: _getBalanceDescView()),
-                Container(
-                    margin: EdgeInsets.only(right: 5.auto),
-                    width: 120,
-                    child: Row(children: [
-                      Expanded(
-                          child: _getWalletView(getTranslatedText("deposit"), "deposit")),
-                      Expanded(
-                          child:
-                              _getWalletView(getTranslatedText("withdrawal"), "withdraw")),
-                    ]))
-              ],
+            Expanded(
+              flex:1,
+              child: Row(
+                children: [
+                  Expanded(child: _getBalanceDescView()),
+                  Container(
+                      margin: EdgeInsets.only(right: 5.auto),
+                      width: 120,
+                      child: Row(children: [
+                        Expanded(
+                            child: _getWalletView(getTranslatedText("deposit"), "deposit")),
+                        Expanded(
+                            child:
+                                _getWalletView(getTranslatedText("withdrawal"), "withdraw")),
+                      ]))
+                ],
+              ),
             )
           ],
         ));
@@ -270,7 +276,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
         },
         child: Container(
           // width: 45,
-          height: 48,
+          // height: 48.auto,
           alignment: Alignment.center,
           padding: EdgeInsets.all(1),
           child: Column(

@@ -8,7 +8,7 @@ class GlobalValueUtil {
   static AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
 
   static void playsong() async {
-    await assetsAudioPlayer.play();
+   if(playerStatus!= AssetPlayerStatus.manualClickPause) await assetsAudioPlayer.play();
   }
 
   static void pausesong() async {
