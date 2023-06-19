@@ -335,7 +335,9 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       case "ThirdParty":
         return "Third Party";
       case "EWallet":
-        return "E-wallet";
+        return "Paymaya";
+      case "Pulsa":
+        return "Gcash";
       default:
         return bankType;
     }

@@ -95,7 +95,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
                   children: [
                     _categoryButtonView(),
                     Expanded(
-                      child: Column(
+                      child: ListView(
                         children: [
                           _titleView(getTranslatedText("register").toString()),
                           _buildUsernameTextFormField(),

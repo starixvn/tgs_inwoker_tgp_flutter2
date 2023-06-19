@@ -75,7 +75,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
               child: Row(
             children: [
               Expanded(
-                  child: Column(
+                  child: ListView(
                 children: [
                   _titleView(),
                   _buildUsernameTextFormField(),
@@ -290,9 +290,8 @@ class _LoginContentViewState extends BaseState<LoginContentView>
     var list = LanguageProvider.getSingleton().list;
     var deviceLanguage =
         list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return FittedBox(
-      fit: BoxFit.fitWidth,
-      child: Container(
+    return  Container(
+
         margin: EdgeInsets.only(top: 10.auto),
         child: IntrinsicHeight(
             child: new Row(
@@ -323,8 +322,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
             );
           }),
         )),
-      ),
-    );
+      );
   }
 
   _login() {
