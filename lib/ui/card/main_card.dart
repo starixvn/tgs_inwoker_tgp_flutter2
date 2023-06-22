@@ -56,7 +56,9 @@ class _MainCardState extends BaseState<MainCard> {
                             children: List.generate(_vm.bankCardList!.length, (index) {
                               return Container(
                                   child: ((_vm.config?.addCardNotAllowedEditDelete ?? false) ||
-                                          (_vm.config?.addCardDisableCreateUpdateDelete ?? false))
+                                          (_vm.config?.addCardDisableCreateUpdateDelete ?? false) ||
+                                      //sky 8 remove delete features
+                                          EnvironmentConfig.brandName == "SKY8")
                                       ? _buildBankCardItem(_vm.bankCardList![index])
                                       : Dismissible(
                                           key: UniqueKey(),
@@ -152,8 +154,7 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildDeleteHintText() => Visibility(
-        visible: !((_vm.config?.addCardNotAllowedEditDelete ?? false) ||
-            (_vm.config?.addCardDisableCreateUpdateDelete ?? false)),
+        visible: !((_vm.config?.addCardNotAllowedEditDelete ?? false) || (_vm.config?.addCardDisableCreateUpdateDelete ?? false)),
         child: Container(
           margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
           child: Row(

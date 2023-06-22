@@ -10,6 +10,7 @@ import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_text_form_field.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
@@ -61,14 +62,14 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
                       //identity status ==2 ,show
                       //identity status ==4, hide
                       // show when icVerification is true, and if identity status not approved
-                      visible: (_vm.config.icVerification ?? true) && ((_identityStatus == 0 && isEdit) || _identityStatus==2|| _identityStatus==4),
+                      visible: (_vm.config.icVerification ?? true) && ((_identityStatus == 0 && isEdit) || _identityStatus == 2 || _identityStatus == 4),
                       // _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
                       //     (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify &&
                       //         (isEdit || _vm.userProfile.identityFormId == null)),
                       child: _buildICNumberTextFormField(),
                     ),
                     Visibility(
-                      visible: (_vm.config.icVerificationUpload ?? false) && ((_identityStatus == 0 && isEdit) ||  _identityStatus==2|| _identityStatus==4),
+                      visible: (_vm.config.icVerificationUpload ?? false) && ((_identityStatus == 0 && isEdit) || _identityStatus == 2 || _identityStatus == 4),
                       // _vm.userProfile.identityFormStatus == IdentityStatus.Reject ||
                       //     (_vm.userProfile.identityFormStatus == IdentityStatus.WaitingVerify &&
                       //         (isEdit || _vm.userProfile.identityFormId == null)),
@@ -212,7 +213,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       // or when _isShowIcVerificationUpload is false and changesNotAllowed is false
 
       //show when isEdit is false, identity status is equals to 0 and changesNotAllowed is false
-      visible: !isEdit && _identityStatus == 0 && !(_vm.config?.changesNotAllowed ?? false),
+      visible: !isEdit && _identityStatus == 0 && !changesNotAllowed,
       child: InkWell(
         onTap: () {
           if (_identityStatus == 0)
@@ -250,25 +251,34 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        if (status == IdentityStatus.WaitingVerify && hasSubmitted) {
-          //有給表單id但狀態沒驗證，不能上傳
-          //waiting verify
-          _identityStatus = 0;
-        }
-        if (status == IdentityStatus.Approve && hasSubmitted) {
-          //api沒給表單id ，表示可以上傳
-          //waiting submit
-          _identityStatus = 1;
-        }
-        if (status == IdentityStatus.Reject && hasSubmitted) {
-          //有給表單id但是狀態是拒絕，也可以上傳
-          //rejected
-          _identityStatus = 2;
-        }
-        if (status == IdentityStatus.WaitingVerify && !hasSubmitted) {
-          //api沒給表單id ，表示可以上傳
-          //waiting submit
-          _identityStatus = 4;
+        //sky8 brand check realname is null
+        if (EnvironmentConfig.brandName == "SKY8") {
+          if ((_vm.userProfile.realname ?? "").isNotEmpty)
+            _identityStatus = 1;
+          else
+            _identityStatus = 4;
+        } else {
+          //others brand check identityFormStatus and identityFormId
+          if (status == IdentityStatus.WaitingVerify && hasSubmitted) {
+            //有給表單id但狀態沒驗證，不能上傳
+            //waiting verify
+            _identityStatus = 0;
+          }
+          if (status == IdentityStatus.Approve && hasSubmitted) {
+            //api沒給表單id ，表示可以上傳
+            //waiting submit
+            _identityStatus = 1;
+          }
+          if (status == IdentityStatus.Reject && hasSubmitted) {
+            //有給表單id但是狀態是拒絕，也可以上傳
+            //rejected
+            _identityStatus = 2;
+          }
+          if (status == IdentityStatus.WaitingVerify && !hasSubmitted) {
+            //api沒給表單id ，表示可以上傳
+            //waiting submit
+            _identityStatus = 4;
+          }
         }
         _updateUIValue();
       });
@@ -384,4 +394,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       _getState();
     });
   }
+
+  //SKY8 not allow to edit real name
+  bool get changesNotAllowed => (_vm.config?.changesNotAllowed ?? false) || EnvironmentConfig.brandName == "SKY8";
 }

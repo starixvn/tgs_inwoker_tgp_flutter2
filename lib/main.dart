@@ -547,14 +547,31 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
     );
   }
 
-  _getCustomThirdPositionItem() => EnvironmentConfig.template_version == 2
-      ? _buildBottomBarItem(2, "ic_menu", "")
-      : _buildBottomBarItem(2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
-          isNeedLogin: true);
+  _getCustomThirdPositionItem() {
+    switch (EnvironmentConfig.template_version) {
+      case 2:
+        return _buildBottomBarItem(2, "ic_menu", "");
+      case 15:
+        return _buildBottomBarItem(6, "ic_cs", "customer_service");
+      default:
+        return _buildBottomBarItem(
+            2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
+            isNeedLogin: true);
+    }
+  }
 
-  _getCustomFourthPositionItem() => EnvironmentConfig.template_version != 11 && EnvironmentConfig.template_version != 15
-      ? SizedBox.shrink()
-      : _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true);
+  _getCustomFourthPositionItem() {
+    switch (EnvironmentConfig.template_version) {
+      case 11:
+        return _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true);
+      case 15:
+        return _buildBottomBarItem(
+            2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
+            isNeedLogin: true);
+      default:
+        return SizedBox.shrink();
+    }
+  }
 
   _buildBottomAppBarRow() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -698,7 +715,7 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
           color: currentBottomIndex == index ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
         ),
       );
-    } else if (EnvironmentConfig.template_version == 15) {
+    } else if (EnvironmentConfig.template_version == 15 && imagePath != "ic_cs") {
       return Container(
           height: 25.auto,
           child: Image.asset(
@@ -706,7 +723,7 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
           ));
     } else {
       return Container(
-        padding: EdgeInsets.only(top: 5),
+        padding: (EnvironmentConfig.template_version == 15) ? EdgeInsets.zero : EdgeInsets.only(top: 5),
         child: SvgPicture.asset(
           "images/bottom_nav_bar/$imagePath.svg",
           matchTextDirection: true,
