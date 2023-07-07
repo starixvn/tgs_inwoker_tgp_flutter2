@@ -28,6 +28,7 @@ import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit.dart';
 import 'package:tgp_flutter2/ui/dialog/deposit_order_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/vip_rebate_dialog.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
 import 'package:tgp_flutter2/ui/home/home.dart';
@@ -428,7 +429,8 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
     print("masukkkk11");
     // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     // if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
-    if (EnvironmentConfig.brandName.toLowerCase().contains("idr")) _initWebSocket();
+    /*if (EnvironmentConfig.brandName.toLowerCase().contains("idr")) */
+    _initWebSocket();
     super.initState();
   }
 
@@ -445,18 +447,41 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
   }
 
   _initWebSocket() async {
+    bool _isOpen = false;
     if (_vm.userProfile != null) {
-      print("connect to signallR");
+      print("connect to signalR");
 
-      WebSocketDeposit.getInstance(onReceive: (value) {
+      WebSocketDeposit.getInstance(onReceive: (WsResponse value) {
         print(value);
 
-        showDialog(
-            context: context,
-            builder: (BuildContext context) => DepositOrderDialog(
-                  data: value,
-                  depositList: _vm.depositList,
-                ));
+        if (value.type?.toLowerCase() == "viprebate") {
+          // check previous dialog is showing
+          if (_isOpen) {
+            setState(() {
+              _isOpen = false;
+            });
+            Navigator.pop(context);
+          }
+
+          _isOpen = true;
+          showDialog(
+              context: context,
+              barrierColor: Color(0x01000000),
+              builder: (BuildContext context) => VipRebateDialog(
+                    data: value,
+                    closeDialog: () {
+                      //check is still showing
+                      if (_isOpen) {
+                        setState(() {
+                          _isOpen = false;
+                        });
+                        Navigator.pop(context);
+                      }
+                    },
+                  ));
+        } else {
+          showDialog(context: context, builder: (BuildContext context) => DepositOrderDialog(data: value, depositList: _vm.depositList));
+        }
       })?.connect();
     }
   }

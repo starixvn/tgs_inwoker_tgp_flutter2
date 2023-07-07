@@ -1175,5 +1175,8 @@
   "sponsor_lyon": "Lyon",
   "sponsor_schal": "Schalke 04",
   "sponsor_desc": "Official Asian Partner",
-  "sponsor_title": "Sponsor"
+  "sponsor_title": "Sponsor",
+
+  "vip_rebate": "คุณยังมีเงินคืน ",
+  "vip_rebate_claim": " เพื่อเรียกร้อง..."
 }

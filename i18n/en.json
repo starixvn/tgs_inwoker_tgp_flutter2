@@ -1190,5 +1190,8 @@
   "sponsor_lyon": "Lyon",
   "sponsor_schal": "Schalke 04",
   "sponsor_desc": "Official Asian Partner",
-  "sponsor_title": "Sponsor"
+  "sponsor_title": "Sponsor",
+
+  "vip_rebate": "You still have rebate ",
+  "vip_rebate_claim": " to claim..."
 }
