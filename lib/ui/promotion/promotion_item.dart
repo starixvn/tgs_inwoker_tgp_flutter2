@@ -34,7 +34,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-      child: EnvironmentConfig.template_version == 10 ? _buildPromotionT10() : _buildPromotion(),
+      child: EnvironmentConfig.template_version == 10 || EnvironmentConfig.brandName == "SKY8" ? _buildPromotionT10() : _buildPromotion(),
     );
   }
 
@@ -55,7 +55,9 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+        color: (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode || EnvironmentConfig.brandName == "SKY8")
+            ? CustomColor.theme_bg_color
+            : Colors.white,
         elevation: 5,
         child: Column(
           children: [
@@ -75,9 +77,17 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                       margin: EdgeInsets.only(right: 3.auto),
                       child: Text(
                         widget.promotion.name ?? "",
-                        style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode?CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
-                        overflow: TextOverflow.ellipsis,
-
+                        style: TextStyle(
+                          color: (() {
+                            if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+                              return CustomColor.theme_text_black_white_color;
+                            else if (EnvironmentConfig.brandName == "SKY8")
+                              return Colors.white;
+                            else
+                              return CustomColor.theme_text_black_color;
+                          }()),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),
@@ -111,7 +121,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         isEnabled: true,
         width: 60,
         height: 17,
-        color: CustomColor.theme_button_color,
+        color: EnvironmentConfig.brandName == "SKY8" ? Colors.white : CustomColor.theme_button_color,
         fontSize: 14,
         radius: 10,
         padding: 4,
