@@ -115,14 +115,21 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   _getCsTemplateVersionPath() {
-    switch (EnvironmentConfig.template_version) {
-      case 3:
-        return "3";
-      case 10:
-        return (EnvironmentConfig.dark_mode) ? "10_dark" : "2";
-      default:
-        return "2";
-    }
+    if (EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode)
+      return "3";
+    else if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+      return "10_dark";
+    else
+      return "2";
+
+    // switch (EnvironmentConfig.template_version) {
+    //   case 3:
+    //     return "3";
+    //   // case 10:
+    //   //   return (EnvironmentConfig.dark_mode) ? "10_dark" : "2";
+    //   default:
+    //     return (EnvironmentConfig.dark_mode) ? "10_dark" : "2";
+    // }
   }
 
   buildLiveChatRow() => Visibility(
@@ -167,7 +174,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                         padding: EdgeInsets.only(top: 16),
                         child: AutoSizeText(
                           getTranslatedText("online_cs"),
-                          style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
+                          style: TextStyle(
+                              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                                  ? CustomColor.theme_text_black_white_color
+                                  : CustomColor.theme_text_black_color),
                           maxLines: 1,
                           minFontSize: 13,
                           stepGranularity: 1,
@@ -182,9 +192,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   flex: 3,
                   child: AutoSizeText(
                     getTranslatedText("contact"),
-                    style: TextStyle(color:EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-                        ? Colors.white
-                        :  CustomColor.theme_button_color),
+                    style: TextStyle(
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
                     maxFontSize: 15,
                     minFontSize: 5,
@@ -225,7 +234,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   margin: EdgeInsets.only(left: 10.auto),
                   child: Text(
                     getTranslatedText(title) ?? title,
-                    style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
+                    style: TextStyle(
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                            ? CustomColor.theme_text_black_white_color
+                            : CustomColor.theme_text_black_color),
                   ),
                 ),
               ),
@@ -249,9 +261,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                       Text(
                     getTranslatedText("cs_join"),
                     style: TextStyle(
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-                            ? Colors.white
-                            : CustomColor.theme_button_color),
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
                   ),
                 ),

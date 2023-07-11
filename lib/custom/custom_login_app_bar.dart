@@ -295,7 +295,15 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
+          textColor: (() {
+            if (_isDarkMode() || EnvironmentConfig.light_mode)
+              return Colors.white;
+            else if (EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode)
+              //pb dark mode with red theme
+              return Colors.black;
+            else
+              return CustomColor.theme_app_bar_color;
+          }()),
           color: EnvironmentConfig.template_version == 3 ||
                   EnvironmentConfig.template_version == 4 ||
                   EnvironmentConfig.template_version == 10 ||
@@ -363,7 +371,15 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_text_black_color,
+          textColor: (() {
+            if (_isDarkMode() || EnvironmentConfig.light_mode)
+              return Colors.white;
+            else if ((EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode))
+              //pb dark mode with red theme
+              return Colors.black;
+            else
+              return CustomColor.theme_text_black_color;
+          }()),
           color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Colors.white,
           icon: Container(
             margin: EdgeInsets.only(right: 3.auto),
@@ -411,7 +427,15 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           height: 17,
           radius: 5,
           padding: 2,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
+          textColor: (() {
+            if (_isDarkMode() || EnvironmentConfig.light_mode)
+              return Colors.white;
+            else if ((EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode))
+              //pb dark mode with red theme
+              return Colors.black;
+            else
+              return CustomColor.theme_text_black_color;
+          }()),
           color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 10 || _isDarkMode() || EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
               : Colors.white,

@@ -64,7 +64,7 @@ class _PromotionMainDetailsState extends BaseState<PromotionMainDetails> {
           displayText,
           style: TextStyle(
             fontSize: 13.auto,
-            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+            color: (EnvironmentConfig.template_version == 10 || EnvironmentConfig.template_version == 1) && EnvironmentConfig.dark_mode
                 ? CustomColor.theme_text_black_white_color
                 : CustomColor.theme_text_black_color,
           ),

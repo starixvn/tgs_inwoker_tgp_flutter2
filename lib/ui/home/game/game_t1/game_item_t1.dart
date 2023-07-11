@@ -9,6 +9,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
+import '../../../../environment_config.dart';
+
 class GameItemT1 extends StatefulWidget {
   final ScrollController? controller;
   final List<dynamic>? gameProviderList;
@@ -56,7 +58,7 @@ class GameItemT1State extends BaseState<GameItemT1> {
     return Container(
       padding: EdgeInsets.only(),
       decoration: BoxDecoration(
-          color: CustomColor.very_light_pink_four,
+          color: EnvironmentConfig.dark_mode ? Colors.black : CustomColor.very_light_pink_four,
           borderRadius: BorderRadius.circular(5.auto)),
       child: ListView(
           padding: EdgeInsets.only(right: _listViewPaddingRight),

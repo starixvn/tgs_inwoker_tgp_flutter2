@@ -39,7 +39,9 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       appBar: _buildAppBar(),
       body: Container(
         height: context.screenHeight,
-        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+        color: (EnvironmentConfig.template_version == 10 || EnvironmentConfig.template_version == 1) && EnvironmentConfig.dark_mode
+            ? CustomColor.theme_bg_color
+            : Colors.white,
         child: ListView(
           shrinkWrap: true,
           children: [
