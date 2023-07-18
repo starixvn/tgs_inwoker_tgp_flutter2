@@ -9,23 +9,29 @@ class CustomScaffold extends StatelessWidget {
   final Widget body;
   final Color? color;
   final bool? resizeToAvoidBottomInset;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final Drawer? endDrawer;
 
   CustomScaffold({
     this.appBar,
     required this.body,
     this.color,
     this.resizeToAvoidBottomInset = false,
+    this.scaffoldKey,
+    this.endDrawer,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey != null ? key : scaffoldKey,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) ||
-              EnvironmentConfig.template_version == 11)
+      backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 11)
           ? Colors.transparent
           : (color ?? CustomColor.theme_bg_color),
-      appBar: appBar, //?? PreferredSizeWidget(),
+      appBar: appBar,
+      endDrawer: endDrawer != null ? endDrawer : Container(),
+      //?? PreferredSizeWidget(),
       body: Container(
         decoration: ((() {
           if (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)

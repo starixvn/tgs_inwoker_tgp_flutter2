@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 1.37.01+1
+version: 1.37.02+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -81,6 +81,7 @@ dependencies:
   path_provider: ^2.0.14
   external_path: ^1.0.3
   signalr_netcore: ^1.3.3
+  dropdown_button2: ^2.1.4
 
   #easy_gradient_text: ^1.0.0
 
@@ -114,6 +115,7 @@ flutter:
     - images/home/
     - images/home/T2/
     - images/home/T11/
+    - images/home/T14/
     - images/home/T15/
     - images/game/T2/
     - images/game/T3/
@@ -144,6 +146,7 @@ flutter:
     - images/game_tab/t4/
     - images/game_tab/t11/
     - images/game_tab/t15/
+    - images/game_tab/t14/
     - images/child_game/
     - images/card/
     - images/language/
@@ -163,6 +166,7 @@ flutter:
     - images/login/t11/
     - images/marquee_dialog/
     - images/deposit_dialog/
+    - images/drawer_menu/
 
     - i18n/
     - features/

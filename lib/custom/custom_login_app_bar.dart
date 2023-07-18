@@ -17,21 +17,23 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomLoginAppBar(
-      {required this.onClickLoginButton,
-      required this.onClickRegisterButton,
-      required this.onClickLogoutButton,
-      required this.isLogin,
-      this.brandLogoUrl,
-      this.userProfile,
-      this.phone,
-      this.config,
-      this.totalBalance,
-      this.brandName,
-      this.onClickBalance,
-      this.onPauseMusic,
-      this.onResumeMusic,
-      required this.randomNumber});
+  CustomLoginAppBar({
+    required this.onClickLoginButton,
+    required this.onClickRegisterButton,
+    required this.onClickLogoutButton,
+    required this.isLogin,
+    this.brandLogoUrl,
+    this.userProfile,
+    this.phone,
+    this.config,
+    this.totalBalance,
+    this.brandName,
+    this.onClickBalance,
+    this.onPauseMusic,
+    this.onResumeMusic,
+    required this.randomNumber,
+    required this.scaffoldKey,
+  });
 
   final Function onClickLoginButton;
   final Function onClickRegisterButton;
@@ -47,6 +49,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function? onPauseMusic;
   final Function? onResumeMusic;
   final int randomNumber;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -132,6 +135,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else {
       return AppBar(
+        actions: [Container()],// for hiding default end drawer icon
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: false,
@@ -217,17 +221,35 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           ),
         );
 
-  List<Widget> _getActionButton() => widget.isLogin
-      ? [
-          if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
-          _getUsernameText(),
-          _getLogoutButton(),
-        ]
-      : [
-          if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
-          _getLoginButton(),
-          _getRegisterButton(),
-        ];
+  List<Widget> _getActionButton() {
+    List<Widget> list = [];
+    /*if (widget.config?.homePageDisplayVIP ?? false)*/
+    list.add(_getVipButton());
+
+    list.addAll(widget.isLogin
+        ? [
+            _getUsernameText(),
+            _getLogoutButton(),
+          ]
+        : [
+            _getLoginButton(),
+            _getRegisterButton(),
+          ]);
+    if (EnvironmentConfig.template_version == 14) {
+      list.add(Container(
+        child: Builder(builder: (context) {
+          return IconButton(
+            icon: new Icon(Icons.menu, color: Colors.white),
+            onPressed: () {
+              widget.scaffoldKey.currentState!.openEndDrawer();
+            },
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          );
+        }),
+      ));
+    }
+    return list;
+  }
 
   _getOnlineUsersText() => Padding(
         padding: EdgeInsets.only(right: 10),
@@ -272,7 +294,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             color: ((() {
               if (_isDarkMode())
                 return CustomColor.theme_text_black_color;
-              else if (EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 10)
+              else if (EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14)
                 return CustomColor.theme_button_color;
               else
                 return Colors.white;
@@ -295,10 +317,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           fontSize: 14,
           radius: 5,
           padding: 4,
-          textColor: _isDarkMode() || EnvironmentConfig.light_mode ? Colors.white : CustomColor.theme_app_bar_color,
+          textColor: _isDarkMode() || EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_app_bar_color,
           color: EnvironmentConfig.template_version == 3 ||
                   EnvironmentConfig.template_version == 4 ||
                   EnvironmentConfig.template_version == 10 ||
+                  EnvironmentConfig.template_version == 14 ||
                   _isDarkMode() ||
                   EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
@@ -347,6 +370,30 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ],
             ),
+          ),
+        ),
+      );
+    else if (EnvironmentConfig.template_version == 14)
+      return InkWell(
+        onTap: () => Navigator.of(context).pushNamed("/vip"),
+        child: Container(
+          margin: EdgeInsets.only(right: 10),
+          child: Column(
+            children: [
+              Image.asset(
+                "images/login_app_bar/vip.png",
+                matchTextDirection: true,
+                height: 15.auto,
+              ),
+              AutoSizeText(
+                "VIP",
+                style: TextStyle(color: CustomColor.theme_button_color, fontWeight: FontWeight.bold),
+                minFontSize: 14,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                stepGranularity: 1,
+              ),
+            ],
           ),
         ),
       );

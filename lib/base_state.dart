@@ -23,6 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+
   // AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   // get assetsAuPlayer => assetsAudioPlayer;
   get config => contentRepo.featuresConfig;
@@ -97,7 +98,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            url == null
+            (url == null || url.isEmpty)
                 ? Container()
                 : CachedNetworkImage(
                     placeholder: (context, url) => Container(),
