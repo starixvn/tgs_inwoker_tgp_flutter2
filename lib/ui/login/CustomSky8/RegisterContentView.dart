@@ -356,7 +356,14 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
           children: [
             Container(
               width: 35.auto,
-              child: CustomCheckbox(checkColor: Colors.white, isChecked: true, iconSize: 15.0, onChanged: () => onChanged()),
+              child: CustomCheckbox(
+                  activeBackgroundColor: Colors.white,
+                  inactiveBackgroundColor: Colors.transparent,
+                  activeIconColor: Colors.black,
+                  inactiveIconColor: Colors.white,
+                  isChecked: true,
+                  iconSize: 15.0,
+                  onChanged: () => onChanged()),
             ),
             // Expanded(
             //   flex: 1,

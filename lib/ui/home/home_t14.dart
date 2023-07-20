@@ -79,7 +79,9 @@ class _HomeT14State extends BaseState<HomeT14> {
     super.initState();
   }
 
-  _initData() async {}
+  _initData() async {
+
+  }
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();

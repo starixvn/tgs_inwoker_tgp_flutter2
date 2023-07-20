@@ -29,8 +29,9 @@ class GameViewModel extends BaseViewModel {
       deleteFavouriteGameApiState,
       getBetConstructHtmlApiState,
       getSM01CockfightApiState;
-  List<Game>? _gameList, filteredGameList;
+  List<Game>? _gameList, filteredGameList, hot;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
+  Map<String, List<Game>> slotGameListByTagMap = new Map<String, List<Game>>();
   int mCategory = 0;
   String? mPlatform = "ALL", mSearchQuery = "";
   GameType? mGameType;
@@ -165,7 +166,7 @@ class GameViewModel extends BaseViewModel {
 
   var _context;
   Map<GameType, List<GameProvider2>>? gameTypeMap = new Map<GameType, List<GameProvider2>>();
-  bool isGamePlatformInactive = false, isFiltering = false;
+  bool isGamePlatformInactive = false;
 
   get userProfile => userRepo.userProfile;
 
@@ -276,6 +277,8 @@ class GameViewModel extends BaseViewModel {
               getGameApiState = apiState;
             }
           });
+
+        print(gameListMap);
       }
     }
     setLoading(false);
@@ -315,7 +318,7 @@ class GameViewModel extends BaseViewModel {
     // if (context != null) ProgressDialog.show(context, brandLogoUrl);
 
     if (context != null) _context = context;
-    if (gamePlatformCode != null && gameType != null) {
+    if (gamePlatformCode != null && gamePlatformCode != "ALL" && gameType != null) {
       mGameType = gameType;
       mPlatform = gamePlatformCode;
       await getGameList(gamePlatformCode, gameType);
@@ -328,14 +331,13 @@ class GameViewModel extends BaseViewModel {
     var platformGameList = await _filterPlatform();
     filteredGameList = _filterSearch(_filterCategory(platformGameList));
     print(filteredGameList);
-    isFiltering = false;
     notifyListeners();
 
     // ProgressDialog.hide();
   }
 
-  List<Game> _filterCategory(List<Game> gameList) {
-    switch (mCategory) {
+  List<Game> _filterCategory(List<Game> gameList, {int? category}) {
+    switch (category ?? mCategory) {
       case 0:
         //all game list
         return gameList;
@@ -350,6 +352,10 @@ class GameViewModel extends BaseViewModel {
       case 3:
         //favorite game list
         var list = gameList.where((element) => element.isFavourite == true).toList();
+        return list;
+      case 4:
+        //recommend game list
+        var list = gameList.where((element) => element.tag?.isRecommend == true).toList();
         return list;
       default:
         return gameList;
@@ -373,14 +379,16 @@ class GameViewModel extends BaseViewModel {
     }
   }
 
-  _addGameList() async {
+  _addGameList({GameType? gameType, bool isGettingRecommendList = false}) async {
     var task = <Future>[];
     platformList!.forEach((platform) {
       if (gameListMap[platform.code] == null) {
-        task.add(getGameList(platform.code, mGameType));
+        task.add(getGameList(platform.code, gameType ?? mGameType, isGettingRecommendList: isGettingRecommendList));
       }
     });
     await Future.wait(task);
+
+    print(gameListMap);
     return gameListMap.values.expand((element) => element).toList();
   }
 
@@ -554,5 +562,17 @@ class GameViewModel extends BaseViewModel {
 
   clearFilteredGameList() {
     filteredGameList = null;
+  }
+
+  getSlotHotGameList() async {
+    // mGameType = GameType.Slot;
+    List<Game> _list = await _addGameList(gameType: GameType.Slot, isGettingRecommendList: userProfile == null);
+    print(_list);
+    slotGameListByTagMap["new"] = _filterCategory(_list, category: 1);
+    slotGameListByTagMap["hot"] = _filterCategory(_list, category: 2);
+    slotGameListByTagMap["recommend"] = _filterCategory(_list, category: 4);
+
+    print("slottt:::$slotGameListByTagMap");
+    notifyListeners();
   }
 }

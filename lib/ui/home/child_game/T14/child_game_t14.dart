@@ -1,23 +1,14 @@
 import 'dart:ui';
 
-import 'package:api/entity/game.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/GlobalValueUtil.dart';
-import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
-import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
-import 'package:tgp_flutter2/my_behavior.dart';
-import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
-import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:tgp_flutter2/ui/home/child_game/T14/child_game_item_t14.dart';
-import 'package:tgp_flutter2/ui/home/child_game/child_game_platform.dart';
-import 'package:tgp_flutter2/ui/home/child_game/child_game_suggestion.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t14/game_item_t14.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 
@@ -167,7 +158,7 @@ class _ChildGameT14State extends BaseState<ChildGameT14> with SingleTickerProvid
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: ChildGameItemT14(
+                    child: GameItemT14(
                       game: (widget.vm.filteredGameList ?? [])[index],
                       //isFavourite: true,
                       isDisabled: false,

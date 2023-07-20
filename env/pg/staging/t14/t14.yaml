@@ -45,7 +45,7 @@ environment_config:
       default: 0xff828282
     theme_bg_color:
       type: int
-      default: 0xffF0EFF5
+      default: 0xff242958
     theme_app_bar_icon_color:
       type: int
       default: 0xff707070
@@ -54,7 +54,7 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xffd83f67
+      default: 0xffFFFFFF
     tab_unselected_color:
       type: int
       default: 0xffFFFFFF

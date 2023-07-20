@@ -1178,5 +1178,7 @@
   "sponsor_title": "Sponsor",
 
   "vip_rebate": "คุณยังมีเงินคืน ",
-  "vip_rebate_claim": " เพื่อเรียกร้อง..."
+  "vip_rebate_claim": " เพื่อเรียกร้อง...",
+
+  "online_chat": "แชทสด"
 }

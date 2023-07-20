@@ -23,19 +23,20 @@ class LoginContentView extends StatefulWidget {
   final child;
   final LoginViewModel vm;
   final VoidCallback onPressed;
+
   LoginContentView({this.child, required this.vm, required this.onPressed});
 
   @override
   _LoginContentViewState createState() => _LoginContentViewState();
 }
 
-class _LoginContentViewState extends BaseState<LoginContentView>
-    with AutomaticKeepAliveClientMixin {
+class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticKeepAliveClientMixin {
   bool _obscurePassword = true;
   bool _isRememberMe = false;
   var username = TextEditingController();
   var password = TextEditingController();
   var _vm;
+
   void onChanged() {
     // setState(() {
     _isRememberMe = !_isRememberMe;
@@ -104,8 +105,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
   }
 
   _categoryButtonView() {
-    var text =
-        getTranslatedText('register_member').toString(); //"会员注册"; // : "会员登录";\
+    var text = getTranslatedText('register_member').toString(); //"会员注册"; // : "会员登录";\
     var langCode = getCurrentLanguage().apiCode;
     var isChinese = (langCode == "zh-CN" || langCode == "zh-TW");
     return GestureDetector(
@@ -129,10 +129,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
                         quarterTurns: 1,
                         child: Text(
                           text,
-                          style: TextStyle(
-                              fontSize: 14.auto,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 14.auto, color: Colors.white, fontWeight: FontWeight.bold),
                         ) //your text
                         )
                     : Wrap(
@@ -141,11 +138,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
                         alignment: WrapAlignment.center,
                         children: text
                             .split("")
-                            .map((string) => Text(string,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)))
+                            .map((string) => Text(string, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold)))
                             .toList(),
                       ))));
   }
@@ -153,19 +146,10 @@ class _LoginContentViewState extends BaseState<LoginContentView>
   _titleView() => Container(
       height: 60.auto,
       // margin: EdgeInsets.only(bottom: 5),
-      child: Center(
-          child: Text(getTranslatedText("login"),
-              style: TextStyle(
-                  fontSize: 18.auto,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold))));
+      child: Center(child: Text(getTranslatedText("login"), style: TextStyle(fontSize: 18.auto, color: Colors.white, fontWeight: FontWeight.bold))));
 
   _buildUsernameTextFormField() => Container(
-        margin: EdgeInsets.only(
-            left: 10.auto,
-            right: 10.auto,
-            bottom: 8.auto,
-            top: 10.auto), //EdgeInsets.all(10.auto),
+        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 8.auto, top: 10.auto), //EdgeInsets.all(10.auto),
         child: LoginTextFormField(
           icon: Image.asset(
             "images/login/Sky8/icon-user.png",
@@ -218,11 +202,9 @@ class _LoginContentViewState extends BaseState<LoginContentView>
               Navigator.of(context).pushNamed(RoutePath.forgotPassword);
             },
             child: Text(
-              getTranslatedText("forgot_password_with_question_mark")
-                  .replaceAll('?', ''),
+              getTranslatedText("forgot_password_with_question_mark").replaceAll('?', ''),
               style: TextStyle(
-                  color:
-                      Colors.white, //CustomColor.theme_text_black_white_color,
+                  color: Colors.white, //CustomColor.theme_text_black_white_color,
                   // decoration: TextDecoration.underline,
                   fontSize: 12.auto),
             ),
@@ -233,9 +215,13 @@ class _LoginContentViewState extends BaseState<LoginContentView>
   _buildCheckBox() => Row(
         children: [
           CustomCheckbox(
-              checkColor: Colors.white,
-              iconSize: 15.0,
-              onChanged: () => onChanged()),
+            activeBackgroundColor: Colors.white,
+            inactiveBackgroundColor: Colors.transparent,
+            activeIconColor: Colors.black,
+            inactiveIconColor: Colors.white,
+            iconSize: 15.0,
+            onChanged: () => onChanged(),
+          ),
 
           // Checkbox(
           //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -264,8 +250,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
       );
 
   _buildLoginButton() => Container(
-        margin: EdgeInsets.only(
-            top: 50.auto, bottom: 0.auto, left: 25.auto, right: 25.auto),
+        margin: EdgeInsets.only(top: 50.auto, bottom: 0.auto, left: 25.auto, right: 25.auto),
         child: ColorButton(
           title: getTranslatedText("login"),
           height: 37.5.auto,
@@ -288,41 +273,35 @@ class _LoginContentViewState extends BaseState<LoginContentView>
 
   _buildChangeLanguageText() {
     var list = LanguageProvider.getSingleton().list;
-    var deviceLanguage =
-        list.singleWhere((e) => e.locale == Localizations.localeOf(context));
-    return  Container(
-
-        margin: EdgeInsets.only(top: 10.auto),
-        child: IntrinsicHeight(
-            child: new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(list.length, (index) {
-            return Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      _changeLanguage(list[index]);
-                    },
-                    child: Text(
-                      list[index].name,
-                      style: TextStyle(
-                          color: deviceLanguage == list[index]
-                              ? CustomColor.theme_button_color
-                              : Colors
-                                  .white /*CustomColor.theme_text_black_white_color*/),
-                    )),
-                Visibility(
-                  visible: index + 1 != list.length,
-                  child: VerticalDivider(
-                    color: Colors
-                        .white /*CustomColor.theme_text_black_white_color*/,
-                  ),
-                )
-              ],
-            );
-          }),
-        )),
-      );
+    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    return Container(
+      margin: EdgeInsets.only(top: 10.auto),
+      child: IntrinsicHeight(
+          child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(list.length, (index) {
+          return Row(
+            children: [
+              InkWell(
+                  onTap: () {
+                    _changeLanguage(list[index]);
+                  },
+                  child: Text(
+                    list[index].name,
+                    style: TextStyle(
+                        color: deviceLanguage == list[index] ? CustomColor.theme_button_color : Colors.white /*CustomColor.theme_text_black_white_color*/),
+                  )),
+              Visibility(
+                visible: index + 1 != list.length,
+                child: VerticalDivider(
+                  color: Colors.white /*CustomColor.theme_text_black_white_color*/,
+                ),
+              )
+            ],
+          );
+        }),
+      )),
+    );
   }
 
   _login() {
@@ -354,8 +333,7 @@ class _LoginContentViewState extends BaseState<LoginContentView>
   }
 
   _handleApiState() {
-    handleApiState(_vm.loginApiState, isCheckSessionExpired: false,
-        onSuccess: () {
+    handleApiState(_vm.loginApiState, isCheckSessionExpired: false, onSuccess: () {
       if (!_vm.isNavigateFromSmsVerification)
         _navigateToHome();
       else

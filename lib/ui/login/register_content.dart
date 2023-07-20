@@ -12,6 +12,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
+import 'package:tgp_flutter2/ui/login/CustomSky8/CustomCheckbox.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
@@ -81,7 +82,8 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                       if (_registerShowEmail()) _buildEmailTextFormField(),
                       _buildPromotionCodeTextFormField(),
                       _buildRegisterTermsText(),
-                      _buildRegisterButton()
+                      _buildRegisterButton(),
+                      _buildCsButton()
                     ],
                   ),
                 );
@@ -89,11 +91,12 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   }
 
   _buildUsernameTextFormField() => LoginTextFormField(
-        icon: EnvironmentConfig.template_version == 11
+        icon: EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 14
             ? Image.asset(
                 "images/login/t11/ic_login_username.png",
                 width: 20.auto,
                 height: 20.auto,
+                color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.theme_bg_color,
               )
             : SvgPicture.asset(
                 "images/login/ic_login_username.svg",
@@ -111,11 +114,12 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   _buildPasswordTextFormField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: LoginPasswordTextFormField(
-          icon: EnvironmentConfig.template_version == 11
+          icon: EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 14
               ? Image.asset(
                   "images/login/t11/ic_login_password.png",
                   width: 20.auto,
                   height: 20.auto,
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.theme_bg_color,
                 )
               : SvgPicture.asset(
                   "images/login/ic_login_password.svg",
@@ -138,11 +142,12 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
   _buildConfirmPasswordTextFormField() => Container(
         margin: EdgeInsets.only(top: 10.auto),
         child: LoginPasswordTextFormField(
-          icon: EnvironmentConfig.template_version == 11
+          icon: EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 14
               ? Image.asset(
                   "images/login/t11/ic_confirm_password.png",
                   width: 20.auto,
                   height: 20.auto,
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.theme_bg_color,
                 )
               : SvgPicture.asset(
                   "images/login/ic_login_password.svg",
@@ -239,39 +244,41 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
               dropDown: Visibility(
                 visible: (_vm.haveAffiliate ?? false),
                 child: Container(
-                  color: CustomColor.very_light_pink_two,
+                  color: EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.very_light_pink_two,
                   padding: EdgeInsets.only(
                     left: 5.auto,
                   ),
                   margin: EdgeInsets.only(top: 8.auto, bottom: 8.auto),
-                  child: DropdownButton(
-                    elevation: 0,
-                    isExpanded: true,
-                    hint: Container(
-                      child: AutoSizeText(
-                        getTranslatedText(agentPlayer),
-                        minFontSize: 2,
-                        stepGranularity: 1,
-                        maxLines: 1,
-                      ),
-                    ),
-                    items: agentPlayerList.map((value) {
-                      return DropdownMenuItem(
-                        value: value,
-                        child: Text(
-                          getTranslatedText(value),
-                          style: TextStyle(
-                              color: CustomColor.theme_title_text_color),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      elevation: 0,
+                      isExpanded: true,
+                      icon: Icon(EnvironmentConfig.template_version == 14 ? Icons.keyboard_arrow_down_outlined : Icons.arrow_drop_down),
+                      hint: Container(
+                        child: AutoSizeText(
+                          getTranslatedText(agentPlayer),
+                          minFontSize: 2,
+                          stepGranularity: 1,
+                          maxLines: 1,
                         ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        agentPlayer = value.toString();
-                      });
-                    },
-                    style: TextStyle(
-                      color: CustomColor.theme_title_text_color,
+                      ),
+                      items: agentPlayerList.map((value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            getTranslatedText(value),
+                            style: TextStyle(color: CustomColor.theme_title_text_color),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          agentPlayer = value.toString();
+                        });
+                      },
+                      style: TextStyle(
+                        color: CustomColor.theme_title_text_color,
+                      ),
                     ),
                   ),
                 ),
@@ -296,16 +303,24 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           children: [
             Expanded(
               flex: 1,
-              child: Checkbox(
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                value: this._isTermsChecked,
-                checkColor: Colors.white,
-                activeColor: Colors.black,
-                fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
-                onChanged: (val) => this.setState(() {
-                  this._isTermsChecked = !this._isTermsChecked;
-                }),
-              ),
+              child: EnvironmentConfig.template_version == 14
+                  ? CustomCheckbox(
+                      activeBackgroundColor: Color(0xff9698af),
+                      inactiveBackgroundColor: Colors.transparent,
+                      activeIconColor: CustomColor.theme_bg_color,
+                      inactiveIconColor: Color(0xff9698af),
+                      borderColor: Color(0xff9698af),
+                      iconSize: 15.0,
+                      onChanged: () => onChangeCheckBox(),
+                    )
+                  : Checkbox(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      value: this._isTermsChecked,
+                      checkColor: Colors.white,
+                      activeColor: Colors.black,
+                      fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
+                      onChanged: (val) => onChangeCheckBox(),
+                    ),
             ),
             Expanded(
               flex: 9,
@@ -317,6 +332,38 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           ],
         ),
       );
+
+  _buildCsButton() => Container(
+        margin: EdgeInsets.only(top: 20),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SvgPicture.asset(
+              "images/bottom_nav_bar/ic_cs.svg",
+              matchTextDirection: true,
+              height: 15.auto,
+              color: Colors.white,
+            ),
+            SizedBox(width: 10),
+            Text(
+              getTranslatedText("online_chat"),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+      );
+
+  onChangeCheckBox() => this.setState(() {
+        this._isTermsChecked = !this._isTermsChecked;
+      });
 
   _register() {
     if (!validate.validateUsernameLength(username.text) || !validate.validateUsernamePassword(username.text)) {
@@ -353,11 +400,11 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
     _vm.checkUsername(username.text);
   }
 
-  _registerShowPhone() => _vm.config.registerShowPhone ?? false;
+  _registerShowPhone() => _vm.config?.registerShowPhone ?? false;
 
-  _registerShowEmail() => _vm.config.registerShowEmail ?? false;
+  _registerShowEmail() => _vm.config?.registerShowEmail ?? false;
 
-  _customFlowForIDR() => _vm.config.idrRegisterCustomFlow ?? false;
+  _customFlowForIDR() => _vm.config?.idrRegisterCustomFlow ?? false;
 
   _handleApiState() {
     handleApiState(_vm.loginApiState, onSuccess: () {
@@ -401,8 +448,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
             _vm.getReVerifyCode(username, password, display!, phone, isIdrRegister: true);
           }*/
           else
-            _vm.register(
-                username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
+            _vm.register(username.text, password.text, confirmPassword.text, invitationCode.text, agentPlayer == "agent");
         });
       }
     });

@@ -32,8 +32,7 @@ class LoginPhoneTextFormField extends StatefulWidget {
   });
 
   @override
-  _LoginPhoneTextFormFieldState createState() =>
-      _LoginPhoneTextFormFieldState();
+  _LoginPhoneTextFormFieldState createState() => _LoginPhoneTextFormFieldState();
 }
 
 class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
@@ -52,13 +51,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
                 : EnvironmentConfig.template_version == 15
                     ? Colors.black.withOpacity(0.44)
                     : Colors.white,
-            borderRadius: BorderRadius.circular(
-              EnvironmentConfig.template_version == 11
-                  ? 25
-                  : EnvironmentConfig.template_version == 15
-                      ? 10
-                      : 2,
-            ),
+            borderRadius: BorderRadius.circular(_getRadius()),
           ),
           child: InkWell(
               highlightColor: Colors.transparent,
@@ -71,11 +64,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
                 children: [
                   Text(
                     widget.displayedAreaCode ?? "", //?? areaCodeList.first,
-                    style: TextStyle(
-                        color: EnvironmentConfig.template_version == 15
-                            ? Colors.white
-                            : CustomColor.theme_text_black_color,
-                        fontSize: 13.auto),
+                    style: TextStyle(color: EnvironmentConfig.template_version == 15 ? Colors.white : CustomColor.theme_text_black_color, fontSize: 13.auto),
                     maxLines: 1,
                   ),
                   Icon(
@@ -98,13 +87,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
                 : EnvironmentConfig.template_version == 15
                     ? Colors.black.withOpacity(0.44)
                     : Colors.white,
-            borderRadius: BorderRadius.circular(
-              EnvironmentConfig.template_version == 11
-                  ? 25
-                  : EnvironmentConfig.template_version == 15
-                      ? 10
-                      : 2,
-            ),
+            borderRadius: BorderRadius.circular(_getRadius()),
           ),
           alignment: Alignment.center,
           child: TextFormField(
@@ -115,10 +98,7 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
             keyboardType: TextInputType.phone,
             textInputAction: widget.textInputAction,
             style: TextStyle(
-                fontSize: 13.auto,
-                color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
-                    ? Colors.white
-                    : Colors.black),
+                fontSize: 13.auto, color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? Colors.white : Colors.black),
             decoration: InputDecoration(
               isDense: true,
               border: InputBorder.none,
@@ -147,5 +127,17 @@ class _LoginPhoneTextFormFieldState extends BaseState<LoginPhoneTextFormField> {
               list: [widget.displayedAreaCode], //areaCodeList,
               onChanged: (value) => widget.onAreaCodeClicked(value));
         });
+  }
+
+  double _getRadius() {
+    switch (EnvironmentConfig.template_version) {
+      case 11:
+        return 25;
+      case 14:
+      case 15:
+        return 10;
+      default:
+        return 2;
+    }
   }
 }

@@ -1,7 +1,12 @@
+import 'package:api/entity/language.dart';
+import 'package:api/localizations/language_provider.dart';
 import 'package:api/network/event_result.dart';
 import 'package:api/api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
+
+import '../../main.dart';
 
 class LoginViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
@@ -36,6 +41,10 @@ class LoginViewModel extends BaseViewModel {
   get brandLogo => contentRepo.brandLogo;
 
   get config => contentRepo.featuresConfig;
+
+  List<Language> get languageList => LanguageProvider.getSingleton().list;
+
+  Language getDeviceLanguage(BuildContext context) => languageList.singleWhere((e) => e.locale == Localizations.localeOf(context));
 
   login(String username, String password, bool rememberMe) async {
     setLoading();
@@ -223,5 +232,11 @@ class LoginViewModel extends BaseViewModel {
     setLoading(false);
     notifyListeners();
     return getAffiliateStatusState;
+  }
+
+  changeLanguage(Language language, BuildContext context) async {
+    Locale? _locale = await LanguageProvider.getSingleton().setLocale(language);
+    MyApp.setLocale(context, _locale!);
+    await getApiError();
   }
 }

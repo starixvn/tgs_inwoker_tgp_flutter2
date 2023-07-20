@@ -1193,5 +1193,7 @@
   "sponsor_title": "Sponsor",
 
   "vip_rebate": "You still have rebate ",
-  "vip_rebate_claim": " to claim..."
+  "vip_rebate_claim": " to claim...",
+
+  "online_chat": "Online Chat"
 }

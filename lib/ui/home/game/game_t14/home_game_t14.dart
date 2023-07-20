@@ -45,21 +45,9 @@ class _HomeGameT14State extends BaseState<HomeGameT14> {
   }
 
   _initData() async {
-    var task = <Future>[];
-    // task.add(widget.vm.getPlatformList(GameType.Slot));
-    // currGamePlatformCode = (widget.vm.platformList ?? []).first.code ?? "";
-    // task.add(widget.vm.getGameList(currGamePlatformCode, GameType.Slot));
-    //
-    // task.add(widget.vm.filter(category: 0, gamePlatformCode: currGamePlatformCode, gameType: GameType.Slot));
-    //
-    // await Future.wait(task);
-    //
-    // print(widget.vm.filteredGameList);
     await widget.vm.getGameProviderList(isRefresh: true);
     await widget.vm.getPlatformList(GameType.Slot);
-    currGamePlatformCode = (widget.vm.platformList ?? []).first.code ?? "";
-    await widget.vm.getGameList(currGamePlatformCode, GameType.Slot);
-    await widget.vm.filter(category: 0, gamePlatformCode: currGamePlatformCode, gameType: GameType.Slot);
+    await widget.vm.getSlotHotGameList();
   }
 
   @override
@@ -67,28 +55,19 @@ class _HomeGameT14State extends BaseState<HomeGameT14> {
     // return ProviderWidget<GameViewModel>(
     //     model: widget.vm,
     //     builder: (ctx, vm, _) {
-    return (widget.vm.filteredGameList?.isEmpty ?? true)
-        ? buildProgressDialog(widget.vm.brandLogoUrl)
+    return (widget.vm.slotGameListByTagMap.isEmpty)
+        ? Center(child: buildProgressDialog(widget.vm.brandLogoUrl))
         : ListView(
             shrinkWrap: true,
             padding: EdgeInsets.all(10),
             physics: ClampingScrollPhysics(),
             children: [
-              GameSuggestT14(vm: widget.vm, titleType: 'Top Games'),
-              GameSuggestT14(vm: widget.vm, titleType: 'Recommend For You'),
-              GameSuggestT14(vm: widget.vm, titleType: 'New Games'),
+              GameSuggestT14(vm: widget.vm, titleType: 'Top Games', tag: "hot"),
+              SizedBox(height: 10),
+              GameSuggestT14(vm: widget.vm, titleType: 'Recommend For You', tag: "recommend"),
+              SizedBox(height: 10),
+              GameSuggestT14(vm: widget.vm, titleType: 'New Games', tag: "new"),
             ],
-            // SliverList(
-            //   delegate: SliverChildListDelegate(
-            //
-            //   ),
-            // shrinkWrap: true,
-            //  physics: ClampingScrollPhysics(),
-            // children: [
-            //   GameSuggestT14(vm: widget.vm, titleType: 'Top Games'),
-            //   GameSuggestT14(vm: widget.vm, titleType: 'Recommend For You'),
-            //   GameSuggestT14(vm: widget.vm, titleType: 'New Games'),
-            // ],
           );
     // });
     // }
