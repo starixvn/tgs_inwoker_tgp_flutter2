@@ -109,6 +109,7 @@ flutter:
     - images/bottom_nav_bar/
     - images/bottom_nav_bar/T2/
     - images/bottom_nav_bar/T11/
+    - images/bottom_nav_bar/T14/
     - images/bottom_nav_bar/T15/
     - images/bottom_nav_bar/T15/ic_withdraw.png
     - images/bottom_nav_bar/T15/ic_withdraw-selected.png
@@ -126,6 +127,7 @@ flutter:
     - images/profile/
     - images/profile/t1/
     - images/profile/t2/
+    - images/profile/t14/
     - images/profile_info/
     - images/support/
     - images/login/

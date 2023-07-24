@@ -14,6 +14,7 @@ import 'package:tgp_flutter2/ui/home/game/game_T4/game_T4.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+
 class HomeT4 extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
@@ -78,7 +79,7 @@ class _HomeT4State extends BaseState<HomeT4> {
   }
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
       padding: EdgeInsets.only(bottom: 5.auto),
       child: Row(
@@ -167,10 +168,6 @@ class _HomeT4State extends BaseState<HomeT4> {
       return 2;
     else
       return 4;
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 
   _buildImageSlider() {

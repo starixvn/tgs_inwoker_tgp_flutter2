@@ -12,7 +12,7 @@ import 'package:tgp_flutter2/ui/login/login_tab.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 import 'T14/language_dialog.dart';
 
 class Login extends StatefulWidget {
@@ -66,10 +66,12 @@ class _LoginState extends BaseState<Login> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          alignment: Alignment.center,
-                          child: InkWell(
-                            onTap: () => Navigator.pop(context),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -110,12 +112,12 @@ class _LoginState extends BaseState<Login> {
                     ),
                   ),
                   Expanded(
-                    flex: EnvironmentConfig.template_version != 14?4:2,
+                    flex: EnvironmentConfig.template_version != 14 ? 4 : 2,
                     child: (EnvironmentConfig.template_version != 14)
                         ? _buildLogoImage()
                         : Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 0,left: 27.auto, right: 27.auto),
+                            margin: EdgeInsets.only(top: 0, left: 27.auto, right: 27.auto),
                             child: Text(
                               (currentTabIndex == 0 ? getTranslatedText("login") : getTranslatedText("register")).toString().toUpperCase(),
                               style: TextStyle(color: Colors.white, fontSize: 56, fontWeight: FontWeight.bold),

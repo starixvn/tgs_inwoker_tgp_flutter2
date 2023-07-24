@@ -8,7 +8,7 @@ import 'package:api/websocket/web_socket_deposit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
@@ -89,12 +89,12 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
   var isDisplayGameView = false; //to check either display jackpot or game view in t11
+  var isShowMarquee = false; //to check either hide show marquee in login app bar
 
   var token;
   var isCloseRouletteIcon = false; //handle users close roulette icon by themselves
 
   late Timer _generateTimer;
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -168,7 +168,6 @@ class _HomeState extends BaseState<Home> implements RouteAware {
           return Stack(
             children: [
               CustomScaffold(
-                  scaffoldKey: _scaffoldKey,
                   appBar: EnvironmentConfig.template_version == 15
                       ? PreferredSize(
                           child: _getTopBarDetails(),
@@ -190,7 +189,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
                     child: EndDrawerMenu(
                       username: _vm.userProfile?.username ?? "",
                       width: context.screenWidth * 0.65,
-                      scaffoldKey: _scaffoldKey,
+                      balance: _vm.totalBalance ?? 0.0,
                     ),
                   )),
               BalancePicker(
@@ -224,7 +223,8 @@ class _HomeState extends BaseState<Home> implements RouteAware {
         onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
         onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         randomNumber: randomGeneratedPlayerCount ?? 0,
-        scaffoldKey: _scaffoldKey,
+        isShowMarquee: isShowMarquee,
+        marquee: _vm.announcement,
       );
 
   _getHomeTemplateView() {
@@ -340,6 +340,9 @@ class _HomeState extends BaseState<Home> implements RouteAware {
           gameViewModel: _gameViewModel,
           randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
+          updateShowMarquee: (show) => this.setState(() {
+            isShowMarquee = show;
+          }),
         );
       default:
         return HomeT1(

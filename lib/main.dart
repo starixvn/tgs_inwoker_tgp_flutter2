@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iphone_has_notch/iphone_has_notch.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/MyRouteObserver.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -745,6 +745,13 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
           height: 25.auto,
           child: Image.asset(
             currentBottomIndex == index ? "images/bottom_nav_bar/T15/$imagePath-selected.png" : "images/bottom_nav_bar/T15/$imagePath.png",
+          ));
+    } else if (EnvironmentConfig.template_version == 14 && imagePath != "ic_cs") {
+      return Container(
+          height: 22.auto,
+          child: SvgPicture.asset(
+            "images/bottom_nav_bar/T14/$imagePath.svg",
+            height: 22.auto,
           ));
     } else {
       return Container(

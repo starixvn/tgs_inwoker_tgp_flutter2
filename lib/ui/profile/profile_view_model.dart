@@ -2,6 +2,8 @@ import 'package:api/entity/game_provider.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/api.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
+
 class ProfileViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
@@ -12,6 +14,7 @@ class ProfileViewModel extends BaseViewModel {
   double? gameBalance;
   double? totalBalance;
   bool haveAffiliate = false;
+
   @override
   List<BaseRepository> get repoList => [userRepo];
 
@@ -24,6 +27,8 @@ class ProfileViewModel extends BaseViewModel {
   get config => contentRepo.featuresConfig;
 
   get bankCardList => bankRepo.bankCardList;
+
+  String get announcement => GlobalValueUtil.removeMultiLine(GlobalValueUtil.parseHtmlString(contentRepo.announcementInStr));
 
   logout() async {
     setLoading();
@@ -43,6 +48,7 @@ class ProfileViewModel extends BaseViewModel {
     await Future.wait(task);
     totalBalance = (wallet?.main ?? 0.0) + (gameBalance ?? 0.0);
     wallet?.totalBalance = totalBalance;
+    GlobalValueUtil.updateTotalBalance(totalBalance ?? 0.0);
     notifyListeners();
   }
 

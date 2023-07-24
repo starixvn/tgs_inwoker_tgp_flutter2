@@ -6,17 +6,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
 import '../../base_state.dart';
+import '../../custom/wallet_text_container.dart';
 
 class EndDrawerMenu extends StatefulWidget {
   final String username;
   final double width;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final double balance;
 
   EndDrawerMenu({
     required this.username,
     required this.width,
-    required this.scaffoldKey,
+    required this.balance,
   });
 
   @override
@@ -24,6 +26,15 @@ class EndDrawerMenu extends StatefulWidget {
 }
 
 class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
+  List<String> titleList = ["Messages", "Announcement", "Change Password", "Change Money PW", "Bet Record", "Language", "Signout"];
+  List<String> iconList = ["ic_message", "ic_announcement", "ic_change_password", "ic_change_money_password", "ic_bet_record", "ic_language", "ic_signout"];
+  double fontSize = 0.0;
+
+  @override
+  void initState() {
+    fontSize = GlobalValueUtil.calculateFontSizeForLongestString(titleList, 20.auto, widget.width - 100.auto);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -31,13 +42,13 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
       shrinkWrap: true,
       children: [
         Container(
-          height: context.screenHeight / 4 + 11,
+          height: context.screenHeight / 3.5,
           child: DrawerHeader(
             padding: EdgeInsets.zero,
             margin: EdgeInsets.only(bottom: 20),
             decoration: BoxDecoration(color: Color(0xff252957)),
             child: Container(
-              height: context.screenHeight / 4 + 10,
+              height: context.screenHeight / 5,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -45,7 +56,7 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        widget.scaffoldKey.currentState?.closeEndDrawer();
+                        GlobalValueUtil.scaffoldKey.currentState?.closeEndDrawer();
                       },
                       child: Container(
                         height: 25,
@@ -60,93 +71,67 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 40,
-                    width: widget.width * 0.7,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text(
-                        "Username",
-                        style: TextStyle(
-                          color: Colors.white,
+                  if (widget.username.isNotEmpty)
+                    Container(
+                      height: context.screenHeight / 20,
+                      width: widget.width * 0.7,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          widget.username,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                      height: 50,
-                      width: (widget.width * 0.7),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(color: Color(0xff000326), borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                margin: EdgeInsets.only(right: 10),
-                                child: Text(
-                                  "₱  103.16",
-                                  style: TextStyle(
-                                    color: CustomColor.theme_button_color,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 0,
-                            child: Icon(
-                              Icons.refresh,
-                              size: 30,
-                              color: CustomColor.theme_button_color,
-                            ),
-                          ),
-                        ],
-                      )),
-                  SizedBox(height: 30),
+                  if (widget.username.isNotEmpty) SizedBox(height: 10),
+                  if (widget.username.isNotEmpty)
+                    WalletTextContainer(height: context.screenHeight / 20, width: (widget.width * 0.7), balance: "₱ ${GlobalValueUtil.totalBalance}"),
+                  if (widget.username.isNotEmpty) SizedBox(height: 30),
+                  if (widget.username.isEmpty)
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          "Please login...",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
         ),
-        _buildDrawerItem("ic_message", "Messages"),
-        _buildDrawerItem("ic_announcement", "Announcement"),
-        _buildDrawerItem("ic_change_password", "Change Password"),
-        _buildDrawerItem("ic_change_money_password", "Change Money PW"),
-        _buildDrawerItem("ic_bet_record", "Bet Record"),
-        _buildDrawerItem("ic_language", "Language"),
-        _buildDrawerItem("ic_signout", "Signout"),
-      ],
+      ]..addAll( (widget.username.isNotEmpty)? List.generate(titleList.length, (index) => _buildDrawerItem(index)):[]),
     );
   }
 
-  _buildDrawerItem(String iconPath, String title) => SizedBox(
-        height: 50,
-        child: ListTile(
-          dense: true,
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-          leading: SvgPicture.asset(
-            "images/drawer_menu/$iconPath.svg",
-            height: 20.auto,
-            color: Colors.white,
-          ),
-          title: Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
-            child: Text(
-              title,
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
-          onTap: () {
-            //
-          },
+  _buildDrawerItem(int index) {
+    print(fontSize);
+    return SizedBox(
+      height: 50,
+      child: ListTile(
+        dense: true,
+        visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+        leading: SvgPicture.asset(
+          "images/drawer_menu/${iconList[index]}.svg",
+          height: 20.auto,
+          color: Colors.white,
         ),
-      );
+        title: Container(
+          margin: EdgeInsets.symmetric(vertical: 5),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            titleList[index],
+            style: TextStyle(color: Colors.white, fontSize: fontSize),
+            maxLines: 1,
+          ),
+        ),
+        onTap: () {
+          //
+        },
+      ),
+    );
+  }
 }

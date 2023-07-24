@@ -25,7 +25,7 @@ import 'package:tgp_flutter2/ui/withdraw/withdraw_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class Withdraw extends StatefulWidget {
   @override

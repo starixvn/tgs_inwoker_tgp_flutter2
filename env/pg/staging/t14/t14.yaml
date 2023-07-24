@@ -60,7 +60,7 @@ environment_config:
       default: 0xffFFFFFF
     bottom_nav_selected_color:
       type: int
-      default: 0xff0B1014
+      default: 0xffFFFFFF
     bottom_nav_unselected_color:
       type: int
       default: 0xffFFFFFF
@@ -93,7 +93,7 @@ environment_config:
       default: 0xffd83f67
     theme_bottom_app_bar_color:
       type: int
-      default: 0xffd83f67
+      default: 0xff242958
     default_lang:
       default:  "en-US"
     assetUrl:

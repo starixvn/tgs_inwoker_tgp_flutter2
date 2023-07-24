@@ -7,6 +7,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
+
 class MessageItem extends StatefulWidget {
   final Message message;
   final Function(String?) onReadMessage;
@@ -103,7 +105,7 @@ class _MessageItemState extends BaseState<MessageItem> {
           Container(
             width: context.screenWidth,
             child: Text(
-              parseHtmlString(_getMessageContent()),
+              GlobalValueUtil.parseHtmlString(_getMessageContent()),
               textAlign: TextAlign.justify,
               style: TextStyle(fontSize: 13.auto, color: CustomColor.grey),
             ),

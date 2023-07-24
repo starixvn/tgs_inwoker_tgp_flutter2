@@ -74,7 +74,7 @@ class _GameSuggestT14State extends BaseState<GameSuggestT14> {
               GridView.count(
                 padding: EdgeInsets.all(10.auto),
                 crossAxisCount: 3,
-                childAspectRatio: 185.5 / 198,
+                childAspectRatio: 2 / 3,
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
                 crossAxisSpacing: 10,

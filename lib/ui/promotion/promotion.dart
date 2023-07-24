@@ -9,7 +9,7 @@ import 'package:tgp_flutter2/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class Promotion extends StatefulWidget {
   @override

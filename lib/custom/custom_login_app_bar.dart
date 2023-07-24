@@ -2,15 +2,18 @@ import 'package:api/entity/env_features_config.dart';
 import 'package:api/entity/main_wallet.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:api/extension/format.dart';
+import 'package:api/extension/screen_util.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:marquee/marquee.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/custom/wallet_text_container.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -32,7 +35,8 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.onPauseMusic,
     this.onResumeMusic,
     required this.randomNumber,
-    required this.scaffoldKey,
+    this.isShowMarquee = false,
+    this.marquee = "",
   });
 
   final Function onClickLoginButton;
@@ -49,7 +53,8 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function? onPauseMusic;
   final Function? onResumeMusic;
   final int randomNumber;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final bool? isShowMarquee;
+  final String? marquee;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -135,10 +140,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else {
       return AppBar(
-        actions: [Container()],// for hiding default end drawer icon
+        actions: [Container()],
+        // for hiding default end drawer icon
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: false,
+        elevation: EnvironmentConfig.template_version == 14 ? 0 : 4,
         flexibleSpace: Container(
           child: _getAppBarWidget(),
         ),
@@ -172,22 +179,71 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getAppBarWidget() => SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            _getAppBarTitle(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: _getActionButton(),
-                ),
-                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-              ],
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _getAppBarTitle(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _getActionButton(),
+                      ),
+                      if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
+                    ],
+                  ),
+                ],
+              ),
             ),
+            if (widget.isShowMarquee ?? false)
+              Expanded(
+                flex: 0,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 0,
+                        child: Text(
+                          "NEWS: ",
+                          style: TextStyle(
+                            color: CustomColor.theme_text_black_white_color,
+                            fontSize: 10.auto,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+                          margin: EdgeInsets.only(left: 3.auto, right: 10.auto),
+                          height: 18.auto,
+                          child: Marquee(
+                            text: widget.marquee ?? "",
+                            style: TextStyle(
+                              color: CustomColor.theme_text_black_white_color,
+                              fontSize: 10.auto,
+                            ),
+                            scrollAxis: Axis.horizontal,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            blankSpace: 300.auto,
+                            pauseAfterRound: Duration(seconds: 1),
+                            showFadingOnlyWhenScrolling: false,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       );
@@ -223,14 +279,53 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   List<Widget> _getActionButton() {
     List<Widget> list = [];
-    /*if (widget.config?.homePageDisplayVIP ?? false)*/
-    list.add(_getVipButton());
+    if (widget.config?.homePageDisplayVIP ?? false) list.add(_getVipButton());
 
     list.addAll(widget.isLogin
-        ? [
-            _getUsernameText(),
-            _getLogoutButton(),
-          ]
+        ? ((EnvironmentConfig.template_version == 14)
+            ? [
+                WalletTextContainer(height: ScreenUtil.getInstance().appBarHeight / 2, width: (context.screenWidth * 0.3), balance: "₱ ${GlobalValueUtil.totalBalance}"),
+                // Container(
+                //     height: ScreenUtil.getInstance().appBarHeight / 2,
+                //     width: (context.screenWidth * 0.3),
+                //     padding: EdgeInsets.symmetric(horizontal: 5),
+                //     decoration: BoxDecoration(color: Color(0xff000326), borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Row(
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       // mainAxisSize: MainAxisSize.max,
+                //       children: [
+                //         Expanded(
+                //           flex: 1,
+                //           child: Container(
+                //             alignment: Alignment.centerLeft,
+                //             margin: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
+                //             child: FittedBox(
+                //               fit: BoxFit.fitWidth,
+                //               child: Text(
+                //                 "₱  103.16777777",
+                //                 style: TextStyle(
+                //                   color: CustomColor.theme_button_color,
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //         Expanded(
+                //           flex: 0,
+                //           child: Icon(
+                //             Icons.refresh,
+                //             size: 18,
+                //             color: CustomColor.theme_button_color,
+                //           ),
+                //         ),
+                //       ],
+                //     ))
+              ]
+            : [
+                _getUsernameText(),
+                _getLogoutButton(),
+              ])
         : [
             _getLoginButton(),
             _getRegisterButton(),
@@ -239,9 +334,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       list.add(Container(
         child: Builder(builder: (context) {
           return IconButton(
-            icon: new Icon(Icons.menu, color: Colors.white),
+            icon: new Icon(Icons.menu, color: CustomColor.theme_button_color),
             onPressed: () {
-              widget.scaffoldKey.currentState!.openEndDrawer();
+              GlobalValueUtil.scaffoldKey.currentState?.openEndDrawer();
             },
             tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
           );
@@ -294,13 +389,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             color: ((() {
               if (_isDarkMode())
                 return CustomColor.theme_text_black_color;
-              else if (EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14)
-                return CustomColor.theme_button_color;
               else
                 return Colors.white;
             })()),
             fontSize: 14,
-            radius: 5,
+            radius: EnvironmentConfig.template_version == 14 ? 10 : 5,
             padding: 4,
           ),
         );
@@ -315,7 +408,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           width: 60.auto,
           height: 17,
           fontSize: 14,
-          radius: 5,
+          radius: EnvironmentConfig.template_version == 14 ? 10 : 5,
           padding: 4,
           textColor: _isDarkMode() || EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_app_bar_color,
           color: EnvironmentConfig.template_version == 3 ||

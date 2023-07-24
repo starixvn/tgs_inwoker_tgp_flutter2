@@ -16,7 +16,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class HomeT15 extends StatefulWidget {
   final Function? onPauseBgMusic;
@@ -47,8 +47,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -71,8 +70,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -100,8 +98,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
 
   _buildImageSlider() => Container(
         height: context.screenHeight / 5,
-        child: widget.homeViewModel.bannerList == null ||
-                widget.homeViewModel.bannerList!.isEmpty
+        child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
             ? buildEmptyContainer(borderRadius: 0)
             : ImageSlideshow(
                 initialPage: 0,
@@ -109,37 +106,31 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                 indicatorBackgroundColor: Colors.transparent,
                 children: List.generate(
                     widget.homeViewModel.bannerList!.length,
-                    (index) =>
-                        widget.homeViewModel.bannerList![index].mobileUrl ==
-                                null
-                            ? buildEmptyContainer(borderRadius: 20)
-                            : ClipRRect(
-                                // borderRadius: BorderRadius.all(Radius.circular(20)),
-                                child: CachedNetworkImage(
-                                  placeholder: (context, url) =>
-                                      buildEmptyContainer(borderRadius: 0),
-                                  imageUrl: widget.homeViewModel
-                                      .bannerList![index].mobileUrl!,
-                                  //handling error
-                                  fit: BoxFit.fill,
-                                  errorWidget: (context, url, error) =>
-                                      buildEmptyContainer(borderRadius: 0),
-                                ),
-                              )),
+                    (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
+                        ? buildEmptyContainer(borderRadius: 20)
+                        : ClipRRect(
+                            // borderRadius: BorderRadius.all(Radius.circular(20)),
+                            child: CachedNetworkImage(
+                              placeholder: (context, url) => buildEmptyContainer(borderRadius: 0),
+                              imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
+                              //handling error
+                              fit: BoxFit.fill,
+                              errorWidget: (context, url, error) => buildEmptyContainer(borderRadius: 0),
+                            ),
+                          )),
                 isLoop: true,
                 autoPlayInterval: 3000),
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(
-        parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
         height: 80.auto,
         padding: EdgeInsets.only(top: 0.auto, bottom: 5.auto),
         child: Column(
           children: [
             Expanded(
-              flex:0,
+              flex: 0,
               child: Row(
                 children: [
                   Expanded(
@@ -175,7 +166,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
               ),
             ),
             Expanded(
-              flex:1,
+              flex: 1,
               child: Row(
                 children: [
                   Expanded(child: _getBalanceDescView()),
@@ -183,11 +174,8 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                       margin: EdgeInsets.only(right: 5.auto),
                       width: 120,
                       child: Row(children: [
-                        Expanded(
-                            child: _getWalletView(getTranslatedText("deposit"), "deposit")),
-                        Expanded(
-                            child:
-                                _getWalletView(getTranslatedText("withdrawal"), "withdraw")),
+                        Expanded(child: _getWalletView(getTranslatedText("deposit"), "deposit")),
+                        Expanded(child: _getWalletView(getTranslatedText("withdrawal"), "withdraw")),
                       ]))
                 ],
               ),
@@ -203,9 +191,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            isLogin
-                ? (widget.homeViewModel.userProfile.username ?? "")
-                : getTranslatedText("home_login_hint2"),
+            isLogin ? (widget.homeViewModel.userProfile.username ?? "") : getTranslatedText("home_login_hint2"),
             style: TextStyle(
               color: CustomColor.theme_app_bar_text_color,
               fontWeight: FontWeight.bold,
@@ -229,10 +215,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
               : Row(
                   children: [
                     Text(
-                      widget.homeViewModel.totalBalance != null
-                          ? Format().amountFormat(
-                              widget.homeViewModel.totalBalance ?? 0)
-                          : "-",
+                      widget.homeViewModel.totalBalance != null ? Format().amountFormat(widget.homeViewModel.totalBalance ?? 0) : "-",
                       style: TextStyle(
                         color: CustomColor.theme_app_bar_text_color,
                         fontWeight: FontWeight.normal,
@@ -304,6 +287,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
           ),
         ),
       ));
+
   _getNoticeFlex() {
     if ((languageCode?.contains("zh") ?? false))
       return 1;
@@ -313,16 +297,11 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
       return 4;
   }
 
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
-  }
-
   _checkDisableMusic() {
     if (EnvironmentConfig.template_version == 15 && widget.onPauseBgMusic != null) {
       if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
         widget.onPauseBgMusic!();
-        GlobalValueUtil.playerStatus =
-            AssetPlayerStatus.leavePagePause;
+        GlobalValueUtil.playerStatus = AssetPlayerStatus.leavePagePause;
       }
     }
   }

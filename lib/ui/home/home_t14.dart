@@ -21,7 +21,7 @@ import 'package:tgp_flutter2/ui/home/game/game_t14/home_game_t14.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 import '../../my_behavior.dart';
 import '../../provider/provider_widget.dart';
 import 'child_game/T14/child_game_t14.dart';
@@ -35,6 +35,7 @@ class HomeT14 extends StatefulWidget {
   final GameViewModel gameViewModel;
   final int? randomNumber;
   final Widget gameView;
+  final ValueChanged<bool> updateShowMarquee;
 
   HomeT14({
     this.onPauseBgMusic,
@@ -44,6 +45,7 @@ class HomeT14 extends StatefulWidget {
     required this.gameViewModel,
     this.randomNumber,
     required this.gameView,
+    required this.updateShowMarquee,
   });
 
   @override
@@ -79,9 +81,7 @@ class _HomeT14State extends BaseState<HomeT14> {
     super.initState();
   }
 
-  _initData() async {
-
-  }
+  _initData() async {}
 
   getLanguage() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -105,7 +105,7 @@ class _HomeT14State extends BaseState<HomeT14> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Container(
-                        height: context.screenHeight / 15,
+                        height: context.screenHeight / 12,
                         width: context.screenWidth,
                         child: ScrollConfiguration(
                           behavior: MyBehavior(),
@@ -135,13 +135,12 @@ class _HomeT14State extends BaseState<HomeT14> {
           // hasScrollBody: false,
           //  fillOverscroll: true,
           child: HomeGameT14(
-              onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-              onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-              vm: widget.gameViewModel,
-              onRefreshHomePage: () {},
-              onGameClick: (gameProvider) {},
-            ),
-
+            onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+            onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+            vm: widget.gameViewModel,
+            onRefreshHomePage: () {},
+            onGameClick: (gameProvider) {},
+          ),
         ),
       ];
     else {
@@ -170,8 +169,29 @@ class _HomeT14State extends BaseState<HomeT14> {
     }
   }
 
+  _buildOnlineUserText() => Container(
+        padding: EdgeInsets.all(5),
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SvgPicture.asset(
+              "images/bottom_nav_bar/ic_profile.svg",
+              width: 10.auto,
+              color: Colors.white,
+            ),
+            SizedBox(width: 5),
+            Container(
+              child: Text(
+                (widget.randomNumber ?? 26500).toString(),
+                style: TextStyle(fontSize: 10.auto, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      );
+
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Expanded(
       flex: 2,
       child: announcement.isEmpty
@@ -203,7 +223,12 @@ class _HomeT14State extends BaseState<HomeT14> {
         color: Color(0xff181c42),
         child: Column(
           children: [
-            _buildTextMarquee(),
+            Row(
+              children: [
+                _buildTextMarquee(),
+                _buildOnlineUserText(),
+              ],
+            ),
             Expanded(
               flex: 8,
               child: Container(
@@ -212,12 +237,14 @@ class _HomeT14State extends BaseState<HomeT14> {
                     Expanded(
                         flex: 2,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          padding: EdgeInsets.symmetric(horizontal: widget.homeViewModel.userProfile == null ? 10 : 30),
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
-                              "Hi, Claire",
-                              style: TextStyle(color: Colors.white),
+                              widget.homeViewModel.userProfile == null
+                                  ? getTranslatedText("home_login_hint")
+                                  : "Hi, ${widget.homeViewModel.userProfile.username ?? ""}",
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                           ),
                         )),
@@ -274,9 +301,10 @@ class _HomeT14State extends BaseState<HomeT14> {
           //
           //   currGameType=gameType;
         });
+        widget.updateShowMarquee(isDisplayGameView);
       },
       child: Container(
-          width: context.screenWidth / 4.5,
+          width: context.screenWidth / 4,
           // padding: EdgeInsets.symmetric(vertical: 10.auto),
           child: _buildIconWithText(
               "game_tab/t14/ic_${gameType.getImagePath()}", gameType.getName(context, widget.gameViewModel.config?.menuItemShootFish ?? false))),
@@ -448,10 +476,6 @@ class _HomeT14State extends BaseState<HomeT14> {
       return 2;
     else
       return 4;
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 
   _checkDisableMusic() {

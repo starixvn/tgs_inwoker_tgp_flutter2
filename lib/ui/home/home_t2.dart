@@ -15,6 +15,7 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+
 class HomeT2 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -135,7 +136,7 @@ class _HomeT2State extends BaseState<HomeT2> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
       decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
       margin: EdgeInsets.only(right: 10.auto),
@@ -189,9 +190,5 @@ class _HomeT2State extends BaseState<HomeT2> {
               isLoop: true,
               autoPlayInterval: 3000),
     );
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 }

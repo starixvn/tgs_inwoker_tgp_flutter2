@@ -82,7 +82,7 @@ class _GameT14State extends BaseState<GameT14> {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
           children: (_getGameTypeMap() ?? [])
-              .map((item) => Container(
+              .map<Widget>((item) => Container(
                     margin: EdgeInsets.only(top: 15.auto),
                     child: _buildImageLayout(item),
                   ))

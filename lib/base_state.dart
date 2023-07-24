@@ -160,12 +160,6 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  String parseHtmlString(String htmlString) {
-    final document = parse(htmlString);
-    final String parsedString = parse(document.body?.text).documentElement!.text;
-    return parsedString;
-  }
-
   getCurrentLanguage() {
     var list = LanguageProvider.getSingleton().list;
     Language? deviceLanguage;

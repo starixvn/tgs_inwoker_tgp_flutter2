@@ -4,12 +4,13 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
+import '../globalUtil/GlobalValueUtil.dart';
+
 class CustomScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget body;
   final Color? color;
   final bool? resizeToAvoidBottomInset;
-  final GlobalKey<ScaffoldState>? scaffoldKey;
   final Drawer? endDrawer;
 
   CustomScaffold({
@@ -17,14 +18,13 @@ class CustomScaffold extends StatelessWidget {
     required this.body,
     this.color,
     this.resizeToAvoidBottomInset = false,
-    this.scaffoldKey,
     this.endDrawer,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey != null ? key : scaffoldKey,
+      key: endDrawer != null ? GlobalValueUtil.scaffoldKey : key,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 11)
           ? Colors.transparent

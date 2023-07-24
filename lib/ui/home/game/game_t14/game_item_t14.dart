@@ -77,69 +77,62 @@ class GameItemT14State extends BaseState<GameItemT14> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (widget.isDisabled) ? () {} : () {
-        if (widget.vm?.userProfile == null) {
-          showPreLoginDialog();
-        } else
-          _navigateToGameWeb(widget.game!);
-      },
-      child: Container(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 8,
+      onTap: (widget.isDisabled)
+          ? () {}
+          : () {
+              if (widget.vm?.userProfile == null) {
+                showPreLoginDialog();
+              } else
+                _navigateToGameWeb(widget.game!);
+            },
+      child: Column(
+        children: [
+          Expanded(
+            flex: 7,
+            child: Container(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(300),
                 child: _buildImage(),
               ),
             ),
-            SizedBox(height: 10),
-            Expanded(
-              flex: 1,
-              child: Container(
-                margin: EdgeInsets.only(right: 3.auto),
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    widget.game?.name ?? "",
-                    style: TextStyle(color: Colors.white),
+          ),
+          SizedBox(height: 5),
+          Expanded(
+            flex: 2,
+            child: Container(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  widget.game?.name ?? "",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+          Expanded(
+            flex: 1,
+            child: Wrap(
+              children: [
+                InkWell(
+                  onTap: () {
+                    if (widget.vm?.userProfile == null) {
+                      showPreLoginDialog();
+                    } else
+                      (widget.game?.isFavourite ?? false) ? widget.vm!.deleteFavoriteGame(widget.game!) : widget.vm!.setFavoriteGame(widget.game!);
+                  },
+                  child: Image.asset(
+                    (widget.game?.isFavourite ?? false) ? "images/child_game/T14/ic_favorite_selected.png" : "images/child_game/T14/ic_favorite.png",
+                    width: 15.auto,
+                    height: 15.auto,
                   ),
                 ),
-                // AutoSizeText(
-                //   widget.game?.name ?? "",
-                //   style: TextStyle(color: Colors.white),
-                //   minFontSize: 10,
-                //   stepGranularity: 1,
-                //   maxLines: 1,
-                // ),
-              ),
+                SizedBox(width: 5),
+                Text("Collect", style: TextStyle(color: Colors.white))
+              ],
             ),
-            SizedBox(height: 10),
-            Expanded(
-              flex: 1,
-              child: Wrap(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      if (widget.vm?.userProfile == null) {
-                        showPreLoginDialog();
-                      }
-                      else
-                        (widget.game?.isFavourite ?? false) ? widget.vm!.deleteFavoriteGame(widget.game!) : widget.vm!.setFavoriteGame(widget.game!);
-                    },
-                    child: Image.asset(
-                      (widget.game?.isFavourite ?? false) ? "images/child_game/T14/ic_favorite_selected.png" : "images/child_game/T14/ic_favorite.png",
-                      width: 15.auto,
-                      height: 15.auto,
-                    ),
-                  ),
-                  SizedBox(width: 5),
-                  Text("Collect", style: TextStyle(color: Colors.white))
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -148,14 +141,12 @@ class GameItemT14State extends BaseState<GameItemT14> {
     return AspectRatio(
       aspectRatio: 1,
       child: CachedNetworkImage(
-          placeholder: (context, url) =>
-              Container(
+          placeholder: (context, url) => Container(
                 color: CustomColor.very_light_pink_two,
               ),
           imageUrl: _getImageUrl(),
           //handling error
-          errorWidget: (_, __, ___) =>
-              Container(
+          errorWidget: (_, __, ___) => Container(
                 color: CustomColor.very_light_pink_two,
               ),
           fit: BoxFit.fill),
@@ -175,13 +166,10 @@ class GameItemT14State extends BaseState<GameItemT14> {
   }
 
   String returnGameName(gameCode) {
-    return platformList
-        ?.singleWhereOrNull((element) => element.code == gameCode)
-        ?.name ?? gameCode;
+    return platformList?.singleWhereOrNull((element) => element.code == gameCode)?.name ?? gameCode;
   }
 
-  _buildPlatformText() =>
-      Container(
+  _buildPlatformText() => Container(
         margin: EdgeInsets.only(left: 10.auto, top: 5.auto),
         padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 15.auto),
         decoration: BoxDecoration(color: CustomColor.black, borderRadius: BorderRadius.circular(15.0)),
@@ -197,8 +185,7 @@ class GameItemT14State extends BaseState<GameItemT14> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  GameWeb(
+              builder: (context) => GameWeb(
                     gamePlatformCode: game.gamePlatformCode,
                     gameId: game.id,
                     onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,

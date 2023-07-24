@@ -24,6 +24,8 @@ import 'package:tgp_flutter2/ui/home/game/game_web_view.dart';
 import 'package:tgp_flutter2/ui/home/game/webGameView.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../globalUtil/GlobalValueUtil.dart';
+
 class BaseGame extends StatefulWidget {
   final GameViewModel vm;
   final Function onRefreshHomePage;
@@ -227,25 +229,26 @@ class _BaseGameState extends BaseState<BaseGame> {
         currentGamePlatformCode = gpcode;
       });
       _navigate();
-      computeTotalBalance();
+      // computeTotalBalance();
     }
   }
 
-  computeTotalBalance() async {
-    if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
-    var gameList = contentRepo.gameProviderList
-            ?.where((element) => element.transferWallet == true) ??
-        [];
-
-    var task = <Future>[];
-    gameList.forEach((game) {
-      task.add(_getGameWalletBalance(game));
-    });
-    await Future.wait(task);
-    totalBalance = (wallet?.main ?? 0.0) + (gameBalance ?? 0.0);
-    wallet?.totalBalance = totalBalance;
-    widget.vm.notifyListeners();
-  }
+  // computeTotalBalance() async {
+  //   if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
+  //   var gameList = contentRepo.gameProviderList
+  //           ?.where((element) => element.transferWallet == true) ??
+  //       [];
+  //
+  //   var task = <Future>[];
+  //   gameList.forEach((game) {
+  //     task.add(_getGameWalletBalance(game));
+  //   });
+  //   await Future.wait(task);
+  //   totalBalance = (wallet?.main ?? 0.0) + (gameBalance ?? 0.0);
+  //   wallet?.totalBalance = totalBalance;
+  //   GlobalValueUtil.updateTotalBalance(totalBalance ?? 0.0);
+  //   widget.vm.notifyListeners();
+  // }
 
   _getGameWalletBalance(GameProvider game) async {
     var state = await walletRepo.getGameWallet(game.code);

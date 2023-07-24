@@ -13,6 +13,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+
 class HomeT3 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -74,7 +75,7 @@ class _HomeT3State extends BaseState<HomeT3> {
   }
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
       padding: EdgeInsets.only(bottom: 5.auto),
       child: Row(
@@ -163,10 +164,6 @@ class _HomeT3State extends BaseState<HomeT3> {
       return 2;
     else
       return 4;
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 
   _buildImageSlider() {
