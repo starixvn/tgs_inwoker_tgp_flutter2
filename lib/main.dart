@@ -580,7 +580,11 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
         return _buildBottomBarItem(6, "ic_cs", "customer_service");
       default:
         return _buildBottomBarItem(
-            2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
+            2,
+            "ic_deposit",
+            (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15 || EnvironmentConfig.template_version == 14)
+                ? "deposit"
+                : "wallet",
             isNeedLogin: true);
     }
   }
@@ -653,7 +657,10 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
                           reverseTransitionDuration: Duration.zero,
                         ),
                       );
-                    else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 2)
+                    else if ((EnvironmentConfig.template_version == 11 ||
+                            EnvironmentConfig.template_version == 15 ||
+                            EnvironmentConfig.template_version == 14) &&
+                        index == 2)
                       Navigator.of(context).pushNamed(RoutePath.deposit);
                     else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 3)
                       Navigator.of(context).pushNamed(RoutePath.withdraw);
