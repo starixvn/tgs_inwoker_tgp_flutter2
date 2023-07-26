@@ -24,14 +24,12 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: endDrawer != null ? GlobalValueUtil.scaffoldKey : key,
+      key:  key,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 11)
           ? Colors.transparent
           : (color ?? CustomColor.theme_bg_color),
       appBar: appBar,
-      endDrawer: endDrawer != null ? endDrawer : Container(),
-      //?? PreferredSizeWidget(),
       body: Container(
         decoration: ((() {
           if (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)

@@ -40,69 +40,72 @@ class _ProfileItemT14State extends BaseState<ProfileItemT14> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _navigate(),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-            margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildImageIcon(),
-                SizedBox(height: 10),
-                _buildProfileBottomItemText(),
-              ],
-            ),
-          ),
-          _buildNotification()
-        ],
+      child: Container(
+        //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+        margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
+        child: Column(
+          // direction: Axis.vertical,
+          // alignment: WrapAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildImageIcon(),
+            SizedBox(height: 10),
+            _buildProfileBottomItemText(),
+          ],
+        ),
       ),
+      // Stack(
+      //   alignment: Alignment.center,
+      //   children: [
+      //
+      //     _buildNotification()
+      //   ],
+      // ),
     );
   }
 
-  _buildImageIcon() => Expanded(
-        flex: 2,
-        child: widget.imagePath == "ic_lang"
-            ? Image.asset(
-                "images/login/ic_language.png",
-                width: 40.auto,
-                height: 40.auto,
-                color: Colors.white,
-              )
-            : SvgPicture.asset(
-                (() {
-                  switch (widget.imagePath) {
-                    case "ic_vip":
-                      return "images/profile/t2/${widget.imagePath}.svg";
-                    case "ic_transfer":
-                    case "ic_signout":
-                      return "images/profile/t14/${widget.imagePath}.svg";
-                    default:
-                      return "images/profile/t1/${widget.imagePath}.svg";
-                  }
-                }()),
-                // widget.imagePath == "ic_vip" ?  : "images/profile/t1/${widget.imagePath}.svg",
-                width: 40.auto,
-                height: 40.auto,
-                matchTextDirection: true,
-                color: Colors.white,
-              ),
-      );
+  _buildImageIcon() => widget.imagePath == "ic_lang"
+      ? Image.asset(
+          "images/login/ic_language.png",
+          width: 40.auto,
+          height: 40.auto,
+          color: Colors.white,
+        )
+      : SvgPicture.asset(
+          (() {
+            switch (widget.imagePath) {
+              case "ic_vip":
+                return "images/profile/t2/${widget.imagePath}.svg";
+              case "ic_transfer":
+              case "ic_signout":
+                return "images/profile/t14/${widget.imagePath}.svg";
+              default:
+                return "images/profile/t1/${widget.imagePath}.svg";
+            }
+          }()),
+          // widget.imagePath == "ic_vip" ?  : "images/profile/t1/${widget.imagePath}.svg",
+          width: 40.auto,
+          height: 40.auto,
+          matchTextDirection: true,
+          color: Colors.white,
+        );
 
-  _buildProfileBottomItemText() => Expanded(
-        flex: 1,
-        child: Container(
-          // padding: EdgeInsets.only(top: 10.auto),
-          child: FittedBox(
-            fit: BoxFit.fitHeight,
-            child: Text(
-              widget.title,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      );
+  _buildProfileBottomItemText() {
+    String title = widget.title.replaceAll(" ", "\n");
+    return Text(
+      title,
+      softWrap: true,
+      textAlign: TextAlign.center,
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.5.auto),
+    );
+  }
+
+  // Expanded(
+  //   flex: 1,
+  //   child: ClipRRect(
+  //     child: ,
+  //   ),
+  // );
 
   _navigate() => WidgetsBinding.instance.addPostFrameCallback((_) {
         if (widget.navigationID == -1) {

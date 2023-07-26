@@ -134,8 +134,7 @@ class _HomeT1State extends BaseState<HomeT1> {
                         width: 8.auto,
                         height: 8.auto,
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
                       );
                     }).toList(),
                   ),

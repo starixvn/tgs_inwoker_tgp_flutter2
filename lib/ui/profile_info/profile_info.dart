@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/identity_status.dart';
 import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/profile_info/profile_info_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
@@ -32,13 +35,15 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("profile_detail"),
       onPop: () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                      index: 4,
-                    )),
-            (Route<dynamic> route) => false);
+        Navigator.pop(context);
+        // NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 4);
+        // Navigator.pushAndRemoveUntil(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => BottomNavigationController(
+        //               // index: 4,
+        //             )),
+        //     (Route<dynamic> route) => false);
       });
 
   Widget build(BuildContext context) {

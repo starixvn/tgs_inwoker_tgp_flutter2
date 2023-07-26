@@ -54,59 +54,73 @@ class _ProfileState extends BaseState<Profile> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-              appBar: EnvironmentConfig.template_version == 14
-                  ? CustomLoginAppBar(
-                      onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-                      onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-                      onClickLogoutButton: () => _logout(),
-                      isLogin: _vm.userProfile != null,
-                      brandLogoUrl: _vm.brandLogoUrl,
-                      userProfile: _vm.userProfile,
-                      phone: "",
-                      config: _vm.config,
-                      totalBalance: _vm.totalBalance,
-                      //_vm.totalBalance,
-                      brandName: EnvironmentConfig.brandName,
-                      onClickBalance: () {},
-                      onPauseMusic: () {},
-                      onResumeMusic: () {},
-                      randomNumber: 0,
-                      isShowMarquee: true,
-                      marquee: GlobalValueUtil.removeMultiLine(GlobalValueUtil.parseHtmlString(_vm.announcement ?? "")),
-                    )
-                  : PreferredSize(
-                      preferredSize: Size.zero,
-                      child: Container(),
-                    ),
-              endDrawer: Drawer(
-                width: context.screenWidth * 0.65,
-                backgroundColor: Color(0xff181c42),
-                child: EndDrawerMenu(
-                  username: _vm.userProfile?.username ?? "",
-                  width: context.screenWidth * 0.65,
-                  balance: _vm.totalBalance ?? 0.0,
+          switch (EnvironmentConfig.template_version) {
+            case 2:
+              return ProfileT2(vm: _vm);
+            case 14:
+              return ProfileT14(vm: vm);
+            default:
+              return Container(
+                padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
+                child: ListView(
+                  children: [
+                    _buildUserInfoContainer(),
+                    ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
+                    _buildLogoutButton()
+                  ],
                 ),
-              ),
-              body: (() {
-                switch (EnvironmentConfig.template_version) {
-                  case 2:
-                    return ProfileT2(vm: _vm);
-                  case 14:
-                    return ProfileT14(vm: vm);
-                  default:
-                    return Container(
-                      padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
-                      child: ListView(
-                        children: [
-                          _buildUserInfoContainer(),
-                          ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
-                          _buildLogoutButton()
-                        ],
-                      ),
-                    );
-                }
-              }()));
+              );
+          }
+            // CustomScaffold(
+            //   appBar: EnvironmentConfig.template_version == 14
+            //       ? CustomLoginAppBar(
+            //           onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+            //           onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+            //           onClickLogoutButton: () => _logout(),
+            //           isLogin: _vm.userProfile != null,
+            //           // brandLogoUrl: _vm.brandLogoUrl,
+            //           userProfile: _vm.userProfile,
+            //           // config: _vm.config,
+            //           // totalBalance: _vm.totalBalance,
+            //           //_vm.totalBalance,
+            //           onClickBalance: () {},
+            //           // onPauseMusic: () {},
+            //           // onResumeMusic: () {},
+            //           randomNumber: 0,
+            //           isShowMarquee: true,
+            //           marquee: GlobalValueUtil.removeMultiLine(GlobalValueUtil.parseHtmlString(_vm.announcement ?? "")),
+            //         )
+            //       : PreferredSize(
+            //           preferredSize: Size.zero,
+            //           child: Container(),
+            //         ),
+            //   endDrawer: Drawer(
+            //     width: context.screenWidth * 0.65,
+            //     backgroundColor: Color(0xff181c42),
+            //     child: EndDrawerMenu(
+            //       username: _vm.userProfile?.username ?? "",
+            //       width: context.screenWidth * 0.65,
+            //     ),
+            //   ),
+            //   body: (() {
+            //     switch (EnvironmentConfig.template_version) {
+            //       case 2:
+            //         return ProfileT2(vm: _vm);
+            //       case 14:
+            //         return ProfileT14(vm: vm);
+            //       default:
+            //         return Container(
+            //           padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
+            //           child: ListView(
+            //             children: [
+            //               _buildUserInfoContainer(),
+            //               ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
+            //               _buildLogoutButton()
+            //             ],
+            //           ),
+            //         );
+            //     }
+            //   }()));
         });
   }
 

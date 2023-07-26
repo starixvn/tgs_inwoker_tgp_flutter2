@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,6 +13,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/CustomCheckbox.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
@@ -465,11 +468,12 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
 
   _navigateToAddCard() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 4);
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    index: 4,
+              builder: (context) => BottomNavigationController(
+                    // index: 4,
                   )));
       Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);

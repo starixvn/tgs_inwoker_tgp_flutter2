@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,11 +34,23 @@ class _DepositState extends BaseState<Deposit> {
   ];*/
   var currentTabIndex = 0;
   var text = "";
+  int currBottomNavigationIndex = 0;
 
   @override
   void initState() {
-    GlobalValueUtil.pausesong();
-    _initData();
+
+    NotificationCenter().subscribe(NotificationServiceName().bottomNavigationIndex, (int? value) {
+      if (value != null) {
+        // setState(() {
+
+          if(value == 2){
+            GlobalValueUtil.pausesong();
+            _initData();
+          }
+        // });
+      }
+    });
+
     super.initState();
   }
 
@@ -49,13 +63,14 @@ class _DepositState extends BaseState<Deposit> {
   }
 
   Widget build(BuildContext context) {
+    // NotificationCenter().notify(NotificationServiceName().appBarTitle, data: getTranslatedText("deposit"));
     return ProviderWidget<DepositViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-              appBar: _buildAppBar(),
-              body: (() {
+          return Container(
+              color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
+              child: (() {
                 if (_vm.paymentCodeList == null)
                   return buildProgressDialog(_vm.brandLogoUrl);
                 else
@@ -107,14 +122,65 @@ class _DepositState extends BaseState<Deposit> {
                         ),
                       ));
               }()));
+          //   CustomScaffold(
+          //   appBar: _buildAppBar(),
+          //   body: Container(
+          //       color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
+          //       child: (() {
+          //         if (_vm.paymentCodeList == null)
+          //           return buildProgressDialog(_vm.brandLogoUrl);
+          //         else
+          //           return handleNullWidget(
+          //               _vm.paymentCodeList!.isEmpty,
+          //               DefaultTabController(
+          //                 length: _vm.paymentCodeList!.keys.length,
+          //                 child: Column(
+          //                   children: [
+          //                     Container(
+          //                       width: context.screenWidth,
+          //                       child: TabBar(
+          //                         isScrollable: true,
+          //                         unselectedLabelColor: CustomColor.theme_text_grey_color,
+          //                         labelColor: CustomColor.theme_label_text_highlight_color,
+          //                         indicatorColor: Colors.transparent,
+          //                         indicator: BoxDecoration(),
+          //                         onTap: (index) {
+          //                           setState(() {
+          //                             currentTabIndex = index;
+          //                           });
+          //                         },
+          //                         labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
+          //                         unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_grey_color),
+          //                         tabs: List.generate(_vm.paymentCodeList!.keys.length, (index) {
+          //                           return TabButton(
+          //                             text: getTranslatedText(_vm.paymentCodeList!.keys.toList()[index]) ?? "",
+          //                             index: index,
+          //                             currentTabIndex: currentTabIndex,
+          //                             width: 90.auto,
+          //                             height: 32.auto,
+          //                           );
+          //                         }).toList(),
+          //                       ),
+          //                     ),
+          //                     Expanded(
+          //                       child: TabBarView(
+          //                         physics: NeverScrollableScrollPhysics(),
+          //                         children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
+          //                           return DepositMethod(
+          //                             paymentCode: _vm.paymentCodeList!.keys.toList()[index],
+          //                             depositMethodList: _vm.paymentCodeList!.values.toList()[index],
+          //                             promotionList: _vm.displayPromotionList,
+          //                           );
+          //                         }).toList(),
+          //                       ),
+          //                     )
+          //                   ],
+          //                 ),
+          //               ));
+          //       }())),
+          // );
         });
   }
-
-  _buildAppBar() => CustomAppBar(
-        title: getTranslatedText("deposit"),
-        walletBalance: _vm.wallet?.totalBalance,
-        isPassTrueWhenPop: true,
-      );
 
   _displayDepositDialog() {
     _vm.getDepositDialog();

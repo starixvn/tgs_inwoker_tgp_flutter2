@@ -3,6 +3,8 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/api.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
+
 class SplashViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
@@ -15,7 +17,7 @@ class SplashViewModel extends BaseViewModel {
 
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url,EnvironmentConfig.jwtKey,EnvironmentConfig.currency,EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;
@@ -32,6 +34,9 @@ class SplashViewModel extends BaseViewModel {
   getBrandLogo() async {
     setLoading();
     getBrandLogoApiState = await contentRepo.getBrandLogo();
+    if (getBrandLogoApiState.isSuccess) {
+      GlobalValueUtil.brandLogo = getBrandLogoApiState.result;
+    }
     setLoading(false);
     return getBrandLogoApiState;
   }

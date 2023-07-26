@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,67 +38,64 @@ class _CustomerServiceState extends BaseState<CustomerService> {
   }
 
   Widget build(BuildContext context) {
+    // NotificationCenter().notify(NotificationServiceName().appBarTitle, data: getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service"));
     return ProviderWidget<CustomerServiceViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-              appBar: CustomAppBar(
-                title: getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service"),
+          return _vm.communicationList == null
+              ? buildProgressDialog(_vm.brandLogoUrl)
+              : Stack(
+            children: [
+              Container(
+                width: context.screenWidth,
+                height: context.screenHeight,
+                padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
+                decoration: BoxDecoration(image: _getCsBgImage()),
+                child: ListView(shrinkWrap: true, children: [
+                  buildLiveChatRow(),
+                  ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: List.generate(_vm.communicationList!.length, (index) {
+                      return Container(
+                        child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
+                            "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                            qrCode: _vm.communicationList![index]),
+                      );
+                    }),
+                  )
+                ]),
               ),
-              body: _vm.communicationList == null
-                  ? buildProgressDialog(_vm.brandLogoUrl)
-                  : Stack(
-                      children: [
-                        Container(
-                          width: context.screenWidth,
-                          height: context.screenHeight,
-                          padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
-                          decoration: BoxDecoration(image: _getCsBgImage()),
-                          child: ListView(shrinkWrap: true, children: [
-                            buildLiveChatRow(),
-                            ListView(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: List.generate(_vm.communicationList!.length, (index) {
-                                return Container(
-                                  child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
-                                      "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
-                                      qrCode: _vm.communicationList![index]),
-                                );
-                              }),
-                            )
-                          ]),
+              Visibility(
+                visible: _vm.config?.displayPhone ?? false,
+                child: Positioned(
+                  top: context.screenWidth / 2.1,
+                  right: context.screenWidth / 10,
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                        child: SvgPicture.asset(
+                          "images/support/ic_phone.svg",
+                          matchTextDirection: true,
+                          height: 20.auto,
+                          color: Color(0xfffD18206),
                         ),
-                        Visibility(
-                          visible: _vm.config?.displayPhone ?? false,
-                          child: Positioned(
-                            top: context.screenWidth / 2.1,
-                            right: context.screenWidth / 10,
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
-                                  child: SvgPicture.asset(
-                                    "images/support/ic_phone.svg",
-                                    matchTextDirection: true,
-                                    height: 20.auto,
-                                    color: Color(0xfffD18206),
-                                  ),
-                                ),
-                                AutoSizeText(
-                                  _vm.phone ?? "",
-                                  style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.left,
-                                  minFontSize: 5,
-                                  stepGranularity: 1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ));
+                      ),
+                      AutoSizeText(
+                        _vm.phone ?? "",
+                        style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        minFontSize: 5,
+                        stepGranularity: 1,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
         });
   }
 

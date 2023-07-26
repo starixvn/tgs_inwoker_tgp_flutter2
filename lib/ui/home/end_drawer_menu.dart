@@ -13,12 +13,12 @@ import '../../custom/wallet_text_container.dart';
 class EndDrawerMenu extends StatefulWidget {
   final String username;
   final double width;
-  final double balance;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   EndDrawerMenu({
     required this.username,
     required this.width,
-    required this.balance,
+     this.scaffoldKey,
   });
 
   @override
@@ -56,7 +56,7 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        GlobalValueUtil.scaffoldKey.currentState?.closeEndDrawer();
+                        widget.scaffoldKey?.currentState?.closeEndDrawer();
                       },
                       child: Container(
                         height: 25,

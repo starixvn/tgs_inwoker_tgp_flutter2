@@ -29,7 +29,7 @@ class _WalletTextContainerState extends BaseState<WalletTextContainer> {
       height: widget.height,
       width: widget.width,
       padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(color: Color(0xff000326), borderRadius: BorderRadius.all(Radius.circular(10))),
+      decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_2, borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

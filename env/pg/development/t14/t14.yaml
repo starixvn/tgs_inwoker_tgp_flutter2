@@ -30,10 +30,10 @@ environment_config:
       default: false
     primaryColorCode:
       type: int
-      default: 0xff91030c
+      default: 0xff242958
     primaryGradientColorCode:
       type: int
-      default: 0xffc40511
+      default: 0xff000326
     theme_app_bar_color:
       type: int
       default: 0xff242958
@@ -54,13 +54,13 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xffFFFFFF
+      default: 0xffffa200
     tab_unselected_color:
       type: int
-      default: 0xffFFFFFF
+      default: 0xff27273F
     bottom_nav_selected_color:
       type: int
-      default: 0xff0B1014
+      default: 0xffFFFFFF
     bottom_nav_unselected_color:
       type: int
       default: 0xffFFFFFF
@@ -93,7 +93,7 @@ environment_config:
       default: 0xffd83f67
     theme_bottom_app_bar_color:
       type: int
-      default: 0xffd83f67
+      default: 0xff242958
     default_lang:
       default:  "en-US"
     assetUrl:

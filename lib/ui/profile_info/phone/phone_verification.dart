@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -14,6 +16,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
@@ -81,11 +84,12 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       title: getTranslatedText("phone_number"),
       onPop: () {
         if (isCompleted == true) {
+          NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 4);
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (context) => MyHomePage(
-                        index: 4,
+                  builder: (context) => BottomNavigationController(
+                        // index: 4,
                       )),
               (Route<dynamic> route) => false);
         } else if (_vm.userProfile.phone == null &&

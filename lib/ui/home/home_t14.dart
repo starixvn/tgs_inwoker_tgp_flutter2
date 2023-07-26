@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/game.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/format.dart';
@@ -24,6 +26,7 @@ import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import '../../globalUtil/GlobalValueUtil.dart';
 import '../../my_behavior.dart';
 import '../../provider/provider_widget.dart';
+import '../withdraw/withdraw.dart';
 import 'child_game/T14/child_game_t14.dart';
 import 'game/game_t14/game_t14.dart';
 
@@ -259,12 +262,20 @@ class _HomeT14State extends BaseState<HomeT14> {
                             Expanded(
                                 flex: 1,
                                 child: InkWell(
-                                    onTap: () => Navigator.of(context).pushNamed(RoutePath.deposit),
+                                    onTap: () {
+                                      NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 2);
+                                    },
                                     child: _buildIconWithText("home/T14/deposit", getTranslatedText("deposit")))),
                             Expanded(
                                 flex: 1,
                                 child: InkWell(
-                                    onTap: () => Navigator.of(context).pushNamed(RoutePath.withdraw),
+                                    onTap: () {
+                                      NotificationCenter().notify(
+                                        NotificationServiceName().showDialogViewToHome,
+                                        data: {"view": Withdraw(), "title": getTranslatedText("withdrawal")},
+                                      );
+                                      NotificationCenter().notifyWidget(NotificationServiceName().appBarTitle, getTranslatedText("withdrawal"));
+                                    },
                                     child: _buildIconWithText("home/T14/withdrawal", getTranslatedText("withdrawal")))),
                           ],
                         ),

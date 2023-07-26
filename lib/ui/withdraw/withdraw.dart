@@ -66,33 +66,30 @@ class _WithdrawState extends BaseState<Withdraw> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            appBar: _buildAppBar(),
-            body: _vm.bankCardList == null
-                ? buildProgressDialog(_vm.brandLogoUrl)
-                : Container(
-                    padding: EdgeInsets.only(
-                        left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: ScrollConfiguration(
-                      behavior: MyBehavior(),
-                      child: ListView(
-                        children: [
-                          _buildWithdrawCard(),
-                          _buildEditBankItem(),
-                          _buildBankPicker(),
-                          _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
-                          _buildPlayerNoteTextField(),
-                          //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
-                          if (_isUSDT()) _buildUSDTExchangeRateText(),
-                          if (_isUSDT()) _buildUSDTAmount(),
-                          _buildHintText(),
+          return _vm.bankCardList == null
+              ? buildProgressDialog(_vm.brandLogoUrl)
+              : Container(
+            padding: EdgeInsets.only(
+                left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: ListView(
+                children: [
+                  _buildWithdrawCard(),
+                  _buildEditBankItem(),
+                  _buildBankPicker(),
+                  _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
+                  _buildPlayerNoteTextField(),
+                  //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
+                  if (_isUSDT()) _buildUSDTExchangeRateText(),
+                  if (_isUSDT()) _buildUSDTAmount(),
+                  _buildHintText(),
 
-                          _buildButton(),
-                          //_buildCustomerServiceText()
-                        ],
-                      ),
-                    ),
-                  ),
+                  _buildButton(),
+                  //_buildCustomerServiceText()
+                ],
+              ),
+            ),
           );
         });
   }

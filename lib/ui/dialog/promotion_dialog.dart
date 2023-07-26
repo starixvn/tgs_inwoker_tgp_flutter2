@@ -7,12 +7,15 @@ import 'package:flutter/scheduler.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item_details.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
+
+import '../promotion/T14/promotion_item_details_t14.dart';
 
 class PromotionDialog extends StatefulWidget {
   final List<Promotion> promotionList;
@@ -103,8 +106,12 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    PromotionItemDetails(imagePath: imageUrl, promotion: promo, vm: _vm)));
+                                builder: (context) => PromotionItemDetails(
+                                      imagePath: imageUrl,
+                                      promotion: promo,
+                                      vm: _vm,
+                                      index: index,
+                                    )));
                       },
                       child: Container(height: 150.auto, child: _buildPromotionImage(imageUrl)));
                 }).toList(),

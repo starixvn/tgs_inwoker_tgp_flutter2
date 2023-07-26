@@ -13,6 +13,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
@@ -291,8 +292,8 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    isFirstRun: false,
+              builder: (context) => BottomNavigationController(
+                    // isFirstRun: false,
                   )),
           (Route<dynamic> route) => false);
     });

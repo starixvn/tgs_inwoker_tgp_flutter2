@@ -34,7 +34,7 @@ class _PromotionTermsContentState extends BaseState<PromotionTermsContent> {
         data: """<style>tr{ border: 1px solid; } </style>""" + (widget.termsContent),
         style: {
           'body': Style(
-           fontSize : FontSize(13.auto),
+            fontSize: FontSize(13.auto),
             color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
                 ? CustomColor.theme_text_black_white_color
                 : CustomColor.theme_text_black_color,

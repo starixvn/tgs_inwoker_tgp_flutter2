@@ -13,10 +13,12 @@ import 'package:api/extension/format.dart';
 class PromotionItem extends StatefulWidget {
   final Promotion promotion;
   final PromotionViewModel vm;
+  final int index;
 
   PromotionItem({
     required this.promotion,
     required this.vm,
+    required this.index,
   });
 
   @override
@@ -75,9 +77,11 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                       margin: EdgeInsets.only(right: 3.auto),
                       child: Text(
                         widget.promotion.name ?? "",
-                        style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode?CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
+                        style: TextStyle(
+                            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                                ? CustomColor.theme_text_black_white_color
+                                : CustomColor.theme_text_black_color),
                         overflow: TextOverflow.ellipsis,
-
                       ),
                     ),
                   ),
@@ -119,7 +123,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
 
   _buildEmptyImage() => Container(
         height: 150.auto,
-        color: CustomColor.very_light_pink_four,
+        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : CustomColor.very_light_pink_four,
       );
 
   _navigateToDetails() => Navigator.push(
@@ -129,6 +133,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                 imagePath: imageUrl,
                 promotion: widget.promotion,
                 vm: widget.vm,
+            index: widget.index,
               )));
 
   _getImageUrl() {

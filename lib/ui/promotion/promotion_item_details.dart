@@ -16,16 +16,19 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
 
 import '../../environment_config.dart';
+import 'T14/promotion_item_details_t14.dart';
 
 class PromotionItemDetails extends StatefulWidget {
   final String imagePath;
   final Promotion promotion;
   final PromotionViewModel vm;
+  final int index;
 
   PromotionItemDetails({
     required this.imagePath,
     required this.promotion,
     required this.vm,
+    required this.index,
   });
 
   @override
@@ -34,27 +37,29 @@ class PromotionItemDetails extends StatefulWidget {
 
 class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      color: Colors.white,
-      appBar: _buildAppBar(),
-      body: Container(
-        height: context.screenHeight,
-        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            _buildPromotionImage(),
-            PromotionMainDetails(promotion: widget.promotion),
-            PromotionTermsContent(
-                termsContent: (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
-                    ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
-                    : widget.promotion.content ?? "")),
-            PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
-            _buildJoinButton()
-          ],
-        ),
-      ),
-    );
+    return EnvironmentConfig.template_version == 14
+        ? PromotionItemDetailsT14(imagePath: widget.imagePath, promotion: widget.promotion, vm: widget.vm, index: widget.index,)
+        : CustomScaffold(
+            color: Colors.white,
+            appBar: _buildAppBar(),
+            body: Container(
+              height: context.screenHeight,
+              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  _buildPromotionImage(),
+                  PromotionMainDetails(promotion: widget.promotion),
+                  PromotionTermsContent(
+                      termsContent: (((widget.promotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
+                          ? (widget.promotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
+                          : widget.promotion.content ?? "")),
+                  PromotionTermsContent(termsContent: widget.promotion.terms ?? ""),
+                  _buildJoinButton()
+                ],
+              ),
+            ),
+          );
   }
 
   _buildAppBar() => CustomAppBar(

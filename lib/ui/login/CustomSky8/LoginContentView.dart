@@ -17,6 +17,7 @@ import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
+import '../../BaseNavigate/BottomNavigationController.dart';
 import 'CustomCheckbox.dart';
 
 class LoginContentView extends StatefulWidget {
@@ -325,8 +326,8 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    isFirstRun: false,
+              builder: (context) => BottomNavigationController(
+
                   )),
           (Route<dynamic> route) => false);
     });

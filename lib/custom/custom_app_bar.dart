@@ -1,6 +1,7 @@
 import 'package:api/extension/format.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:flutter/services.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -55,10 +56,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: [Colors.transparent.withOpacity(1.0), Color(0xff000129)],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                stops: [0, 0.5]),
+                colors: [Colors.transparent.withOpacity(1.0), Color(0xff000129)], begin: Alignment.bottomCenter, end: Alignment.topCenter, stops: [0, 0.5]),
           ),
         ),
         centerTitle: true,
@@ -104,6 +102,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: true,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          // Status bar color
+
+          statusBarColor: CustomColor.theme_app_bar_color,
+        ),
         //widget == null ? true : false,
         title: Text(
           title,
@@ -113,8 +116,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(
             Icons.arrow_back,
             color: EnvironmentConfig.template_version == 8 ||
-                    (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode) ||
-                    EnvironmentConfig.light_mode
+                (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode) ||
+                EnvironmentConfig.light_mode
                 ? Colors.black
                 : Colors.white,
           ),
@@ -125,22 +128,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   _getAppBarWidget() {
-    if (walletBalance != null) {
-      return Container(
-          margin: EdgeInsets.only(right: 15.auto),
-          alignment: Alignment.center,
-          child: Text(
-            EnvironmentConfig.brandName == "IDR1"
-            //without decimal places
-                ? Format().currencyFormat((walletBalance ?? 0).toInt())
-            //with 2 decimal places
-                : Format().currencyWithDecimalFormat(walletBalance ?? 0),
-            style: TextStyle(color: EnvironmentConfig.template_version == 8 ? Colors.black : Colors.white),
-          ));
-    } else if (widget != null) {
-      return widget;
-    } else
+    return SafeArea(
+        child: (() {
+      if (walletBalance != null) {
+        return Container(
+            margin: EdgeInsets.only(right: 15.auto),
+            alignment: Alignment.center,
+            child: Text(
+              EnvironmentConfig.brandName == "IDR1"
+                  //without decimal places
+                  ? Format().currencyFormat((walletBalance ?? 0).toInt())
+                  //with 2 decimal places
+                  : Format().currencyWithDecimalFormat(walletBalance ?? 0),
+              style: TextStyle(color: _getWalletBalanceTextColor()),
+            ));
+      } else if (widget != null) {
+        return widget!;
+      }
       return Container();
+    }()));
+  }
+
+  Color _getWalletBalanceTextColor() {
+    switch (EnvironmentConfig.template_version) {
+      case 8:
+        return Colors.black;
+      case 14:
+        return CustomColor.theme_button_color;
+      default:
+        return Colors.white;
+    }
   }
 
   _onPress(BuildContext context) {

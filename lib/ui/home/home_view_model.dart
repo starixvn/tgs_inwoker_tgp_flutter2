@@ -54,7 +54,7 @@ class HomeViewModel extends BaseViewModel {
   double? totalBalance;
   List<HomeBanner>? bannerList;
   MainDialogContent? marqueeDialog;
-  String? phone;
+  // String? phone;
   int? page;
   int rows = 10;
   bool endRecord = false;
@@ -195,7 +195,9 @@ class HomeViewModel extends BaseViewModel {
     setLoading();
     getBrandCommunicationApiState = await userRepo.getBrandCommunication();
     if (getBrandCommunicationApiState.isSuccess) {
-      if (getBrandCommunicationApiState.result.isNotEmpty ?? false) phone = getBrandCommunicationApiState.result?.first.phone;
+      if (getBrandCommunicationApiState.result.isNotEmpty ?? false) {
+        GlobalValueUtil.phone = getBrandCommunicationApiState.result?.first.phone;
+      }
     }
     setLoading(false);
     return getBrandCommunicationApiState;

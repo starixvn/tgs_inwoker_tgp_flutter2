@@ -5,11 +5,14 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
+import '../../custom/custom_login_app_bar.dart';
 import '../../globalUtil/GlobalValueUtil.dart';
+import '../../route_path.dart';
 
 class Promotion extends StatefulWidget {
   @override
@@ -41,12 +44,32 @@ class _PromotionState extends BaseState<Promotion> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            appBar: CustomAppBar(
-              title: getTranslatedText("promotion_center"),
-            ),
-            body: _buildPromotion(),
-          );
+          return  _buildPromotion();
+          // return CustomScaffold(
+          //   appBar: EnvironmentConfig.template_version == 14
+          //       ? CustomLoginAppBar(
+          //           onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+          //           onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+          //           onClickLogoutButton: () {},
+          //           isLogin: _vm.userProfile != null,
+          //           // brandLogoUrl: _vm.brandLogoUrl,
+          //           userProfile: _vm.userProfile,
+          //           // config: _vm.config,
+          //           // totalBalance: _vm.totalBalance,
+          //           //_vm.totalBalance,
+          //           // brandName: EnvironmentConfig.brandName,
+          //           onClickBalance: () {},
+          //           // onPauseMusic: () {},
+          //           // onResumeMusic: () {},
+          //           randomNumber: 0,
+          //           // isShowMarquee: isShowMarquee,
+          //           // marquee: _vm.announcement,
+          //         )
+          //       : CustomAppBar(
+          //           title: getTranslatedText("promotion_center"),
+          //         ),
+          //   body:
+          // );
         });
   }
 
@@ -96,12 +119,16 @@ class _PromotionState extends BaseState<Promotion> {
     } else {
       return Container(
         height: context.screenHeight,
-        color: Colors.transparent,
+        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.only(bottom: 10.auto),
           children: List.generate(_vm.promotionList.length, (index) {
-            return PromotionItem(promotion: _vm.promotionList[index], vm: _vm);
+            return PromotionItem(
+              promotion: _vm.promotionList[index],
+              vm: _vm,
+              index: index,
+            );
           }),
         ),
       );
@@ -122,8 +149,7 @@ class _PromotionState extends BaseState<Promotion> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style:
-              TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+          style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
         ),
       );
 

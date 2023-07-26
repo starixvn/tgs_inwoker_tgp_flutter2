@@ -1,3 +1,5 @@
+import 'package:api/entity/brand_logo.dart';
+import 'package:api/entity/env_features_config.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
@@ -5,13 +7,17 @@ import 'package:html/parser.dart' show parse;
 enum AssetPlayerStatus { leavePagePause, manualClickPause, normal, returnHome }
 
 class GlobalValueUtil {
-   static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+   // static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   static AssetPlayerStatus playerStatus = AssetPlayerStatus.normal;
 
   static AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
 
-  static double totalBalance = 0.0;
+  static double? totalBalance;
+  static String? phone;
+
+  static EnvFeaturesConfig? featuresConfig;
+  static BrandLogo? brandLogo;
 
   static void playsong() async {
     if (playerStatus != AssetPlayerStatus.manualClickPause) await assetsAudioPlayer.play();
@@ -73,10 +79,6 @@ class GlobalValueUtil {
     double fontSizeForLongestString = containerWidth / longestTextWidth * fixedFontSize;
 
     return fontSizeForLongestString;
-  }
-
-  static double getTotalBalance()  {
-    return totalBalance;
   }
 
   static void updateTotalBalance(double balance) {

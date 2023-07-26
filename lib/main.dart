@@ -20,6 +20,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/affiliate/affiliate.dart';
 import 'package:tgp_flutter2/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
@@ -234,11 +235,11 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 title: appTitle,
                 initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
                 routes: {
-                  RoutePath.myHome: (context) => MyHomePage(
+                  RoutePath.myHome: (context) => BottomNavigationController(
                         versionUpdate: _vm.versionUpdateState,
-                        isFirstRun: true,
-                        onPauseBgMusic: () => GlobalValueUtil.pausesong(),
-                        onResumeBgMusic: () => GlobalValueUtil.playsong(),
+                        // isFirstRun: true,
+                        // onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+                        // onResumeBgMusic: () => GlobalValueUtil.playsong(),
                       ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
@@ -652,7 +653,7 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) => MyHomePage(),
+                          pageBuilder: (context, animation1, animation2) => BottomNavigationController(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ),

@@ -167,31 +167,15 @@ class _HomeState extends BaseState<Home> implements RouteAware {
           _handleApiState();
           return Stack(
             children: [
-              CustomScaffold(
-                  appBar: EnvironmentConfig.template_version == 15
-                      ? PreferredSize(
-                          child: _getTopBarDetails(),
-                          preferredSize: Size.fromHeight(55),
-                        )
-                      : _getTopBarDetails(),
-                  body: Container(
-                    color: EnvironmentConfig.template_version == 15 ? CustomColor.theme_app_bar_color : Colors.transparent,
-                    child: Stack(
-                      children: [
-                        _getHomeTemplateView(),
-                        _rouletteHolder(),
-                      ],
-                    ),
-                  ),
-                  endDrawer: Drawer(
-                    width: context.screenWidth * 0.65,
-                    backgroundColor: Color(0xff181c42),
-                    child: EndDrawerMenu(
-                      username: _vm.userProfile?.username ?? "",
-                      width: context.screenWidth * 0.65,
-                      balance: _vm.totalBalance ?? 0.0,
-                    ),
-                  )),
+              Container(
+                color: EnvironmentConfig.template_version == 15 ? CustomColor.theme_app_bar_color : Colors.transparent,
+                child: Stack(
+                  children: [
+                    _getHomeTemplateView(),
+                    _rouletteHolder(),
+                  ],
+                ),
+              ),
               BalancePicker(
                 isShow: isShowTransferUI,
                 mainWalletBalance: _vm.totalBalance,
@@ -208,23 +192,24 @@ class _HomeState extends BaseState<Home> implements RouteAware {
         onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
         onClickLogoutButton: () => _logout(),
         isLogin: _vm.userProfile != null,
-        brandLogoUrl: _vm.brandLogoUrl,
+        // brandLogoUrl: _vm.brandLogoUrl,
         userProfile: _vm.userProfile,
-        phone: _vm.phone,
-        config: _vm.config,
-        totalBalance: _vm.totalBalance,
+        // phone: _vm.phone,
+        // config: _vm.config,
+        // totalBalance: _vm.totalBalance,
         //_vm.totalBalance,
-        brandName: EnvironmentConfig.brandName,
+        // brandName: EnvironmentConfig.brandName,
         onClickBalance: () {
           setState(() {
             isShowTransferUI = !isShowTransferUI;
           });
         },
-        onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-        onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        // onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        // onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
         randomNumber: randomGeneratedPlayerCount ?? 0,
         isShowMarquee: isShowMarquee,
         marquee: _vm.announcement,
+      isShowBarrier:false,
       );
 
   _getHomeTemplateView() {

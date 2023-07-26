@@ -11,6 +11,7 @@ class TabButton extends StatelessWidget {
   final int currentTabIndex;
   final double? width;
   final double? height;
+  final bool isHideInactiveBg;
 
   TabButton({
     required this.text,
@@ -18,6 +19,7 @@ class TabButton extends StatelessWidget {
     required this.currentTabIndex,
     this.width,
     this.height,
+    this.isHideInactiveBg = false,
   });
 
   @override
@@ -28,11 +30,16 @@ class TabButton extends StatelessWidget {
       decoration: EnvironmentConfig.template_version == 14
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: index == currentTabIndex ? CustomColor.theme_button_color : Colors.transparent,
+              color: index == currentTabIndex ? CustomColor.tab_selected_color : (isHideInactiveBg ? Colors.transparent : CustomColor.tab_unselected_color),
             )
           : BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color, width: 3))),
+              border: Border(
+                bottom: BorderSide(
+                  color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
+                  width: 3,
+                ),
+              ),
+            ),
       child: Tab(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 2.auto),
@@ -42,10 +49,19 @@ class TabButton extends StatelessWidget {
             minFontSize: 8,
             maxFontSize: 14,
             stepGranularity: 1,
-            style: TextStyle(color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color),
+            style: TextStyle(color: _getTextColor()),
           ),
         ),
       ),
     );
+  }
+
+  Color _getTextColor() {
+    switch (EnvironmentConfig.template_version) {
+      case 14:
+        return Colors.white;
+      default:
+        return index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color;
+    }
   }
 }
