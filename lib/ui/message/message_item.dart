@@ -6,7 +6,9 @@ import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/message/message_dialog.dart';
 
+import '../../environment_config.dart';
 import '../../globalUtil/GlobalValueUtil.dart';
 
 class MessageItem extends StatefulWidget {
@@ -33,9 +35,22 @@ class _MessageItemState extends BaseState<MessageItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        setState(() {
-          show = !show;
-        });
+        if (EnvironmentConfig.template_version == 14) {
+          //show dialog
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => MessageDialog(
+                    messageList: [
+                      _getMessageSubject(),
+                      widget.message.createdOn == null ? "" : Format().dateTimezoneFormat(widget.message.createdOn!),
+                      _getMessageContent(),
+                    ],
+                  ));
+        } else {
+          setState(() {
+            show = !show;
+          });
+        }
         widget.onReadMessage(widget.message.id);
       },
       child: Card(
@@ -45,6 +60,7 @@ class _MessageItemState extends BaseState<MessageItem> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         elevation: 5,
+        color: EnvironmentConfig.template_version == 14 ? Color(0xff202137) : Colors.white,
         child: Container(
             padding: EdgeInsets.all(15.auto),
             child: Column(
@@ -66,7 +82,7 @@ class _MessageItemState extends BaseState<MessageItem> {
   }
 
   _messageDot() => Visibility(
-        visible: !(widget.message.isRead ?? true),
+        visible: !(widget.message.isRead ?? true) && EnvironmentConfig.template_version != 14,
         child: Container(
           width: 8.auto,
           height: 8.auto,
@@ -82,19 +98,20 @@ class _MessageItemState extends BaseState<MessageItem> {
           children: [
             Text(
               _getMessageSubject(),
-              style: TextStyle(fontSize: 15.auto),
+              style: TextStyle(
+                  fontSize: (EnvironmentConfig.template_version == 14 ? 14 : 15).auto,
+                  color: EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 5.auto),
               child: Text(
                 widget.message.createdOn == null ? "" : Format().dateTimezoneFormat(widget.message.createdOn!),
-                style: TextStyle(fontSize: 11.auto, color: CustomColor.grey),
+                style: TextStyle(fontSize: (EnvironmentConfig.template_version == 14 ? 14 : 11).auto, color: CustomColor.grey),
               ),
             ),
           ],
         ),
       );
-
 
   _messageContent() => Column(
         children: [
@@ -113,7 +130,6 @@ class _MessageItemState extends BaseState<MessageItem> {
         ],
       );
 
-
   _getMessageSubject() {
     if ((widget.message.localization?.subject?.isNotEmpty) ?? false)
       return widget.message.localization?.subject;
@@ -128,4 +144,3 @@ class _MessageItemState extends BaseState<MessageItem> {
       return widget.message.content ?? "";
   }
 }
-

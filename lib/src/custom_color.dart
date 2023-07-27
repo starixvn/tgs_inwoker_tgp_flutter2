@@ -33,7 +33,7 @@ class CustomColor {
   static const bottom_nav_unselected_color = Color(EnvironmentConfig.bottom_nav_unselected_color);
   static const promotion_bg_color = Color(EnvironmentConfig.promotion_bg_color);
   static const promotion_text_color = Color(EnvironmentConfig.promotion_text_color);
-  static const theme_text_black_color = Color(EnvironmentConfig.theme_text_black_color);
+  static const theme_text_black_color = Color(0xff000000);
   static const theme_text_black_white_color = Color(EnvironmentConfig.theme_text_black_white_color);
   static const theme_text_grey_color = Color(EnvironmentConfig.theme_text_grey_color);
   static const theme_text_grey_white_color = Color(EnvironmentConfig.theme_text_grey_white_color);

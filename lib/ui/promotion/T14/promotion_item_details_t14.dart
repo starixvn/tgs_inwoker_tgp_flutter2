@@ -41,6 +41,7 @@ class PromotionItemDetailsT14 extends StatefulWidget {
 class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
   bool isExpanded = false;
   int currIndex = 0;
+
   late Promotion currPromotion;
 
   @override
@@ -55,134 +56,131 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
   }
 
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBar: _buildAppBar(),
-      endDrawer: Drawer(
-        width: context.screenWidth * 0.65,
-        backgroundColor: Color(0xff181c42),
-        child: EndDrawerMenu(
-          username: widget.vm.userProfile?.username ?? "",
-          width: context.screenWidth * 0.65,
-        ),
-      ),
-      body: Container(
-        height: context.screenHeight,
-        color: CustomColor.theme_bar_gradient_2,
-        padding: EdgeInsets.symmetric(horizontal: 10.auto),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Container(
-              height: 50.auto,
-              // padding: EdgeInsets.all(10.auto),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 0,
-                    child: InkWell(
-                      onTap: () => setState(() {
+    return Container(
+      height: context.screenHeight,
+      color: CustomColor.theme_bar_gradient_2,
+      padding: EdgeInsets.symmetric(horizontal: 10.auto),
+      child: ListView(
+        shrinkWrap: true,
+        children: [
+          Container(
+            height: 50.auto,
+            // padding: EdgeInsets.all(10.auto),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 0,
+                  child: InkWell(
+                    onTap: () => setState(() {
+                      if (currIndex == 0)
+                        currIndex = widget.vm.promotionList.length - 1;
+                      else
                         currIndex--;
-                        currPromotion = widget.vm.promotionList[currIndex];
-                      }),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                      ),
+                      currPromotion = widget.vm.promotionList[currIndex];
+                    }),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: GlobalValueUtil.calculateTextSize(
-                        text: currPromotion.name ?? "",
-                        style: TextStyle(fontSize: 16.auto),
-                        context: context,
-                      ).height,
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          currPromotion.name ?? "",
-                          style: TextStyle(color: Colors.white, fontSize: 16.auto),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 0,
-                    child: InkWell(
-                      onTap: () => setState(() {
-                        currIndex++;
-                        currPromotion = widget.vm.promotionList[currIndex];
-                      }),
-                      child: Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _buildPromotionImage(),
-            SizedBox(height: 10.auto),
-            Container(
-              height: GlobalValueUtil.calculateTextSize(
-                text: currPromotion.name ?? "",
-                style: TextStyle(fontSize: 16.auto),
-                context: context,
-              ).height,
-              alignment: Alignment.center,
-              child: FittedBox(
-                fit: BoxFit.fitHeight,
-                child: Text(
-                  currPromotion.name ?? "",
-                  style: TextStyle(color: Colors.white, fontSize: 16.auto),
                 ),
-              ),
-            ),
-            SizedBox(height: 10.auto),
-            Container(
-              padding: EdgeInsets.all(10.auto),
-              margin: EdgeInsets.symmetric(horizontal: 10.auto),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Color(0xff0e0f1a),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Html(
-                      data: """<style>tr{ border: 1px solid; } </style>""" +
-                          (((currPromotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
-                              ? (currPromotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
-                              : currPromotion.content ?? ""),
-                      style: {
-                        'body': Style(
-                          fontSize: FontSize(11.auto),
-                          color: CustomColor.theme_text_black_color,
-                        )
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 10.auto),
-                  Container(
-                    child: Text(
-                      "${getTranslatedText("promotion_time")}：\n " +
-                          Format().dateTimeFormat(currPromotion.from) +
-                          " - " +
-                          Format().dateTimeFormat(currPromotion.to),
-                      style: TextStyle(
-                        fontSize: 11.auto,
-                        color: CustomColor.theme_text_black_color,
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: GlobalValueUtil.calculateTextSize(
+                      text: currPromotion.name ?? "",
+                      style: TextStyle(fontSize: 16.auto),
+                      context: context,
+                    ).height,
+                    alignment: Alignment.center,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(
+                        currPromotion.name ?? "",
+                        style: TextStyle(color: Colors.white, fontSize: 16.auto),
                       ),
                     ),
-                  )
-                ],
+                  ),
+                ),
+                Expanded(
+                  flex: 0,
+                  child: InkWell(
+                    onTap: () => setState(() {
+                      if (currIndex == widget.vm.promotionList.length - 1)
+                        currIndex = 0;
+                      else
+                        currIndex++;
+                      currPromotion = widget.vm.promotionList[currIndex];
+                    }),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _buildPromotionImage(),
+          SizedBox(height: 10.auto),
+          Container(
+            height: GlobalValueUtil.calculateTextSize(
+              text: currPromotion.name ?? "",
+              style: TextStyle(fontSize: 16.auto),
+              context: context,
+            ).height,
+            alignment: Alignment.center,
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text(
+                currPromotion.name ?? "",
+                style: TextStyle(color: Colors.white, fontSize: 16.auto),
               ),
             ),
-            SizedBox(height: 10.auto),
+          ),
+          SizedBox(height: 10.auto),
+          Container(
+            padding: EdgeInsets.all(10.auto),
+            margin: EdgeInsets.symmetric(horizontal: 10.auto),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Color(0xff0e0f1a),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Html(
+                    data: """<style>tr{ border: 1px solid; } </style>""" +
+                        (((currPromotion.localization?[getCurrentLanguage().apiCode]?.content)?.isNotEmpty ?? false)
+                            ? (currPromotion.localization?[getCurrentLanguage().apiCode]?.content) ?? ""
+                            : currPromotion.content ?? ""),
+                    style: {
+                      'body': Style(
+                        fontSize: FontSize(11.auto),
+                        color: Colors.white,
+                      )
+                    },
+                  ),
+                ),
+                SizedBox(height: 10.auto),
+                Container(
+                  child: Text(
+                    "${getTranslatedText("promotion_time")}：\n " +
+                        Format().dateTimeFormat(currPromotion.from) +
+                        " - " +
+                        Format().dateTimeFormat(currPromotion.to),
+                    style: TextStyle(
+                      fontSize: 11.auto,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 10.auto),
+          if (currPromotion.terms?.isNotEmpty ?? false)
             Row(
               children: [
                 InkWell(
@@ -200,24 +198,23 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
                 )
               ],
             ),
-            if (isExpanded)
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Html(
-                  data: """<style>tr{ border: 1px solid; } </style>""" + (currPromotion.terms ?? ""),
-                  style: {
-                    'body': Style(
-                      fontSize: FontSize(13.auto),
-                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-                          ? CustomColor.theme_text_black_white_color
-                          : CustomColor.theme_text_black_color,
-                    )
-                  },
-                ),
+          if (isExpanded)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Html(
+                data: """<style>tr{ border: 1px solid; } </style>""" + (currPromotion.terms ?? ""),
+                style: {
+                  'body': Style(
+                    fontSize: FontSize(13.auto),
+                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                        ? CustomColor.theme_text_black_white_color
+                        : CustomColor.theme_text_black_color,
+                  )
+                },
               ),
-            _buildJoinButton()
-          ],
-        ),
+            ),
+          _buildJoinButton()
+        ],
       ),
     );
   }
@@ -237,7 +234,7 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
         // onPauseMusic: () {},
         // onResumeMusic: () {},
         randomNumber: 0,
-      isShowBarrier:false,
+        isShowBarrier: false,
         // isShowMarquee: isShowMarquee,
         // marquee: _vm.announcement,
       );
@@ -247,7 +244,7 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
         child: Container(
           margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
           child: ColorButton(
-            title: getTranslatedText("join"),
+            title: "Claim Bonus",
             onClick: () {
               _onClick();
             },
@@ -279,7 +276,7 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
                 placeholder: (context, url) => Container(
                   color: CustomColor.very_light_pink_four,
                 ),
-                imageUrl: widget.imagePath,
+                imageUrl: imageUrl,
                 //handling error
                 errorWidget: (context, url, error) => Container(
                   color: CustomColor.very_light_pink_four,

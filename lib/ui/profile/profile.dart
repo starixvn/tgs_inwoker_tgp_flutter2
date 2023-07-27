@@ -41,6 +41,7 @@ class _ProfileState extends BaseState<Profile> {
       if (_vm.userProfile != null) {
         // _vm.computeTotalBalance();
         _vm.getAffiliateStatus();
+        _vm.getMessageList();
       }
     });
     GlobalValueUtil.pausesong();
@@ -65,7 +66,7 @@ class _ProfileState extends BaseState<Profile> {
                         child: ListView(
                           children: [
                             _buildUserInfoContainer(),
-                            ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
+                            ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate, isNotify: _vm.isNotify,),
                             _buildLogoutButton()
                           ],
                         ),

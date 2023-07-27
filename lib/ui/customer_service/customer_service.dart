@@ -20,6 +20,12 @@ import 'package:tgp_flutter2/ui/customer_service/customer_service_view_model.dar
 import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
 
 class CustomerService extends StatefulWidget {
+  final bool isNewPage;
+
+  CustomerService({
+    this.isNewPage = false,
+  });
+
   @override
   _CustomerServiceState createState() => _CustomerServiceState();
 }
@@ -43,71 +49,103 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return _buildCsWidget();
-            // EnvironmentConfig.template_version == 14
-            //   ? _buildCsWidget()
-            //   : CustomScaffold(
-            //       appBar: CustomAppBar(
-            //         title: getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service"),
-            //       ),
-            //       body: _buildCsWidget(),
-            //     );
+          return widget.isNewPage
+              ? CustomScaffold(
+                  appBar: CustomAppBar(
+                    title: getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service"),
+                  ),
+                  body: _buildCsWidget(),
+                )
+              : _buildCsWidget();
         });
   }
 
   _buildCsWidget() => _vm.communicationList == null
       ? buildProgressDialog(_vm.brandLogoUrl)
-      : Stack(
+      : EnvironmentConfig.template_version == 14
+          ? _buildCs14Widget()
+          : Stack(
+              children: [
+                Container(
+                  width: context.screenWidth,
+                  height: context.screenHeight,
+                  padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
+                  decoration: BoxDecoration(image: _getCsBgImage()),
+                  child: ListView(shrinkWrap: true, children: [
+                    buildLiveChatRow(),
+                    ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: List.generate(_vm.communicationList!.length, (index) {
+                        return Container(
+                          child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
+                              "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                              qrCode: _vm.communicationList![index]),
+                        );
+                      }),
+                    )
+                  ]),
+                ),
+                Visibility(
+                  visible: _vm.config?.displayPhone ?? false,
+                  child: Positioned(
+                    top: context.screenWidth / 2.1,
+                    right: context.screenWidth / 10,
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                          child: SvgPicture.asset(
+                            "images/support/ic_phone.svg",
+                            matchTextDirection: true,
+                            height: 20.auto,
+                            color: Color(0xfffD18206),
+                          ),
+                        ),
+                        AutoSizeText(
+                          _vm.phone ?? "",
+                          style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.left,
+                          minFontSize: 5,
+                          stepGranularity: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+
+  _buildCs14Widget() => Container(
+        height: context.screenHeight,
+        width: context.screenWidth,
+        color: CustomColor.theme_bar_gradient_2,
+        child: ListView(
+          shrinkWrap: true,
           children: [
             Container(
-              width: context.screenWidth,
-              height: context.screenHeight,
-              padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
-              decoration: BoxDecoration(image: _getCsBgImage()),
-              child: ListView(shrinkWrap: true, children: [
-                buildLiveChatRow(),
-                ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: List.generate(_vm.communicationList!.length, (index) {
-                    return Container(
-                      child: _buildCSRow(
-                          _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
-                          qrCode: _vm.communicationList![index]),
-                    );
-                  }),
-                )
-              ]),
-            ),
-            Visibility(
-              visible: _vm.config?.displayPhone ?? false,
-              child: Positioned(
-                top: context.screenWidth / 2.1,
-                right: context.screenWidth / 10,
-                child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
-                      child: SvgPicture.asset(
-                        "images/support/ic_phone.svg",
-                        matchTextDirection: true,
-                        height: 20.auto,
-                        color: Color(0xfffD18206),
-                      ),
-                    ),
-                    AutoSizeText(
-                      _vm.phone ?? "",
-                      style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
-                      minFontSize: 5,
-                      stepGranularity: 1,
-                    ),
-                  ],
-                ),
+              padding: EdgeInsets.all(15),
+              alignment: Alignment.center,
+              child: Text(
+                "CUSTOMER SERVICE",
+                style: TextStyle(color: Colors.white, fontSize: 15.auto),
               ),
             ),
+            buildLiveChatRow(),
+            ListView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: List.generate(_vm.communicationList!.length, (index) {
+                return Container(
+                  child: _buildCSRow(
+                      _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                      qrCode: _vm.communicationList![index]),
+                );
+              }),
+            ),
           ],
-        );
+        ),
+      );
 
   _getCsBgImage() {
     var language;
@@ -150,12 +188,13 @@ class _CustomerServiceState extends BaseState<CustomerService> {
           child: Container(
             padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
             margin: EdgeInsets.only(top: 15.auto),
-            height: 40.auto,
+            height: EnvironmentConfig.template_version == 14 ? 50.auto : 40.auto,
             decoration: BoxDecoration(
-              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xff000520) : Colors.white,
+              color: _getItemBgColor(),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   flex: 1,
@@ -163,21 +202,23 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                     "images/support/support-call.svg",
                     matchTextDirection: true,
                     height: 20.auto,
-                    color: CustomColor.theme_button_color,
+                    color: EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_button_color,
                   ),
                 ),
                 Expanded(
                   flex: 10,
                   child: Container(
+                    alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
                     child: SizedBox.expand(
                       // to fix not showing full text in thai language
                       child: Container(
-                        padding: EdgeInsets.only(top: 16),
+                        alignment: Alignment.centerLeft,
+                        //padding: EdgeInsets.only(top: 16),
                         child: AutoSizeText(
                           getTranslatedText("online_cs"),
                           style: TextStyle(
-                              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                              color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
                                   ? CustomColor.theme_text_black_white_color
                                   : CustomColor.theme_text_black_color),
                           maxLines: 1,
@@ -192,15 +233,27 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 ),
                 Expanded(
                   flex: 3,
-                  child: AutoSizeText(
-                    getTranslatedText("contact"),
-                    style: TextStyle(
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : CustomColor.theme_button_color),
-                    textAlign: TextAlign.end,
-                    maxFontSize: 15,
-                    minFontSize: 5,
-                    maxLines: 1,
-                    stepGranularity: 1,
+                  child: Container(
+                    decoration: EnvironmentConfig.template_version == 14
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.auto)),
+                            color: CustomColor.theme_button_color,
+                          )
+                        : BoxDecoration(),
+                    margin: EdgeInsets.symmetric(vertical: EnvironmentConfig.template_version == 14 ? 10.auto : 0),
+                    alignment: Alignment.center,
+                    child: AutoSizeText(
+                      getTranslatedText("contact"),
+                      style: TextStyle(
+                          color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                              ? Colors.white
+                              : CustomColor.theme_button_color),
+                      textAlign: TextAlign.end,
+                      maxFontSize: 15,
+                      minFontSize: 5,
+                      maxLines: 1,
+                      stepGranularity: 1,
+                    ),
                   ),
                 )
               ],
@@ -209,69 +262,82 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         ),
       );
 
-  _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: EdgeInsets.only(left: 15.auto, right: 20.auto),
-          margin: EdgeInsets.only(top: 15.auto),
-          height: 40.auto,
-          decoration: BoxDecoration(
-            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xff000520) : Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: SvgPicture.asset(
-                  "images/support/$imagePath.svg",
-                  matchTextDirection: true,
-                  height: 20.auto,
-                  color: CustomColor.theme_button_color,
+  _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => Container(
+        padding: EdgeInsets.only(left: 15.auto, right: 20.auto),
+        margin: EdgeInsets.only(top: 15.auto),
+        height: EnvironmentConfig.template_version == 14 ? 50.auto : 40.auto,
+        decoration: BoxDecoration(
+          color: _getItemBgColor(),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: SvgPicture.asset(
+                "images/support/$imagePath.svg",
+                matchTextDirection: true,
+                height: 20.auto,
+                color: EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_button_color,
+              ),
+            ),
+            Expanded(
+              flex: 10,
+              child: Container(
+                margin: EdgeInsets.only(left: 10.auto),
+                child: Text(
+                  getTranslatedText(title) ?? title,
+                  style: TextStyle(
+                      color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                          ? CustomColor.theme_text_black_white_color
+                          : CustomColor.theme_text_black_color),
                 ),
               ),
-              Expanded(
-                flex: 10,
+            ),
+            Expanded(
+              flex: 3,
+              child: InkWell(
+                onTap: () {
+                  var contact = qrCode?.appId ?? qrCode?.phone;
+                  if (contact != null) {
+                    Clipboard.setData(ClipboardData(text: contact));
+                    _handleDeepLinkApps(title ?? "", contact);
+                  }
+                  // CustomToast.show(getTranslatedText("copy_text"));
+                },
                 child: Container(
-                  margin: EdgeInsets.only(left: 10.auto),
+                  decoration: EnvironmentConfig.template_version == 14
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10.auto)),
+                          color: CustomColor.theme_button_color,
+                        )
+                      : BoxDecoration(),
+                  margin: EdgeInsets.symmetric(vertical: EnvironmentConfig.template_version == 14 ? 10.auto : 0),
+                  alignment: Alignment.center,
                   child: Text(
-                    getTranslatedText(title) ?? title,
-                    style: TextStyle(
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-                            ? CustomColor.theme_text_black_white_color
-                            : CustomColor.theme_text_black_color),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: InkWell(
-                  onTap: () {
-                    var contact = qrCode?.appId ?? qrCode?.phone;
-                    if (contact != null) {
-                      Clipboard.setData(ClipboardData(text: contact));
-                      _handleDeepLinkApps(title ?? "", contact);
-                    }
-
-                    // CustomToast.show(getTranslatedText("copy_text"));
-                  },
-                  child: /*ImageIcon(
-                    AssetImage("images/support/ic_copy.png"),
-                    size: 23.auto,
-                    color: CustomColor.theme_text_black_color,
-                  ),*/
-                      Text(
                     getTranslatedText("cs_join"),
                     style: TextStyle(
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : CustomColor.theme_button_color),
+                        color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                            ? Colors.white
+                            : CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
+
+  Color _getItemBgColor() {
+    if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+      return Color(0xff000520);
+    else if (EnvironmentConfig.template_version == 14)
+      return Color(0xff212238);
+    else
+      return Colors.white;
+  }
 
   _handleApiState() {
     handleApiState(_vm.getBrandCommunicationApiState, isAutoHideLoading: false, onSuccess: () {});

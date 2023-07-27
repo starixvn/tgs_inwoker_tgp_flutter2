@@ -9,11 +9,13 @@ class ProfileViewModel extends BaseViewModel {
   final contentRepo = ContentRepository.getSingleton();
   final walletRepo = WalletRepository.getSingleton();
   final bankRepo = BankRepository.getSingleton();
+  final messageRepo = MessageRepository.getSingleton();
 
   var logoutApiState, getWalletBalanceApiState, getAffiliateStatusState;
   double? gameBalance;
   double? totalBalance;
   bool haveAffiliate = false;
+  bool isNotify = false;
 
   @override
   List<BaseRepository> get repoList => [userRepo];
@@ -69,5 +71,15 @@ class ProfileViewModel extends BaseViewModel {
     setLoading(false);
     notifyListeners();
     return getAffiliateStatusState;
+  }
+
+  getMessageList() async {
+    setLoading();
+    var state = await messageRepo.getMessageList(1, 99);
+    if (state.isSuccess) {
+      isNotify = (state.result?.items ?? []).any((element) => (element.isRead ?? false));
+    }
+    setLoading(false);
+    return state;
   }
 }

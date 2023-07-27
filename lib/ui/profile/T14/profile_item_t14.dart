@@ -22,6 +22,7 @@ class ProfileItemT14 extends StatefulWidget {
   final int navigationID;
   final bool isMessage;
   final VoidCallback logout;
+  final bool isNotify;
 
   ProfileItemT14({
     required this.title,
@@ -30,6 +31,7 @@ class ProfileItemT14 extends StatefulWidget {
     required this.navigationID,
     required this.isMessage,
     required this.logout,
+    this.isNotify = false,
   });
 
   @override
@@ -40,19 +42,38 @@ class _ProfileItemT14State extends BaseState<ProfileItemT14> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _navigate(),
-      child: Container(
-        //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
-        margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
-        child: Column(
-          // direction: Axis.vertical,
-          // alignment: WrapAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildImageIcon(),
-            SizedBox(height: 10),
-            _buildProfileBottomItemText(),
-          ],
-        ),
+      child: Stack(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            //margin: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+            margin: EdgeInsets.only(left: 5.auto, right: 5.auto, top: 10.auto, bottom: 5.auto),
+            child: Column(
+              // direction: Axis.vertical,
+              // alignment: WrapAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildImageIcon(),
+                SizedBox(height: 10),
+                _buildProfileBottomItemText(),
+              ],
+            ),
+          ),
+          if (widget.isMessage && widget.isNotify)
+            Positioned(
+              right: 10,
+              top: 10,
+              child: Container(
+                height: 5,
+                width: 5,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+        ],
       ),
       // Stack(
       //   alignment: Alignment.center,
@@ -78,12 +99,13 @@ class _ProfileItemT14State extends BaseState<ProfileItemT14> {
                 return "images/profile/t2/${widget.imagePath}.svg";
               case "ic_transfer":
               case "ic_signout":
+              case "ic_announcement":
+              case "ic_favourite":
                 return "images/profile/t14/${widget.imagePath}.svg";
               default:
                 return "images/profile/t1/${widget.imagePath}.svg";
             }
           }()),
-          // widget.imagePath == "ic_vip" ?  : "images/profile/t1/${widget.imagePath}.svg",
           width: 40.auto,
           height: 40.auto,
           matchTextDirection: true,
@@ -96,7 +118,7 @@ class _ProfileItemT14State extends BaseState<ProfileItemT14> {
       title,
       softWrap: true,
       textAlign: TextAlign.center,
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.5.auto),
+      style: TextStyle(color: Colors.white, fontSize: 10.auto),
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/extension/format.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -17,6 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.isPopTwice = false,
     this.onPop,
     this.isPassTrueWhenPop = false,
+    this.isShowBalance = false,
   });
 
   final String title;
@@ -25,12 +28,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isPopTwice;
   final Function? onPop;
   final bool isPassTrueWhenPop;
+  final bool isShowBalance;
 
   @override
   Size get preferredSize => const Size.fromHeight(45);
 
   Widget build(BuildContext context) {
-    if (EnvironmentConfig.template_version == 1)
+  if (EnvironmentConfig.template_version == 1)
       return AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
@@ -116,8 +120,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(
             Icons.arrow_back,
             color: EnvironmentConfig.template_version == 8 ||
-                (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode) ||
-                EnvironmentConfig.light_mode
+                    (EnvironmentConfig.template_version == 9 && !EnvironmentConfig.dark_mode) ||
+                    EnvironmentConfig.light_mode
                 ? Colors.black
                 : Colors.white,
           ),
@@ -130,7 +134,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   _getAppBarWidget() {
     return SafeArea(
         child: (() {
-      if (walletBalance != null && EnvironmentConfig.template_version==14) {
+      if (walletBalance != null && EnvironmentConfig.template_version == 14 && isShowBalance) {
         return Container(
             margin: EdgeInsets.only(right: 15.auto),
             alignment: Alignment.center,

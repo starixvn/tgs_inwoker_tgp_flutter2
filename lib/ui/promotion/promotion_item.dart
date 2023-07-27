@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -126,15 +128,22 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : CustomColor.very_light_pink_four,
       );
 
-  _navigateToDetails() => Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PromotionItemDetails(
-                imagePath: imageUrl,
-                promotion: widget.promotion,
-                vm: widget.vm,
-            index: widget.index,
-              )));
+  _navigateToDetails() {
+    Widget view = PromotionItemDetails(
+      imagePath: imageUrl,
+      promotion: widget.promotion,
+      vm: widget.vm,
+      index: widget.index,
+    );
+    if (EnvironmentConfig.template_version == 14) {
+      NotificationCenter().notify(
+        NotificationServiceName().showDialogViewToHome,
+        data: {"view": view, "title": ""},
+      );
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => view));
+    }
+  }
 
   _getImageUrl() {
     var language = getCurrentLanguage().apiCode ?? "en-US";

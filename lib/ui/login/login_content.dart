@@ -14,6 +14,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
@@ -200,31 +201,36 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         color: CustomColor.theme_grey_button_color,
       );
 
-  _buildCsButton() => Container(
-        margin: EdgeInsets.only(top: 20),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.white,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            SvgPicture.asset(
-              "images/bottom_nav_bar/ic_cs.svg",
-              matchTextDirection: true,
-              height: 15.auto,
-              color: Colors.white,
-            ),
-            SizedBox(width: 10),
-            Text(
-              getTranslatedText("online_chat"),
-              style: TextStyle(
+  _buildCsButton() => InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerService(isNewPage: true)));
+        },
+        child: Container(
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          decoration: BoxDecoration(
+              border: Border.all(
                 color: Colors.white,
               ),
-            )
-          ],
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "images/bottom_nav_bar/ic_cs.svg",
+                matchTextDirection: true,
+                height: 15.auto,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Text(
+                getTranslatedText("online_chat"),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
         ),
       );
 
@@ -293,7 +299,7 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => BottomNavigationController(
-                    // isFirstRun: false,
+                  // isFirstRun: false,
                   )),
           (Route<dynamic> route) => false);
     });

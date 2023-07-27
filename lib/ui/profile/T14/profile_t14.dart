@@ -43,29 +43,30 @@ class _ProfileT14State extends BaseState<ProfileT14> {
     );
   }
 
-  _buildUserInfoContainerT14() => ScrollConfiguration(
-        behavior: MyBehavior(),
-        child: Column(
-          children: [
-            Expanded(flex:1,child:_buildProfileTopItem()),
-            Expanded(flex:3,child:_buildGridViewLayout()),
+  _buildUserInfoContainerT14() =>
+      // ScrollConfiguration(
+      //   behavior: MyBehavior(),
+      //   child: Column(
+      //     children: [
+      //       Expanded(flex:1,child:_buildProfileTopItem()),
+      //       Expanded(flex:3,child:_buildGridViewLayout()),
+      //     ],
+      //   ),
+        CustomScrollView(
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: _buildProfileTopItem(),
+            ),
+            SliverFillRemaining(
+              child: Flexible(
+                fit: FlexFit.tight,
+                child: _buildGridViewLayout(),
+              ),
+            ),
           ],
-        ),
-        // CustomScrollView(
-        //   shrinkWrap: true,
-        //   physics: BouncingScrollPhysics(),
-        //   slivers: [
-        //     SliverToBoxAdapter(
-        //       child: _buildProfileTopItem(),
-        //     ),
-        //     SliverFillRemaining(
-        //       child: Flexible(
-        //         fit: FlexFit.tight,
-        //         child: _buildGridViewLayout(),
-        //       ),
-        //     ),
-        //   ],
-        // ),
+
       );
 
   _buildProfileTopItem() => Container(
@@ -100,14 +101,16 @@ class _ProfileT14State extends BaseState<ProfileT14> {
   _buildGridViewLayout() {
     List<Widget> list = [
       _buildProfileBottomItem("ic_profile", "profile_detail", "profile_info", 0),
-      _buildProfileBottomItem("ic_message", "message_center", "message", 0),
-      _buildProfileBottomItem("ic_message", "站内信", "message", 0),
+      _buildProfileBottomItem("ic_message", "message_center", "message", 0, isMessage: true),
+      _buildProfileBottomItem("ic_message", "Memo", "message", 0),
+      _buildProfileBottomItem("ic_announcement", "announcement", "message", 0),
       _buildProfileBottomItem("ic_account_report", "bet_history", "transaction", 0),
       _buildProfileBottomItem("ic_withdraw_report", "withdrawal_history", "transaction", 2),
       _buildProfileBottomItem("ic_deposit_report", "deposit_history", "transaction", 1),
       _buildProfileBottomItem("ic_transfer_report", "transfer_history", "transaction", 3),
       _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 4),
       _buildProfileBottomItem("ic_transfer_report", "balanceChangeRecords", "transaction", 5),
+      _buildProfileBottomItem("ic_favourite", "My Favourite", "vip", 0),
       _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
       if (_vm.haveAffiliate) _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
       _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
@@ -120,7 +123,7 @@ class _ProfileT14State extends BaseState<ProfileT14> {
         padding: EdgeInsets.all(20.auto),
         crossAxisCount: 4,
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         crossAxisSpacing: 10.auto,
         mainAxisSpacing: 10.auto,
         itemCount: list.length,
@@ -142,6 +145,7 @@ class _ProfileT14State extends BaseState<ProfileT14> {
         navigationID: navigationID,
         isMessage: isMessage,
         logout: () => _logout(),
+    isNotify: _vm.isNotify,
       );
 
   _logout() {

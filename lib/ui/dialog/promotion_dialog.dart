@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,7 +63,7 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         horizontal: context.screenWidth / 20,
       ),
       decoration: new BoxDecoration(
-        color: Colors.white,
+        color: EnvironmentConfig.template_version == 14 ? Color(0xff27273f) : Colors.white,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
@@ -77,13 +79,10 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         children: [
           Container(
             padding: EdgeInsets.only(bottom: 13.auto, left: 10.auto),
-            alignment: Alignment.topLeft,
+            alignment: EnvironmentConfig.template_version == 14 ? Alignment.center : Alignment.topLeft,
             child: Text(
               getTranslatedText("promotion_center"),
-              style: TextStyle(
-                fontSize: 18.auto,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontSize: 18.auto, fontWeight: FontWeight.w500, color: EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black),
             ),
           ),
           Flexible(
@@ -103,15 +102,30 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
                     imageUrl = "";
                   return InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PromotionItemDetails(
-                                      imagePath: imageUrl,
-                                      promotion: promo,
-                                      vm: _vm,
-                                      index: index,
-                                    )));
+                        Widget view = PromotionItemDetails(
+                          imagePath: imageUrl,
+                          promotion: promo,
+                          vm: _vm,
+                          index: index,
+                        );
+                        if (EnvironmentConfig.template_version == 14) {
+                          Navigator.pop(context);
+                          NotificationCenter().notify(
+                            NotificationServiceName().showDialogViewToHome,
+                            data: {"view": view, "title": ""},
+                          );
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => view));
+                        }
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => PromotionItemDetails(
+                        //               imagePath: imageUrl,
+                        //               promotion: promo,
+                        //               vm: _vm,
+                        //               index: index,
+                        //             )));
                       },
                       child: Container(height: 150.auto, child: _buildPromotionImage(imageUrl)));
                 }).toList(),

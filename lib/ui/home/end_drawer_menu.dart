@@ -27,8 +27,9 @@ class EndDrawerMenu extends StatefulWidget {
 }
 
 class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
-  List<String> titleList = ["Messages", "Announcement", "Change Password", "Change Money PW", "Bet Record", "Language", "Signout"];
-  List<String> iconList = ["ic_message", "ic_announcement", "ic_change_password", "ic_change_money_password", "ic_bet_record", "ic_language", "ic_signout"];
+  List<String> titleList = ["Messages", "Announcement", "Change Password", "Bet Record", "Language", "Signout"];
+
+  List<String> iconList = ["ic_message", "ic_announcement", "ic_change_password", "ic_bet_record", "ic_language", "ic_signout"];
   double fontSize = 0.0;
 
   @override

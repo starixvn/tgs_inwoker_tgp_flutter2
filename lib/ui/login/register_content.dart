@@ -24,6 +24,8 @@ import 'package:tgp_flutter2/ui/login/phone_re_verification/login_otp_text_form_
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 
+import '../customer_service/customer_service.dart';
+
 class RegisterContent extends StatefulWidget {
   // final ValueChanged<dynamic>? onSubmitUsernameAndPassword;
   final LoginViewModel vm;
@@ -86,7 +88,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
                       _buildPromotionCodeTextFormField(),
                       _buildRegisterTermsText(),
                       _buildRegisterButton(),
-                      _buildCsButton()
+                      if (EnvironmentConfig.template_version == 14) _buildCsButton()
                     ],
                   ),
                 );
@@ -336,33 +338,38 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
         ),
       );
 
-  _buildCsButton() => Container(
-        margin: EdgeInsets.only(top: 20),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.white,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            SvgPicture.asset(
-              "images/bottom_nav_bar/ic_cs.svg",
-              matchTextDirection: true,
-              height: 15.auto,
-              color: Colors.white,
-            ),
-            SizedBox(width: 10),
-            Text(
-              getTranslatedText("online_chat"),
-              style: TextStyle(
+  _buildCsButton() => InkWell(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerService(isNewPage: true)));
+    },
+    child: Container(
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          decoration: BoxDecoration(
+              border: Border.all(
                 color: Colors.white,
               ),
-            )
-          ],
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "images/bottom_nav_bar/ic_cs.svg",
+                matchTextDirection: true,
+                height: 15.auto,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Text(
+                getTranslatedText("online_chat"),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
         ),
-      );
+  );
 
   onChangeCheckBox() => this.setState(() {
         this._isTermsChecked = !this._isTermsChecked;
@@ -473,7 +480,7 @@ class _RegisterContentState extends BaseState<RegisterContent> with AutomaticKee
           context,
           MaterialPageRoute(
               builder: (context) => BottomNavigationController(
-                    // index: 4,
+                  // index: 4,
                   )));
       Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);

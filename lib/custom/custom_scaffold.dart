@@ -47,6 +47,10 @@ class CustomScaffold extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             );
+          else if (EnvironmentConfig.template_version == 14)
+            return BoxDecoration(
+              color:CustomColor.theme_bar_gradient_2
+            );
           else
             return BoxDecoration();
         }())),

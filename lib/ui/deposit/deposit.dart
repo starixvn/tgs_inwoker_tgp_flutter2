@@ -53,7 +53,6 @@ class _DepositState extends BaseState<Deposit> {
         }
       });
     }
-
     super.initState();
   }
 

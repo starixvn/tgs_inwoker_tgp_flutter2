@@ -29,7 +29,6 @@ class _PromotionState extends BaseState<Promotion> {
   BuildContext? key = GlobalKey().currentContext;
   var languageCode;
 
-
   @override
   void initState() {
     _vm.getPromotionList();
@@ -48,14 +47,31 @@ class _PromotionState extends BaseState<Promotion> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return /*EnvironmentConfig.template_version == 14
-              ?*/ _buildPromotion();
-              /*: CustomScaffold(
+          return Container(
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+               if(EnvironmentConfig.template_version == 14) Container(
+                  padding: EdgeInsets.all(15),
+                  alignment: Alignment.center,
+                  child: Text(
+                    getTranslatedText("promotion_center").toString().toUpperCase(),
+                    style: TextStyle(color: Colors.white, fontSize: 15.auto),
+                  ),
+                ),
+                _buildPromotion(),
+              ],
+            ),
+          );
+          /*EnvironmentConfig.template_version == 14
+              ?*/
+          /*: CustomScaffold(
                   appBar: CustomAppBar(
                     title: getTranslatedText("promotion_center"),
                     onPop: (){
                       Navigator.pop(context);
-                      NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: preBottomIndex);
+                 (     NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: preBottomIndex);
 
                     },
                   ),
@@ -108,10 +124,10 @@ class _PromotionState extends BaseState<Promotion> {
       );
     } else {
       return Container(
-        height: context.screenHeight,
         color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
         child: ListView(
           shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
           padding: EdgeInsets.only(bottom: 10.auto),
           children: List.generate(_vm.promotionList.length, (index) {
             return PromotionItem(

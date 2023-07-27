@@ -69,6 +69,7 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
   var isShowMarquee = false; //to check either hide show marquee in login app bar
   var isMenu = false;
   bool hideAppBar = false, hideBottomNavigationBar = false;
+  bool isShowBalanceInAppBar = false;
 
   // int? preBottomIndex;
   List<int> preBottomNavigationRoute = [];
@@ -125,6 +126,11 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       if (homeViewModel.userProfile == null) {
         showPreLoginDialog();
         return;
+      } else if (map["title"].isEmpty) {
+        setState(() {
+          updateCustomView = true;
+          customView = map["view"];
+        });
       } else {
         setState(() {
           isShowTopNavigate = true;
@@ -148,6 +154,8 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       isMenu = false;
       isShowTopNavigate = false;
       bool isNeedLogin = false;
+      updateCustomView = false;
+      isShowBalanceInAppBar = false;
       switch (_getBottomNavigationIconList()[value]) {
         case BottomNavigationIcon.profile:
           {
@@ -173,18 +181,20 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
               isNeedLogin = true;
               showPreLoginDialog();
             } else if (EnvironmentConfig.template_version != 14) {
-              NotificationCenter().notify(NotificationServiceName().depositNeededLoadData, data: true);
+              isShowBalanceInAppBar = true;
               //show app bar with back button and title
               isShowTopNavigate = true;
               hideBottomNavigationBar = true;
               preBottomNavigationRoute.add(_selectedIndex);
               // Navigator.of(context).pushNamed(RoutePath.deposit);
             } else {
+              isShowBalanceInAppBar = true;
               //show app bar with back button and title
               isShowTopNavigate = true;
               //for tracing back previous route when user click back button
               preBottomNavigationRoute.add(_selectedIndex);
             }
+            NotificationCenter().notify(NotificationServiceName().depositNeededLoadData, data: true);
             _appBarTitle = getTranslatedText("deposit");
             break;
           }
@@ -305,6 +315,7 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
                       preBottomNavigationRoute.removeLast();
                     }
                   },
+                  isShowBalance: isShowBalanceInAppBar,
                 )
               : CustomLoginAppBar(
                   onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
