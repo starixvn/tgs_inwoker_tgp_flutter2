@@ -6,6 +6,8 @@ import 'package:html/parser.dart' show parse;
 
 enum AssetPlayerStatus { leavePagePause, manualClickPause, normal, returnHome }
 
+enum BottomNavigationIcon { home, promotion, wallet, cs, profile, deposit, withdraw }
+
 class GlobalValueUtil {
    // static GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 

@@ -237,7 +237,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 routes: {
                   RoutePath.myHome: (context) => BottomNavigationController(
                         versionUpdate: _vm.versionUpdateState,
-                        // isFirstRun: true,
+                         isFirstRun: true,
                         // onPauseBgMusic: () => GlobalValueUtil.pausesong(),
                         // onResumeBgMusic: () => GlobalValueUtil.playsong(),
                       ),

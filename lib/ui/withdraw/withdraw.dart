@@ -28,6 +28,12 @@ import 'package:tgp_flutter2/base_state.dart';
 import '../../globalUtil/GlobalValueUtil.dart';
 
 class Withdraw extends StatefulWidget {
+  final bool isNewPage;
+
+  Withdraw({
+    this.isNewPage = false,
+  });
+
   @override
   _WithdrawState createState() => _WithdrawState();
 }
@@ -38,9 +44,7 @@ class _WithdrawState extends BaseState<Withdraw> {
   //UserProfile user;
   var isDetailsButtonEnabled = false, isNextButtonEnabled = false;
   var selectedBankCard;
-  TextEditingController _amountController = TextEditingController(),
-      _usdtController = TextEditingController(),
-      _remarkController = TextEditingController();
+  TextEditingController _amountController = TextEditingController(), _usdtController = TextEditingController(), _remarkController = TextEditingController();
   var amount;
   InputValidationProvider validate = new InputValidationProvider();
   String? selectedBankCardText;
@@ -66,31 +70,12 @@ class _WithdrawState extends BaseState<Withdraw> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return _vm.bankCardList == null
-              ? buildProgressDialog(_vm.brandLogoUrl)
-              : Container(
-            padding: EdgeInsets.only(
-                left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: ScrollConfiguration(
-              behavior: MyBehavior(),
-              child: ListView(
-                children: [
-                  _buildWithdrawCard(),
-                  _buildEditBankItem(),
-                  _buildBankPicker(),
-                  _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
-                  _buildPlayerNoteTextField(),
-                  //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
-                  if (_isUSDT()) _buildUSDTExchangeRateText(),
-                  if (_isUSDT()) _buildUSDTAmount(),
-                  _buildHintText(),
-
-                  _buildButton(),
-                  //_buildCustomerServiceText()
-                ],
-              ),
-            ),
-          );
+          return widget.isNewPage
+              ? CustomScaffold(
+                  appBar: _buildAppBar(),
+                  body: _buildWithdrawWidget(),
+                )
+              : _buildWithdrawWidget();
         });
   }
 
@@ -99,6 +84,31 @@ class _WithdrawState extends BaseState<Withdraw> {
         walletBalance: _vm.wallet?.totalBalance,
         isPassTrueWhenPop: true,
       );
+
+  _buildWithdrawWidget() => _vm.bankCardList == null
+      ? buildProgressDialog(_vm.brandLogoUrl)
+      : Container(
+          padding: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: ListView(
+              children: [
+                _buildWithdrawCard(),
+                _buildEditBankItem(),
+                _buildBankPicker(),
+                _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
+                _buildPlayerNoteTextField(),
+                //_buildTextField("pay_password", "enter_pay_password", _payPasswordController, false),
+                if (_isUSDT()) _buildUSDTExchangeRateText(),
+                if (_isUSDT()) _buildUSDTAmount(),
+                _buildHintText(),
+
+                _buildButton(),
+                //_buildCustomerServiceText()
+              ],
+            ),
+          ),
+        );
 
   _buildWithdrawCard() => Container(
         padding: EdgeInsets.only(top: 15.auto),
@@ -141,10 +151,10 @@ class _WithdrawState extends BaseState<Withdraw> {
                   padding: EdgeInsets.only(top: 5.auto),
                   child: Text(
                     EnvironmentConfig.brandName == "IDR1"
-                    //without decimal places
+                        //without decimal places
                         ? Format().currencyFormat(amount.toInt())
-                    //with 2 decimal places
-                        :Format().currencyWithDecimalFormat(amount),
+                        //with 2 decimal places
+                        : Format().currencyWithDecimalFormat(amount),
                     style: TextStyle(color: CustomColor.theme_button_color, fontSize: 12.auto),
                     textAlign: TextAlign.start,
                   ),
@@ -188,9 +198,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: getTranslatedText("bank_card"),
         displayText: selectedBankCardText ?? "",
         list: _vm.bankCardList ?? [],
-        isHintText: selectedBankCard != null || _vm.bankCardList != null || (_vm.bankCardList?.isNotEmpty ?? false)
-            ? false
-            : true,
+        isHintText: selectedBankCard != null || _vm.bankCardList != null || (_vm.bankCardList?.isNotEmpty ?? false) ? false : true,
         width: context.screenWidth,
         onClick: () {
           _buildPickerDialog("bank_card", _vm.bankCardList ?? []);
@@ -393,13 +401,10 @@ class _WithdrawState extends BaseState<Withdraw> {
         title: "",
         description: getTranslatedText("withdraw_success"),
         buttonText1: getTranslatedText("confirm"),
-        buttonText2: (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
-            ? getTranslatedText("verify_realname")
-            : null,
+        buttonText2: (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication) ? getTranslatedText("verify_realname") : null,
         onClick: () => Navigator.pop(context),
-        onClick2: () => (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication)
-            ? Navigator.pushNamed(context, RoutePath.realNameVerification)
-            : null,
+        onClick2: () =>
+            (_vm.userProfile.realname != null && !_vm.userProfile.identityAuthentication) ? Navigator.pushNamed(context, RoutePath.realNameVerification) : null,
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/environment_config.dart';
+import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -17,6 +18,8 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
 import '../../globalUtil/GlobalValueUtil.dart';
+import '../deposit/deposit.dart';
+import '../withdraw/withdraw.dart';
 
 class HomeT15 extends StatefulWidget {
   final Function? onPauseBgMusic;
@@ -174,8 +177,8 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                       margin: EdgeInsets.only(right: 5.auto),
                       width: 120,
                       child: Row(children: [
-                        Expanded(child: _getWalletView(getTranslatedText("deposit"), "deposit")),
-                        Expanded(child: _getWalletView(getTranslatedText("withdrawal"), "withdraw")),
+                        Expanded(child: _getWalletView(getTranslatedText("deposit"), RoutePath.deposit)),
+                        Expanded(child: _getWalletView(getTranslatedText("withdrawal"), RoutePath.withdraw)),
                       ]))
                 ],
               ),
@@ -254,7 +257,11 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
             showPreLoginDialog();
           } else {
             _checkDisableMusic();
-            Navigator.of(context).pushNamed("/${path.toLowerCase()}");
+            if (path == RoutePath.deposit) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Deposit(isNewPage: true)));
+            } else if (path == RoutePath.withdraw) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Withdraw(isNewPage: true)));
+            }
           }
         },
         child: Container(

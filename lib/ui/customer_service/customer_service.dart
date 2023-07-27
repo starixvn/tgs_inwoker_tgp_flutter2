@@ -43,61 +43,71 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return _vm.communicationList == null
-              ? buildProgressDialog(_vm.brandLogoUrl)
-              : Stack(
-            children: [
-              Container(
-                width: context.screenWidth,
-                height: context.screenHeight,
-                padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
-                decoration: BoxDecoration(image: _getCsBgImage()),
-                child: ListView(shrinkWrap: true, children: [
-                  buildLiveChatRow(),
-                  ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: List.generate(_vm.communicationList!.length, (index) {
-                      return Container(
-                        child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
-                            "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
-                            qrCode: _vm.communicationList![index]),
-                      );
-                    }),
-                  )
-                ]),
-              ),
-              Visibility(
-                visible: _vm.config?.displayPhone ?? false,
-                child: Positioned(
-                  top: context.screenWidth / 2.1,
-                  right: context.screenWidth / 10,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
-                        child: SvgPicture.asset(
-                          "images/support/ic_phone.svg",
-                          matchTextDirection: true,
-                          height: 20.auto,
-                          color: Color(0xfffD18206),
-                        ),
-                      ),
-                      AutoSizeText(
-                        _vm.phone ?? "",
-                        style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
-                        minFontSize: 5,
-                        stepGranularity: 1,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
+          return _buildCsWidget();
+            // EnvironmentConfig.template_version == 14
+            //   ? _buildCsWidget()
+            //   : CustomScaffold(
+            //       appBar: CustomAppBar(
+            //         title: getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service"),
+            //       ),
+            //       body: _buildCsWidget(),
+            //     );
         });
   }
+
+  _buildCsWidget() => _vm.communicationList == null
+      ? buildProgressDialog(_vm.brandLogoUrl)
+      : Stack(
+          children: [
+            Container(
+              width: context.screenWidth,
+              height: context.screenHeight,
+              padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
+              decoration: BoxDecoration(image: _getCsBgImage()),
+              child: ListView(shrinkWrap: true, children: [
+                buildLiveChatRow(),
+                ListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: List.generate(_vm.communicationList!.length, (index) {
+                    return Container(
+                      child: _buildCSRow(
+                          _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                          qrCode: _vm.communicationList![index]),
+                    );
+                  }),
+                )
+              ]),
+            ),
+            Visibility(
+              visible: _vm.config?.displayPhone ?? false,
+              child: Positioned(
+                top: context.screenWidth / 2.1,
+                right: context.screenWidth / 10,
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                      child: SvgPicture.asset(
+                        "images/support/ic_phone.svg",
+                        matchTextDirection: true,
+                        height: 20.auto,
+                        color: Color(0xfffD18206),
+                      ),
+                    ),
+                    AutoSizeText(
+                      _vm.phone ?? "",
+                      style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                      minFontSize: 5,
+                      stepGranularity: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
 
   _getCsBgImage() {
     var language;
@@ -166,7 +176,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                         padding: EdgeInsets.only(top: 16),
                         child: AutoSizeText(
                           getTranslatedText("online_cs"),
-                          style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
+                          style: TextStyle(
+                              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                                  ? CustomColor.theme_text_black_white_color
+                                  : CustomColor.theme_text_black_color),
                           maxLines: 1,
                           minFontSize: 13,
                           stepGranularity: 1,
@@ -181,9 +194,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   flex: 3,
                   child: AutoSizeText(
                     getTranslatedText("contact"),
-                    style: TextStyle(color:EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-                        ? Colors.white
-                        :  CustomColor.theme_button_color),
+                    style: TextStyle(
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
                     maxFontSize: 15,
                     minFontSize: 5,
@@ -224,7 +236,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   margin: EdgeInsets.only(left: 10.auto),
                   child: Text(
                     getTranslatedText(title) ?? title,
-                    style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
+                    style: TextStyle(
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                            ? CustomColor.theme_text_black_white_color
+                            : CustomColor.theme_text_black_color),
                   ),
                 ),
               ),
@@ -248,9 +263,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                       Text(
                     getTranslatedText("cs_join"),
                     style: TextStyle(
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-                            ? Colors.white
-                            : CustomColor.theme_button_color),
+                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : CustomColor.theme_button_color),
                     textAlign: TextAlign.end,
                   ),
                 ),

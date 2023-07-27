@@ -81,13 +81,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
     return Stack(
       children: [
         _buildAppBarWidget(),
-        Visibility(
-          visible: widget.isShowBarrier,
-          child: Opacity(
-            opacity: 0.9,
-            child: widget.barrierWidget ?? Container()
-          ),
-        ),
+        Visibility(visible: widget.isShowBarrier, child: widget.barrierWidget ?? Container()),
       ],
     );
   }
@@ -95,6 +89,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
   _buildAppBarWidget() {
     if (EnvironmentConfig.template_version == 1) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
@@ -104,6 +99,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 8 && (EnvironmentConfig.dark_mode)) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -119,6 +115,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 9 && (EnvironmentConfig.dark_mode)) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -134,6 +131,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 2 && EnvironmentConfig.brandName == "PB3") {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: true,
@@ -158,6 +156,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.brandName == "SKY8") {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: false,
@@ -230,7 +229,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ],
               ),
             ),
-            if (widget.isShowMarquee ?? false)
+            if (EnvironmentConfig.template_version == 14 && (widget.isShowMarquee ?? false))
               Expanded(
                 flex: 0,
                 child: Container(

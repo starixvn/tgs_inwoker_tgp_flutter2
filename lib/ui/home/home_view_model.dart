@@ -9,7 +9,6 @@ import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:api/api.dart';
 import 'package:api/extension/list_extension.dart';
 
-
 class HomeViewModel extends BaseViewModel {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
@@ -54,6 +53,7 @@ class HomeViewModel extends BaseViewModel {
   double? totalBalance;
   List<HomeBanner>? bannerList;
   MainDialogContent? marqueeDialog;
+
   // String? phone;
   int? page;
   int rows = 10;

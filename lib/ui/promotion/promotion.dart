@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -22,15 +24,17 @@ class Promotion extends StatefulWidget {
 class _PromotionState extends BaseState<Promotion> {
   var height, width, ratio;
   var currentTabIndex = 0;
-  var currentBottomIndex = 1;
+  var preBottomIndex = 1;
   PromotionViewModel _vm = PromotionViewModel();
   BuildContext? key = GlobalKey().currentContext;
   var languageCode;
+
 
   @override
   void initState() {
     _vm.getPromotionList();
     GlobalValueUtil.pausesong();
+
     super.initState();
   }
 
@@ -44,32 +48,18 @@ class _PromotionState extends BaseState<Promotion> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return  _buildPromotion();
-          // return CustomScaffold(
-          //   appBar: EnvironmentConfig.template_version == 14
-          //       ? CustomLoginAppBar(
-          //           onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-          //           onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-          //           onClickLogoutButton: () {},
-          //           isLogin: _vm.userProfile != null,
-          //           // brandLogoUrl: _vm.brandLogoUrl,
-          //           userProfile: _vm.userProfile,
-          //           // config: _vm.config,
-          //           // totalBalance: _vm.totalBalance,
-          //           //_vm.totalBalance,
-          //           // brandName: EnvironmentConfig.brandName,
-          //           onClickBalance: () {},
-          //           // onPauseMusic: () {},
-          //           // onResumeMusic: () {},
-          //           randomNumber: 0,
-          //           // isShowMarquee: isShowMarquee,
-          //           // marquee: _vm.announcement,
-          //         )
-          //       : CustomAppBar(
-          //           title: getTranslatedText("promotion_center"),
-          //         ),
-          //   body:
-          // );
+          return /*EnvironmentConfig.template_version == 14
+              ?*/ _buildPromotion();
+              /*: CustomScaffold(
+                  appBar: CustomAppBar(
+                    title: getTranslatedText("promotion_center"),
+                    onPop: (){
+                      Navigator.pop(context);
+                      NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: preBottomIndex);
+
+                    },
+                  ),
+                  body: _buildPromotion();*/
         });
   }
 

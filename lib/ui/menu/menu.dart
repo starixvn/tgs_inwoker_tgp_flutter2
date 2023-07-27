@@ -10,6 +10,9 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/menu/menu_view_model.dart';
 import 'package:tgp_flutter2/environment_config.dart';
+import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
+
+import '../deposit/deposit.dart';
 
 class Menu extends StatefulWidget {
   final Function? onCloseMenu;
@@ -63,7 +66,11 @@ class _MenuState extends BaseState<Menu> {
         onTap: () {
           if (route == RoutePath.withdraw && (_vm.config?.addCardNotAllowedEditDelete ?? false) && (_vm.bankCardList?.isEmpty ?? false))
             _showNoCardDialog();
-          else
+          else if (route == RoutePath.deposit) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Deposit(isNewPage: true)));
+          } else if (route == RoutePath.withdraw) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Withdraw(isNewPage: true)));
+          } else
             Navigator.of(context).pushNamed(route);
         },
         child: Container(

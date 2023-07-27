@@ -57,60 +57,61 @@ class _LoginState extends BaseState<Login> {
                   : BoxDecoration(image: DecorationImage(image: AssetImage("images/t11_bg/login_bg.png"), fit: BoxFit.fill)),
               child: Column(
                 children: [
-                  Container(
-                    height: ScreenUtil.getInstance().appBarHeight,
-                    width: context.screenWidth,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                FittedBox(fit: BoxFit.fitHeight, child: Icon(Icons.arrow_back_ios_new, color: Colors.white)),
-                                SizedBox(width: 10),
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 15),
-                                  height: double.infinity,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Text(
-                                      getTranslatedText("back"),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: ScreenUtil.getInstance().appBarHeight,
-                          width: ScreenUtil.getInstance().appBarHeight,
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () => showLanguageDialog(),
+                  if (EnvironmentConfig.template_version == 14)
+                    Container(
+                      height: ScreenUtil.getInstance().appBarHeight,
+                      width: context.screenWidth,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              child: Image.asset(
-                                "images/login/ic_language.png",
-                                color: Colors.white,
+                              alignment: Alignment.center,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  FittedBox(fit: BoxFit.fitHeight, child: Icon(Icons.arrow_back_ios_new, color: Colors.white)),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    height: double.infinity,
+                                    child: FittedBox(
+                                      fit: BoxFit.fitHeight,
+                                      child: Text(
+                                        getTranslatedText("back"),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            height: ScreenUtil.getInstance().appBarHeight,
+                            width: ScreenUtil.getInstance().appBarHeight,
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () => showLanguageDialog(),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                child: Image.asset(
+                                  "images/login/ic_language.png",
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Expanded(
                     flex: EnvironmentConfig.template_version != 14 ? 4 : 2,
                     child: (EnvironmentConfig.template_version != 14)

@@ -130,7 +130,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   _getAppBarWidget() {
     return SafeArea(
         child: (() {
-      if (walletBalance != null) {
+      if (walletBalance != null && EnvironmentConfig.template_version==14) {
         return Container(
             margin: EdgeInsets.only(right: 15.auto),
             alignment: Alignment.center,

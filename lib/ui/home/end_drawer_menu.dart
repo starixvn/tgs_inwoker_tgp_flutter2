@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
+import '../../environment_config.dart';
 import '../../globalUtil/GlobalValueUtil.dart';
 import '../../base_state.dart';
 import '../../custom/wallet_text_container.dart';
@@ -18,7 +19,7 @@ class EndDrawerMenu extends StatefulWidget {
   EndDrawerMenu({
     required this.username,
     required this.width,
-     this.scaffoldKey,
+    this.scaffoldKey,
   });
 
   @override
@@ -56,7 +57,7 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        widget.scaffoldKey?.currentState?.closeEndDrawer();
+                        if (EnvironmentConfig.template_version == 14) widget.scaffoldKey?.currentState?.closeEndDrawer();
                       },
                       child: Container(
                         height: 25,
@@ -103,7 +104,7 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
             ),
           ),
         ),
-      ]..addAll( (widget.username.isNotEmpty)? List.generate(titleList.length, (index) => _buildDrawerItem(index)):[]),
+      ]..addAll((widget.username.isNotEmpty) ? List.generate(titleList.length, (index) => _buildDrawerItem(index)) : []),
     );
   }
 

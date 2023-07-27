@@ -35,8 +35,12 @@ import '../menu/menu.dart';
 
 class BottomNavigationController extends StatefulWidget {
   final dynamic versionUpdate;
+  final bool isFirstRun;
 
-  const BottomNavigationController({this.versionUpdate});
+  const BottomNavigationController({
+    this.versionUpdate,
+    this.isFirstRun = false,
+  });
 
   @override
   _BottomNavigationControllerState createState() => _BottomNavigationControllerState();
@@ -64,6 +68,7 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
   late Timer _generateTimer;
   var isShowMarquee = false; //to check either hide show marquee in login app bar
   var isMenu = false;
+  bool hideAppBar = false, hideBottomNavigationBar = false;
 
   // int? preBottomIndex;
   List<int> preBottomNavigationRoute = [];
@@ -87,10 +92,11 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
 
   @override
   void initState() {
+    print(widget.isFirstRun);
+
     if (widget.versionUpdate != null) {
       Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
     }
-    homeView = Home();
 
     _generateNewNumberEveryFewSec();
 
@@ -116,14 +122,18 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       }
     });
     NotificationCenter().subscribe(NotificationServiceName().showDialogViewToHome, (Map<String, dynamic> map) {
-      // if (value != null) {
-      setState(() {
-        isShowTopNavigate = true;
-        updateCustomView = true;
-        _appBarTitle = map["title"];
-        customView = map["view"];
-        preBottomNavigationRoute.add(_selectedIndex);
-      });
+      if (homeViewModel.userProfile == null) {
+        showPreLoginDialog();
+        return;
+      } else {
+        setState(() {
+          isShowTopNavigate = true;
+          updateCustomView = true;
+          _appBarTitle = map["title"];
+          customView = map["view"];
+          preBottomNavigationRoute.add(_selectedIndex);
+        });
+      }
       // }
     });
     NotificationCenter().subscribe(NotificationServiceName().closeDialogViewAtHome, closeCustomView);
@@ -133,38 +143,116 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
 
   _updateBottomIndex(int value) {
     setState(() {
-      if (value == 2 && EnvironmentConfig.template_version != 14) {
-        isMenu = true;
-        NotificationCenter().notify(NotificationServiceName().isShowingMenu, data: true);
-      } else {
-        isMenu = false;
-        if ((value == 2 || value == 3) && EnvironmentConfig.template_version == 14) {
-          //show app bar with back button and title
-          isShowTopNavigate = true;
-          //for tracing back previous route when user click back button
-          preBottomNavigationRoute.add(_selectedIndex);
-        } else {
-          //ignore tracing purpose
-          preBottomNavigationRoute.clear();
-          //show login app bar
-          isShowTopNavigate = false;
-        }
-        NotificationCenter().notify(NotificationServiceName().isShowingMenu, data: false);
-        _selectedIndex = value;
-        _appBarTitle = _getAppBarTitle();
+      hideAppBar = value == 4 && EnvironmentConfig.template_version != 14 && homeViewModel.userProfile != null;
+      hideBottomNavigationBar = false;
+      isMenu = false;
+      isShowTopNavigate = false;
+      bool isNeedLogin = false;
+      switch (_getBottomNavigationIconList()[value]) {
+        case BottomNavigationIcon.profile:
+          {
+            if (homeViewModel.userProfile == null) {
+              isNeedLogin = true;
+              showPreLoginDialog();
+            }
+            break;
+          }
+        case BottomNavigationIcon.promotion:
+          {
+            if (EnvironmentConfig.template_version != 14) {
+              isShowTopNavigate = true;
+              hideBottomNavigationBar = true;
+              preBottomNavigationRoute.add(_selectedIndex);
+              _appBarTitle = getTranslatedText("promotion");
+            }
+            break;
+          }
+        case BottomNavigationIcon.deposit:
+          {
+            if (homeViewModel.userProfile == null) {
+              isNeedLogin = true;
+              showPreLoginDialog();
+            } else if (EnvironmentConfig.template_version != 14) {
+              NotificationCenter().notify(NotificationServiceName().depositNeededLoadData, data: true);
+              //show app bar with back button and title
+              isShowTopNavigate = true;
+              hideBottomNavigationBar = true;
+              preBottomNavigationRoute.add(_selectedIndex);
+              // Navigator.of(context).pushNamed(RoutePath.deposit);
+            } else {
+              //show app bar with back button and title
+              isShowTopNavigate = true;
+              //for tracing back previous route when user click back button
+              preBottomNavigationRoute.add(_selectedIndex);
+            }
+            _appBarTitle = getTranslatedText("deposit");
+            break;
+          }
+        case BottomNavigationIcon.cs:
+          {
+            if (EnvironmentConfig.template_version != 14) {
+              hideAppBar = true;
+              preBottomNavigationRoute.add(_selectedIndex);
+              // Navigator.of(context).pushNamed(RoutePath.customerService);
+            } else {
+              //show app bar with back button and title
+              isShowTopNavigate = true;
+              //for tracing back previous route when user click back button
+              preBottomNavigationRoute.add(_selectedIndex);
+            }
+            _appBarTitle = getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service");
+            break;
+          }
+        case BottomNavigationIcon.wallet:
+          {
+            if (homeViewModel.userProfile == null) {
+              isNeedLogin = true;
+              showPreLoginDialog();
+              break;
+            } else {
+              // show wallet menu
+              isMenu = true;
+              NotificationCenter().notify(NotificationServiceName().isShowingMenu, data: true);
+            }
+            break;
+          }
+        default:
+          {}
       }
+      if (!isMenu && !isNeedLogin) _selectedIndex = value;
+      if (!isShowTopNavigate) preBottomNavigationRoute.clear();
     });
-  }
 
-  _getAppBarTitle() {
-    switch (_selectedIndex) {
-      case 2:
-        return getTranslatedText("deposit");
-      case 3:
-        return getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service");
-      default:
-        return "";
-    }
+    // if (_getRouteList()[value].isNotEmpty) {
+    //   Navigator.of(context).pushNamed(_getRouteList()[value]);
+    // } else {
+    //   setState(() {
+    //   setState(() {
+    //     if (value == 2 && EnvironmentConfig.template_version != 14) {
+    //       // show wallet menu
+    //       isMenu = true;
+    //       NotificationCenter().notify(NotificationServiceName().isShowingMenu, data: true);
+    //     } else {
+    //       // for handling t14, load content with app bar and bottom navigation bar
+    //       isMenu = false;
+    //       if ((value == 2 || value == 3)) {
+    //         //show app bar with back button and title
+    //         isShowTopNavigate = true;
+    //         //for tracing back previous route when user click back button
+    //         preBottomNavigationRoute.add(_selectedIndex);
+    //       } else {
+    //         //ignore tracing purpose
+    //         preBottomNavigationRoute.clear();
+    //         //show login app bar
+    //         isShowTopNavigate = false;
+    //       }
+    //       NotificationCenter().notify(NotificationServiceName().isShowingMenu, data: false);
+    //       hideAppBar = value == 4 && EnvironmentConfig.template_version != 14;
+    //       _selectedIndex = value;
+    //       _appBarTitle = _getAppBarTitle();
+    //     }
+    //   });
+    // }
   }
 
   closeCustomView() {
@@ -190,9 +278,8 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      endDrawer: isShowTopNavigate
-          ? Container()
-          : Drawer(
+      endDrawer: !isShowTopNavigate && (EnvironmentConfig.template_version == 14)
+          ? Drawer(
               width: context.screenWidth * 0.65,
               backgroundColor: Color(0xff181c42),
               child: EndDrawerMenu(
@@ -200,44 +287,45 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
                 width: context.screenWidth * 0.65,
                 scaffoldKey: scaffoldKey,
               ),
-            ),
-      appBar: isShowTopNavigate
-          ? CustomAppBar(
-              title: _appBarTitle,
-              walletBalance: GlobalValueUtil.totalBalance,
-              isPassTrueWhenPop: true,
-              onPop: EnvironmentConfig.template_version == 14
-                  ? () {
-                      if (updateCustomView) {
-                        updateCustomView = false;
-                      }
-                      if (preBottomNavigationRoute.isNotEmpty) {
-                        _updateBottomIndex(preBottomNavigationRoute.last);
-                        preBottomNavigationRoute.removeLast();
-                      }
-                    }
-                  : null,
             )
-          : CustomLoginAppBar(
-              onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-              onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-              onClickLogoutButton: () => _logout(),
-              isLogin: homeViewModel.userProfile != null,
-              userProfile: homeViewModel.userProfile,
-              onClickBalance: () {
-                // setState(() {
-                //   isShowTransferUI = !isShowTransferUI;
-                // });
-              },
-              // onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-              // onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-              randomNumber: randomGeneratedPlayerCount ?? 0,
-              isShowMarquee: isShowMarquee,
-              marquee: homeViewModel.announcement,
-              scaffoldKey: scaffoldKey,
-              barrierWidget: _buildOverlay(),
-              isShowBarrier: isMenu,
-            ),
+          : Container(),
+      appBar: hideAppBar
+          ? null
+          : (isShowTopNavigate
+              ? CustomAppBar(
+                  title: _appBarTitle,
+                  walletBalance: GlobalValueUtil.totalBalance,
+                  isPassTrueWhenPop: true,
+                  onPop: () {
+                    if (updateCustomView) {
+                      updateCustomView = false;
+                    }
+                    if (preBottomNavigationRoute.isNotEmpty) {
+                      _updateBottomIndex(preBottomNavigationRoute.last);
+                      preBottomNavigationRoute.removeLast();
+                    }
+                  },
+                )
+              : CustomLoginAppBar(
+                  onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+                  onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+                  onClickLogoutButton: () => _logout(),
+                  isLogin: homeViewModel.userProfile != null,
+                  userProfile: homeViewModel.userProfile,
+                  onClickBalance: () {
+                    // setState(() {
+                    //   isShowTransferUI = !isShowTransferUI;
+                    // });
+                  },
+                  // onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+                  // onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+                  randomNumber: randomGeneratedPlayerCount ?? 0,
+                  isShowMarquee: isShowMarquee,
+                  marquee: homeViewModel.announcement,
+                  scaffoldKey: scaffoldKey,
+                  barrierWidget: _buildOverlay(),
+                  isShowBarrier: isMenu,
+                )),
       body: Container(
         height: context.screenHeight,
         width: context.screenWidth,
@@ -255,20 +343,22 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: CustomColor.theme_bottom_app_bar_color,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildBottomNavigationBarItem(0),
-            _buildBottomNavigationBarItem(1),
-            _buildBottomNavigationBarItem(2),
-            _buildBottomNavigationBarItem(3),
-            _buildBottomNavigationBarItem(4),
-          ],
-        ),
-      ),
+      bottomNavigationBar: hideBottomNavigationBar
+          ? null
+          : BottomAppBar(
+              color: CustomColor.theme_bottom_app_bar_color,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildBottomNavigationBarItem(0),
+                  _buildBottomNavigationBarItem(1),
+                  _buildBottomNavigationBarItem(2),
+                  _buildBottomNavigationBarItem(3),
+                  _buildBottomNavigationBarItem(4),
+                ],
+              ),
+            ),
     );
   }
 
@@ -283,13 +373,10 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
         child: Menu(),
       );
 
-  _buildOverlay() => Opacity(
-        opacity: 0.9,
-        child: ModalBarrier(
-          dismissible: true,
-          color: Colors.black54,
-          onDismiss: _closeMenu,
-        ),
+  _buildOverlay() => ModalBarrier(
+        dismissible: true,
+        color: Colors.black54.withOpacity(0.5),
+        onDismiss: _closeMenu,
       );
 
   _generateNewNumberEveryFewSec() {
@@ -313,23 +400,43 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
     });
   }
 
-  _getCurrentTabView() {
-    var views = [
-      _selectedIndex == 0 ? ((updateCustomView) ? customView : homeView) : homeView,
-      _selectedIndex == 1 ? ((updateCustomView) ? customView : Promotion()) : Promotion(),
-      _selectedIndex == 2 ? ((updateCustomView) ? customView : Deposit()) : Deposit(),
-      _selectedIndex == 3 ? ((updateCustomView) ? customView : CustomerService()) : CustomerService(),
-      _selectedIndex == 4 ? ((updateCustomView) ? customView : Profile()) : Profile(),
-    ];
-    return views;
+  List<Widget> _getCurrentTabView() {
+    List<Widget> viewList = [];
+    for (BottomNavigationIcon icon in _getBottomNavigationIconList()) {
+      viewList.add((updateCustomView)
+          ? customView
+          : (() {
+              switch (icon) {
+                case BottomNavigationIcon.home:
+                  return Home(isFirstRun: widget.isFirstRun);
+                case BottomNavigationIcon.promotion:
+                  return Promotion();
+                case BottomNavigationIcon.cs:
+                  return CustomerService();
+                case BottomNavigationIcon.profile:
+                  return Profile();
+                case BottomNavigationIcon.deposit:
+                  return Deposit();
+                default:
+                  return Container();
+              }
+            }()));
+    }
+    return viewList;
+    // var views = [
+    //   _selectedIndex == 0 ? ((updateCustomView) ? customView : Home(isFirstRun: widget.isFirstRun)) : Home(isFirstRun: widget.isFirstRun),
+    //   _selectedIndex == 1 ? ((updateCustomView) ? customView : _getView(Promotion())) : _getView(Promotion()),
+    //   _selectedIndex == 2 ? ((updateCustomView) ? customView : _getView(Deposit())) : _getView(Deposit()),
+    //   _selectedIndex == 3 ? ((updateCustomView) ? customView : _getView(CustomerService())) : _getView(CustomerService()),
+    //   _selectedIndex == 4 ? ((updateCustomView) ? customView : Profile()) : Profile(),
+    // ];
+    // return
+    //   views;
   }
 
   _buildBottomNavigationBarItem(int index) {
     String imagePath = _getTabBarList()[index];
     bool isMenu = imagePath.contains("ic_menu");
-
-    if (EnvironmentConfig.template_version == 15 && _selectedIndex != index) imagePath.replaceAll("-selected", "");
-
     return Expanded(
       child: SizedBox(
         height: context.screenWidth / 7,
@@ -365,7 +472,8 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
   }
 
   _buildImageIcon(String imagePath, int index) {
-    if (imagePath.contains("ic_menu")) {
+    print(imagePath);
+/*    if (imagePath.contains("ic_menu")) {
       return Container(
         height: 35.auto,
         padding: EdgeInsets.symmetric(vertical: 5),
@@ -373,14 +481,15 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
           backgroundColor: CustomColor.theme_title_text_color,
           child: ImageIcon(
             AssetImage(
-              "images/bottom_nav_bar/$imagePath.png",
+              "images/bottom_nav_bar/${(EnvironmentConfig.template_version == 15 && _selectedIndex != index) ? imagePath.replaceAll("-selected", "") : imagePath}.png",
             ),
             size: 20.auto,
             color: _selectedIndex == index ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
           ),
         ),
       );
-    } else if (imagePath.contains(".svg")) {
+    } else*/
+    if (imagePath.contains(".svg")) {
       return EnvironmentConfig.template_version == 14 && !imagePath.contains("ic_cs")
           // preventing override color for t14 icon
           ? SvgPicture.asset(
@@ -396,7 +505,7 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
             );
     } else {
       return Image.asset(
-        imagePath,
+        (EnvironmentConfig.template_version == 15 && _selectedIndex != index) ? imagePath.replaceAll("-selected", "") : imagePath,
         width: 25.auto,
         height: 25.auto,
       );
@@ -432,49 +541,61 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
     }
   }
 
-  _getTabBarItemText(int index) {
-    switch (index) {
-      case 0:
-        return "home";
-      case 1:
-        return "promotion";
-      case 2:
-        return (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15 || EnvironmentConfig.template_version == 14)
-            ? "deposit"
-            : "wallet";
-      case 3:
-        return "customer_service";
+  List<BottomNavigationIcon> _getBottomNavigationIconList() {
+    switch (EnvironmentConfig.template_version) {
+      case 14:
+        return [
+          BottomNavigationIcon.home,
+          BottomNavigationIcon.promotion,
+          BottomNavigationIcon.deposit,
+          BottomNavigationIcon.cs,
+          BottomNavigationIcon.profile,
+        ];
+      case 15:
+        return [
+          BottomNavigationIcon.home,
+          BottomNavigationIcon.promotion,
+          BottomNavigationIcon.cs,
+          BottomNavigationIcon.deposit,
+          BottomNavigationIcon.profile,
+        ];
       default:
-        return "my_profile";
+        return [
+          BottomNavigationIcon.home,
+          BottomNavigationIcon.promotion,
+          BottomNavigationIcon.wallet,
+          BottomNavigationIcon.cs,
+          BottomNavigationIcon.profile,
+        ];
     }
   }
 
-  _buildMenuItem() => ListTile(
-        // leading: SvgPicture.asset("images/Drawer/MenuItem/ic_menu_transaction_history.svg"),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              "images/Drawer/MenuItem/ic_menu_transaction_history.svg",
-              height: 30,
-              width: 30,
-            ),
-            SizedBox(width: 20),
-            Text(
-              '账户明细',
-              style: TextStyle(color: CustomColor.theme_button_color, fontSize: 20),
-            ),
-          ],
-        ),
-        onTap: () {
-          // Update the state of the app.
-          // ...
-        },
-      );
+  _getTabBarItemText(int index) {
+    switch (_getBottomNavigationIconList()[index]) {
+      case BottomNavigationIcon.home:
+        return "home";
+      case BottomNavigationIcon.promotion:
+        return "promotion";
+      case BottomNavigationIcon.wallet:
+        return "wallet";
+      case BottomNavigationIcon.cs:
+        return "customer_service";
+      case BottomNavigationIcon.profile:
+        return "my_profile";
+      case BottomNavigationIcon.deposit:
+        return "deposit";
+      case BottomNavigationIcon.withdraw:
+        return "";
+    }
+  }
 
   _logout() {
     ProgressDialog.show(context, homeViewModel.brandLogoUrl);
-    homeViewModel.logout();
+    homeViewModel.logout().then((result) {
+      setState(() {
+        ProgressDialog.hide();
+      });
+    });
   }
 
   _showNewVersionUpdateDialog(dynamic data) {

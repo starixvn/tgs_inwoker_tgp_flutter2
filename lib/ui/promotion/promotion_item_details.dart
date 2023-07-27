@@ -16,6 +16,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
 
 import '../../environment_config.dart';
+import '../deposit/deposit.dart';
 import 'T14/promotion_item_details_t14.dart';
 
 class PromotionItemDetails extends StatefulWidget {
@@ -112,7 +113,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
         widget.promotion.promotionType == "DepositAccumulateRoulette" ||
         widget.promotion.promotionType == "DepositReward") {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(RoutePath.deposit);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Deposit(isNewPage: true)));
       });
     } else {
       ProgressDialog.show(context, widget.vm.brandLogoUrl);
