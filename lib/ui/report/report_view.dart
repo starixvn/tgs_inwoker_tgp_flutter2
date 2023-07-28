@@ -15,6 +15,8 @@ import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:tgp_flutter2/ui/report/transfer_report_view.dart';
 import 'package:tgp_flutter2/ui/report/withdraw_report_view.dart';
 
+import 'T14/report_view_t14.dart';
+
 class ReportView extends StatefulWidget {
   final int? tabIndex;
 
@@ -24,8 +26,7 @@ class ReportView extends StatefulWidget {
   _ReportViewState createState() => _ReportViewState();
 }
 
-class _ReportViewState extends BaseState<ReportView>
-    with SingleTickerProviderStateMixin {
+class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderStateMixin {
   var _tabController;
   var currentTabIndex = 0;
   var tabList = [
@@ -42,69 +43,68 @@ class _ReportViewState extends BaseState<ReportView>
   @override
   void initState() {
     currentTabIndex = widget.tabIndex ?? 0;
-    _tabController = TabController(
-        length: tabList.length, vsync: this, initialIndex: currentTabIndex);
+    _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return ProviderWidget<ReportViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          return CustomScaffold(
-            appBar: CustomAppBar(
-              title: getTranslatedText((tabList[currentTabIndex]["text"])!),
-              walletBalance: _vm.wallet?.totalBalance,
-            ),
-            body: Column(
-              children: [
-                Container(
-                  width: context.screenWidth,
-                  color: Colors.transparent,
-                  child: TabBar(
-                    controller: _tabController,
-                    isScrollable: true,
-                    unselectedLabelColor: CustomColor.theme_text_grey_color,
-                    labelColor: CustomColor.theme_button_color,
-                    indicatorColor: Colors.transparent,
-                    indicator: BoxDecoration(),
-                    indicatorWeight: 3,
-                    onTap: (index) {
-                      setState(() {
-                        currentTabIndex = index;
-                      });
-                    },
-                    labelPadding: EdgeInsets.symmetric(
-                        horizontal: 10.auto, vertical: 5.auto),
-                    unselectedLabelStyle: TextStyle(color: CustomColor.grey),
-                    tabs: List.generate(tabList.length, (index) {
-                      return TabButton(
-                        text: getTranslatedText((tabList[index]["text"])!) ??
-                            tabList[currentTabIndex]["text"],
-                        index: index,
-                        currentTabIndex: currentTabIndex,
-                        width: 90.auto,
-                      );
-                    }).toList(),
-                  ),
+    return EnvironmentConfig.template_version == 14
+        ? ReportViewT14(tabIndex: widget.tabIndex)
+        : ProviderWidget<ReportViewModel>(
+            model: _vm,
+            builder: (ctx, vm, _) {
+              return CustomScaffold(
+                appBar: CustomAppBar(
+                  title: getTranslatedText((tabList[currentTabIndex]["text"])!),
+                  walletBalance: _vm.wallet?.totalBalance,
                 ),
-                Expanded(
-                  child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: _tabController,
-                    children: [
-                      AccountReportView(vm: _vm),
-                      WithdrawReportView(vm: _vm),
-                      DepositReportView(vm: _vm),
-                      TransferReportView(vm: _vm),
-                      BalanceChangesView(vm: _vm),
-                      PromotionReportView(vm: _vm),
-                    ],
-                  ),
+                body: Column(
+                  children: [
+                    Container(
+                      width: context.screenWidth,
+                      color: Colors.transparent,
+                      child: TabBar(
+                        controller: _tabController,
+                        isScrollable: false,
+                        unselectedLabelColor: CustomColor.theme_text_grey_color,
+                        labelColor: CustomColor.theme_button_color,
+                        indicatorColor: Colors.transparent,
+                        indicator: BoxDecoration(),
+                        indicatorWeight: 3,
+                        onTap: (index) {
+                          setState(() {
+                            currentTabIndex = index;
+                          });
+                        },
+                        labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
+                        unselectedLabelStyle: TextStyle(color: CustomColor.grey),
+                        tabs: List.generate(tabList.length, (index) {
+                          return TabButton(
+                            text: getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
+                            index: index,
+                            currentTabIndex: currentTabIndex,
+                            width: 90.auto,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: _tabController,
+                        children: [
+                          AccountReportView(vm: _vm),
+                          WithdrawReportView(vm: _vm),
+                          DepositReportView(vm: _vm),
+                          TransferReportView(vm: _vm),
+                          BalanceChangesView(vm: _vm),
+                          PromotionReportView(vm: _vm),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        });
+              );
+            });
   }
 }

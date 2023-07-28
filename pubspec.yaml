@@ -82,6 +82,7 @@ dependencies:
   external_path: ^1.0.3
   signalr_netcore: ^1.3.3
   dropdown_button2: ^2.1.4
+  flutter_layout_grid: ^2.0.4
 
   #easy_gradient_text: ^1.0.0
 
@@ -139,6 +140,7 @@ flutter:
     - images/login/Sky8/sponsor-5.png
     - images/audio/
     - images/transaction/
+    - images/transaction/T14/
     - images/promotion/
     - images/menu/
     - images/game_tab/t1/

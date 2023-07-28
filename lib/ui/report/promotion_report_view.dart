@@ -11,6 +11,8 @@ import 'package:tgp_flutter2/ui/report/base_report.dart';
 import 'package:tgp_flutter2/ui/report/report_cell_item.dart';
 import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 
+import '../../environment_config.dart';
+
 class PromotionReportView extends StatefulWidget {
   final ReportViewModel vm;
 
@@ -100,7 +102,7 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
       alignment: Alignment.centerLeft,
       child: AutoSizeText(
         getTranslatedText(title) + " : " + text,
-        style: TextStyle(color: Colors.grey[700]),
+        style: TextStyle(color: _getTextColor()),
         minFontSize: 10,
         maxFontSize: 12,
         stepGranularity: 1,
@@ -133,6 +135,13 @@ class PromotionReportViewState extends BaseState<PromotionReportView> {
 
   _getReport({Status? status, bool isLoadMore = false}) async {
     await _vm.getPromotionReport(isLoadMore: isLoadMore);
+  }
+
+  Color _getTextColor() {
+    if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.grey.shade700;
   }
 
   _handleApiState() {

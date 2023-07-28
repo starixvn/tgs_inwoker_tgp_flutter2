@@ -16,13 +16,7 @@ class CustomPicker extends StatefulWidget {
   final String? tipsText;
 
   CustomPicker(
-      {required this.title,
-      required this.displayText,
-      this.list,
-      required this.onClick,
-      required this.isHintText,
-      required this.width,
-      this.tipsText});
+      {required this.title, required this.displayText, this.list, required this.onClick, required this.isHintText, required this.width, this.tipsText});
 
   @override
   _CustomPickerState createState() => _CustomPickerState();
@@ -79,7 +73,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                           child: AutoSizeText(
                             widget.displayText,
                             style: TextStyle(
-                              color: widget.isHintText ? Colors.grey : (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color :CustomColor.theme_button_color),
+                              color: _getTextColor(),
                             ),
                             maxFontSize: 12,
                             minFontSize: 8,
@@ -99,5 +93,16 @@ class _CustomPickerState extends BaseState<CustomPicker> {
         ],
       ),
     );
+  }
+
+  Color _getTextColor() {
+    if (widget.isHintText)
+      return Colors.grey;
+    else if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+      return CustomColor.theme_bg_color;
+    else if (EnvironmentConfig.template_version == 14)
+      return Colors.black;
+    else
+      return CustomColor.theme_button_color;
   }
 }

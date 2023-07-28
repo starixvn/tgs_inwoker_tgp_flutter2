@@ -24,18 +24,21 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          Container(
-            width: 2,
-            height: 20.auto,
-            color: CustomColor.theme_button_color,
-            margin: EdgeInsets.symmetric(horizontal: 10.auto),
+        if (EnvironmentConfig.template_version != 14)
+          Row(
+            children: [
+              Container(
+                width: 2,
+                height: 20.auto,
+                color: CustomColor.theme_button_color,
+                margin: EdgeInsets.symmetric(horizontal: 10.auto),
+              ),
+              Text(
+                widget.title,
+                style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_black_white_color),
+              )
+            ],
           ),
-          Text(
-            widget.title,
-            style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_black_white_color),
-          )
-        ]),
         InkWell(
           onTap: () => _showDatePicker(context),
           child: Card(
@@ -51,10 +54,17 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
                 child: Text(
                   Format().dateFormat(date),
                   style: TextStyle(
-                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : CustomColor.theme_button_color,
+                    color: (() {
+                      if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+                        return CustomColor.theme_bg_color;
+                      else if (EnvironmentConfig.template_version == 14)
+                        return Colors.black;
+                      else
+                        return CustomColor.theme_button_color;
+                    }()),
                     fontSize: 13.auto,
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: EnvironmentConfig.template_version != 14 ? TextAlign.center : TextAlign.start,
                 ),
               )),
         )
@@ -64,7 +74,21 @@ class _ReportDateItemState extends BaseState<ReportDateItem> {
 
   _showDatePicker(BuildContext context) async {
     var currentDate = DateTime.now();
-    final DateTime? dateTime = await showDatePicker(context: context, initialDate: date, firstDate: DateTime(2020), lastDate: currentDate);
+    final DateTime? dateTime = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(2020),
+      lastDate: currentDate,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(primary: CustomColor.theme_button_color, onPrimary: Colors.white),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
+    );
 
     if (dateTime == null) {
       setState(() {

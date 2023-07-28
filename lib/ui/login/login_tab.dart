@@ -70,7 +70,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
                 text: getTranslatedText(item["text"]),
                 index: int.parse(item['id']),
                 currentTabIndex: currentTabIndex,
-                width: context.screenWidth / 2,
+                width: EnvironmentConfig.template_version == 14 ? context.screenWidth / 3.5 : context.screenWidth / 2,
                 height: 40.auto,
               ));
             }).toList(),

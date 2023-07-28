@@ -3,6 +3,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/status.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -76,10 +77,11 @@ class BaseReportState extends BaseState<BaseReport> {
                             background: Column(
                               children: [
                                 _getCalendarItem(),
-                                ReportFilterButtonItem(
-                                  index: widget.filterIndex,
-                                  onTextChanged: (value) =>
-                                      _onDateFilter(value),
+                                Flexible(
+                                  child: ReportFilterButtonItem(
+                                    index: widget.filterIndex,
+                                    onTextChanged: (value) => _onDateFilter(value),
+                                  ),
                                 ),
                                 widget.getPickerBox
                               ],
@@ -96,9 +98,7 @@ class BaseReportState extends BaseState<BaseReport> {
                                   )
                                 : Container(),
                           ),
-                          toolbarHeight: widget.transactionHeaderList.isNotEmpty
-                              ? 40.auto
-                              : 0,
+                          toolbarHeight: widget.transactionHeaderList.isNotEmpty ? 40.auto : 0,
                           elevation: 0,
                         ),
                         _buildReportItem()
@@ -116,23 +116,26 @@ class BaseReportState extends BaseState<BaseReport> {
                     1,
                     (index) => Container(
                           alignment: Alignment.center,
-                          margin:
-                              EdgeInsets.only(left: 10.auto, right: 10.auto),
+                          margin: EdgeInsets.only(left: 10.auto, right: 10.auto),
                           height: 150.auto,
                           decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: Colors.white),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: EnvironmentConfig.template_version == 14 ? Colors.transparent : Colors.white),
                           padding: EdgeInsets.symmetric(vertical: 10.auto),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                  width: 75.auto,
-                                  height: 75.auto,
-                                  child: Image.asset(
-                                      "images/transaction/ic_no_record.png")),
-                              Text(getTranslatedText("no_record"))
+                                width: 75.auto,
+                                height: 75.auto,
+                                child: Image.asset("images/transaction/${EnvironmentConfig.template_version == 14 ? "T14/" : ""}ic_no_record.png"),
+                              ),
+                              Text(
+                                getTranslatedText("no_record"),
+                                style: TextStyle(
+                                  color: EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black,
+                                ),
+                              )
                             ],
                           ),
                         ))
@@ -143,29 +146,39 @@ class BaseReportState extends BaseState<BaseReport> {
 
   _getCalendarItem() => Container(
         padding: EdgeInsets.all(10.auto),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ReportDateItem(
-              date: widget.vm.pStartDate,
-              title: getTranslatedText("start_time"),
-              onDateChanged: (value) {
-                _onCalendarClick(value, true);
-              },
-            ),
             Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 20.auto),
-              width: 5.auto,
-              height: 1,
-              color: CustomColor.grey,
+              padding: EdgeInsets.only(left: 10.auto),
+              child: Text("Date", style: TextStyle(fontSize: 12.auto, color: Colors.white)),
             ),
-            ReportDateItem(
-              date: widget.vm.pEndDate,
-              title: getTranslatedText("end_time"),
-              onDateChanged: (value) {
-                _onCalendarClick(value, false);
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ReportDateItem(
+                  date: widget.vm.pStartDate,
+                  title: getTranslatedText("start_time"),
+                  onDateChanged: (value) {
+                    _onCalendarClick(value, true);
+                  },
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.remove,
+                    size: 13.auto,
+                    color: CustomColor.grey,
+                  ),
+                ),
+                ReportDateItem(
+                  date: widget.vm.pEndDate,
+                  title: getTranslatedText("end_time"),
+                  onDateChanged: (value) {
+                    _onCalendarClick(value, false);
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -188,22 +201,13 @@ class BaseReportState extends BaseState<BaseReport> {
     var currentDate = DateTime.now();
     switch (index) {
       case 0: //today
-        widget.vm.setDate(
-            startDate: DateTime(currentDate.year, currentDate.month,
-                currentDate.day, 0, 0, 0, 0, 0),
-            endDate: currentDate);
+        widget.vm.setDate(startDate: DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0, 0, 0), endDate: currentDate);
         break;
       case 1: //week
-        widget.vm.setDate(
-            startDate: DateTime(
-                currentDate.year, currentDate.month, currentDate.day - 7),
-            endDate: currentDate);
+        widget.vm.setDate(startDate: DateTime(currentDate.year, currentDate.month, currentDate.day - 7), endDate: currentDate);
         break;
       case 2: //month
-        widget.vm.setDate(
-            startDate: DateTime(
-                currentDate.year, currentDate.month - 1, currentDate.day),
-            endDate: currentDate);
+        widget.vm.setDate(startDate: DateTime(currentDate.year, currentDate.month - 1, currentDate.day), endDate: currentDate);
         break;
       case -1: //click from calendar
         break;

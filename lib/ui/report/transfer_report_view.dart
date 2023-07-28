@@ -99,7 +99,7 @@ class TransferReportViewState extends BaseState<TransferReportView> {
                     alignment: Alignment.centerLeft,
                     child: AutoSizeText(
                       Format().dateTimezoneFormat(_vm.transferReportList![index].balanceTime),
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(color: _getTextColor()),
                       minFontSize: 10,
                       maxFontSize: 12,
                       stepGranularity: 1,
@@ -114,7 +114,7 @@ class TransferReportViewState extends BaseState<TransferReportView> {
       margin: EdgeInsets.only(bottom: 3.auto),
       child: AutoSizeText(
         getTranslatedText(title) + " : " + text,
-        style: TextStyle(color: Colors.grey[700]),
+        style: TextStyle(color: _getTextColor()),
         minFontSize: 10,
         maxFontSize: 12,
         stepGranularity: 1,
@@ -146,6 +146,13 @@ class TransferReportViewState extends BaseState<TransferReportView> {
 
   _getReport({bool isLoadMore = false}) async {
     await _vm.getTransferReport(isLoadMore: isLoadMore);
+  }
+
+  Color _getTextColor() {
+    if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.grey.shade700;
   }
 
   _handleApiState() {

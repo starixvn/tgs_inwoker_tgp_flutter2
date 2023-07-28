@@ -80,8 +80,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             child: ReportCellItem(
               type: _getReportItemType(index),
               isEndRecord: _vm.endRecord,
-              buildReportCellItemLayout:
-                  _buildReportCellItemLayout(index, _vm.reportList![index].canUploadCerts ?? false),
+              buildReportCellItemLayout: _buildReportCellItemLayout(index, _vm.reportList![index].canUploadCerts ?? false),
             ),
           );
         }).toList();
@@ -96,7 +95,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
               padding: EdgeInsets.only(bottom: 3.auto),
               child: AutoSizeText(
                 getTranslatedText("gms_order_number") + (_vm.reportList![index].orderNo ?? ""),
-                style: TextStyle(color: Colors.grey[700]),
+                style: TextStyle(color: _getTextColor()),
                 minFontSize: 10,
                 maxFontSize: 12,
                 stepGranularity: 1,
@@ -110,7 +109,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
                   flex: 2,
                   child: AutoSizeText(
                     _vm.reportList![index].status.getName(context),
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: _getTextColor()),
                     minFontSize: 10,
                     maxFontSize: 12,
                     stepGranularity: 1,
@@ -124,7 +123,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
                         ? Format().currencyFormat((_vm.reportList?[index].amount ?? 0).toInt())
                         //with 2 decimal places
                         : _vm.reportList?[index].amount.toString()}",
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: _getTextColor()),
                     minFontSize: 10,
                     maxFontSize: 12,
                     stepGranularity: 1,
@@ -155,7 +154,7 @@ class DepositReportViewState extends BaseState<DepositReportView> {
             alignment: Alignment.centerLeft,
             child: AutoSizeText(
               Format().dateTimezoneFormat(_vm.reportList![index].createdOn),
-              style: TextStyle(color: Colors.grey[700]),
+              style: TextStyle(color: _getTextColor()),
               minFontSize: 10,
               maxFontSize: 12,
               stepGranularity: 1,
@@ -217,6 +216,13 @@ class DepositReportViewState extends BaseState<DepositReportView> {
                 });
               });
         });
+  }
+
+  Color _getTextColor() {
+    if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.grey.shade700;
   }
 
   _scrollListener() {

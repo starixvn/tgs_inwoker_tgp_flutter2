@@ -76,7 +76,7 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
           Container(
             padding: EdgeInsets.only(top: 5.auto),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: EnvironmentConfig.template_version == 14 ? Color(0xff27273F) :Colors.white,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
             ),
             child: Column(
@@ -115,7 +115,7 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
             AutoSizeText(
               title + ": ",
               style: TextStyle(
-                color: Colors.grey[700],
+                color: _getTextColor(),
                 fontWeight: FontWeight.bold,
               ),
               minFontSize: 10,
@@ -126,7 +126,7 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
             AutoSizeText(
               data,
               style: TextStyle(
-                color: Colors.grey[700],
+                color: _getTextColor(),
               ),
               minFontSize: 10,
               maxFontSize: 12,
@@ -183,6 +183,13 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
 
   _getReport({bool isLoadMore = false}) async {
     await _vm.getBalanceChangeRecord(isLoadMore: isLoadMore);
+  }
+
+  Color _getTextColor() {
+    if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.grey.shade700;
   }
 
   _handleApiState() {

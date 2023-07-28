@@ -12,6 +12,7 @@ class TabButton extends StatelessWidget {
   final double? width;
   final double? height;
   final bool isHideInactiveBg;
+  final bool isWidthNull;
 
   TabButton({
     required this.text,
@@ -20,13 +21,16 @@ class TabButton extends StatelessWidget {
     this.width,
     this.height,
     this.isHideInactiveBg = false,
+    this.isWidthNull = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    print("tabbuton widthhhh:::::${width}");
     return Container(
-      width: EnvironmentConfig.template_version == 14 ? context.screenWidth / 3.5 : (width ?? context.screenWidth / 3),
+      width: isWidthNull ? null : (width ?? context.screenWidth / 3),
       height: height ?? 40.auto,
+      padding: EdgeInsets.symmetric(vertical: 2.auto),
       decoration: EnvironmentConfig.template_version == 14
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -40,17 +44,16 @@ class TabButton extends StatelessWidget {
                 ),
               ),
             ),
-      child: Tab(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 2.auto),
-          child: AutoSizeText(
-            EnvironmentConfig.template_version == 14 ? text.toUpperCase() : text,
-            maxLines: 2,
-            minFontSize: 8,
-            maxFontSize: 14,
-            stepGranularity: 1,
-            style: TextStyle(color: _getTextColor()),
-          ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 2.auto),
+        child: AutoSizeText(
+          EnvironmentConfig.template_version == 14 ? text.toUpperCase() : text,
+          maxLines: 2,
+          minFontSize: 8,
+          maxFontSize: 14,
+          stepGranularity: 1,
+          style: TextStyle(color: _getTextColor()),
+          textAlign: TextAlign.center,
         ),
       ),
     );
