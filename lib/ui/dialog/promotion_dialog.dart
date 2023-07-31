@@ -63,7 +63,7 @@ class _PromotionDialogState extends BaseState<PromotionDialog> {
         horizontal: context.screenWidth / 20,
       ),
       decoration: new BoxDecoration(
-        color: EnvironmentConfig.template_version == 14 ? Color(0xff27273f) : Colors.white,
+        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [

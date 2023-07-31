@@ -28,6 +28,10 @@ class VipViewModel extends BaseViewModel {
       vipList!.forEach((e) {
         vipMap[(e.level!).toInt()] = e;
       });
+      vipMap = Map.fromEntries(
+          vipMap.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)));
+
+      print(vipMap);
     }
     setLoading(false);
     return getVipApiState;

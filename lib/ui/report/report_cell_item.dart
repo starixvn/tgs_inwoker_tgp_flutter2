@@ -46,7 +46,7 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
         child: Container(
           padding: EdgeInsets.only(top: 5.auto, bottom: 10.auto),
           decoration: BoxDecoration(
-            color: EnvironmentConfig.template_version == 14 ? Color(0xff27273F) : Colors.white,
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: _getReportCellItem(isLast: true),
@@ -58,7 +58,7 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
       return Container(
           padding: EdgeInsets.only(top: 5.auto),
           decoration: BoxDecoration(
-            color: EnvironmentConfig.template_version == 14 ? Color(0xff27273F) : Colors.white,
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: _getReportCellItem());
@@ -71,7 +71,7 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
           child: Container(
               padding: EdgeInsets.only(bottom: 10.auto),
               decoration: BoxDecoration(
-                color: EnvironmentConfig.template_version == 14 ? Color(0xff27273F) : Colors.white,
+                color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               ),
               child: _getReportCellItem(isLast: true)),
@@ -87,7 +87,7 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
             : Container()
       ]);
     } else {
-      return Container(color: EnvironmentConfig.template_version == 14 ? Color(0xff27273F) : Colors.white, child: _getReportCellItem());
+      return Container(color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white, child: _getReportCellItem());
     }
   }
 

@@ -76,7 +76,7 @@ class BalanceChangesViewState extends BaseState<BalanceChangesView> {
           Container(
             padding: EdgeInsets.only(top: 5.auto),
             decoration: BoxDecoration(
-              color: EnvironmentConfig.template_version == 14 ? Color(0xff27273F) :Colors.white,
+              color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 :Colors.white,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
             ),
             child: Column(

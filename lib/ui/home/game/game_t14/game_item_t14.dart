@@ -23,6 +23,7 @@ class GameItemT14 extends StatefulWidget {
   final GameViewModel? vm;
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
+  final bool isHideFavourite;
 
   GameItemT14({
     this.isFavourite,
@@ -31,6 +32,7 @@ class GameItemT14 extends StatefulWidget {
     this.vm,
     this.onPauseBgMusic,
     this.onResumeBgMusic,
+    this.isHideFavourite = false,
   });
 
   @override
@@ -110,28 +112,29 @@ class GameItemT14State extends BaseState<GameItemT14> {
             ),
           ),
           SizedBox(height: 5),
-          Expanded(
-            flex: 1,
-            child: Wrap(
-              children: [
-                InkWell(
-                  onTap: () {
-                    if (widget.vm?.userProfile == null) {
-                      showPreLoginDialog();
-                    } else
-                      (widget.game?.isFavourite ?? false) ? widget.vm!.deleteFavoriteGame(widget.game!) : widget.vm!.setFavoriteGame(widget.game!);
-                  },
-                  child: Image.asset(
-                    (widget.game?.isFavourite ?? false) ? "images/child_game/T14/ic_favorite_selected.png" : "images/child_game/T14/ic_favorite.png",
-                    width: 15.auto,
-                    height: 15.auto,
+          if (!widget.isHideFavourite)
+            Expanded(
+              flex: 1,
+              child: Wrap(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (widget.vm?.userProfile == null) {
+                        showPreLoginDialog();
+                      } else
+                        (widget.game?.isFavourite ?? false) ? widget.vm!.deleteFavoriteGame(widget.game!) : widget.vm!.setFavoriteGame(widget.game!);
+                    },
+                    child: Image.asset(
+                      (widget.game?.isFavourite ?? false) ? "images/child_game/T14/ic_favorite_selected.png" : "images/child_game/T14/ic_favorite.png",
+                      width: 15.auto,
+                      height: 15.auto,
+                    ),
                   ),
-                ),
-                SizedBox(width: 5),
-                Text("Collect", style: TextStyle(color: Colors.white))
-              ],
+                  SizedBox(width: 5),
+                  Text(getTranslatedText("collect"), style: TextStyle(color: Colors.white))
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

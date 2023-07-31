@@ -28,7 +28,6 @@ class GameSuggestT14 extends StatefulWidget {
 }
 
 class _GameSuggestT14State extends BaseState<GameSuggestT14> {
-  var _controller = ScrollController();
   var currentTabIndex = 0, currentGameType, currentGamePlatformCode;
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
@@ -36,7 +35,6 @@ class _GameSuggestT14State extends BaseState<GameSuggestT14> {
   @override
   void initState() {
     currentGameType = widget.vm.gameTypeList.first;
-    _controller.addListener(_scrollListener);
 
     super.initState();
   }
@@ -91,127 +89,9 @@ class _GameSuggestT14State extends BaseState<GameSuggestT14> {
                 ),
               ),
               SizedBox(height: 10),
-              ColorButton(title: "See more", onClick: () {}, isEnabled: true),
+              ColorButton(title: getTranslatedText("see_more"), onClick: () {}, isEnabled: true),
               SizedBox(height: 20),
             ],
           );
-  }
-
-  _getGameTypeMap() {
-    return widget.vm.gameTypeMap![currentGameType];
-  }
-
-  _buildTopGameTab(int tabIndex, GameType gameType) => Container(
-        // decoration: BoxDecoration(
-        //   color: Colors.transparent,
-        //   borderRadius: BorderRadius.only(
-        //     topLeft: Radius.circular(5),
-        //     topRight: Radius.circular(5),
-        //   ),
-        // ),
-        child: _buildGameTab(tabIndex, gameType),
-      );
-
-  _buildBottomGameTab(int tabIndex, GameType gameType) => Container(
-        // decoration: BoxDecoration(
-        //   color: Colors.transparent,
-        //   borderRadius: BorderRadius.only(
-        //     bottomLeft: Radius.circular(5),
-        //     bottomRight: Radius.circular(5),
-        //   ),
-        // ),
-        margin: EdgeInsets.only(top: 7.auto, bottom: 10.auto), //EdgeInsets.only(bottom: 20.auto),
-        child: _buildGameTab(tabIndex, gameType),
-      );
-
-  _buildMiddleGameTab(int tabIndex, GameType gameType) => Container(
-        // width: 40,
-        //     decoration: BoxDecoration(color: Colors.transparent),
-        margin: EdgeInsets.only(top: 7.auto),
-        child: _buildGameTab(tabIndex, gameType),
-      );
-
-  _buildGameTab(int tabIndex, GameType gameType) {
-    return InkWell(
-      onTap: () {
-        _onTabClick(tabIndex, gameType);
-      },
-      child: Container(
-          height: (90 * (36 / 74)),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('images/game/T15/${tabIndex == currentTabIndex ? "gametype-selected" : "gametype"}.png'),
-              fit: BoxFit.fill,
-            ),
-            // shape: BoxShape.circle,
-          ),
-          padding: EdgeInsets.only(top: 0.auto, left: 5.auto, right: 0.auto),
-          child: Row(
-            children: [
-              Container(
-                  width: 18.auto,
-                  margin: EdgeInsets.only(right: 2.5.auto),
-                  child: Image.asset(
-                    "images/game_tab/t15/${gameType.getImagePath()}${tabIndex == currentTabIndex ? "-selected" : ""}.png",
-                    width: 18.auto,
-                    height: 18.auto,
-                    // color: (tabIndex == currentTabIndex &&
-                    //             EnvironmentConfig.brandName == "PB" ||
-                    //         tabIndex != currentTabIndex &&
-                    //             EnvironmentConfig.brandName != "PB")
-                    //     //only PB, selected game tab color is grey, not selected game tab is button color
-                    //     ? CustomColor.theme_text_grey_color
-                    //     : CustomColor.theme_button_color,
-                  )),
-              Expanded(
-                child: AutoSizeText(
-                  gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: (tabIndex == currentTabIndex) ? Color(0xff9aa4c2) : Colors.white, fontWeight: FontWeight.bold),
-                  minFontSize: 2,
-                  maxFontSize: 12,
-                  stepGranularity: 1,
-                  maxLines: 2,
-                ),
-              )
-            ],
-          )),
-    );
-  }
-
-  _onTabClick(int tabIndex, GameType gameType) {
-    // var itemHeight = gameViewItem.currentState!.itemHeight;
-    // var des = 0.0;
-    //
-    // widget.vm.gameProviderList!.asMap().forEach((i, element) {
-    //   if (tabIndex > i) {
-    //     des += itemHeight * widget.vm.gameProviderList![i].length;
-    //   }
-    // });
-    setState(() {
-      currentGameType = gameType == GameType.VirtualSports ? GameType.Sportsbook : gameType;
-      _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
-      currentTabIndex = tabIndex;
-      // _controller.animateTo(des,
-      //     curve: Curves.linear, duration: Duration(milliseconds: 250));
-    });
-  }
-
-  _scrollListener() {
-    var scrollTab = gameViewItem.currentState!.itemHeight;
-    var des = 0.0;
-    var index = 0;
-
-    widget.vm.gameProviderList!.asMap().forEach((i, element) {
-      if (_controller.offset >= des) {
-        des += scrollTab * widget.vm.gameProviderList![i].length;
-        index = i;
-      } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = widget.vm.gameProviderList!.where((i) => i.length > 0).toList().length - 1;
-      }
-    });
-    setState(() {
-      currentTabIndex = index; //1
-    });
   }
 }

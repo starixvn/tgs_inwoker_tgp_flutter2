@@ -72,6 +72,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
                 currentTabIndex: currentTabIndex,
                 width: EnvironmentConfig.template_version == 14 ? context.screenWidth / 3.5 : context.screenWidth / 2,
                 height: 40.auto,
+                isHideInactiveBg: true,
               ));
             }).toList(),
           ),

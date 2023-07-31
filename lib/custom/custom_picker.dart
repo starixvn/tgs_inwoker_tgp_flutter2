@@ -7,7 +7,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import '../environment_config.dart';
 
 class CustomPicker extends StatefulWidget {
-  final String title;
+  final String? title;
   final String displayText;
   final List<dynamic>? list;
   final Function onClick;
@@ -15,8 +15,7 @@ class CustomPicker extends StatefulWidget {
   final double width;
   final String? tipsText;
 
-  CustomPicker(
-      {required this.title, required this.displayText, this.list, required this.onClick, required this.isHintText, required this.width, this.tipsText});
+  CustomPicker({this.title, required this.displayText, this.list, required this.onClick, required this.isHintText, required this.width, this.tipsText});
 
   @override
   _CustomPickerState createState() => _CustomPickerState();
@@ -33,10 +32,11 @@ class _CustomPickerState extends BaseState<CustomPicker> {
             alignment: Alignment.topLeft,
             child: Row(
               children: [
-                Text(
-                  getTranslatedText(widget.title) ?? widget.title,
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
-                ),
+                if (widget.title != null)
+                  Text(
+                    getTranslatedText(widget.title) ?? widget.title,
+                    style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
+                  ),
                 if (widget.tipsText != null)
                   Container(
                     margin: EdgeInsets.only(left: 10.auto),

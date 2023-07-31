@@ -22,6 +22,8 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/affiliate/affiliate.dart';
+import 'package:tgp_flutter2/ui/announcement/announcement.dart';
+import 'package:tgp_flutter2/ui/announcement/announcement_item_details.dart';
 import 'package:tgp_flutter2/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/card/main_card.dart';
@@ -37,6 +39,7 @@ import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/LoginTemplate02.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
+import 'package:tgp_flutter2/ui/memo/memo.dart';
 import 'package:tgp_flutter2/ui/menu/menu.dart';
 import 'package:tgp_flutter2/ui/menu/menu_t2.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
@@ -66,6 +69,7 @@ import 'package:api/localizations/my_localizations.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter2/ui/vip/vip.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
+import 'package:tgp_flutter2/ui/favourite/favourite.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'custom/custom_toast.dart';
@@ -237,7 +241,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 routes: {
                   RoutePath.myHome: (context) => BottomNavigationController(
                         versionUpdate: _vm.versionUpdateState,
-                         isFirstRun: true,
+                        isFirstRun: true,
                         // onPauseBgMusic: () => GlobalValueUtil.pausesong(),
                         // onResumeBgMusic: () => GlobalValueUtil.playsong(),
                       ),
@@ -300,6 +304,9 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.viber: (context) => Viber(),
                   RoutePath.whatsapp: (context) => Whatsapp(),
                   RoutePath.birthdate: (context) => Birthdate(),
+                  RoutePath.memo: (context) => Memo(),
+                  RoutePath.announcement: (context) => Announcement(),
+                  RoutePath.favourite: (context) => Favourite(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,

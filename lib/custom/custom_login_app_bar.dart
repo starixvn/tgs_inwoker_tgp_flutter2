@@ -312,43 +312,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         ? ((EnvironmentConfig.template_version == 14)
             ? [
                 WalletTextContainer(
-                    height: ScreenUtil.getInstance().appBarHeight / 2, width: (context.screenWidth * 0.3), balance: "₱ ${GlobalValueUtil.totalBalance}"),
-                // Container(
-                //     height: ScreenUtil.getInstance().appBarHeight / 2,
-                //     width: (context.screenWidth * 0.3),
-                //     padding: EdgeInsets.symmetric(horizontal: 5),
-                //     decoration: BoxDecoration(color: Color(0xff000326), borderRadius: BorderRadius.all(Radius.circular(10))),
-                //     child: Row(
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       // mainAxisSize: MainAxisSize.max,
-                //       children: [
-                //         Expanded(
-                //           flex: 1,
-                //           child: Container(
-                //             alignment: Alignment.centerLeft,
-                //             margin: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
-                //             child: FittedBox(
-                //               fit: BoxFit.fitWidth,
-                //               child: Text(
-                //                 "₱  103.16777777",
-                //                 style: TextStyle(
-                //                   color: CustomColor.theme_button_color,
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         Expanded(
-                //           flex: 0,
-                //           child: Icon(
-                //             Icons.refresh,
-                //             size: 18,
-                //             color: CustomColor.theme_button_color,
-                //           ),
-                //         ),
-                //       ],
-                //     ))
+                    height: ScreenUtil.getInstance().appBarHeight / 2, width: (context.screenWidth * 0.3), balance: "${GlobalValueUtil.totalBalance != null ? Format().amountFormat(GlobalValueUtil.totalBalance ?? 0) : "-"}"),
               ]
             : [
                 _getUsernameText(),

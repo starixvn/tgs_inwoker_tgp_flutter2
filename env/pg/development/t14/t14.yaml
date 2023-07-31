@@ -30,7 +30,7 @@ environment_config:
       default: false
     primaryColorCode:
       type: int
-      default: 0xff242958
+      default: 0xff27273F
     primaryGradientColorCode:
       type: int
       default: 0xff000326

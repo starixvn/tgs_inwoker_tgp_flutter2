@@ -1,3 +1,4 @@
+import 'package:api/extension/format.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
+import '../../custom/custom_progress_dialog.dart';
 import '../../environment_config.dart';
 import '../../globalUtil/GlobalValueUtil.dart';
 import '../../base_state.dart';
@@ -15,11 +17,13 @@ class EndDrawerMenu extends StatefulWidget {
   final String username;
   final double width;
   final GlobalKey<ScaffoldState>? scaffoldKey;
+  final VoidCallback logout;
 
   EndDrawerMenu({
     required this.username,
     required this.width,
     this.scaffoldKey,
+    required this.logout,
   });
 
   @override
@@ -27,14 +31,25 @@ class EndDrawerMenu extends StatefulWidget {
 }
 
 class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
-  List<String> titleList = ["Messages", "Announcement", "Change Password", "Bet Record", "Language", "Signout"];
+  List<Map<String, String>> itemList = [
+    //title, icon, routepath
+    {"index": "0", "title": "message_center", "icon": "ic_message", "routePath": "message"},
+    {"index": "1", "title": "announcement", "icon": "ic_announcement", "routePath": "announcement"},
+    {"index": "2", "title": "edit_password", "icon": "ic_change_password", "routePath": "edit_password"},
+    {"index": "3", "title": "bet_history", "icon": "ic_bet_record", "routePath": "transaction"},
+    {"index": "4", "title": "language", "icon": "ic_language", "routePath": "language"},
+    {"index": "5", "title": "exit", "icon": "ic_signout", "routePath": ""},
+  ];
 
-  List<String> iconList = ["ic_message", "ic_announcement", "ic_change_password", "ic_bet_record", "ic_language", "ic_signout"];
+  // List<String> titleList = ["Messages", "Announcement", "Change Password", "Bet Record", "Language", "Signout"];
+  //
+  // List<String> iconList = ["ic_message", "ic_announcement", "ic_change_password", "ic_bet_record", "ic_language", "ic_signout"];
   double fontSize = 0.0;
 
   @override
   void initState() {
-    fontSize = GlobalValueUtil.calculateFontSizeForLongestString(titleList, 20.auto, widget.width - 100.auto);
+    List<String> list = itemList.map((element) => element["title"] ?? "").toList();
+    fontSize = GlobalValueUtil.calculateFontSizeForLongestString(list, 20.auto, widget.width - 100.auto);
   }
 
   @override
@@ -89,13 +104,13 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
                     ),
                   if (widget.username.isNotEmpty) SizedBox(height: 10),
                   if (widget.username.isNotEmpty)
-                    WalletTextContainer(height: context.screenHeight / 20, width: (widget.width * 0.7), balance: "₱ ${GlobalValueUtil.totalBalance}"),
+                    WalletTextContainer(height: context.screenHeight / 20, width: (widget.width * 0.7), balance: "${GlobalValueUtil.totalBalance != null ? "₱ ${Format().amountFormat(GlobalValueUtil.totalBalance ?? 0)}" : " - "}"),
                   if (widget.username.isNotEmpty) SizedBox(height: 30),
                   if (widget.username.isEmpty)
                     Expanded(
                       child: Center(
                         child: Text(
-                          "Please login...",
+                          getTranslatedText("home_login_hint"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -105,19 +120,18 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
             ),
           ),
         ),
-      ]..addAll((widget.username.isNotEmpty) ? List.generate(titleList.length, (index) => _buildDrawerItem(index)) : []),
+      ]..addAll((widget.username.isNotEmpty) ? List.generate(itemList.length, (index) => _buildDrawerItem(index)) : []),
     );
   }
 
   _buildDrawerItem(int index) {
-    print(fontSize);
     return SizedBox(
       height: 50,
       child: ListTile(
         dense: true,
         visualDensity: VisualDensity(horizontal: 0, vertical: -4),
         leading: SvgPicture.asset(
-          "images/drawer_menu/${iconList[index]}.svg",
+          "images/drawer_menu/${itemList[index]["icon"]}.svg",
           height: 20.auto,
           color: Colors.white,
         ),
@@ -125,13 +139,17 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
           margin: EdgeInsets.symmetric(vertical: 5),
           alignment: Alignment.centerLeft,
           child: Text(
-            titleList[index],
+            getTranslatedText(itemList[index]["title"] ?? ""),
             style: TextStyle(color: Colors.white, fontSize: fontSize),
             maxLines: 1,
           ),
         ),
         onTap: () {
-          //
+          if (itemList[index] == itemList.last) {
+            widget.logout();
+          } else {
+            Navigator.of(context).pushNamed("/${itemList[index]["routePath"]}");
+          }
         },
       ),
     );

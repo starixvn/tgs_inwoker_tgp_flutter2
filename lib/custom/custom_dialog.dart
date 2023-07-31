@@ -66,7 +66,7 @@ class _CustomDialogState extends BaseState<CustomDialog> {
             horizontal: context.screenWidth / 20,
           ),
           decoration: new BoxDecoration(
-            color: Colors.white,
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
@@ -90,6 +90,7 @@ class _CustomDialogState extends BaseState<CustomDialog> {
                         style: TextStyle(
                           fontSize: 18.auto,
                           fontWeight: FontWeight.w500,
+                          color: _getTextColor(),
                         ),
                       ),
                     ),
@@ -100,7 +101,7 @@ class _CustomDialogState extends BaseState<CustomDialog> {
                   widget.description!,
                   style: TextStyle(
                     fontSize: 13.auto,
-                    color: Colors.black54,
+                    color: _getTextColor().withOpacity(0.54),
                   ),
                   textAlign: widget.title == null ? TextAlign.center : TextAlign.start,
                 ),
@@ -151,7 +152,16 @@ class _CustomDialogState extends BaseState<CustomDialog> {
         width: context.screenWidth / 3.5,
         height: context.screenHeight / 18,
         fontSize: 13.auto,
-        color: EnvironmentConfig.template_version == 11 ? Color(0xff4B4B4B) : CustomColor.theme_text_black_color,
+        color: (() {
+          if (EnvironmentConfig.template_version == 11)
+            return Color(0xff4B4B4B);
+          else if (EnvironmentConfig.template_version == 14)
+            return Colors.white;
+          else
+            return CustomColor.theme_text_black_color;
+        }()),
         radius: 45.auto,
       );
+
+  Color _getTextColor() => EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black;
 }

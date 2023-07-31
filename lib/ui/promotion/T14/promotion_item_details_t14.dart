@@ -193,7 +193,7 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
                   ),
                 ),
                 Text(
-                  "Terms and conditions",
+                  getTranslatedText("terms_and_conditions"),
                   style: TextStyle(color: Colors.white),
                 )
               ],
@@ -244,7 +244,7 @@ class _PromotionItemDetailsT14State extends BaseState<PromotionItemDetailsT14> {
         child: Container(
           margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
           child: ColorButton(
-            title: "Claim Bonus",
+            title: getTranslatedText("claim_bonus"),
             onClick: () {
               _onClick();
             },

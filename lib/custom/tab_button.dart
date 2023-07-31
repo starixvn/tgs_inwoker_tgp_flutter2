@@ -31,6 +31,7 @@ class TabButton extends StatelessWidget {
       width: isWidthNull ? null : (width ?? context.screenWidth / 3),
       height: height ?? 40.auto,
       padding: EdgeInsets.symmetric(vertical: 2.auto),
+      alignment: Alignment.center,
       decoration: EnvironmentConfig.template_version == 14
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),

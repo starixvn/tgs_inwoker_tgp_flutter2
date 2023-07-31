@@ -38,6 +38,8 @@ class _ProfileT14State extends BaseState<ProfileT14> {
 
   Widget build(BuildContext context) {
     return Container(
+      height: context.screenHeight,
+      width: context.screenWidth,
       color: CustomColor.theme_bar_gradient_2,
       child: _buildUserInfoContainerT14(),
     );
@@ -52,21 +54,17 @@ class _ProfileT14State extends BaseState<ProfileT14> {
       //       Expanded(flex:3,child:_buildGridViewLayout()),
       //     ],
       //   ),
-        CustomScrollView(
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: _buildProfileTopItem(),
-            ),
-            SliverFillRemaining(
-              child: Flexible(
-                fit: FlexFit.tight,
-                child: _buildGridViewLayout(),
-              ),
-            ),
-          ],
-
+      CustomScrollView(
+        shrinkWrap: true,
+        physics: AlwaysScrollableScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: _buildProfileTopItem(),
+          ),
+          SliverFillRemaining(
+            child: _buildGridViewLayout(),
+          ),
+        ],
       );
 
   _buildProfileTopItem() => Container(
@@ -81,7 +79,7 @@ class _ProfileT14State extends BaseState<ProfileT14> {
               style: TextStyle(color: Colors.white, fontSize: 25.auto),
             ),
             SizedBox(height: 10),
-            WalletTextContainer(height: context.screenHeight / 20, width: (context.screenWidth / 1.5), balance: "玩家总资金 ₱  ${GlobalValueUtil.totalBalance}"),
+            WalletTextContainer(height: context.screenHeight / 20, width: (context.screenWidth / 1.5), balance: "${getTranslatedText("player_balance")} ${GlobalValueUtil.totalBalance != null ? "₱ ${Format().amountFormat(GlobalValueUtil.totalBalance ?? 0)}" : "-"}"),
             SizedBox(height: 40),
             // Text(
             //   widget.vm.totalBalance != null ? Format().amountFormat(widget.vm.totalBalance ?? 0) : "-",
@@ -102,15 +100,15 @@ class _ProfileT14State extends BaseState<ProfileT14> {
     List<Widget> list = [
       _buildProfileBottomItem("ic_profile", "profile_detail", "profile_info", 0),
       _buildProfileBottomItem("ic_message", "message_center", "message", 0, isMessage: true),
-      _buildProfileBottomItem("ic_message", "Memo", "message", 0),
-      _buildProfileBottomItem("ic_announcement", "announcement", "message", 0),
+      _buildProfileBottomItem("ic_message", "memo", "memo", 0),
+      _buildProfileBottomItem("ic_announcement", "announcement", "announcement", 0),
       _buildProfileBottomItem("ic_account_report", "bet_history", "transaction", 0),
       _buildProfileBottomItem("ic_withdraw_report", "withdrawal_history", "transaction", 2),
       _buildProfileBottomItem("ic_deposit_report", "deposit_history", "transaction", 1),
       _buildProfileBottomItem("ic_transfer_report", "transfer_history", "transaction", 3),
       _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 4),
       _buildProfileBottomItem("ic_transfer_report", "balanceChangeRecords", "transaction", 5),
-      _buildProfileBottomItem("ic_favourite", "My Favourite", "vip", 0),
+      _buildProfileBottomItem("ic_favourite", "my_favorite", "favourite", 0),
       _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
       if (_vm.haveAffiliate) _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
       _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
@@ -130,9 +128,7 @@ class _ProfileT14State extends BaseState<ProfileT14> {
         // childAspectRatio: 2/3,
         // children: List.generate(list.length, (index) => list[index]),
         itemBuilder: (_, index) {
-          return Expanded(
-            child: list[index],
-          );
+          return list[index];
         },
       ),
     );
@@ -145,7 +141,7 @@ class _ProfileT14State extends BaseState<ProfileT14> {
         navigationID: navigationID,
         isMessage: isMessage,
         logout: () => _logout(),
-    isNotify: _vm.isNotify,
+        isNotify: _vm.isNotify,
       );
 
   _logout() {

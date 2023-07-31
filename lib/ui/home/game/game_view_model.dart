@@ -29,7 +29,7 @@ class GameViewModel extends BaseViewModel {
       deleteFavouriteGameApiState,
       getBetConstructHtmlApiState,
       getSM01CockfightApiState;
-  List<Game>? _gameList, filteredGameList, hot;
+  List<Game>? _gameList, filteredGameList, hot, favouriteGameList;
   Map<String, List<Game>> gameListMap = new Map<String, List<Game>>();
   Map<String, List<Game>> slotGameListByTagMap = new Map<String, List<Game>>();
   int mCategory = 0;
@@ -384,6 +384,9 @@ class GameViewModel extends BaseViewModel {
     platformList!.forEach((platform) {
       if (gameListMap[platform.code] == null) {
         task.add(getGameList(platform.code, gameType ?? mGameType, isGettingRecommendList: isGettingRecommendList));
+      } else if (gameType != null) {
+        //refresh favourite game
+        task.add(_getFavoriteGame(gameType));
       }
     });
     await Future.wait(task);
@@ -412,12 +415,18 @@ class GameViewModel extends BaseViewModel {
     getFavouriteGameApiState = await contentRepo.getFavoriteGame(gameType);
     if (getFavouriteGameApiState.isSuccess) {
       List list = getFavouriteGameApiState.result;
+      if (favouriteGameList == null) favouriteGameList = [];
       gameListMap.values.forEach((gameList) => gameList.map((game) {
             game.isFavourite = false;
             list.forEach((id) {
-              if (game.id == id) game.isFavourite = true;
+              if (game.id == id) {
+                game.isFavourite = true;
+                if (EnvironmentConfig.template_version == 14 && !favouriteGameList!.any((element) => element.id == id)) favouriteGameList!.add(game);
+              }
             });
           }).toList());
+
+      print(favouriteGameList);
     }
     setLoading(false);
     return getFavouriteGameApiState;

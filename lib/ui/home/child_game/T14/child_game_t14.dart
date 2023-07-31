@@ -71,7 +71,7 @@ class _ChildGameT14State extends BaseState<ChildGameT14> with SingleTickerProvid
       return ListView(
         shrinkWrap: true,
         padding: EdgeInsets.all(10.auto),
-        physics: BouncingScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
         children: [
           Container(
             height: context.screenHeight / 23,

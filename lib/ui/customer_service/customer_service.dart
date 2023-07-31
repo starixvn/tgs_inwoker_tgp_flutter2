@@ -52,7 +52,9 @@ class _CustomerServiceState extends BaseState<CustomerService> {
           return widget.isNewPage
               ? CustomScaffold(
                   appBar: CustomAppBar(
-                    title: getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service"),
+                    title: getTranslatedText("customer_service") == "customer_service"
+                        ? "Customer Service"
+                        : (EnvironmentConfig.template_version == 14 ? getTranslatedText("contact_us") : getTranslatedText("customer_service")),
                   ),
                   body: _buildCsWidget(),
                 )
@@ -127,7 +129,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
               padding: EdgeInsets.all(15),
               alignment: Alignment.center,
               child: Text(
-                "CUSTOMER SERVICE",
+                getTranslatedText('customer_service'),
                 style: TextStyle(color: Colors.white, fontSize: 15.auto),
               ),
             ),

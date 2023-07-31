@@ -8,7 +8,7 @@ environment_config:
     jwtKey:
       default: "I7nKiimrZQOqnJ6ryjUw74c0Hi64KC6Myunhob4cHh8VOUIuZh4p63czefxyyzbZ"
     url:
-      default: "https://stg-t1.rpgp.cc/"
+      default: "https://stg-t14.rpgp.cc/"
     currency:
       default: "CNY"
     appTitleName:
@@ -30,7 +30,7 @@ environment_config:
       default: false
     primaryColorCode:
       type: int
-      default: 0xff242958
+      default: 0xff27273F
     primaryGradientColorCode:
       type: int
       default: 0xff000326

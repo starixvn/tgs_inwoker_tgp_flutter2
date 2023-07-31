@@ -16,6 +16,8 @@ import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verificatio
 import 'package:tgp_flutter2/ui/promotion/promotion_item_details.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 
+import '../../environment_config.dart';
+
 class PhoneVerificationDialog extends StatefulWidget {
   PhoneVerificationDialog();
 
@@ -51,7 +53,7 @@ class _PhoneVerificationDialogState extends BaseState<PhoneVerificationDialog> {
           horizontal: context.screenWidth / 20,
         ),
         decoration: new BoxDecoration(
-          color: Colors.white,
+          color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
@@ -69,10 +71,7 @@ class _PhoneVerificationDialogState extends BaseState<PhoneVerificationDialog> {
               alignment: Alignment.topLeft,
               child: Text(
                 getTranslatedText("phone_re-verify"),
-                style: TextStyle(
-                  fontSize: 18.auto,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(fontSize: 18.auto, fontWeight: FontWeight.w500, color: EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black),
               ),
             ),
             PhoneReVerification(

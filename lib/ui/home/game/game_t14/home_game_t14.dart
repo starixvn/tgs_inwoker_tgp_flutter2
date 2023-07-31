@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/game.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,12 @@ class _HomeGameT14State extends BaseState<HomeGameT14> {
   @override
   void initState() {
     _initData();
+    NotificationCenter().subscribe(NotificationServiceName().gameNeededLoadData, (bool value) {
+      if (value) {
+        widget.vm.slotGameListByTagMap.clear();
+        _initData();
+      }
+    });
     super.initState();
   }
 
@@ -62,11 +70,11 @@ class _HomeGameT14State extends BaseState<HomeGameT14> {
             padding: EdgeInsets.all(10),
             physics: ClampingScrollPhysics(),
             children: [
-              GameSuggestT14(vm: widget.vm, titleType: 'Top Games', tag: "hot"),
+              GameSuggestT14(vm: widget.vm, titleType: getTranslatedText("top_games"), tag: "hot"),
               SizedBox(height: 10),
-              GameSuggestT14(vm: widget.vm, titleType: 'Recommend For You', tag: "recommend"),
+              GameSuggestT14(vm: widget.vm, titleType: getTranslatedText("recommend_for_you"), tag: "recommend"),
               SizedBox(height: 10),
-              GameSuggestT14(vm: widget.vm, titleType: 'New Games', tag: "new"),
+              GameSuggestT14(vm: widget.vm, titleType: getTranslatedText("new_games"), tag: "new"),
             ],
           );
     // });

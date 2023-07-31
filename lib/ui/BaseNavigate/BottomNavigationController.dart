@@ -157,6 +157,11 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       updateCustomView = false;
       isShowBalanceInAppBar = false;
       switch (_getBottomNavigationIconList()[value]) {
+        case BottomNavigationIcon.home:
+          {
+            NotificationCenter().notify(NotificationServiceName().gameNeededLoadData, data: true);
+            break;
+          }
         case BottomNavigationIcon.profile:
           {
             if (homeViewModel.userProfile == null) {
@@ -210,7 +215,9 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
               //for tracing back previous route when user click back button
               preBottomNavigationRoute.add(_selectedIndex);
             }
-            _appBarTitle = getTranslatedText("customer_service") == "customer_service" ? "Customer Service" : getTranslatedText("customer_service");
+            _appBarTitle = getTranslatedText("customer_service") == "customer_service"
+                ? "Customer Service"
+                : (EnvironmentConfig.template_version == 14 ? getTranslatedText("contact_us") : getTranslatedText("customer_service"));
             break;
           }
         case BottomNavigationIcon.wallet:
@@ -296,6 +303,7 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
                 username: mainViewModel.userProfile?.username ?? "",
                 width: context.screenWidth * 0.65,
                 scaffoldKey: scaffoldKey,
+                logout: () => _logout() ,
               ),
             )
           : Container(),

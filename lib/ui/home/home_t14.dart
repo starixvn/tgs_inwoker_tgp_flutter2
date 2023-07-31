@@ -104,7 +104,7 @@ class _HomeT14State extends BaseState<HomeT14> {
                 behavior: MyBehavior(),
                 child: CustomScrollView(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(
                       child: Container(

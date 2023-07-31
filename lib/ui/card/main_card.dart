@@ -17,6 +17,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
 import 'card_view_model.dart';
 
 class MainCard extends StatefulWidget {
@@ -51,33 +52,55 @@ class _MainCardState extends BaseState<MainCard> {
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.auto),
                       child: ListView(
-                        children: [
-                          Wrap(
-                            children: List.generate(_vm.bankCardList!.length, (index) {
-                              return Container(
-                                  child: ((_vm.config?.addCardNotAllowedEditDelete ?? false) ||
-                                          (_vm.config?.addCardDisableCreateUpdateDelete ?? false) ||
-                                      //sky 8 remove delete features
-                                          EnvironmentConfig.brandName == "SKY8")
-                                      ? _buildBankCardItem(_vm.bankCardList![index])
-                                      : Dismissible(
-                                          key: UniqueKey(),
-                                          child: _buildBankCardItem(_vm.bankCardList![index]),
-                                          background: _swipeLeftBackground(),
-                                          direction: DismissDirection.endToStart,
-                                          behavior: HitTestBehavior.deferToChild,
-                                          onDismissed: (_) {
-                                            if (_vm.config?.changesNotAllowed ?? false)
-                                              _showNotAllowedEditDeleteDialog();
-                                            else
-                                              _delete(_vm.bankCardList![index], index);
-                                          },
-                                        ));
-                            }),
-                          ),
-                          _buildDeleteHintText(),
-                          _buildAddCardItem(),
-                        ],
+                        children: ((EnvironmentConfig.template_version == 14)
+                            ? [
+                                Container(
+                                  width: context.screenWidth,
+                                  padding: EdgeInsets.all(7.5.auto),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    GlobalValueUtil.totalBalance != null ? Format().amountFormat(GlobalValueUtil.totalBalance ?? 0) : "-",
+                                    style: TextStyle(color: Colors.white, fontSize: 18.auto),
+                                  ),
+                                ),
+                                Container(
+                                  width: context.screenWidth,
+                                  padding: EdgeInsets.all(7.5.auto),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    getTranslatedText("slide_to_delete_card"),
+                                    style: TextStyle(color: Colors.white, fontSize: 12.auto),
+                                  ),
+                                ),
+                              ]
+                            : [])
+                          ..addAll([
+                            Wrap(
+                              children: List.generate(_vm.bankCardList!.length, (index) {
+                                return Container(
+                                    child: ((_vm.config?.addCardNotAllowedEditDelete ?? false) ||
+                                            (_vm.config?.addCardDisableCreateUpdateDelete ?? false) ||
+                                            //sky 8 remove delete features
+                                            EnvironmentConfig.brandName == "SKY8")
+                                        ? _buildBankCardItem(_vm.bankCardList![index])
+                                        : Dismissible(
+                                            key: UniqueKey(),
+                                            child: _buildBankCardItem(_vm.bankCardList![index]),
+                                            background: _swipeLeftBackground(),
+                                            direction: DismissDirection.endToStart,
+                                            behavior: HitTestBehavior.deferToChild,
+                                            onDismissed: (_) {
+                                              if (_vm.config?.changesNotAllowed ?? false)
+                                                _showNotAllowedEditDeleteDialog();
+                                              else
+                                                _delete(_vm.bankCardList![index], index);
+                                            },
+                                          ));
+                              }),
+                            ),
+                            _buildDeleteHintText(),
+                            _buildAddCardItem(),
+                          ]),
                       ),
                     ),
             ),
@@ -130,10 +153,12 @@ class _MainCardState extends BaseState<MainCard> {
         height: 90.auto,
         margin: EdgeInsets.only(top: 10.auto),
         padding: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 30.auto),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
-        ),
+        decoration: EnvironmentConfig.template_version == 14
+            ? BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white)
+            : BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(image: AssetImage("images/card/card_bg.png"), fit: BoxFit.cover),
+              ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -146,7 +171,7 @@ class _MainCardState extends BaseState<MainCard> {
               child: Text(
                 _getDisplayBankAccountText(bankCard) ?? "",
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+                style: TextStyle(fontSize: 15.auto, color: EnvironmentConfig.template_version == 14 ? Colors.black : CustomColor.theme_button_color),
               ),
             )
           ],
@@ -154,7 +179,8 @@ class _MainCardState extends BaseState<MainCard> {
       );
 
   _buildDeleteHintText() => Visibility(
-        visible: !((_vm.config?.addCardNotAllowedEditDelete ?? false) || (_vm.config?.addCardDisableCreateUpdateDelete ?? false)),
+        visible: !((_vm.config?.addCardNotAllowedEditDelete ?? false) || (_vm.config?.addCardDisableCreateUpdateDelete ?? false)) &&
+            (EnvironmentConfig.template_version != 14),
         child: Container(
           margin: EdgeInsets.only(right: 23.auto, top: 10.auto),
           child: Row(
@@ -199,52 +225,92 @@ class _MainCardState extends BaseState<MainCard> {
               _getBankCardList(); //reinitdata after pop from  add card
             }
           },
-          child: Container(
-            margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
-            child: DottedBorder(
-                color: CustomColor.theme_text_grey_white_color,
-                borderType: BorderType.RRect,
-                radius: Radius.circular(10.auto),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              getTranslatedText("add_card"),
-                              style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+          child: EnvironmentConfig.template_version == 14
+              ? Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.white, width: 1.0),
+                  ),
+                  margin: EdgeInsets.only(top: 15.auto),
+                  padding: EdgeInsets.all(20.auto),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: context.screenWidth,
+                        alignment: Alignment.centerRight,
+                        // margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                        child: ImageIcon(
+                            AssetImage(
+                              "images/card/ic_add_card.png",
                             ),
-                            Container(
-                              margin: EdgeInsets.only(top: 5.auto),
-                              child: Text(
-                                getTranslatedText("max_card_hint"),
-                                style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
-                              ),
-                            )
-                          ],
+                            size: 23.auto,
+                            color: CustomColor.theme_text_grey_white_color),
+                      ),
+                      Text(
+                        getTranslatedText("add_card"),
+                        style: TextStyle(
+                          fontSize: 14.auto,
+                          color: CustomColor.theme_text_grey_white_color,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.auto),
-                          child: ImageIcon(
-                              AssetImage(
-                                "images/card/ic_add_card.png",
+                      Container(
+                        margin: EdgeInsets.only(top: 5.auto),
+                        child: Text(
+                          getTranslatedText("max_card_hint"),
+                          style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_white_color),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : Container(
+                  margin: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto, bottom: 20.auto),
+                  child: DottedBorder(
+                      color: CustomColor.theme_text_grey_white_color,
+                      borderType: BorderType.RRect,
+                      radius: Radius.circular(10.auto),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 8,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 20.auto, horizontal: 20.auto),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    getTranslatedText("add_card"),
+                                    style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_grey_white_color),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 5.auto),
+                                    child: Text(
+                                      getTranslatedText("max_card_hint"),
+                                      style: TextStyle(fontSize: 9.auto, color: CustomColor.theme_text_grey_white_color),
+                                    ),
+                                  )
+                                ],
                               ),
-                              size: 23.auto,
-                              color: CustomColor.theme_text_grey_white_color)),
-                    ),
-                  ],
-                )),
-          ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20.auto),
+                                child: ImageIcon(
+                                    AssetImage(
+                                      "images/card/ic_add_card.png",
+                                    ),
+                                    size: 23.auto,
+                                    color: CustomColor.theme_text_grey_white_color)),
+                          ),
+                        ],
+                      )),
+                ),
         );
 
   _getAddCardItemVisible() {

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -16,7 +17,10 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/ui/transfer/transfer_picker.dart';
 import 'package:tgp_flutter2/ui/transfer/transfer_text_form_field.dart';
+import 'package:tgp_flutter2/ui/transfer/wallet_provider_icon.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer_view_model.dart';
+
+import '../../custom/custom_picker.dart';
 
 class WalletTransfer extends StatefulWidget {
   @override
@@ -72,21 +76,195 @@ class _WalletTransferState extends BaseState<WalletTransfer> with TickerProvider
           //updateData();
           return CustomScaffold(
               appBar: _buildAppBar(),
-              body: Container(
-                child: Column(
-                  children: [
-                    Column(
-                      children: [_buildWallet(), _buildFromWallet(), _buildToWallet()],
-                    ),
-                    _buildAmountTextField(),
-                    _buildAutoTransferToggleButton(),
-                    _buildTransferAllButton(),
-                    _buildButton()
-                  ],
-                ),
-              ));
+              body: EnvironmentConfig.template_version == 14
+                  ? _buildWalletTransferT14()
+                  : Container(
+                      child: Column(
+                        children: [
+                          Column(
+                            children: [_buildWallet(), _buildFromWallet(), _buildToWallet()],
+                          ),
+                          _buildAmountTextField(),
+                          _buildAutoTransferToggleButton(),
+                          _buildTransferAllButton(),
+                          _buildButton()
+                        ],
+                      ),
+                    ));
         });
   }
+
+  _buildWalletTransferT14() => Container(
+        width: context.screenWidth,
+        height: context.screenHeight,
+        child: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text(
+                getTranslatedText("quick_transfer").toString().toUpperCase(),
+                style: TextStyle(color: Colors.white, fontSize: 15.auto),
+              ),
+            ),
+            CustomPicker(
+              displayText: textFromWallet ?? getTranslatedText("please_select"),
+              list: [],
+              isHintText: textFromWallet == null || textFromWallet == getTranslatedText("please_select"),
+              onClick: () {
+                _buildPicker("transfer_from", _vm.walletList, true);
+              },
+              width: context.screenWidth,
+            ),
+            Container(
+              width: context.screenWidth,
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: CustomColor.theme_bar_gradient_1,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                padding: EdgeInsets.all(5),
+                child: Icon(
+                  Icons.keyboard_arrow_down_outlined,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            CustomPicker(
+              displayText: textToWallet ?? getTranslatedText("please_select"),
+              list: [],
+              isHintText: textToWallet == null || textToWallet == getTranslatedText("please_select"),
+              onClick: () {
+                _buildPicker("transfer_to", _vm.walletList, false);
+              },
+              width: context.screenWidth,
+            ),
+            Container(
+              width: context.screenWidth,
+              height: 40.auto,
+              margin: EdgeInsets.only(left: 18.auto, right: 18.auto, bottom: 15.auto),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      child: TextFormField(
+                        enabled: true,
+                        autofocus: false,
+                        onChanged: (value) {
+                          checkButtonState();
+                        },
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        style: TextStyle(color: CustomColor.theme_text_grey_color, fontSize: 13.auto),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                          hintText: getTranslatedText("enter_amount"),
+                          hintStyle: TextStyle(color: CustomColor.very_light_pink_two, fontSize: 13.auto),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                      flex: 3,
+                      child: ColorButton(
+                        title: getTranslatedText("submit"),
+                        onClick: () {},
+                        isEnabled: true,
+                        radius: 10,
+                      ))
+                ],
+              ),
+            ),
+            Container(
+              width: context.screenWidth,
+              padding: EdgeInsets.all(15.auto),
+              child: Text(
+                getTranslatedText("transfer_wallet").toString().toUpperCase(),
+                style: TextStyle(fontSize: 15.auto, color: Colors.white),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15.auto),
+              child: RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: getTranslatedText("transfer_hint") + " (${_vm.autoTransferValue ? getTranslatedText("on") : getTranslatedText("off")}) ",
+                      style: TextStyle(fontSize: 14.auto, color: Colors.white, height: 2),
+                    ),
+                    WidgetSpan(child: SizedBox(width: 10)),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Container(
+                        width: 35,
+                        child: FlutterSwitch(
+                          value: _vm.autoTransferValue,
+                          width: 35,
+                          height: 17.5,
+                          toggleSize: 17.5,
+                          padding: 2,
+                          activeColor: CustomColor.theme_button_color,
+                          onToggle: (val) {
+                            ProgressDialog.show(context, _vm.brandLogoUrl);
+                            _vm.setAutoTransferValue();
+                          },
+                        ),
+                      ),
+                    ),
+                    WidgetSpan(child: SizedBox(width: 10)),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.auto, horizontal: 10.auto),
+                        decoration: BoxDecoration(
+                          color: CustomColor.theme_bar_gradient_1,
+                          borderRadius: BorderRadius.all(Radius.circular(15.auto)),
+                        ),
+                        child: Text(
+                          getTranslatedText("transfer_out"),
+                          style: TextStyle(fontSize: 10.auto, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10.auto),
+            (() {
+              List<Wallet> list = _vm.walletList;
+              list.removeWhere((element) => element.isMainWallet);
+              return GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 2,
+                padding: EdgeInsets.symmetric(horizontal: 15.auto),
+                children: List.generate(list.length, (index) {
+                  return Container(
+                    child: WalletProviderIcon(wallet: list[index]),
+                  );
+                }),
+              );
+            }())
+          ],
+        ),
+      );
 
   _buildAppBar() => CustomAppBar(
         title: getTranslatedText("transfer"),
