@@ -64,7 +64,7 @@ class _PromotionItemDetailsState extends BaseState<PromotionItemDetails> {
       );
 
   _buildJoinButton() => Visibility(
-        visible: widget.promotion.promotionType != "Dummy",
+        visible: widget.promotion.promotionType != "Dummy" && widget.promotion.promotionType != "PromoteDepositChannel",
         child: Container(
           margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 15.auto, bottom: 20.auto),
           child: ColorButton(
