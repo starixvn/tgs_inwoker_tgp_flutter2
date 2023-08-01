@@ -9,6 +9,7 @@ import 'package:tgp_flutter2/ui/promotion/promotion_item_details.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:api/extension/format.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class PromotionItem extends StatefulWidget {
   final Promotion promotion;
@@ -34,7 +35,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-      child: EnvironmentConfig.template_version == 10 ? _buildPromotionT10() : _buildPromotion(),
+      child: EnvironmentConfig.template_version == 10 || EnvironmentConfig.brandName == "SKY8" ? _buildPromotionT10() : _buildPromotion(),
     );
   }
 
@@ -49,46 +50,59 @@ class _PromotionItemState extends BaseState<PromotionItem> {
         ),
       );
 
-  _buildPromotionT10() => Card(
-        semanticContainer: true,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
-        elevation: 5,
-        child: Column(
-          children: [
-            Container(
-              width: context.screenWidth,
-              child: _buildPromotionImage(),
-            ),
-            Container(
-              height: 45.auto,
-              padding: EdgeInsets.all(10.auto),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 17,
-                    child: Container(
-                      margin: EdgeInsets.only(right: 3.auto),
-                      child: Text(
-                        widget.promotion.name ?? "",
-                        style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode?CustomColor.theme_text_black_white_color:CustomColor.theme_text_black_color),
-                        overflow: TextOverflow.ellipsis,
-
+  _buildPromotionT10() => InkWell(
+        onTap: () => _navigateToDetails(),
+        child: Card(
+          semanticContainer: true,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          color: (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode || EnvironmentConfig.brandName == "SKY8")
+              ? CustomColor.theme_bg_color
+              : Colors.white,
+          elevation: 5,
+          child: Column(
+            children: [
+              Container(
+                width: context.screenWidth,
+                child: _buildPromotionImage(),
+              ),
+              Container(
+                height: 45.auto,
+                padding: EdgeInsets.all(10.auto),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 17,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 3.auto),
+                        child: Text(
+                          widget.promotion.name ?? "",
+                          style: TextStyle(
+                            color: (() {
+                              if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+                                return CustomColor.theme_text_black_white_color;
+                              else if (EnvironmentConfig.brandName == "SKY8")
+                                return Colors.white;
+                              else
+                                return CustomColor.theme_text_black_color;
+                            }()),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: _buildDetailsButton(),
-                  )
-                ],
-              ),
-            )
-          ],
+                    Expanded(
+                      flex: 3,
+                      child: _buildDetailsButton(),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
 
@@ -105,17 +119,48 @@ class _PromotionItemState extends BaseState<PromotionItem> {
             fit: BoxFit.fill);
   }
 
-  _buildDetailsButton() => OutlineBorderButton(
-        title: getTranslatedText("details"),
-        onClick: () => _navigateToDetails(),
-        isEnabled: true,
-        width: 60,
-        height: 17,
-        color: CustomColor.theme_button_color,
-        fontSize: 14,
-        radius: 10,
-        padding: 4,
+  _buildDetailsButton() => Container(
+        alignment: Alignment.center,
+    decoration: BoxDecoration(
+        border: Border.all(color: CustomColor.theme_button_color),
+      borderRadius: BorderRadius.all(Radius.circular(10))
+    ),
+        /*width: width??context.screenWidth,
+          height: 25.auto,*/
+        child: SizedBox(
+          width: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                flex: 1,
+                child: AutoSizeText(
+                  getTranslatedText("details"),
+                  style: TextStyle(
+                    color: EnvironmentConfig.brandName == "SKY8" ? Colors.white : CustomColor.theme_button_color,
+                  ),
+                  minFontSize: 14,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
       );
+
+  // OutlineBorderButton(
+  //   title: getTranslatedText("details"),
+  //   onClick: () {},
+  //   isEnabled: true,
+  //   width: 60,
+  //   height: 17,
+  //   color: EnvironmentConfig.brandName == "SKY8" ? Colors.white : CustomColor.theme_button_color,
+  //   fontSize: 14,
+  //   radius: 10,
+  //   padding: 4,
+  // );
 
   _buildEmptyImage() => Container(
         height: 150.auto,
