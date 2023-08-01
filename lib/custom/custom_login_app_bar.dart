@@ -120,7 +120,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           ),
         ),
       );
-    } else if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.brandName == "SKY8") {
+    } else if (EnvironmentConfig.template_version == 15) {
       return AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
@@ -199,20 +199,26 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CachedNetworkImage(
-                placeholder: (context, url) => Container(
-                  height: 30.auto,
-                  width: 30.auto,
+              Expanded(
+                flex:1,
+                child: CachedNetworkImage(
+                  placeholder: (context, url) => Container(
+                    height: 30.auto,
+                    width: 30.auto,
+                  ),
+                  imageUrl: widget.brandLogoUrl!,
+                  //handling error
+                  height: _isDisplayUserDetailsRow() ? 38.auto : 40.auto,
+                  width: 100.auto,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.centerLeft,
+                  errorWidget: (context, url, error) => Container(),
                 ),
-                imageUrl: widget.brandLogoUrl!,
-                //handling error
-                height: _isDisplayUserDetailsRow() ? 38.auto : 40.auto,
-                width: 100.auto,
-                fit: BoxFit.contain,
-                alignment: Alignment.centerLeft,
-                errorWidget: (context, url, error) => Container(),
               ),
-              _getUserDetailsRow(),
+              Expanded(
+                flex: 0,
+                child: _getUserDetailsRow(),
+              )
             ],
           ),
         );
