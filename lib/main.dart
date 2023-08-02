@@ -146,6 +146,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       _getLocale();
       langList = LanguageProvider.getSingleton().list.map((e) => e.locale).toList();
       _getAssetsAudioPlayer();
+      GlobalValueUtil.updateLanguageCode();
       return _vm.getLanguageApiState;
     } else
       // _getAssetsAudioPlayer();

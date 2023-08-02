@@ -13,6 +13,8 @@ import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/language/language_item.dart';
 import 'package:tgp_flutter2/ui/language/language_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class LanguageView extends StatefulWidget {
   @override
   _LanguageViewState createState() => _LanguageViewState();
@@ -58,5 +60,6 @@ class _LanguageViewState extends BaseState<LanguageView> {
     Locale? _locale = await LanguageProvider.getSingleton().setLocale(language);
     MyApp.setLocale(context, _locale!);
     await _vm.getApiError();
+    GlobalValueUtil.updateLanguageCode();
   }
 }

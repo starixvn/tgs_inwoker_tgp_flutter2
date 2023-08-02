@@ -55,8 +55,9 @@ class GameViewModel extends BaseViewModel {
     GameType.Slot,
     GameType.Fishing,
     GameType.LotteryLobby,
-    GameType.EGame,
     GameType.CardGameLobby,
+    GameType.EGame,
+    GameType.Cockfight
   ];
   var _pbGamelist = [
     GameType.Slot,

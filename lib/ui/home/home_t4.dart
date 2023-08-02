@@ -14,6 +14,8 @@ import 'package:tgp_flutter2/ui/home/game/game_T4/game_T4.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class HomeT4 extends StatefulWidget {
   final bool isFirstRun;
   final Function? onPauseBgMusic;
@@ -50,13 +52,12 @@ class _HomeT4State extends BaseState<HomeT4> {
 
   @override
   void initState() {
-    getLanguage();
+    _getLanguage();
     super.initState();
   }
 
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  _getLanguage() async {
+    languageCode = GlobalValueUtil.languageCode;
     imageLanguageCode = ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
   }
 

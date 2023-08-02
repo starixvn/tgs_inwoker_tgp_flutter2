@@ -58,21 +58,13 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
   var itemHeightRatio = 335 / 90;
   int _current = 0;
   CarouselController carouselController = CarouselController();
-  var languageCode;
   var isLogin = false;
 
   @override
   void initState() {
     isLogin = widget.homeViewModel.userProfile != null;
-    getLanguage();
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
     super.initState();
-  }
-
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -304,14 +296,6 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
           ),
         ),
       ));
-  _getNoticeFlex() {
-    if ((languageCode?.contains("zh") ?? false))
-      return 1;
-    else if (languageCode == "th-TH" || languageCode == "vi-VN")
-      return 2;
-    else
-      return 4;
-  }
 
   _removeMultiLine(String text) {
     return text.replaceAll("\n", " ");

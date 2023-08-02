@@ -13,6 +13,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class HomeT3 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -46,13 +48,12 @@ class _HomeT3State extends BaseState<HomeT3> {
 
   @override
   void initState() {
-    getLanguage();
+    _getLanguage();
     super.initState();
   }
 
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  _getLanguage() async {
+    languageCode = GlobalValueUtil.languageCode;
     imageLanguageCode = ((languageCode?.contains("th") ?? false)) ? languageCode : "en-US";
   }
 

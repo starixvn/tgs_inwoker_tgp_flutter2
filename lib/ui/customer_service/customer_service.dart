@@ -171,7 +171,8 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                     child: SizedBox.expand(
                       // to fix not showing full text in thai language
                       child: Container(
-                        padding: EdgeInsets.only(top: 16),
+                        // padding: EdgeInsets.only(top: 16),
+                        alignment:Alignment.centerLeft,
                         child: AutoSizeText(
                           getTranslatedText("online_cs"),
                           style: TextStyle(
@@ -182,7 +183,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           minFontSize: 13,
                           stepGranularity: 1,
                           maxFontSize: 15,
-                          textAlign: TextAlign.start,
+                          textAlign: TextAlign.left,
                         ),
                       ),
                     ),

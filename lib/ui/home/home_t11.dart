@@ -15,6 +15,8 @@ import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/home/jackpot/jackpot.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class HomeT11 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -54,18 +56,10 @@ class _HomeT11State extends BaseState<HomeT11> {
   var currentBottomIndex = 0;
   var isMenu = false;
   var itemHeightRatio = 335 / 90;
-  var languageCode;
 
   @override
   void initState() {
-    getLanguage();
     super.initState();
-  }
-
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode =
-        _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -153,9 +147,9 @@ class _HomeT11State extends BaseState<HomeT11> {
   }
 
   _getNoticeFlex() {
-    if ((languageCode?.contains("zh") ?? false))
+    if (GlobalValueUtil.languageCode.contains("zh"))
       return 1;
-    else if (languageCode == "th-TH" || languageCode == "vi-VN")
+    else if (GlobalValueUtil.languageCode == "th-TH" || GlobalValueUtil.languageCode == "vi-VN")
       return 2;
     else
       return 3;

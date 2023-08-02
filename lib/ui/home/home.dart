@@ -81,7 +81,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   var itemHeightRatio = 335 / 90;
   var _vm = HomeViewModel();
   CarouselController carouselController = CarouselController();
-  var languageCode;
+
   var _gameViewModel = GameViewModel();
   var randomNumber;
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
@@ -140,8 +140,6 @@ class _HomeState extends BaseState<Home> implements RouteAware {
     //    task.add(_vm.getDepositRouletteTodayResult());
     //  }
     await Future.wait(task);
-    getLanguage();
-
     _handleNavigationAndPopUpDialog();
     await _vm.getUserDetails();
   }
@@ -151,10 +149,10 @@ class _HomeState extends BaseState<Home> implements RouteAware {
     token = _prefs.getString('token');
   }
 
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
-  }
+  // getLanguage() async {
+  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+  //   languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  // }
 
   Widget build(BuildContext context) {
     print("masukkksssHome:");

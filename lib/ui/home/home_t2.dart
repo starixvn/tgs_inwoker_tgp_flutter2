@@ -15,6 +15,8 @@ import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class HomeT2 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -60,17 +62,11 @@ class _HomeT2State extends BaseState<HomeT2> {
   CarouselController carouselController = CarouselController();
 
   //var widget.gameViewModel = GameViewModel();
-  var languageCode;
+
 
   @override
   void initState() {
-    getLanguage();
     super.initState();
-  }
-
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -157,9 +153,9 @@ class _HomeT2State extends BaseState<HomeT2> {
   }
 
   _getNoticeFlex() {
-    if ((languageCode?.contains("zh") ?? false))
+    if (GlobalValueUtil.languageCode.contains("zh") )
       return 1;
-    else if (languageCode == "th-TH" || languageCode == "vi-VN")
+    else if (GlobalValueUtil.languageCode == "th-TH" || GlobalValueUtil.languageCode == "vi-VN")
       return 2;
     else
       return 4;

@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -78,29 +79,35 @@ class _MenuState extends BaseState<Menu> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                margin: EdgeInsets.only(right: 10.auto),
-                child: imagePath.contains(".png")
-                    ? Image.asset(
-                        "images/menu/$imagePath",
-                        height: 18.auto,
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white,
-                      )
-                    : SvgPicture.asset(
-                        "images/menu/$imagePath.svg",
-                        matchTextDirection: true,
-                        height: 18.auto,
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white,
-                      ),
+              Expanded(
+                flex: 0,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.auto),
+                  child: imagePath.contains(".png")
+                      ? Image.asset(
+                          "images/menu/$imagePath",
+                          height: 18.auto,
+                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white,
+                        )
+                      : SvgPicture.asset(
+                          "images/menu/$imagePath.svg",
+                          matchTextDirection: true,
+                          height: 18.auto,
+                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.black : Colors.white,
+                        ),
+                ),
               ),
-              AutoSizeText(
-                getTranslatedText(title),
-                textAlign: TextAlign.center,
-                style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white),
-                minFontSize: 10,
-                maxLines: 1,
-                stepGranularity: 1,
-                overflow: TextOverflow.ellipsis,
+              Expanded(
+                flex: 1,
+                child: AutoSizeText(
+                  getTranslatedText(title),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white),
+                  minFontSize: 10,
+                  maxLines: GlobalValueUtil.languageCode == "ta-IN" && title == "withdrawal" ? 2 : 1,
+                  stepGranularity: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

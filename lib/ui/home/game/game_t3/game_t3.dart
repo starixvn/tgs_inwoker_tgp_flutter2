@@ -3,6 +3,7 @@ import 'package:api/entity/game_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -34,11 +35,12 @@ class GameT3 extends StatefulWidget {
 class _GameT3State extends BaseState<GameT3> {
   var gameName;
   double _imageRatio = 750 / 330;
-  var imageLanguageCode;
+  var imageLanguageCode, languageCode;
 
   @override
   void initState() {
     widget.vm.getGameProviderList(isRefresh: true);
+    getLanguage();
     super.initState();
   }
 
@@ -52,9 +54,8 @@ class _GameT3State extends BaseState<GameT3> {
     );
   }
 
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    var languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  getLanguage() {
+    languageCode = GlobalValueUtil.languageCode;
     imageLanguageCode = (languageCode.contains("th")) ? languageCode : "en-US";
   }
 
@@ -91,24 +92,31 @@ class _GameT3State extends BaseState<GameT3> {
                         _getFullGameTabImagePath(widget.vm.gameListT3![index].getImagePath()),
                       ),
                       Positioned(
-                        bottom: (widget.vm.gameListT3![index] == GameType.Sportsbook ||
-                                widget.vm.gameListT3![index] == GameType.LiveDealerLobby)
-                            ? 7.auto
-                            : 20.auto,
-                        left: (widget.vm.gameListT3![index] == GameType.Sportsbook ||
-                                widget.vm.gameListT3![index] == GameType.LiveDealerLobby)
-                            ? context.screenWidth / 3.8
-                            : 70.auto,
+                        bottom: _isTopGameTab(widget.vm.gameListT3![index]) ? 7.auto : 20.auto,
+                        right: 5,
+                        //left: _isTopGameTab(widget.vm.gameListT3![index]) ? context.screenWidth / 3.8 : 70.auto,
                         child: Container(
-                          width: 70.auto,
-                          height: 40.auto,
+                          width: 80.auto,
+                          height: _isTopGameTab(widget.vm.gameListT3![index]) ? 50.auto : 40.auto,
                           alignment: Alignment.bottomLeft,
+                          margin: EdgeInsets.only(right: 5.auto),
                           child: AutoSizeText(
                             widget.vm.gameListT3![index].getName(context, widget.vm.config?.menuItemShootFish ?? false),
+                            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
                             maxFontSize: 23,
                             minFontSize: 10,
                             stepGranularity: 1,
-                            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 23.auto),
+                            textAlign: _isTopGameTab(widget.vm.gameListT3![index]) ? TextAlign.right : TextAlign.left,
+                            maxLines: (() {
+                              switch (languageCode) {
+                                case "en-US":
+                                  return 1;
+                                case "ta-IN":
+                                  return 3;
+                                default:
+                                  return null;
+                              }
+                            }()),
                           ),
                         ),
                       ),
@@ -119,6 +127,8 @@ class _GameT3State extends BaseState<GameT3> {
       ),
     );
   }
+
+  _isTopGameTab(GameType gameType) => (gameType == GameType.Sportsbook || gameType == GameType.LiveDealerLobby);
 
   _getFullGameTabImagePath(String path) {
     if (widget.vm.config?.homePageAnimated ?? false)

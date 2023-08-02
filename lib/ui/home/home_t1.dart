@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
@@ -52,17 +53,10 @@ class _HomeT1State extends BaseState<HomeT1> {
   var itemHeightRatio = 335 / 90;
   int _current = 0;
   CarouselController carouselController = CarouselController();
-  String? languageCode;
 
   @override
   void initState() {
-    getLanguage();
     super.initState();
-  }
-
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -137,8 +131,7 @@ class _HomeT1State extends BaseState<HomeT1> {
                         width: 8.auto,
                         height: 8.auto,
                         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? Colors.redAccent : Colors.grey),
                       );
                     }).toList(),
                   ),
@@ -157,7 +150,7 @@ class _HomeT1State extends BaseState<HomeT1> {
         children: [
           //if (widget.homeViewModel.config?.onlineUser ?? false)
           Expanded(
-            flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
+            flex: (GlobalValueUtil.languageCode.contains("zh")) ? 2 : 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -227,9 +220,9 @@ class _HomeT1State extends BaseState<HomeT1> {
   }
 
   _getNoticeFlex() {
-    if ((languageCode?.contains("zh") ?? false))
+    if ((GlobalValueUtil.languageCode.contains("zh") ))
       return 1;
-    else if (languageCode == "th-TH" || languageCode == "vi-VN")
+    else if (GlobalValueUtil.languageCode == "th-TH" || GlobalValueUtil.languageCode == "vi-VN")
       return 2;
     else
       return 4;

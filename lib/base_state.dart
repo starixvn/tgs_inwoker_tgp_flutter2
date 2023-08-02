@@ -10,6 +10,7 @@ import 'package:api/api.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:api/network/event_result.dart';
 import 'package:html/parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -23,6 +24,7 @@ import 'package:url_launcher/url_launcher.dart';
 abstract class BaseState<T extends StatefulWidget> extends State<T> {
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+
   // AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   // get assetsAuPlayer => assetsAudioPlayer;
   get config => contentRepo.featuresConfig;

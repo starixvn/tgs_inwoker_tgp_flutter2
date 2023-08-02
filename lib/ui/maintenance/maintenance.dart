@@ -17,6 +17,8 @@ import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart'
 import 'package:tgp_flutter2/ui/maintenance/maintenance_dialog.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class Maintenance extends StatefulWidget {
   final bool isShowCS;
   final bool isShowsAppBar;
@@ -30,7 +32,6 @@ class Maintenance extends StatefulWidget {
 
 class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserver {
   var _vm = MaintenanceViewModel();
-  var languageCode;
 
   @override
   void initState() {
@@ -48,14 +49,13 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
       _vm.getBrandCommunication();
       _vm.getLiveChatUrl(code);
     }
-    getLanguage();
   }
 
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
-    print(languageCode);
-  }
+  // getLanguage() async {
+  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
+  //   languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
+  //   print(languageCode);
+  // }
 
   @override
   void dispose() {
@@ -182,7 +182,7 @@ class _MaintenanceState extends BaseState<Maintenance> with WidgetsBindingObserv
             fontSize: 20,
             color: Colors.white,
             padding: 0,
-            minFontSize: languageCode == "th-TH" ? 15 : 5,
+            minFontSize: GlobalValueUtil.languageCode == "th-TH" ? 15 : 5,
           ),
           ColorButton(
             title: getTranslatedText("instant_messaging"),

@@ -14,6 +14,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
+import '../../GlobalValueUtil.dart';
+
 class HomeT8 extends StatefulWidget {
   final Function? onPauseBgMusic;
   final Function? onResumeBgMusic;
@@ -52,17 +54,10 @@ class _HomeT8State extends BaseState<HomeT8> {
   var itemHeightRatio = 335 / 90;
   int _current = 0;
   CarouselController carouselController = CarouselController();
-  var languageCode;
 
   @override
   void initState() {
-    getLanguage();
     super.initState();
-  }
-
-  getLanguage() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
   }
 
   Widget build(BuildContext context) {
@@ -120,7 +115,7 @@ class _HomeT8State extends BaseState<HomeT8> {
         children: [
           // if (widget.homeViewModel.config?.onlineUser ?? false)
           Expanded(
-            flex: (languageCode?.contains("zh") ?? false) ? 2 : 3,
+            flex: (GlobalValueUtil.languageCode.contains("zh")) ? 2 : 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -196,9 +191,9 @@ class _HomeT8State extends BaseState<HomeT8> {
   }
 
   _getNoticeFlex() {
-    if ((languageCode?.contains("zh") ?? false))
+    if (GlobalValueUtil.languageCode.contains("zh") )
       return 1;
-    else if (languageCode == "th-TH" || languageCode == "vi-VN")
+    else if (GlobalValueUtil.languageCode == "th-TH" || GlobalValueUtil.languageCode == "vi-VN")
       return 2;
     else
       return 4;
