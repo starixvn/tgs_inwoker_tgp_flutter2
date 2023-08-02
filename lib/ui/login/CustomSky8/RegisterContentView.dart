@@ -353,10 +353,14 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
   _buildRegisterTermsText() => Container(
         margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 35.auto,
-              child: CustomCheckbox(checkColor: Colors.white, isChecked: true, iconSize: 15.0, onChanged: () => onChanged()),
+            Expanded(
+              flex: 0,
+              child: Container(
+                width: 35.auto,
+                child: CustomCheckbox(checkColor: Colors.white, isChecked: true, iconSize: 15.0, onChanged: () => onChanged()),
+              ),
             ),
             // Expanded(
             //   flex: 1,
@@ -375,7 +379,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
             //   // ),
             // ),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Text(
                 getTranslatedText("register_terms"),
                 maxLines: 5,

@@ -191,31 +191,37 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
       margin: EdgeInsets.only(left: 5.auto, right: 15.auto),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [_buildCheckBox(), _buildForgotPassword()],
+        children: [
+          Expanded(flex: 1, child: _buildCheckBox()),
+          Expanded(flex: 1, child: _buildForgotPassword()),
+        ],
       ));
 
-  _buildForgotPassword() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed(RoutePath.forgotPassword);
-            },
-            child: Text(
-              getTranslatedText("forgot_password_with_question_mark").replaceAll('?', ''),
-              style: TextStyle(
-                  color: Colors.white, //CustomColor.theme_text_black_white_color,
-                  // decoration: TextDecoration.underline,
-                  fontSize: 12.auto),
-            ),
-          )
-        ],
+  _buildForgotPassword() => Container(
+        alignment: Alignment.centerRight,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(RoutePath.forgotPassword);
+          },
+          child: Text(
+            getTranslatedText("forgot_password_with_question_mark").replaceAll('?', ''),
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                color: Colors.white, //CustomColor.theme_text_black_white_color,
+                // decoration: TextDecoration.underline,
+                fontSize: 12.auto),
+          ),
+        ),
       );
 
   _buildCheckBox() => Row(
+        // alignment: WrapAlignment.start,
+        // runAlignment: WrapAlignment.start,
         children: [
-          CustomCheckbox(checkColor: Colors.white, iconSize: 15.0, onChanged: () => onChanged()),
-
+          Expanded(
+            flex: 0,
+            child: CustomCheckbox(checkColor: Colors.white, iconSize: 15.0, onChanged: () => onChanged()),
+          ),
           // Checkbox(
           //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           //   value: this._isRememberMe,
@@ -233,11 +239,15 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
           //     if (!_isRememberMe) _vm.removePrefs();
           //   }),
           // ),
-          Text(
-            getTranslatedText("rmb_password"),
-            style: TextStyle(
+          Expanded(
+            flex: 1,
+            child: Text(
+              getTranslatedText("rmb_password"),
+              style: TextStyle(
                 color: Colors.white, //CustomColor.theme_text_black_white_color,
-                fontSize: 12.auto),
+                fontSize: 12.auto,
+              ),
+            ),
           ),
         ],
       );
@@ -281,15 +291,15 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InkWell(
-                      onTap: () {
-                        _changeLanguage(list[index]);
-                      },
-                      child: Text(
-                        list[index].name,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: deviceLanguage == list[index] ? CustomColor.theme_button_color : Colors.white /*CustomColor.theme_text_black_white_color*/),
-                      ),
+                    onTap: () {
+                      _changeLanguage(list[index]);
+                    },
+                    child: Text(
+                      list[index].name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: deviceLanguage == list[index] ? CustomColor.theme_button_color : Colors.white /*CustomColor.theme_text_black_white_color*/),
+                    ),
                   ),
                   SizedBox(width: 5),
                   Visibility(

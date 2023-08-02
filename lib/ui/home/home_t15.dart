@@ -295,7 +295,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                   typeName,
                   style: TextStyle(color: CustomColor.theme_button_color),
                   minFontSize: 10,
-                  maxLines: 1,
+                  maxLines: 2,
                   textAlign: TextAlign.center,
                   stepGranularity: 1,
                 ),

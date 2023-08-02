@@ -156,7 +156,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
             child: Row(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 0,
                   child: SvgPicture.asset(
                     "images/support/support-call.svg",
                     matchTextDirection: true,
@@ -165,7 +165,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   ),
                 ),
                 Expanded(
-                  flex: 10,
+                  flex: 1,
                   child: Container(
                     margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
                     child: SizedBox.expand(
@@ -189,7 +189,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 1,
                   child: AutoSizeText(
                     getTranslatedText("contact"),
                     style: TextStyle(
@@ -220,7 +220,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
           child: Row(
             children: [
               Expanded(
-                flex: 1,
+                flex: 0,
                 child: SvgPicture.asset(
                   "images/support/$imagePath.svg",
                   matchTextDirection: true,
@@ -229,7 +229,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 ),
               ),
               Expanded(
-                flex: 10,
+                flex: 1,
                 child: Container(
                   margin: EdgeInsets.only(left: 10.auto),
                   child: Text(
@@ -242,7 +242,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 1,
                 child: InkWell(
                   onTap: () {
                     var contact = qrCode?.appId ?? qrCode?.phone;
@@ -254,10 +254,10 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                     // CustomToast.show(getTranslatedText("copy_text"));
                   },
                   child: /*ImageIcon(
-                    AssetImage("images/support/ic_copy.png"),
-                    size: 23.auto,
-                    color: CustomColor.theme_text_black_color,
-                  ),*/
+                      AssetImage("images/support/ic_copy.png"),
+                      size: 23.auto,
+                      color: CustomColor.theme_text_black_color,
+                    ),*/
                       Text(
                     getTranslatedText("cs_join"),
                     style: TextStyle(

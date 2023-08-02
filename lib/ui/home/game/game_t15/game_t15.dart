@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
+import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:api/extension/screen_apis.dart';
@@ -37,6 +38,7 @@ class _GameT15State extends BaseState<GameT15> {
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
 
+
   @override
   void initState() {
     currentGameType = widget.vm.gameTypeList.first;
@@ -53,13 +55,13 @@ class _GameT15State extends BaseState<GameT15> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: Container(
+                  Expanded(
+                      child: Container(
                     // width: 65.auto,
                     margin: EdgeInsets.only(right: 5.auto, left: 5.auto),
                     child: ListView(
                       // padding: EdgeInsets.only(bottom: 10.auto),
-                      children:
-                      List.generate(widget.vm.gameTypeList.length, (index) {
+                      children: List.generate(widget.vm.gameTypeList.length, (index) {
                         var gameType = widget.vm.gameTypeList[index];
                         if (index == 0)
                           return _buildTopGameTab(index, gameType);
@@ -70,7 +72,6 @@ class _GameT15State extends BaseState<GameT15> {
                       }),
                     ),
                   )),
-
                   Container(
                     width: context.screenWidth - (90.auto),
                     child: GameItemT15(
@@ -110,25 +111,24 @@ class _GameT15State extends BaseState<GameT15> {
         //     bottomRight: Radius.circular(5),
         //   ),
         // ),
-        margin: EdgeInsets.only(top: 7.auto, bottom: 10.auto),//EdgeInsets.only(bottom: 20.auto),
+        margin: EdgeInsets.only(top: 7.auto, bottom: 10.auto), //EdgeInsets.only(bottom: 20.auto),
         child: _buildGameTab(tabIndex, gameType),
       );
 
   _buildMiddleGameTab(int tabIndex, GameType gameType) => Container(
-    // width: 40,
-    //     decoration: BoxDecoration(color: Colors.transparent),
+        // width: 40,
+        //     decoration: BoxDecoration(color: Colors.transparent),
         margin: EdgeInsets.only(top: 7.auto),
         child: _buildGameTab(tabIndex, gameType),
       );
 
   _buildGameTab(int tabIndex, GameType gameType) {
-    return
-      InkWell(
+    return InkWell(
       onTap: () {
         _onTabClick(tabIndex, gameType);
       },
       child: Container(
-        height: (90 * (36 / 74 )),
+          height: (90 * (36 / 74)),
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('images/game/T15/${tabIndex == currentTabIndex ? "gametype-selected" : "gametype"}.png'),
@@ -136,40 +136,48 @@ class _GameT15State extends BaseState<GameT15> {
             ),
             // shape: BoxShape.circle,
           ),
-          padding: EdgeInsets.only(top: 0.auto, left: 5.auto, right: 0.auto),
+          padding: EdgeInsets.only(top: 0.auto, left: 5.auto, right: 2.auto),
           child: Row(
+            // direction: Axis.horizontal,
             children: [
-              Container(
-                width: 18.auto,
-                margin: EdgeInsets.only(right: 2.5.auto),
-                child: Image.asset(
-                          "images/game_tab/t15/${gameType.getImagePath()}${tabIndex == currentTabIndex ? "-selected" : ""}.png",
-                        width: 18.auto,
-                        height: 18.auto,
-                        // color: (tabIndex == currentTabIndex &&
-                        //             EnvironmentConfig.brandName == "PB" ||
-                        //         tabIndex != currentTabIndex &&
-                        //             EnvironmentConfig.brandName != "PB")
-                        //     //only PB, selected game tab color is grey, not selected game tab is button color
-                        //     ? CustomColor.theme_text_grey_color
-                        //     : CustomColor.theme_button_color,
-                      )
+              Expanded(
+                flex: 0,
+                child: Container(
+                    width: 18.auto,
+                    margin: EdgeInsets.only(right: 2.5.auto),
+                    child: Image.asset(
+                      "images/game_tab/t15/${gameType.getImagePath()}${tabIndex == currentTabIndex ? "-selected" : ""}.png",
+                      width: 18.auto,
+                      height: 18.auto,
+                      // color: (tabIndex == currentTabIndex &&
+                      //             EnvironmentConfig.brandName == "PB" ||
+                      //         tabIndex != currentTabIndex &&
+                      //             EnvironmentConfig.brandName != "PB")
+                      //     //only PB, selected game tab color is grey, not selected game tab is button color
+                      //     ? CustomColor.theme_text_grey_color
+                      //     : CustomColor.theme_button_color,
+                    )),
               ),
-              Expanded(child: AutoSizeText(
-                gameType.getName(
-                    context, widget.vm.config?.menuItemShootFish ?? false),
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: (tabIndex == currentTabIndex)
-                      ? Color(0xff9aa4c2)
-                      : Colors.white,
-                  fontWeight: FontWeight.bold
+              Flexible(
+                 flex: 1,
+                child: Text(
+                  gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
+                  textAlign: TextAlign.left,
+                  maxLines: 5,
+                  overflow: TextOverflow.visible,
+                  softWrap: true,
+                  style: TextStyle(color: (tabIndex == currentTabIndex) ? Color(0xff9aa4c2) : Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
                 ),
-                minFontSize: 2,
-                maxFontSize: 12,
-                stepGranularity: 1,
-                maxLines: 2,
-              ),)
+                // AutoSizeText(
+                //   gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
+                //   textAlign: TextAlign.left,
+                //   style: TextStyle(color: (tabIndex == currentTabIndex) ? Color(0xff9aa4c2) : Colors.white, fontWeight: FontWeight.bold),
+                //   minFontSize: 2,
+                //   maxFontSize: 12,
+                //   stepGranularity: 1,
+                //   maxLines: 5,
+                // ),
+              ),
             ],
           )),
     );
@@ -187,7 +195,7 @@ class _GameT15State extends BaseState<GameT15> {
     setState(() {
       currentGameType = gameType == GameType.VirtualSports ? GameType.Sportsbook : gameType;
       _controller.animateTo(0, duration: Duration(milliseconds: 250), curve: Curves.linear);
-       currentTabIndex = tabIndex;
+      currentTabIndex = tabIndex;
       // _controller.animateTo(des,
       //     curve: Curves.linear, duration: Duration(milliseconds: 250));
     });
@@ -203,11 +211,7 @@ class _GameT15State extends BaseState<GameT15> {
         des += scrollTab * widget.vm.gameProviderList![i].length;
         index = i;
       } else if (_controller.offset >= _controller.position.maxScrollExtent) {
-        index = widget.vm.gameProviderList!
-                .where((i) => i.length > 0)
-                .toList()
-                .length -
-            1;
+        index = widget.vm.gameProviderList!.where((i) => i.length > 0).toList().length - 1;
       }
     });
     setState(() {
