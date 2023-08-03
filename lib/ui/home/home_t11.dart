@@ -48,8 +48,7 @@ class _HomeT11State extends BaseState<HomeT11> {
     '2',
     //'images/banner_2.jpg'
   ];
-  String marquee =
-      "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
+  String marquee = "《GD真人维护公告》GD真人将于 7 月 2 8 日 09:00 至 14:00 进行维护 维护期间不提供游戏相关服务。若有问题欢迎与在线客服联系 如有问题欢迎与在线客服联系，谢谢";
   ScrollController controller = ScrollController();
   var currentTabIndex = "0";
   UserProfile? user;
@@ -85,8 +84,7 @@ class _HomeT11State extends BaseState<HomeT11> {
   }
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(
-        parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
       padding: EdgeInsets.only(top: 5.auto, bottom: 5.auto),
       margin: EdgeInsets.only(top: 5.auto),
@@ -122,9 +120,7 @@ class _HomeT11State extends BaseState<HomeT11> {
           Expanded(
               flex: 8,
               child: Container(
-                decoration: BoxDecoration(
-                    color: CustomColor.theme_button_color.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10.0)),
+                decoration: BoxDecoration(color: CustomColor.theme_button_color.withOpacity(0.5), borderRadius: BorderRadius.circular(10.0)),
                 margin: EdgeInsets.symmetric(horizontal: 8.auto),
                 height: 18.auto,
                 child: announcement.isEmpty
@@ -170,13 +166,10 @@ class _HomeT11State extends BaseState<HomeT11> {
       );
 
   _buildImageSlider() {
-    String brand = EnvironmentConfig.appTitleName == "PG Gaming"
-        ? "PGG"
-        : EnvironmentConfig.appTitleName;
+    String brand = EnvironmentConfig.appTitleName == "PG Gaming" ? "PGG" : EnvironmentConfig.appTitleName;
     return Container(
       height: context.screenHeight / 5,
-      child: widget.homeViewModel.bannerList == null ||
-              widget.homeViewModel.bannerList!.isEmpty
+      child: widget.homeViewModel.bannerList == null || widget.homeViewModel.bannerList!.isEmpty
           ? buildEmptyContainer()
           : ImageSlideshow(
               initialPage: 0,
@@ -184,25 +177,17 @@ class _HomeT11State extends BaseState<HomeT11> {
               indicatorBackgroundColor: Colors.grey,
               children: List.generate(
                   widget.homeViewModel.bannerList!.length,
-                  (index) =>
-                      widget.homeViewModel.bannerList![index].mobileUrl == null
-                          ? buildEmptyContainer()
-                          : CachedNetworkImage(
-                              placeholder: (context, url) =>
-                                  buildEmptyContainer(),
-                              imageUrl: widget
-                                  .homeViewModel.bannerList![index].mobileUrl!,
-                              //handling error
-                              fit: BoxFit.fill,
-                              errorWidget: (context, url, error) =>
-                                  buildEmptyContainer(),
-                            )),
+                  (index) => widget.homeViewModel.bannerList![index].mobileUrl == null
+                      ? buildEmptyContainer()
+                      : CachedNetworkImage(
+                          placeholder: (context, url) => buildEmptyContainer(),
+                          imageUrl: widget.homeViewModel.bannerList![index].mobileUrl!,
+                          //handling error
+                          fit: BoxFit.fill,
+                          errorWidget: (context, url, error) => buildEmptyContainer(),
+                        )),
               isLoop: true,
               autoPlayInterval: 3000),
     );
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 }

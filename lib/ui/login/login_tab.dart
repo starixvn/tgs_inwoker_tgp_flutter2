@@ -14,8 +14,9 @@ import 'package:api/extension/screen_apis.dart';
 class LoginTab extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final bool defaultRegisterTab;
+  final ValueChanged<int> updateIndex;
 
-  LoginTab({this.config, this.defaultRegisterTab = false});
+  LoginTab({this.config, this.defaultRegisterTab = false, required this.updateIndex});
 
   @override
   _LoginTabState createState() => _LoginTabState();
@@ -58,6 +59,7 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
               setState(() {
                 currentTabIndex = index;
               });
+              widget.updateIndex(index);
             },
             labelPadding: EdgeInsets.symmetric(horizontal: 5.auto),
             indicatorColor: Colors.transparent,
@@ -68,23 +70,23 @@ class _LoginTabState extends BaseState<LoginTab> with TickerProviderStateMixin {
                 text: getTranslatedText(item["text"]),
                 index: int.parse(item['id']),
                 currentTabIndex: currentTabIndex,
-                width: context.screenWidth / 2,
+                width: EnvironmentConfig.template_version == 14 ? context.screenWidth / 3.5 : context.screenWidth / 2,
                 height: 40.auto,
+                isHideInactiveBg: true,
               ));
             }).toList(),
           ),
         ),
         Expanded(
-            //height: context.screenHeight - 250.auto,
-            //width: context.screenWidth,
-            child: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: tabController,
-          children: [
-            LoginContent(vm: _vm),
-            RegisterContent( vm: _vm),
-          ],
-        ))
+          child: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: tabController,
+            children: [
+              LoginContent(vm: _vm),
+              RegisterContent(vm: _vm),
+            ],
+          ),
+        )
       ],
     );
   }

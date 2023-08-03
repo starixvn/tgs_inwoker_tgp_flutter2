@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,6 +22,7 @@ import 'package:tgp_flutter2/ui/login/phone_re_verification/login_otp_text_form_
 import 'package:tgp_flutter2/ui/login/phone_re_verification/login_phone_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/phone_re_verification/phone_re_verification.dart';
 
+import '../../BaseNavigate/BottomNavigationController.dart';
 import 'CustomCheckbox.dart';
 
 class RegisterContentView extends StatefulWidget {
@@ -355,12 +358,22 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 0,
-              child: Container(
-                width: 35.auto,
-                child: CustomCheckbox(checkColor: Colors.white, isChecked: true, iconSize: 15.0, onChanged: () => onChanged()),
-              ),
+            // Expanded(
+            //   flex: 0,
+            //   child: Container(
+            //     width: 35.auto,
+            //     child: CustomCheckbox(checkColor: Colors.white, isChecked: true, iconSize: 15.0, onChanged: () => onChanged()),
+            //   ),
+            Container(
+              width: 35.auto,
+              child: CustomCheckbox(
+                  activeBackgroundColor: Colors.white,
+                  inactiveBackgroundColor: Colors.transparent,
+                  activeIconColor: Colors.black,
+                  inactiveIconColor: Colors.white,
+                  isChecked: true,
+                  iconSize: 15.0,
+                  onChanged: () => onChanged()),
             ),
             // Expanded(
             //   flex: 1,
@@ -511,11 +524,11 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
 
   _navigateToAddCard() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 4);
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    index: 4,
+              builder: (context) => BottomNavigationController(
                   )));
       Navigator.push(context, MaterialPageRoute(builder: (context) => AddCard(isNavigateFromRegister: true)));
       //Navigator.pushNamed(context, RoutePath.addCard);

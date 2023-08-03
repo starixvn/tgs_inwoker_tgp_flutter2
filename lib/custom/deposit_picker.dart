@@ -67,7 +67,7 @@ class _DepositPickerState extends BaseState<DepositPicker> {
                         style: TextStyle(
                           color: widget.isHintText
                               ? Colors.grey
-                              : ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+                              : ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14
                                   ? CustomColor.black
                                   : CustomColor.theme_button_color),
                         ),

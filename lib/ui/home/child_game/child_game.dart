@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:api/entity/game_type.dart';
 import 'package:api/extension/screen_apis.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:tgp_flutter2/my_behavior.dart';

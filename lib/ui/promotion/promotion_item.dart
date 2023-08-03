@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +16,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 class PromotionItem extends StatefulWidget {
   final Promotion promotion;
   final PromotionViewModel vm;
+  final int index;
 
   PromotionItem({
     required this.promotion,
     required this.vm,
+    required this.index,
   });
 
   @override
@@ -49,6 +53,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
           ),
         ),
       );
+
 
   _buildPromotionT10() => InkWell(
         onTap: () => _navigateToDetails(),
@@ -92,6 +97,38 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+
+  // _buildPromotionT10() => Card(
+  //       semanticContainer: true,
+  //       clipBehavior: Clip.antiAlias,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(20.0),
+  //       ),
+  //       color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+  //       elevation: 5,
+  //       child: Column(
+  //         children: [
+  //           Container(
+  //             width: context.screenWidth,
+  //             child: _buildPromotionImage(),
+  //           ),
+  //           Container(
+  //             height: 45.auto,
+  //             padding: EdgeInsets.all(10.auto),
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Expanded(
+  //                   flex: 17,
+  //                   child: Container(
+  //                     margin: EdgeInsets.only(right: 3.auto),
+  //                     child: Text(
+  //                       widget.promotion.name ?? "",
+  //                       style: TextStyle(
+  //                           color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+  //                               ? CustomColor.theme_text_black_white_color
+  //                               : CustomColor.theme_text_black_color),
+  //                       overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Expanded(
@@ -164,17 +201,25 @@ class _PromotionItemState extends BaseState<PromotionItem> {
 
   _buildEmptyImage() => Container(
         height: 150.auto,
-        color: CustomColor.very_light_pink_four,
+        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : CustomColor.very_light_pink_four,
       );
 
-  _navigateToDetails() => Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PromotionItemDetails(
-                imagePath: imageUrl,
-                promotion: widget.promotion,
-                vm: widget.vm,
-              )));
+  _navigateToDetails() {
+    Widget view = PromotionItemDetails(
+      imagePath: imageUrl,
+      promotion: widget.promotion,
+      vm: widget.vm,
+      index: widget.index,
+    );
+    if (EnvironmentConfig.template_version == 14) {
+      NotificationCenter().notify(
+        NotificationServiceName().showDialogViewToHome,
+        data: {"view": view, "title": ""},
+      );
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => view));
+    }
+  }
 
   _getImageUrl() {
     var language = getCurrentLanguage().apiCode ?? "en-US";

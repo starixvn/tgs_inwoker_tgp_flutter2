@@ -123,7 +123,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                     padding: EdgeInsets.only(bottom: 3.auto),
                     child: AutoSizeText(
                       getTranslatedText("order_number") + (_vm.accountReportList![index].id ?? ""),
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(color: _getTextColor()),
                       minFontSize: 10,
                       maxFontSize: 12,
                       stepGranularity: 1,
@@ -136,17 +136,15 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AutoSizeText(
-                        (_vm.accountReportList![index].gameName ?? "") +
-                            " - " +
-                            (_vm.accountReportList![index].gameProviderName ?? ""),
-                        style: TextStyle(color: Colors.grey[700]),
+                        (_vm.accountReportList![index].gameName ?? "") + " - " + (_vm.accountReportList![index].gameProviderName ?? ""),
+                        style: TextStyle(color: _getTextColor()),
                         minFontSize: 10,
                         maxFontSize: 12,
                         stepGranularity: 1,
                       ),
                       AutoSizeText(
                         Format().dateTimezoneFormat(_vm.accountReportList![index].createdOn),
-                        style: TextStyle(color: Colors.grey[700]),
+                        style: TextStyle(color: _getTextColor()),
                         minFontSize: 10,
                         maxFontSize: 12,
                         stepGranularity: 1,
@@ -174,7 +172,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
               ? Format().currencyFormat(text.toInt())
               //with 2 decimal places
               : text}",
-          style: TextStyle(color: Colors.grey[700]),
+          style: TextStyle(color: _getTextColor()),
           minFontSize: 5,
           maxFontSize: 12,
           stepGranularity: 1,
@@ -189,7 +187,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
           children: [
             AutoSizeText(
               getTranslatedText(title) + " : ",
-              style: TextStyle(color: Colors.grey[700]),
+              style: TextStyle(color: _getTextColor()),
               minFontSize: 5,
               maxFontSize: 12,
               stepGranularity: 1,
@@ -199,7 +197,7 @@ class AccountReportViewState extends BaseState<AccountReportView> {
                 " ${EnvironmentConfig.brandName == "IDR1"
                     //without decimal places
                     ? Format().currencyFormat(text.toInt()) : text}",
-                style: TextStyle(color: _getTextColor(text.toString())),
+                style: TextStyle(color: _getWinLossTextColor(text.toString())),
                 minFontSize: 5,
                 maxFontSize: 12,
                 stepGranularity: 1,
@@ -208,11 +206,18 @@ class AccountReportViewState extends BaseState<AccountReportView> {
         ),
       );
 
-  _getTextColor(String? text) {
+  _getWinLossTextColor(String? text) {
     if (text != null && text != "null")
       return (text.contains("-") ? Colors.red : Colors.green);
     else
-      return Colors.grey[700];
+      return _getTextColor();
+  }
+
+  Color _getTextColor() {
+    if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.grey.shade700;
   }
 
   _getReportItemType(int index) {

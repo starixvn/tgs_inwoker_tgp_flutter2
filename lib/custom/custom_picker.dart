@@ -7,7 +7,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import '../environment_config.dart';
 
 class CustomPicker extends StatefulWidget {
-  final String title;
+  final String? title;
   final String displayText;
   final List<dynamic>? list;
   final Function onClick;
@@ -15,14 +15,7 @@ class CustomPicker extends StatefulWidget {
   final double width;
   final String? tipsText;
 
-  CustomPicker(
-      {required this.title,
-      required this.displayText,
-      this.list,
-      required this.onClick,
-      required this.isHintText,
-      required this.width,
-      this.tipsText});
+  CustomPicker({this.title, required this.displayText, this.list, required this.onClick, required this.isHintText, required this.width, this.tipsText});
 
   @override
   _CustomPickerState createState() => _CustomPickerState();
@@ -39,10 +32,11 @@ class _CustomPickerState extends BaseState<CustomPicker> {
             alignment: Alignment.topLeft,
             child: Row(
               children: [
-                Text(
-                  getTranslatedText(widget.title) ?? widget.title,
-                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
-                ),
+                if (widget.title != null)
+                  Text(
+                    getTranslatedText(widget.title) ?? widget.title,
+                    style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
+                  ),
                 if (widget.tipsText != null)
                   Container(
                     margin: EdgeInsets.only(left: 10.auto),
@@ -79,7 +73,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
                           child: AutoSizeText(
                             widget.displayText,
                             style: TextStyle(
-                              color: widget.isHintText ? Colors.grey : (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color :CustomColor.theme_button_color),
+                              color: _getTextColor(),
                             ),
                             maxFontSize: 12,
                             minFontSize: 8,
@@ -99,5 +93,16 @@ class _CustomPickerState extends BaseState<CustomPicker> {
         ],
       ),
     );
+  }
+
+  Color _getTextColor() {
+    if (widget.isHintText)
+      return Colors.grey;
+    else if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+      return CustomColor.theme_bg_color;
+    else if (EnvironmentConfig.template_version == 14)
+      return Colors.black;
+    else
+      return CustomColor.theme_button_color;
   }
 }

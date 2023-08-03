@@ -29,8 +29,7 @@ class LoginTextFormField extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      height: 45
-          .auto, //EnvironmentConfig.template_version == 15 ? 45.auto : 40.auto,
+      height: 45.auto, //EnvironmentConfig.template_version == 15 ? 45.auto : 40.auto,
       padding: EdgeInsets.symmetric(horizontal: 10.auto),
       decoration: BoxDecoration(
         color: EnvironmentConfig.template_version == 11
@@ -38,13 +37,7 @@ class LoginTextFormField extends StatelessWidget {
             : EnvironmentConfig.template_version == 15
                 ? Colors.black.withOpacity(0.44)
                 : Colors.white,
-        borderRadius: BorderRadius.circular(
-          EnvironmentConfig.template_version == 11
-              ? 25
-              : EnvironmentConfig.template_version == 15
-                  ? 10
-                  : 2,
-        ),
+        borderRadius: BorderRadius.circular(_getRadius()),
       ),
       child: Row(
         children: [
@@ -68,9 +61,7 @@ class LoginTextFormField extends StatelessWidget {
               textInputAction: textInputAction,
               style: TextStyle(
                   fontSize: 13.auto,
-                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15)
-                      ? Colors.white
-                      : Colors.black),
+                  color: (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? Colors.white : Colors.black),
               decoration: InputDecoration(
                 isDense: true,
                 border: InputBorder.none,
@@ -88,5 +79,17 @@ class LoginTextFormField extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double _getRadius() {
+    switch (EnvironmentConfig.template_version) {
+      case 11:
+        return 25;
+      case 14:
+      case 15:
+        return 10;
+      default:
+        return 2;
+    }
   }
 }

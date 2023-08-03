@@ -17,6 +17,7 @@ import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
+import '../../BaseNavigate/BottomNavigationController.dart';
 import 'CustomCheckbox.dart';
 
 class LoginContentView extends StatefulWidget {
@@ -194,6 +195,19 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
         children: [
           Expanded(flex: 1, child: _buildCheckBox()),
           Expanded(flex: 1, child: _buildForgotPassword()),
+
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.of(context).pushNamed(RoutePath.forgotPassword);
+          //   },
+          //   child: Text(
+          //     getTranslatedText("forgot_password_with_question_mark").replaceAll('?', ''),
+          //     style: TextStyle(
+          //         color: Colors.white, //CustomColor.theme_text_black_white_color,
+          //         // decoration: TextDecoration.underline,
+          //         fontSize: 12.auto),
+          //   ),
+          // )
         ],
       ));
 
@@ -218,10 +232,20 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
         // alignment: WrapAlignment.start,
         // runAlignment: WrapAlignment.start,
         children: [
-          Expanded(
-            flex: 0,
-            child: CustomCheckbox(checkColor: Colors.white, iconSize: 15.0, onChanged: () => onChanged()),
+          // Expanded(
+          //   flex: 0,
+          //   child: CustomCheckbox(checkColor: Colors.white, iconSize: 15.0, onChanged: () => onChanged()),
+          // ),
+
+          CustomCheckbox(
+            activeBackgroundColor: Colors.white,
+            inactiveBackgroundColor: Colors.transparent,
+            activeIconColor: Colors.black,
+            inactiveIconColor: Colors.white,
+            iconSize: 15.0,
+            onChanged: () => onChanged(),
           ),
+
           // Checkbox(
           //   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           //   value: this._isRememberMe,
@@ -277,6 +301,7 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
   _buildChangeLanguageText() {
     var list = LanguageProvider.getSingleton().list;
     var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+
     return IntrinsicHeight(
       child: Container(
         margin: EdgeInsets.only(top: 10.auto),
@@ -318,6 +343,33 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
           }),
         ),
       ),
+    // return Container(
+    //   margin: EdgeInsets.only(top: 10.auto),
+    //   child: IntrinsicHeight(
+    //       child: new Row(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: List.generate(list.length, (index) {
+    //       return Row(
+    //         children: [
+    //           InkWell(
+    //               onTap: () {
+    //                 _changeLanguage(list[index]);
+    //               },
+    //               child: Text(
+    //                 list[index].name,
+    //                 style: TextStyle(
+    //                     color: deviceLanguage == list[index] ? CustomColor.theme_button_color : Colors.white /*CustomColor.theme_text_black_white_color*/),
+    //               )),
+    //           Visibility(
+    //             visible: index + 1 != list.length,
+    //             child: VerticalDivider(
+    //               color: Colors.white /*CustomColor.theme_text_black_white_color*/,
+    //             ),
+    //           )
+    //         ],
+    //       );
+    //     }),
+    //   )),
     );
   }
 
@@ -342,8 +394,8 @@ class _LoginContentViewState extends BaseState<LoginContentView> with AutomaticK
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    isFirstRun: false,
+              builder: (context) => BottomNavigationController(
+
                   )),
           (Route<dynamic> route) => false);
     });

@@ -131,7 +131,7 @@ class _HomeT2State extends BaseState<HomeT2> {
       );
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
       decoration: BoxDecoration(color: CustomColor.theme_button_color, borderRadius: BorderRadius.circular(10.0)),
       margin: EdgeInsets.only(right: 10.auto),
@@ -185,9 +185,5 @@ class _HomeT2State extends BaseState<HomeT2> {
               isLoop: true,
               autoPlayInterval: 3000),
     );
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 }

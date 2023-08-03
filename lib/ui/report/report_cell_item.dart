@@ -1,6 +1,7 @@
 import 'package:api/entity/report_cell_item_type.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
@@ -39,13 +40,13 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
 
   Widget build(BuildContext context) {
     //only one item
-    if (widget.type == ReportCellItemType.SINGLE) {
+    if (widget.type == ReportCellItemType.SINGLE || EnvironmentConfig.template_version == 14) {
       return Container(
         padding: EdgeInsets.only(bottom: 10.auto),
         child: Container(
           padding: EdgeInsets.only(top: 5.auto, bottom: 10.auto),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: _getReportCellItem(isLast: true),
@@ -57,9 +58,8 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
       return Container(
           padding: EdgeInsets.only(top: 5.auto),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: _getReportCellItem());
     }
@@ -71,10 +71,8 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
           child: Container(
               padding: EdgeInsets.only(bottom: 10.auto),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10)),
+                color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               ),
               child: _getReportCellItem(isLast: true)),
         ),
@@ -83,22 +81,18 @@ class _ReportCellItemState extends BaseState<ReportCellItem> {
                 padding: EdgeInsets.only(bottom: 10.auto),
                 child: Text(
                   getTranslatedText("no_more"),
-                  style: TextStyle(
-                      fontSize: 12.auto,
-                      color: CustomColor.theme_text_grey_color),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_color),
                 ),
               )
             : Container()
       ]);
     } else {
-      return Container(color: Colors.white, child: _getReportCellItem());
+      return Container(color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white, child: _getReportCellItem());
     }
   }
 
   _getReportCellItem({bool isLast = false}) => Column(children: [
-        Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.auto),
-            child: widget.buildReportCellItemLayout),
+        Container(margin: EdgeInsets.symmetric(horizontal: 10.auto), child: widget.buildReportCellItemLayout),
         handleNullWidget(
             isLast,
             Divider(

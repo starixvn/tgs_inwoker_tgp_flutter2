@@ -99,7 +99,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            url == null
+            (url == null || url.isEmpty)
                 ? Container()
                 : CachedNetworkImage(
                     placeholder: (context, url) => Container(),
@@ -159,12 +159,6 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       String error = userRepo.apiError![eventResult.errorMsgId] ?? "";
       CustomToast.show(error);
     }
-  }
-
-  String parseHtmlString(String htmlString) {
-    final document = parse(htmlString);
-    final String parsedString = parse(document.body?.text).documentElement!.text;
-    return parsedString;
   }
 
   getCurrentLanguage() {

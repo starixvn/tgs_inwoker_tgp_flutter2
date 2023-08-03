@@ -16,6 +16,7 @@ import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/vip/vipT14.dart';
 import 'package:tgp_flutter2/ui/vip/vip_view_model.dart';
 
 class VipView extends StatefulWidget {
@@ -43,33 +44,35 @@ class _VipViewState extends BaseState<VipView> {
             appBar: _buildAppBar(),
             body: _vm.vipList == null
                 ? buildProgressDialog(_vm.brandLogoUrl)
-                : Container(
-                    height: context.screenHeight,
-                    margin: EdgeInsets.all(15.auto),
-                    decoration: BoxDecoration(
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    child: ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        Container(
-                          height: 120.auto,
-                          padding: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto),
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: List.generate(
-                              _vm.vipList!.length,
-                              (index) {
-                                return _buildVipIcon(index);
-                              },
+                : EnvironmentConfig.template_version == 14
+                    ? VipViewT14(vm: _vm)
+                    : Container(
+                        height: context.screenHeight,
+                        margin: EdgeInsets.all(15.auto),
+                        decoration: BoxDecoration(
+                            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            Container(
+                              height: 120.auto,
+                              padding: EdgeInsets.only(top: 15.auto, left: 5.auto, right: 5.auto),
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: List.generate(
+                                  _vm.vipList!.length,
+                                  (index) {
+                                    return _buildVipIcon(index);
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
+                            _buildVipDetails()
+                          ],
                         ),
-                        _buildVipDetails()
-                      ],
-                    ),
-                  ),
+                      ),
           );
         });
   }

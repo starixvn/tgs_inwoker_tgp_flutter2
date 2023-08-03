@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
@@ -17,6 +19,7 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/LoginOtpInputView.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/LoginPhoneInputView.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
@@ -260,11 +263,12 @@ class _PhoneReVerificationState extends BaseState<PhoneReVerification> with Auto
 
   _navigateToAddCard() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 4);
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    index: 4,
+              builder: (context) => BottomNavigationController(
+                    // index: 4,
                   )));
       Navigator.pushNamed(context, RoutePath.addCard);
     });

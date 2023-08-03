@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/identity_status.dart';
 import 'package:api/entity/profile_info_item.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/profile_info/profile_info_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
@@ -32,13 +35,15 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
   _buildAppBar() => CustomAppBar(
       title: getTranslatedText("profile_detail"),
       onPop: () {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(
-                      index: 4,
-                    )),
-            (Route<dynamic> route) => false);
+        Navigator.pop(context);
+        // NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 4);
+        // Navigator.pushAndRemoveUntil(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => BottomNavigationController(
+        //               // index: 4,
+        //             )),
+        //     (Route<dynamic> route) => false);
       });
 
   Widget build(BuildContext context) {
@@ -92,19 +97,20 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               elevation: 5,
-              color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+              color: _getCardBgColor(),
               child: Container(
                 margin: EdgeInsets.all(20.auto),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      getTranslatedText("other_info"),
-                      style: TextStyle(
-                        fontSize: 15.auto,
-                        color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                    if (EnvironmentConfig.template_version != 14)
+                      Text(
+                        getTranslatedText("other_info"),
+                        style: TextStyle(
+                          fontSize: 15.auto,
+                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                        ),
                       ),
-                    ),
                     Column(
                       children: _vm.messagingMap.map((mapItem) {
                         ProfileInfoItem item = mapItem["item"];
@@ -135,7 +141,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
-          color: EnvironmentConfig.template_version == 10 ? CustomColor.theme_bg_color : Colors.white,
+          color: _getCardBgColor(),
           elevation: 5,
           child: Container(
             margin: EdgeInsets.all(20.auto),
@@ -143,10 +149,11 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  getTranslatedText(title),
-                  style: TextStyle(fontSize: 15.auto, color: EnvironmentConfig.template_version == 10 ? Colors.white : Colors.black),
-                ),
+                if (EnvironmentConfig.template_version != 14)
+                  Text(
+                    getTranslatedText(title),
+                    style: TextStyle(fontSize: 15.auto, color: EnvironmentConfig.template_version == 10 ? Colors.white : Colors.black),
+                  ),
                 Column(
                     children: List.generate(itemList.length, (index) {
                   return Container(
@@ -190,20 +197,21 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
           margin: EdgeInsets.only(top: 20.auto),
           child: Row(
             children: [
-              Container(
-                  margin: EdgeInsets.only(right: 10.auto),
-                  child: imagePath.contains("svg")
-                      ? SvgPicture.asset(
-                          imagePath,
-                          matchTextDirection: true,
-                          height: 28.auto,
-                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
-                        )
-                      : ImageIcon(
-                          AssetImage(imagePath),
-                          size: 20.auto,
-                          color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
-                        )),
+              if (EnvironmentConfig.template_version != 14)
+                Container(
+                    margin: EdgeInsets.only(right: 10.auto),
+                    child: imagePath.contains("svg")
+                        ? SvgPicture.asset(
+                            imagePath,
+                            matchTextDirection: true,
+                            height: 28.auto,
+                            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                          )
+                        : ImageIcon(
+                            AssetImage(imagePath),
+                            size: 20.auto,
+                            color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                          )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,7 +220,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     itemTitle,
                     style: TextStyle(
                       fontSize: 15.auto,
-                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                      color: _getItemTitleColor(),
                     ),
                   ),
                   handleNullWidget(
@@ -221,7 +229,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                         margin: EdgeInsets.only(top: 3.auto),
                         child: Text(
                           itemDescription!,
-                          style: TextStyle(fontSize: 15.auto, color: CustomColor.theme_button_color),
+                          style: TextStyle(fontSize: 15.auto, color: _getItemContentColor()),
                         ),
                       ))
                 ],
@@ -232,7 +240,9 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 child: Icon(
                   Icons.arrow_forward_ios,
                   size: 13.auto,
-                  color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                  color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ],
@@ -250,13 +260,14 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
           margin: EdgeInsets.only(top: 15.auto, bottom: 15.auto),
           child: Row(
             children: [
-              Container(
-                  margin: EdgeInsets.only(right: 10.auto),
-                  child: ImageIcon(
-                    AssetImage(imagePath),
-                    size: 20.auto,
-                    color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
-                  )),
+              if (EnvironmentConfig.template_version != 14)
+                Container(
+                    margin: EdgeInsets.only(right: 10.auto),
+                    child: ImageIcon(
+                      AssetImage(imagePath),
+                      size: 20.auto,
+                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Color(0xffd3d3d3) : Colors.black,
+                    )),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,7 +276,7 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                     itemTitle,
                     style: TextStyle(
                       fontSize: 15.auto,
-                      color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                      color: _getItemTitleColor(),
                     ),
                   ),
                 ],
@@ -276,13 +287,44 @@ class _ProfileInfoState extends BaseState<ProfileInfo> {
                 child: Icon(
                   Icons.arrow_forward_ios,
                   size: 13.auto,
-                  color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                  color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ],
           ),
         ),
       );
+
+  Color _getCardBgColor() {
+    switch (EnvironmentConfig.template_version) {
+      case 10:
+        return CustomColor.theme_bg_color;
+      case 14:
+        return Color(0xff212238);
+      default:
+        return Colors.white;
+    }
+  }
+
+  Color _getItemContentColor() {
+    switch (EnvironmentConfig.template_version) {
+      case 14:
+        return Color(0xff82838e);
+      default:
+        return CustomColor.theme_button_color;
+    }
+  }
+
+  Color _getItemTitleColor() {
+    if (EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode)
+      return Colors.white;
+    else if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.black;
+  }
 
   _getRealName() {
     var realName = _vm.userProfile.realname;

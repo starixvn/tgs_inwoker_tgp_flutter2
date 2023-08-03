@@ -138,31 +138,20 @@ class _GameT1State extends BaseState<GameT1> {
                         "images/game_tab/t1/ic_fish.png",
                         width: 28.auto,
                         height: 28.auto,
-                        color: (/*tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||*/
-                                tabIndex != currentTabIndex/* && EnvironmentConfig.brandName != "PB"*/)
-                            //only PB, selected game tab color is grey, not selected game tab is button color
-                            ? CustomColor.theme_text_grey_color
-                            : CustomColor.theme_button_color,
+                        color: _getGameTabColor(tabIndex),
                       )
                     : SvgPicture.asset(
                         "images/game_tab/t1/ic_${gameType.getImagePath()}.svg",
                         width: 28.auto,
                         height: 28.auto,
-                        color: (/*tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" ||*/
-                                tabIndex != currentTabIndex /*&& EnvironmentConfig.brandName != "PB"*/)
-                            //only PB, selected game tab color is grey, not selected game tab is button color
-                            ? CustomColor.theme_text_grey_color
-                            : CustomColor.theme_button_color,
+                        color: _getGameTabColor(tabIndex),
                       ),
               ),
               AutoSizeText(
                 gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color:
-                      (/*tabIndex == currentTabIndex && EnvironmentConfig.brandName == "PB" || */tabIndex != currentTabIndex/* && EnvironmentConfig.brandName != "PB"*/)
-                          ? CustomColor.theme_text_grey_color
-                          : CustomColor.theme_button_color,
+                  color: _getGameTabColor(tabIndex),
                 ),
                 minFontSize: 2,
                 maxFontSize: 12,
@@ -173,6 +162,11 @@ class _GameT1State extends BaseState<GameT1> {
           )),
     );
   }
+
+  _getGameTabColor(int tabIndex) => tabIndex != currentTabIndex
+      //only PB(t1_red), selected game tab color is white, not selected game tab is button color
+      ? Colors.white
+      : CustomColor.theme_button_color;
 
   _onTabClick(int tabIndex) {
     var itemHeight = gameViewItem.currentState!.itemHeight;

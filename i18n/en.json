@@ -519,5 +519,32 @@
   "sponsor_title": "Sponsor",
 
   "vip_rebate": "You still have rebate ",
-  "vip_rebate_claim": " to claim..."
+  "vip_rebate_claim": " to claim...",
+
+  "online_chat": "Online Chat",
+  "collect": "Collect",
+  "terms_and_conditions": "Terms and Conditions",
+  "claim_bonus": "Claim bonus",
+  "contact_us": "Contact us",
+  "top_news": "Top News",
+  "my_favorite": "My favorite",
+  "no_favorite_hint": "No collections yet",
+  "no_favorite_hint2": "Hurry and add your favorite games!",
+  "quick_transfer": "Quick transfer",
+  "transfer_wallet": "Transfer wallet",
+  "transfer_hint": "Auto Transfer : All credits will be transferred to games during launch",
+  "transfer_in": "Transfer In",
+  "transfer_out": "Transfer Out",
+  "on": "ON",
+  "off": "OFF",
+  "top_games": "Top Games",
+  "recommend_for_you": "Recommend For You",
+  "new_games": "New Games",
+  "see_more": "See More",
+  "memo": "Memo",
+  "announcement": "Announcement",
+  "player_balance": "Balance",
+  "vip_level": "VIP Level",
+
+  "date": "Date"
 }

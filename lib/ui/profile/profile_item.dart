@@ -12,9 +12,10 @@ import 'package:tgp_flutter2/ui/report/report_view.dart';
 class ProfileItem extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final List<BankCard>? bankCardList;
-  bool? haveAffiliate = false;
+  final bool? haveAffiliate;
+  final bool? isNotify;
 
-  ProfileItem({this.config, this.bankCardList, this.haveAffiliate});
+  ProfileItem({this.config, this.bankCardList, this.haveAffiliate, this.isNotify});
 
   @override
   _ProfileItemState createState() => _ProfileItemState();
@@ -137,7 +138,16 @@ class _ProfileItemState extends BaseState<ProfileItem> {
                     style:
                         TextStyle(fontSize: 12.auto, color: EnvironmentConfig.template_version == 11 ? Color(0xff707070) : CustomColor.theme_text_grey_color),
                   ),
-                ))
+                )),
+            if (routePath == "message" && (widget.isNotify ?? false))
+              Container(
+                height: 5,
+                width: 5,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              )
           ],
         ),
       );

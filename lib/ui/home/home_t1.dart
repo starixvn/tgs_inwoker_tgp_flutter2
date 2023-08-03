@@ -13,9 +13,6 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
-import 'dart:math';
-
-import 'package:tgp_flutter2/ui/dialog/promotion_dialog.dart';
 
 class HomeT1 extends StatefulWidget {
   final Function? onPauseBgMusic;
@@ -142,7 +139,7 @@ class _HomeT1State extends BaseState<HomeT1> {
   }
 
   _buildTextMarquee() {
-    var announcement = _removeMultiLine(parseHtmlString(widget.homeViewModel.announcement ?? ""));
+    var announcement = widget.homeViewModel.announcement;
     return Container(
       padding: EdgeInsets.only(top: 3.auto, bottom: 5.auto),
       child: Row(
@@ -156,7 +153,7 @@ class _HomeT1State extends BaseState<HomeT1> {
               children: [
                 Text(
                   getTranslatedText("online_user") + " :",
-                  style: TextStyle(fontSize: 10.auto),
+                  style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_black_white_color),
                 ),
                 Container(
                   child: Text(
@@ -220,15 +217,11 @@ class _HomeT1State extends BaseState<HomeT1> {
   }
 
   _getNoticeFlex() {
-    if ((GlobalValueUtil.languageCode.contains("zh") ))
+    if ((GlobalValueUtil.languageCode.contains("zh")))
       return 1;
     else if (GlobalValueUtil.languageCode == "th-TH" || GlobalValueUtil.languageCode == "vi-VN")
       return 2;
     else
       return 4;
-  }
-
-  _removeMultiLine(String text) {
-    return text.replaceAll("\n", " ");
   }
 }

@@ -64,4 +64,7 @@ class RoutePath {
   static final viber = '/viber';
   static final whatsapp = '/whatsapp';
   static final birthdate = '/birthdate';
+  static final memo = '/memo';
+  static final announcement = '/announcement';
+  static final favourite = '/favourite';
 }

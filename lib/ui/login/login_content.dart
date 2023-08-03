@@ -6,16 +6,21 @@ import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
 import 'package:api/entity/language.dart';
 import 'package:api/localizations/language_provider.dart';
+import 'package:tgp_flutter2/custom/outline_border_button.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/login/login_password_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_text_form_field.dart';
 import 'package:tgp_flutter2/ui/login/login_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
+
+import 'CustomSky8/CustomCheckbox.dart';
 
 class LoginContent extends StatefulWidget {
   final child;
@@ -46,12 +51,6 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
     password.text = await _vm.getPassword();
   }
 
-  void _changeLanguage(Language language) async {
-    Locale? _locale = await LanguageProvider.getSingleton().setLocale(language);
-    MyApp.setLocale(context, _locale!);
-    await _vm.getApiError();
-  }
-
   @override
   bool get wantKeepAlive => true;
 
@@ -68,8 +67,9 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
               _buildPasswordTextFormField(),
               _buildRememberAndForgotPassword(),
               _buildLoginButton(),
-              _buildLoginLaterButton(),
-              _buildChangeLanguageText()
+              if (EnvironmentConfig.template_version != 14) _buildLoginLaterButton(),
+              if (EnvironmentConfig.template_version != 14) _buildChangeLanguageText(),
+              if (EnvironmentConfig.template_version == 14) _buildCsButton(),
             ],
           );
         });
@@ -79,11 +79,12 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         margin: EdgeInsets.only(bottom: 10.auto),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.8)),
         child: LoginTextFormField(
-          icon: EnvironmentConfig.template_version == 11
+          icon: EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 14
               ? Image.asset(
                   "images/login/t11/ic_login_username.png",
                   width: 20.auto,
                   height: 20.auto,
+                  color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.theme_bg_color,
                 )
               : SvgPicture.asset(
                   "images/login/ic_login_username.svg",
@@ -101,11 +102,12 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
       );
 
   _buildPasswordTextFormField() => LoginPasswordTextFormField(
-        icon: EnvironmentConfig.template_version == 11
+        icon: EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 14
             ? Image.asset(
                 "images/login/t11/ic_login_password.png",
                 width: 20.auto,
                 height: 20.auto,
+                color: EnvironmentConfig.template_version == 11 ? Colors.white : CustomColor.theme_bg_color,
               )
             : SvgPicture.asset(
                 "images/login/ic_login_password.svg",
@@ -124,9 +126,12 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         obscurePassword: _obscurePassword,
       );
 
-  _buildRememberAndForgotPassword() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [_buildCheckBox(), _buildForgotPassword()],
+  _buildRememberAndForgotPassword() => Container(
+        margin: EdgeInsets.only(top: 10.auto),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [_buildCheckBox(), _buildForgotPassword()],
+        ),
       );
 
   _buildForgotPassword() => Row(
@@ -138,36 +143,46 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
             },
             child: Text(
               getTranslatedText("forgot_password_with_question_mark"),
-              style: TextStyle(
-                  color: CustomColor.theme_text_black_white_color,
-                  decoration: TextDecoration.underline,
-                  fontSize: 12.auto),
+              style: TextStyle(color: CustomColor.theme_text_black_white_color, decoration: TextDecoration.underline, fontSize: 12.auto),
             ),
           )
         ],
       );
 
-  _buildCheckBox() => Row(
-        children: [
-          Checkbox(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            value: this._isRememberMe,
-            checkColor: Colors.white,
-            activeColor: Colors.black,
-            fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(EnvironmentConfig.template_version == 11 ? 20.auto : 0)),
-            onChanged: (val) => this.setState(() {
-              this._isRememberMe = !this._isRememberMe;
-              if (!_isRememberMe) _vm.removePrefs();
-            }),
-          ),
-          Text(
-            getTranslatedText("rmb_password"),
-            style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
-          ),
-        ],
+  _buildCheckBox() => Container(
+        child: Row(
+          children: [
+            EnvironmentConfig.template_version == 14
+                ? CustomCheckbox(
+                    activeBackgroundColor: Color(0xff9698af),
+                    inactiveBackgroundColor: Colors.transparent,
+                    activeIconColor: CustomColor.theme_bg_color,
+                    inactiveIconColor: Color(0xff9698af),
+                    borderColor: Color(0xff9698af),
+                    iconSize: 15.0,
+                    onChanged: () => onChangeCheckBox(),
+                  )
+                : Checkbox(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    value: this._isRememberMe,
+                    checkColor: Colors.white,
+                    activeColor: Colors.black,
+                    fillColor: MaterialStateProperty.all(CustomColor.theme_button_color),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(EnvironmentConfig.template_version == 11 ? 20.auto : 0)),
+                    onChanged: (val) => onChangeCheckBox(),
+                  ),
+            Text(
+              getTranslatedText("rmb_password"),
+              style: TextStyle(color: CustomColor.theme_text_black_white_color, fontSize: 12.auto),
+            ),
+          ],
+        ),
       );
+
+  onChangeCheckBox() => this.setState(() {
+        this._isRememberMe = !this._isRememberMe;
+        if (!_isRememberMe) _vm.removePrefs();
+      });
 
   _buildLoginButton() => Container(
         margin: EdgeInsets.only(top: 50.auto, bottom: 10.auto),
@@ -186,9 +201,50 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
         color: CustomColor.theme_grey_button_color,
       );
 
+  _buildCsButton() => InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerService(isNewPage: true)));
+        },
+        child: Container(
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "images/bottom_nav_bar/ic_cs.svg",
+                matchTextDirection: true,
+                height: 15.auto,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Text(
+                getTranslatedText("online_chat"),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+
+  // OutlineBorderButton(
+  //   title: "Online Chat",
+  //   onClick: () => _navigateToHome(),
+  //   isEnabled: true,
+  //   color: CustomColor.theme_grey_button_color,
+  //   fontSize: 15,
+  // );
+
   _buildChangeLanguageText() {
-    var list = LanguageProvider.getSingleton().list;
-    var deviceLanguage = list.singleWhere((e) => e.locale == Localizations.localeOf(context));
+    var list = _vm.languageList;
+    var deviceLanguage = _vm.getDeviceLanguage(context);
     return FittedBox(
       fit: BoxFit.fitWidth,
       child: Container(
@@ -201,14 +257,11 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
               children: [
                 InkWell(
                     onTap: () {
-                      _changeLanguage(list[index]);
+                      _vm.changeLanguage(list[index], context);
                     },
                     child: Text(
                       list[index].name,
-                      style: TextStyle(
-                          color: deviceLanguage == list[index]
-                              ? CustomColor.theme_button_color
-                              : CustomColor.theme_text_black_white_color),
+                      style: TextStyle(color: deviceLanguage == list[index] ? CustomColor.theme_button_color : CustomColor.theme_text_black_white_color),
                     )),
                 Visibility(
                   visible: index + 1 != list.length,
@@ -245,8 +298,8 @@ class _LoginContentState extends BaseState<LoginContent> with AutomaticKeepAlive
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
-                    isFirstRun: false,
+              builder: (context) => BottomNavigationController(
+                  // isFirstRun: false,
                   )),
           (Route<dynamic> route) => false);
     });

@@ -8,7 +8,7 @@ import 'package:api/websocket/web_socket_deposit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
@@ -45,6 +45,8 @@ import 'dart:math';
 import 'package:tgp_flutter2/ui/profile_info/phone/phone_verification.dart';
 
 import '../../MyRouteObserver.dart';
+import 'end_drawer_menu.dart';
+import 'home_t14.dart';
 import 'home_t15.dart';
 
 class Home extends StatefulWidget {
@@ -87,6 +89,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   var onClickFromSmallRoulette = false, isShowTransferUI = false;
   var onClickFromAnotherSmallRoulette = false;
   var isDisplayGameView = false; //to check either display jackpot or game view in t11
+  var isShowMarquee = false; //to check either hide show marquee in login app bar
 
   var token;
   var isCloseRouletteIcon = false; //handle users close roulette icon by themselves
@@ -124,7 +127,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
     _generateNewNumberEveryFewSec();
 
     task.add(_vm.getPromotionList());
-    await _gameViewModel.getJackpotRecommendList();
+    if (EnvironmentConfig.template_version == 11) task.add(_gameViewModel.getJackpotRecommendList());
     randomGeneratedPlayerCount = _randomGenerator();
     task.add(_vm.getAnnouncement());
     task.add(_vm.getBanner());
@@ -149,11 +152,6 @@ class _HomeState extends BaseState<Home> implements RouteAware {
     token = _prefs.getString('token');
   }
 
-  // getLanguage() async {
-  //   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  //   languageCode = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
-  // }
-
   Widget build(BuildContext context) {
     print("masukkksssHome:");
     return ProviderWidget<HomeViewModel>(
@@ -162,21 +160,13 @@ class _HomeState extends BaseState<Home> implements RouteAware {
           _handleApiState();
           return Stack(
             children: [
-              CustomScaffold(
-                appBar: EnvironmentConfig.template_version == 15
-                    ? PreferredSize(
-                        child: _getTopBarDetails(),
-                        preferredSize: Size.fromHeight(55),
-                      )
-                    : _getTopBarDetails(),
-                body: Container(
-                  color: EnvironmentConfig.template_version == 15 ? CustomColor.theme_app_bar_color : Colors.transparent,
-                  child: Stack(
-                    children: [
-                      _getHomeTemplateView(),
-                      _rouletteHolder(),
-                    ],
-                  ),
+              Container(
+                color: EnvironmentConfig.template_version == 15 ? CustomColor.theme_app_bar_color : Colors.transparent,
+                child: Stack(
+                  children: [
+                    _getHomeTemplateView(),
+                    _rouletteHolder(),
+                  ],
                 ),
               ),
               BalancePicker(
@@ -191,25 +181,29 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   }
 
   _getTopBarDetails() => CustomLoginAppBar(
-      onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-      onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-      onClickLogoutButton: () => _logout(),
-      isLogin: _vm.userProfile != null,
-      brandLogoUrl: _vm.brandLogoUrl,
-      userProfile: _vm.userProfile,
-      phone: _vm.phone,
-      config: _vm.config,
-      totalBalance: _vm.totalBalance,
-      //_vm.totalBalance,
-      brandName: EnvironmentConfig.brandName,
-      onClickBalance: () {
-        setState(() {
-          isShowTransferUI = !isShowTransferUI;
-        });
-      },
-      onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-      onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-      randomNumber: randomGeneratedPlayerCount ?? 0);
+        onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+        onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+        onClickLogoutButton: () => _logout(),
+        isLogin: _vm.userProfile != null,
+        // brandLogoUrl: _vm.brandLogoUrl,
+        userProfile: _vm.userProfile,
+        // phone: _vm.phone,
+        // config: _vm.config,
+        // totalBalance: _vm.totalBalance,
+        //_vm.totalBalance,
+        // brandName: EnvironmentConfig.brandName,
+        onClickBalance: () {
+          setState(() {
+            isShowTransferUI = !isShowTransferUI;
+          });
+        },
+        // onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        // onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        randomNumber: randomGeneratedPlayerCount ?? 0,
+        isShowMarquee: isShowMarquee,
+        marquee: _vm.announcement,
+        isShowBarrier: false,
+      );
 
   _getHomeTemplateView() {
     switch (EnvironmentConfig.template_version) {
@@ -314,6 +308,19 @@ class _HomeState extends BaseState<Home> implements RouteAware {
           gameViewModel: _gameViewModel,
           randomNumber: randomGeneratedPlayerCount ?? 0,
           gameView: _buildGameView(),
+        );
+      case 14:
+        return HomeT14(
+          onPauseBgMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+          onResumeBgMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+          initData: () => _initData(),
+          homeViewModel: _vm,
+          gameViewModel: _gameViewModel,
+          randomNumber: randomGeneratedPlayerCount ?? 0,
+          gameView: _buildGameView(),
+          updateShowMarquee: (show) => this.setState(() {
+            isShowMarquee = show;
+          }),
         );
       default:
         return HomeT1(
@@ -436,6 +443,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
 //
 // //display the first item in depositRoulettePromo that matches id in appearedDAR
 //         if (appearedDAR.isNotEmpty && depositRoulettePromo[index].id == appearedDAR.first) {
+
               if (_vm.depositRoulettePromo != null && _vm.depositRoulettePromo!.length > 0) {
                 for (Promotion item in _vm.depositRoulettePromo!) {
                   if (item.id == _vm.rouletteCount[index].id) {

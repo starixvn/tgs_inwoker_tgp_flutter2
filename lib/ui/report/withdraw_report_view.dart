@@ -92,7 +92,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
               padding: EdgeInsets.only(bottom: 3.auto),
               child: AutoSizeText(
                 getTranslatedText("gms_order_number") + (_vm.withdrawReportList![index].orderNo ?? ""),
-                style: TextStyle(color: Colors.grey[700]),
+                style: TextStyle(color: _getTextColor()),
                 minFontSize: 10,
                 maxFontSize: 12,
                 stepGranularity: 1,
@@ -105,7 +105,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
                   flex: 1,
                   child: AutoSizeText(
                     Format().dateTimezoneFormat(_vm.withdrawReportList![index].createdOn),
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: _getTextColor()),
                     minFontSize: 10,
                     maxFontSize: 12,
                     stepGranularity: 1,
@@ -115,7 +115,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
                   flex: 1,
                   child: AutoSizeText(
                     _vm.withdrawReportList![index].status.getName(context),
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: _getTextColor()),
                     minFontSize: 10,
                     maxFontSize: 12,
                     stepGranularity: 1,
@@ -130,7 +130,7 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
                         ? Format().currencyFormat((_vm.reportList?[index].amount ?? 0).toInt())
                         //with 2 decimal places
                         : _vm.withdrawReportList![index].amount.toString(),
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: _getTextColor()),
                     minFontSize: 10,
                     maxFontSize: 12,
                     stepGranularity: 1,
@@ -209,6 +209,13 @@ class WithdrawReportViewState extends BaseState<WithdrawReportView> {
 
   _getReport({Status? status = Status.All, bool isLoadMore = false}) async {
     await _vm.getWithdrawReport(isLoadMore: isLoadMore, status: status);
+  }
+
+  Color _getTextColor() {
+    if (EnvironmentConfig.template_version == 14)
+      return Colors.white;
+    else
+      return Colors.grey.shade700;
   }
 
   _handleApiState() {

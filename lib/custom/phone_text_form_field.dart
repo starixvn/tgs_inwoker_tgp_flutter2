@@ -84,9 +84,16 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                             child: AutoSizeText(
                               widget.displayedAreaCode ?? "",
                               style: TextStyle(
-                                color: EnvironmentConfig.template_version != 11
-                                    ? CustomColor.theme_text_black_color
-                                    : Color(0xff4B4B4B),
+                                color: (() {
+                                  switch (EnvironmentConfig.template_version) {
+                                    case 11:
+                                      return Color(0xff4B4B4B);
+                                    case 14:
+                                      return Colors.black;
+                                    default:
+                                      return CustomColor.theme_text_black_color;
+                                  }
+                                }()),
                               ),
                               maxFontSize: 12,
                               minFontSize: 8,
@@ -124,11 +131,8 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
                     onFieldSubmitted: (value) => widget.onChanged(value),
                     keyboardType: TextInputType.phone,
                     textInputAction: widget.textInputAction,
-                    style: TextStyle(
-                        color: EnvironmentConfig.template_version != 11
-                            ? CustomColor.theme_text_black_color
-                            : Color(0xff4B4B4B),
-                        fontSize: 13.auto),
+                    style:
+                        TextStyle(color: EnvironmentConfig.template_version != 11 ? CustomColor.theme_text_black_color : Color(0xff4B4B4B), fontSize: 13.auto),
                     decoration: InputDecoration(
                       isCollapsed: true,
                       border: InputBorder.none,
@@ -152,10 +156,7 @@ class _PhoneTextFormFieldState extends BaseState<PhoneTextFormField> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return CustomPickerDialog(
-              title: "area_code",
-              list: [widget.displayedAreaCode],
-              onChanged: (value) => widget.onAreaCodeClicked(value));
+          return CustomPickerDialog(title: "area_code", list: [widget.displayedAreaCode], onChanged: (value) => widget.onAreaCodeClicked(value));
         });
   }
 }

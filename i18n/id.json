@@ -569,5 +569,32 @@
   "sponsor_title": "Sponsor",
 
   "vip_rebate": "Anda masih memiliki potongan harga ",
-  "vip_rebate_claim": " untuk diklaim..."
+  "vip_rebate_claim": " untuk diklaim...",
+
+  "online_chat": "Obrolan Langsung",
+  "collect": "Kumpulkan",
+  "terms_and_conditions": "Syarat dan Ketentuan",
+  "claim_bonus": "Klaim bonus",
+  "contact_us": "Hubungi kami",
+  "top_news": "Berita Teratas",
+  "my_favorite": "Favorit saya",
+  "no_favorite_hint": "Belum ada koleksi",
+  "no_favorite_hint2": "Cepat dan tambahkan game favorit Anda!",
+  "quick_transfer": "Transfer cepat",
+  "transfer_wallet": "Dompet transfer",
+  "transfer_hint": "Transfer Otomatis : Semua kredit akan ditransfer ke game selama peluncuran",
+  "transfer_in": "Transfer Masuk",
+  "transfer_out": "Transfer Keluar",
+  "on": "HIDUP",
+  "off": "MATI",
+  "top_games": "Game Teratas",
+  "recommend_for_you": "Rekomendasikan Untuk Anda",
+  "new_games": "Game Baru",
+  "see_more": "Lihat Lebih Banyak",
+  "memo": "Memo",
+  "announcement": "Pengumuman",
+  "player_balance": "Total Dana Pemain",
+  "vip_level": "Tingkat VIP",
+
+  "date": "Tanggal"
 }

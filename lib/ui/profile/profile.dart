@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
+import 'package:tgp_flutter2/custom/custom_login_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -10,8 +11,10 @@ import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
+import 'package:tgp_flutter2/ui/home/home.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/LoginTemplate02.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
+import 'package:tgp_flutter2/ui/profile/T14/profile_t14.dart';
 import 'package:tgp_flutter2/ui/profile/T2/profile_bottom_item.dart';
 import 'package:tgp_flutter2/ui/profile/profile_item.dart';
 import 'package:tgp_flutter2/ui/profile/T2/profile_t2.dart';
@@ -19,7 +22,8 @@ import 'package:tgp_flutter2/ui/profile/T2/profile_top_item.dart';
 import 'package:tgp_flutter2/ui/profile/profile_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
+import '../home/end_drawer_menu.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -35,10 +39,9 @@ class _ProfileState extends BaseState<Profile> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_vm.userProfile != null) {
-        _vm.computeTotalBalance();
+        // _vm.computeTotalBalance();
         _vm.getAffiliateStatus();
-      } else {
-        Navigator.of(context).pushNamed(RoutePath.login);
+        _vm.getMessageList();
       }
     });
     GlobalValueUtil.pausesong();
@@ -50,21 +53,76 @@ class _ProfileState extends BaseState<Profile> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            body: EnvironmentConfig.template_version == 2
-                ? ProfileT2(vm: _vm)
-                : Container(
-                    padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
-                    child: ListView(
-                      children: [
-                        _buildUserInfoContainer(),
-                        ProfileItem(
-                            config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
-                        _buildLogoutButton()
-                      ],
-                    ),
-                  ),
-          );
+
+          switch (EnvironmentConfig.template_version) {
+            case 14:
+              return ProfileT14(vm: vm);
+            default:
+              return CustomScaffold(
+                body: EnvironmentConfig.template_version == 2
+                    ? ProfileT2(vm: _vm)
+                    : Container(
+                        padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
+                        child: ListView(
+                          children: [
+                            _buildUserInfoContainer(),
+                            ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate, isNotify: _vm.isNotify,),
+                            _buildLogoutButton()
+                          ],
+                        ),
+                      ),
+              );
+          }
+          // CustomScaffold(
+          //   appBar: EnvironmentConfig.template_version == 14
+          //       ? CustomLoginAppBar(
+          //           onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+          //           onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+          //           onClickLogoutButton: () => _logout(),
+          //           isLogin: _vm.userProfile != null,
+          //           // brandLogoUrl: _vm.brandLogoUrl,
+          //           userProfile: _vm.userProfile,
+          //           // config: _vm.config,
+          //           // totalBalance: _vm.totalBalance,
+          //           //_vm.totalBalance,
+          //           onClickBalance: () {},
+          //           // onPauseMusic: () {},
+          //           // onResumeMusic: () {},
+          //           randomNumber: 0,
+          //           isShowMarquee: true,
+          //           marquee: GlobalValueUtil.removeMultiLine(GlobalValueUtil.parseHtmlString(_vm.announcement ?? "")),
+          //         )
+          //       : PreferredSize(
+          //           preferredSize: Size.zero,
+          //           child: Container(),
+          //         ),
+          //   endDrawer: Drawer(
+          //     width: context.screenWidth * 0.65,
+          //     backgroundColor: Color(0xff181c42),
+          //     child: EndDrawerMenu(
+          //       username: _vm.userProfile?.username ?? "",
+          //       width: context.screenWidth * 0.65,
+          //     ),
+          //   ),
+          //   body: (() {
+          //     switch (EnvironmentConfig.template_version) {
+          //       case 2:
+          //         return ProfileT2(vm: _vm);
+          //       case 14:
+          //         return ProfileT14(vm: vm);
+          //       default:
+          //         return Container(
+          //           padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
+          //           child: ListView(
+          //             children: [
+          //               _buildUserInfoContainer(),
+          //               ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate),
+          //               _buildLogoutButton()
+          //             ],
+          //           ),
+          //         );
+          //     }
+          //   }()));
         });
   }
 
@@ -78,9 +136,7 @@ class _ProfileState extends BaseState<Profile> {
                 width: 65.auto,
                 height: 65.auto,
                 decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image:
-                        new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
+                    shape: BoxShape.circle, image: new DecorationImage(fit: BoxFit.fill, image: AssetImage("images/profile/profile_image.png")))),
             _buildUserInfoText(),
           ],
         ),
@@ -168,9 +224,14 @@ class _ProfileState extends BaseState<Profile> {
 
   _navigateToLogin() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //navigate to login and remove all previous route,
-      Navigator.of(context)
-          .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => EnvironmentConfig.template_version == 15 ? LoginTemplate02() : Login()), (Route<dynamic> route) => false);
+      if (EnvironmentConfig.template_version == 14) {
+        //navigate to home and remove all previous route
+        Navigator.of(context).pushNamedAndRemoveUntil(RoutePath.myHome, (Route<dynamic> route) => false);
+      } else {
+        //navigate to login and remove all previous route,
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => EnvironmentConfig.template_version == 15 ? LoginTemplate02() : Login()), (Route<dynamic> route) => false);
+      }
     });
   }
 

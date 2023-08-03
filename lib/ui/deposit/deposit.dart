@@ -1,7 +1,9 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -20,6 +22,12 @@ import 'package:tgp_flutter2/ui/deposit/deposit_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
 class Deposit extends StatefulWidget {
+  final bool isNewPage;
+
+  Deposit({
+    this.isNewPage = false,
+  });
+
   @override
   _DepositState createState() => _DepositState();
 }
@@ -32,15 +40,24 @@ class _DepositState extends BaseState<Deposit> {
   ];*/
   var currentTabIndex = 0;
   var text = "";
+  int currBottomNavigationIndex = 0;
 
   @override
   void initState() {
-    GlobalValueUtil.pausesong();
-    _initData();
+    if (widget.isNewPage) {
+      _initData();
+    } else {
+      NotificationCenter().subscribe(NotificationServiceName().depositNeededLoadData, (bool value) {
+        if (value && _vm.userProfile != null) {
+          _initData();
+        }
+      });
+    }
     super.initState();
   }
 
   _initData() async {
+    GlobalValueUtil.pausesong();
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var code = _prefs.getString("LANGUAGE_CODE") ?? EnvironmentConfig.default_lang;
     await _vm.getPlayerPromotionList(code);
@@ -53,60 +70,12 @@ class _DepositState extends BaseState<Deposit> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-              appBar: _buildAppBar(),
-              body: (() {
-                if (_vm.paymentCodeList == null)
-                  return buildProgressDialog(_vm.brandLogoUrl);
-                else
-                  return handleNullWidget(
-                      _vm.paymentCodeList!.isEmpty,
-                      DefaultTabController(
-                        length: _vm.paymentCodeList!.keys.length,
-                        child: Column(
-                          children: [
-                            Container(
-                              width: context.screenWidth,
-                              child: TabBar(
-                                isScrollable: true,
-                                unselectedLabelColor: CustomColor.theme_text_grey_color,
-                                labelColor: CustomColor.theme_label_text_highlight_color,
-                                indicatorColor: Colors.transparent,
-                                indicator: BoxDecoration(),
-                                onTap: (index) {
-                                  setState(() {
-                                    currentTabIndex = index;
-                                  });
-                                },
-                                labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
-                                unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_grey_color),
-                                tabs: List.generate(_vm.paymentCodeList!.keys.length, (index) {
-                                  return TabButton(
-                                    text: getTranslatedText(_vm.paymentCodeList!.keys.toList()[index]) ?? "",
-                                    index: index,
-                                    currentTabIndex: currentTabIndex,
-                                    width: 90.auto,
-                                    height: 32.auto,
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                            Expanded(
-                              child: TabBarView(
-                                physics: NeverScrollableScrollPhysics(),
-                                children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
-                                  return DepositMethod(
-                                    paymentCode: _vm.paymentCodeList!.keys.toList()[index],
-                                    depositMethodList: _vm.paymentCodeList!.values.toList()[index],
-                                    promotionList: _vm.displayPromotionList,
-                                  );
-                                }).toList(),
-                              ),
-                            )
-                          ],
-                        ),
-                      ));
-              }()));
+          return widget.isNewPage
+              ? CustomScaffold(
+                  appBar: _buildAppBar(),
+                  body: _buildDepositWidget(),
+                )
+              : _buildDepositWidget();
         });
   }
 
@@ -115,6 +84,61 @@ class _DepositState extends BaseState<Deposit> {
         walletBalance: _vm.wallet?.totalBalance,
         isPassTrueWhenPop: true,
       );
+
+  _buildDepositWidget() => Container(
+      color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
+      child: (() {
+        if (_vm.paymentCodeList == null)
+          return buildProgressDialog(_vm.brandLogoUrl);
+        else
+          return handleNullWidget(
+              _vm.paymentCodeList!.isEmpty,
+              DefaultTabController(
+                length: _vm.paymentCodeList!.keys.length,
+                child: Column(
+                  children: [
+                    Container(
+                      width: context.screenWidth,
+                      child: TabBar(
+                        isScrollable: true,
+                        unselectedLabelColor: CustomColor.theme_text_grey_color,
+                        labelColor: CustomColor.theme_label_text_highlight_color,
+                        indicatorColor: Colors.transparent,
+                        indicator: BoxDecoration(),
+                        onTap: (index) {
+                          setState(() {
+                            currentTabIndex = index;
+                          });
+                        },
+                        labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
+                        unselectedLabelStyle: TextStyle(color: CustomColor.theme_text_grey_color),
+                        tabs: List.generate(_vm.paymentCodeList!.keys.length, (index) {
+                          return TabButton(
+                            text: getTranslatedText(_vm.paymentCodeList!.keys.toList()[index]) ?? "",
+                            index: index,
+                            currentTabIndex: currentTabIndex,
+                            width: 90.auto,
+                            height: 32.auto,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        physics: NeverScrollableScrollPhysics(),
+                        children: List.generate(_vm.paymentCodeList!.keys.length, (index) {
+                          return DepositMethod(
+                            paymentCode: _vm.paymentCodeList!.keys.toList()[index],
+                            depositMethodList: _vm.paymentCodeList!.values.toList()[index],
+                            promotionList: _vm.displayPromotionList,
+                          );
+                        }).toList(),
+                      ),
+                    )
+                  ],
+                ),
+              ));
+      }()));
 
   _displayDepositDialog() {
     _vm.getDepositDialog();

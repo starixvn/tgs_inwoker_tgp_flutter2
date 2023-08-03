@@ -10,6 +10,7 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tgp_flutter2/base_viewmodel.dart';
 import 'package:tgp_flutter2/custom/custom_toast.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 
 import 'environment_config.dart';
 
@@ -62,27 +63,17 @@ class MainViewModel extends BaseViewModel {
   }
 
   getEnvFeatures() async {
-    // var brand;
-    // if (EnvironmentConfig.environmentStage == "staging" &&
-    //     !(EnvironmentConfig.brandName == "PGG" ||
-    //         EnvironmentConfig.brandName == "MGM" ||
-    //         EnvironmentConfig.brandName.contains("PB")))
-    //   brand = "stg_${EnvironmentConfig.brandName}";
-    // else if (EnvironmentConfig.environmentStage == "development" && EnvironmentConfig.template_version == 11)
-    //   brand = "T11";
-    // else if(EnvironmentConfig.environmentStage == "production" && EnvironmentConfig.brandName == "PB3")
-    //   brand = "inyobet";
-    // else
-    //   brand = EnvironmentConfig.brandName;
     setLoading();
-    await contentRepo.getEnvFeaturesJson(EnvironmentConfig.configFileName);
+    var state = await contentRepo.getEnvFeaturesJson(EnvironmentConfig.configFileName);
+    if (state.isSuccess) {
+      GlobalValueUtil.featuresConfig = state.result;
+    }
     setLoading(false);
   }
 
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency,
-        EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;
@@ -98,6 +89,9 @@ class MainViewModel extends BaseViewModel {
   getBrandLogo() async {
     setLoading();
     getBrandLogoApiState = await contentRepo.getBrandLogo();
+    if (getBrandLogoApiState.isSuccess) {
+      GlobalValueUtil.brandLogo = getBrandLogoApiState.result;
+    }
     setLoading(false);
     return getBrandLogoApiState;
   }

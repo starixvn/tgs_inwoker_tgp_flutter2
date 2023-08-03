@@ -1,3 +1,5 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
@@ -5,11 +7,14 @@ import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/custom/custom_scaffold.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/provider/provider_widget.dart';
+import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_item.dart';
 import 'package:tgp_flutter2/ui/promotion/promotion_view_model.dart';
 import 'package:api/extension/screen_apis.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../custom/custom_login_app_bar.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
+import '../../route_path.dart';
 
 class Promotion extends StatefulWidget {
   @override
@@ -19,7 +24,7 @@ class Promotion extends StatefulWidget {
 class _PromotionState extends BaseState<Promotion> {
   var height, width, ratio;
   var currentTabIndex = 0;
-  var currentBottomIndex = 1;
+  var preBottomIndex = 1;
   PromotionViewModel _vm = PromotionViewModel();
   BuildContext? key = GlobalKey().currentContext;
   var languageCode;
@@ -28,6 +33,7 @@ class _PromotionState extends BaseState<Promotion> {
   void initState() {
     _vm.getPromotionList();
     GlobalValueUtil.pausesong();
+
     super.initState();
   }
 
@@ -41,12 +47,35 @@ class _PromotionState extends BaseState<Promotion> {
         model: _vm,
         builder: (ctx, vm, _) {
           _handleApiState();
-          return CustomScaffold(
-            appBar: CustomAppBar(
-              title: getTranslatedText("promotion_center"),
+          return Container(
+            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+               if(EnvironmentConfig.template_version == 14) Container(
+                  padding: EdgeInsets.all(15),
+                  alignment: Alignment.center,
+                  child: Text(
+                    getTranslatedText("promotion_center").toString().toUpperCase(),
+                    style: TextStyle(color: Colors.white, fontSize: 15.auto),
+                  ),
+                ),
+                _buildPromotion(),
+              ],
             ),
-            body: _buildPromotion(),
           );
+          /*EnvironmentConfig.template_version == 14
+              ?*/
+          /*: CustomScaffold(
+                  appBar: CustomAppBar(
+                    title: getTranslatedText("promotion_center"),
+                    onPop: (){
+                      Navigator.pop(context);
+                 (     NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: preBottomIndex);
+
+                    },
+                  ),
+                  body: _buildPromotion();*/
         });
   }
 
@@ -95,13 +124,17 @@ class _PromotionState extends BaseState<Promotion> {
       );
     } else {
       return Container(
-        height: context.screenHeight,
-        color: Colors.transparent,
+        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.transparent,
         child: ListView(
           shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
           padding: EdgeInsets.only(bottom: 10.auto),
           children: List.generate(_vm.promotionList.length, (index) {
-            return PromotionItem(promotion: _vm.promotionList[index], vm: _vm);
+            return PromotionItem(
+              promotion: _vm.promotionList[index],
+              vm: _vm,
+              index: index,
+            );
           }),
         ),
       );
@@ -122,8 +155,7 @@ class _PromotionState extends BaseState<Promotion> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style:
-              TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
+          style: TextStyle(fontSize: context.screenWidth / 25, fontWeight: FontWeight.bold).copyWith(color: Colors.white),
         ),
       );
 

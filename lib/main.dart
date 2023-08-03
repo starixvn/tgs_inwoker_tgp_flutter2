@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iphone_has_notch/iphone_has_notch.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/MyRouteObserver.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -20,7 +20,10 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/affiliate/affiliate.dart';
+import 'package:tgp_flutter2/ui/announcement/announcement.dart';
+import 'package:tgp_flutter2/ui/announcement/announcement_item_details.dart';
 import 'package:tgp_flutter2/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/card/main_card.dart';
@@ -36,6 +39,7 @@ import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/LoginTemplate02.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance.dart';
+import 'package:tgp_flutter2/ui/memo/memo.dart';
 import 'package:tgp_flutter2/ui/menu/menu.dart';
 import 'package:tgp_flutter2/ui/menu/menu_t2.dart';
 import 'package:tgp_flutter2/ui/message/message_view.dart';
@@ -65,6 +69,7 @@ import 'package:api/localizations/my_localizations.dart';
 import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter2/ui/vip/vip.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
+import 'package:tgp_flutter2/ui/favourite/favourite.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'custom/custom_toast.dart';
@@ -235,11 +240,11 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 title: appTitle,
                 initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
                 routes: {
-                  RoutePath.myHome: (context) => MyHomePage(
+                  RoutePath.myHome: (context) => BottomNavigationController(
                         versionUpdate: _vm.versionUpdateState,
                         isFirstRun: true,
-                        onPauseBgMusic: () => GlobalValueUtil.pausesong(),
-                        onResumeBgMusic: () => GlobalValueUtil.playsong(),
+                        // onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+                        // onResumeBgMusic: () => GlobalValueUtil.playsong(),
                       ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
@@ -300,6 +305,9 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                   RoutePath.viber: (context) => Viber(),
                   RoutePath.whatsapp: (context) => Whatsapp(),
                   RoutePath.birthdate: (context) => Birthdate(),
+                  RoutePath.memo: (context) => Memo(),
+                  RoutePath.announcement: (context) => Announcement(),
+                  RoutePath.favourite: (context) => Favourite(),
                 },
                 localizationsDelegates: [
                   MyLocalizations.delegate,
@@ -581,7 +589,11 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
         return _buildBottomBarItem(6, "ic_cs", "customer_service");
       default:
         return _buildBottomBarItem(
-            2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
+            2,
+            "ic_deposit",
+            (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15 || EnvironmentConfig.template_version == 14)
+                ? "deposit"
+                : "wallet",
             isNeedLogin: true);
     }
   }
@@ -649,12 +661,15 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) => MyHomePage(),
+                          pageBuilder: (context, animation1, animation2) => BottomNavigationController(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ),
                       );
-                    else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 2)
+                    else if ((EnvironmentConfig.template_version == 11 ||
+                            EnvironmentConfig.template_version == 15 ||
+                            EnvironmentConfig.template_version == 14) &&
+                        index == 2)
                       Navigator.of(context).pushNamed(RoutePath.deposit);
                     else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 3)
                       Navigator.of(context).pushNamed(RoutePath.withdraw);
@@ -746,6 +761,13 @@ class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver
           height: 25.auto,
           child: Image.asset(
             currentBottomIndex == index ? "images/bottom_nav_bar/T15/$imagePath-selected.png" : "images/bottom_nav_bar/T15/$imagePath.png",
+          ));
+    } else if (EnvironmentConfig.template_version == 14 && imagePath != "ic_cs") {
+      return Container(
+          height: 22.auto,
+          child: SvgPicture.asset(
+            "images/bottom_nav_bar/T14/$imagePath.svg",
+            height: 22.auto,
           ));
     } else {
       return Container(

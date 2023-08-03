@@ -1,52 +1,59 @@
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/env_features_config.dart';
 import 'package:api/entity/main_wallet.dart';
 import 'package:api/entity/user_profile.dart';
 import 'package:api/extension/format.dart';
+import 'package:api/extension/screen_util.dart';
 import 'package:api/localizations/language_provider.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
+import 'package:marquee/marquee.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/custom/color_button.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
+import 'package:tgp_flutter2/custom/wallet_text_container.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 
 class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
-  CustomLoginAppBar(
-      {required this.onClickLoginButton,
-      required this.onClickRegisterButton,
-      required this.onClickLogoutButton,
-      required this.isLogin,
-      this.brandLogoUrl,
-      this.userProfile,
-      this.phone,
-      this.config,
-      this.totalBalance,
-      this.brandName,
-      this.onClickBalance,
-      this.onPauseMusic,
-      this.onResumeMusic,
-      required this.randomNumber});
+  CustomLoginAppBar({
+    required this.onClickLoginButton,
+    required this.onClickRegisterButton,
+    required this.onClickLogoutButton,
+    required this.isLogin,
+    this.userProfile,
+    this.onClickBalance,
+    // this.onPauseMusic,
+    // this.onResumeMusic,
+    required this.randomNumber,
+    this.isShowMarquee = false,
+    this.marquee = "",
+    this.scaffoldKey,
+    this.barrierWidget,
+    required this.isShowBarrier,
+  });
 
   final Function onClickLoginButton;
   final Function onClickRegisterButton;
   final Function onClickLogoutButton;
   final bool isLogin;
-  final String? brandLogoUrl;
   final UserProfile? userProfile;
-  final String? phone;
-  final EnvFeaturesConfig? config;
-  final double? totalBalance;
-  final String? brandName;
   final Function? onClickBalance;
-  final Function? onPauseMusic;
-  final Function? onResumeMusic;
+
+  // final Function? onPauseMusic;
+  // final Function? onResumeMusic;
   final int randomNumber;
+  final bool? isShowMarquee;
+  final String? marquee;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final Widget? barrierWidget;
+  final bool isShowBarrier;
 
   @override
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
@@ -56,9 +63,33 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
+  bool isShowMenu = false;
+
+  @override
+  void initState() {
+    // NotificationCenter().subscribe(NotificationServiceName().isShowingMenu, (bool? value) {
+    //   if (value != null) {
+    //     setState(() {
+    //       isShowMenu = value;
+    //     });
+    //   }
+    // });
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        _buildAppBarWidget(),
+        Visibility(visible: widget.isShowBarrier, child: widget.barrierWidget ?? Container()),
+      ],
+    );
+  }
+
+  _buildAppBarWidget() {
     if (EnvironmentConfig.template_version == 1) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: gradientDecoration,
@@ -68,6 +99,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 8 && (EnvironmentConfig.dark_mode)) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -83,6 +115,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 9 && (EnvironmentConfig.dark_mode)) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -98,6 +131,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 2 && EnvironmentConfig.brandName == "PB3") {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: true,
@@ -109,7 +143,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 height: 30.auto,
                 width: 30.auto,
               ),
-              imageUrl: widget.brandLogoUrl!,
+              imageUrl: GlobalValueUtil.brandLogo?.mobileUrl ?? "",
               //handling error
               height: _isDisplayUserDetailsRow() ? 38.auto : 50.auto,
               width: 100.auto,
@@ -122,6 +156,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else if (EnvironmentConfig.template_version == 15) {
       return AppBar(
+        actions: [Container()],
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: false,
@@ -132,9 +167,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
     } else {
       return AppBar(
+        actions: [Container()],
+        // for hiding default end drawer icon
         automaticallyImplyLeading: false,
         backgroundColor: CustomColor.theme_app_bar_color,
         centerTitle: false,
+        elevation: EnvironmentConfig.template_version == 14 ? 0 : 4,
         flexibleSpace: Container(
           child: _getAppBarWidget(),
         ),
@@ -168,27 +206,76 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getAppBarWidget() => SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            _getAppBarTitle(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: _getActionButton(),
-                ),
-                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-              ],
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _getAppBarTitle(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _getActionButton(),
+                      ),
+                      if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
+                    ],
+                  ),
+                ],
+              ),
             ),
+            if (EnvironmentConfig.template_version == 14 && (widget.isShowMarquee ?? false))
+              Expanded(
+                flex: 0,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 0,
+                        child: Text(
+                          "NEWS: ",
+                          style: TextStyle(
+                            color: CustomColor.theme_text_black_white_color,
+                            fontSize: 10.auto,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          // decoration: BoxDecoration(color: CustomColor.theme_bar_gradient_1, borderRadius: BorderRadius.circular(10.0)),
+                          margin: EdgeInsets.only(left: 3.auto, right: 10.auto),
+                          height: 18.auto,
+                          child: Marquee(
+                            text: widget.marquee ?? "",
+                            style: TextStyle(
+                              color: CustomColor.theme_text_black_white_color,
+                              fontSize: 10.auto,
+                            ),
+                            scrollAxis: Axis.horizontal,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            blankSpace: 300.auto,
+                            pauseAfterRound: Duration(seconds: 1),
+                            showFadingOnlyWhenScrolling: false,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       );
 
-  _getAppBarTitle() => (widget.brandLogoUrl?.isEmpty ?? true)
+  _getAppBarTitle() => (GlobalValueUtil.brandLogo?.mobileUrl?.isEmpty ?? true)
       ? Container()
       : Container(
           height: EnvironmentConfig.template_version == 15 ? 50.0 : 100.0,
@@ -200,13 +287,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex:1,
+                flex: 1,
                 child: CachedNetworkImage(
                   placeholder: (context, url) => Container(
                     height: 30.auto,
                     width: 30.auto,
                   ),
-                  imageUrl: widget.brandLogoUrl!,
+                  imageUrl: GlobalValueUtil.brandLogo?.mobileUrl ?? "",
                   //handling error
                   height: _isDisplayUserDetailsRow() ? 38.auto : 40.auto,
                   width: 100.auto,
@@ -223,17 +310,41 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           ),
         );
 
-  List<Widget> _getActionButton() => widget.isLogin
-      ? [
-          if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
-          _getUsernameText(),
-          _getLogoutButton(),
-        ]
-      : [
-          if (widget.config?.homePageDisplayVIP ?? false) _getVipButton(),
-          _getLoginButton(),
-          _getRegisterButton(),
-        ];
+  List<Widget> _getActionButton() {
+    List<Widget> list = [];
+    if (GlobalValueUtil.featuresConfig?.homePageDisplayVIP ?? false) list.add(_getVipButton());
+
+    list.addAll(widget.isLogin
+        ? ((EnvironmentConfig.template_version == 14)
+            ? [
+                WalletTextContainer(
+                    height: ScreenUtil.getInstance().appBarHeight / 2,
+                    width: (context.screenWidth * 0.3),
+                    balance: "${GlobalValueUtil.totalBalance != null ? Format().amountFormat(GlobalValueUtil.totalBalance ?? 0) : "-"}"),
+              ]
+            : [
+                _getUsernameText(),
+                _getLogoutButton(),
+              ])
+        : [
+            _getLoginButton(),
+            _getRegisterButton(),
+          ]);
+    if (EnvironmentConfig.template_version == 14) {
+      list.add(Container(
+        child: Builder(builder: (context) {
+          return IconButton(
+            icon: new Icon(Icons.menu, color: CustomColor.theme_button_color),
+            onPressed: () {
+              widget.scaffoldKey?.currentState?.openEndDrawer();
+            },
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          );
+        }),
+      ));
+    }
+    return list;
+  }
 
   _getOnlineUsersText() => Padding(
         padding: EdgeInsets.only(right: 10),
@@ -278,13 +389,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             color: ((() {
               if (_isDarkMode())
                 return CustomColor.theme_text_black_color;
-              else if (EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 10)
-                return CustomColor.theme_button_color;
               else
                 return Colors.white;
             })()),
             fontSize: 14,
-            radius: 5,
+            radius: EnvironmentConfig.template_version == 14 ? 10 : 5,
             padding: 4,
           ),
         );
@@ -299,10 +408,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           width: 60.auto,
           height: 17,
           fontSize: 14,
-          radius: 5,
+          radius: EnvironmentConfig.template_version == 14 ? 10 : 5,
           padding: 4,
           textColor: (() {
-            if (_isDarkMode() || EnvironmentConfig.light_mode)
+            if (_isDarkMode() || EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14)
               return Colors.white;
             else if (EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode)
               //pb dark mode with red theme
@@ -310,9 +419,12 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             else
               return CustomColor.theme_app_bar_color;
           }()),
+          // textColor: _isDarkMode() || EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_app_bar_color,
+
           color: EnvironmentConfig.template_version == 3 ||
                   EnvironmentConfig.template_version == 4 ||
                   EnvironmentConfig.template_version == 10 ||
+                  EnvironmentConfig.template_version == 14 ||
                   _isDarkMode() ||
                   EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
@@ -361,6 +473,30 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                 ),
               ],
             ),
+          ),
+        ),
+      );
+    else if (EnvironmentConfig.template_version == 14)
+      return InkWell(
+        onTap: () => Navigator.of(context).pushNamed("/vip"),
+        child: Container(
+          margin: EdgeInsets.only(right: 10),
+          child: Column(
+            children: [
+              Image.asset(
+                "images/login_app_bar/vip.png",
+                matchTextDirection: true,
+                height: 15.auto,
+              ),
+              AutoSizeText(
+                "VIP",
+                style: TextStyle(color: CustomColor.theme_button_color, fontWeight: FontWeight.bold),
+                minFontSize: 14,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                stepGranularity: 1,
+              ),
+            ],
           ),
         ),
       );
@@ -459,11 +595,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               style: TextStyle(
                 color: CustomColor.theme_app_bar_text_color,
                 fontWeight: FontWeight.bold,
-                fontSize: ((widget.config?.homePageDisplayBalance ?? false) || (widget.config?.newTransferUI ?? false)) ? 10.auto : 14.auto,
+                fontSize: ((GlobalValueUtil.featuresConfig?.homePageDisplayBalance ?? false) || (GlobalValueUtil.featuresConfig?.newTransferUI ?? false))
+                    ? 10.auto
+                    : 14.auto,
               ),
             ),
-            if (widget.config?.homePageDisplayBalance ?? false) _getBalanceText(),
-            if (widget.config?.newTransferUI ?? false)
+            if (GlobalValueUtil.featuresConfig?.homePageDisplayBalance ?? false) _getBalanceText(),
+            if (GlobalValueUtil.featuresConfig?.newTransferUI ?? false)
               InkWell(
                 onTap: () => widget.onClickBalance != null ? widget.onClickBalance!() : null,
                 child: Container(
@@ -489,13 +627,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
       );
 
   _getBalanceText() => Text(
-        widget.totalBalance != null ? Format().amountFormat(widget.totalBalance ?? 0) : "-",
+        GlobalValueUtil.totalBalance != null ? Format().amountFormat(GlobalValueUtil.totalBalance ?? 0) : "-",
         style: TextStyle(
-          color: (widget.config?.newTransferUI ?? false) && EnvironmentConfig.template_version == 3
+          color: (GlobalValueUtil.featuresConfig?.newTransferUI ?? false) && EnvironmentConfig.template_version == 3
               ? CustomColor.theme_button_color
               : CustomColor.theme_app_bar_text_color,
           fontWeight: FontWeight.bold,
-          fontSize: (widget.config?.newTransferUI ?? false) ? 16.auto : 14.auto,
+          fontSize: (GlobalValueUtil.featuresConfig?.newTransferUI ?? false) ? 16.auto : 14.auto,
         ),
         textAlign: TextAlign.left,
       );
@@ -508,7 +646,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               if (_isDisplayPhone()) _getPhoneText(),
-              if (widget.config?.customVIP ?? false) _getVipText(),
+              if (GlobalValueUtil.featuresConfig?.customVIP ?? false) _getVipText(),
             ],
           ),
         )
@@ -527,7 +665,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           Container(
             margin: EdgeInsets.only(right: 5.auto),
             child: AutoSizeText(
-              widget.phone ?? "",
+              GlobalValueUtil.phone ?? "",
               style: TextStyle(color: CustomColor.theme_app_bar_text_color, fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
               minFontSize: 10,
@@ -597,8 +735,6 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               GlobalValueUtil.playerStatus = AssetPlayerStatus.manualClickPause;
               GlobalValueUtil.pausesong();
             });
-
-            // widget.onPauseMusic!();
           }
         },
         splashColor: Colors.transparent,
@@ -621,8 +757,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   _isDarkMode() => ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) && !EnvironmentConfig.dark_mode);
 
-  _isDisplayUserDetailsRow() => (_isDisplayPhone() || (widget.config?.customVIP ?? false));
+  _isDisplayUserDetailsRow() => (_isDisplayPhone() || (GlobalValueUtil.featuresConfig?.customVIP ?? false));
 
   _isDisplayPhone() =>
-      (widget.config?.displayPhone ?? false) && widget.phone != null && (widget.phone ?? "").isNotEmpty && EnvironmentConfig.brandName != "SKY8";
+      (GlobalValueUtil.featuresConfig?.displayPhone ?? false) &&
+      GlobalValueUtil.phone != null &&
+      (GlobalValueUtil.phone ?? "").isNotEmpty &&
+      EnvironmentConfig.brandName != "SKY8";
 }

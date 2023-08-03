@@ -4,28 +4,32 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
+import '../globalUtil/GlobalValueUtil.dart';
+
 class CustomScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget body;
   final Color? color;
   final bool? resizeToAvoidBottomInset;
+  final Drawer? endDrawer;
 
   CustomScaffold({
     this.appBar,
     required this.body,
     this.color,
     this.resizeToAvoidBottomInset = false,
+    this.endDrawer,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key:  key,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) ||
-              EnvironmentConfig.template_version == 11)
+      backgroundColor: ((EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 11)
           ? Colors.transparent
           : (color ?? CustomColor.theme_bg_color),
-      appBar: appBar, //?? PreferredSizeWidget(),
+      appBar: appBar,
       body: Container(
         decoration: ((() {
           if (EnvironmentConfig.template_version == 9 && EnvironmentConfig.dark_mode)
@@ -43,8 +47,14 @@ class CustomScaffold extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             );
+          else if (EnvironmentConfig.template_version == 14)
+            return BoxDecoration(
+              color:CustomColor.theme_bar_gradient_2
+            );
           else
-            return BoxDecoration();
+            return BoxDecoration(
+              color: CustomColor.theme_bg_color,
+            );
         }())),
         child: body,
       ),
