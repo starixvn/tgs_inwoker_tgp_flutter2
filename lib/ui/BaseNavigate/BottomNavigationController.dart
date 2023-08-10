@@ -230,6 +230,8 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
             } else {
               // show wallet menu
               isMenu = true;
+              //check previous page is hide/show appbar
+              hideAppBar = _selectedIndex == 4 && EnvironmentConfig.template_version != 14 && homeViewModel.userProfile != null;
               NotificationCenter().notify(NotificationServiceName().isShowingMenu, data: true);
             }
             break;
@@ -298,54 +300,54 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       key: scaffoldKey,
       endDrawer: !isShowTopNavigate && (EnvironmentConfig.template_version == 14)
           ? Drawer(
-              width: context.screenWidth * 0.65,
-              backgroundColor: Color(0xff181c42),
-              child: EndDrawerMenu(
-                username: mainViewModel.userProfile?.username ?? "",
-                width: context.screenWidth * 0.65,
-                scaffoldKey: scaffoldKey,
-                logout: () => _logout(),
-              ),
-            )
+        width: context.screenWidth * 0.65,
+        backgroundColor: Color(0xff181c42),
+        child: EndDrawerMenu(
+          username: mainViewModel.userProfile?.username ?? "",
+          width: context.screenWidth * 0.65,
+          scaffoldKey: scaffoldKey,
+          logout: () => _logout(),
+        ),
+      )
           : Container(),
       appBar: hideAppBar
           ? null
           : (isShowTopNavigate
-              ? CustomAppBar(
-                  title: _appBarTitle,
-                  walletBalance: GlobalValueUtil.totalBalance,
-                  isPassTrueWhenPop: true,
-                  onPop: () {
-                    if (updateCustomView) {
-                      updateCustomView = false;
-                    }
-                    if (preBottomNavigationRoute.isNotEmpty) {
-                      _updateBottomIndex(preBottomNavigationRoute.last);
-                      preBottomNavigationRoute.removeLast();
-                    }
-                  },
-                  isShowBalance: isShowBalanceInAppBar,
-                )
-              : CustomLoginAppBar(
-                  onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
-                  onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
-                  onClickLogoutButton: () => _logout(),
-                  isLogin: homeViewModel.userProfile != null,
-                  userProfile: homeViewModel.userProfile,
-                  onClickBalance: () {
-                    // setState(() {
-                    //   isShowTransferUI = !isShowTransferUI;
-                    // });
-                  },
-                  // onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
-                  // onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
-                  randomNumber: randomGeneratedPlayerCount ?? 0,
-                  isShowMarquee: isShowMarquee,
-                  marquee: homeViewModel.announcement,
-                  scaffoldKey: scaffoldKey,
-                  barrierWidget: _buildOverlay(),
-                  isShowBarrier: isMenu,
-                )),
+          ? CustomAppBar(
+        title: _appBarTitle,
+        walletBalance: GlobalValueUtil.totalBalance,
+        isPassTrueWhenPop: true,
+        onPop: () {
+          if (updateCustomView) {
+            updateCustomView = false;
+          }
+          if (preBottomNavigationRoute.isNotEmpty) {
+            _updateBottomIndex(preBottomNavigationRoute.last);
+            preBottomNavigationRoute.removeLast();
+          }
+        },
+        isShowBalance: isShowBalanceInAppBar,
+      )
+          : CustomLoginAppBar(
+        onClickLoginButton: () => Navigator.of(context).pushNamed(RoutePath.login),
+        onClickRegisterButton: () => Navigator.of(context).pushNamed(RoutePath.register),
+        onClickLogoutButton: () => _logout(),
+        isLogin: homeViewModel.userProfile != null,
+        userProfile: homeViewModel.userProfile,
+        onClickBalance: () {
+          // setState(() {
+          //   isShowTransferUI = !isShowTransferUI;
+          // });
+        },
+        // onPauseMusic: () => (widget.onPauseBgMusic != null) ? widget.onPauseBgMusic!() : null,
+        // onResumeMusic: () => (widget.onResumeBgMusic != null) ? widget.onResumeBgMusic!() : null,
+        randomNumber: randomGeneratedPlayerCount ?? 0,
+        isShowMarquee: isShowMarquee,
+        marquee: homeViewModel.announcement,
+        scaffoldKey: scaffoldKey,
+        barrierWidget: _buildOverlay(),
+        isShowBarrier: isMenu,
+      )),
       body: Container(
         height: context.screenHeight,
         width: context.screenWidth,
@@ -367,19 +369,19 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       bottomNavigationBar: hideBottomNavigationBar
           ? null
           : BottomAppBar(
-              color: CustomColor.theme_bottom_app_bar_color,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildBottomNavigationBarItem(0),
-                  _buildBottomNavigationBarItem(1),
-                  _buildBottomNavigationBarItem(2),
-                  _buildBottomNavigationBarItem(3),
-                  _buildBottomNavigationBarItem(4),
-                ],
-              ),
-            ),
+        color: CustomColor.theme_bottom_app_bar_color,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildBottomNavigationBarItem(0),
+            _buildBottomNavigationBarItem(1),
+            _buildBottomNavigationBarItem(2),
+            _buildBottomNavigationBarItem(3),
+            _buildBottomNavigationBarItem(4),
+          ],
+        ),
+      ),
     );
   }
 
@@ -390,15 +392,15 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
   }
 
   _buildMenu() => Visibility(
-        visible: isMenu,
-        child: Menu(),
-      );
+    visible: isMenu,
+    child: Menu(),
+  );
 
   _buildOverlay() => ModalBarrier(
-        dismissible: true,
-        color: Colors.black54.withOpacity(0.5),
-        onDismiss: _closeMenu,
-      );
+    dismissible: true,
+    color: Colors.black54.withOpacity(0.5),
+    onDismiss: _closeMenu,
+  );
 
   _generateNewNumberEveryFewSec() {
     Random _random = new Random();
@@ -427,21 +429,21 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
       viewList.add((updateCustomView)
           ? customView
           : (() {
-              switch (icon) {
-                case BottomNavigationIcon.home:
-                  return Home(isFirstRun: widget.isFirstRun);
-                case BottomNavigationIcon.promotion:
-                  return Promotion();
-                case BottomNavigationIcon.cs:
-                  return CustomerService();
-                case BottomNavigationIcon.profile:
-                  return Profile();
-                case BottomNavigationIcon.deposit:
-                  return Deposit();
-                default:
-                  return Container();
-              }
-            }()));
+        switch (icon) {
+          case BottomNavigationIcon.home:
+            return Home(isFirstRun: widget.isFirstRun);
+          case BottomNavigationIcon.promotion:
+            return Promotion();
+          case BottomNavigationIcon.cs:
+            return CustomerService();
+          case BottomNavigationIcon.profile:
+            return Profile();
+          case BottomNavigationIcon.deposit:
+            return Deposit();
+          default:
+            return Container();
+        }
+      }()));
     }
     return viewList;
     // var views = [
@@ -514,18 +516,18 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
     } else*/
     if (imagePath.contains(".svg")) {
       return EnvironmentConfig.template_version == 14 && !imagePath.contains("ic_cs")
-          // preventing override color for t14 icon
+      // preventing override color for t14 icon
           ? SvgPicture.asset(
-              imagePath,
-              width: 25.auto,
-              height: 25.auto,
-            )
+        imagePath,
+        width: 25.auto,
+        height: 25.auto,
+      )
           : SvgPicture.asset(
-              imagePath,
-              width: 25.auto,
-              height: 25.auto,
-              color: (_selectedIndex == index && !isMenu) ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
-            );
+        imagePath,
+        width: 25.auto,
+        height: 25.auto,
+        color: (_selectedIndex == index && !isMenu) ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
+      );
     } else {
       return Image.asset(
         (EnvironmentConfig.template_version == 15 && _selectedIndex != index) ? imagePath.replaceAll("-selected", "") : imagePath,
@@ -648,9 +650,9 @@ class TooltipShape extends ShapeBorder {
 
   @override
   Path getInnerPath(
-    Rect rect, {
-    TextDirection? textDirection,
-  }) {
+      Rect rect, {
+        TextDirection? textDirection,
+      }) {
     final Path path = Path();
 
     path.addRRect(
@@ -684,7 +686,7 @@ class TooltipShape extends ShapeBorder {
 
   @override
   ShapeBorder scale(double t) => RoundedRectangleBorder(
-        side: _side.scale(t),
-        borderRadius: _borderRadius * t,
-      );
+    side: _side.scale(t),
+    borderRadius: _borderRadius * t,
+  );
 }
