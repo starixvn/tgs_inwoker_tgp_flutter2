@@ -21,67 +21,93 @@ import 'package:tgp_flutter2/ui/vip/vip_view_model.dart';
 
 import '../../custom/custom_text_form_field.dart';
 import '../report/account_report_view.dart';
+
+import 'memo_item.dart';
 import 'memo_view_model.dart';
 
 class Sent extends StatefulWidget {
+  final MemoViewModel vm;
+
+  Sent({required this.vm});
+
   @override
   _SentState createState() => _SentState();
 }
 
 class _SentState extends BaseState<Sent> {
+  ScrollController _controller = ScrollController();
+  bool isLoading = false;
+
   @override
   void initState() {
+    widget.vm.getDeliveryBoxList();
+    _controller.addListener(_scrollListener);
     super.initState();
   }
 
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(15.auto),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 0,
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Text(
-                      "Subject",
-                      style: TextStyle(color: Colors.white),
+    return Wrap(
+      children: [
+        Container(
+          decoration:
+              EnvironmentConfig.template_version == 14 ? BoxDecoration() : BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.auto)),
+          padding: EdgeInsets.all(15.auto),
+          margin: EnvironmentConfig.template_version == 14 ? EdgeInsets.zero : EdgeInsets.all(10.auto),
+          child: Wrap(
+            children: [
+              Expanded(
+                flex: 0,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Text(
+                          getTranslatedText("memo_subject"),
+                          style: TextStyle(color: _getTextColor()),
+                        ),
+                      ),
                     ),
+                    Expanded(
+                      flex: 0,
+                      child: Container(
+                        child: Text(
+                          getTranslatedText("memo_date"),
+                          style: TextStyle(color: _getTextColor()),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                physics: ClampingScrollPhysics(),
+                controller: _controller,
+                children: List.generate(
+                  (widget.vm.deliveryBoxList?.length ?? 0),
+                  (index) => MemoItem(
+                    title: widget.vm.deliveryBoxList?[index].subject ?? "",
+                    date: Format().reversedDateFormat(widget.vm.deliveryBoxList?[index].sentOn ?? ""),
                   ),
                 ),
-                Expanded(
-                  flex: 0,
-                  child: Container(
-                    child: Text(
-                      "Date",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Divider(
-            thickness: (0.5).auto,
-            color: Colors.white,
-          ),
-          Expanded(flex: 1, child: Container())
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  _buildSubmitButton() => Container(
-      width: context.screenWidth,
-      padding: EdgeInsets.all(10.auto),
-      child: ColorButton(
-        title: getTranslatedText("submit"),
-        onClick: () {},
-        isEnabled: true,
-        color: CustomColor.theme_button_color,
-        radius: 9.6,
-      ));
+  Color _getTextColor() => EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black;
+
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent) {
+      setState(() {
+        isLoading = true;
+      });
+      widget.vm.getDeliveryBoxList(isLoadMore: true);
+    }
+  }
 }

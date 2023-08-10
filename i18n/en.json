@@ -1218,5 +1218,15 @@
   "memo": "Memo",
   "announcement": "Announcement",
   "player_balance": "Balance",
-  "vip_level": "VIP Level"
+  "vip_level": "VIP Level",
+  "compose": "Compose",
+  "inbox": "Inbox",
+  "sent": "Sent",
+  "memo_no": "No",
+  "memo_date": "Date",
+  "memo_subject": "Subject",
+  "memo_action": "Action",
+  "memo_reply": "Reply",
+  "enter_memo_subject": "Please enter subject",
+  "enter_memo": "Please enter memo"
 }

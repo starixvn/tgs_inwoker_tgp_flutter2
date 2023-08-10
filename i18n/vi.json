@@ -1204,5 +1204,15 @@
   "memo": "Bản ghi nhớ",
   "announcement": "Thông báo",
   "player_balance": "THĂNG BẰNG",
-  "vip_level": "Cấp độ VIP"
+  "vip_level": "Cấp độ VIP",
+  "compose": "Viết",
+  "inbox": "Hộp thư đến",
+  "sent": "Hộp thư đi",
+  "memo_no": "Đặt hàng",
+  "memo_date": "Ngày",
+  "memo_subject": "Chủ đề",
+  "memo_action": "Hành động",
+  "memo_reply": "Trả lời",
+  "enter_memo_subject": "Vui lòng nhập chủ đề",
+  "enter_memo": "Vui lòng nhập tin nhắn trạm"
 }

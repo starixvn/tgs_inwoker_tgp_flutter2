@@ -20,6 +20,7 @@ class CustomTextFormField extends StatefulWidget {
   final double bottomMargin;
   final String? tipsText;
   final Widget? customPart;
+  final double? elevation;
 
   CustomTextFormField({
     required this.title,
@@ -36,6 +37,7 @@ class CustomTextFormField extends StatefulWidget {
     this.bottomMargin = 15,
     this.tipsText,
     this.customPart,
+    this.elevation  = 5,
   });
 
   @override
@@ -92,7 +94,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            elevation: 5,
+            elevation: widget.elevation,
             margin: EdgeInsets.symmetric(vertical: 8.auto, horizontal: 10.auto),
             child: Container(
               height: 40.auto,

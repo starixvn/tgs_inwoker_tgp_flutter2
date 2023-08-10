@@ -1116,10 +1116,8 @@
   "fees_deposit": "Biaya setoran",
   "playerNote": "Catatan Pemain",
   "plsEnterPlayerNote": "Silakan masukkan catatan pemain",
-
   "report_bet": "Riwayat Taruhan",
   "report_withdrawal": "Penarikan",
-
   "dialogDARUnavailableTitle": "Lotre isi ulang telah berakhir",
   "dialogUnavailableTitle1": "Mainkan sekali sehari",
   "dialogUnavailableTitle2": "Datang lagi besok",
@@ -1128,7 +1126,6 @@
   "dialogErrorTitle1": "Undian tidak mungkin",
   "dialogErrorTitle2": "Silakan coba lagi nanti",
   "dialogIndexErrorTitle1": "Pemain harap segarkan",
-
   "winning_id": "Pemenang ID",
   "date_time": "Waktu",
   "winning_content": "Pemenang",
@@ -1148,13 +1145,10 @@
   "affiliate_rebate_players": "Pemain",
   "affiliate_rebate_turnover": "Pengeluaran",
   "affiliate_rebate_rebates": "Rebate",
-
   "deposit_enter_amount": "Silakan Masukkan Jumlah Deposit",
-
   "download": "Unduh",
   "storage_permission_required": "Izin penyimpanan diperlukan",
   "affiliate_qr_code_saved": "Kode QR disimpan di album",
-
   "deposit_dialog_deposit_form": "Transaksi Deposit",
   "deposit_dialog_withdrawal_form": "Transaksi Withdrawal",
   "deposit_dialog_update_time": "Waktu: ",
@@ -1165,12 +1159,10 @@
   "deposit_dialog_waiting": "Menunggu",
   "deposit_dialog_success": "Success",
   "deposit_dialog_rejected": "Ditolak",
-
   "login_member": "Login Anggota",
   "register_member": "Mendaftar",
   "phone_verification_title": "Verifikasi telepon",
   "email_verification_title": "Verifikasi email",
-
   "sponsor_liver": "Liverpool",
   "sponsor_fioren": "Fiorentina",
   "sponsor_real": "Real Sociedad",
@@ -1178,10 +1170,8 @@
   "sponsor_schal": "Schalke 04",
   "sponsor_desc": "Official Asian Partner",
   "sponsor_title": "Sponsor",
-
   "vip_rebate": "Anda masih memiliki potongan harga ",
   "vip_rebate_claim": " untuk diklaim...",
-
   "online_chat": "Obrolan Langsung",
   "collect": "Kumpulkan",
   "terms_and_conditions": "Syarat dan Ketentuan",
@@ -1205,5 +1195,15 @@
   "memo": "Memo",
   "announcement": "Pengumuman",
   "player_balance": "Total Dana Pemain",
-  "vip_level": "Tingkat VIP"
+  "vip_level": "Tingkat VIP",
+  "compose": "Menulis",
+  "inbox": "Kotak masuk",
+  "sent": "Kotak keluar",
+  "memo_no": "Pesanan",
+  "memo_date": "Tanggal",
+  "memo_subject": "Subjek",
+  "memo_action": "Aksi",
+  "memo_reply": "Balas",
+  "enter_memo_subject": "Masukkan subjek",
+  "enter_memo": "Silakan masukkan pesan stasiun"
 }

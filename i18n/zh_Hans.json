@@ -1204,5 +1204,15 @@
   "memo": "站内信",
   "announcement": "公告",
   "player_balance": "玩家总资金",
-  "vip_level": "VIP 级别"
+  "vip_level": "VIP 级别",
+  "compose": "撰写",
+  "inbox": "收件匣",
+  "sent": "寄件匣",
+  "memo_no": "序",
+  "memo_date": "日期",
+  "memo_subject": "主旨",
+  "memo_action": "操作",
+  "memo_reply": "回复",
+  "enter_memo_subject": "请输入主旨",
+  "enter_memo": "请输入站内信"
 }

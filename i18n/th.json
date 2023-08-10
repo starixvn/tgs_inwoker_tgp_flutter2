@@ -1203,5 +1203,15 @@
   "memo": "บันทึก",
   "announcement": "ประกาศ",
   "player_balance": "เงินทุนรวมของผู้เล่น",
-  "vip_level": "ระดับวีไอพี"
+  "vip_level": "ระดับวีไอพี",
+  "compose": "เขียน",
+  "inbox": "กล่องจดหมาย",
+  "sent": "กล่องขาออก",
+  "memo_no": "สั่งซื้อ",
+  "memo_date": "วันที่",
+  "memo_subject": "เรื่อง",
+  "memo_action": "การกระทำ",
+  "memo_reply": "ตอบกลับ",
+  "enter_memo_subject": "กรุณากรอกหัวข้อ",
+  "enter_memo": "กรุณากรอกข้อความสถานี"
 }
