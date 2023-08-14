@@ -14,7 +14,7 @@ import 'package:tgp_flutter2/ui/home/game/game_T4/game_T4.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class HomeT4 extends StatefulWidget {
   final bool isFirstRun;

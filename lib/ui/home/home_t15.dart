@@ -168,10 +168,12 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                   Expanded(child: _getBalanceDescView()),
                   Container(
                       margin: EdgeInsets.only(right: 5.auto),
-                      width: 120,
+                      width: 180,
                       child: Row(children: [
                         Expanded(child: _getWalletView(getTranslatedText("deposit"), RoutePath.deposit)),
                         Expanded(child: _getWalletView(getTranslatedText("withdrawal"), RoutePath.withdraw)),
+                        if ((widget.homeViewModel.config.haveVIPFeature ?? true) && (widget.homeViewModel.config.homePageDisplayVIP ?? true))
+                          Expanded(child: _getWalletView("VIP", RoutePath.vip)),
                       ]))
                 ],
               ),
@@ -277,6 +279,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
             } else if (path == RoutePath.withdraw) {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Withdraw(isNewPage: true)));
             }
+            else Navigator.pushNamed(context, RoutePath.vip);
           }
         },
         child: Container(

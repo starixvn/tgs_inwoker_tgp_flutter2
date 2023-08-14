@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
+import '../base_state.dart';
 import '../environment_config.dart';
 
-class TabButton extends StatelessWidget {
+class TabButton extends StatefulWidget {
   final String text;
   final int index;
   final int currentTabIndex;
@@ -25,22 +26,29 @@ class TabButton extends StatelessWidget {
   });
 
   @override
+  _TabButtonState createState() => _TabButtonState();
+}
+
+class _TabButtonState extends BaseState<TabButton> {
+  @override
   Widget build(BuildContext context) {
-    print("tabbuton widthhhh:::::${width}");
+    // print("tabbuton widthhhh:::::${widget.width}");
     return Container(
-      width: isWidthNull ? null : (width ?? context.screenWidth / 3),
-      height: height ?? 40.auto,
+      width: widget.isWidthNull ? null : (widget.width ?? context.screenWidth / 3),
+      height: widget.height ?? 40.auto,
       padding: EdgeInsets.symmetric(vertical: 2.auto),
       alignment: Alignment.center,
       decoration: EnvironmentConfig.template_version == 14
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: index == currentTabIndex ? CustomColor.tab_selected_color : (isHideInactiveBg ? Colors.transparent : CustomColor.tab_unselected_color),
+              color: widget.index == widget.currentTabIndex
+                  ? CustomColor.tab_selected_color
+                  : (widget.isHideInactiveBg ? Colors.transparent : CustomColor.tab_unselected_color),
             )
           : BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
+                  color: widget.index == widget.currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
                   width: 3,
                 ),
               ),
@@ -48,16 +56,23 @@ class TabButton extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 2.auto),
         child: AutoSizeText(
-          EnvironmentConfig.template_version == 14 ? text.toUpperCase() : text,
-          maxLines: 2,
+          EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text,
+          maxLines: _getTextMaxLines(),
           minFontSize: 8,
           maxFontSize: 14,
           stepGranularity: 1,
           style: TextStyle(color: _getTextColor()),
           textAlign: TextAlign.center,
+
         ),
       ),
     );
+  }
+
+  int _getTextMaxLines() {
+    String str = EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text;
+    if ((getCurrentLanguage().apiCode == "en-US") && str.contains(" ")) return 2;
+    else return 1;
   }
 
   Color _getTextColor() {
@@ -65,7 +80,7 @@ class TabButton extends StatelessWidget {
       case 14:
         return Colors.white;
       default:
-        return index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color;
+        return widget.index == widget.currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color;
     }
   }
 }

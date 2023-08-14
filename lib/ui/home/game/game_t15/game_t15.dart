@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:api/entity/game_provider2.dart';
 import 'package:api/entity/game_type.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:api/extension/screen_apis.dart';

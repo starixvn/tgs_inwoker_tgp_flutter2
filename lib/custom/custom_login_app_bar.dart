@@ -313,7 +313,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   List<Widget> _getActionButton() {
     List<Widget> list = [];
-    if (GlobalValueUtil.featuresConfig?.homePageDisplayVIP ?? false) list.add(_getVipButton());
+    if ((GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true) && (GlobalValueUtil.featuresConfig?.homePageDisplayVIP ?? true)) list.add(_getVipButton());
 
     list.addAll(widget.isLogin
         ? ((EnvironmentConfig.template_version == 14)

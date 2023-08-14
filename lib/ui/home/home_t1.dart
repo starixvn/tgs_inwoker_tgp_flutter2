@@ -6,13 +6,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:api/entity/user_profile.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class HomeT1 extends StatefulWidget {
   final Function? onPauseBgMusic;

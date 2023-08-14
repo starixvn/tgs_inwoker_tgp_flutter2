@@ -17,7 +17,7 @@ import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart'
 import 'package:tgp_flutter2/ui/maintenance/maintenance_dialog.dart';
 import 'package:tgp_flutter2/ui/maintenance/maintenance_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class Maintenance extends StatefulWidget {
   final bool isShowCS;

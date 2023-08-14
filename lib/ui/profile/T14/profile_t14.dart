@@ -79,7 +79,11 @@ class _ProfileT14State extends BaseState<ProfileT14> {
               style: TextStyle(color: Colors.white, fontSize: 25.auto),
             ),
             SizedBox(height: 10),
-            WalletTextContainer(height: context.screenHeight / 20, width: (context.screenWidth / 1.5), balance: "${getTranslatedText("player_balance")} ${GlobalValueUtil.totalBalance != null ? "₱ ${Format().amountFormat(GlobalValueUtil.totalBalance ?? 0)}" : "-"}"),
+            WalletTextContainer(
+                height: context.screenHeight / 20,
+                width: (context.screenWidth / 1.5),
+                balance:
+                    "${getTranslatedText("player_balance")} ${GlobalValueUtil.totalBalance != null ? "₱ ${Format().amountFormat(GlobalValueUtil.totalBalance ?? 0)}" : "-"}"),
             SizedBox(height: 40),
             // Text(
             //   widget.vm.totalBalance != null ? Format().amountFormat(widget.vm.totalBalance ?? 0) : "-",
@@ -109,7 +113,7 @@ class _ProfileT14State extends BaseState<ProfileT14> {
       _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 4),
       _buildProfileBottomItem("ic_transfer_report", "balanceChangeRecords", "transaction", 5),
       _buildProfileBottomItem("ic_favourite", "my_favorite", "favourite", 0),
-      _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
+      if (GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true) _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
       if (_vm.haveAffiliate) _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
       _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
       _buildProfileBottomItem("ic_transfer", "transfer", "wallet_transfer", 0),

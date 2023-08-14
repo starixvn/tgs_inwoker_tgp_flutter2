@@ -67,7 +67,7 @@ class _CustomerServiceT15LightState extends BaseState<CustomerServiceT15Light> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.auto),
+                margin: EdgeInsets.symmetric(horizontal: 25.auto),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -91,7 +91,7 @@ class _CustomerServiceT15LightState extends BaseState<CustomerServiceT15Light> {
                 child: ListView(
                   shrinkWrap: true,
                   physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                  padding: EdgeInsets.symmetric(horizontal: 25.auto),
                   children: [
                     buildLiveChatRow(),
                   ]..addAll(

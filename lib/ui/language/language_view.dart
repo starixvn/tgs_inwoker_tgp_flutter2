@@ -13,7 +13,7 @@ import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/ui/language/language_item.dart';
 import 'package:tgp_flutter2/ui/language/language_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class LanguageView extends StatefulWidget {
   @override
