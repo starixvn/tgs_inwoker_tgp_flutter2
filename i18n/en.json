@@ -546,5 +546,12 @@
   "player_balance": "Balance",
   "vip_level": "VIP Level",
 
-  "date": "Date"
+  "date": "Date",
+
+  "customer_support": "Customer Support",
+  "welcome_customer_support": "Welcome to Customer Support",
+  "vip_privilege": "VIP Privilege",
+  "account_record": "Account Record",
+  "account_safety": "Account Safety",
+  "member_center": "Member Center"
 }

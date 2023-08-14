@@ -544,6 +544,12 @@
   "announcement": "公告",
   "player_balance": "玩家总资金",
   "vip_level": "VIP 级别",
+  "date": "日期",
 
-  "date": "日期"
+  "customer_support": "客服",
+  "welcome_customer_support": "欢迎来到客服中心",
+  "vip_privilege": "VIP特权",
+  "account_record": "账户记录",
+  "account_safety": "账号安全",
+  "member_center": "会员中心"
 }

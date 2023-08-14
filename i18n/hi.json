@@ -541,5 +541,12 @@
   "no_favorite_hint": "अभी तक कोई संग्रह नहीं है",
   "no_favorite_hint2": "जल्दी करो और अपने पसंदीदा गेम जोड़ें!",
 
-  "date": "तारीख"
+  "date": "तारीख",
+
+  "customer_support": "ग्राहक सेवा",
+  "welcome_customer_support": "ग्राहक सेवा केंद्र में आपका स्वागत है",
+  "vip_privilege": "वीआईपी विशेषाधिकार",
+  "account_record": "खाता रिकॉर्ड",
+  "account_safety": "खाता सुरक्षा",
+  "member_center": "सदस्य केंद्र"
 }

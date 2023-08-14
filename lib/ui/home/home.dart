@@ -99,7 +99,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   @override
   void initState() {
     _initData();
-    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15) {
+    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15&& EnvironmentConfig.dark_mode) {
       // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
       GlobalValueUtil.playsong();
     }

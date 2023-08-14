@@ -38,7 +38,6 @@ class _GameT15State extends BaseState<GameT15> {
   var gameName;
   GlobalKey<GameItemT1State> gameViewItem = GlobalKey();
 
-
   @override
   void initState() {
     currentGameType = widget.vm.gameTypeList.first;
@@ -131,7 +130,7 @@ class _GameT15State extends BaseState<GameT15> {
           height: (90 * (36 / 74)),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('images/game/T15/${tabIndex == currentTabIndex ? "gametype-selected" : "gametype"}.png'),
+              image: AssetImage('images/game/T15/gametype${_getAppendImagePath(tabIndex)}.png'),
               fit: BoxFit.fill,
             ),
             // shape: BoxShape.circle,
@@ -146,7 +145,7 @@ class _GameT15State extends BaseState<GameT15> {
                     width: 18.auto,
                     margin: EdgeInsets.only(right: 2.5.auto),
                     child: Image.asset(
-                      "images/game_tab/t15/${gameType.getImagePath()}${tabIndex == currentTabIndex ? "-selected" : ""}.png",
+                      "images/game_tab/t15/${gameType.getImagePath()}${_getAppendImagePath(tabIndex)}.png",
                       width: 18.auto,
                       height: 18.auto,
                       // color: (tabIndex == currentTabIndex &&
@@ -159,14 +158,19 @@ class _GameT15State extends BaseState<GameT15> {
                     )),
               ),
               Flexible(
-                 flex: 1,
+                flex: 1,
                 child: Text(
                   gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
                   textAlign: TextAlign.left,
                   maxLines: 5,
                   overflow: TextOverflow.visible,
                   softWrap: true,
-                  style: TextStyle(color: (tabIndex == currentTabIndex) ? Color(0xff9aa4c2) : Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                  style: TextStyle(
+                      color: ((EnvironmentConfig.dark_mode && currentTabIndex == tabIndex) || (EnvironmentConfig.light_mode && currentTabIndex != tabIndex))
+                          ? Color(0xff9aa4c2)
+                          : Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12),
                 ),
                 // AutoSizeText(
                 //   gameType.getName(context, widget.vm.config?.menuItemShootFish ?? false),
@@ -182,6 +186,9 @@ class _GameT15State extends BaseState<GameT15> {
           )),
     );
   }
+
+  _getAppendImagePath(int index) =>
+      ((EnvironmentConfig.dark_mode && currentTabIndex == index) || (EnvironmentConfig.light_mode && currentTabIndex != index)) ? "-selected" : "";
 
   _onTabClick(int tabIndex, GameType gameType) {
     // var itemHeight = gameViewItem.currentState!.itemHeight;

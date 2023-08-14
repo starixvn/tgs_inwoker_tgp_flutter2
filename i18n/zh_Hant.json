@@ -1206,5 +1206,12 @@
   "player_balance": "玩家總資金",
   "vip_level": "VIP 級別",
 
-  "date": "日期"
+  "date": "日期",
+
+  "customer_support": "客服",
+  "welcome_customer_support": "歡迎來到客服中心",
+  "vip_privilege": "VIP特權",
+  "account_record": "賬戶記錄",
+  "account_safety": "賬號安全",
+  "member_center": "會員中心"
 }

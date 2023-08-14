@@ -544,5 +544,12 @@
   "player_balance": "เงินทุนรวมของผู้เล่น",
   "vip_level": "ระดับวีไอพี",
 
-  "date": "วันที่"
+  "date": "วันที่",
+
+  "customer_support": "บริการลูกค้า",
+  "welcome_customer_support": "ยินดีต้อนรับสู่ศูนย์บริการลูกค้า",
+  "vip_privilege": "สิทธิ์ VIP",
+  "account_record": "บันทึกบัญชี",
+  "account_safety": "ความปลอดภัยของบัญชี",
+  "member_center": "ศูนย์สมาชิก"
 }

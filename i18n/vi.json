@@ -545,5 +545,12 @@
   "player_balance": "THĂNG BẰNG",
   "vip_level": "Cấp độ VIP",
 
-  "date": "Ngày"
+  "date": "Ngày",
+
+  "customer_support": "Dịch vụ khách hàng",
+  "welcome_customer_support": "Chào mừng đến với trung tâm dịch vụ khách hàng",
+  "vip_privilege": "Đặc quyền VIP",
+  "account_record": "Bản ghi tài khoản",
+  "account_safety": "An toàn tài khoản",
+  "member_center": "Trung tâm thành viên"
 }

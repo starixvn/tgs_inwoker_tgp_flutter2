@@ -16,8 +16,11 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/src/gradient_decoration.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/ui/customer_service/customer_service_t15_light.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service_view_model.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
+
+import 'customer_service_t14.dart';
 
 class CustomerService extends StatefulWidget {
   final bool isNewPage;
@@ -62,91 +65,89 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         });
   }
 
-  _buildCsWidget() => _vm.communicationList == null
-      ? buildProgressDialog(_vm.brandLogoUrl)
-      : EnvironmentConfig.template_version == 14
-          ? _buildCs14Widget()
-          : Stack(
-              children: [
-                Container(
-                  width: context.screenWidth,
-                  height: context.screenHeight,
-                  padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
-                  decoration: BoxDecoration(image: _getCsBgImage()),
-                  child: ListView(shrinkWrap: true, children: [
-                    buildLiveChatRow(),
-                    ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: List.generate(_vm.communicationList!.length, (index) {
-                        return Container(
-                          child: _buildCSRow(_vm.communicationList![index].type, "cs_join", "cs_qr_code",
-                              "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
-                              qrCode: _vm.communicationList![index]),
-                        );
-                      }),
-                    )
-                  ]),
-                ),
-                Visibility(
-                  visible: _vm.config?.displayPhone ?? false,
-                  child: Positioned(
-                    top: context.screenWidth / 2.1,
-                    right: context.screenWidth / 10,
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
-                          child: SvgPicture.asset(
-                            "images/support/ic_phone.svg",
-                            matchTextDirection: true,
-                            height: 20.auto,
-                            color: Color(0xfffD18206),
-                          ),
-                        ),
-                        AutoSizeText(
-                          _vm.phone ?? "",
-                          style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
-                          minFontSize: 5,
-                          stepGranularity: 1,
-                        ),
-                      ],
+  _buildCsWidget() => _vm.communicationList == null ? buildProgressDialog(_vm.brandLogoUrl) : _getCsWidgetSwitch();
+
+  _getCsWidgetSwitch() {
+    if (EnvironmentConfig.template_version == 14)
+      return CustomerServiceT14(
+        liveChatRow: buildLiveChatRow(),
+        cSRow: List.generate(_vm.communicationList!.length, (index) {
+          return Container(
+            child: _buildCSRow(
+                _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                qrCode: _vm.communicationList![index]),
+          );
+        }),
+      );
+    else if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)
+      return  CustomerServiceT15Light(
+        vm: _vm,
+      );
+    else
+      return _buildDefaultCsWidget();
+  }
+
+  _buildDefaultCsWidget() => Stack(
+        children: [
+          Container(
+            width: context.screenWidth,
+            height: context.screenHeight,
+            padding: EdgeInsets.only(top: 260.auto, left: 20.auto, right: 20.auto),
+            decoration: BoxDecoration(image: _getCsBgImage()),
+            child: ListView(shrinkWrap: true, children: [
+              buildLiveChatRow(),
+              ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: List.generate(_vm.communicationList!.length, (index) {
+                  return Container(
+                    child: _buildCSRow(
+                        _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                        qrCode: _vm.communicationList![index]),
+                  );
+                }),
+              )
+            ]),
+          ),
+          Visibility(
+            visible: _vm.config?.displayPhone ?? false,
+            child: Positioned(
+              top: context.screenWidth / 2.1,
+              right: context.screenWidth / 10,
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 30.auto, right: 3.auto),
+                    child: SvgPicture.asset(
+                      "images/support/ic_phone.svg",
+                      matchTextDirection: true,
+                      height: 20.auto,
+                      color: Color(0xfffD18206),
                     ),
                   ),
-                ),
-              ],
-            );
-
-  _buildCs14Widget() => Container(
-        height: context.screenHeight,
-        width: context.screenWidth,
-        color: CustomColor.theme_bar_gradient_2,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              alignment: Alignment.center,
-              child: Text(
-                getTranslatedText('customer_service'),
-                style: TextStyle(color: Colors.white, fontSize: 15.auto),
+                  AutoSizeText(
+                    _vm.phone ?? "",
+                    style: TextStyle(color: Color(0xfffD18206), fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
+                    minFontSize: 5,
+                    stepGranularity: 1,
+                  ),
+                ],
               ),
             ),
-            buildLiveChatRow(),
-            ListView(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              children: List.generate(_vm.communicationList!.length, (index) {
-                return Container(
-                  child: _buildCSRow(
-                      _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
-                      qrCode: _vm.communicationList![index]),
-                );
-              }),
-            ),
-          ],
-        ),
+          ),
+        ],
+      );
+
+  _buildCs14Widget() => CustomerServiceT14(
+        liveChatRow: buildLiveChatRow(),
+        cSRow: List.generate(_vm.communicationList!.length, (index) {
+          return Container(
+            child: _buildCSRow(
+                _vm.communicationList![index].type, "cs_join", "cs_qr_code", "support-" + (_vm.communicationList![index].type ?? "").toLowerCase(),
+                qrCode: _vm.communicationList![index]),
+          );
+        }),
       );
 
   _getCsBgImage() {

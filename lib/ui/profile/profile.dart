@@ -24,6 +24,7 @@ import 'package:api/extension/screen_apis.dart';
 
 import '../../globalUtil/GlobalValueUtil.dart';
 import '../home/end_drawer_menu.dart';
+import 'T15_light/profile_t15_light.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -54,25 +55,30 @@ class _ProfileState extends BaseState<Profile> {
         builder: (ctx, vm, _) {
           _handleApiState();
 
-          switch (EnvironmentConfig.template_version) {
-            case 14:
-              return ProfileT14(vm: vm);
-            default:
-              return CustomScaffold(
-                body: EnvironmentConfig.template_version == 2
-                    ? ProfileT2(vm: _vm)
-                    : Container(
-                        padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
-                        child: ListView(
-                          children: [
-                            _buildUserInfoContainer(),
-                            ProfileItem(config: _vm.config, bankCardList: _vm.bankCardList, haveAffiliate: _vm.haveAffiliate, isNotify: _vm.isNotify,),
-                            _buildLogoutButton()
-                          ],
-                        ),
+          if (EnvironmentConfig.template_version == 14)
+            return ProfileT14(vm: vm);
+          else if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)
+          return ProfileT15Light(vm: vm);
+          else
+            return CustomScaffold(
+              body: EnvironmentConfig.template_version == 2
+                  ? ProfileT2(vm: _vm)
+                  : Container(
+                      padding: EdgeInsets.only(left: 20.auto, right: 20.auto, top: 30.auto),
+                      child: ListView(
+                        children: [
+                          _buildUserInfoContainer(),
+                          ProfileItem(
+                            config: _vm.config,
+                            bankCardList: _vm.bankCardList,
+                            haveAffiliate: _vm.haveAffiliate,
+                            isNotify: _vm.isNotify,
+                          ),
+                          _buildLogoutButton()
+                        ],
                       ),
-              );
-          }
+                    ),
+            );
           // CustomScaffold(
           //   appBar: EnvironmentConfig.template_version == 14
           //       ? CustomLoginAppBar(

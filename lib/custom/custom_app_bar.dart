@@ -34,7 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(45);
 
   Widget build(BuildContext context) {
-  if (EnvironmentConfig.template_version == 1)
+    if (EnvironmentConfig.template_version == 1)
       return AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
@@ -114,7 +114,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         //widget == null ? true : false,
         title: Text(
           title,
-          style: TextStyle(fontSize: 16.auto, color: CustomColor.theme_app_bar_text_color),
+          style: TextStyle(
+              fontSize: 16.auto,
+              color: EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode ? Colors.black : CustomColor.theme_app_bar_text_color),
         ),
         leading: IconButton(
           icon: Icon(

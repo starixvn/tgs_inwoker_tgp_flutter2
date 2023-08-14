@@ -185,35 +185,34 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            isLogin ? (widget.homeViewModel.userProfile.username ?? "") : getTranslatedText("home_login_hint2"),
-            style: TextStyle(
-              color: CustomColor.theme_app_bar_text_color,
-              fontWeight: FontWeight.bold,
-              fontSize: 14.auto,
-            ),
-          ),
-          !isLogin
-              ? InkWell(
-                  onTap: () {
-                    showPreLoginDialog();
-                  },
-                  child: Text(
-                    getTranslatedText("home_login_hint3"),
-                    style: TextStyle(
-                      color: CustomColor.theme_app_bar_text_color,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14.auto,
+        children: isLogin
+            ? [
+                Row(
+                  children: [
+                    Text(
+                      (widget.homeViewModel.userProfile.username ?? ""),
+                      style: TextStyle(
+                        color: EnvironmentConfig.light_mode ? CustomColor.theme_button_color : CustomColor.theme_app_bar_text_color,
+                        fontWeight: EnvironmentConfig.light_mode ? FontWeight.normal : FontWeight.bold,
+                        fontSize: 14.auto,
+                      ),
                     ),
-                  ),
-                )
-              : Row(
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.auto),
+                      decoration: BoxDecoration(color: Color(0xffceb296), borderRadius: BorderRadius.all(Radius.circular(2.5))),
+                      child: Text(
+                        "VIP ${(widget.homeViewModel.userProfile.vipLevel ?? "")}",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
                   children: [
                     Text(
                       widget.homeViewModel.totalBalance != null ? Format().amountFormat(widget.homeViewModel.totalBalance ?? 0) : "-",
                       style: TextStyle(
-                        color: CustomColor.theme_app_bar_text_color,
+                        color: CustomColor.theme_button_color,
                         fontWeight: FontWeight.normal,
                         fontSize: 14.auto,
                       ),
@@ -233,13 +232,36 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                         child: SvgPicture.asset(
                           "images/home/T15/refresh.svg",
                           height: 18.auto,
-                          color: CustomColor.announcement_icon_color,
+                          color: EnvironmentConfig.light_mode ? Color(0xff7d7d7f) : CustomColor.announcement_icon_color,
                         ),
                       ),
                     ),
                   ],
                 )
-        ],
+              ]
+            : [
+                Text(
+                  getTranslatedText("home_login_hint2"),
+                  style: TextStyle(
+                    color: EnvironmentConfig.light_mode ? Colors.black : CustomColor.theme_app_bar_text_color,
+                    fontWeight: EnvironmentConfig.light_mode ? FontWeight.normal : FontWeight.bold,
+                    fontSize: 14.auto,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    showPreLoginDialog();
+                  },
+                  child: Text(
+                    getTranslatedText("home_login_hint3"),
+                    style: TextStyle(
+                      color: EnvironmentConfig.light_mode ? Color(0xff9aa4c2) : CustomColor.theme_app_bar_text_color,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.auto,
+                    ),
+                  ),
+                )
+              ],
       ));
 
   _getWalletView(String typeName, String path) => Container(
@@ -276,7 +298,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                 flex: 1,
                 child: AutoSizeText(
                   typeName,
-                  style: TextStyle(color: CustomColor.theme_button_color),
+                  style: TextStyle(color: EnvironmentConfig.light_mode ? CustomColor.theme_app_bar_text_color : CustomColor.theme_button_color),
                   minFontSize: 10,
                   maxLines: 2,
                   textAlign: TextAlign.center,

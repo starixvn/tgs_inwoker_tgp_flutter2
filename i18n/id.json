@@ -596,5 +596,12 @@
   "player_balance": "Total Dana Pemain",
   "vip_level": "Tingkat VIP",
 
-  "date": "Tanggal"
+  "date": "Tanggal",
+
+  "customer_support": "Pelayanan Pelanggan",
+  "welcome_customer_support": "Selamat datang di pusat layanan pelanggan",
+  "vip_privilege": "Hak istimewa VIP",
+  "account_record": "Catatan Akun",
+  "account_safety": "Keamanan Akun",
+  "member_center": "Pusat Anggota"
 }
