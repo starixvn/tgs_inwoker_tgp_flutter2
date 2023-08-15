@@ -1205,6 +1205,14 @@
   "announcement": "公告",
   "player_balance": "玩家總資金",
   "vip_level": "VIP 級別",
-
-  "date": "日期"
+  "compose": "撰寫",
+  "inbox": "收件匣",
+  "sent": "寄件匣",
+  "memo_no": "序",
+  "memo_date": "日期",
+  "memo_subject": "主旨",
+  "memo_action": "操作",
+  "memo_reply": "回复",
+  "enter_memo_subject": "請輸入主旨",
+  "enter_memo": "請輸入站內信"
 }

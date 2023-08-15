@@ -41,6 +41,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
         children: [
           _buildTopProfileItem("ic_profile", "profile_detail", "profile_info", 0),
           _buildMiddleProfileItem("ic_message", "message_center", "message", 0),
+          _buildMiddleProfileItem("ic_message", "memo", "memo", 0),
           _buildMiddleProfileItem("ic_account_report", "bet_history", "transaction", 0),
           _buildMiddleProfileItem("ic_withdraw_report", "withdrawal_history", "transaction", 1),
           _buildMiddleProfileItem("ic_deposit_report", "deposit_history", "transaction", 2),

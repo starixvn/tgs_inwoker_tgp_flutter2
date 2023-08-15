@@ -53,6 +53,8 @@ class _MemoState extends BaseState<Memo> with SingleTickerProviderStateMixin {
     return ProviderWidget<MemoViewModel>(
         model: _vm,
         builder: (ctx, vm, _) {
+          _handleApiState();
+
           return CustomScaffold(
             appBar: CustomAppBar(
               title: getTranslatedText("memo").toString().toUpperCase(),
@@ -60,11 +62,13 @@ class _MemoState extends BaseState<Memo> with SingleTickerProviderStateMixin {
             body: Column(
               children: [
                 Container(
+                  width: context.screenWidth,
+                  padding: EdgeInsets.symmetric(horizontal: 10.auto),
                   margin: EdgeInsets.only(top: 10.auto),
                   child: Wrap(
                     spacing: 10.auto, // Adjust the spacing between tabs
                     runSpacing: 10.auto, // Adjust the spacing between rows of tabs
-                    alignment: WrapAlignment.center,
+                    alignment: EnvironmentConfig.template_version == 14 ? WrapAlignment.center : WrapAlignment.start,
                     children: List.generate(tabList.length, (index) {
                       return InkWell(
                         onTap: () {
@@ -81,31 +85,36 @@ class _MemoState extends BaseState<Memo> with SingleTickerProviderStateMixin {
                                   color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
                                 )
                               : BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_unselected_color,
-                                      width: 3,
-                                    ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: index == currentTabIndex ? CustomColor.tab_selected_color : CustomColor.tab_selected_color.withOpacity(0.2),
+                                    width: 1,
                                   ),
                                 ),
-                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 17),
+                          padding: EdgeInsets.symmetric(
+                              vertical: EnvironmentConfig.template_version == 14 ? 12 : 5, horizontal: EnvironmentConfig.template_version == 14 ? 17 : 10),
                           child: Text(
                             getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
-                            style: TextStyle(color: Colors.white, fontSize: 14.auto),
+                            style: TextStyle(
+                                color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                                fontSize: EnvironmentConfig.template_version == 14 ? 14.auto : 10.auto,
+                                fontWeight: index == currentTabIndex ? FontWeight.w900 : FontWeight.normal,
+                            ),
                           ),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
+                SizedBox(height: 10),
                 Expanded(
                   child: TabBarView(
                     physics: NeverScrollableScrollPhysics(),
                     controller: _tabController,
                     children: [
-                      Compose(),
-                      Inbox(),
-                      Sent(),
+                      Compose(vm: _vm),
+                      Inbox(vm: _vm),
+                      Sent(vm: _vm),
                     ],
                   ),
                 ),
@@ -113,5 +122,9 @@ class _MemoState extends BaseState<Memo> with SingleTickerProviderStateMixin {
             ),
           );
         });
+  }
+
+  _handleApiState() {
+    handleApiState(_vm.getStationLetterListApiState, onSuccess: () {});
   }
 }
