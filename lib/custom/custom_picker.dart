@@ -30,7 +30,7 @@ class _CustomPickerState extends BaseState<CustomPicker> {
           Container(
             margin: EdgeInsets.only(bottom: 5.auto, left: 5.auto),
             alignment: Alignment.topLeft,
-            child: Row(
+            child: Wrap(
               children: [
                 if (widget.title != null)
                   Text(
