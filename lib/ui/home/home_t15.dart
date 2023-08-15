@@ -238,6 +238,7 @@ class _HomeT15State extends BaseState<HomeT15> with SingleTickerProviderStateMix
                     SizedBox(width: 10),
                     InkWell(
                       onTap: () async {
+                        widget.homeViewModel.getUserDetails();
                         if (!isClickAnimate) _controller.repeat();
                         setState(() {
                           isClickAnimate = true;
