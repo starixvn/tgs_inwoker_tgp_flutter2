@@ -73,7 +73,7 @@ class GlobalValueUtil {
       final TextPainter textPainter = TextPainter(
         text: textSpan,
         textDirection: TextDirection.ltr,
-        maxLines: 1,
+        maxLines: countSpace(text, " "),
       )..layout();
 
       final double textWidth = textPainter.width;
@@ -86,6 +86,16 @@ class GlobalValueUtil {
     double fontSizeForLongestString = containerWidth / longestTextWidth * fixedFontSize;
 
     return fontSizeForLongestString;
+  }
+
+  static int countSpace(String text, String letter) {
+    int count = 0;
+    for (int i = 0; i < text.length; i++) {
+      if (text[i] == letter) {
+        count++;
+      }
+    }
+    return count==0?1:count;
   }
 
   static void updateTotalBalance(double balance) {

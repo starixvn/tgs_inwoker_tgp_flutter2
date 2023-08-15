@@ -15,6 +15,7 @@ import 'package:tgp_flutter2/ui/report/report_view_model.dart';
 import 'package:tgp_flutter2/ui/report/transfer_report_view.dart';
 import 'package:tgp_flutter2/ui/report/withdraw_report_view.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
 import 'T14/report_view_t14.dart';
 
 class ReportView extends StatefulWidget {
@@ -39,11 +40,16 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
     /*{"id": "4", "text": "返水记录"},*/
   ];
   ReportViewModel _vm = ReportViewModel();
+  double fontSize=0.0;
 
   @override
   void initState() {
     currentTabIndex = widget.tabIndex ?? 0;
     _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
+
+    List<String> list = tabList.map((element) => element["text"] ?? "").toList();
+    fontSize = GlobalValueUtil.calculateFontSizeForLongestString(list, 15.auto, 120.auto);
+
     super.initState();
   }
 
@@ -76,14 +82,15 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
                             currentTabIndex = index;
                           });
                         },
-                        labelPadding: EdgeInsets.symmetric(horizontal: 10.auto, vertical: 5.auto),
+                        labelPadding: EdgeInsets.symmetric(horizontal: 5.auto, vertical: 5.auto),
                         unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                         tabs: List.generate(tabList.length, (index) {
                           return TabButton(
                             text: getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
                             index: index,
                             currentTabIndex: currentTabIndex,
-                            width: 90.auto,
+                            width: 120.auto,
+                            fontSize: fontSize,
                           );
                         }).toList(),
                       ),

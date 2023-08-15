@@ -189,7 +189,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (EnvironmentConfig.template_version == 11 || (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode))
+                if (EnvironmentConfig.template_version == 11 /*|| (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)*/)
                   _getOnlineUsersText(),
                 if ((EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode)) _getMusicPlayerWidget(),
               ],

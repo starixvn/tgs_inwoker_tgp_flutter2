@@ -42,7 +42,7 @@ class _ProfileItemT15LightState extends BaseState<ProfileItemT15Light> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _navigate(),
-      child:  Container(
+      child: Container(
         width: context.screenWidth,
         alignment: Alignment.center,
         color: Colors.white,
@@ -55,8 +55,8 @@ class _ProfileItemT15LightState extends BaseState<ProfileItemT15Light> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(flex: 0, child: _buildImageIcon()),
-            SizedBox(width: 10),
+            if (widget.imagePath.isNotEmpty) Expanded(flex: 0, child: _buildImageIcon()),
+            if (widget.imagePath.isNotEmpty) SizedBox(width: 10),
             Expanded(flex: 1, child: _buildProfileBottomItemText()),
             Expanded(flex: 0, child: Icon(Icons.keyboard_arrow_right, color: Color(0xffcfd3dd))),
           ],
@@ -85,14 +85,12 @@ class _ProfileItemT15LightState extends BaseState<ProfileItemT15Light> {
                 return "images/profile/t1/${widget.imagePath}.svg";
             }
           }()),
-
           height: 20.auto,
           matchTextDirection: true,
           color: Color(0xffa8afc1),
         );
 
   _buildProfileBottomItemText() {
-
     return Text(
       widget.title,
       textAlign: TextAlign.start,

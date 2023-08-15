@@ -474,7 +474,7 @@
   "spin_run_out": "Oops, it seems you've\nrun out of spins.",
   "remaining_spin": "Remaining ",
   "remaining_spin2": " Spin(s) !",
-  "balanceChangeRecords": "Balance Change Records",
+  "balanceChangeRecords": "Balance Change",
   "bcr_type": "Transaction Type",
   "bcr_amount": "Amount",
   "affiliate_rebate_sports": "Sports",
@@ -552,6 +552,6 @@
   "welcome_customer_support": "Welcome to Customer Support",
   "vip_privilege": "VIP Privilege",
   "account_record": "Account Record",
-  "account_safety": "Account Safety",
+  "account_safety": "Account",
   "member_center": "Member Center"
 }

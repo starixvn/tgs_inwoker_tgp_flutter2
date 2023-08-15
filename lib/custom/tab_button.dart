@@ -14,6 +14,7 @@ class TabButton extends StatefulWidget {
   final double? height;
   final bool isHideInactiveBg;
   final bool isWidthNull;
+  final double? fontSize;
 
   TabButton({
     required this.text,
@@ -23,6 +24,7 @@ class TabButton extends StatefulWidget {
     this.height,
     this.isHideInactiveBg = false,
     this.isWidthNull = false,
+    this.fontSize,
   });
 
   @override
@@ -55,24 +57,32 @@ class _TabButtonState extends BaseState<TabButton> {
             ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 2.auto),
-        child: AutoSizeText(
-          EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text,
-          maxLines: _getTextMaxLines(),
-          minFontSize: 8,
-          maxFontSize: 14,
-          stepGranularity: 1,
-          style: TextStyle(color: _getTextColor()),
-          textAlign: TextAlign.center,
-
-        ),
+        child: widget.fontSize != null
+            ? Text(
+                EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text,
+                maxLines: _getTextMaxLines(),
+                style: TextStyle(color: _getTextColor(), fontSize: widget.fontSize),
+                textAlign: TextAlign.center,
+              )
+            : AutoSizeText(
+                EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text,
+                maxLines: _getTextMaxLines(),
+                minFontSize: 8,
+                maxFontSize: 14,
+                stepGranularity: 1,
+                style: TextStyle(color: _getTextColor()),
+                textAlign: TextAlign.center,
+              ),
       ),
     );
   }
 
   int _getTextMaxLines() {
     String str = EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text;
-    if ((getCurrentLanguage().apiCode == "en-US") && str.contains(" ")) return 2;
-    else return 1;
+    if ((getCurrentLanguage().apiCode == "en-US") && str.contains(" "))
+      return 2;
+    else
+      return 1;
   }
 
   Color _getTextColor() {

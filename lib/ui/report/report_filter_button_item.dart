@@ -29,7 +29,7 @@ class _ReportFilterButtonItemState extends BaseState<ReportFilterButtonItem> {
 
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.auto, horizontal: 20.auto),
+      padding: EdgeInsets.symmetric(vertical: 8.auto, horizontal: 20.auto),
       child: EnvironmentConfig.template_version == 14
           ? Container(
               width: context.screenWidth,
@@ -46,9 +46,7 @@ class _ReportFilterButtonItemState extends BaseState<ReportFilterButtonItem> {
             )
           : Row(
               children: List.generate(filterTabList.length, (index) {
-                return Container(
-                  child: _buildFilterButton(index, (filterTabList[index]["text"])!),
-                );
+                return _buildFilterButton(index, (filterTabList[index]["text"])!);
               }),
             ),
     );

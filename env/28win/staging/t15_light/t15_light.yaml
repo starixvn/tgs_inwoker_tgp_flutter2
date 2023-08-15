@@ -57,7 +57,7 @@ environment_config:
       default: 0xff53b2b8 #6589F7
     tab_unselected_color:
       type: int
-      default: 0xff707070
+      default: 0xff000000
     bottom_nav_selected_color:
       type: int
       default: 0xffceb296 #6589F7

@@ -158,23 +158,23 @@ class _ProfileT15LightState extends BaseState<ProfileT15Light> {
 
   _buildGridViewLayout() {
     List<Widget> list = [
-      _buildProfileBottomItem("ic_profile", "profile_detail", "profile_info", 0),
+      // _buildProfileBottomItem("ic_profile", "profile_detail", "profile_info", 0),
       _buildProfileBottomItem("ic_message", "message_center", "message", 0, isMessage: true),
       // _buildProfileBottomItem("ic_message", "memo", "memo", 0),
       // _buildProfileBottomItem("ic_announcement", "announcement", "announcement", 0),
-      _buildProfileBottomItem("ic_account_report", "bet_history", "transaction", 0),
       _buildProfileBottomItem("ic_withdraw_report", "withdrawal_history", "transaction", 1),
       _buildProfileBottomItem("ic_deposit_report", "deposit_history", "transaction", 2),
       _buildProfileBottomItem("ic_transfer_report", "transfer_history", "transaction", 3),
+      // _buildProfileBottomItem("ic_account_report", "bet_history", "transaction", 0),
       _buildProfileBottomItem("ic_account_report", "promotion_history", "transaction", 5),
       _buildProfileBottomItem("ic_transfer_report", "balanceChangeRecords", "transaction", 4),
       // _buildProfileBottomItem("ic_favourite", "my_favorite", "favourite", 0),
-      if (GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true) _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
+      // if (GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true) _buildProfileBottomItem("ic_vip", "VIP", "vip", 0),
       if (_vm.haveAffiliate) _buildProfileBottomItem("ic_affiliate", "affiliate", "affiliate", 0),
       _buildProfileBottomItem("ic_card_detail", "manage_card", "main_card", 0),
-      _buildProfileBottomItem("ic_transfer", "transfer", "wallet_transfer", 0),
+      // _buildProfileBottomItem("ic_transfer", "transfer", "wallet_transfer", 0),
       _buildProfileBottomItem("ic_lang", "language", "language", 0),
-      _buildProfileBottomItem("ic_signout", "exit", "language", -1),
+      _buildProfileBottomItem("", "logout", "language", -1),
     ];
     return ListView(
       shrinkWrap: true,
