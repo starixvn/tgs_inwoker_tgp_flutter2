@@ -64,11 +64,24 @@ class _MemoItemState extends BaseState<MemoItem> with SingleTickerProviderStateM
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(widget.title),
-            Text(widget.date),
+            Text(
+                widget.title,
+              style: TextStyle(
+                color: _getTextColor(),
+              ),
+            ),
+            Text(
+                widget.date,
+              style: TextStyle(
+                color: _getTextColor(),
+              ),
+            ),
           ],
         ),
       ],
     );
   }
+
+  Color _getTextColor() => EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black;
+
 }

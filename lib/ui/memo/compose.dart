@@ -7,6 +7,7 @@ import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
 
 import '../../custom/custom_text_form_field.dart';
+import 'ErrorDialogUtils.dart';
 import 'memo_view_model.dart';
 
 class Compose extends StatefulWidget {
@@ -19,6 +20,8 @@ class Compose extends StatefulWidget {
 }
 
 class _ComposeState extends BaseState<Compose> {
+
+  var isButtonEnabled = false;
   TextEditingController _subjectController = TextEditingController();
   TextEditingController _memoController = TextEditingController();
 
@@ -40,9 +43,10 @@ class _ComposeState extends BaseState<Compose> {
             children: [
               CustomTextFormField(
                   title: getTranslatedText("memo_subject"),
+                  titleFontWeight: FontWeight.bold,
                   hintText: getTranslatedText("enter_memo_subject"),
-                  onChanged: (value) {},
-                  onFieldSubmitted: (value) {},
+                  onChanged: (value) => onTextChange(),
+                  onFieldSubmitted: (value) => onTextChange(),
                   controller: _subjectController,
                   width: context.screenWidth - 70.auto,
                   textInputType: TextInputType.text,
@@ -50,9 +54,10 @@ class _ComposeState extends BaseState<Compose> {
                   elevation: EnvironmentConfig.template_version == 14 ? 5 : 0),
               CustomTextFormField(
                   title: getTranslatedText("memo"),
+                  titleFontWeight: FontWeight.bold,
                   hintText: getTranslatedText("enter_memo"),
-                  onChanged: (value) {},
-                  onFieldSubmitted: (value) {},
+                  onChanged: (value) => onTextChange(),
+                  onFieldSubmitted: (value) => onTextChange(),
                   controller: _memoController,
                   width: context.screenWidth - 70.auto,
                   textInputType: TextInputType.text,
@@ -71,9 +76,28 @@ class _ComposeState extends BaseState<Compose> {
       padding: EdgeInsets.all(10.auto),
       child: ColorButton(
         title: getTranslatedText("submit"),
-        onClick: () {},
-        isEnabled: true,
+        onClick: () async {
+          if (_subjectController.text.isNotEmpty && _memoController.text.isNotEmpty) {
+              await widget.vm.postStationLetter(_subjectController.text,_memoController.text);
+             _subjectController.clear();
+             _memoController.clear();
+          }
+          ErrorDialogUtils.showErrorDialog(context, 'Send Success');
+        },
+        isEnabled: isButtonEnabled,
         color: CustomColor.theme_button_color,
         radius: 9.6,
       ));
+
+  onTextChange() {
+    if (_subjectController.text.isNotEmpty && _memoController.text.isNotEmpty) {
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else {
+      setState(() {
+        isButtonEnabled = false;
+      });
+    }
+  }
 }

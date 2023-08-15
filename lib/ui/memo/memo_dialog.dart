@@ -10,9 +10,10 @@ import 'package:tgp_flutter2/custom/outline_border_button.dart';
 
 class MemoDialog extends StatefulWidget {
   final String? title, sender, sentOn, content;
-  final Function onReplyClick;
+  final Function? onReplyClick;
+  final bool showButton;
 
-  MemoDialog({this.title, this.sender, this.sentOn, this.content, required this.onReplyClick});
+  MemoDialog({this.title, this.sender, this.sentOn, this.content, this.onReplyClick, this.showButton = true});
 
   @override
   _MemoDialogState createState() => _MemoDialogState();
@@ -37,85 +38,88 @@ class _MemoDialogState extends BaseState<MemoDialog> {
   }
 
   dialogContent(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: context.screenHeight / 90,
-        horizontal: context.screenWidth / 20,
-      ),
-      decoration: new BoxDecoration(
-        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 10.0,
-            offset: const Offset(0.0, 10.0),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // To make the card compact
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerRight,
-            child: _buildCloseDialogButton(),
-          ),
-          Text(
-            widget.title ?? "",
-            style: TextStyle(color: _getTextColor(), fontSize: 17.auto, fontWeight: FontWeight.bold),
-          ),
-          Wrap(
-            children: [
-              Text(
-                "${widget.sender} - ",
-                style: TextStyle(color: _getTextColor(), fontSize: 10),
-              ),
-              Text(
-                "${Format().dateFormat(DateTime.parse(widget.sentOn ?? ""))} - ",
-                style: TextStyle(color: _getTextColor(), fontSize: 10),
-              ),
-              Text(
-                _calculateDaysDifference(),
-                style: TextStyle(color: _getTextColor(), fontSize: 10),
-              ),
-            ],
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            child: Text("${widget.content ?? " "}"),
-          ),
-          Row(
-            children: [
-              Expanded(flex: 1, child: Container()),
-              Expanded(
-                flex: 0,
-                child: ColorButton(
-                  title: "回复",
-                  onClick: () => widget.onReplyClick(),
-                  isEnabled: true,
-                  width: 60.auto,
-                  height: 17,
-                  fontSize: 14,
-                  radius: 5,
-                  padding: 4,
-                  textColor: /*_isDarkMode() || EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14 ?*/
-                  Colors.white /*: CustomColor.theme_app_bar_color*/,
-                  color: /*EnvironmentConfig.template_version == 3 ||
-                            EnvironmentConfig.template_version == 4 ||
-                            EnvironmentConfig.template_version == 10 ||
-                            EnvironmentConfig.template_version == 14 ||
-                            _isDarkMode() ||
-                            EnvironmentConfig.light_mode
-                            ? */
-                  CustomColor.theme_button_color /* : Colors.white*/,
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: context.screenHeight / 90,
+          horizontal: context.screenWidth / 20,
+        ),
+        decoration: new BoxDecoration(
+          color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_1 : Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10.0,
+              offset: const Offset(0.0, 10.0),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // To make the card compact
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerRight,
+              child: _buildCloseDialogButton(),
+            ),
+            Text(
+              widget.title ?? "",
+              style: TextStyle(color: _getTextColor(), fontSize: 17.auto, fontWeight: FontWeight.bold),
+            ),
+            Wrap(
+              children: [
+                Text(
+                  "${widget.sender} - ",
+                  style: TextStyle(color: _getTextColor(), fontSize: 10),
                 ),
-              ),
-            ],
-          )
-        ],
+                Text(
+                  "${Format().dateFormat(DateTime.parse(widget.sentOn ?? ""))} - ",
+                  style: TextStyle(color: _getTextColor(), fontSize: 10),
+                ),
+                Text(
+                  _calculateDaysDifference(),
+                  style: TextStyle(color: _getTextColor(), fontSize: 10),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Text("${widget.content ?? " "}"),
+            ),
+            if (widget.showButton)
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                Expanded(
+                  flex: 0,
+                  child: ColorButton(
+                    title: "回复",
+                    onClick: () => widget.onReplyClick!(),
+                    isEnabled: true,
+                    width: 60.auto,
+                    height: 17,
+                    fontSize: 14,
+                    radius: 5,
+                    padding: 4,
+                    textColor: /*_isDarkMode() || EnvironmentConfig.light_mode || EnvironmentConfig.template_version == 14 ?*/
+                    Colors.white /*: CustomColor.theme_app_bar_color*/,
+                    color: /*EnvironmentConfig.template_version == 3 ||
+                              EnvironmentConfig.template_version == 4 ||
+                              EnvironmentConfig.template_version == 10 ||
+                              EnvironmentConfig.template_version == 14 ||
+                              _isDarkMode() ||
+                              EnvironmentConfig.light_mode
+                              ? */
+                    CustomColor.theme_button_color /* : Colors.white*/,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -21,6 +21,7 @@ class CustomTextFormField extends StatefulWidget {
   final String? tipsText;
   final Widget? customPart;
   final double? elevation;
+  final FontWeight? titleFontWeight;
 
   CustomTextFormField({
     required this.title,
@@ -38,6 +39,7 @@ class CustomTextFormField extends StatefulWidget {
     this.tipsText,
     this.customPart,
     this.elevation  = 5,
+    this.titleFontWeight,
   });
 
   @override
@@ -63,8 +65,11 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                       child: Text(
                         widget.title,
                         style: TextStyle(
-                            color: CustomColor.theme_text_black_white_color,
-                            fontSize: 12.auto),
+                            // color: CustomColor.theme_text_black_white_color,
+                            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_text_black_white_color : Colors.black,
+                            fontSize: 12.auto,
+                          fontWeight: widget.titleFontWeight ?? FontWeight.normal,
+                        ),
                         textAlign: TextAlign.start,
                       ),
                     ),

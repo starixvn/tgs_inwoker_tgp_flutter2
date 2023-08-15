@@ -96,8 +96,10 @@ class _MemoState extends BaseState<Memo> with SingleTickerProviderStateMixin {
                           child: Text(
                             getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
                             style: TextStyle(
-                                color: EnvironmentConfig.template_version == 14 ? Colors.white : Colors.black,
-                                fontSize: EnvironmentConfig.template_version == 14 ? 14.auto : 10.auto),
+                                color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? Colors.white : Colors.black,
+                                fontSize: EnvironmentConfig.template_version == 14 ? 14.auto : 10.auto,
+                                fontWeight: index == currentTabIndex ? FontWeight.w900 : FontWeight.normal,
+                            ),
                           ),
                         ),
                       );

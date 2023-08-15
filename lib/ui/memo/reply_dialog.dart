@@ -8,16 +8,23 @@ import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/custom/outline_border_button.dart';
 
-class ReplyDialog extends StatefulWidget {
-  final String? title;
+import 'ErrorDialogUtils.dart';
 
-  ReplyDialog({this.title});
+class ReplyDialog extends StatefulWidget {
+  final String? id;
+  final String? title;
+  final Function(String) onSentClick;
+
+  ReplyDialog({this.id, this.title, required this.onSentClick});
 
   @override
   _ReplyDialogState createState() => _ReplyDialogState();
 }
 
 class _ReplyDialogState extends BaseState<ReplyDialog> {
+  var isButtonEnabled = false;
+  TextEditingController fieldController = TextEditingController();
+
   @override
   void dispose() {
     super.dispose();
@@ -70,42 +77,68 @@ class _ReplyDialogState extends BaseState<ReplyDialog> {
                       flex: 1,
                       child: Text(
                         "主旨",
-                        style: TextStyle(fontSize: 12.5),
+                        style: TextStyle(color:_getTextColor(), fontSize: 12.5),
                       )),
                   Expanded(
-                    flex: 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xffF8F8F8),
-                        border: Border.all(color: Color(0xffD0D0D0)),
-                      ),
-                      child: Text(
-                        "Re：${widget.title}",
-                        style: TextStyle(fontSize: 12.5),
-                      ),
+                    flex: 5,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            width: context.screenWidth * 0.1,
+                            decoration: BoxDecoration(
+                              color: Color(0xffF8F8F8),
+                              border: Border.all(color: Color(0xffD0D0D0)),
+                            ),
+                            child: Text(
+                              "Re：${widget.title}",
+                              style: TextStyle(
+                                color:_getTextColor(),
+                                fontSize: 12.5,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 5,
+                            child: Container()
+                        ),
+                      ],
                     ),
                   )
                 ],
               ),
+              SizedBox(height: 5),
               Container(
-                height: context.screenHeight / 4,
+                height: context.screenHeight / 8,
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                         flex: 1,
                         child: Text(
                           "站内信",
-                          style: TextStyle(fontSize: 12.5),
+                          style: TextStyle(color:_getTextColor(), fontSize: 12.5),
                         )),
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Container(
-                        height: double.infinity,
+                        height: 222,
                         decoration: BoxDecoration(
                           border: Border.all(color: Color(0xffB7C7CC)),
                         ),
                         child: TextFormField(
+                          controller: fieldController,
+                          onChanged: (value) => onTextChange(),
                           style: TextStyle(fontSize: 12.5),
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(0),
+                            isDense: true,
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     )
@@ -116,11 +149,17 @@ class _ReplyDialogState extends BaseState<ReplyDialog> {
                 children: [
                   Expanded(flex: 1, child: Container()),
                   Expanded(
-                    flex: 4,
+                    flex: 5,
                     child: ColorButton(
                       title: "提交",
-                      onClick: () {},
-                      isEnabled: true,
+                      onClick: () async {
+                        if (fieldController.text.isNotEmpty) {
+                          await widget.onSentClick(fieldController.text);
+                          fieldController.clear();
+                        }
+                        ErrorDialogUtils.showErrorDialog(context, 'Send Success', popCount: 3);
+                      },
+                      isEnabled: isButtonEnabled,
                       width: 60.auto,
                       height: 17,
                       fontSize: 14,
@@ -145,6 +184,18 @@ class _ReplyDialogState extends BaseState<ReplyDialog> {
         ),
       ],
     );
+  }
+
+  onTextChange() {
+    if (fieldController.text.isNotEmpty) {
+      setState(() {
+        isButtonEnabled = true;
+      });
+    } else {
+      setState(() {
+        isButtonEnabled = false;
+      });
+    }
   }
 
   _buildCloseDialogButton() => InkWell(

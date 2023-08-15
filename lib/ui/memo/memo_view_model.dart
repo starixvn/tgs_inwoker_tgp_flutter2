@@ -10,7 +10,13 @@ class MemoViewModel extends BaseViewModel {
   @override
   List<BaseRepository> get repoList => [];
 
-  var getStationLetterListApiState, getDeliveryBoxListApiState, readStationLetterApiState, getStationLetterDetailsApiState;
+  var getStationLetterListApiState,
+      getDeliveryBoxListApiState,
+      readStationLetterApiState,
+      getStationLetterDetailsApiState,
+      getDeliveryBoxDetailsApiState,
+      postStationLetterState,
+      replyStationLetterState;
 
   List<StationLetter>? stationLetterList;
   List<DeliveryBox>? deliveryBoxList;
@@ -50,6 +56,43 @@ class MemoViewModel extends BaseViewModel {
     return getStationLetterDetailsApiState;
   }
 
+  postStationLetter(String subject, String content) async {
+    setLoading();
+    postStationLetterState = await messageRepo.postStationLetter(subject,content);
+    if (postStationLetterState.isSuccess) {
+      final resultMap = postStationLetterState.result as Map<String, dynamic>;
+      if (resultMap.containsKey('stationLetterList')) {
+        stationLetterList = (resultMap['stationLetterList'] as List<dynamic>)
+            .map((e) => StationLetter.fromJson(e))
+            .toList();
+        print(stationLetterList);
+      }
+      // stationLetterList = postStationLetterState.result;
+      print(postStationLetterState.result);
+    }
+    setLoading(false);
+    return postStationLetterState;
+  }
+
+  // replyStationLetter(String id, String content) async {
+  //   setLoading();
+  //   replyStationLetterState = await messageRepo.replyStationLetter(id,content);
+  //   if (replyStationLetterState.isSuccess) {
+  //     stationLetterList = replyStationLetterState.result;
+  //     print(replyStationLetterState.result);
+  //   }
+  //
+  //   setLoading(false);
+  //   return replyStationLetterState;
+  // }
+
+  replyStationLetter(String id, String content) async {
+    setLoading();
+    replyStationLetterState = await messageRepo.replyStationLetter(id,content);
+    setLoading(false);
+    return replyStationLetterState;
+  }
+
   getDeliveryBoxList({isLoadMore = false}) async {
     setLoading();
 
@@ -72,5 +115,20 @@ class MemoViewModel extends BaseViewModel {
     }
     setLoading(false);
     return getDeliveryBoxListApiState;
+  }
+
+  getDeliveryBoxDetails(String id) async {
+    setLoading();
+    getDeliveryBoxDetailsApiState = await messageRepo.getDeliveryBoxDetails(id);
+    if (getDeliveryBoxDetailsApiState.isSuccess) {
+      print(getDeliveryBoxDetailsApiState.result);
+      DeliveryBox delivery = getDeliveryBoxDetailsApiState.result;
+      int index = (deliveryBoxList ?? []).indexWhere((element) => element.id == delivery.id);
+      (deliveryBoxList ?? [])[index]= delivery;
+
+      print((deliveryBoxList ?? [])[index]);
+    }
+    setLoading(false);
+    return getDeliveryBoxDetailsApiState;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:api/entity/delivery_box.dart';
 import 'package:api/entity/vip.dart';
 import 'package:api/extension/format.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -22,6 +23,7 @@ import 'package:tgp_flutter2/ui/vip/vip_view_model.dart';
 import '../../custom/custom_text_form_field.dart';
 import '../report/account_report_view.dart';
 
+import 'memo_dialog.dart';
 import 'memo_item.dart';
 import 'memo_view_model.dart';
 
@@ -55,42 +57,51 @@ class _SentState extends BaseState<Sent> {
           margin: EnvironmentConfig.template_version == 14 ? EdgeInsets.zero : EdgeInsets.all(10.auto),
           child: Wrap(
             children: [
-              Expanded(
-                flex: 0,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        child: Text(
-                          getTranslatedText("memo_subject"),
-                          style: TextStyle(color: _getTextColor()),
-                        ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: Text(
+                        getTranslatedText("memo_subject"),
+                        style: TextStyle(color: _getTextColor(), fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Expanded(
-                      flex: 0,
-                      child: Container(
-                        child: Text(
-                          getTranslatedText("memo_date"),
-                          style: TextStyle(color: _getTextColor()),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: ClampingScrollPhysics(),
-                controller: _controller,
-                children: List.generate(
-                  (widget.vm.deliveryBoxList?.length ?? 0),
-                  (index) => MemoItem(
-                    title: widget.vm.deliveryBoxList?[index].subject ?? "",
-                    date: Format().reversedDateFormat(widget.vm.deliveryBoxList?[index].sentOn ?? ""),
                   ),
+                  Expanded(
+                    flex: 0,
+                    child: Container(
+                      child: Text(
+                        getTranslatedText("memo_date"),
+                        style: TextStyle(color: _getTextColor(), fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: context.screenHeight * 0.72,
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: ClampingScrollPhysics(),
+                  controller: _controller,
+                  children: List.generate(
+                    (widget.vm.deliveryBoxList?.length ?? 0), (index){
+                    DeliveryBox? delivery = widget.vm.deliveryBoxList?[index];
+                    return InkWell(
+                      onTap: (){
+                        widget.vm.getDeliveryBoxDetails(delivery?.id ?? "").then((_) {
+                          print("111");
+                          _showDialog(widget.vm.deliveryBoxList![index]);
+                        });
+                      },
+                      child: MemoItem(
+                        title: widget.vm.deliveryBoxList?[index].subject ?? "",
+                        date: Format().reversedDateFormat(widget.vm.deliveryBoxList?[index].sentOn ?? ""),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ],
@@ -109,5 +120,18 @@ class _SentState extends BaseState<Sent> {
       });
       widget.vm.getDeliveryBoxList(isLoadMore: true);
     }
+  }
+
+  _showDialog(DeliveryBox delivery) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => MemoDialog(
+        title: delivery.subject,
+        sender: delivery.sender,
+        sentOn: delivery.sentOn,
+        content: delivery.content,
+        showButton: false,
+      ),
+    );
   }
 }

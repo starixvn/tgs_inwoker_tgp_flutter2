@@ -78,26 +78,29 @@ class _InboxState extends BaseState<Inbox> {
                   ),
                 ],
               ),
-              ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: ClampingScrollPhysics(),
-                children: List.generate((widget.vm.stationLetterList?.length ?? 0), (index) {
-                  StationLetter? letter = widget.vm.stationLetterList?[index];
-                  return InkWell(
-                    onTap: () {
-                      if (!(letter?.haveRead ?? true)) widget.vm.readStationLetter(letter?.id ?? "");
-                      widget.vm.getStationLetterDetails(letter?.id ?? "").then((_) {
-                        print("111");
-                        _showDialog(widget.vm.stationLetterList![index]);
-                      });
-                    },
-                    child: MemoItem(
-                      title: letter?.subject ?? "",
-                      date: Format().reversedDateFormat(letter?.sentOn ?? ""),
-                    ),
-                  );
-                }),
+              Container(
+                height: context.screenHeight * 0.72,
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: ClampingScrollPhysics(),
+                  children: List.generate((widget.vm.stationLetterList?.length ?? 0), (index) {
+                    StationLetter? letter = widget.vm.stationLetterList?[index];
+                    return InkWell(
+                      onTap: () {
+                        if (!(letter?.haveRead ?? true)) widget.vm.readStationLetter(letter?.id ?? "");
+                        widget.vm.getStationLetterDetails(letter?.id ?? "").then((_) {
+                          print("111");
+                          _showDialog(widget.vm.stationLetterList![index]);
+                        });
+                      },
+                      child: MemoItem(
+                        title: letter?.subject ?? "",
+                        date: Format().reversedDateFormat(letter?.sentOn ?? ""),
+                      ),
+                    );
+                  }),
+                ),
               ),
             ],
           ),
@@ -121,6 +124,9 @@ class _InboxState extends BaseState<Inbox> {
             context: context,
             builder: (BuildContext context) => ReplyDialog(
               title: letter.subject,
+              onSentClick: (String content) async {
+                widget.vm.replyStationLetter(letter.id! ,content);
+              },
             ),
           );
         },
