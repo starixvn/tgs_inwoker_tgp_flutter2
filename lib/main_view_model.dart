@@ -52,7 +52,7 @@ class MainViewModel extends BaseViewModel {
                 : "";
         var version = versionList.where((element) => element["platform"] == platform).first;
 
-        if (version["version"] != package.version) {
+        if (_isNewVersionAvailable(package.version, version["version"])) {
           versionUpdateState = version;
         }
       } catch (e) {
@@ -60,6 +60,24 @@ class MainViewModel extends BaseViewModel {
       }
     }
     setLoading(false);
+  }
+
+  bool _isNewVersionAvailable(String currentVersion, String newVersion) {
+    List<int> currentVersionNumbers = currentVersion.split('.').map(int.parse).toList();
+    List<int> newVersionNumbers = newVersion.split('.').map(int.parse).toList();
+
+    for (int i = 0; i < currentVersionNumbers.length; i++) {
+      if (newVersionNumbers.length <= i) {
+        return false;
+      }
+      if (newVersionNumbers[i] > currentVersionNumbers[i]) {
+        return true;
+      }
+      if (newVersionNumbers[i] < currentVersionNumbers[i]) {
+        return false;
+      }
+    }
+    return newVersionNumbers.length > currentVersionNumbers.length;
   }
 
   getEnvFeatures() async {

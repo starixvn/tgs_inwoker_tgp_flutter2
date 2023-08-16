@@ -182,10 +182,10 @@ class _HomeT15State extends BaseState<HomeT15> with SingleTickerProviderStateMix
                       margin: EdgeInsets.only(right: 5.auto),
                       width: 180,
                       child: Row(children: [
-                        Expanded(child: _getWalletView(getTranslatedText("deposit"), RoutePath.deposit)),
-                        Expanded(child: _getWalletView(getTranslatedText("withdrawal"), RoutePath.withdraw)),
+                        Expanded(child: _getWalletView("deposit", getTranslatedText("deposit"), RoutePath.deposit)),
+                        Expanded(child: _getWalletView("account_report", getTranslatedText("withdrawal"), RoutePath.withdraw)),
                         if ((widget.homeViewModel.config.haveVIPFeature ?? true) && (widget.homeViewModel.config.homePageDisplayVIP ?? true))
-                          Expanded(child: _getWalletView("VIP", RoutePath.vip)),
+                          Expanded(child: _getWalletView("deposit", "VIP", RoutePath.vip)),
                       ]))
                 ],
               ),
@@ -302,7 +302,7 @@ class _HomeT15State extends BaseState<HomeT15> with SingleTickerProviderStateMix
               ],
       ));
 
-  _getWalletView(String typeName, String path) => Container(
+  _getWalletView(String imagePath, String typeName, String path) => Container(
           // margin: EdgeInsets.only(right: 5),
           child: InkWell(
         onTap: () {
@@ -328,7 +328,7 @@ class _HomeT15State extends BaseState<HomeT15> with SingleTickerProviderStateMix
               Expanded(
                 flex: 0,
                 child: Image.asset(
-                  "images/home/T15/deposit.png",
+                  imagePath == "deposit" ? "images/home/T15/$imagePath.png" : "images/profile/t15_light/ic_$imagePath.png",
                   matchTextDirection: true,
                   height: 30.auto,
                 ),
