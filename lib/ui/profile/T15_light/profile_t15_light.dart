@@ -106,8 +106,9 @@ class _ProfileT15LightState extends BaseState<ProfileT15Light> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildProfileTopItem("deposit", getTranslatedText("deposit"), RoutePath.deposit),
-                  _buildProfileTopItem("bet_record", getTranslatedText("report_bet"), RoutePath.transaction),
-                  _buildProfileTopItem("account_report", getTranslatedText("account_record"), "transaction", navigationID: 5),
+                  _buildProfileTopItem("deposit", getTranslatedText("withdrawal"), RoutePath.withdraw),
+                  _buildProfileTopItem("bet_record", getTranslatedText("bet_record"), RoutePath.transaction),
+                  //_buildProfileTopItem("account_report", getTranslatedText("account_record"), "transaction", navigationID: 5),
                   _buildProfileTopItem("profile_info", getTranslatedText("account_safety"), RoutePath.profileInfo),
                 ],
               ),

@@ -35,7 +35,7 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
     {"id": "1", "text": "report_withdrawal"},
     {"id": "2", "text": "deposit"},
     {"id": "3", "text": "transfer"},
-    {"id": "6", "text": "balanceChangeRecords"},
+    {"id": "6", "text": "balanceChange"},
     {"id": "4", "text": "promotion_history"},
     /*{"id": "4", "text": "返水记录"},*/
   ];
@@ -47,8 +47,7 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
     currentTabIndex = widget.tabIndex ?? 0;
     _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
 
-    List<String> list = tabList.map((element) => element["text"] ?? "").toList();
-    fontSize = GlobalValueUtil.calculateFontSizeForLongestString(list, 15.auto, 120.auto);
+
 
     super.initState();
   }
@@ -59,6 +58,9 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
         : ProviderWidget<ReportViewModel>(
             model: _vm,
             builder: (ctx, vm, _) {
+              List<String> list = tabList.map((element) => element["text"] ?? "").toList();
+              fontSize = GlobalValueUtil.calculateFontSizeForLongestString(list, 15.auto, context.screenWidth/4.3);
+
               return CustomScaffold(
                 appBar: CustomAppBar(
                   title: getTranslatedText((tabList[currentTabIndex]["text"])!),
@@ -82,14 +84,14 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
                             currentTabIndex = index;
                           });
                         },
-                        labelPadding: EdgeInsets.symmetric(horizontal: 5.auto, vertical: 5.auto),
+                        labelPadding: EdgeInsets.symmetric(horizontal: 3.auto, vertical: 5.auto),
                         unselectedLabelStyle: TextStyle(color: CustomColor.grey),
                         tabs: List.generate(tabList.length, (index) {
                           return TabButton(
                             text: getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
                             index: index,
                             currentTabIndex: currentTabIndex,
-                            width: 120.auto,
+                            width: context.screenWidth/4.3,
                             fontSize: fontSize,
                           );
                         }).toList(),
