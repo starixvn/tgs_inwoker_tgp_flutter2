@@ -98,6 +98,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                     children: [
                       _buildWithdrawCard(),
                       _buildEditBankItem(),
+                      _buildTransferAllButton(),
                       _buildBankPicker(),
                       _buildTextField("amount", "enter_withdraw_amount", _amountController, true),
                       _buildPlayerNoteTextField(),
@@ -105,13 +106,40 @@ class _WithdrawState extends BaseState<Withdraw> {
                       if (_isUSDT()) _buildUSDTExchangeRateText(),
                       if (_isUSDT()) _buildUSDTAmount(),
                       _buildHintText(),
-
                       _buildButton(),
                       //_buildCustomerServiceText()
                     ],
                   ),
                 ),
               ),
+      );
+
+  _buildTransferAllButton() => Visibility(
+        visible: GlobalValueUtil.featuresConfig?.newTransferUI ?? false,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10.auto),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  getTranslatedText("transfer_all_title"),
+                  style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_black_white_color),
+                ),
+              ),
+              SizedBox(height: 10),
+              ColorButton(
+                onClick: () => _vm.transferAllWallet(),
+                isEnabled: true,
+                radius: 9.6,
+                color: CustomColor.theme_button_color,
+                title: getTranslatedText("transfer_all"),
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ),
       );
 
   _buildWithdrawCard() => Container(

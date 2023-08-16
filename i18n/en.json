@@ -553,5 +553,7 @@
   "vip_privilege": "VIP Privilege",
   "account_record": "Account Record",
   "account_safety": "Account",
-  "member_center": "Member Center"
+  "member_center": "Member Center",
+  "transfer_all_title": "Transfer from all sub wallet to main wallet",
+  "transfer_all": "Transfer All"
 }

@@ -603,5 +603,8 @@
   "vip_privilege": "Hak istimewa VIP",
   "account_record": "Catatan Akun",
   "account_safety": "Keamanan Akun",
-  "member_center": "Pusat Anggota"
+  "member_center": "Pusat Anggota",
+
+  "transfer_all_title": "Transfer dari semua sub dompet ke dompet utama",
+  "transfer_all": "Transfer Semua"
 }

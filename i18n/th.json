@@ -551,5 +551,8 @@
   "vip_privilege": "สิทธิ์ VIP",
   "account_record": "บันทึกบัญชี",
   "account_safety": "ความปลอดภัยของบัญชี",
-  "member_center": "ศูนย์สมาชิก"
+  "member_center": "ศูนย์สมาชิก",
+
+  "transfer_all_title": "โอนจากกระเป๋าเงินย่อยทั้งหมดไปยังกระเป๋าเงินหลัก",
+  "transfer_all": "โอนทั้งหมด"
 }

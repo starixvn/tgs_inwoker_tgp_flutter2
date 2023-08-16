@@ -548,5 +548,8 @@
   "vip_privilege": "वीआईपी विशेषाधिकार",
   "account_record": "खाता रिकॉर्ड",
   "account_safety": "खाता सुरक्षा",
-  "member_center": "सदस्य केंद्र"
+  "member_center": "सदस्य केंद्र",
+
+  "transfer_all_title": "सभी उप वॉलेट से मुख्य वॉलेट में स्थानांतरण",
+  "transfer_all": "सभी को स्थानांतरित करें"
 }

@@ -1213,5 +1213,8 @@
   "vip_privilege": "VIP特權",
   "account_record": "賬戶記錄",
   "account_safety": "賬號安全",
-  "member_center": "會員中心"
+  "member_center": "會員中心",
+
+  "transfer_all_title": "從所有子錢包轉賬到主錢包",
+  "transfer_all": "一鍵傳輸"
 }

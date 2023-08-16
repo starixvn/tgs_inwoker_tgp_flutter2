@@ -10,13 +10,12 @@ class WithdrawViewModel extends BaseViewModel {
   final bankRepo = BankRepository.getSingleton();
   final userRepo = UserRepository.getSingleton();
   final contentRepo = ContentRepository.getSingleton();
+  final walletRepo = WalletRepository.getSingleton();
 
   @override
   List<BaseRepository> get repoList => [];
-  var getBankCardListApiState,
-      withdrawApiState,
-      getTurnoverAmountApiState,
-      getWithdrawalInfoListApiState;
+  var getBankCardListApiState, withdrawApiState, getTurnoverAmountApiState, getWithdrawalInfoListApiState, transferWalletApiState;
+
   var turnover;
   List<WithdrawalInfo>? withdrawList;
   List<BankCard>? bankCardList;
@@ -40,8 +39,7 @@ class WithdrawViewModel extends BaseViewModel {
     return getBankCardListApiState;
   }
 
-  withdraw(
-      int amount, String bankInfoId, String payPassword, String? note) async {
+  withdraw(int amount, String bankInfoId, String payPassword, String? note) async {
     setLoading();
     var status = await bankRepo.withdraw(amount, bankInfoId, payPassword, note);
     if (status.isSuccess) {
@@ -87,5 +85,12 @@ class WithdrawViewModel extends BaseViewModel {
         }
       });
     });
+  }
+
+  transferAllWallet() async {
+    setLoading();
+    transferWalletApiState = await walletRepo.withdrawAllFund();
+    if (transferWalletApiState.isSuccess) {}
+    setLoading(false);
   }
 }
