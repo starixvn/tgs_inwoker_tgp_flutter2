@@ -16,6 +16,7 @@ import 'package:tgp_flutter2/base_state.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
+import 'dart:math' as math;
 
 import '../../globalUtil/GlobalValueUtil.dart';
 import '../deposit/deposit.dart';
@@ -44,7 +45,7 @@ class HomeT15 extends StatefulWidget {
   _HomeT15State createState() => _HomeT15State();
 }
 
-class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
+class _HomeT15State extends BaseState<HomeT15> with SingleTickerProviderStateMixin implements RouteAware {
   List<String> imgList = [
     '1',
     '2',
@@ -61,11 +62,22 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
   int _current = 0;
   CarouselController carouselController = CarouselController();
   var isLogin = false;
+  late AnimationController _controller;
+  late CurvedAnimation _animation;
+  var isClickAnimate = false;
 
   @override
   void initState() {
     isLogin = widget.homeViewModel.userProfile != null;
     if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _animation = new CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    );
     super.initState();
   }
 
@@ -168,10 +180,12 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                   Expanded(child: _getBalanceDescView()),
                   Container(
                       margin: EdgeInsets.only(right: 5.auto),
-                      width: 120,
+                      width: 180,
                       child: Row(children: [
-                        Expanded(child: _getWalletView(getTranslatedText("deposit"), RoutePath.deposit)),
-                        Expanded(child: _getWalletView(getTranslatedText("withdrawal"), RoutePath.withdraw)),
+                        Expanded(child: _getWalletView("deposit", getTranslatedText("deposit"), RoutePath.deposit)),
+                        Expanded(child: _getWalletView("account_report", getTranslatedText("withdrawal"), RoutePath.withdraw)),
+                        if ((widget.homeViewModel.config.haveVIPFeature ?? true) && (widget.homeViewModel.config.homePageDisplayVIP ?? true))
+                          Expanded(child: _getWalletView("deposit", "VIP", RoutePath.vip)),
                       ]))
                 ],
               ),
@@ -183,66 +197,112 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
   _getBalanceDescView() => Container(
       margin: EdgeInsets.only(left: 5.auto, top: 7.auto),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            isLogin ? (widget.homeViewModel.userProfile.username ?? "") : getTranslatedText("home_login_hint2"),
-            style: TextStyle(
-              color: CustomColor.theme_app_bar_text_color,
-              fontWeight: FontWeight.bold,
-              fontSize: 14.auto,
-            ),
-          ),
-          !isLogin
-              ? InkWell(
+        children: isLogin
+            ? [
+                Wrap(
+                  children: [
+                    Text(
+                      (widget.homeViewModel.userProfile.username ?? ""),
+                      style: TextStyle(
+                        color: EnvironmentConfig.light_mode ? CustomColor.theme_button_color : CustomColor.theme_app_bar_text_color,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.auto,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.auto),
+                      decoration: BoxDecoration(color: Color(0xffceb296), borderRadius: BorderRadius.all(Radius.circular(2.5))),
+                      child: Text(
+                        "VIP ${(widget.homeViewModel.userProfile.vipLevel ?? "")}",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      widget.homeViewModel.totalBalance != null ? Format().amountFormat(widget.homeViewModel.totalBalance ?? 0) : "-",
+                      style: TextStyle(
+                        color: CustomColor.theme_button_color,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15.auto,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    SizedBox(width: 10),
+                    InkWell(
+                      onTap: () async {
+                        widget.homeViewModel.getUserDetails();
+                        if (!isClickAnimate) _controller.repeat();
+                        setState(() {
+                          isClickAnimate = true;
+                        });
+                        await Future.delayed(Duration(seconds: 2), () {
+                          _controller.stop();
+                          setState(() {
+                            isClickAnimate = false;
+                          });
+                        });
+                      },
+                      child: AnimatedBuilder(
+                        animation: _animation,
+                        builder: (_, child) {
+                          return Transform.rotate(
+                            angle: _controller.value * 2 * math.pi,
+                            child: child,
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          "images/home/T15/refresh.svg",
+                          height: 13.auto,
+                          color: EnvironmentConfig.light_mode ? Color(0xff7d7d7f) : CustomColor.announcement_icon_color,
+                        ),
+                      ),
+
+                      // RotationTransition(
+                      //   turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                      //   child: SvgPicture.asset(
+                      //     "images/home/T15/refresh.svg",
+                      //     height: 13.auto,
+                      //     color: EnvironmentConfig.light_mode ? Color(0xff7d7d7f) : CustomColor.announcement_icon_color,
+                      //   ),
+                      // ),
+                    ),
+                  ],
+                )
+              ]
+            : [
+                Text(
+                  getTranslatedText("home_login_hint2"),
+                  style: TextStyle(
+                    color: EnvironmentConfig.light_mode ? Colors.black : CustomColor.theme_app_bar_text_color,
+                    fontWeight: EnvironmentConfig.light_mode ? FontWeight.normal : FontWeight.bold,
+                    fontSize: 14.auto,
+                  ),
+                ),
+                InkWell(
                   onTap: () {
                     showPreLoginDialog();
                   },
                   child: Text(
                     getTranslatedText("home_login_hint3"),
                     style: TextStyle(
-                      color: CustomColor.theme_app_bar_text_color,
+                      color: EnvironmentConfig.light_mode ? Color(0xff9aa4c2) : CustomColor.theme_app_bar_text_color,
                       fontWeight: FontWeight.normal,
                       fontSize: 14.auto,
                     ),
                   ),
                 )
-              : Row(
-                  children: [
-                    Text(
-                      widget.homeViewModel.totalBalance != null ? Format().amountFormat(widget.homeViewModel.totalBalance ?? 0) : "-",
-                      style: TextStyle(
-                        color: CustomColor.theme_app_bar_text_color,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14.auto,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    InkWell(
-                      onTap: () => widget.homeViewModel.getUserDetails(),
-                      child: Container(
-                        width: 25.auto,
-                        height: 25.auto,
-                        // decoration: BoxDecoration(
-                        //   borderRadius: BorderRadius.circular(10),
-                        //   color: CustomColor.theme_button_color,
-                        // ),
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(1),
-                        child: SvgPicture.asset(
-                          "images/home/T15/refresh.svg",
-                          height: 18.auto,
-                          color: CustomColor.announcement_icon_color,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-        ],
+              ],
       ));
 
-  _getWalletView(String typeName, String path) => Container(
+  _getWalletView(String imagePath, String typeName, String path) => Container(
           // margin: EdgeInsets.only(right: 5),
           child: InkWell(
         onTap: () {
@@ -254,7 +314,8 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Deposit(isNewPage: true)));
             } else if (path == RoutePath.withdraw) {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Withdraw(isNewPage: true)));
-            }
+            } else
+              Navigator.pushNamed(context, RoutePath.vip);
           }
         },
         child: Container(
@@ -267,7 +328,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
               Expanded(
                 flex: 0,
                 child: Image.asset(
-                  "images/home/T15/deposit.png",
+                  imagePath == "deposit" ? "images/home/T15/$imagePath.png" : "images/profile/t15_light/ic_$imagePath.png",
                   matchTextDirection: true,
                   height: 30.auto,
                 ),
@@ -276,7 +337,7 @@ class _HomeT15State extends BaseState<HomeT15> implements RouteAware {
                 flex: 1,
                 child: AutoSizeText(
                   typeName,
-                  style: TextStyle(color: CustomColor.theme_button_color),
+                  style: TextStyle(color: EnvironmentConfig.light_mode ? CustomColor.theme_app_bar_text_color : CustomColor.theme_button_color),
                   minFontSize: 10,
                   maxLines: 2,
                   textAlign: TextAlign.center,

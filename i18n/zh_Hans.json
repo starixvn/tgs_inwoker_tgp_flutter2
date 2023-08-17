@@ -456,6 +456,7 @@
   "plsEnterPlayerNote": "请输入玩家备注",
 
   "report_bet": "投注记录",
+  "bet_record": "投注记录",
   "report_withdrawal": "提现记录",
 
   "dialogDARUnavailableTitle": "充值抽奖已结束",
@@ -553,5 +554,16 @@
   "memo_action": "操作",
   "memo_reply": "回复",
   "enter_memo_subject": "请输入主旨",
-  "enter_memo": "请输入站内信"
+  "enter_memo": "请输入站内信",
+  "date": "日期",
+
+  "customer_support": "客服",
+  "welcome_customer_support": "欢迎来到客服中心",
+  "vip_privilege": "VIP特权",
+  "account_record": "账户记录",
+  "account_safety": "账号安全",
+  "member_center": "会员中心",
+
+  "transfer_all_title": "从所有子钱包转账到主钱包",
+  "transfer_all": "一键传输"
 }

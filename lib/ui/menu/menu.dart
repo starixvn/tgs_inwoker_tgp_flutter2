@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/route_path.dart';
@@ -13,6 +12,7 @@ import 'package:tgp_flutter2/ui/menu/menu_view_model.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
 import '../deposit/deposit.dart';
 
 class Menu extends StatefulWidget {

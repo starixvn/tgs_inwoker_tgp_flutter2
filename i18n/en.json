@@ -457,6 +457,7 @@
   "plsEnterPlayerNote": "Please enter the note",
 
   "report_bet": "Bet History",
+  "bet_record": "Bet Record",
   "report_withdrawal": "Withdrawal",
 
   "dialogDARUnavailableTitle": "Deposit Roulette has ended",
@@ -474,6 +475,7 @@
   "spin_run_out": "Oops, it seems you've\nrun out of spins.",
   "remaining_spin": "Remaining ",
   "remaining_spin2": " Spin(s) !",
+  "balanceChange": "Balance Change",
   "balanceChangeRecords": "Balance Change Records",
   "bcr_type": "Transaction Type",
   "bcr_amount": "Amount",
@@ -554,5 +556,16 @@
   "memo_action": "Action",
   "memo_reply": "Reply",
   "enter_memo_subject": "Please enter subject",
-  "enter_memo": "Please enter memo"
+  "enter_memo": "Please enter memo",
+
+  "date": "Date",
+
+  "customer_support": "Customer Support",
+  "welcome_customer_support": "Welcome to Customer Support",
+  "vip_privilege": "VIP Privilege",
+  "account_record": "Account Record",
+  "account_safety": "Account",
+  "member_center": "Member Center",
+  "transfer_all_title": "Transfer from all sub wallet to main wallet",
+  "transfer_all": "Transfer All"
 }

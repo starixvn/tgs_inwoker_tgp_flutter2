@@ -9,6 +9,8 @@ import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/report/report_view.dart';
 
+import '../../globalUtil/GlobalValueUtil.dart';
+
 class ProfileItem extends StatefulWidget {
   final EnvFeaturesConfig? config;
   final List<BankCard>? bankCardList;
@@ -47,7 +49,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_deposit_report", "deposit_history", "transaction", 2),
           _buildMiddleProfileItem("ic_transfer_report", "transfer_history", "transaction", 3),
           _buildMiddleProfileItem("ic_transfer_report", "balanceChangeRecords", "transaction", 5),
-          EnvironmentConfig.template_version == 15 ? Container() : _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
+          if (GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true)  _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.haveAffiliate ?? false) ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0) : Container(),
           //  _buildMiddleProfileItem(
           //      "ic_account_report", "promotion_history", "transaction", 4),
@@ -71,7 +73,7 @@ class _ProfileItemState extends BaseState<ProfileItem> {
           _buildMiddleProfileItem("ic_transfer_report", "balanceChangeRecords", "transaction", 5),
           _buildMiddleProfileItem("ic_transaction", "promotion_history", "transaction", 4),
           _buildMiddleProfileItem("ic_card_detail", "manage_card", "main_card", 0),
-          _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
+          if (GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true) _buildMiddleProfileItem("ic_vip", "VIP", "vip", 0),
           (widget.haveAffiliate ?? false) ? _buildMiddleProfileItem("ic_affiliate", "affiliate", "affiliate", 0) : Container(),
           _buildBottomProfileItem("ic_lang", "language", "language", 0),
         ],

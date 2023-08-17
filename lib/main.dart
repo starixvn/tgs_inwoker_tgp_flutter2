@@ -180,7 +180,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      if (EnvironmentConfig.template_version == 15) {
+      if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode) {
         if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
           GlobalValueUtil.playsong();
         }
@@ -198,7 +198,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   }
 
   _getAssetsAudioPlayer() {
-    if (_vm.config?.backgroundMusic ?? false || EnvironmentConfig.template_version == 15) {
+    if (_vm.config?.backgroundMusic ?? false || (EnvironmentConfig.template_version == 15&& EnvironmentConfig.dark_mode)) {
       // GlobalValueUtil.assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
       GlobalValueUtil.assetsAudioPlayer.open(
         Playlist(audios: [
@@ -340,490 +340,490 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  final bool isFirstRun;
-  final int? index;
-  final dynamic versionUpdate;
-  final Function? onResumeBgMusic;
-  final Function? onPauseBgMusic;
-  final bool isDisplayingDepositDialog = false;
-
-  MyHomePage({
-    this.isFirstRun = false,
-    this.index,
-    this.versionUpdate,
-    this.onPauseBgMusic,
-    this.onResumeBgMusic,
-  });
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver {
-  int currentBottomIndex = 0;
-  List _page = [];
-  var isMenu = false;
-  var _vm = MainViewModel();
-  var isDisplayGameView = false;
-
-  onClickGameTab(value) {
-    setState(() {
-      isDisplayGameView = value;
-    });
-  }
-
-  // _getAssetsAudioPlayer() {
-  //   if (_vm.config?.backgroundMusic ??
-  //       false || EnvironmentConfig.template_version == 15) {
-  //     this.assetsAudioPlayer.open(
-  //       Playlist(audios: [
-  //         Audio(
-  //             "audio/${EnvironmentConfig.template_version == 15 ? "sky8BgMusic.mp3" : "caishendao.mp3"}"),
-  //       ]),
-  //       loopMode: LoopMode.playlist, //loop the full playlist
-  //     );
-  //     print("diuneiiss");
-  //     assetsAudioPlayer.pause();
-  //   }
-  //   WidgetsBinding.instance.addObserver(this);
-  // }
-
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.resumed) {
-  //     if (EnvironmentConfig.template_version == 15) {
-  //       if (GlobalValueUtil.playerStatus !=
-  //           AssetPlayerStatus.manualClickPause) {
-  //         assetsAudioPlayer.play();
-  //       }
-  //     } else {
-  //       assetsAudioPlayer.play();
-  //     }
-  //   } else {
-  //     assetsAudioPlayer.pause();
-  //   }
-  // }
-
-  @override
-  void initState() {
-    if (widget.versionUpdate != null) {
-      Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
-    }
-    // GlobalValueUtil.assetsAudioPlayer.stop();
-    // GlobalValueUtil.assetsAudioPlayer.play();
-    // assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
-    // _getAssetsAudioPlayer();
-    if (widget.index != null) currentBottomIndex = widget.index!;
-    _page = EnvironmentConfig.template_version != 11
-        ? [
-            Home(
-              onPauseBgMusic: () => GlobalValueUtil.pausesong(),
-              onResumeBgMusic: () => GlobalValueUtil.playsong(),
-            ),
-            Promotion(),
-            EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
-            CustomerService(),
-            Profile(),
-          ]
-        : [
-            Home(
-              isDisplayGameView: isDisplayGameView,
-              onClickGameTab: (value) => onClickGameTab(value),
-            ),
-            Promotion(),
-            Deposit(),
-            Withdraw(),
-            Profile(),
-          ];
-    print("masukkkk11");
-    // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
-    // if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
-    /*if (EnvironmentConfig.brandName.toLowerCase().contains("idr")) */
-    _initWebSocket();
-    super.initState();
-  }
-
-  @override
-  void deactivate() {
-    GlobalValueUtil.stopsong();
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    GlobalValueUtil.stopsong();
-    super.dispose();
-  }
-
-  _initWebSocket() async {
-    bool _isOpen = false;
-    if (_vm.userProfile != null) {
-      print("connect to signalR");
-
-      WebSocketDeposit.getInstance(onReceive: (WsResponse value) {
-        print(value);
-
-        if (value.type?.toLowerCase() == "viprebate") {
-          // check previous dialog is showing
-          if (_isOpen) {
-            setState(() {
-              _isOpen = false;
-            });
-            Navigator.pop(context);
-          }
-
-          _isOpen = true;
-          showDialog(
-              context: context,
-              barrierColor: Color(0x01000000),
-              builder: (BuildContext context) => VipRebateDialog(
-                    data: value,
-                    closeDialog: () {
-                      //check is still showing
-                      if (_isOpen) {
-                        setState(() {
-                          _isOpen = false;
-                        });
-                        Navigator.pop(context);
-                      }
-                    },
-                  ));
-        } else {
-          showDialog(context: context, builder: (BuildContext context) => DepositOrderDialog(data: value, depositList: _vm.depositList));
-        }
-      })?.connect();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ScrollConfiguration(
-      behavior: MyBehavior(),
-      child: Stack(
-        children: [
-          Scaffold(
-            extendBody: false,
-            body: Stack(
-              children: [
-                Center(
-                  child: _page[currentBottomIndex],
-                ),
-                _buildOverlay(),
-                _buildMenu()
-              ],
-            ),
-            bottomNavigationBar: ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) && EnvironmentConfig.dark_mode)
-                ? Container(
-                    child: BottomAppBar(
-                        child: Container(
-                      decoration: EnvironmentConfig.template_version == 8
-                          ? BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xff011F60), Colors.transparent.withOpacity(1.0)],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            )
-                          : BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  //Color.fromRGBO(0, 1, 41, -0.1),
-                                  CustomColor.theme_bar_gradient_2,
-                                  Color.fromRGBO(199, 219, 231, 0.9),
-                                  // Colors.white.withOpacity(1.0)
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            ),
-                      child: _buildBottomAppBarRow(),
-                    )),
-                  )
-                : EnvironmentConfig.template_version == 15
-                    ? Container(
-                        decoration:
-                            BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)), color: Colors.white),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30.0),
-                            topRight: Radius.circular(30.0),
-                          ),
-                          child: BottomAppBar(
-                            color: Colors.white,
-                            child: _buildBottomAppBarRow(),
-                          ),
-                        ))
-                    : BottomAppBar(
-                        color: CustomColor.theme_bottom_app_bar_color,
-                        child: _buildBottomAppBarRow(),
-                      ),
-          ),
-          /*Positioned(
-                bottom: context.screenWidth / 7 + (IphoneHasNotch.hasNotch ? 20 : 0),
-                right: -10,
-                child: RawMaterialButton(
-                  onPressed: () {
-                    FlutterLivechatPlugin.beginChat("14246631");
-                  },
-                  elevation: 2.0,
-                  fillColor: Color(0xff6819d2),
-                  child: ImageIcon(
-                    AssetImage("images/livechat.png"),
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  padding: EdgeInsets.all(15.0),
-                  shape: CircleBorder(),
-                ),
-              ),*/
-        ],
-      ),
-    );
-  }
-
-  _getCustomThirdPositionItem() {
-    switch (EnvironmentConfig.template_version) {
-      case 2:
-        return _buildBottomBarItem(2, "ic_menu", "");
-      case 15:
-        return _buildBottomBarItem(6, "ic_cs", "customer_service");
-      default:
-        return _buildBottomBarItem(
-            2,
-            "ic_deposit",
-            (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15 || EnvironmentConfig.template_version == 14)
-                ? "deposit"
-                : "wallet",
-            isNeedLogin: true);
-    }
-  }
-
-  _getCustomFourthPositionItem() {
-    switch (EnvironmentConfig.template_version) {
-      case 11:
-        return _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true);
-      case 15:
-        return _buildBottomBarItem(
-            2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
-            isNeedLogin: true);
-      default:
-        return SizedBox.shrink();
-    }
-  }
-
-  _buildBottomAppBarRow() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _buildBottomBarItem(
-            0,
-            "ic_home",
-            "home",
-          ),
-          _buildBottomBarItem(1, "ic_promotion", "promotion"),
-          _getCustomThirdPositionItem(),
-          _getCustomFourthPositionItem(),
-          EnvironmentConfig.template_version == 15 ? SizedBox.shrink() : _buildBottomBarItem(6, "ic_cs", "customer_service"),
-          _buildBottomBarItem(
-            4,
-            "ic_profile",
-            "my_profile",
-            isNeedLogin: true,
-          ),
-        ],
-      );
-
-  _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false, bool isNeedLogin = false}) => Expanded(
-        child: Stack(
-          children: [
-            SizedBox(
-              height: context.screenWidth / 7,
-              width: context.screenWidth / 5,
-              child: Material(
-                type: MaterialType.transparency,
-                child: InkWell(
-                  onTap: () async {
-                    if (isNeedLogin) {
-                      if (_vm.userProfile == null) {
-                        showPreLoginDialog();
-                        return;
-                      }
-                    }
-                    if (EnvironmentConfig.template_version == 15 && widget.onPauseBgMusic != null) {
-                      if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
-                        if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
-                        GlobalValueUtil.pausesong();
-                        GlobalValueUtil.playerStatus = AssetPlayerStatus.leavePagePause;
-                      }
-                    }
-                    if (EnvironmentConfig.template_version == 11 && index == 0 && isDisplayGameView)
-                      //will refresh page for t11
-                      Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) => BottomNavigationController(),
-                          transitionDuration: Duration.zero,
-                          reverseTransitionDuration: Duration.zero,
-                        ),
-                      );
-                    else if ((EnvironmentConfig.template_version == 11 ||
-                            EnvironmentConfig.template_version == 15 ||
-                            EnvironmentConfig.template_version == 14) &&
-                        index == 2)
-                      Navigator.of(context).pushNamed(RoutePath.deposit);
-                    else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 3)
-                      Navigator.of(context).pushNamed(RoutePath.withdraw);
-                    else if (index == 1)
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Promotion()));
-                    //Navigator.pushNamed(context, RoutePath.addCard);
-                    //   Navigator.of(context). pushNamed("/promotion");
-                    else if (index == 6)
-                      Navigator.of(context).pushNamed("/customer_service");
-                    else if (index == 2 && EnvironmentConfig.template_version != 2)
-                      setState(() {
-                        isMenu = !isMenu;
-                      });
-                    else if (index == 2 && EnvironmentConfig.template_version == 2)
-                      setState(() {
-                        Navigator.of(context).pushNamed(RoutePath.menuT2);
-                      });
-                    else
-                      setState(() {
-                        isMenu = false;
-                        currentBottomIndex = index;
-                      });
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      _buildImageIcon(imagePath, index, isNewMessage),
-                      if (title.isNotEmpty)
-                        Container(
-                          margin: EdgeInsets.only(top: 3.auto),
-                          child: Text(
-                            getTranslatedText(title) ?? title,
-                            style: TextStyle(
-                              fontSize: 9.auto,
-                              color: (currentBottomIndex == index && !isMenu) ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-
-  _buildImageIcon(String imagePath, int index, bool isNewMessage) {
-    if (EnvironmentConfig.template_version == 11 && imagePath != "ic_home" && imagePath != "ic_profile" && imagePath != "ic_cs") {
-      return Container(
-        height: 30,
-        alignment: Alignment.topCenter,
-        child: Image.asset(
-          "images/bottom_nav_bar/T11/$imagePath.gif",
-          fit: BoxFit.fitHeight,
-        ),
-      );
-    } else if (index == 2 && imagePath == "ic_menu") {
-      return Container(
-        height: 35.auto,
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: CircleAvatar(
-          backgroundColor: CustomColor.theme_title_text_color,
-          child: ImageIcon(
-            AssetImage(
-              "images/bottom_nav_bar/$imagePath.png",
-            ),
-            size: 20.auto,
-            color: currentBottomIndex == index ? Colors.yellow : Colors.white,
-          ),
-        ),
-      );
-    } else if ((EnvironmentConfig.template_version == 2 && (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) ||
-        (EnvironmentConfig.template_version == 11 && (imagePath == "ic_home" || imagePath == "ic_profile"))) {
-      return Container(
-        height: 20.auto,
-        child: ImageIcon(
-          AssetImage(
-            "images/bottom_nav_bar/T2/$imagePath.png",
-          ),
-          size: 20.auto,
-          color: currentBottomIndex == index ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
-        ),
-      );
-    } else if (EnvironmentConfig.template_version == 15 && imagePath != "ic_cs") {
-      return Container(
-          height: 25.auto,
-          child: Image.asset(
-            currentBottomIndex == index ? "images/bottom_nav_bar/T15/$imagePath-selected.png" : "images/bottom_nav_bar/T15/$imagePath.png",
-          ));
-    } else if (EnvironmentConfig.template_version == 14 && imagePath != "ic_cs") {
-      return Container(
-          height: 22.auto,
-          child: SvgPicture.asset(
-            "images/bottom_nav_bar/T14/$imagePath.svg",
-            height: 22.auto,
-          ));
-    } else {
-      return Container(
-        padding: (EnvironmentConfig.template_version == 15) ? EdgeInsets.zero : EdgeInsets.only(top: 5),
-        child: SvgPicture.asset(
-          "images/bottom_nav_bar/$imagePath.svg",
-          matchTextDirection: true,
-          height: 22.auto,
-          color: currentBottomIndex == index && !isMenu ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
-        ),
-      );
-    }
-  }
-
-  _closeMenu() {
-    setState(() {
-      isMenu = false;
-    });
-  }
-
-  _buildMenu() => Visibility(
-        visible: isMenu,
-        child: Menu(),
-      );
-
-  _buildOverlay() => Visibility(
-        visible: isMenu,
-        child: ColorFiltered(
-          colorFilter: ColorFilter.mode(Colors.black54, BlendMode.srcOut),
-          child: Stack(
-            children: [
-              GestureDetector(
-                onTap: _closeMenu,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-
-  _showNewVersionUpdateDialog(dynamic data) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => CustomDialog(
-            title: getTranslatedText("New update: ${data["version"]}"),
-            description: data["content"],
-            buttonText1: getTranslatedText("update"),
-            onClick: () {
-              Navigator.pop(
-                context,
-              );
-              launch(data["link"]);
-            }));
-  }
-}
+// class MyHomePage extends StatefulWidget {
+//   final bool isFirstRun;
+//   final int? index;
+//   final dynamic versionUpdate;
+//   final Function? onResumeBgMusic;
+//   final Function? onPauseBgMusic;
+//   final bool isDisplayingDepositDialog = false;
+//
+//   MyHomePage({
+//     this.isFirstRun = false,
+//     this.index,
+//     this.versionUpdate,
+//     this.onPauseBgMusic,
+//     this.onResumeBgMusic,
+//   });
+//
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
+//
+// class _MyHomePageState extends BaseState<MyHomePage> with WidgetsBindingObserver {
+//   int currentBottomIndex = 0;
+//   List _page = [];
+//   var isMenu = false;
+//   var _vm = MainViewModel();
+//   var isDisplayGameView = false;
+//
+//   onClickGameTab(value) {
+//     setState(() {
+//       isDisplayGameView = value;
+//     });
+//   }
+//
+//   // _getAssetsAudioPlayer() {
+//   //   if (_vm.config?.backgroundMusic ??
+//   //       false || EnvironmentConfig.template_version == 15) {
+//   //     this.assetsAudioPlayer.open(
+//   //       Playlist(audios: [
+//   //         Audio(
+//   //             "audio/${EnvironmentConfig.template_version == 15 ? "sky8BgMusic.mp3" : "caishendao.mp3"}"),
+//   //       ]),
+//   //       loopMode: LoopMode.playlist, //loop the full playlist
+//   //     );
+//   //     print("diuneiiss");
+//   //     assetsAudioPlayer.pause();
+//   //   }
+//   //   WidgetsBinding.instance.addObserver(this);
+//   // }
+//
+//   // void didChangeAppLifecycleState(AppLifecycleState state) {
+//   //   if (state == AppLifecycleState.resumed) {
+//   //     if (EnvironmentConfig.template_version == 15) {
+//   //       if (GlobalValueUtil.playerStatus !=
+//   //           AssetPlayerStatus.manualClickPause) {
+//   //         assetsAudioPlayer.play();
+//   //       }
+//   //     } else {
+//   //       assetsAudioPlayer.play();
+//   //     }
+//   //   } else {
+//   //     assetsAudioPlayer.pause();
+//   //   }
+//   // }
+//
+//   @override
+//   void initState() {
+//     if (widget.versionUpdate != null) {
+//       Future.delayed(Duration.zero, () => _showNewVersionUpdateDialog(widget.versionUpdate));
+//     }
+//     // GlobalValueUtil.assetsAudioPlayer.stop();
+//     // GlobalValueUtil.assetsAudioPlayer.play();
+//     // assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+//     // _getAssetsAudioPlayer();
+//     if (widget.index != null) currentBottomIndex = widget.index!;
+//     _page = EnvironmentConfig.template_version != 11
+//         ? [
+//             Home(
+//               onPauseBgMusic: () => GlobalValueUtil.pausesong(),
+//               onResumeBgMusic: () => GlobalValueUtil.playsong(),
+//             ),
+//             Promotion(),
+//             EnvironmentConfig.template_version == 2 ? MenuT2() : Menu(),
+//             CustomerService(),
+//             Profile(),
+//           ]
+//         : [
+//             Home(
+//               isDisplayGameView: isDisplayGameView,
+//               onClickGameTab: (value) => onClickGameTab(value),
+//             ),
+//             Promotion(),
+//             Deposit(),
+//             Withdraw(),
+//             Profile(),
+//           ];
+//     print("masukkkk11");
+//     // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
+//     // if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+//     /*if (EnvironmentConfig.brandName.toLowerCase().contains("idr")) */
+//     _initWebSocket();
+//     super.initState();
+//   }
+//
+//   @override
+//   void deactivate() {
+//     GlobalValueUtil.stopsong();
+//     super.deactivate();
+//   }
+//
+//   @override
+//   void dispose() {
+//     GlobalValueUtil.stopsong();
+//     super.dispose();
+//   }
+//
+//   _initWebSocket() async {
+//     bool _isOpen = false;
+//     if (_vm.userProfile != null) {
+//       print("connect to signalR");
+//
+//       WebSocketDeposit.getInstance(onReceive: (WsResponse value) {
+//         print(value);
+//
+//         if (value.type?.toLowerCase() == "viprebate") {
+//           // check previous dialog is showing
+//           if (_isOpen) {
+//             setState(() {
+//               _isOpen = false;
+//             });
+//             Navigator.pop(context);
+//           }
+//
+//           _isOpen = true;
+//           showDialog(
+//               context: context,
+//               barrierColor: Color(0x01000000),
+//               builder: (BuildContext context) => VipRebateDialog(
+//                     data: value,
+//                     closeDialog: () {
+//                       //check is still showing
+//                       if (_isOpen) {
+//                         setState(() {
+//                           _isOpen = false;
+//                         });
+//                         Navigator.pop(context);
+//                       }
+//                     },
+//                   ));
+//         } else {
+//           showDialog(context: context, builder: (BuildContext context) => DepositOrderDialog(data: value, depositList: _vm.depositList));
+//         }
+//       })?.connect();
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ScrollConfiguration(
+//       behavior: MyBehavior(),
+//       child: Stack(
+//         children: [
+//           Scaffold(
+//             extendBody: false,
+//             body: Stack(
+//               children: [
+//                 Center(
+//                   child: _page[currentBottomIndex],
+//                 ),
+//                 _buildOverlay(),
+//                 _buildMenu()
+//               ],
+//             ),
+//             bottomNavigationBar: ((EnvironmentConfig.template_version == 8 || EnvironmentConfig.template_version == 9) && EnvironmentConfig.dark_mode)
+//                 ? Container(
+//                     child: BottomAppBar(
+//                         child: Container(
+//                       decoration: EnvironmentConfig.template_version == 8
+//                           ? BoxDecoration(
+//                               gradient: LinearGradient(
+//                                 colors: [Color(0xff011F60), Colors.transparent.withOpacity(1.0)],
+//                                 begin: Alignment.bottomCenter,
+//                                 end: Alignment.topCenter,
+//                               ),
+//                             )
+//                           : BoxDecoration(
+//                               gradient: LinearGradient(
+//                                 colors: [
+//                                   //Color.fromRGBO(0, 1, 41, -0.1),
+//                                   CustomColor.theme_bar_gradient_2,
+//                                   Color.fromRGBO(199, 219, 231, 0.9),
+//                                   // Colors.white.withOpacity(1.0)
+//                                 ],
+//                                 begin: Alignment.bottomCenter,
+//                                 end: Alignment.topCenter,
+//                               ),
+//                             ),
+//                       child: _buildBottomAppBarRow(),
+//                     )),
+//                   )
+//                 : EnvironmentConfig.template_version == 15
+//                     ? Container(
+//                         decoration:
+//                             BoxDecoration(borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)), color: Colors.white),
+//                         child: ClipRRect(
+//                           borderRadius: BorderRadius.only(
+//                             topLeft: Radius.circular(30.0),
+//                             topRight: Radius.circular(30.0),
+//                           ),
+//                           child: BottomAppBar(
+//                             color: Colors.white,
+//                             child: _buildBottomAppBarRow(),
+//                           ),
+//                         ))
+//                     : BottomAppBar(
+//                         color: CustomColor.theme_bottom_app_bar_color,
+//                         child: _buildBottomAppBarRow(),
+//                       ),
+//           ),
+//           /*Positioned(
+//                 bottom: context.screenWidth / 7 + (IphoneHasNotch.hasNotch ? 20 : 0),
+//                 right: -10,
+//                 child: RawMaterialButton(
+//                   onPressed: () {
+//                     FlutterLivechatPlugin.beginChat("14246631");
+//                   },
+//                   elevation: 2.0,
+//                   fillColor: Color(0xff6819d2),
+//                   child: ImageIcon(
+//                     AssetImage("images/livechat.png"),
+//                     color: Colors.white,
+//                     size: 20,
+//                   ),
+//                   padding: EdgeInsets.all(15.0),
+//                   shape: CircleBorder(),
+//                 ),
+//               ),*/
+//         ],
+//       ),
+//     );
+//   }
+//
+//   _getCustomThirdPositionItem() {
+//     switch (EnvironmentConfig.template_version) {
+//       case 2:
+//         return _buildBottomBarItem(2, "ic_menu", "");
+//       case 15:
+//         return _buildBottomBarItem(6, "ic_cs", "customer_service");
+//       default:
+//         return _buildBottomBarItem(
+//             2,
+//             "ic_deposit",
+//             (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15 || EnvironmentConfig.template_version == 14)
+//                 ? "deposit"
+//                 : "wallet",
+//             isNeedLogin: true);
+//     }
+//   }
+//
+//   _getCustomFourthPositionItem() {
+//     switch (EnvironmentConfig.template_version) {
+//       case 11:
+//         return _buildBottomBarItem(3, "ic_withdraw", "withdrawal", isNeedLogin: true);
+//       case 15:
+//         return _buildBottomBarItem(
+//             2, "ic_deposit", (EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) ? "deposit" : "wallet",
+//             isNeedLogin: true);
+//       default:
+//         return SizedBox.shrink();
+//     }
+//   }
+//
+//   _buildBottomAppBarRow() => Row(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           _buildBottomBarItem(
+//             0,
+//             "ic_home",
+//             "home",
+//           ),
+//           _buildBottomBarItem(1, "ic_promotion", "promotion"),
+//           _getCustomThirdPositionItem(),
+//           _getCustomFourthPositionItem(),
+//           EnvironmentConfig.template_version == 15 ? SizedBox.shrink() : _buildBottomBarItem(6, "ic_cs", "customer_service"),
+//           _buildBottomBarItem(
+//             4,
+//             "ic_profile",
+//             "my_profile",
+//             isNeedLogin: true,
+//           ),
+//         ],
+//       );
+//
+//   _buildBottomBarItem(int index, String imagePath, String title, {bool isNewMessage = false, bool isNeedLogin = false}) => Expanded(
+//         child: Stack(
+//           children: [
+//             SizedBox(
+//               height: context.screenWidth / 7,
+//               width: context.screenWidth / 5,
+//               child: Material(
+//                 type: MaterialType.transparency,
+//                 child: InkWell(
+//                   onTap: () async {
+//                     if (isNeedLogin) {
+//                       if (_vm.userProfile == null) {
+//                         showPreLoginDialog();
+//                         return;
+//                       }
+//                     }
+//                     if (EnvironmentConfig.template_version == 15 && widget.onPauseBgMusic != null) {
+//                       if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
+//                         if (widget.onPauseBgMusic != null) widget.onPauseBgMusic!();
+//                         GlobalValueUtil.pausesong();
+//                         GlobalValueUtil.playerStatus = AssetPlayerStatus.leavePagePause;
+//                       }
+//                     }
+//                     if (EnvironmentConfig.template_version == 11 && index == 0 && isDisplayGameView)
+//                       //will refresh page for t11
+//                       Navigator.pushReplacement(
+//                         context,
+//                         PageRouteBuilder(
+//                           pageBuilder: (context, animation1, animation2) => BottomNavigationController(),
+//                           transitionDuration: Duration.zero,
+//                           reverseTransitionDuration: Duration.zero,
+//                         ),
+//                       );
+//                     else if ((EnvironmentConfig.template_version == 11 ||
+//                             EnvironmentConfig.template_version == 15 ||
+//                             EnvironmentConfig.template_version == 14) &&
+//                         index == 2)
+//                       Navigator.of(context).pushNamed(RoutePath.deposit);
+//                     else if ((EnvironmentConfig.template_version == 11 || EnvironmentConfig.template_version == 15) && index == 3)
+//                       Navigator.of(context).pushNamed(RoutePath.withdraw);
+//                     else if (index == 1)
+//                       Navigator.push(context, MaterialPageRoute(builder: (context) => Promotion()));
+//                     //Navigator.pushNamed(context, RoutePath.addCard);
+//                     //   Navigator.of(context). pushNamed("/promotion");
+//                     else if (index == 6)
+//                       Navigator.of(context).pushNamed("/customer_service");
+//                     else if (index == 2 && EnvironmentConfig.template_version != 2)
+//                       setState(() {
+//                         isMenu = !isMenu;
+//                       });
+//                     else if (index == 2 && EnvironmentConfig.template_version == 2)
+//                       setState(() {
+//                         Navigator.of(context).pushNamed(RoutePath.menuT2);
+//                       });
+//                     else
+//                       setState(() {
+//                         isMenu = false;
+//                         currentBottomIndex = index;
+//                       });
+//                   },
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     crossAxisAlignment: CrossAxisAlignment.center,
+//                     children: <Widget>[
+//                       _buildImageIcon(imagePath, index, isNewMessage),
+//                       if (title.isNotEmpty)
+//                         Container(
+//                           margin: EdgeInsets.only(top: 3.auto),
+//                           child: Text(
+//                             getTranslatedText(title) ?? title,
+//                             style: TextStyle(
+//                               fontSize: 9.auto,
+//                               color: (currentBottomIndex == index && !isMenu) ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
+//                             ),
+//                             textAlign: TextAlign.center,
+//                           ),
+//                         ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       );
+//
+//   _buildImageIcon(String imagePath, int index, bool isNewMessage) {
+//     if (EnvironmentConfig.template_version == 11 && imagePath != "ic_home" && imagePath != "ic_profile" && imagePath != "ic_cs") {
+//       return Container(
+//         height: 30,
+//         alignment: Alignment.topCenter,
+//         child: Image.asset(
+//           "images/bottom_nav_bar/T11/$imagePath.gif",
+//           fit: BoxFit.fitHeight,
+//         ),
+//       );
+//     } else if (index == 2 && imagePath == "ic_menu") {
+//       return Container(
+//         height: 35.auto,
+//         padding: EdgeInsets.symmetric(vertical: 5),
+//         child: CircleAvatar(
+//           backgroundColor: CustomColor.theme_title_text_color,
+//           child: ImageIcon(
+//             AssetImage(
+//               "images/bottom_nav_bar/$imagePath.png",
+//             ),
+//             size: 20.auto,
+//             color: currentBottomIndex == index ? Colors.yellow : Colors.white,
+//           ),
+//         ),
+//       );
+//     } else if ((EnvironmentConfig.template_version == 2 && (imagePath == "ic_home" || imagePath == "ic_profile" || imagePath == "ic_promotion")) ||
+//         (EnvironmentConfig.template_version == 11 && (imagePath == "ic_home" || imagePath == "ic_profile"))) {
+//       return Container(
+//         height: 20.auto,
+//         child: ImageIcon(
+//           AssetImage(
+//             "images/bottom_nav_bar/T2/$imagePath.png",
+//           ),
+//           size: 20.auto,
+//           color: currentBottomIndex == index ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
+//         ),
+//       );
+//     } else if (EnvironmentConfig.template_version == 15 ) {
+//       return Container(
+//           height: 25.auto,
+//           child: Image.asset(
+//             currentBottomIndex == index ? "images/bottom_nav_bar/T15/$imagePath-selected.png" : "images/bottom_nav_bar/T15/$imagePath.png",
+//           ));
+//     } else if (EnvironmentConfig.template_version == 14 && imagePath != "ic_cs") {
+//       return Container(
+//           height: 22.auto,
+//           child: SvgPicture.asset(
+//             "images/bottom_nav_bar/T14/$imagePath.svg",
+//             height: 22.auto,
+//           ));
+//     } else {
+//       return Container(
+//         padding: (EnvironmentConfig.template_version == 15) ? EdgeInsets.zero : EdgeInsets.only(top: 5),
+//         child: SvgPicture.asset(
+//           "images/bottom_nav_bar/$imagePath.svg",
+//           matchTextDirection: true,
+//           height: 22.auto,
+//           color: currentBottomIndex == index && !isMenu ? CustomColor.bottom_nav_selected_color : CustomColor.bottom_nav_unselected_color,
+//         ),
+//       );
+//     }
+//   }
+//
+//   _closeMenu() {
+//     setState(() {
+//       isMenu = false;
+//     });
+//   }
+//
+//   _buildMenu() => Visibility(
+//         visible: isMenu,
+//         child: Menu(),
+//       );
+//
+//   _buildOverlay() => Visibility(
+//         visible: isMenu,
+//         child: ColorFiltered(
+//           colorFilter: ColorFilter.mode(Colors.black54, BlendMode.srcOut),
+//           child: Stack(
+//             children: [
+//               GestureDetector(
+//                 onTap: _closeMenu,
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                     color: Colors.transparent,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+//
+//   _showNewVersionUpdateDialog(dynamic data) {
+//     showDialog(
+//         context: context,
+//         builder: (BuildContext context) => CustomDialog(
+//             title: getTranslatedText("New update: ${data["version"]}"),
+//             description: data["content"],
+//             buttonText1: getTranslatedText("update"),
+//             onClick: () {
+//               Navigator.pop(
+//                 context,
+//               );
+//               launch(data["link"]);
+//             }));
+//   }
+// }

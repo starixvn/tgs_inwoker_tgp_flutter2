@@ -36,7 +36,7 @@ class _EndDrawerMenuState extends BaseState<EndDrawerMenu> {
     {"index": "0", "title": "message_center", "icon": "ic_message", "routePath": "message"},
     {"index": "1", "title": "announcement", "icon": "ic_announcement", "routePath": "announcement"},
     {"index": "2", "title": "edit_password", "icon": "ic_change_password", "routePath": "edit_password"},
-    {"index": "3", "title": "bet_history", "icon": "ic_bet_record", "routePath": "transaction"},
+    {"index": "3", "title": "bet_record", "icon": "ic_bet_record", "routePath": "transaction"},
     {"index": "4", "title": "language", "icon": "ic_language", "routePath": "language"},
     {"index": "5", "title": "exit", "icon": "ic_signout", "routePath": ""},
   ];

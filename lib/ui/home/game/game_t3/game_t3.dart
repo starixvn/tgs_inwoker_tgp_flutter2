@@ -3,7 +3,6 @@ import 'package:api/entity/game_type.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tgp_flutter2/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/base_state.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/my_behavior.dart';
@@ -12,6 +11,8 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_t3/game_item_t3.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../../../../globalUtil/GlobalValueUtil.dart';
 
 class GameT3 extends StatefulWidget {
   final Function? onPauseBgMusic;

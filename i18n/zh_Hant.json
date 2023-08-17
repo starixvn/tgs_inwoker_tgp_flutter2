@@ -1117,6 +1117,7 @@
   "playerNote": "玩家備註",
   "plsEnterPlayerNote": "請輸入玩家備註",
   "report_bet": "投注記錄",
+  "bet_record": "投注記錄",
   "report_withdrawal": "提現記錄",
 
   "dialogDARUnavailableTitle": "充值抽獎已結束",
@@ -1214,5 +1215,17 @@
   "memo_action": "操作",
   "memo_reply": "回复",
   "enter_memo_subject": "請輸入主旨",
-  "enter_memo": "請輸入站內信"
+  "enter_memo": "請輸入站內信",
+
+  "date": "日期",
+
+  "customer_support": "客服",
+  "welcome_customer_support": "歡迎來到客服中心",
+  "vip_privilege": "VIP特權",
+  "account_record": "賬戶記錄",
+  "account_safety": "賬號安全",
+  "member_center": "會員中心",
+
+  "transfer_all_title": "從所有子錢包轉賬到主錢包",
+  "transfer_all": "一鍵傳輸"
 }

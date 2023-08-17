@@ -93,8 +93,9 @@ class HomeViewModel extends BaseViewModel {
   _computeTotalBalance() async {
     if (contentRepo.gameProviderList == null) contentRepo.getGameProviderList();
     var gameList = contentRepo.gameProviderList?.where((element) => element.transferWallet == true) ?? [];
-
+    await userRepo.getWalletBalance();
     var task = <Future>[];
+    gameBalance = 0.0; //reset gamebalance before adding new value
     gameList.forEach((game) {
       task.add(_getGameWalletBalance(game));
     });

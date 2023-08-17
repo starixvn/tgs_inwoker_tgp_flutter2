@@ -248,7 +248,7 @@ class GameViewModel extends BaseViewModel {
     });
     nonExistGameTypeList.forEach((element) {
       //handle some showing empty game list, some will hide it
-      if (EnvironmentConfig.template_version == 1) {
+      if (EnvironmentConfig.template_version == 1 || (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)) {
         gameTypeList.remove(element);
       }
       _gameListT3.remove(element);
@@ -272,7 +272,7 @@ class GameViewModel extends BaseViewModel {
         if (!isGettingRecommendList &&
             (gameType == GameType.Slot || gameType == GameType.EGame || gameType == GameType.Fishing || gameType == GameType.VirtualSports))
           await _getFavoriteGame(gameType).then((_apiState) {
-            if (_apiState.result?.isNotEmpty?? false) {
+            if (_apiState.result?.isNotEmpty ?? false) {
               getGameApiState = _apiState;
             } else {
               getGameApiState = apiState;

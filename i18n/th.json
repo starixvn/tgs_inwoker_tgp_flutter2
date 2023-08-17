@@ -455,6 +455,7 @@
   "playerNote": "หมายเหตุผู้เล่น",
   "plsEnterPlayerNote": "กรุณาใส่หมายเหตุผู้เล่น",
   "report_bet": "ประวัติการเดิมพัน",
+  "bet_record": "ประวัติการเดิมพัน",
   "report_withdrawal": "รายงานการถอนเงิน",
 
   "dialogDARUnavailableTitle": "หวยเติมเงินหมดเขตแล้ว",
@@ -552,5 +553,17 @@
   "memo_action": "การกระทำ",
   "memo_reply": "ตอบกลับ",
   "enter_memo_subject": "กรุณากรอกหัวข้อ",
-  "enter_memo": "กรุณากรอกข้อความสถานี"
+  "enter_memo": "กรุณากรอกข้อความสถานี",
+
+  "date": "วันที่",
+
+  "customer_support": "บริการลูกค้า",
+  "welcome_customer_support": "ยินดีต้อนรับสู่ศูนย์บริการลูกค้า",
+  "vip_privilege": "สิทธิ์ VIP",
+  "account_record": "บันทึกบัญชี",
+  "account_safety": "ความปลอดภัยของบัญชี",
+  "member_center": "ศูนย์สมาชิก",
+
+  "transfer_all_title": "โอนจากกระเป๋าเงินย่อยทั้งหมดไปยังกระเป๋าเงินหลัก",
+  "transfer_all": "โอนทั้งหมด"
 }

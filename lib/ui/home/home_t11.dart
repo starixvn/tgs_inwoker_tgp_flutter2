@@ -15,7 +15,7 @@ import 'package:tgp_flutter2/ui/home/home_user_info_view.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 import 'package:tgp_flutter2/ui/home/jackpot/jackpot.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class HomeT11 extends StatefulWidget {
   final Function? onPauseBgMusic;

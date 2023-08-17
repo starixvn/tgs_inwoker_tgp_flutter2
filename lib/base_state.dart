@@ -285,7 +285,11 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
     // var imageFileFormat = EnvironmentConfig.template_version == 10 ? "png" : "jpg";
 
     var appendPathForDarkLightMode = EnvironmentConfig.template_version == 10 ? (EnvironmentConfig.dark_mode ? "dark/" : "light/") : "";
-    return "$frontImagePath/$appendPathForDarkLightMode${gameType == "" ? "sports" : gameType}-$gamePlatformCode.png";
+
+
+    String imagePath = "$frontImagePath/$appendPathForDarkLightMode${gameType == "" ? "sports" : gameType}-$gamePlatformCode.png";
+    print(imagePath);
+    return imagePath;
   }
 
   String _getFrontImagePathVersion() {
@@ -304,7 +308,7 @@ abstract class BaseState<T extends StatefulWidget> extends State<T> {
       case 11:
         return "/T11";
       case 15:
-        return "/T15/gold";
+        return "/T15/${EnvironmentConfig.light_mode?"white":"gold"}";
       default:
         return "/T${EnvironmentConfig.template_version}";
     }

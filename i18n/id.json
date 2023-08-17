@@ -506,6 +506,7 @@
   "playerNote": "Catatan Pemain",
   "plsEnterPlayerNote": "Silakan masukkan catatan pemain",
   "report_bet": "Riwayat Taruhan",
+  "bet_record": "Riwayat Taruhan",
   "report_withdrawal": "Penarikan",
   "dialogDARUnavailableTitle": "Lotre isi ulang telah berakhir",
   "dialogUnavailableTitle1": "Mainkan sekali sehari",
@@ -594,5 +595,17 @@
   "memo_action": "Aksi",
   "memo_reply": "Balas",
   "enter_memo_subject": "Masukkan subjek",
-  "enter_memo": "Silakan masukkan pesan stasiun"
+  "enter_memo": "Silakan masukkan pesan stasiun",
+
+  "date": "Tanggal",
+
+  "customer_support": "Pelayanan Pelanggan",
+  "welcome_customer_support": "Selamat datang di pusat layanan pelanggan",
+  "vip_privilege": "Hak istimewa VIP",
+  "account_record": "Catatan Akun",
+  "account_safety": "Keamanan Akun",
+  "member_center": "Pusat Anggota",
+
+  "transfer_all_title": "Transfer dari semua sub dompet ke dompet utama",
+  "transfer_all": "Transfer Semua"
 }

@@ -14,7 +14,7 @@ import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/home/game/game_view_model.dart';
 import 'package:tgp_flutter2/ui/home/home_view_model.dart';
 
-import '../../GlobalValueUtil.dart';
+import '../../globalUtil/GlobalValueUtil.dart';
 
 class HomeT9 extends StatefulWidget {
   final Function? onPauseBgMusic;

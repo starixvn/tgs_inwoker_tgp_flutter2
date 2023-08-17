@@ -59,7 +59,7 @@ class CustomLoginAppBar extends StatefulWidget implements PreferredSizeWidget {
   _CustomLoginAppBarState createState() => _CustomLoginAppBarState();
 
   @override
-  Size get preferredSize => const Size.fromHeight((EnvironmentConfig.template_version == 2) ? 60 : 90);
+  Size get preferredSize => const Size.fromHeight(/*(EnvironmentConfig.template_version == 2) ?*/ 60 /*: 90*/);
 }
 
 class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
@@ -189,8 +189,9 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (EnvironmentConfig.template_version == 11) _getOnlineUsersText(),
-                _getMusicPlayerWidget(),
+                if (EnvironmentConfig.template_version == 11 /*|| (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)*/)
+                  _getOnlineUsersText(),
+                if ((EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode)) _getMusicPlayerWidget(),
               ],
             ),
           ],
@@ -312,7 +313,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
 
   List<Widget> _getActionButton() {
     List<Widget> list = [];
-    if (GlobalValueUtil.featuresConfig?.homePageDisplayVIP ?? false) list.add(_getVipButton());
+    if ((GlobalValueUtil.featuresConfig?.haveVIPFeature ?? true) && (GlobalValueUtil.featuresConfig?.homePageDisplayVIP ?? true)) list.add(_getVipButton());
 
     list.addAll(widget.isLogin
         ? ((EnvironmentConfig.template_version == 14)
@@ -352,8 +353,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
           "${getTranslatedText("online_user")} : ${widget.randomNumber}",
           textAlign: TextAlign.right,
           style: TextStyle(
-            color: EnvironmentConfig.template_version == 15 ? CustomColor.theme_button_color : Colors.white,
-            fontSize: 10.auto,
+            color: (() {
+              if (EnvironmentConfig.template_version == 15)
+                return EnvironmentConfig.light_mode ? CustomColor.theme_app_bar_text_color : CustomColor.theme_button_color;
+              else
+                return Colors.white;
+            }()),
+            fontSize: EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode ? 12.auto : 10.auto,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -660,6 +666,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               "images/home/ic_phone.png",
               width: 10.auto,
               height: 10.auto,
+              color: CustomColor.theme_app_bar_text_color,
             ),
           ),
           Container(

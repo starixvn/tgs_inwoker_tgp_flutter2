@@ -288,6 +288,7 @@
   "review": "प्रसंस्करण",
   "approved": "अनुमत",
   "rejected": "अस्वीकार कर दिया",
+  "waiting_paid": "भुगतान",
   "paid": "चुकाया गया",
   "order_number": "ऑर्डर नंबर: ",
   "gms_order_number": "जीएमएस ऑर्डर नंबर: ",
@@ -455,6 +456,7 @@
   "playerNote": "प्लेयर नोट",
   "plsEnterPlayerNote": "कृपया नोट दर्ज करें",
   "report_bet": "शर्त इतिहास",
+  "bet_record": "शर्त इतिहास",
   "report_withdrawal": "निकासी",
   "dialogDARUnavailableTitle": "जमा रूलेट समाप्त हो गया है",
   "dialogUnavailableTitle1": "दिन में एक बार खेलें",
@@ -470,6 +472,7 @@
   "spin_run_out": "उफ़, ऐसा लगता है कि आपकी स्पिन ख़त्म हो गई है।",
   "remaining_spin": "बचा हुआ ",
   "remaining_spin2": " स्पिन(ओं) !",
+  "balanceChange": "शेष परिवर्तन रिकॉर्ड",
   "balanceChangeRecords": "शेष परिवर्तन रिकॉर्ड",
   "bcr_type": "सौदे का प्रकार",
   "bcr_amount": "मात्रा",
@@ -541,5 +544,15 @@
   "no_favorite_hint": "अभी तक कोई संग्रह नहीं है",
   "no_favorite_hint2": "जल्दी करो और अपने पसंदीदा गेम जोड़ें!",
 
-  "date": "तारीख"
+  "date": "तारीख",
+
+  "customer_support": "ग्राहक सेवा",
+  "welcome_customer_support": "ग्राहक सेवा केंद्र में आपका स्वागत है",
+  "vip_privilege": "वीआईपी विशेषाधिकार",
+  "account_record": "खाता रिकॉर्ड",
+  "account_safety": "खाता सुरक्षा",
+  "member_center": "सदस्य केंद्र",
+
+  "transfer_all_title": "सभी उप वॉलेट से मुख्य वॉलेट में स्थानांतरण",
+  "transfer_all": "सभी को स्थानांतरित करें"
 }

@@ -551,7 +551,7 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
         return [
           "images/bottom_nav_bar/T15/ic_home-selected.png",
           "images/bottom_nav_bar/T15/ic_promotion-selected.png",
-          "images/bottom_nav_bar/ic_cs.svg",
+          "images/bottom_nav_bar/T15/ic_cs-selected.png",
           "images/bottom_nav_bar/T15/ic_deposit-selected.png",
           "images/bottom_nav_bar/T15/ic_profile-selected.png",
         ];

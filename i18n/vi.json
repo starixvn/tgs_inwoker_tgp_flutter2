@@ -456,6 +456,7 @@
   "plsEnterPlayerNote": "Vui lòng nhập ghi chú của người chơi",
 
   "report_bet": "Lịch sử đặt cược",
+  "bet_record": "Lịch sử đặt cược",
   "report_withdrawal": "Rút tiền",
 
   "dialogDARUnavailableTitle": "Xổ số nạp tiền đã kết thúc",
@@ -553,5 +554,17 @@
   "memo_action": "Hành động",
   "memo_reply": "Trả lời",
   "enter_memo_subject": "Vui lòng nhập chủ đề",
-  "enter_memo": "Vui lòng nhập tin nhắn trạm"
+  "enter_memo": "Vui lòng nhập tin nhắn trạm",
+
+  "date": "Ngày",
+
+  "customer_support": "Dịch vụ khách hàng",
+  "welcome_customer_support": "Chào mừng đến với trung tâm dịch vụ khách hàng",
+  "vip_privilege": "Đặc quyền VIP",
+  "account_record": "Bản ghi tài khoản",
+  "account_safety": "An toàn tài khoản",
+  "member_center": "Trung tâm thành viên",
+
+  "transfer_all_title": "Chuyển từ tất cả ví phụ sang ví chính",
+  "transfer_all": "Chuyển tất cả"
 }
