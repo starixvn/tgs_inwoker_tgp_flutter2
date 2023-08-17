@@ -21,6 +21,7 @@ import '../../../custom/wallet_text_container.dart';
 import '../../../environment_config.dart';
 import '../../deposit/deposit.dart';
 import '../../report/report_view.dart';
+import '../../withdraw/withdraw.dart';
 
 class ProfileT15Light extends StatefulWidget {
   final ProfileViewModel vm;
@@ -133,6 +134,8 @@ class _ProfileT15LightState extends BaseState<ProfileT15Light> {
                         )));
           else if (routePath == RoutePath.deposit) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => Deposit(isNewPage: true)));
+          } else if (routePath == RoutePath.withdraw) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Withdraw(isNewPage: true)));
           } else
             Navigator.of(context).pushNamed(routePath);
         },

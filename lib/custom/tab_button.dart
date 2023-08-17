@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:api/extension/screen_apis.dart';
+import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
 import '../base_state.dart';
@@ -66,7 +67,7 @@ class _TabButtonState extends BaseState<TabButton> {
               )
             : AutoSizeText(
                 EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text,
-                maxLines: _getTextMaxLines(),
+                maxLines: GlobalValueUtil.countSpace(EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text, " "),
                 minFontSize: 8,
                 maxFontSize: 14,
                 stepGranularity: 1,
@@ -79,7 +80,7 @@ class _TabButtonState extends BaseState<TabButton> {
 
   int _getTextMaxLines() {
     String str = EnvironmentConfig.template_version == 14 ? widget.text.toUpperCase() : widget.text;
-    if ((getCurrentLanguage().apiCode == "en-US") && str.contains(" "))
+    if (str.contains(" "))
       return 2;
     else
       return 1;

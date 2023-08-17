@@ -40,14 +40,12 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
     /*{"id": "4", "text": "返水记录"},*/
   ];
   ReportViewModel _vm = ReportViewModel();
-  double fontSize=0.0;
+  double fontSize = 0.0;
 
   @override
   void initState() {
     currentTabIndex = widget.tabIndex ?? 0;
     _tabController = TabController(length: tabList.length, vsync: this, initialIndex: currentTabIndex);
-
-
 
     super.initState();
   }
@@ -59,7 +57,7 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
             model: _vm,
             builder: (ctx, vm, _) {
               List<String> list = tabList.map((element) => element["text"] ?? "").toList();
-              fontSize = GlobalValueUtil.calculateFontSizeForLongestString(list, 15.auto, context.screenWidth/4.3);
+              fontSize = GlobalValueUtil.calculateFontSizeForLongestString(list, 15.auto, context.screenWidth / 4.3);
 
               return CustomScaffold(
                 appBar: CustomAppBar(
@@ -91,8 +89,8 @@ class _ReportViewState extends BaseState<ReportView> with SingleTickerProviderSt
                             text: getTranslatedText((tabList[index]["text"])!) ?? tabList[currentTabIndex]["text"],
                             index: index,
                             currentTabIndex: currentTabIndex,
-                            width: context.screenWidth/4.3,
-                            fontSize: fontSize,
+                            width: context.screenWidth / 4.3,
+                            fontSize: getCurrentLanguage().apiCode == "en-US" ? fontSize : null,
                           );
                         }).toList(),
                       ),

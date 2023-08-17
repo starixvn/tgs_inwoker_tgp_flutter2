@@ -95,7 +95,7 @@ class GlobalValueUtil {
         count++;
       }
     }
-    return count==0?1:count;
+    return count+1;
   }
 
   static void updateTotalBalance(double balance) {
