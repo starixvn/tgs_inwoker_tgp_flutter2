@@ -76,7 +76,7 @@ class _ReplyDialogState extends BaseState<ReplyDialog> {
                   Expanded(
                       flex: 1,
                       child: Text(
-                        "主旨",
+                        getTranslatedText("memo_subject"),
                         style: TextStyle(color:_getTextColor(), fontSize: 12.5),
                       )),
                   Expanded(
@@ -119,7 +119,7 @@ class _ReplyDialogState extends BaseState<ReplyDialog> {
                     Expanded(
                         flex: 1,
                         child: Text(
-                          "站内信",
+                          getTranslatedText("memo"),
                           style: TextStyle(color:_getTextColor(), fontSize: 12.5),
                         )),
                     Expanded(
