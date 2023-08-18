@@ -278,8 +278,7 @@ class _AddCardState extends BaseState<AddCard> {
         ];
       default:
         return [
-          _buildRealNameTextField(),
-          _buildPhoneTextField(),
+          _buildCryptoAddressTextField(),
         ];
     }
   }
@@ -297,7 +296,7 @@ class _AddCardState extends BaseState<AddCard> {
             Container(
               margin: EdgeInsets.only(left: 5.auto),
               child: Text(
-                getTranslatedText("add_card_hint"),
+                getTranslatedText("add_card_hint2"),
                 style: TextStyle(fontSize: 9.auto, color: Colors.red),
               ),
             )

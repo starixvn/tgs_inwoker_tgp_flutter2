@@ -57,6 +57,7 @@
   "slide_to_delete_card": "滑动以删除银行卡",
   "add_card": "添加银行卡",
   "max_card_hint": "添加银行卡后即可进行转出提款。",
+  "max_card_hint2": "添加银行卡后即可进行转出提款,至多3张。",
   "bank": "银行",
   "select_bank": "请选择银行",
   "bank_branch": "支行",
@@ -209,7 +210,7 @@
   "edit": "修改",
   "phone_format_error_msg": "手机号码设置为8到10位",
   "email_format_error_msg": "邮箱地址格式不正确",
-  "bank_type": "银行账号类别",
+  "bank_type": "类别",
   "bank_acc_name": "银行账号名称",
   "bank_name": "银行名称",
   "promotion_condition": "优惠条件",
@@ -221,6 +222,7 @@
   "select_bank_type": "请选择银行账号类别",
   "select_bank_name": "请选择银行账号名称",
   "add_card_hint": "资讯加密处理，仅用银行验证",
+  "add_card_hint2": "资讯加密处理",
   "crypto_address": "银行卡号码/加密货币地址",
   "enter_crypto_address": "请输入银行卡号码/加密货币地址",
   "delete": "删除",
@@ -565,5 +567,7 @@
   "member_center": "会员中心",
 
   "transfer_all_title": "从所有子钱包转账到主钱包",
-  "transfer_all": "一键传输"
+  "transfer_all": "一键传输",
+
+  "manage_bank": "管理银行卡"
 }

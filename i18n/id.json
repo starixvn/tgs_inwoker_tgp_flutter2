@@ -53,11 +53,12 @@
   "enter_amount_hint": "Silakan masukkan 100-450.000 yuan",
   "pay_password": "Password Penarikan",
   "enter_pay_password": "Silakan masukkan kata sandi penarikan",
-  "withdrawal_warning": "Nama pembukaan rekening kartu bank ini harus sama dengan nama asli yang diisikan nomor rekening Anda, jika tidak penarikan bisa gagal",
+  "withdrawal_warning": "Nama rekening bank ini harus sama dengan nama asli yang diisikan di rekening Anda, jika tidak maka penarikan bisa gagal",
   "next": "Selanjutnya",
   "slide_to_delete_card": "Geser untuk menghapus kartu bank",
   "add_card": "Tambahkan Kartu Bank",
   "max_card_hint": "Setelah menambahkan kartu bank, Anda dapat mentransfer dan menarik dana.",
+  "max_card_hint2": "Setelah menambahkan kartu bank, dapat digunakan untuk menarik uang, hingga 3 kartu.",
   "bank": "Bank",
   "select_bank": "Silakan pilih bank",
   "bank_branch": "Cabang",
@@ -210,7 +211,7 @@
   "edit": "Sunting",
   "phone_format_error_msg": "Nomor ponsel diatur ke 8 hingga 10 digit",
   "email_format_error_msg": "Format alamat email salah",
-  "bank_type": "Jenis Rekening Bank",
+  "bank_type": "Jenis",
   "bank_acc_name": "Nama rekening bank",
   "bank_name": "Nama Bank",
   "promotion_condition": "Ketentuan Promosi",
@@ -222,6 +223,7 @@
   "select_bank_type": "Silakan pilih jenis rekening bank",
   "select_bank_name": "Silakan pilih nama rekening bank",
   "add_card_hint": "Pemrosesan enkripsi informasi, hanya verifikasi bank yang digunakan",
+  "add_card_hint2": "Pemrosesan enkripsi informasi",
   "crypto_address": "nomor kartu bank/alamat mata uang kripto",
   "enter_crypto_address": "Silakan masukkan nomor kartu bank/alamat mata uang kripto",
   "delete": "Hapus",
@@ -607,5 +609,7 @@
   "member_center": "Pusat Anggota",
 
   "transfer_all_title": "Transfer dari semua sub dompet ke dompet utama",
-  "transfer_all": "Transfer Semua"
+  "transfer_all": "Transfer Semua",
+
+  "manage_bank": "Kelola Bank"
 }

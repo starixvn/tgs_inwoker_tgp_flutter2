@@ -47,7 +47,7 @@ class _MainCardState extends BaseState<MainCard> {
             behavior: MyBehavior(),
             child: CustomScaffold(
               appBar: _buildAppBar(),
-              body: _vm.bankCardList == null || _vm.bankCardList!.length == 0
+              body: _vm.bankCardList == null /*|| _vm.bankCardList!.length == 0*/
                   ? buildProgressDialog(_vm.brandLogoUrl)
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.auto),
@@ -258,7 +258,7 @@ class _MainCardState extends BaseState<MainCard> {
                       Container(
                         margin: EdgeInsets.only(top: 5.auto),
                         child: Text(
-                          getTranslatedText("max_card_hint"),
+                          getTranslatedText("max_card_hint2"),
                           style: TextStyle(fontSize: 12.auto, color: CustomColor.theme_text_grey_white_color),
                         ),
                       )
@@ -393,9 +393,9 @@ class _MainCardState extends BaseState<MainCard> {
       if (!isInitLoading) {
         isInitLoading = true;
       }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _checkBankCardListLength(); //check card list every time fetched
-      });
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   _checkBankCardListLength(); //check card list every time fetched
+      // });
     });
     handleApiState(_vm.getWithdrawalInfoListApiState, isAutoHideLoading: false, onSuccess: () {});
     handleApiState(_vm.deleteBankCardApiState, isAutoHideLoading: false, onSuccess: () {});
