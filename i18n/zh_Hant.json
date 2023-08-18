@@ -57,6 +57,7 @@
   "slide_to_delete_card": "滑動以刪除銀行卡",
   "add_card": "添加銀行卡",
   "max_card_hint": "添加銀行卡後即可進行轉出提款。",
+  "max_card_hint2": "添加銀行卡後即可進行轉出提款,至多3張。",
   "bank": "銀行",
   "select_bank": "請選擇銀行",
   "bank_branch": "支行",
@@ -209,7 +210,7 @@
   "edit": "修改",
   "phone_format_error_msg": "手機號碼設置為8到10位",
   "email_format_error_msg": "郵箱地址格式不正確",
-  "bank_type": "銀行賬號類別",
+  "bank_type": "類別",
   "bank_name": "銀行名稱",
   "bank_acc_name": "銀行賬號名稱",
   "promotion_condition": "優惠條件",
@@ -221,6 +222,7 @@
   "select_bank_type": "請選擇銀行賬號類別",
   "select_bank_name": "請選擇銀行賬號名稱",
   "add_card_hint": "資訊加密處理，僅用銀行驗證",
+  "add_card_hint2": "資訊加密處理",
   "crypto_address": "銀行卡號碼/加密貨幣地址",
   "enter_crypto_address": "請輸入銀行卡號碼/加密貨幣地址",
   "delete": "刪除",
@@ -1217,5 +1219,7 @@
   "member_center": "會員中心",
 
   "transfer_all_title": "從所有子錢包轉賬到主錢包",
-  "transfer_all": "一鍵傳輸"
+  "transfer_all": "一鍵傳輸",
+
+  "manage_bank": "管理銀行卡"
 }

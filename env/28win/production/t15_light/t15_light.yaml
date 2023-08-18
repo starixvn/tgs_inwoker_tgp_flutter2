@@ -18,7 +18,7 @@ environment_config:
     imageLogo:
       default: "pg_login_logo"
     environmentStage:
-      default: "staging"
+      default: "production"
     template_version:
       type: int
       default: 15

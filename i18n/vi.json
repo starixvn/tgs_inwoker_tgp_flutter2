@@ -52,11 +52,12 @@
   "enter_amount_hint": "Vui lòng nhập 100-450.000 nhân dân tệ",
   "pay_password": "Mật khẩu rút tiền",
   "enter_pay_password": "Vui lòng nhập mật khẩu rút tiền",
-  "withdrawal_warning": "Tên mở tài khoản của thẻ ngân hàng này phải trùng với tên thật trong số tài khoản của bạn, nếu không việc rút tiền có thể không thành công",
+  "withdrawal_warning": "Tên mở tài khoản của tTên tài khoản của thẻ ngân hàng này phải phù hợp với tên thật trong tài khoản của bạn, nếu không việc rút tiền có thể không thành công",
   "next": "Tiếp theo",
   "slide_to_delete_card": "Trượt để xóa thẻ ngân hàng",
   "add_card": "Thêm thẻ ngân hàng",
   "max_card_hint": "Sau khi thêm thẻ ngân hàng, bạn có thể chuyển tiền và rút tiền",
+  "max_card_hint2": "Sau khi thêm thẻ ngân hàng, nó có thể sử dụng để rút tiền, tối đa 3 thẻ.",
   "bank": "Ngân hàng",
   "select_bank": "Vui lòng chọn một ngân hàng",
   "bank_branch": "Chi nhánh",
@@ -209,7 +210,7 @@
   "edit": "Chỉnh sửa",
   "phone_format_error_msg": "Số điện thoại di động được đặt thành 8 đến 10 chữ số",
   "email_format_error_msg": "Định dạng địa chỉ email không chính xác",
-  "bank_type": "Loại tài khoản ngân hàng",
+  "bank_type": "kiểu",
   "bank_acc_name": "Tên tài khoản ngân hàng",
   "bank_name": "Tên ngân hàng",
   "promotion_condition": "Điều kiện khuyến mãi",
@@ -221,6 +222,7 @@
   "select_bank_type": "Vui lòng chọn loại tài khoản ngân hàng",
   "select_bank_name": "Vui lòng chọn tên tài khoản ngân hàng",
   "add_card_hint": "Xử lý mã hóa thông tin, chỉ sử dụng xác minh ngân hàng",
+  "add_card_hint2": "Thông tin được mã hóa",
   "crypto_address": "số thẻ ngân hàng /địa chỉ tiền điện tử",
   "enter_crypto_address": "Vui lòng nhập số thẻ ngân hàng / địa chỉ tiền điện tử",
   "delete": "Xóa",
@@ -556,5 +558,7 @@
   "member_center": "Trung tâm thành viên",
 
   "transfer_all_title": "Chuyển từ tất cả ví phụ sang ví chính",
-  "transfer_all": "Chuyển tất cả"
+  "transfer_all": "Chuyển tất cả",
+
+  "manage_bank": "Quản lý ngân hàng"
 }
