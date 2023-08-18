@@ -593,6 +593,8 @@
   "memo_subject": "Subjek",
   "memo_action": "Aksi",
   "memo_reply": "Balas",
+  "memo_reply_confirm": "Mengesah",
+  "memo_reply_success": "Menghantar Kejayaan",
   "enter_memo_subject": "Masukkan subjek",
   "enter_memo": "Silakan masukkan pesan stasiun"
 }

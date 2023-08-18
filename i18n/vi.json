@@ -552,6 +552,8 @@
   "memo_subject": "Chủ đề",
   "memo_action": "Hành động",
   "memo_reply": "Trả lời",
+  "memo_reply_confirm": "Xác nhận",
+  "memo_reply_success": "Gửi thành công",
   "enter_memo_subject": "Vui lòng nhập chủ đề",
   "enter_memo": "Vui lòng nhập tin nhắn trạm"
 }

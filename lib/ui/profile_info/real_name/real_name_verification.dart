@@ -234,7 +234,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
               style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
               children: [
                 TextSpan(
-                  text: /*!(_vm.config?.changesNotAllowed ?? false) || */ _identityStatus == 0 ? getTranslatedText("here") : getTranslatedText("online_cs"),
+                  text: !(_vm.config?.changesNotAllowed ?? false) ||  _identityStatus == 0 ? getTranslatedText("here") : getTranslatedText("online_cs"),
                   style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
                 ),
               ],
@@ -353,7 +353,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.idVerify(
+      _vm.getIdVerifyWithImage(
         _realNameController.text,
         _icNumberController.text,
         imageFile: uploadImage,
@@ -361,7 +361,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
     }
   }
 
-  _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? false);
+  _isShowIcVerificationUpload() => (_vm.config?.icVerificationUpload ?? true);
 
   Future<void> chooseImage() async {
     /*File choosedImage = await ImagePicker.pickImage(source: ImageSource.gallery);

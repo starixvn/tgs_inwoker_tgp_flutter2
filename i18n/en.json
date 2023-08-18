@@ -553,6 +553,8 @@
   "memo_subject": "Subject",
   "memo_action": "Action",
   "memo_reply": "Reply",
+  "memo_reply_confirm": "Confirm",
+  "memo_reply_success": "Send Success",
   "enter_memo_subject": "Please enter subject",
   "enter_memo": "Please enter memo"
 }
