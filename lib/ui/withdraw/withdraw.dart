@@ -227,7 +227,7 @@ class _WithdrawState extends BaseState<Withdraw> {
                     ),
             ),
             Text(
-              getTranslatedText("manage_card"),
+              getTranslatedText("manage_bank"),
               style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: 12.auto),
             )
           ]),
