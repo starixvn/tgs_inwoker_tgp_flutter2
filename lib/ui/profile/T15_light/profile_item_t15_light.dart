@@ -65,7 +65,7 @@ class _ProfileItemT15LightState extends BaseState<ProfileItemT15Light> {
     );
   }
 
-  _buildImageIcon() => widget.imagePath == "ic_lang"
+  _buildImageIcon() => widget.imagePath == "_ic_lang"
       ? Image.asset(
           "images/login/ic_language.png",
           height: 20.auto,

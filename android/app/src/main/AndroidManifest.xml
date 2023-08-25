@@ -10,7 +10,7 @@
         </intent>
     </queries>
     <application
-        android:label="SKY8"
+        android:label="PG"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity android:name="com.livechatinc.inappchat.ChatWindowActivity" android:configChanges="orientation|screenSize" />
