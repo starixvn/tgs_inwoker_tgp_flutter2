@@ -30,7 +30,7 @@ packages:
     description:
       path: "."
       ref: develop
-      resolved-ref: fefcb48385279983180cdef569a150b7d5372010
+      resolved-ref: "61e25930e71f07e6dd6d9cb2b2bc9dc3706c4c89"
       url: "https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git"
     source: git
     version: "0.0.0"
@@ -654,6 +654,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  livechatt:
+    dependency: "direct main"
+    description:
+      name: livechatt
+      sha256: ea88e3dc5fbe8a69f0287c735f55f1097125a4f282c7ec9b03d9b9c1716a7260
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   logging:
     dependency: transitive
     description:

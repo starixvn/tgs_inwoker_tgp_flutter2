@@ -21,6 +21,10 @@ PODS:
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
+  - LiveChat (2.0.24)
+  - livechatt (1.1.0):
+    - Flutter
+    - LiveChat (~> 2.0.24)
   - OrderedSet (5.0.0)
   - package_info (0.0.1):
     - Flutter
@@ -49,6 +53,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - livechatt (from `.symlinks/plugins/livechatt/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -60,6 +65,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - LiveChat
     - OrderedSet
     - Toast
 
@@ -78,6 +84,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  livechatt:
+    :path: ".symlinks/plugins/livechatt/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider_foundation:
@@ -102,6 +110,8 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  LiveChat: 63028afb59c57ae6771d59838b1097def6e560ed
+  livechatt: 1069cacc03bb67f5a230fbb11edcebe006f23ac7
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8

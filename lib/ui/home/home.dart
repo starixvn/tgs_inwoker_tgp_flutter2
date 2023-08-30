@@ -99,7 +99,7 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   @override
   void initState() {
     _initData();
-    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15&& EnvironmentConfig.dark_mode) {
+    if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause && EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode) {
       // if (widget.onResumeBgMusic != null) widget.onResumeBgMusic!();
       GlobalValueUtil.playsong();
     }
@@ -655,20 +655,20 @@ class _HomeState extends BaseState<Home> implements RouteAware {
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if ((_vm.config?.forcedVerification ?? false) && _vm.userProfile?.registerCompleted == false && (_vm.config?.initPhoneWithoutVerify ?? false)) {
-        Navigator.pushNamed(context, "/phone_verification");
-      }
-
-      if (_vm.config?.idrRegisterCustomFlow ?? false) {
-        if (_vm.userProfile?.phone == "") {
-          //navigate to add phone
+      if ((_vm.config?.forcedVerification ?? false) && (_vm.userProfile?.registerCompleted ?? false) == false && (_vm.config?.registerShowPhone ?? false)) {
+        if ((_vm.config.idrRegisterCustomFlow ?? false) && (_vm.config.navigateToAddCard ?? false)) {
+          if (_vm.userProfile?.phone == "") {
+            //navigate to add phone
+            Navigator.pushNamed(context, "/phone_verification");
+          } else if (_vm.userProfile?.email == "") {
+            //navigate to add email
+            Navigator.pushNamed(context, "/email_verification");
+          } else if (_vm.userProfile?.registerCompleted == true) {
+            //navigate to add card
+            Navigator.pushNamed(context, "/add_card");
+          }
+        } else {
           Navigator.pushNamed(context, "/phone_verification");
-        } else if (_vm.userProfile?.email == "") {
-          //navigate to add email
-          Navigator.pushNamed(context, "/email_verification");
-        } else if (_vm.userProfile?.registerCompleted == true) {
-          //navigate to add card
-          Navigator.pushNamed(context, "/add_card");
         }
       }
 
@@ -679,7 +679,10 @@ class _HomeState extends BaseState<Home> implements RouteAware {
         _displayPhoneVerificationDialog();
       } else if ((_vm.config?.registerShowPhone ?? false) && !(_vm.userProfile?.registerCompleted ?? true) && (_vm.config?.forcedVerification ?? false)) {
         _navigateToPhoneVerification();
-      } else if (!(_vm.userProfile?.registerCompleted ?? true) && (_vm.bankCardList == null || _vm.bankCardList.length == 0)) {
+      } else if ((_vm.config.navigateToAddCard ?? false) &&
+          !(_vm.userProfile?.registerCompleted ?? true) &&
+          (_vm.bankCardList == null || _vm.bankCardList.length == 0)) {
+        //check whether need to navigate to add card
         _navigateToAddCard();
       } else if (_vm.config?.homePagePromoRoulette ?? false)
         _displayRouletteDialog();

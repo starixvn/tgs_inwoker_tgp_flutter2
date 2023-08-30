@@ -1,9 +1,11 @@
 import 'package:api/NotificationServices/NotificationServiceName.dart';
 import 'package:api/NotificationServices/notification_center.dart';
+import 'package:api/entity/live_chat_vendor.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:livechatt/livechatt.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -115,91 +117,97 @@ class _CustomerServiceT15LightState extends BaseState<CustomerServiceT15Light> {
     );
   }
 
-  buildLiveChatRow() => Visibility(
-        visible: widget.vm.liveChatUrl == null ? false : true,
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CustomerServiceWebView(
-                          //to remove whitespace in url
-                          url: widget.vm.liveChatUrl!.replaceAll(" ", ""),
-                          brandLogoUrl: widget.vm.brandLogoUrl,
-                        )));
-          },
-          child: Container(
-            padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
-            margin: EdgeInsets.only(top: 15.auto),
-            height: 50.auto,
-            decoration: _getBoxDecoration(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 0,
-                  child: SvgPicture.asset(
-                    "images/support/support-call.svg",
-                    matchTextDirection: true,
-                    height: 30.auto,
-                    color: Colors.white,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
-                    child: SizedBox.expand(
-                      // to fix not showing full text in thai language
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(top: 16),
-                        child: AutoSizeText(
-                          getTranslatedText("online_cs"),
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          maxLines: 1,
-                          minFontSize: 13,
-                          stepGranularity: 1,
-                          maxFontSize: 15,
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 0,
-                  child: Container(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10.auto)),
-                        color: Color(0xffceb296),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      margin: EdgeInsets.symmetric(vertical: 10.auto),
-                      alignment: Alignment.centerRight,
-                      child: AutoSizeText(
-                        getTranslatedText("contact"),
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.end,
-                        maxFontSize: 15,
-                        minFontSize: 5,
-                        maxLines: 1,
-                        stepGranularity: 1,
-                      ),
-                    ),
-                  ),
-                )
-              ],
+  //live chat is temporary hard code in 28win
+  buildLiveChatRow() {
+    LiveChatVendor? livechat = widget.vm.config.liveChatVendor;
+    return InkWell(
+      onTap: () {
+        if (livechat != null) {
+          Livechat.beginChat(
+              livechat.license ?? "license", "groupID", widget.vm.userProfile?.username ?? "Visitor", widget.vm.userProfile?.email ?? "email", {"": ""});
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CustomerServiceWebView(
+                        //to remove whitespace in url
+                        url: widget.vm.liveChatUrl!.replaceAll(" ", ""),
+                        brandLogoUrl: widget.vm.brandLogoUrl,
+                      )));
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
+        margin: EdgeInsets.only(top: 15.auto),
+        height: 50.auto,
+        decoration: _getBoxDecoration(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 0,
+              child: SvgPicture.asset(
+                "images/support/support-call.svg",
+                matchTextDirection: true,
+                height: 30.auto,
+                color: Colors.white,
+              ),
             ),
-          ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
+                child: SizedBox.expand(
+                  // to fix not showing full text in thai language
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(top: 16),
+                    child: AutoSizeText(
+                      getTranslatedText("online_cs"),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                      minFontSize: 13,
+                      stepGranularity: 1,
+                      maxFontSize: 15,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 0,
+              child: Container(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10.auto)),
+                    color: Color(0xffceb296),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  margin: EdgeInsets.symmetric(vertical: 10.auto),
+                  alignment: Alignment.centerRight,
+                  child: AutoSizeText(
+                    getTranslatedText("contact"),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.end,
+                    maxFontSize: 15,
+                    minFontSize: 5,
+                    maxLines: 1,
+                    stepGranularity: 1,
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => Container(
         padding: EdgeInsets.only(left: 15.auto, right: 20.auto),
