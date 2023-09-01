@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:api/NotificationServices/NotificationServiceName.dart';
+import 'package:api/NotificationServices/notification_center.dart';
 import 'package:api/entity/campaign_details.dart';
+import 'package:api/entity/dedicated_home_banner.dart';
 import 'package:api/entity/promotion.dart';
 import 'package:api/entity/promotion_roulette.dart';
 import 'package:api/entity/response/ws_response.dart';
@@ -600,9 +603,41 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   }
 
   _displayDialog() {
+    // if (isShowDedicatedHomeBanner()) {
+      showDedicatedHomeBanner();
+    // }
     if (isShowAnnouncement()) {
       _displayMarqueeDialog();
     } else if (isShowPromotion()) _displayPromotionDialog();
+  }
+
+  void showDedicatedHomeBanner() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        print( _vm.config?.dedicatedHomeBanner.wap ?? "");
+        return /*Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 5,
+          backgroundColor: Colors.transparent,
+          child:*/Center(
+            child: GestureDetector(
+              onTap: () {
+                NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 1);
+                Navigator.of(context).pop();
+              },
+              child: Image.network(
+                _vm.config?.dedicatedHomeBanner.wap ?? "",
+                height: context.screenHeight * 0.6,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        // );
+      },
+    );
   }
 
   _displayPhoneVerificationDialog() {
@@ -709,6 +744,8 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   isShowAnnouncement() => (_vm.config?.popupAnnouncement ?? false) && _vm.marqueeDialog != null;
 
   isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
+
+  // isShowDedicatedHomeBanner() => (_vm.config?.dedicatedHomeBanner ?? "") && (_vm.config?.dedicatedHomeBanner ?? null);
 
   var randomGeneratedPlayerCount;
 
