@@ -98,19 +98,22 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
                   children: [
                     _categoryButtonView(),
                     Expanded(
-                      child: ListView(
-                        children: [
-                          _titleView(getTranslatedText("register").toString()),
-                          _buildUsernameTextFormField(),
-                          _buildPasswordTextFormField(),
-                          _buildConfirmPasswordTextFormField(),
-                          //_buildPayPasswordTextFormField(),
-                          if (_registerShowPhone()) _buildPhoneTextFormField(),
-                          if (_registerShowEmail()) _buildEmailTextFormField(),
-                          _buildPromotionCodeTextFormField(),
-                          _buildRegisterTermsText(),
-                          _buildRegisterButton()
-                        ],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.auto),
+                        child: ListView(
+                          children: [
+                            _titleView(getTranslatedText("register").toString()),
+                            _buildUsernameTextFormField(),
+                            _buildPasswordTextFormField(),
+                            _buildConfirmPasswordTextFormField(),
+                            //_buildPayPasswordTextFormField(),
+                            if (_registerShowPhone()) _buildPhoneTextFormField(),
+                            if (_registerShowEmail()) _buildEmailTextFormField(),
+                            _buildPromotionCodeTextFormField(),
+                            _buildRegisterTermsText(),
+                            _buildRegisterButton()
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -163,7 +166,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
   }
 
   _buildUsernameTextFormField() => Container(
-      margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 8.auto, top: 10.auto),
+      margin: EdgeInsets.only(bottom: 8.auto, top: 10.auto),
       child: LoginTextFormField(
         icon: Image.asset(
           "images/login/Sky8/icon-user.png",
@@ -180,7 +183,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
       ));
 
   _buildPasswordTextFormField() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(bottom: 10.auto),
         child: LoginPasswordTextFormField(
           icon: Image.asset(
             "images/login/Sky8/icon-unlock.png",
@@ -202,7 +205,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
       );
 
   _buildConfirmPasswordTextFormField() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(bottom: 10.auto),
         child: LoginPasswordTextFormField(
           icon: Image.asset(
             "images/login/Sky8/icon-unlock2.png",
@@ -241,7 +244,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
       );
 
   _buildPhoneTextFormField() => Container(
-        margin: EdgeInsets.only(top: 10.auto),
+        margin: EdgeInsets.only(bottom: 10.auto),
         child: LoginPhoneTextFormField(
           onChanged: (value) {},
           onFieldSubmitted: (value) {},
@@ -282,7 +285,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
   _buildPromotionCodeTextFormField() => Visibility(
         visible: !(_vm.brandLogo?.hasInvitationCode ?? false),
         child: Container(
-          margin: EdgeInsets.only(left: 10.auto, right: 10.auto, bottom: 10.auto),
+          margin: EdgeInsets.only(bottom: 10.auto),
           child: LoginTextFormField(
               //icon: Container(),
               // EnvironmentConfig.template_version == 11
@@ -341,7 +344,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
       );
 
   _buildRegisterButton() => Container(
-        margin: EdgeInsets.only(left: 25.auto, right: 25.auto, bottom: 10.auto, top: 10.auto),
+        margin: EdgeInsets.only(left: 15.auto, right: 15.auto, bottom: 10.auto, top: 10.auto),
         child: ColorButton(
           title: getTranslatedText(_customFlowForIDR() ? "next" : "register"),
           height: 37.5.auto,
@@ -354,7 +357,7 @@ class _RegisterContentViewState extends BaseState<RegisterContentView> with Auto
       );
 
   _buildRegisterTermsText() => Container(
-        margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 5.auto, bottom: 10.auto),
+        margin: EdgeInsets.only(top: 5.auto, bottom: 10.auto),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
