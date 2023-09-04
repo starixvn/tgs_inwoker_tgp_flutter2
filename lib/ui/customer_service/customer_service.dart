@@ -1,9 +1,11 @@
 import 'package:api/NotificationServices/NotificationServiceName.dart';
 import 'package:api/NotificationServices/notification_center.dart';
+import 'package:api/entity/live_chat_vendor.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:livechatt/livechatt.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tgp_flutter2/custom/custom_app_bar.dart';
 import 'package:tgp_flutter2/custom/custom_progress_dialog.dart';
@@ -80,7 +82,7 @@ class _CustomerServiceState extends BaseState<CustomerService> {
         }),
       );
     else if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)
-      return  CustomerServiceT15Light(
+      return CustomerServiceT15Light(
         vm: _vm,
       );
     else
@@ -182,10 +184,15 @@ class _CustomerServiceState extends BaseState<CustomerService> {
     // }
   }
 
-  buildLiveChatRow() => Visibility(
-        visible: _vm.liveChatUrl == null ? false : true,
-        child: InkWell(
-          onTap: () {
+  buildLiveChatRow() {
+    LiveChatVendor? livechat = _vm.config.liveChatVendor;
+    return Visibility(
+      visible: (_vm.liveChatUrl == null || livechat == null) ? false : true,
+      child: InkWell(
+        onTap: () {
+          if (livechat != null) {
+            Livechat.beginChat(livechat.license ?? " ", " ", _vm.userProfile?.username ?? "Visitor", _vm.userProfile?.email ?? "email",{"": ""});
+          } else {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -194,83 +201,85 @@ class _CustomerServiceState extends BaseState<CustomerService> {
                           url: _vm.liveChatUrl!.replaceAll(" ", ""),
                           brandLogoUrl: _vm.brandLogoUrl,
                         )));
-          },
-          child: Container(
-            padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
-            margin: EdgeInsets.only(top: 15.auto),
-            height: EnvironmentConfig.template_version == 14 ? 50.auto : 40.auto,
-            decoration: BoxDecoration(
-              color: _getItemBgColor(),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 0,
-                  child: SvgPicture.asset(
-                    "images/support/support-call.svg",
-                    matchTextDirection: true,
-                    height: 20.auto,
-                    color: EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_button_color,
-                  ),
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.only(left: 15.auto, right: 20.auto, top: 0, bottom: 0),
+          margin: EdgeInsets.only(top: 15.auto),
+          height: EnvironmentConfig.template_version == 14 ? 50.auto : 40.auto,
+          decoration: BoxDecoration(
+            color: _getItemBgColor(),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 0,
+                child: SvgPicture.asset(
+                  "images/support/support-call.svg",
+                  matchTextDirection: true,
+                  height: 20.auto,
+                  color: EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_button_color,
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
-                    child: SizedBox.expand(
-                      // to fix not showing full text in thai language
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(top: 16),
-                        child: AutoSizeText(
-                          getTranslatedText("online_cs"),
-                          style: TextStyle(
-                              color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
-                                  ? CustomColor.theme_text_black_white_color
-                                  : CustomColor.theme_text_black_color),
-                          maxLines: 1,
-                          minFontSize: 13,
-                          stepGranularity: 1,
-                          maxFontSize: 15,
-                          textAlign: TextAlign.left,
-                        ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(left: 10.auto, top: 0, bottom: 0),
+                  child: SizedBox.expand(
+                    // to fix not showing full text in thai language
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      //padding: EdgeInsets.only(top: 16),
+                      child: AutoSizeText(
+                        getTranslatedText("online_cs"),
+                        style: TextStyle(
+                            color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                                ? CustomColor.theme_text_black_white_color
+                                : CustomColor.theme_text_black_color),
+                        maxLines: 1,
+                        minFontSize: 13,
+                        stepGranularity: 1,
+                        maxFontSize: 15,
+                        textAlign: TextAlign.left,
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration: EnvironmentConfig.template_version == 14
-                        ? BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10.auto)),
-                            color: CustomColor.theme_button_color,
-                          )
-                        : BoxDecoration(),
-                    margin: EdgeInsets.symmetric(vertical: EnvironmentConfig.template_version == 14 ? 10.auto : 0),
-                    alignment: Alignment.centerRight,
-                    child: AutoSizeText(
-                      getTranslatedText("contact"),
-                      style: TextStyle(
-                          color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
-                              ? Colors.white
-                              : CustomColor.theme_button_color),
-                      textAlign: TextAlign.end,
-                      maxFontSize: 15,
-                      minFontSize: 5,
-                      maxLines: 1,
-                      stepGranularity: 1,
-                    ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: EnvironmentConfig.template_version == 14
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10.auto)),
+                          color: CustomColor.theme_button_color,
+                        )
+                      : BoxDecoration(),
+                  margin: EdgeInsets.symmetric(vertical: EnvironmentConfig.template_version == 14 ? 10.auto : 0),
+                  alignment: Alignment.centerRight,
+                  child: AutoSizeText(
+                    getTranslatedText("contact"),
+                    style: TextStyle(
+                        color: ((EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode) || EnvironmentConfig.template_version == 14)
+                            ? Colors.white
+                            : CustomColor.theme_button_color),
+                    textAlign: TextAlign.end,
+                    maxFontSize: 15,
+                    minFontSize: 5,
+                    maxLines: 1,
+                    stepGranularity: 1,
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
-      );
+      ),
+    );
+  }
 
   _buildCSRow(String? title, String text, String routePath, String? imagePath, {BrandCommunication? qrCode}) => Container(
         padding: EdgeInsets.only(left: 15.auto, right: 20.auto),

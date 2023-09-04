@@ -41,7 +41,7 @@ class CustomerServiceViewModel extends BaseViewModel {
     if (getLiveChatUrlApiState.isSuccess) {
       List<String> pattern = ["{name}", "{email}", "{lang}"]; //ABV list
       List<String> replace = [userProfile?.username ?? "", userProfile?.email ?? "", languageCode]; //corresponding list
-      Map<String, String> map = Map.fromIterables(pattern, replace);
+      Map<String, String> map = Map.fromIterables(  pattern, replace);
       liveChatUrl = getLiveChatUrlApiState.result?.setting?.url;
       //  map.entries.fold(getLiveChatUrlApiState.result.setting.url, (prev, e) => prev!.replaceAll(e.key, e.value));
     }
