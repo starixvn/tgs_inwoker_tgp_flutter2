@@ -603,26 +603,18 @@ class _HomeState extends BaseState<Home> implements RouteAware {
   }
 
   _displayDialog() {
-    // if (isShowDedicatedHomeBanner()) {
+    if (isShowDedicatedHomeBanner()) {
       showDedicatedHomeBanner();
-    // }
-    if (isShowAnnouncement()) {
+    } else if (isShowAnnouncement()) {
       _displayMarqueeDialog();
     } else if (isShowPromotion()) _displayPromotionDialog();
   }
 
   void showDedicatedHomeBanner() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        print( _vm.config?.dedicatedHomeBanner.wap ?? "");
-        return /*Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          elevation: 5,
-          backgroundColor: Colors.transparent,
-          child:*/Center(
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
             child: GestureDetector(
               onTap: () {
                 NotificationCenter().notify(NotificationServiceName().bottomNavigationIndex, data: 1);
@@ -635,10 +627,10 @@ class _HomeState extends BaseState<Home> implements RouteAware {
               ),
             ),
           );
-        // );
-      },
-    );
+        },
+      );
   }
+
 
   _displayPhoneVerificationDialog() {
     showDialog(
@@ -745,7 +737,14 @@ class _HomeState extends BaseState<Home> implements RouteAware {
 
   isShowPromotion() => (_vm.config?.popupPromotion ?? false) && (_vm.promotionList?.isNotEmpty ?? false);
 
-  // isShowDedicatedHomeBanner() => (_vm.config?.dedicatedHomeBanner ?? "") && (_vm.config?.dedicatedHomeBanner ?? null);
+  isShowDedicatedHomeBanner() {
+    if (_vm.config?.dedicatedHomeBanner?.wap?.isNotEmpty == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
   var randomGeneratedPlayerCount;
 
