@@ -87,7 +87,7 @@ class _WithdrawState extends BaseState<Withdraw> {
       );
 
   _buildWithdrawWidget() => Container(
-        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : Colors.white,
+        color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_bar_gradient_2 : CustomColor.theme_bg_color,
         child: _vm.bankCardList == null
             ? buildProgressDialog(_vm.brandLogoUrl)
             : Container(
@@ -228,7 +228,7 @@ class _WithdrawState extends BaseState<Withdraw> {
             ),
             Text(
               getTranslatedText("manage_bank"),
-              style: TextStyle(color: CustomColor.theme_text_grey_white_color, fontSize: 12.auto),
+              style: TextStyle(color: EnvironmentConfig.template_version == 14 ? Colors.white : CustomColor.theme_text_black_white_color, fontSize: 12.auto),
             )
           ]),
         ),
@@ -378,7 +378,7 @@ class _WithdrawState extends BaseState<Withdraw> {
         margin: EdgeInsets.only(left: 15.auto, bottom: 15.auto),
         child: Text(
           getTranslatedText("withdrawal_warning"),
-          style: TextStyle(color: EnvironmentConfig.template_version == 14 ? Colors.white : Colors.red, fontSize: 11.auto),
+          style: TextStyle(color: EnvironmentConfig.template_version == 14 || EnvironmentConfig.template_version == 1 ? Colors.red : Colors.white, fontSize: 11.auto),
         ),
       );
 
