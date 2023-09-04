@@ -39,7 +39,11 @@ class _PromotionItemState extends BaseState<PromotionItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 11.auto, right: 11.auto, top: 10.auto),
-      child: EnvironmentConfig.template_version == 10 || EnvironmentConfig.brandName == "SKY8" ? _buildPromotionT10() : _buildPromotion(),
+      child: EnvironmentConfig.template_version == 10 ||
+              EnvironmentConfig.brandName == "SKY8" ||
+              (EnvironmentConfig.template_version == 15 && EnvironmentConfig.light_mode)
+          ? _buildPromotionT10()
+          : _buildPromotion(),
     );
   }
 
@@ -53,7 +57,6 @@ class _PromotionItemState extends BaseState<PromotionItem> {
           ),
         ),
       );
-
 
   _buildPromotionT10() => InkWell(
         onTap: () => _navigateToDetails(),
@@ -98,37 +101,37 @@ class _PromotionItemState extends BaseState<PromotionItem> {
                           ),
                         ),
 
-  // _buildPromotionT10() => Card(
-  //       semanticContainer: true,
-  //       clipBehavior: Clip.antiAlias,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(20.0),
-  //       ),
-  //       color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
-  //       elevation: 5,
-  //       child: Column(
-  //         children: [
-  //           Container(
-  //             width: context.screenWidth,
-  //             child: _buildPromotionImage(),
-  //           ),
-  //           Container(
-  //             height: 45.auto,
-  //             padding: EdgeInsets.all(10.auto),
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Expanded(
-  //                   flex: 17,
-  //                   child: Container(
-  //                     margin: EdgeInsets.only(right: 3.auto),
-  //                     child: Text(
-  //                       widget.promotion.name ?? "",
-  //                       style: TextStyle(
-  //                           color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
-  //                               ? CustomColor.theme_text_black_white_color
-  //                               : CustomColor.theme_text_black_color),
-  //                       overflow: TextOverflow.ellipsis,
+                        // _buildPromotionT10() => Card(
+                        //       semanticContainer: true,
+                        //       clipBehavior: Clip.antiAlias,
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(20.0),
+                        //       ),
+                        //       color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode ? CustomColor.theme_bg_color : Colors.white,
+                        //       elevation: 5,
+                        //       child: Column(
+                        //         children: [
+                        //           Container(
+                        //             width: context.screenWidth,
+                        //             child: _buildPromotionImage(),
+                        //           ),
+                        //           Container(
+                        //             height: 45.auto,
+                        //             padding: EdgeInsets.all(10.auto),
+                        //             child: Row(
+                        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //               children: [
+                        //                 Expanded(
+                        //                   flex: 17,
+                        //                   child: Container(
+                        //                     margin: EdgeInsets.only(right: 3.auto),
+                        //                     child: Text(
+                        //                       widget.promotion.name ?? "",
+                        //                       style: TextStyle(
+                        //                           color: EnvironmentConfig.template_version == 10 && EnvironmentConfig.dark_mode
+                        //                               ? CustomColor.theme_text_black_white_color
+                        //                               : CustomColor.theme_text_black_color),
+                        //                       overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Expanded(
@@ -158,10 +161,7 @@ class _PromotionItemState extends BaseState<PromotionItem> {
 
   _buildDetailsButton() => Container(
         alignment: Alignment.center,
-    decoration: BoxDecoration(
-        border: Border.all(color: CustomColor.theme_button_color),
-      borderRadius: BorderRadius.all(Radius.circular(10))
-    ),
+        decoration: BoxDecoration(border: Border.all(color: CustomColor.theme_button_color), borderRadius: BorderRadius.all(Radius.circular(10))),
         /*width: width??context.screenWidth,
           height: 25.auto,*/
         child: SizedBox(
