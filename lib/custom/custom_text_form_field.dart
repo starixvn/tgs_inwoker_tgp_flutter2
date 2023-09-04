@@ -66,8 +66,8 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                         widget.title,
                         style: TextStyle(
                             // color: CustomColor.theme_text_black_white_color,
-                            color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_text_black_white_color : Colors.black,
-                            fontSize: 12.auto,
+                          color: EnvironmentConfig.template_version == 14 ? CustomColor.theme_text_black_color : CustomColor.theme_text_black_white_color,
+                          fontSize: 12.auto,
                           fontWeight: widget.titleFontWeight ?? FontWeight.normal,
                         ),
                         textAlign: TextAlign.start,
