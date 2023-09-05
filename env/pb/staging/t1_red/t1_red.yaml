@@ -1,7 +1,7 @@
 flutter_icons:
   android: true
   ios: true
-  image_path: "images/app_logo/PB_logo.png"
+  image_path: "images/app_logo/Solaire_logo.png"
 
 environment_config:
   fields:
