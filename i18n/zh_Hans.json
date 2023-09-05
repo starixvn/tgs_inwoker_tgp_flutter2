@@ -569,5 +569,8 @@
   "transfer_all_title": "从所有子钱包转账到主钱包",
   "transfer_all": "一键传输",
 
-  "manage_bank": "管理银行卡"
+  "manage_bank": "管理银行卡",
+
+  "network_desc": "网络异常，请检查网络设置并重启应用。",
+  "network_restart": "重新启动"
 }

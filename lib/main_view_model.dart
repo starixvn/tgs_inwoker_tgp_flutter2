@@ -87,6 +87,7 @@ class MainViewModel extends BaseViewModel {
       GlobalValueUtil.featuresConfig = state.result;
     }
     setLoading(false);
+    return state;
   }
 
   getAuthToken() async {

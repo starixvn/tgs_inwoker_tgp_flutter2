@@ -611,5 +611,7 @@
   "transfer_all_title": "Transfer dari semua sub dompet ke dompet utama",
   "transfer_all": "Transfer Semua",
 
-  "manage_bank": "Kelola Bank"
+  "manage_bank": "Kelola Bank",
+  "network_desc": "Jaringan tidak normal, silakan periksa pengaturan jaringan Anda dan mulai ulang aplikasi.",
+  "network_restart": "Mulai ulang"
 }

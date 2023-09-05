@@ -570,5 +570,7 @@
   "transfer_all_title": "Chuyển từ tất cả ví phụ sang ví chính",
   "transfer_all": "Chuyển tất cả",
 
-  "manage_bank": "Quản lý ngân hàng"
+  "manage_bank": "Quản lý ngân hàng",
+  "network_desc": "Mạng không bình thường, vui lòng kiểm tra cài đặt mạng của bạn và khởi động lại ứng dụng.",
+  "network_restart": "Khởi động lại"
 }

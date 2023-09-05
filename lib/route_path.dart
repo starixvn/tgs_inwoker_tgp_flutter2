@@ -67,4 +67,5 @@ class RoutePath {
   static final memo = '/memo';
   static final announcement = '/announcement';
   static final favourite = '/favourite';
+  static final splash = '/splash';
 }

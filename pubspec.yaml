@@ -86,7 +86,8 @@ dependencies:
   flutter_layout_grid: ^2.0.4
   linked_scroll_controller: ^0.2.0
   livechatt: ^1.4.0
-
+  mixpanel_flutter: ^2.1.1
+  connectivity_plus: ^3.0.0
   #easy_gradient_text: ^1.0.0
 
 dev_dependencies:

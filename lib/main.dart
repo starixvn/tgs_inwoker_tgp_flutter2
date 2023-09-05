@@ -1,40 +1,31 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:api/entity/response/ws_response.dart';
 import 'package:api/network/event_result.dart';
-import 'package:api/websocket/web_socket_deposit.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:iphone_has_notch/iphone_has_notch.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/MyRouteObserver.dart';
-import 'package:tgp_flutter2/custom/custom_dialog.dart';
 import 'package:tgp_flutter2/environment_config.dart';
 import 'package:tgp_flutter2/main_view_model.dart';
-import 'package:tgp_flutter2/my_behavior.dart';
 import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/base_state.dart';
-import 'package:api/extension/screen_apis.dart';
 import 'package:tgp_flutter2/ui/BaseNavigate/BottomNavigationController.dart';
 import 'package:tgp_flutter2/ui/affiliate/affiliate.dart';
 import 'package:tgp_flutter2/ui/announcement/announcement.dart';
-import 'package:tgp_flutter2/ui/announcement/announcement_item_details.dart';
 import 'package:tgp_flutter2/ui/blacklisted_user/blacklisted_user.dart';
 import 'package:tgp_flutter2/ui/card/add_card.dart';
 import 'package:tgp_flutter2/ui/card/main_card.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit.dart';
-import 'package:tgp_flutter2/ui/dialog/deposit_order_dialog.dart';
-import 'package:tgp_flutter2/ui/dialog/vip_rebate_dialog.dart';
+import 'package:tgp_flutter2/ui/dialog/network_issue_dialog.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
-import 'package:tgp_flutter2/ui/home/child_game/child_game.dart';
-import 'package:tgp_flutter2/ui/home/home.dart';
 import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
 import 'package:tgp_flutter2/ui/login/CustomSky8/LoginTemplate02.dart';
@@ -70,9 +61,6 @@ import 'package:tgp_flutter2/ui/transfer/wallet_transfer.dart';
 import 'package:tgp_flutter2/ui/vip/vip.dart';
 import 'package:tgp_flutter2/ui/withdraw/withdraw.dart';
 import 'package:tgp_flutter2/ui/favourite/favourite.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'custom/custom_toast.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +89,12 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   var _vm = MainViewModel();
   var firstInit = true;
 
+  var trackAutomaticEvents = true;
+  Mixpanel? mixpanel;
+
+  late Future<EventResult<dynamic>> _future;
+  bool isOffline = false;
+
   // var _assetsAudioPlayer;
 
   setLocale(Locale locale) {
@@ -109,9 +103,9 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     });
   }
 
-  _getLocale() {
-    LanguageProvider.getSingleton().refreshLangList();
-    LanguageProvider.getSingleton().getLocale().then((locale) {
+  _getLocale() async {
+    await LanguageProvider.getSingleton().refreshLangList();
+    await LanguageProvider.getSingleton().getLocale().then((locale) {
       setState(() {
         this._locale = locale;
       });
@@ -119,21 +113,33 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   }
 
   Future<EventResult<dynamic>> initData() async {
+    _checkNetworkConnection();
+
     if (firstInit) {
       LanguageProvider.getSingleton().init(EnvironmentConfig.brandName);
 
-      if (_vm.authApiState?.isMaintenance == true) {
-        //prevent loop
-        return _vm.authApiState; //return if maintenance
-      }
+      // if (_vm.authApiState?.isMaintenance ?? false) {
+      //   //prevent loop
+      //   return _vm.authApiState; //return if maintenance
+      // }
+      // if (_vm.authApiState?.isError ?? false) {
+      //   _getLocale();
+      //   return _vm.authApiState;
+      // }
 
       await _vm.getAuthToken();
-      //_vm.authApiState.isMaintenance = true;
-      if (_vm.authApiState.isMaintenance) {
+
+      if (_vm.authApiState?.isMaintenance ?? false) {
         _getLocale(); //temp for localization for mainteance page
         await _vm.getEnvFeatures(); // call when authApiState is Maintenance
         return _vm.authApiState; //return if maintenance
       }
+
+      if (_vm.authApiState?.isError ?? false) {
+        await _getLocale();
+        return _vm.authApiState;
+      }
+
       await _vm.getEnvFeatures();
       if (_vm.config?.haveDownloadFeature ?? false) {
         await _vm.getVersion();
@@ -166,19 +172,55 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       return EventResult.loading();
   }*/
 
+  Future<void> initMixpanel() async {
+    mixpanel = await Mixpanel.init("1a61aa796c9652147bf4d602cd58de22", trackAutomaticEvents: true);
+  }
+
+  _checkNetworkConnection() {
+    // Initialize and listen to network connectivity changes.
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      setState(() {
+        // Set isOffline based on the network connectivity result
+        isOffline = result == ConnectivityResult.none;
+      });
+    });
+
+    // Check the initial connectivity state.
+    Connectivity().checkConnectivity().then((ConnectivityResult result) {
+      setState(() {
+        // Set isOffline based on the initial connectivity state
+        isOffline = result == ConnectivityResult.none;
+      });
+    });
+  }
+
   @override
   void initState() {
     // _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+
+    WidgetsBinding.instance.addObserver(this);
+
+    initMixpanel();
+
+    _future = initData();
+
     super.initState();
   }
 
   @override
   void dispose() {
     GlobalValueUtil.stopsong();
+    WidgetsBinding.instance.removeObserver(this);
+
     super.dispose();
   }
 
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+
+    super.didChangeAppLifecycleState(state);
+
     if (state == AppLifecycleState.resumed) {
       if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode) {
         if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
@@ -191,14 +233,34 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       print("stop when close");
       GlobalValueUtil.pausesong();
     }
-
-    // GlobalValueUtil.assetsAudioPlayer.onErrorDo = (handler){
-    //   GlobalValueUtil.stopsong();
-    // };
   }
 
+  // Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+  //
+  //   print(state);
+
+  // if (state == AppLifecycleState.resumed) {
+  //   if (EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode) {
+  //     if (GlobalValueUtil.playerStatus != AssetPlayerStatus.manualClickPause) {
+  //       GlobalValueUtil.playsong();
+  //     }
+  //   } else {
+  //     GlobalValueUtil.playsong();
+  //   }
+  //
+  //   if(isOffline){
+  //     setState(() {
+  //       _future = initData();
+  //     });
+  //   }
+  // } else {
+  //   print("stop when close");
+  //   GlobalValueUtil.pausesong();
+  // }
+  // }
+
   _getAssetsAudioPlayer() {
-    if (_vm.config?.backgroundMusic ?? false || (EnvironmentConfig.template_version == 15&& EnvironmentConfig.dark_mode)) {
+    if (_vm.config?.backgroundMusic ?? false || (EnvironmentConfig.template_version == 15 && EnvironmentConfig.dark_mode)) {
       // GlobalValueUtil.assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
       GlobalValueUtil.assetsAudioPlayer.open(
         Playlist(audios: [
@@ -214,17 +276,20 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    _handleApiState();
+    // _handleApiState();
     // if (GlobalValueUtil.playerStatus == AssetPlayerStatus.returnHome){
     //   _assetsAudioPlayer.play();
     // }else {
     //   _assetsAudioPlayer.pause();
     // }
     return FutureBuilder(
-        future: initData(),
+        future: _future,
         builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
+          print(snapshot.connectionState);
+          _handleApiState();
+
           if (!snapshot.hasData) {
-            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash(isOffline: isOffline));
           } else {
             return GestureDetector(
               onTap: () {
@@ -238,8 +303,16 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                 theme: ThemeData(canvasColor: EnvironmentConfig.template_version == 15 ? CustomColor.theme_bg_color : Colors.white),
                 debugShowCheckedModeBanner: false,
                 title: appTitle,
-                initialRoute: snapshot.data!.isMaintenance ? RoutePath.splashMaintenance : RoutePath.myHome,
+                initialRoute: (() {
+                  if (snapshot.data?.isMaintenance ?? false)
+                    return RoutePath.splashMaintenance;
+                  else if (snapshot.data?.isError ?? false)
+                    return RoutePath.splash;
+                  else
+                    return RoutePath.myHome;
+                }()),
                 routes: {
+                  RoutePath.splash: (context) => Splash(isOffline: isOffline),
                   RoutePath.myHome: (context) => BottomNavigationController(
                         versionUpdate: _vm.versionUpdateState,
                         isFirstRun: true,
@@ -335,7 +408,13 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   _handleApiState() {
     handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {
+      mixpanel?.track("Signed Up");
+    }, onError: (errorMsg) {
+      print("mixpanelllll tracked auth on error: $errorMsg");
+
+      mixpanel?.track("Auth on error", properties: {'errorMsg': "whhwhshshs"});
+    });
     handleApiState(_vm.autoLoginApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }

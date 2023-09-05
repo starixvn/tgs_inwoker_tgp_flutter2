@@ -571,5 +571,7 @@
   "transfer_all_title": "Ilipat mula sa lahat ng sub wallet patungo sa pangunahing wallet",
   "transfer_all": "Ilipat Lahat",
 
-  "manage_bank": "Pamahalaan ang Bangko"
+  "manage_bank": "Pamahalaan ang Bangko",
+  "network_desc": "Ang network ay abnormal, mangyaring suriin ang iyong mga setting ng network at i-restart ang application.",
+  "network_restart": "I-restart"
 }

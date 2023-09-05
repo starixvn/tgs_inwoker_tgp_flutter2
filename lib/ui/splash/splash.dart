@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -7,10 +9,13 @@ import 'package:tgp_flutter2/route_path.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 import 'package:tgp_flutter2/ui/splash/splash_view_model.dart';
 
+import '../dialog/network_issue_dialog.dart';
+
 class Splash extends StatefulWidget {
   final String? logoUrl;
+  final bool? isOffline;
 
-  Splash({this.logoUrl});
+  Splash({this.logoUrl, this.isOffline = false});
 
   @override
   _SplashState createState() => _SplashState();
@@ -21,56 +26,63 @@ class _SplashState extends BaseState<Splash> {
 
   @override
   void initState() {
-   /* WidgetsBinding.instance.addPostFrameCallback((_) {
+    /* WidgetsBinding.instance.addPostFrameCallback((_) {
       _vm.getAuthToken();
       _vm.getApiError();
       _vm.getBrandLogo();
       _vm.getLanguageOption();
     });*/
+
     super.initState();
   }
 
+  _displayNetworkDialog() async {
+    Future.delayed(Duration.zero, () {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => NetworkIssueDialog(),
+      );
+    });
+  }
+
   Widget build(BuildContext context) {
- /*   return ProviderWidget<SplashViewModel>(
-        model: _vm,
-        builder: (ctx, vm, _) {
-          _handleApiState();*/
-          return Container(
-            width: context.screenWidth,
-            height: context.screenHeight,
-            color: Colors.black,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  widget.logoUrl?.isEmpty ?? true
-                      ? Container()
-                      : CachedNetworkImage(
-                          placeholder: (context, url) => Container(),
-                          imageUrl: widget.logoUrl!,
-                          //handling error
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error) => Container(),
-                        ),
-                  Container(
-                    width: context.screenWidth / 2.5,
-                    alignment: Alignment.bottomCenter,
-                    child: Center(
-                      child: SizedBox(
-                        height:80,
-                        width: 80,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
-                        ),
-                      ),
-                    )
+    if (widget.isOffline ?? false) _displayNetworkDialog();
+    return Container(
+      width: context.screenWidth,
+      height: context.screenHeight,
+      color: Colors.black,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            widget.logoUrl?.isEmpty ?? true
+                ? Container()
+                : CachedNetworkImage(
+                    placeholder: (context, url) => Container(),
+                    imageUrl: widget.logoUrl!,
+                    //handling error
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(),
                   ),
-                ],
-              ),
-            ),
-          );
-       // });
+            Container(
+                width: context.screenWidth / 2.5,
+                alignment: Alignment.bottomCenter,
+                child: Center(
+                  child: SizedBox(
+                    height: 80,
+                    width: 80,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(CustomColor.theme_button_color),
+                    ),
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
+    // });
   }
 
   _handleApiState() {

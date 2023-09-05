@@ -571,5 +571,8 @@
   "transfer_all_title": "Transfer from all sub wallet to main wallet",
   "transfer_all": "Transfer All",
 
-  "manage_bank": "Manage Bank"
+  "manage_bank": "Manage Bank",
+
+  "network_desc": "The network is abnormal, please check your network settings and restart the application.",
+  "network_restart": "Restart"
 }

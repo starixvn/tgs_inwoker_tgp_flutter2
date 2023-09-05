@@ -1231,5 +1231,8 @@
   "transfer_all_title": "從所有子錢包轉賬到主錢包",
   "transfer_all": "一鍵傳輸",
 
-  "manage_bank": "管理銀行卡"
+  "manage_bank": "管理銀行卡",
+
+  "network_desc": "網絡異常，請檢查網絡設置並重啟應用。",
+  "network_restart": "重新啟動"
 }
