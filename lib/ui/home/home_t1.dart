@@ -159,7 +159,7 @@ class _HomeT1State extends BaseState<HomeT1> {
                 Container(
                   child: Text(
                     (widget.randomNumber ?? 26500).toString(),
-                    style: TextStyle(fontSize: 10.auto),
+                    style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_black_white_color),
                   ),
                 ),
               ],

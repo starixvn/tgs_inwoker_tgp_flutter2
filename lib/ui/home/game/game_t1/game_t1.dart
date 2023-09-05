@@ -165,8 +165,8 @@ class _GameT1State extends BaseState<GameT1> {
 
   _getGameTabColor(int tabIndex) => tabIndex != currentTabIndex
       //only PB(t1_red), selected game tab color is white, not selected game tab is button color
-      ? Colors.white
-      : CustomColor.theme_button_color;
+      ? CustomColor.theme_button_color
+      : Colors.white;
 
   _onTabClick(int tabIndex) {
     var itemHeight = gameViewItem.currentState!.itemHeight;
