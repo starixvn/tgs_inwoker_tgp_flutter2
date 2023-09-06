@@ -29,8 +29,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: develop
-      resolved-ref: "4c163fcb439ab6cbf0224f4f90c9a9b3900f66bf"
+      ref: mixpanel
+      resolved-ref: "88237825974d40f48ba24304fd896446949e6698"
       url: "https://gitlab+deploy-token-682999:oi5hk1kzzVM3z9Kzp6-2@gitlab.com/inwoker/tgs/api.git"
     source: git
     version: "0.0.0"
@@ -743,7 +743,7 @@ packages:
     source: hosted
     version: "1.0.4"
   mixpanel_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: mixpanel_flutter
       sha256: f12cd54f1e211230a58c0102e2399b445d8dd417b290ea3c3709d4e54a3ed00b

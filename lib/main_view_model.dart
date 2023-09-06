@@ -92,7 +92,6 @@ class MainViewModel extends BaseViewModel {
 
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;

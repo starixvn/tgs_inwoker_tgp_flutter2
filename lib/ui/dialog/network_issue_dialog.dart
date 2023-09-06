@@ -44,8 +44,8 @@ class _NetworkIssueDialogState extends BaseState<NetworkIssueDialog> {
               borderRadius: BorderRadius.circular(10),
             ),
             alignment: Alignment.center,
-            child: Wrap(
-              alignment: WrapAlignment.center,
+            child: ListView(
+              shrinkWrap: true,
               children: [
                 Image.asset(
                   "images/network_error.png",

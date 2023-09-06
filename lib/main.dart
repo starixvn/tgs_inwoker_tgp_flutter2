@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:api/init.dart';
 import 'package:api/network/event_result.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:tgp_flutter2/globalUtil/GlobalValueUtil.dart';
 import 'package:tgp_flutter2/MyRouteObserver.dart';
 import 'package:tgp_flutter2/environment_config.dart';
@@ -24,7 +23,6 @@ import 'package:tgp_flutter2/ui/card/main_card.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service.dart';
 import 'package:tgp_flutter2/ui/customer_service/customer_service_web_view.dart';
 import 'package:tgp_flutter2/ui/deposit/deposit.dart';
-import 'package:tgp_flutter2/ui/dialog/network_issue_dialog.dart';
 import 'package:tgp_flutter2/ui/forgot_password/forgot_password.dart';
 import 'package:tgp_flutter2/ui/language/language_view.dart';
 import 'package:tgp_flutter2/ui/login/login.dart';
@@ -90,7 +88,6 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   var firstInit = true;
 
   var trackAutomaticEvents = true;
-  Mixpanel? mixpanel;
 
   late Future<EventResult<dynamic>> _future;
   bool isOffline = false;
@@ -113,6 +110,8 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   }
 
   Future<EventResult<dynamic>> initData() async {
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
+
     _checkNetworkConnection();
 
     if (firstInit) {
@@ -172,11 +171,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       return EventResult.loading();
   }*/
 
-  Future<void> initMixpanel() async {
-    mixpanel = await Mixpanel.init("1a61aa796c9652147bf4d602cd58de22", trackAutomaticEvents: true);
-  }
-
-  _checkNetworkConnection() {
+  _checkNetworkConnection()  {
     // Initialize and listen to network connectivity changes.
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       setState(() {
@@ -199,11 +194,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     // _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
 
     WidgetsBinding.instance.addObserver(this);
-
-    initMixpanel();
-
     _future = initData();
-
     super.initState();
   }
 
@@ -285,11 +276,29 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     return FutureBuilder(
         future: _future,
         builder: (BuildContext context, AsyncSnapshot<EventResult<dynamic>> snapshot) {
-          print(snapshot.connectionState);
           _handleApiState();
-
           if (!snapshot.hasData) {
-            return MaterialApp(debugShowCheckedModeBanner: false, home: Splash(isOffline: isOffline));
+            Locale defaultLocale = LanguageProvider.getSingleton().getDefaultLocale();
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Splash(isOffline: isOffline),
+              localeListResolutionCallback: (locales, supportedLocales) {
+                for (Locale locale in supportedLocales) {
+                  if (supportedLocales.contains(locale)) {
+                    return locale;
+                  }
+                }
+                return defaultLocale;
+              },
+              supportedLocales: [defaultLocale],
+              locale: defaultLocale,
+              localizationsDelegates: [
+                MyLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+              ],
+            );
           } else {
             return GestureDetector(
               onTap: () {
@@ -408,13 +417,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
   _handleApiState() {
     handleApiState(_vm.getLanguageApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.getBrandLogoApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
-    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {
-      mixpanel?.track("Signed Up");
-    }, onError: (errorMsg) {
-      print("mixpanelllll tracked auth on error: $errorMsg");
-
-      mixpanel?.track("Auth on error", properties: {'errorMsg': "whhwhshshs"});
-    });
+    handleApiState(_vm.authApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
     handleApiState(_vm.autoLoginApiState, isAutoHideLoading: false, isSplashScreen: true, onSuccess: () {});
   }
 }
