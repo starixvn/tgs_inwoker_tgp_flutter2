@@ -242,13 +242,13 @@ class _AddCardState extends BaseState<AddCard> {
                     onClick: () {
                       _buildBottomSheet("bank_name", _vm.bankNameList);
                     })
-                : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true),
+                : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: false),
           Visibility(
             visible: !_isAddCardHideCertainField() && (_vm.config?.addCardBankBranch ?? true) && EnvironmentConfig.brandName != "PB2",
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField(
-              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: true),
+              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false),
           _buildBankTextField(
             _isAddCardDisplayGCash()
                 ? "gcash_bank_name"
@@ -266,7 +266,7 @@ class _AddCardState extends BaseState<AddCard> {
         ];
       case "EWallet":
         return [
-          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false ,isBankName: true),
+          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false),
           _buildPhoneTextField(),
         ];
       case "Crypto":
