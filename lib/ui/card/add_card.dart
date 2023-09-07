@@ -39,6 +39,7 @@ class _AddCardState extends BaseState<AddCard> {
       _bankBranchController = TextEditingController(),
       _realNameController = TextEditingController(),
       _phoneController = TextEditingController();
+
   var _vm = CardViewModel();
   var isButtonEnabled = false;
   String? bankTypePickerText, channelPickerText, bankNamePickerText;
@@ -247,7 +248,7 @@ class _AddCardState extends BaseState<AddCard> {
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField(
-              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false),
+              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: true),
           _buildBankTextField(
             _isAddCardDisplayGCash()
                 ? "gcash_bank_name"
@@ -265,7 +266,7 @@ class _AddCardState extends BaseState<AddCard> {
         ];
       case "EWallet":
         return [
-          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false, isBankName: false),
+          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false ,isBankName: true),
           _buildPhoneTextField(),
         ];
       case "Crypto":
@@ -408,6 +409,11 @@ class _AddCardState extends BaseState<AddCard> {
     setState(() {
       isCrypto = _currentBankType == "Crypto";
       bankTypePickerText = getBankDisplayName(_currentBankType);
+
+      //Switch BankType RealName Change
+      if(_currentBankType == "Bank" || _currentBankType == "EWallet"){
+        _nameController.text = _vm.userProfile.realname ?? "";
+      }
     });
   }
 
