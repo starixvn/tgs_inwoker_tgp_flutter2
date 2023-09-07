@@ -46,6 +46,7 @@ class _AddCardState extends BaseState<AddCard> {
   bool isCrypto = true;
   InputValidationProvider validate = new InputValidationProvider();
   bool isBankNameEnabledEdit = true;
+  bool? isRealNameEnabledEdit;
 
   @override
   void initState() {
@@ -248,7 +249,7 @@ class _AddCardState extends BaseState<AddCard> {
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField(
-              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false),
+              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: isRealNameEnabledEdit!),
           _buildBankTextField(
             _isAddCardDisplayGCash()
                 ? "gcash_bank_name"
@@ -413,6 +414,10 @@ class _AddCardState extends BaseState<AddCard> {
       //Switch BankType RealName Change
       if(_currentBankType == "Bank" || _currentBankType == "EWallet"){
         _nameController.text = _vm.userProfile.realname ?? "";
+        isRealNameEnabledEdit = true;
+      } else {
+        _nameController.text = "";
+        isRealNameEnabledEdit = false;
       }
     });
   }
