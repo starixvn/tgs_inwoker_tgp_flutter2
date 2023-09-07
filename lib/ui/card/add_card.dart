@@ -242,7 +242,7 @@ class _AddCardState extends BaseState<AddCard> {
                     onClick: () {
                       _buildBottomSheet("bank_name", _vm.bankNameList);
                     })
-                : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: false),
+                : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true),
           Visibility(
             visible: !_isAddCardHideCertainField() && (_vm.config?.addCardBankBranch ?? true) && EnvironmentConfig.brandName != "PB2",
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
