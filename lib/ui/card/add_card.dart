@@ -46,7 +46,7 @@ class _AddCardState extends BaseState<AddCard> {
   bool isCrypto = true;
   InputValidationProvider validate = new InputValidationProvider();
   bool isBankNameEnabledEdit = true;
-  bool? isRealNameEnabledEdit;
+  bool isRealNameEnabledEdit = true;
 
   @override
   void initState() {
@@ -249,7 +249,7 @@ class _AddCardState extends BaseState<AddCard> {
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField(
-              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: isRealNameEnabledEdit!),
+              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: EnvironmentConfig.brandName == "IDR1" ? isRealNameEnabledEdit : true /* If other template need edit set false*/),
           _buildBankTextField(
             _isAddCardDisplayGCash()
                 ? "gcash_bank_name"
@@ -267,7 +267,7 @@ class _AddCardState extends BaseState<AddCard> {
         ];
       case "EWallet":
         return [
-          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false),
+          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false, isBankName: EnvironmentConfig.brandName == "IDR1" ? isRealNameEnabledEdit : false),
           _buildPhoneTextField(),
         ];
       case "Crypto":
