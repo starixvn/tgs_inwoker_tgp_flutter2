@@ -225,6 +225,8 @@
   "add_card_hint2": "資訊加密處理",
   "crypto_address": "銀行卡號碼/加密貨幣地址",
   "enter_crypto_address": "請輸入銀行卡號碼/加密貨幣地址",
+  "ifsc_code": "IFSC 代碼",
+  "enter_ifsc_code": "請輸入 IFSC 代碼",
   "delete": "刪除",
   "enter_bank_name": "請輸入銀行名稱",
   "enter": "請輸入",

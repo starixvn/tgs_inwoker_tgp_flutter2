@@ -38,7 +38,8 @@ class _AddCardState extends BaseState<AddCard> {
       _nameController = TextEditingController(),
       _bankBranchController = TextEditingController(),
       _realNameController = TextEditingController(),
-      _phoneController = TextEditingController();
+      _phoneController = TextEditingController(),
+      _ifscCodeController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
   String? bankTypePickerText, channelPickerText, bankNamePickerText;
@@ -83,7 +84,8 @@ class _AddCardState extends BaseState<AddCard> {
                             left: 10.auto,
                             right: 10.auto,
                             top: 5.auto,
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                            // bottom: MediaQuery.of(context).viewInsets.bottom,
+                            bottom: 10.auto,
                           ),
                           children: [
                             _buildAddCardTitle(),
@@ -174,6 +176,19 @@ class _AddCardState extends BaseState<AddCard> {
         textInputAction: TextInputAction.next,
       );
 
+  _buildIFSCCodeTextField() => CustomTextFormField(
+    title: getTranslatedText('ifsc_code'),
+    hintText: getTranslatedText('enter_ifsc_code'),
+    onChanged: (value) => _onTextChange(value),
+    onFieldSubmitted: (value) => _onTextChange(value),
+    controller: _ifscCodeController,
+    focusNode: null,
+    width: context.screenWidth - 70.auto,
+    textInputType: TextInputType.text,
+    textInputAction: TextInputAction.next,
+    textMaxLength: 11,
+  );
+
   _buildRealNameTextField() => CustomTextFormField(
         title: ((() {
           if (_vm.config?.addCardDisplayFPS ?? false)
@@ -262,6 +277,7 @@ class _AddCardState extends BaseState<AddCard> {
             _bankNumController,
             true,
           ),
+          _buildIFSCCodeTextField()
         ];
       case "EWallet":
         return [

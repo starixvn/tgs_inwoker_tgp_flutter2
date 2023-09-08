@@ -226,6 +226,8 @@
   "add_card_hint2": "Pemrosesan enkripsi informasi",
   "crypto_address": "nomor kartu bank/alamat mata uang kripto",
   "enter_crypto_address": "Silakan masukkan nomor kartu bank/alamat mata uang kripto",
+  "ifsc_code": "Kod IFSC",
+  "enter_ifsc_code": "Sila masukkan Kod IFSC",
   "delete": "Hapus",
   "enter_bank_name": "Silakan masukkan nama bank",
   "enter": "Silahkan masuk",
