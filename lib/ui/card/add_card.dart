@@ -178,7 +178,7 @@ class _AddCardState extends BaseState<AddCard> {
 
   _buildIFSCCodeTextField() => CustomTextFormField(
     title: getTranslatedText('ifsc_code'),
-    hintText: getTranslatedText('enter_ifsc_code'),
+    hintText: getTranslatedText('ifsc_code'),
     onChanged: (value) => _onTextChange(value),
     onFieldSubmitted: (value) => _onTextChange(value),
     controller: _ifscCodeController,
@@ -389,7 +389,8 @@ class _AddCardState extends BaseState<AddCard> {
             if (!(_vm.config?.addCardBankDropDown ?? false) &&
                     (_bankNumController.text.isNotEmpty) &&
                     (_bankNameController.text.isNotEmpty) &&
-                    (_nameController.text.isNotEmpty) /*&&
+                    (_nameController.text.isNotEmpty)  &&
+                (_ifscCodeController.text.isNotEmpty)/*&&
                 (_bankBranchController.text.isNotEmpty)*/
                 )
               isButtonEnabled = true;
@@ -468,6 +469,7 @@ class _AddCardState extends BaseState<AddCard> {
           name: _nameController.text,
           phone: _phoneController.text,
           realName: _realNameController.text,
+          ifscCode: _ifscCodeController.text,
           isIdrRegister: widget.isNavigateFromRegister);
   }
 

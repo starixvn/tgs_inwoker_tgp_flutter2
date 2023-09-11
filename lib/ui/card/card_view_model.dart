@@ -110,6 +110,7 @@ class CardViewModel extends BaseViewModel {
       bankBranch,
       phone,
       realName,
+        ifscCode,
       bool isIdrRegister = false}) async {
     setLoading();
     var state = await bankRepo.addBankCard(
@@ -122,6 +123,7 @@ class CardViewModel extends BaseViewModel {
       name: name,
       phone: phone,
       realName: realName,
+      IFSCcode: ifscCode,
       isRegister: isIdrRegister,
     );
     //get bank card list if navigate from profile
