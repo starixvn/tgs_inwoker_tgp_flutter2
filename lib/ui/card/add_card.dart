@@ -177,17 +177,17 @@ class _AddCardState extends BaseState<AddCard> {
       );
 
   _buildIFSCCodeTextField() => CustomTextFormField(
-    title: getTranslatedText('ifsc_code'),
-    hintText: getTranslatedText('ifsc_code'),
-    onChanged: (value) => _onTextChange(value),
-    onFieldSubmitted: (value) => _onTextChange(value),
-    controller: _ifscCodeController,
-    focusNode: null,
-    width: context.screenWidth - 70.auto,
-    textInputType: TextInputType.text,
-    textInputAction: TextInputAction.next,
-    textMaxLength: 11,
-  );
+        title: getTranslatedText('ifsc_code'),
+        hintText: getTranslatedText('ifsc_code'),
+        onChanged: (value) => _onTextChange(value),
+        onFieldSubmitted: (value) => _onTextChange(value),
+        controller: _ifscCodeController,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        textMaxLength: 11,
+      );
 
   _buildRealNameTextField() => CustomTextFormField(
         title: ((() {
@@ -277,7 +277,7 @@ class _AddCardState extends BaseState<AddCard> {
             _bankNumController,
             true,
           ),
-          _buildIFSCCodeTextField()
+          if (EnvironmentConfig.currency == "INR") _buildIFSCCodeTextField()
         ];
       case "EWallet":
         return [
@@ -389,8 +389,8 @@ class _AddCardState extends BaseState<AddCard> {
             if (!(_vm.config?.addCardBankDropDown ?? false) &&
                     (_bankNumController.text.isNotEmpty) &&
                     (_bankNameController.text.isNotEmpty) &&
-                    (_nameController.text.isNotEmpty)  &&
-                (_ifscCodeController.text.isNotEmpty)/*&&
+                    (_nameController.text.isNotEmpty) &&
+                    (_ifscCodeController.text.isNotEmpty) /*&&
                 (_bankBranchController.text.isNotEmpty)*/
                 )
               isButtonEnabled = true;

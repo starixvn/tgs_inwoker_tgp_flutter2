@@ -682,8 +682,8 @@ class _HomeState extends BaseState<Home> implements RouteAware {
 
   _handleNavigationAndPopUpDialog() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if ((_vm.config?.forcedVerification ?? false) && (_vm.userProfile?.registerCompleted ?? false) == false && (_vm.config?.registerShowPhone ?? false)) {
-        if ((_vm.config.idrRegisterCustomFlow ?? false) && (_vm.config.navigateToAddCard ?? false)) {
+      if ((_vm.config?.forcedVerification ?? false) && (_vm.userProfile?.registerCompleted ?? false) == false && (_vm.config?.registerShowPhone ?? false) && _vm.userProfile!=null) {
+        if ((_vm.config.idrRegisterCustomFlow ?? false) && (_vm.config.navigateToAddCard ?? false) ) {
           if (_vm.userProfile?.phone == "") {
             //navigate to add phone
             Navigator.pushNamed(context, "/phone_verification");

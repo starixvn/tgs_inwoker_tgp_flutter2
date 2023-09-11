@@ -24,8 +24,7 @@ class PhoneVerification extends StatefulWidget {
   final bool isFromRegister;
   final bool isFromRouletteRoute;
 
-  PhoneVerification(
-      {this.isFromRegister = false, this.isFromRouletteRoute = false});
+  PhoneVerification({this.isFromRegister = false, this.isFromRouletteRoute = false});
 
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
@@ -33,13 +32,8 @@ class PhoneVerification extends StatefulWidget {
 
 class _PhoneVerificationState extends BaseState<PhoneVerification> {
   var _vm = PhoneVerificationViewModel();
-  TextEditingController _phoneController = TextEditingController(),
-      _otpController = TextEditingController();
-  var isButtonEnabled = false,
-      isOtpEnabled = false,
-      isTextFieldEnabled = false,
-      isOtpCountdown = false,
-      isCompleted = false;
+  TextEditingController _phoneController = TextEditingController(), _otpController = TextEditingController();
+  var isButtonEnabled = false, isOtpEnabled = false, isTextFieldEnabled = false, isOtpCountdown = false, isCompleted = false;
 
   var buttonText;
 
@@ -65,8 +59,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
               appBar: _buildAppBar(),
               body: Container(
                   child: Container(
-                margin: EdgeInsets.only(
-                    left: 10.auto, right: 10.auto, top: 10.auto),
+                margin: EdgeInsets.only(left: 10.auto, right: 10.auto, top: 10.auto),
                 child: Column(
                   children: [
                     //CustomTabBar(index:1),
@@ -89,14 +82,11 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
               context,
               MaterialPageRoute(
                   builder: (context) => BottomNavigationController(
-                        // index: 4,
+                      // index: 4,
                       )),
               (Route<dynamic> route) => false);
-        } else if (_vm.userProfile.phone == null &&
-            !(_vm.userProfile?.registerCompleted ?? true) &&
-            (_vm.config?.forcedVerification ?? false)) {
-        } else if (widget.isFromRouletteRoute ||
-            (_vm.userProfile.phone != null && widget.isFromRegister))
+        } else if (_vm.userProfile?.phone == null && !(_vm.userProfile?.registerCompleted ?? true) && (_vm.config?.forcedVerification ?? false)) {
+        } else if (widget.isFromRouletteRoute || (_vm.userProfile?.phone != null && widget.isFromRegister))
           //pop back to home page
           Navigator.pop(context, true);
         else
@@ -122,9 +112,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     return Visibility(
         visible: _vm.config?.initPhoneWithoutVerify ?? false
             ? false
-            : _vm.userProfile.phone == null &&
-                    !(_vm.config?.profileDisableVerifyPhone ?? true) ||
-                !(_vm.userProfile?.registerCompleted ?? true),
+            : _vm.userProfile?.phone == null && !(_vm.config?.profileDisableVerifyPhone ?? true) || !(_vm.userProfile?.registerCompleted ?? true),
         child: OtpTextFormField(
           hintText: getTranslatedText("enter_email_otp_hint"),
           onChanged: (value) => _onTextChange(),
@@ -157,34 +145,39 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       ));
 
   _buildEditPhoneText() => Visibility(
-        visible: _vm.userProfile.phone != null,
+        visible: _vm.userProfile?.phone != null,
         child: InkWell(
           onTap: () {
-            _isNotAllowedEditPhone()
-                ? Navigator.of(context).pushNamed("/customer_service")
-                : Navigator.of(context).pushNamed(RoutePath.editPhone).then(
-                    (value) =>
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _getUserProfile();
-                        }));
+            // _isNotAllowedEditPhone()
+            //     ? Navigator.of(context).pushNamed("/customer_service")
+            //     : Navigator.of(context).pushNamed(RoutePath.editPhone).then(
+            //         (value) =>
+            //             WidgetsBinding.instance.addPostFrameCallback((_) {
+            //               _getUserProfile();
+            //             }));
+
+            if ((_vm.config?.profileDisableEditPhone ?? false) ){
+              Navigator.of(context).pushNamed("/customer_service");
+            } else {
+              if (_vm.config?.changesNotAllowed ?? false)
+                Navigator.of(context).pushNamed("/customer_service");
+              else {
+                Navigator.of(context).pushNamed(RoutePath.editPhone).then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _getUserProfile();
+                    }));
+              }
+            }
           },
           child: Container(
             margin: EdgeInsets.only(top: 20.auto),
             child: RichText(
               text: TextSpan(
                 text: getTranslatedText("edit_phone_cs"),
-                style: TextStyle(
-                    fontSize: 11.auto,
-                    color: CustomColor.theme_text_black_white_color),
+                style: TextStyle(fontSize: 11.auto, color: CustomColor.theme_text_black_white_color),
                 children: [
                   TextSpan(
-                    text: _isNotAllowedEditPhone()
-                        ? getTranslatedText("online_cs")
-                        : getTranslatedText("here"),
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: CustomColor.theme_button_color,
-                        fontSize: 11.auto),
+                    text: _isNotAllowedEditPhone() ? getTranslatedText("online_cs") : getTranslatedText("here"),
+                    style: TextStyle(decoration: TextDecoration.underline, color: CustomColor.theme_button_color, fontSize: 11.auto),
                   ),
                 ],
               ),
@@ -195,12 +188,10 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _onTextChange() {
     setState(() {
-      if (_phoneController.text.isNotEmpty &&
-          _vm.config?.initPhoneWithoutVerify) {
+      if (_phoneController.text.isNotEmpty && _vm.config?.initPhoneWithoutVerify) {
         isOtpEnabled = false;
         isButtonEnabled = true;
-      } else if (_otpController.text.isNotEmpty &&
-          _phoneController.text.isNotEmpty) {
+      } else if (_otpController.text.isNotEmpty && _phoneController.text.isNotEmpty) {
         isOtpEnabled = true;
         isButtonEnabled = true;
       } else if (_phoneController.text.isNotEmpty) {
@@ -222,14 +213,13 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
 
   _getUserProfile() {
     setState(() {
-      String? phone = _vm.userProfile.phone;
+      String? phone = _vm.userProfile?.phone;
       if (phone?.isNotEmpty ?? false) {
         _phoneController.text = phone!;
         buttonText = getTranslatedText("verified");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
-      } else if ((_vm.config?.profileDisableVerifyPhone ?? false) &&
-          (_vm.userProfile?.registerCompleted ?? true)) {
+      } else if ((_vm.config?.profileDisableVerifyPhone ?? false) && (_vm.userProfile?.registerCompleted ?? true)) {
         buttonText = getTranslatedText("done");
         isButtonEnabled = false;
         isTextFieldEnabled = false;
@@ -259,17 +249,14 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
     }*/
     else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getPhoneVerifyCode(display!, _phoneController.text,
-          isFromRegister: widget.isFromRegister);
+      _vm.getPhoneVerifyCode(display!, _phoneController.text, isFromRegister: widget.isFromRegister);
     }
   }
 
   _onClick() async {
     ProgressDialog.show(context, _vm.brandLogoUrl);
 
-    if (_vm.userProfile.phone == null &&
-        !(_vm.userProfile?.registerCompleted ?? true) &&
-        (_vm.config?.initPhoneWithoutVerify ?? false)) {
+    if (_vm.userProfile?.phone == null && !(_vm.userProfile?.registerCompleted ?? true) && (_vm.config?.initPhoneWithoutVerify ?? false)) {
       _vm.performSetPhoneDontCareDuplicate(display!, _phoneController.text);
 
       if (_vm.performSetPhoneDontCareDuplicateApiState.isSuccess) {
@@ -280,16 +267,16 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
         });
       }
     } else {
-      _vm.submitVerifyCode(1, _otpController.text,
-          isFromRegister: widget.isFromRegister);
+      _vm.submitVerifyCode(1, _otpController.text, isFromRegister: widget.isFromRegister);
     }
   }
 
   _isNotAllowedEditPhone() =>
       (_vm.config?.changesNotAllowed ?? false) ||
-      (_vm.config?.profileNotAllowChangePhone ?? false) ||
-      (_vm.config?.profileDisableEditPhone ?? false) ||
-      (_vm.config?.registerShowPhone ?? false);
+      // (_vm.config?.profileNotAllowChangePhone ?? false) ||
+      (_vm.config?.profileDisableEditPhone ?? false)
+      //|| (_vm.config?.registerShowPhone ?? false)
+  ;
 
   _handleApiState() {
     handleApiState(_vm.getPhoneVerifyCodeApiState, onSuccess: () {
@@ -305,8 +292,7 @@ class _PhoneVerificationState extends BaseState<PhoneVerification> {
       await _getUserProfile();
     });
 
-    handleApiState(_vm.performSetPhoneDontCareDuplicateApiState,
-        onSuccess: () async {
+    handleApiState(_vm.performSetPhoneDontCareDuplicateApiState, onSuccess: () async {
       isCompleted = true;
       await _getUserProfile();
       CustomToast.show(getTranslatedText("success"));
