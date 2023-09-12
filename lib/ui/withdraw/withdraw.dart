@@ -378,7 +378,14 @@ class _WithdrawState extends BaseState<Withdraw> {
         margin: EdgeInsets.only(left: 15.auto, bottom: 15.auto),
         child: Text(
           getTranslatedText("withdrawal_warning"),
-          style: TextStyle(color: EnvironmentConfig.template_version == 14 || EnvironmentConfig.template_version == 1 ? Colors.red : Colors.white, fontSize: 11.auto),
+          style: TextStyle(
+              color: EnvironmentConfig.template_version == 14 || EnvironmentConfig.template_version == 1
+                  ? Colors.red
+                  : EnvironmentConfig.template_version == 15
+                  ? Colors.black
+                  : Colors.white,
+              fontSize: 11.auto
+          ),
         ),
       );
 
