@@ -46,7 +46,7 @@ class _AddCardState extends BaseState<AddCard> {
   bool isCrypto = true;
   InputValidationProvider validate = new InputValidationProvider();
   bool isBankNameEnabledEdit = true;
-  bool isRealNameEnabledEdit = true;
+  bool isRealNameEnabledEdit = false;
 
   @override
   void initState() {
@@ -249,7 +249,7 @@ class _AddCardState extends BaseState<AddCard> {
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField(
-              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: EnvironmentConfig.brandName == "IDR1" ? isRealNameEnabledEdit : true /* If other template need edit set false*/),
+              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: EnvironmentConfig.brandName == "IDR1" ? isRealNameEnabledEdit : false),
           _buildBankTextField(
             _isAddCardDisplayGCash()
                 ? "gcash_bank_name"
@@ -411,13 +411,16 @@ class _AddCardState extends BaseState<AddCard> {
       isCrypto = _currentBankType == "Crypto";
       bankTypePickerText = getBankDisplayName(_currentBankType);
 
-      //Switch BankType RealName Change
-      if(_currentBankType == "Bank" || _currentBankType == "EWallet"){
-        _nameController.text = _vm.userProfile.realname ?? "";
-        isRealNameEnabledEdit = true;
-      } else {
-        _nameController.text = "";
-        isRealNameEnabledEdit = false;
+      //Switch BankType RealName Change IDR1
+      if(EnvironmentConfig.brandName == "IDR1") {
+        if ((_currentBankType == "Bank" || _currentBankType == "EWallet") &&
+            _vm.userProfile.realname != null) {
+          _nameController.text = _vm.userProfile.realname ?? "";
+          isRealNameEnabledEdit = true;
+        } else {
+          // _nameController.text = "";
+          isRealNameEnabledEdit = false;
+        }
       }
     });
   }
