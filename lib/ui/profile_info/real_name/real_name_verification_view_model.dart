@@ -20,11 +20,14 @@ class RealNameVerificationViewModel extends BaseViewModel {
   // idVerify(String realname, String id, {File? imageFile}) async {
   //   setLoading();
   //   var _status = await userRepo.setIdentity(realname, id);
+  //   var _imageStatus = uploadIdImageApiState = await userRepo.uploadIdImage(imageFile);
+  //
   //   if (_status.isSuccess) {
   //     if (imageFile != null) await uploadIdImage(imageFile);
   //     idVerifyApiState = await userRepo.getBasicInfo();
-  //   } else
+  //   } else {
   //     idVerifyApiState = _status;
+  //   }
   //   setLoading(false);
   //   return idVerifyApiState;
   // }
@@ -37,27 +40,56 @@ class RealNameVerificationViewModel extends BaseViewModel {
   //   return uploadIdImageApiState;
   // }
 
+  // getIdVerifyWithImage(String realname, String id, {File? imageFile}) async {
+  //   setLoading();
+  //
+  //   var _status = await userRepo.setIdentity(realname, id);
+  //
+  //   if (_status.isSuccess) {
+  //     if (imageFile != null) {
+  //       uploadIdImageApiState = await userRepo.uploadIdImage(imageFile);
+  //       if (uploadIdImageApiState.isSuccess) {
+  //         idVerifyApiState = await userRepo.getBasicInfo();
+  //       } else {
+  //         print('Image upload failed: ${uploadIdImageApiState.errorMessage}');
+  //       }
+  //     } else {
+  //       idVerifyApiState = await userRepo.getBasicInfo();
+  //     }
+  //   } else {
+  //     idVerifyApiState = _status;
+  //   }
+  //
+  //   setLoading(false);
+  //   return idVerifyApiState;
+  // }
+
   getIdVerifyWithImage(String realname, String id, {File? imageFile}) async {
     setLoading();
 
     var _status = await userRepo.setIdentity(realname, id);
 
-    if (_status.isSuccess) {
-      if (imageFile != null) {
+    if (imageFile != null) {
+      var _imageStatus = await userRepo.uploadIdImage(imageFile);
+
+      if (_status.isSuccess) {
         uploadIdImageApiState = await userRepo.uploadIdImage(imageFile);
+
         if (uploadIdImageApiState.isSuccess) {
           idVerifyApiState = await userRepo.getBasicInfo();
         } else {
           print('Image upload failed: ${uploadIdImageApiState.errorMessage}');
         }
       } else {
-        idVerifyApiState = await userRepo.getBasicInfo();
+        idVerifyApiState = _imageStatus;
+        setLoading(false);
       }
     } else {
       idVerifyApiState = _status;
+      // idVerifyApiState = await userRepo.getBasicInfo();
+      setLoading(false);
     }
 
-    setLoading(false);
     return idVerifyApiState;
   }
 
