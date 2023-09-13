@@ -353,7 +353,7 @@ class _RealNameVerificationState extends BaseState<RealNameVerification> {
       });
     } else {
       ProgressDialog.show(context, _vm.brandLogoUrl);
-      _vm.getIdVerifyWithImage(
+      _vm.idVerify(
         _realNameController.text,
         _icNumberController.text,
         imageFile: uploadImage,
