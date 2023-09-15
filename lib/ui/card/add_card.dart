@@ -45,6 +45,7 @@ class _AddCardState extends BaseState<AddCard> {
   bool isCrypto = true;
   InputValidationProvider validate = new InputValidationProvider();
   bool isBankNameEnabledEdit = true;
+  bool isBankNameShow = false;
 
   @override
   void initState() {
@@ -241,7 +242,9 @@ class _AddCardState extends BaseState<AddCard> {
                     onClick: () {
                       _buildBottomSheet("bank_name", _vm.bankNameList);
                     })
-                : _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true),
+                : Visibility(
+                visible: (EnvironmentConfig.brandName == "28WIN") == isBankNameShow,
+                child: _buildBankTextField("bank_name", "enter_bank_name", _bankNameController, false, isBankName: true)),
           Visibility(
             visible: !_isAddCardHideCertainField() && (_vm.config?.addCardBankBranch ?? true) && EnvironmentConfig.brandName != "PB2",
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
@@ -421,9 +424,11 @@ class _AddCardState extends BaseState<AddCard> {
       if (_vm.pWithdrawalInfo?.channelCode != "CustomBank") {
         _bankNameController.text = _vm.pWithdrawalInfo?.channelCode ?? "";
         isBankNameEnabledEdit = false;
+        isBankNameShow = false;
       } else {
         _bankNameController.text = "";
         isBankNameEnabledEdit = true;
+        isBankNameShow = true;
       }
     });
   }
