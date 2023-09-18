@@ -47,6 +47,7 @@ class _AddCardState extends BaseState<AddCard> {
   InputValidationProvider validate = new InputValidationProvider();
   bool isBankNameEnabledEdit = true;
   bool isBankNameShow = true;
+  bool isRealNameEnabledEdit = false;
 
   @override
   void initState() {
@@ -265,7 +266,7 @@ class _AddCardState extends BaseState<AddCard> {
             child: _buildBankTextField("bank_branch", "enter_bank_branch", _bankBranchController, false),
           ),
           _buildBankTextField(
-              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false),
+              (_vm.config?.addCardBankCustomIdr ?? false) ? "card_holder_name" : "bank_acc_name", "enter_bank_acc_name", _nameController, false, isBankName: isRealNameEnabledEdit),
           _buildBankTextField(
             _isAddCardDisplayGCash()
                 ? "gcash_bank_name"
@@ -284,7 +285,7 @@ class _AddCardState extends BaseState<AddCard> {
         ];
       case "EWallet":
         return [
-          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false, isBankName: false),
+          _buildBankTextField("eWalletAccount", "msgEnterEwalletAccount", _nameController, false, isBankName: isRealNameEnabledEdit),
           _buildPhoneTextField(),
         ];
       case "Crypto":
@@ -428,6 +429,18 @@ class _AddCardState extends BaseState<AddCard> {
     setState(() {
       isCrypto = _currentBankType == "Crypto";
       bankTypePickerText = getBankDisplayName(_currentBankType);
+
+      //Switch BankType RealName Change IDR1
+      if(EnvironmentConfig.brandName == "IDR1") {
+        if ((_currentBankType == "Bank" || _currentBankType == "EWallet") &&
+            _vm.userProfile.realname != null) {
+          _nameController.text = _vm.userProfile.realname ?? "";
+          isRealNameEnabledEdit = true;
+        } else {
+          // _nameController.text = "";
+          isRealNameEnabledEdit = false;
+        }
+      }
     });
   }
 
