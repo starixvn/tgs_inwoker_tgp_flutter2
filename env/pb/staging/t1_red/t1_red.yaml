@@ -36,10 +36,10 @@ environment_config:
       default: 0xffc40511
     theme_app_bar_color:
       type: int
-      default: 0xffC40511
+      default: 0xff212020
     theme_button_color:
       type: int
-      default: 0xffC40511
+      default: 0xffd14738
     theme_grey_button_color:
       type: int
       default: 0xff828282
@@ -54,16 +54,16 @@ environment_config:
       default: 0xffffffff
     tab_selected_color:
       type: int
-      default: 0xffC40511
+      default: 0xffd14738
     tab_unselected_color:
       type: int
       default: 0xffFFFFFF
     bottom_nav_selected_color:
       type: int
-      default: 0xff91030C
+      default: 0xffd14738
     bottom_nav_unselected_color:
       type: int
-      default: 0xff707070
+      default: 0xffFFFFFF
     promotion_bg_color:
       type: int
       default: 0xffFFFFFF
@@ -84,7 +84,7 @@ environment_config:
       default: 0xffFFFFFF
     theme_app_bar_text_color:
       type: int
-      default: 0xffFFFFFF
+      default: 0xffd14738
     theme_marquee_text_color:
       type: int
       default: 0xffFFFFFF
@@ -93,7 +93,7 @@ environment_config:
       default: 0xffC40511
     theme_bottom_app_bar_color:
       type: int
-      default: 0xffF5F5F5
+      default: 0xff212020
     default_lang:
       default: "en-US"
     assetUrl:

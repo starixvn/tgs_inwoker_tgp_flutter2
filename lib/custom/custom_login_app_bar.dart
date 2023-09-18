@@ -395,7 +395,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               if (_isDarkMode())
                 return CustomColor.theme_text_black_color;
               else
-                return Colors.white;
+                return Color(0xffd14738);
             })()),
             fontSize: 14,
             radius: EnvironmentConfig.template_version == 14 ? 10 : 5,
@@ -420,7 +420,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               return Colors.white;
             else if (EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode)
               //pb dark mode with red theme
-              return Colors.black;
+              return Colors.white;
             else
               return CustomColor.theme_app_bar_color;
           }()),
@@ -433,7 +433,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                   _isDarkMode() ||
                   EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
-              : Colors.white,
+              : Color(0xffd14738),
         ),
       );
 
@@ -523,11 +523,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               return Colors.white;
             else if ((EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode))
               //pb dark mode with red theme
-              return Colors.black;
+              return Colors.white;
             else
               return CustomColor.theme_text_black_color;
           }()),
-          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Colors.white,
+          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Color(0xffd14738),
           icon: Container(
             margin: EdgeInsets.only(right: 3.auto),
             child: Image.asset(
@@ -579,13 +579,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               return Colors.white;
             else if ((EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode))
               //pb dark mode with red theme
-              return Colors.black;
+              return Colors.white;
             else
               return CustomColor.theme_text_black_color;
           }()),
           color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 10 || _isDarkMode() || EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
-              : Colors.white,
+              : Color(0xffd14738),
         ),
       );
 
@@ -598,7 +598,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             Text(
               widget.userProfile?.username ?? "",
               style: TextStyle(
-                color: CustomColor.theme_app_bar_text_color,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: ((GlobalValueUtil.featuresConfig?.homePageDisplayBalance ?? false) || (GlobalValueUtil.featuresConfig?.newTransferUI ?? false))
                     ? 10.auto

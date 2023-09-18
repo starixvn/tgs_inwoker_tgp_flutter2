@@ -370,6 +370,8 @@ class _BottomNavigationControllerState extends BaseState<BottomNavigationControl
           ? null
           : BottomAppBar(
         color: CustomColor.theme_bottom_app_bar_color,
+        // color: Color(0xff91030C),
+        // color: Color(0xffd14738),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
