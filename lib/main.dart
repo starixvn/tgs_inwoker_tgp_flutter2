@@ -248,7 +248,7 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
                       ),
                   RoutePath.profile: (context) => Profile(),
                   RoutePath.csWebView: (context) => CustomerServiceWebView(),
-                  RoutePath.customerService: (context) => CustomerService(),
+                  RoutePath.customerService: (context) => CustomerService(isNewPage: true),
                   RoutePath.transaction: (context) => ReportView(),
                   RoutePath.login: (context) => EnvironmentConfig.template_version == 15
                       ? LoginTemplate02(

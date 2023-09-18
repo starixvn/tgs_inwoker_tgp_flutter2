@@ -225,6 +225,8 @@
   "add_card_hint2": "Thông tin được mã hóa",
   "crypto_address": "số thẻ ngân hàng /địa chỉ tiền điện tử",
   "enter_crypto_address": "Vui lòng nhập số thẻ ngân hàng / địa chỉ tiền điện tử",
+  "ifsc_code": "Mã IFSC",
+  "enter_ifsc_code": "Vui lòng nhập Mã IFSC",
   "delete": "Xóa",
   "enter_bank_name": "Vui lòng nhập tên ngân hàng",
   "enter": "Vui lòng nhập",

@@ -22,6 +22,7 @@ class CustomTextFormField extends StatefulWidget {
   final Widget? customPart;
   final double? elevation;
   final FontWeight? titleFontWeight;
+  final int? textMaxLength;
 
   CustomTextFormField({
     required this.title,
@@ -40,6 +41,7 @@ class CustomTextFormField extends StatefulWidget {
     this.customPart,
     this.elevation  = 5,
     this.titleFontWeight,
+    this.textMaxLength,
   });
 
   @override
@@ -110,6 +112,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                   Expanded(
                     flex: 9,
                     child: TextFormField(
+                      maxLength: widget.textMaxLength,
                       enabled: widget.enabled,
                       autofocus: false,
                       onChanged: (value) => widget.onChanged(value),
@@ -130,6 +133,7 @@ class _CustomTextFormFieldState extends BaseState<CustomTextFormField> {
                               : Color(0xff4B4B4B),
                           fontSize: 13.auto),
                       decoration: InputDecoration(
+                        counterText: "",
                         border: InputBorder.none,
                         hintText: widget.hintText,
                         isDense: true,

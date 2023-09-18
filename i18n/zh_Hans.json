@@ -225,6 +225,8 @@
   "add_card_hint2": "资讯加密处理",
   "crypto_address": "银行卡号码/加密货币地址",
   "enter_crypto_address": "请输入银行卡号码/加密货币地址",
+  "ifsc_code": "IFSC 代码",
+  "enter_ifsc_code": "请输入 IFSC 代码",
   "delete": "删除",
   "enter_bank_name": "请输入银行名称",
   "enter": "请输入",

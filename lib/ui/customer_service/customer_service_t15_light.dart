@@ -65,7 +65,7 @@ class _CustomerServiceT15LightState extends BaseState<CustomerServiceT15Light> {
                 alignment: Alignment.center,
                 child: Text(
                   getTranslatedText('customer_support'),
-                  style: TextStyle(color: Colors.white, fontSize: 15.auto),
+                  style: TextStyle(color: Colors.white, fontSize: 15.auto, decoration: TextDecoration.none),
                 ),
               ),
               Container(
@@ -78,7 +78,7 @@ class _CustomerServiceT15LightState extends BaseState<CustomerServiceT15Light> {
                 padding: EdgeInsets.symmetric(horizontal: 40.auto, vertical: 20.auto),
                 child: Text(
                   getTranslatedText("welcome_customer_support"),
-                  style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_grey_color),
+                  style: TextStyle(fontSize: 10.auto, color: CustomColor.theme_text_grey_color, decoration: TextDecoration.none),
                 ),
               ),
               SizedBox(height: 15),

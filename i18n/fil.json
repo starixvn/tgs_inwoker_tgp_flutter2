@@ -226,6 +226,8 @@
   "add_card_hint2": "Naka-encrypt ang impormasyon",
   "crypto_address": "Numero ng bank card/Crypto currency address ",
   "enter_crypto_address": "Pakilagay ang numero ng bank card/crypto currency address",
+  "ifsc_code": "IFSC Code",
+  "enter_ifsc_code": "Pakipasok ang IFSC Code",
   "delete": "Burahin",
   "enter_bank_name": "Pakilagay ang pangalan ng bangko",
   "enter": "Pakipasok ",

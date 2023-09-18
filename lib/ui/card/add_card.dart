@@ -38,7 +38,8 @@ class _AddCardState extends BaseState<AddCard> {
       _nameController = TextEditingController(),
       _bankBranchController = TextEditingController(),
       _realNameController = TextEditingController(),
-      _phoneController = TextEditingController();
+      _phoneController = TextEditingController(),
+      _ifscCodeController = TextEditingController();
   var _vm = CardViewModel();
   var isButtonEnabled = false;
   String? bankTypePickerText, channelPickerText, bankNamePickerText;
@@ -84,7 +85,8 @@ class _AddCardState extends BaseState<AddCard> {
                             left: 10.auto,
                             right: 10.auto,
                             top: 5.auto,
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                            // bottom: MediaQuery.of(context).viewInsets.bottom,
+                            bottom: 10.auto,
                           ),
                           children: [
                             _buildAddCardTitle(),
@@ -173,6 +175,19 @@ class _AddCardState extends BaseState<AddCard> {
         width: context.screenWidth - 70.auto,
         textInputType: TextInputType.text,
         textInputAction: TextInputAction.next,
+      );
+
+  _buildIFSCCodeTextField() => CustomTextFormField(
+        title: getTranslatedText('ifsc_code'),
+        hintText: getTranslatedText('ifsc_code'),
+        onChanged: (value) => _onTextChange(value),
+        onFieldSubmitted: (value) => _onTextChange(value),
+        controller: _ifscCodeController,
+        focusNode: null,
+        width: context.screenWidth - 70.auto,
+        textInputType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        textMaxLength: 11,
       );
 
   _buildRealNameTextField() => CustomTextFormField(
@@ -265,6 +280,7 @@ class _AddCardState extends BaseState<AddCard> {
             _bankNumController,
             true,
           ),
+          if (EnvironmentConfig.currency == "INR") _buildIFSCCodeTextField()
         ];
       case "EWallet":
         return [
@@ -376,7 +392,8 @@ class _AddCardState extends BaseState<AddCard> {
             if (!(_vm.config?.addCardBankDropDown ?? false) &&
                     (_bankNumController.text.isNotEmpty) &&
                     (_bankNameController.text.isNotEmpty) &&
-                    (_nameController.text.isNotEmpty) /*&&
+                    (_nameController.text.isNotEmpty) &&
+                    (_ifscCodeController.text.isNotEmpty) /*&&
                 (_bankBranchController.text.isNotEmpty)*/
                 )
               isButtonEnabled = true;
@@ -457,6 +474,7 @@ class _AddCardState extends BaseState<AddCard> {
           name: _nameController.text,
           phone: _phoneController.text,
           realName: _realNameController.text,
+          ifscCode: _ifscCodeController.text,
           isIdrRegister: widget.isNavigateFromRegister);
   }
 

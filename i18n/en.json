@@ -226,6 +226,8 @@
   "add_card_hint2": "Information is encrypted",
   "crypto_address": "Bank card number/Crypto currency address ",
   "enter_crypto_address": "Please enter bank card number/crypto currency address",
+  "ifsc_code": "IFSC Code",
+  "enter_ifsc_code": "Please enter IFSC Code",
   "delete": "Delete",
   "enter_bank_name": "Please enter bank name",
   "enter": "Please enter ",
