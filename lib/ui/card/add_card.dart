@@ -48,6 +48,7 @@ class _AddCardState extends BaseState<AddCard> {
   bool isBankNameEnabledEdit = true;
   bool isBankNameShow = true;
   bool isRealNameEnabledEdit = false;
+  String? channelOrSelectBank;
 
   @override
   void initState() {
@@ -143,7 +144,7 @@ class _AddCardState extends BaseState<AddCard> {
   _buildChannelPicker() => Visibility(
         visible: !(((_vm.config?.addCardHideChannel ?? false))),
         child: CustomPicker(
-            title: (_vm.config?.addCardBankCustomIdr ?? false) ? "bank_name" : "channel",
+            title: (_vm.config?.addCardBankCustomIdr ?? false) ? "bank_name" : channelOrSelectBank,
             displayText: channelPickerText == null ? getTranslatedText("select_channel") : channelPickerText,
             list: _vm.withdrawalInfoList,
             isHintText: false,
@@ -440,6 +441,12 @@ class _AddCardState extends BaseState<AddCard> {
           // _nameController.text = "";
           isRealNameEnabledEdit = false;
         }
+      }
+
+      if(_currentBankType == "Bank"){
+        if(EnvironmentConfig.brandName == "28WIN") channelOrSelectBank = "select_bank";
+      } else {
+        channelOrSelectBank = "channel";
       }
     });
   }
