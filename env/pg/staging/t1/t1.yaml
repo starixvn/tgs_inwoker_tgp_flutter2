@@ -63,7 +63,7 @@ environment_config:
       default: 0xff91030C
     bottom_nav_unselected_color:
       type: int
-      default: 0xff707070
+      default: 0xff404040
     promotion_bg_color:
       type: int
       default: 0xffFFFFFF

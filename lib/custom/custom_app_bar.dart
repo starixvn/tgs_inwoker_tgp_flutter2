@@ -38,7 +38,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       return AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          decoration: gradientDecoration,
+          decoration: EnvironmentConfig.brandName == "PB" ?
+          BoxDecoration(
+              color: Color(0xff212020)
+          ) : gradientDecoration,
         ),
         centerTitle: true,
         title: Text(
@@ -48,7 +51,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: EnvironmentConfig.light_mode ? Colors.black : Color(0xffd14738),
+            color: EnvironmentConfig.light_mode
+                ? Colors.black
+                : EnvironmentConfig.brandName == "PB" ? Color(0xffd14738) : Colors.white,
           ),
           onPressed: () => _onPress(context),
         ),

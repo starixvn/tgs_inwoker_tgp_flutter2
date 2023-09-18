@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tgp_flutter2/src/custom_color.dart';
 
 BoxDecoration gradientDecoration = BoxDecoration(
-  // gradient: LinearGradient(
-  //   colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
-  //   begin: Alignment.bottomCenter,
-  //   end: Alignment.topCenter,
-  // ),
-  color: Color(0xff212020),
+  gradient: LinearGradient(
+    colors: [CustomColor.theme_bar_gradient_1, CustomColor.theme_bar_gradient_2],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  ),
+  // color: Color(0xff212020),
 );
 
 BoxDecoration roundGradientDecoration = BoxDecoration(
