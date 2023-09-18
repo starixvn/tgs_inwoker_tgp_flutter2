@@ -151,13 +151,13 @@ class _ReplyDialogState extends BaseState<ReplyDialog> {
                   Expanded(
                     flex: 5,
                     child: ColorButton(
-                      title: "提交",
+                      title: getTranslatedText("submit"),
                       onClick: () async {
                         if (fieldController.text.isNotEmpty) {
                           await widget.onSentClick(fieldController.text);
                           fieldController.clear();
+                          ErrorDialogUtils.showErrorDialog(context, getTranslatedText("memo_reply_success"), getTranslatedText("memo_reply_confirm"),popCount: 3);
                         }
-                        ErrorDialogUtils.showErrorDialog(context, 'Send Success', popCount: 3);
                       },
                       isEnabled: isButtonEnabled,
                       width: 60.auto,

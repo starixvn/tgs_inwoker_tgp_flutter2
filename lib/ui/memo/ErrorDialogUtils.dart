@@ -6,7 +6,7 @@ import '../../environment_config.dart';
 import '../../src/custom_color.dart';
 
 class ErrorDialogUtils {
-  static void showErrorDialog(BuildContext context, String message, {int popCount = 1}) {
+  static void showErrorDialog(BuildContext context, String message, String title, {int popCount = 1}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -47,7 +47,7 @@ class ErrorDialogUtils {
                   width: context.screenWidth * 0.4,
                   padding: EdgeInsets.all(10.auto),
                   child: ColorButton(
-                    title: 'Confirm',
+                    title: title,
                     onClick: () {
                       for (int i = 0; i < popCount; i++) {
                         Navigator.of(context).pop();

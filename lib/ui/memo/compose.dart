@@ -81,8 +81,8 @@ class _ComposeState extends BaseState<Compose> {
               await widget.vm.postStationLetter(_subjectController.text,_memoController.text);
              _subjectController.clear();
              _memoController.clear();
+              ErrorDialogUtils.showErrorDialog(context, getTranslatedText("memo_reply_success"),getTranslatedText("memo_reply_confirm"));
           }
-          ErrorDialogUtils.showErrorDialog(context, 'Send Success');
         },
         isEnabled: isButtonEnabled,
         color: CustomColor.theme_button_color,

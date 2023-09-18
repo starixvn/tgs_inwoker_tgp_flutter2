@@ -556,6 +556,8 @@
   "memo_subject": "เรื่อง",
   "memo_action": "การกระทำ",
   "memo_reply": "ตอบกลับ",
+  "memo_reply_confirm": "ยืนยัน",
+  "memo_reply_success": "ส่งความสำเร็จ",
   "enter_memo_subject": "กรุณากรอกหัวข้อ",
   "enter_memo": "กรุณากรอกข้อความสถานี",
 

@@ -541,6 +541,8 @@
   "memo_subject": "विषय",
   "memo_action": "कार्य",
   "memo_reply": "जवाब",
+  "memo_reply_confirm": "पुष्टि करना",
+  "memo_reply_success": "सफलता भेजें",
   "vip_level": "वीआईपी स्तर",
   "Please enter subject": "कृपया विषय दर्ज करें",
   "Please enter memo": "कृपया मेमो दर्ज करें",
