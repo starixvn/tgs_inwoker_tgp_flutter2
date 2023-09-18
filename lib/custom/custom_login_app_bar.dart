@@ -92,7 +92,10 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
         actions: [Container()],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          decoration: gradientDecoration,
+          decoration: EnvironmentConfig.brandName == "PB" ?
+              BoxDecoration(
+                  color: Color(0xff212020)
+              ) : gradientDecoration,
           child: _getAppBarWidget(),
         ),
         centerTitle: false,
@@ -395,6 +398,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               if (_isDarkMode())
                 return CustomColor.theme_text_black_color;
               else
+                return EnvironmentConfig.brandName == "PB" ? Color(0xffd14738) : Colors.white;
                 return Color(0xffd14738);
             })()),
             fontSize: 14,
@@ -420,7 +424,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               return Colors.white;
             else if (EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode)
               //pb dark mode with red theme
-              return Colors.white;
+              return EnvironmentConfig.brandName == "PB" ? Colors.white : Colors.black;
             else
               return CustomColor.theme_app_bar_color;
           }()),
@@ -430,10 +434,11 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
                   EnvironmentConfig.template_version == 4 ||
                   EnvironmentConfig.template_version == 10 ||
                   EnvironmentConfig.template_version == 14 ||
+              EnvironmentConfig.brandName == "PB" ||
                   _isDarkMode() ||
                   EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
-              : Color(0xffd14738),
+              : Colors.white,
         ),
       );
 
@@ -523,11 +528,13 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               return Colors.white;
             else if ((EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode))
               //pb dark mode with red theme
-              return Colors.white;
+              return EnvironmentConfig.brandName == "PB" ? Colors.white : Colors.black;
             else
               return CustomColor.theme_text_black_color;
           }()),
-          color: EnvironmentConfig.template_version == 3 || _isDarkMode() || EnvironmentConfig.light_mode ? CustomColor.theme_button_color : Color(0xffd14738),
+          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.brandName == "PB" || _isDarkMode() || EnvironmentConfig.light_mode
+              ? CustomColor.theme_button_color
+              : Colors.white,
           icon: Container(
             margin: EdgeInsets.only(right: 3.auto),
             child: Image.asset(
@@ -579,13 +586,16 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
               return Colors.white;
             else if ((EnvironmentConfig.template_version == 1 && EnvironmentConfig.dark_mode))
               //pb dark mode with red theme
-              return Colors.white;
+              return EnvironmentConfig.brandName == "PB" ? Colors.white : Colors.black;
             else
               return CustomColor.theme_text_black_color;
           }()),
-          color: EnvironmentConfig.template_version == 3 || EnvironmentConfig.template_version == 10 || _isDarkMode() || EnvironmentConfig.light_mode
+          color: EnvironmentConfig.template_version == 3 ||
+              EnvironmentConfig.template_version == 10 ||
+              EnvironmentConfig.brandName == "PB" ||
+              _isDarkMode() || EnvironmentConfig.light_mode
               ? CustomColor.theme_button_color
-              : Color(0xffd14738),
+              : Colors.white,
         ),
       );
 
@@ -598,7 +608,7 @@ class _CustomLoginAppBarState extends BaseState<CustomLoginAppBar> {
             Text(
               widget.userProfile?.username ?? "",
               style: TextStyle(
-                color: Colors.white,
+                color: EnvironmentConfig.brandName == "PB" ? Colors.white : CustomColor.theme_app_bar_text_color,
                 fontWeight: FontWeight.bold,
                 fontSize: ((GlobalValueUtil.featuresConfig?.homePageDisplayBalance ?? false) || (GlobalValueUtil.featuresConfig?.newTransferUI ?? false))
                     ? 10.auto
