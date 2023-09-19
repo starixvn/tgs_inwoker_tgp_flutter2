@@ -1,0 +1,107 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/app_logo/Solaire_logo.png"
+
+environment_config:
+  fields:
+    jwtKey:
+      default: "GPB22ReSL0ym6KMWmCdGFWYxAlnMwUaBfn3372ymNU3aWncGXDgaD1"
+    url:
+      default: "https://pnd268.com/"
+    currency:
+      default: "PHP"
+    appTitleName:
+      default: "PB"
+    slotGameUrl:
+      default: "https://images.srvptt.com/"
+    imageLogo:
+      default: "pg_login_logo"
+    environmentStage:
+      default: "production"
+    template_version:
+      type: int
+      default: 1
+    dark_mode:
+      type: bool
+      default: true
+    light_mode:
+      type: bool
+      default: false
+    primaryColorCode:
+      type: int
+      default: 0xff91030c
+    primaryGradientColorCode:
+      type: int
+      default: 0xffc40511
+    theme_app_bar_color:
+      type: int
+      default: 0xff212020
+    theme_button_color:
+      type: int
+      default: 0xffd14738
+    theme_grey_button_color:
+      type: int
+      default: 0xff828282
+    theme_bg_color:
+      type: int
+      default: 0xff000000
+    theme_app_bar_icon_color:
+      type: int
+      default: 0xff707070
+    menu_bg_color:
+      type: int
+      default: 0xffffffff
+    tab_selected_color:
+      type: int
+      default: 0xffd14738
+    tab_unselected_color:
+      type: int
+      default: 0xffFFFFFF
+    bottom_nav_selected_color:
+      type: int
+      default: 0xffd14738
+    bottom_nav_unselected_color:
+      type: int
+      default: 0xffFFFFFF
+    promotion_bg_color:
+      type: int
+      default: 0xffFFFFFF
+    promotion_text_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_text_black_color:
+      type: int
+      default: 0xff000000
+    theme_text_black_white_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_text_grey_color:
+      type: int
+      default: 0xff707070
+    theme_text_grey_white_color:
+      type: int
+      default: 0xffFFFFFF
+    theme_app_bar_text_color:
+      type: int
+      default: 0xffd14738
+    theme_marquee_text_color:
+      type: int
+      default: 0xffFFFFFF
+    announcement_icon_color:
+      type: int
+      default: 0xffC40511
+    theme_bottom_app_bar_color:
+      type: int
+      default: 0xff212020
+    default_lang:
+      default: "en-US"
+    assetUrl:
+      default: "https://app12.s3.ap-east-1.amazonaws.com/"
+    brandName:
+      default: "PB"
+    vipPresentType:
+      type: int
+      default: 1
+    configFileName:
+      default: "PB"

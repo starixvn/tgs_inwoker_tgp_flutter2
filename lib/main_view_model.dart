@@ -82,16 +82,21 @@ class MainViewModel extends BaseViewModel {
 
   getEnvFeatures() async {
     setLoading();
+    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
     var state = await contentRepo.getEnvFeaturesJson(EnvironmentConfig.configFileName);
     if (state.isSuccess) {
       GlobalValueUtil.featuresConfig = state.result;
+      if (GlobalValueUtil.featuresConfig?.domainUrl?.isNotEmpty ?? false) {
+        // if domain url is not empty, then update it
+        InitData().getData(GlobalValueUtil.featuresConfig?.domainUrl ?? EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency,
+            EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
+      }
     }
     setLoading(false);
   }
 
   getAuthToken() async {
     setLoading();
-    InitData().getData(EnvironmentConfig.url, EnvironmentConfig.jwtKey, EnvironmentConfig.currency, EnvironmentConfig.assetUrl, EnvironmentConfig.default_lang);
     authApiState = await userRepo.auth();
     setLoading(false);
     return authApiState;

@@ -122,6 +122,8 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
     if (firstInit) {
       LanguageProvider.getSingleton().init(EnvironmentConfig.brandName);
 
+      await _vm.getEnvFeatures();
+
       if (_vm.authApiState?.isMaintenance == true) {
         //prevent loop
         return _vm.authApiState; //return if maintenance
@@ -131,10 +133,9 @@ class _MyAppState extends BaseState<MyApp> with WidgetsBindingObserver {
       //_vm.authApiState.isMaintenance = true;
       if (_vm.authApiState.isMaintenance) {
         _getLocale(); //temp for localization for mainteance page
-        await _vm.getEnvFeatures(); // call when authApiState is Maintenance
         return _vm.authApiState; //return if maintenance
       }
-      await _vm.getEnvFeatures();
+
       if (_vm.config?.haveDownloadFeature ?? false) {
         await _vm.getVersion();
       }
