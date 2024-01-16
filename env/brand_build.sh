@@ -22,10 +22,10 @@ flutter pub run environment_config:generate --config=env/$1
 cd ../../../../
 
 #App PackageId
-dart pub global run rename --bundleId $2
+dart pub global run rename setBundleId --value $2
 
 #App Name
-dart pub global run rename --appname $3
+dart pub global run rename setAppName --value $3
 
 # run command below in case of error
 # pub global activate rename
